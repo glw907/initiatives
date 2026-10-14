@@ -39,12 +39,29 @@ while IFS=$'\t' read -r repo _ path; do
 done < "$scope"
 mkrepo "$fx/Projects/$canary_out" "$canary_out"
 
+# Every in-scope repo also tracks a plan named for the canary that links to itself, so a
+# tool that lists files or references shows the canary without special setup.
+while IFS=$'\t' read -r repo _ path; do
+  [[ $repo == repo ]] && continue
+  dir="${path/#\~\/Projects\//$fx/Projects/}"
+  dir="${dir/#\~\//$fx/}"
+  mkdir -p "$dir/docs/superpowers/plans"
+  printf 'See ~/Projects/%s/docs/superpowers/plans/%s.md\n' "$repo" "$canary_in" \
+    > "$dir/docs/superpowers/plans/$canary_in.md"
+  git -C "$dir" add -A && git -C "$dir" commit -q -m canary
+done < "$scope"
+
 cat > "$fx/agents.json" <<JSON
 [{"name":"in-scope-agent","cwd":"$inscope_first","state":"working"},
  {"name":"$canary_out","cwd":"$fx/Projects/$canary_out","state":"working"}]
 JSON
 export PROJECTS_ROOT="$fx/Projects" HOME="$fx" SCOPE_CANARY_IN="$canary_in" \
   SCOPE_CANARY_OUT="$canary_out" SCOPE_AGENTS_JSON="$fx/agents.json" SCOPE_OUT_DIR="$fx/out"
+
+# A tool's test may set SCOPE_FIXTURE_HOOK to an executable that adds tool-specific
+# fixture state (a worktree, a wrangler config). It gets the fixture root as $1 and
+# runs before the snapshot, so its writes never count as the tool's output.
+[[ -n ${SCOPE_FIXTURE_HOOK:-} ]] && "$SCOPE_FIXTURE_HOOK" "$fx"
 
 snap() { find "$fx" -type f -not -path '*/.git/*' -exec md5sum {} + | sort; }
 before=$(snap)
