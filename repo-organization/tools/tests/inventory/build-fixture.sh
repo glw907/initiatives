@@ -36,7 +36,7 @@ put "$(dir_of aksailingclub-sveltekit)/wrangler.toml" <<EOF
 name = "asc-shell"
 services = [{ binding = "HB", service = "asc-handbook" }, { binding = "UP", service = "asc-uptime" }]
 r2_buckets = [{ binding = "IMG", bucket_name = "asc-event-images" }]
-d1_databases = [{ binding = "DB", database_name = "asc-shell-db", database_id = "$d1" }]
+d1_databases = [{ binding = "DB", database_name = "asc-shell-db", database_id = "$d1" }, { binding = "DB2", database_name = "ghost-db" }]
 kv_namespaces = [{ binding = "K3", id = "$(kv 3)" }, { binding = "K4", id = "$(kv 4)" }]
 [env.staging]
 kv_namespaces = [{ binding = "K2", id = "$(kv 2)" }]

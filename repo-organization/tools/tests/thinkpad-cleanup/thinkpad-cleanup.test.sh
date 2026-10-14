@@ -63,6 +63,16 @@ check "--apply removes the identical plain directory" test ! -e "$root/old-plain
 check "--apply leaves the refused repo" test -d "$root/old-extra"
 check "--apply never touches an edit row" test -d "$root/keeper"
 
+# A stash lives only in the checkout, so a repo holding one is never removable.
+git init -q -b main "$root/old-stash"; printf 'a\n' > "$root/old-stash/a"
+git -C "$root/old-stash" add a && git -C "$root/old-stash" commit -q -m one
+printf 'changed\n' > "$root/old-stash/a"; git -C "$root/old-stash" stash -q
+printf 'repo\trole\tpath\nold-stash\tretire\t~/Projects/old-stash\n' > "$tmp/scope3.tsv"
+printf 'stage\tkind\tid\taction\texpect\nR1\tlocal-dir\told-stash\tremove\t%s\n' "$(git_expect "$root/old-stash")" > "$tmp/m3.tsv"
+out=$(PROJECTS_ROOT="$root" HOME="$tmp" "$tool" --scope "$tmp/scope3.tsv" --manifest "$tmp/m3.tsv" --apply)
+check "a repo holding a stash is refused" grep -q $'^old-stash\tno remote\trefused\tstash present' <<< "$out"
+check "a repo holding a stash survives --apply" test -d "$root/old-stash"
+
 # The doc form: the manifest is a fenced block, and a wrong hash stops everything.
 mkdir -p "$root/old-doc"; printf 'x\n' > "$root/old-doc/x"
 printf 'repo\trole\tpath\nold-doc\tretire\t~/Projects/old-doc\n' > "$tmp/scope2.tsv"

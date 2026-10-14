@@ -85,6 +85,7 @@ chk() { # label kind id want
 }
 
 # known ties
+chk "name-only D1 missing from the account" d1 ghost-db absent-in-account
 chk "pings Worker" worker pings sole-owner
 chk "pings KV" kv "$(kv 1)" sole-owner
 chk "pings cron" cron "pings:*/5 * * * *" sole-owner
@@ -155,6 +156,10 @@ variant nopings "d['/accounts/acct-fixture/workers/scripts']['body'] = [{'id': '
 start_api "$tmp/nopings.json"
 "$tool" --network >/dev/null 2>&1; rc=$?
 [[ $rc -ne 0 ]] && ok "Worker list lacking pings exits nonzero" || bad "no pings rc=$rc"
+"$tool" --network --sentinel scratch-a >/dev/null 2>"$tmp/err"
+grep -q "lacks" "$tmp/err" && bad "--sentinel scratch-a still demanded pings" || ok "--sentinel names the Worker the list must hold"
+"$tool" --network --sentinel missing-worker >/dev/null 2>"$tmp/err"
+grep -q "lacks the missing-worker" "$tmp/err" && ok "--sentinel that is absent exits nonzero naming it" || bad "sentinel absent msg: $(cat "$tmp/err")"
 variant e500 "d['/accounts/acct-fixture/d1/database'] = {'status': 500, 'body': None}"
 start_api "$tmp/e500.json"
 "$tool" --network >/dev/null 2>"$tmp/err"; rc=$?

@@ -96,6 +96,8 @@ def holds_path(path):
 
 def status_files(path):
     out = git(path, "status", "--porcelain", "--ignored")
+    if out.returncode != 0:  # an unreadable tree must never read as clean
+        return ["git status failed"], []
     dirty, ignored = [], []
     for line in out.stdout.splitlines():
         (ignored if line.startswith("!!") else dirty).append(line[3:].strip('"'))

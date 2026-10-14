@@ -210,7 +210,7 @@ def classify(ctx, tok, contain, relfile, history):
 
 def is_history(rel, repo=None):
     # In the initiatives repo every file inside a record directory is a record of past work.
-    if repo == "initiatives" and "/" in rel:
+    if repo == "initiatives" and "/" in rel and not rel.startswith(("scripts/", "tests/", ".github/")):
         return True
     return rel.startswith(HISTORY_DIRS) or os.path.basename(rel) == "HISTORY.md"
 
@@ -278,7 +278,8 @@ def gather(ctx):
     for repo in ctx.edit:
         d = ctx.checkout[repo]
         for rel in git_files(d):
-            if excluded(rel):
+            # The pass's own tools and their fixtures name paths on purpose.
+            if excluded(rel) or (repo == "initiatives" and rel.startswith("repo-organization/tools/")):
                 continue
             p = os.path.join(d, rel)
             real = os.path.realpath(p)

@@ -355,9 +355,11 @@ def github_copy(row, scratch):
         return row
     dest = os.path.join(scratch, row["repo"])
     owner = os.environ.get("INVENTORY_GH_OWNER", "glw907")
-    rc, _, _ = gh(["repo", "clone", f"{owner}/{row['repo']}", dest, "--", "--depth", "1", "--quiet"])
+    rc, _, err = gh(["repo", "clone", f"{owner}/{row['repo']}", dest, "--", "--depth", "1", "--quiet"])
     if rc != 0:
-        return row
+        if re.search(r"Could not resolve|HTTP 404|Not Found", err):
+            return row
+        raise Fail(f"gh repo clone {row['repo']} failed: {err.strip()[:200]}")
     return {**row, "path": dest, "absent": False}
 
 
@@ -556,17 +558,21 @@ class Repo:
 class Cloud:
     """The account state the inventory reads, fetched once."""
 
-    def __init__(self, cf, target_names):
+    def __init__(self, cf, target_names, sentinel="pings"):
         a = cf.acct
         self.workers = [s["id"] for s in cf.get(f"/accounts/{a}/workers/scripts")]
-        if "pings" not in self.workers:
-            raise Fail("account Worker list lacks the pings Worker; an empty list must not read as no ties")
+        # A Worker known to exist proves the list is real; once R1 deletes the default
+        # one, it passes a surviving Worker through --sentinel.
+        if sentinel not in self.workers:
+            raise Fail(f"account Worker list lacks the {sentinel} Worker; an empty list must not read as no ties")
         self.bindings = {w: (cf.get(f"/accounts/{a}/workers/scripts/{w}/settings") or {}).get("bindings", [])
                          for w in self.workers}
         self.schedules = {w: [s["cron"] for s in (cf.get(f"/accounts/{a}/workers/scripts/{w}/schedules") or {}).get("schedules", [])]
                           for w in self.workers if w in target_names}
         self.domains = cf.get(f"/accounts/{a}/workers/domains")
-        self.d1 = {d["uuid"] for d in cf.get(f"/accounts/{a}/d1/database")}
+        d1s = cf.get(f"/accounts/{a}/d1/database")
+        self.d1 = {d["uuid"] for d in d1s}
+        self.d1_names = {d["name"]: d["uuid"] for d in d1s}
         self.kv = {k["id"] for k in cf.get(f"/accounts/{a}/storage/kv/namespaces")}
         self.r2 = {b["name"] for b in (cf.get(f"/accounts/{a}/r2/buckets") or {}).get("buckets", [])}
         self.apps = cf.get(f"/accounts/{a}/access/apps")
@@ -590,7 +596,7 @@ def app_hosts(app):
     return sorted({host_of(x) for x in raw if x})
 
 
-def network_leg(rows, target_rows):
+def network_leg(rows, target_rows, sentinel="pings"):
     token, acct = credentials()
     cf = CF(token, acct)
     if not acct:
@@ -606,7 +612,7 @@ def network_leg(rows, target_rows):
     targets = {r["repo"]: Repo(r) for r in target_rows if not r["absent"]}
     shutil.rmtree(scratch, ignore_errors=True)
     target_workers = set().union(*[t.facts["deploys"] for t in targets.values()]) if targets else set()
-    cloud = Cloud(cf, target_workers)
+    cloud = Cloud(cf, target_workers, sentinel)
 
     def owners_of_worker(w):
         return sorted(s.name for s in survivors if s.claims_worker(w))
@@ -670,11 +676,15 @@ def network_leg(rows, target_rows):
                 add("cron", f"{w}:{c}", wstat)
         for kind, live in (("kv", cloud.kv), ("d1", cloud.d1), ("r2", cloud.r2)):
             for rid in sorted(t.facts[kind]):
-                claimed = {s.name for s in survivors if s.claims(rid)}
-                st = judge(kind, rid, claimed, binder_kind=kind)
-                if st == "sole-owner" and kind != "d1" and rid not in live:
-                    st = "absent-in-account"
-                if st == "sole-owner" and kind == "d1" and not (rid in live or not re.match(r"^[0-9a-f-]{36}$", rid)):
+                key = rid
+                if kind == "d1" and not re.match(r"^[0-9a-f-]{36}$", rid):
+                    key = cloud.d1_names.get(rid)  # a config may name a database without its id
+                if key is None:
+                    add(kind, rid, "absent-in-account")
+                    continue
+                claimed = {s.name for s in survivors if s.claims(rid) or s.claims(key)}
+                st = judge(kind, key, claimed, binder_kind=kind)
+                if st == "sole-owner" and key not in live:
                     st = "absent-in-account"
                 add(kind, rid, st)
         hosts = set(t.facts["hosts"]) | {h for h, ws in host_workers.items() if ws & t.facts["deploys"]}
@@ -746,6 +756,7 @@ def main():
     ap.add_argument("--network", action="store_true")
     ap.add_argument("--host", default=socket.gethostname().split(".")[0])
     ap.add_argument("--out")
+    ap.add_argument("--sentinel", default="pings", help="a Worker that must exist in the account")
     a = ap.parse_args()
     do_local = a.local or not a.network
     do_net = a.network or not a.local
@@ -760,7 +771,7 @@ def main():
             res["local"] = local_leg(rows)
         if do_net:
             res["github"] = {t["repo"]: github_target(t["repo"]) for t in targets}
-            res["cloudflare"] = network_leg(rows, targets)
+            res["cloudflare"] = network_leg(rows, targets, a.sentinel)
     except Fail as e:
         print(f"inventory: {e}", file=sys.stderr)
         return e.code

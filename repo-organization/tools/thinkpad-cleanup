@@ -95,6 +95,9 @@ def judge(path, expect, kind):
     is_git = os.path.isdir(os.path.join(path, ".git"))
     remotes = git(path, "remote").stdout.split() if is_git else []
     note = "remote" if remotes else "no remote"
+    # A stash lives only in this checkout, so removing the directory would lose it.
+    if is_git and git(path, "stash", "list").stdout.strip():
+        return note, "refused", "stash present"
     if remotes:
         dirty = git(path, "status", "--porcelain").stdout.strip()
         unpushed = [r.split("=")[0] for r in git_facts(path) if r.startswith("refs/heads/")
