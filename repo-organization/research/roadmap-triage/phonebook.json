@@ -1,0 +1,17 @@
+{
+  "headline": "You sort the 2 roadmap entries of the household phonebook; approving moves each one where you marked it and retires the roadmap.",
+  "lede": "This roadmap holds 2 entries. Do now turns an entry into its own initiative record, Do later moves it to the backlog, and Don't do drops it.",
+  "rows": [
+    {
+      "action": "#1 Household phonebook, phases 0 to 2",
+      "why": "now: becomes record `household-phonebook`. Three phases across the Worker, the phones, and the Survey UI.",
+      "proposed": "now",
+      "detail": "Proposed record id `household-phonebook`, repos: `phonebook`, `cairn-themes`, `workstation`."
+    },
+    {
+      "action": "#2 Remote voicemail through the voip.ms API",
+      "why": "defer: moves to BACKLOG.md. Someday work that needs its own design first.",
+      "proposed": "defer"
+    }
+  ]
+}

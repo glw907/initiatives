@@ -1,0 +1,22 @@
+{
+  "headline": "You sort the 3 roadmap entries of the poplar mail client; approving moves each one where you marked it and retires the roadmap.",
+  "lede": "This roadmap holds 3 entries. Do now turns an entry into its own initiative record, Do later moves it to the backlog, and Don't do drops it.",
+  "rows": [
+    {
+      "action": "#1 The re-founding",
+      "why": "now: becomes record `poplar-refounding`. The sole active track, run in phases from a charter.",
+      "proposed": "now",
+      "detail": "Proposed record id `poplar-refounding`, repos: `poplar`, `workstation`."
+    },
+    {
+      "action": "#2 Bubble Tea refactor pass",
+      "why": "defer: moves to BACKLOG.md. One refactor pass that serves the re-founding without needing its own record.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#3 Gate and toolchain repairs",
+      "why": "defer: moves to BACKLOG.md. Bundled fixes with no larger purpose, each for a poplar session.",
+      "proposed": "defer"
+    }
+  ]
+}

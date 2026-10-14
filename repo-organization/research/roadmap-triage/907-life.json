@@ -1,0 +1,37 @@
+{
+  "headline": "You sort the 6 roadmap entries of the 907.life site; approving moves each one where you marked it and retires the roadmap.",
+  "lede": "This roadmap holds 6 entries. Do now turns an entry into its own initiative record, Do later moves it to the backlog, and Don't do drops it.",
+  "rows": [
+    {
+      "action": "#1 907.life rebuild on current cairn (`907-rebuild`)",
+      "why": "now: becomes record `survey-theme`. A multi-pass rebuild that carries the Survey theme work across the site and the theme repo.",
+      "proposed": "now",
+      "detail": "Proposed record id `survey-theme`, repos: `907-life`, `cairn-themes`, `phonebook`."
+    },
+    {
+      "action": "#2 ECN Nordic standalone site (`ecnordic-standalone`)",
+      "why": "drop: dropped. The ecxc-ski roadmap holds this same entry, so it is tracked there.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#3 PR test CI (`pr-test-ci`)",
+      "why": "defer: moves to BACKLOG.md. A small workflow addition with no larger purpose.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#4 Cairn CMS platform (`cairn-cms`)",
+      "why": "drop: dropped. The entry says it is superseded; the engine's own plan tracks the work.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#5 Migrate 907.life and ecnordic.ski to Cairn (`site-migrations`)",
+      "why": "drop: dropped. The entry itself says both sites are already migrated.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#6 AKS Sailing Club site (`aksailingclub`)",
+      "why": "drop: dropped. The aksailingclub-org repo owns this work now.",
+      "proposed": "drop"
+    }
+  ]
+}
