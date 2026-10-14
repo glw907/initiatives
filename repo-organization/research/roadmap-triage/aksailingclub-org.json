@@ -1,0 +1,103 @@
+{
+  "headline": "You sort the 19 roadmap entries of the AKS Sailing Club site; approving moves each one where you marked it and retires the roadmap.",
+  "lede": "This roadmap holds 19 entries. Do now turns an entry into its own initiative record, Do later moves it to the backlog, and Don't do drops it. This repo keeps no backlog yet, so moving an entry later creates `BACKLOG.md`.",
+  "rows": [
+    {
+      "action": "#1 Admin screen redesign series (`admin-screen-passes`)",
+      "why": "now: becomes record `aksailingclub-mw-replacement`. The series gates the apex cutover, and several passes remain.",
+      "proposed": "now",
+      "detail": "Proposed record id `aksailingclub-mw-replacement`, repos: `aksailingclub-org`."
+    },
+    {
+      "action": "#2 The money ledger (`money-ledger`)",
+      "why": "drop: dropped. Marked DONE 2026-07-13.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#3 Unified signup and membership lifecycle (`unified-signup`)",
+      "why": "drop: dropped. Marked DONE 2026-07-14.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#4 Club notifications: announce-on-publish and SMS (`club-notifications`)",
+      "why": "defer: moves to BACKLOG.md. A scoped feature with a long registration lead time, not yet started.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#5 Members and Memberships admin on live data (`membership-admin`)",
+      "why": "drop: dropped. Marked DONE 2026-07-14; its open follow-up shipped as `admin-roles`.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#6 Segment email (`segment-email`)",
+      "why": "drop: dropped. Marked DONE 2026-07-14.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#7 Custom admin roles (`admin-roles`)",
+      "why": "drop: dropped. Marked DONE 2026-07-15.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#8 Admin nav reorganization (`admin-nav-reorg`)",
+      "why": "drop: dropped. Marked DONE 2026-07-15.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#9 Admin sidebar round 2 (`admin-sidebar-2`)",
+      "why": "drop: dropped. The pass sequence in the same file marks it DONE 2026-07-19, though this heading still says next.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#10 Payments hardening and live smoke (`payments-live-smoke`)",
+      "why": "defer: moves to BACKLOG.md. One bounded pass, a cutover blocker the new record can tag.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#11 Go-live: apex cutover and MW retirement (`mw-cutover`)",
+      "why": "now: becomes record `aksailingclub-mw-replacement`. The program's final act, and it waits on the series above.",
+      "proposed": "now",
+      "detail": "Proposed record id `aksailingclub-mw-replacement`, repos: `aksailingclub-org`."
+    },
+    {
+      "action": "#12 Fragments migration and the DX/contract harvest (`fragments-migration`)",
+      "why": "defer: moves to BACKLOG.md. A single pass; check whether it already ran before scheduling it.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#13 Member waivers and digital signing (`member-waivers`)",
+      "why": "defer: moves to BACKLOG.md. A designed, planned build pass that needs no record of its own.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#14 Events page from-scratch redesign (`events-redesign`)",
+      "why": "drop: dropped. Marked DONE 2026-08-22.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#15 Member directory brainstorm and pass (`member-directory`)",
+      "why": "defer: moves to BACKLOG.md. A designed, planned build pass that needs no record of its own.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#16 Design propagation and continuing rounds (`design-propagation`)",
+      "why": "defer: moves to BACKLOG.md. Ongoing polish rounds that fit the backlog.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#17 Class management (`class-management`)",
+      "why": "defer: moves to BACKLOG.md. In-season tooling that fits the backlog.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#18 Season rollover (`season-rollover`)",
+      "why": "defer: moves to BACKLOG.md. One designed operation that fits the backlog.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#19 QuickBooks Online integration (`qbo-integration`)",
+      "why": "defer: moves to BACKLOG.md. Phase 2 work that waits until after the cutover.",
+      "proposed": "defer"
+    }
+  ]
+}

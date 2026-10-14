@@ -1,0 +1,27 @@
+{
+  "headline": "You sort the 4 roadmap entries of the cairn theme collection; approving moves each one where you marked it and retires the roadmap.",
+  "lede": "This roadmap holds 4 entries. Do now turns an entry into its own initiative record, Do later moves it to the backlog, and Don't do drops it.",
+  "rows": [
+    {
+      "action": "#1 Survey S1: core, living specimen, shared tooling (`survey-s1`)",
+      "why": "now: becomes record `survey-theme`. The active theme work that the phonebook's UI and the 907.life rebuild both wait on.",
+      "proposed": "now",
+      "detail": "Proposed record id `survey-theme`, repos: `cairn-themes`, `907-life`, `phonebook`."
+    },
+    {
+      "action": "#2 Survey S2: cairn layer (`survey-s2`)",
+      "why": "drop: dropped. The 907-life roadmap moved this work into its own rebuild on 2026-10-07.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#3 Survey S3: packaging as a cairn theme (`survey-s3`)",
+      "why": "defer: moves to BACKLOG.md. Later work that the entry itself assigns to cairn.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#4 Terrain hero from elevation data (`survey-terrain-hero`)",
+      "why": "defer: moves to BACKLOG.md. A single optional design idea.",
+      "proposed": "defer"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+"""Print the entry count of a ROADMAP.md file.
+
+An entry is a `###` heading, or a top-level bullet (`- ` or `* ` at column 0)
+that sits outside any `###` section. A bullet under a `###` heading belongs to
+that heading's entry. A `#` or `##` heading ends the `###` section. Fenced
+code blocks are ignored.
+"""
+import re
+import sys
+
+
+def count(text):
+    n = 0
+    in_h3 = False
+    fence = None
+    for line in text.splitlines():
+        m = re.match(r"^(`{3,}|~{3,})", line)
+        if m:
+            if fence is None:
+                fence = m.group(1)[0]
+            elif line.startswith(fence * 3):
+                fence = None
+            continue
+        if fence:
+            continue
+        if re.match(r"^###(\s|$)", line):
+            n += 1
+            in_h3 = True
+        elif re.match(r"^#{1,2}(\s|$)", line):
+            in_h3 = False
+        elif re.match(r"^[-*] ", line) and not in_h3:
+            n += 1
+    return n
+
+
+def main(argv):
+    if len(argv) != 2:
+        print("usage: roadmap-count FILE", file=sys.stderr)
+        return 2
+    with open(argv[1], encoding="utf-8") as f:
+        print(count(f.read()))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

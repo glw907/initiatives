@@ -1,0 +1,62 @@
+{
+  "headline": "You sort the 11 roadmap entries of the dubplate music server; approving moves each one where you marked it and retires the roadmap.",
+  "lede": "This roadmap holds 11 entries. Do now turns an entry into its own initiative record, Do later moves it to the backlog, and Don't do drops it.",
+  "rows": [
+    {
+      "action": "#1 Greenfield dubplate-server (`dubplate-organizer`)",
+      "why": "now: becomes record `dubplate-server`. The one active initiative, a ladder of many passes that launches 0.8.0.",
+      "proposed": "now",
+      "detail": "Proposed record id `dubplate-server`, repos: `dubplate`."
+    },
+    {
+      "action": "#2 The built-in streamer (`streamer`)",
+      "why": "defer: moves to BACKLOG.md. Its slices run inside the server ladder and tag to that record.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#3 dubplate-server 0.9: the paired local client (`local-client-0-9`)",
+      "why": "defer: moves to BACKLOG.md. A later release that follows the 0.8 launch.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#4 dubplate-server 1.0: the format ladder (`formats-1-0`)",
+      "why": "defer: moves to BACKLOG.md. A later release that follows the 0.9 launch.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#5 Give back: permissive Go modules (`give-back`)",
+      "why": "defer: moves to BACKLOG.md. Each module publishes only after a release proves it.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#6 PR test CI (`pr-test-ci`)",
+      "why": "defer: moves to BACKLOG.md. The entry says it lands after `admin-api-1`.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#7 Production cleanup and polish (`prod-polish`)",
+      "why": "drop: dropped. The entry calls itself largely superseded by the greenfield ruling.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#8 Packaging (`packaging`)",
+      "why": "defer: moves to BACKLOG.md. The entry says it runs after the server build.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#9 Photo curation for the web surface (`photo-curation`)",
+      "why": "defer: moves to BACKLOG.md. A designed curation task with a plan, not an initiative.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#10 The project site (`project-site`)",
+      "why": "defer: moves to BACKLOG.md. It waits on an external trigger the entry names.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#11 Open-source the pair (`oss-pair`)",
+      "why": "defer: moves to BACKLOG.md. Someday work with preconditions of months of group use.",
+      "proposed": "defer"
+    }
+  ]
+}

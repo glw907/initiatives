@@ -1,0 +1,118 @@
+{
+  "headline": "You sort the 22 roadmap entries of the workstation repo; approving moves each one where you marked it and retires the roadmap.",
+  "lede": "This roadmap holds 22 entries. Do now turns an entry into its own initiative record, Do later moves it to the backlog, and Don't do drops it.",
+  "rows": [
+    {
+      "action": "#1 Monthly model, effort, and skill review",
+      "why": "now: becomes record `monthly-model-review`. A standing monthly practice that already matches a proposed record.",
+      "proposed": "now",
+      "detail": "Proposed record id `monthly-model-review`, repos: `workstation`."
+    },
+    {
+      "action": "#2 cairn documentation standard",
+      "why": "now: becomes record `cairn-docs-standard`. A three-plan effort that spans this repo and the cairn engine repo.",
+      "proposed": "now",
+      "detail": "Proposed record id `cairn-docs-standard`, repos: `workstation`, `cairn-cms`."
+    },
+    {
+      "action": "#3 Thunderbird Nord mail follow-ups",
+      "why": "defer: moves to BACKLOG.md. Six items you already marked now, small enough for one backlog pass.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#4 Music-server docs split into their own repo",
+      "why": "defer: moves to BACKLOG.md. A one-time move of docs to a new music-server repo.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#5 `claude-wf-guard` alarms on a run that finished cleanly",
+      "why": "defer: moves to BACKLOG.md. A scoped tool fix with no larger purpose.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#6 Poplar adopts `pass-core`",
+      "why": "defer: moves to BACKLOG.md. One poplar PR that the re-founding can tag.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#7 Document the brief's `local` field in `cairn-docs-drafter.md`",
+      "why": "defer: moves to BACKLOG.md. A one-file doc fix; the agent file still lacks the field.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#8 Docs page chain follow-ups from drafter Pass 0",
+      "why": "defer: moves to BACKLOG.md. Four small fixes that tag to the drafter record.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#9 The plan read checks code before it asserts behavior",
+      "why": "defer: moves to BACKLOG.md. A prompt fix that tags to the drafter record.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#10 PR test CI for dotfiles",
+      "why": "defer: moves to BACKLOG.md. A small workflow addition with no larger purpose.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#11 Release the lid-switch hold when a session ends",
+      "why": "defer: moves to BACKLOG.md. A small doc and skill edit.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#12 Two gate-tool cleanups",
+      "why": "defer: moves to BACKLOG.md. Two small cleanups deferred by your earlier triage.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#13 Approval queue hardening",
+      "why": "defer: moves to BACKLOG.md. A list of fixes that tags to the approval-queue record.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#14 Infra-sweep 2 leftovers",
+      "why": "defer: moves to BACKLOG.md. A list of small leftovers deferred by your earlier triage.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#15 Approval queue UI leftovers",
+      "why": "defer: moves to BACKLOG.md. A list of fixes that tags to the approval-queue record.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#16 Approval queue brief leftovers",
+      "why": "defer: moves to BACKLOG.md. A list of fixes that tags to the approval-queue record, including the plan item you asked for.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#17 Two worktree-guard notes",
+      "why": "defer: moves to BACKLOG.md. Two small doc notes for the pair-dispatch template.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#18 The deferred infra-sweep checks",
+      "why": "defer: moves to BACKLOG.md. Each check is built only when a live defect of its class appears.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#19 Devcontainers",
+      "why": "defer: moves to BACKLOG.md. Built as each site repo matures.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#20 kitty harness replacement",
+      "why": "defer: moves to BACKLOG.md. It waits for a Wayland-native capture method to prove out.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#21 Custom uBlue image",
+      "why": "defer: moves to BACKLOG.md. An explicit later decision for the second workstation.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#22 bootstrap.sh restore split",
+      "why": "defer: moves to BACKLOG.md. It waits until the second workstation lands.",
+      "proposed": "defer"
+    }
+  ]
+}
