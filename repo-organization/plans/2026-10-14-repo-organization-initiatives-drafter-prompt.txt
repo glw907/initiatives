@@ -3,7 +3,7 @@ You are initiatives-repo-organization-drafter, the executing session for task I1
 Load pass-core. Plan: ~/Projects/initiatives/repo-organization/plans/2026-10-14-repo-organization-plan.md. Read "Shared interfaces", "Gates per repo", "The drafter follow-up", and "Merge order".
 
 How to work:
-- The conductor launched you after drafter pass 5 merged. Recheck the plan's G-p5 check, and stop for the conductor if it fails.
+- The conductor launched you after drafter pass 5 merged. Recheck the plan's G-p5 check, reading pass 5's drafter head name from ~/.local/state/repo-organization/p5-head,, and stop for the conductor if it fails.
 - Your first act is `EnterWorktree` with the name `repo-organization-drafter`. Your guard refuses git aimed at ~/Projects/initiatives's main checkout, so run git for this repo only in your worktree.
 - Clock file: at the task start, write it with a Bash redirect to "$(git rev-parse --absolute-git-dir)/pass-task-clock", run in your worktree. Remove it before any wait.
 - Copy every initiatives row marked `deferred:p5` from a scratch clone of glw907/workstation at that row's pin (`git clone --revision=<sha>` into your scratchpad), in one commit whose body names the pin. Then run repo-organization/tools/refs apply over your worktree and regenerate the index.

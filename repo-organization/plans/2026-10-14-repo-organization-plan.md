@@ -7,7 +7,7 @@ Class: `auth-data` by the dotfiles path map, for task W8 only (`secrets/**`, `sc
 Adapters: `pass-core`; `dotfiles-pass` (workstation); `cairn-pass` (cairn-cms); `site-pass` (907-life, aksailingclub-org, cairn-pub, ecxc-ski, xcathletes-org). The initiatives, drafter, approval-queue, dubplate, poplar, cairn-themes, and phonebook repos have no adapter; their gate, path class, and close steps are stated here, with `pass-core`'s `runner` definition as the path map.
 Engine consultation: no engine asks. Facts consulted: none, since no task touches a cairn engine surface.
 Design estimate: 840 path minutes. Standing approval (Geoff, 2026-10-14): a plan or a run up to 1,680 path minutes proceeds without stopping.
-Plan path minutes: 1,120. Task sum: 3,020.
+Plan path minutes: 1,130. Task sum: 3,070.
 
 ## Outcome
 
@@ -26,7 +26,7 @@ Worktree isolation guards only the launch repo's main checkout. The worktrees pa
 
 | Session | Launched from | Repo it commits to | Tasks |
 |---|---|---|---|
-| `conductor-initiatives` (Opus, medium) | `~/Projects/initiatives` | none (merges and pulls only) | C0, C2, C6 to C9 |
+| `conductor-initiatives` (Opus, medium) | `~/Projects/initiatives` | STATUS and record hand-overs only, per `pass-core` "Ledgers" | C0, C2, C6 to C9 |
 | `initiatives-repo-organization` | `~/Projects/initiatives` | `glw907/initiatives` (PR 1) | I1 to I10 |
 | `initiatives-repo-organization-retire` | `~/Projects/initiatives` | `glw907/initiatives` (PR 2) | R0 to R3 |
 | `workstation-repo-organization` | `~/.dotfiles` | `glw907/workstation` | W2 to W8 |
@@ -53,17 +53,17 @@ Model and effort: executors `sonnet` at `medium`, pair subagents the same with `
 
 - **Scope list**: `repo-organization/scope.tsv` in initiatives, with columns `repo`, `role`, and `path`. It holds exactly 26 rows: 14 `edit` rows (initiatives, workstation, drafter, approval-queue, and the ten sweep repos), 1 `read` row (`aksailingclub-legacy`), and 11 `retire` rows. Every repo-wide step reads this list and never globs `~/Projects`, including the reference tool, the inventory, the worktree listing, the thinkpad script, the end-to-end checks, and "pulls every repo". An `edit` or `read` row whose path is missing makes a tool exit nonzero and name the row. A missing `retire` path is reported `absent`.
 - **Memory directories**: built from `scope.tsv`, as each `edit` or `read` row's encoded project path (`-var-home-glw907-Projects-<repo>`, plus the `.dotfiles` encoding for workstation) and its `.claude/worktrees` variants, never a `*` glob.
-- **Out-of-scope names**: no committed or handed-over file names a repo outside the list. The inventory reports a binder outside the list as `shared-out-of-scope`, with no name. Every PR's close runs the **name check**, and so does C0 before its push. The check builds the outside names in memory from `gh repo list glw907 --limit 200` and the `~/Projects` entry names, minus `scope.tsv`, and requires `git diff origin/main...HEAD | grep -wF -f -` to be empty. It runs beside `gitleaks git`.
+- **Out-of-scope names**: no committed or handed-over file names a repo outside the list. The inventory reports a binder outside the list as `shared-out-of-scope`, with no name. Every PR's close runs the **name check**, and so does C0 before its push. The check builds the outside names in memory from `gh repo list glw907 --limit 200` and the `~/Projects` entry names, minus `scope.tsv`, and feeds them to grep as a pattern file through process substitution, so the patterns never come from stdin. A PR's form is `git log -p origin/main..HEAD | grep -wF -f <(outside names)`, which also reads commit messages and lines a later commit removed. C0's form, with no `origin/main` yet, is `git log -p --all | grep -wF -f <(outside names)`. Each must print nothing and exit 1. A positive control plants one outside name in a scratch repo's commit, and the same form must print it and exit 0. It runs beside `gitleaks git`.
 - **Tools from a fixed copy**: a session other than the initiatives executor runs the pass's tools from a clone of `glw907/initiatives` at a pushed commit, made with `git clone --revision=<sha>` into `~/.local/state/repo-organization/tools-<sha>/`. It never runs them from a worktree another session is editing. Every output records that sha. After PR 1 merges, the pulled `~/Projects/initiatives` serves.
 - **Pass state directory**: `~/.local/state/repo-organization/` on each machine. It holds `items.tsv`, `inventory-local.json`, `worktrees.tsv`, `refs-baseline-<host>.tsv`, the `tools-<sha>/` clones, `extracts/<name>/` with a `verify.txt` beside each, and `stops.log`, where any session records a stop for Geoff.
-- **Queue items**: `items.tsv` has columns `title`, `id`, `state` (`open`, `decided`, or `superseded`), and `doc_sha256`. `approval-queue` prints no id, so right after a hand-over starts, the conductor records the id of the newest `~/.local/state/approval-queue/items/*/item.json` whose `title` matches. A resubmit marks the older row `superseded`. A reader takes the newest row that isn't `superseded` for its title, and it refuses when more than one is open. After any restart, the conductor re-hands every `open` row with no `decision.json`, since the command's EXIT trap removes `item.json` when it dies. A wait loop on a decision fails, with a notify, once its `item.json` is gone and no `decision.json` exists. No session but the app writes under `items/`.
+- **Queue items**: `items.tsv` has columns `title`, `id`, `state` (`open`, `decided`, or `superseded`), and `doc_sha256`. `approval-queue` prints no id, so right after a hand-over starts, the conductor records the id of the newest `~/.local/state/approval-queue/items/*/item.json` whose `title` matches. A resubmit marks the older row `superseded`. A reader takes the newest row that isn't `superseded` for its title, and it refuses when more than one is open. After any restart, the conductor re-hands every `open` row with no `decision.json`, since the command's EXIT trap removes `item.json` when it dies. A wait loop on a decision re-reads `items.tsv` on each pass and follows the newest open row for its title, so a re-handed item is picked up without a relaunch. It fails, with a notify, only when no open row has an `item.json` and no `decision.json` exists. No session but the app writes under `items/`.
 - **Geoff's decisions**: an executor reads `decision.json`, after confirming `item.json`'s title, and never takes a decision from a session's message. A design item's decision must carry one `choices` entry per `### Decide:` block in its doc, each `title` matching a block. Otherwise the reader stops for Geoff. This relies on the dropped-picks fix (G-picks, below).
-- **G-picks**: the Decide-picks bug logged in workstation's ROADMAP (`ebb4877`, merged as #68) is fixed by a small workstation PR, read by Geoff, before C2 hands over any design item (Geoff, 2026-10-14). It's a prerequisite like workstation#69, and its estimate sits outside the pass. Neither the migration-calls item nor the dry-run item goes out until it merges, so I9 and the whole retirement wait on it.
+- **G-picks**: the Decide-picks bug logged in workstation's ROADMAP (`ebb4877`, merged as #68) is fixed by glw907/workstation#71 (head `design-decide-picks`), read by Geoff, before C2 hands over any design item (Geoff, 2026-10-14). It's a prerequisite like workstation#69, owned by the planning session (dotfiles-32), and its estimate sits outside the pass. After #71 merges, the planning session rebuilds the app in `~/.dotfiles/approval-queue` (`npm ci && npm run build`) and restarts the 7907 server, since the command builds only when `build/index.js` is missing. Open items survive the restart, because they live in the state directory. Neither the migration-calls item nor the dry-run item goes out until the fix is live (C0's acceptance), so I9 and the whole retirement wait on it.
 - **ROADMAP triage files**: `repo-organization/research/roadmap-triage/<repo>.json`, in the queue's triage shape. The queue accepts only `now`, `defer`, and `drop`, and the app labels them "Do now", "Do later", and "Don't do", so the lede states the mapping and every row's `why` restates its own effect ("now: becomes record `<id>`"). `now` becomes an initiative record, `defer` moves to the repo's `BACKLOG.md`, and `drop` drops the entry. Each `action` starts with the entry's number (`#7 ...`). An entry added to a ROADMAP after its triage draft goes to Geoff as a one-row triage item and is never applied unasked.
 - **Migration map**: `repo-organization/research/migration-map.tsv`, with columns `source_repo`, `old_path`, `new_repo`, `new_path`, `initiative`, `state`, and `pin`. `pin` is I3's pinned `workstation` commit for a docs row. For a code row it's the extract's pinned commit, which A1 and D1 write into their extract's `verify.txt`, and W7 and W9 read it there. `state` is a new path, or one of `stays`, `leaves-with-pings`, `deferred:<pass>`, `flagged`, `collision-identical`, or `collision-differs`. The drafter rows carry `deferred:p5`.
-- **Retirement manifest**: `repo-organization/research/retire-manifest.tsv`, with columns `stage`, `kind`, `id`, `action`, and `expect`. It covers every Cloudflare id, repo delete, description, secret name, manifest line, local directory, D1 export, and worktree. `expect` holds the fact the act-time recheck compares: HEAD and branch tips for a git target, newest mtime and file count for a plain directory, and `sole-owner` for a resource. The dry-run doc embeds the manifest verbatim in a fenced block, so the approved snapshot carries it. At the approve, the conductor writes the sha256 of the item's `doc.md` into `items.tsv`. R0 to R3, W8, and the thinkpad script extract the manifest from `doc.md`, check the hash, and act only on its rows. A mismatch stops for Geoff.
+- **Retirement manifest**: `repo-organization/research/retire-manifest.tsv`, with columns `stage`, `kind`, `id`, `action`, and `expect`. It covers every Cloudflare id, repo delete, description, secret name, manifest line, local directory, D1 export, and worktree. `expect` holds the fact the act-time recheck compares: HEAD and branch tips for a git target, newest mtime and file count for a plain directory, and `sole-owner` for a resource. The dry-run doc embeds the manifest verbatim in a fenced block, so the approved snapshot carries it. At the approve, the conductor writes the sha256 of the item's `doc.md` into `items.tsv`, and R0 copies it into the committed retirement log. R0 to R3 and W8 extract the manifest from `doc.md`, check the hash, and act only on its rows. On the thinkpad, which has no `doc.md`, T1 checks that the committed dry-run file's sha256 equals the logged value. A mismatch stops for Geoff. I8 leaves out of the manifest the worktrees C9 reserves: cairn-cms's `drafter-pipeline` and `p5-scratch`, and drafter's `agent-*` worktrees.
 - **Retirement log**: `repo-organization/research/2026-10-14-retirement-log.tsv` on PR 2's branch, with columns `stage`, `item`, `result`, and `time`. Each item is pushed after it's appended.
-- **Pass 5 check (G-p5)**: `gh pr list -R glw907/drafter --head <pass 5's drafter head> --state merged --json number` and `gh pr list -R glw907/cairn-cms --head drafter-pipeline --state merged --json number` each return one PR. The conductor reads pass 5's drafter head name when pass 5 opens that PR. `claude agents --json` exits 0, lists the conductor's own `conductor-initiatives` row under `name` as a positive control, and lists no row in a live `status` whose `name` equals `conductor-drafter` or starts with `drafter-p` followed by a digit. The pass's own `*-repo-organization*` names never match. Only the follow-up set waits on G-p5.
+- **Pass 5 check (G-p5)**: `gh pr list -R glw907/drafter --head <pass 5's drafter head> --state merged --json number` and `gh pr list -R glw907/cairn-cms --head drafter-pipeline --state merged --json number` each return one PR. When pass 5 opens that PR, the conductor writes its head name to `p5-head` in the state directory, and D1 and I11 read it there. `claude agents --json` exits 0, lists the conductor's own `conductor-initiatives` row under `name` as a positive control, and lists no live row, meaning one whose `state` isn't `done`, whose `name` equals `conductor-drafter` or starts with `drafter-p` followed by a digit. The pass's own `*-repo-organization*` names never match. If the PR half passes and the session half still fails 72 hours later, the conductor logs a line in `stops.log` and notifies Geoff. Only the follow-up set waits on G-p5.
 - **Clock file**: each executor writes `pass-task-clock` per `pass-core` with a Bash redirect to `<git rev-parse --absolute-git-dir, run in its worktree>/pass-task-clock`. The `Write` tool is refused there, and the redirect isn't. A wait on Geoff or on another session removes the file first and writes a new `start=` after.
 - **Stops**: a session that stops for Geoff appends one line to `stops.log` and runs `notify-send -u normal`. No session writes `~/.dotfiles/docs/STATUS.md` before C8.
 - **Stow**: every restow is `stow -d ~/.dotfiles -t ~ -R bin claude`, since no `.stowrc` exists.
@@ -88,13 +88,13 @@ Estimates are minutes of work. A wait on Geoff or on another session is not coun
 
 ### Conductor
 
-**C0. Launch gate and the initiatives remote (25, ordinary, live-account).**
+**C0. Launch gate and the initiatives remote (30, ordinary, live-account).**
 
 - Outcome: the pass may start.
-  - `gh pr view 69 -R glw907/workstation --json state` reads `MERGED`, and so does the G-picks PR (Geoff, 2026-10-14).
+  - `gh pr view 71 -R glw907/workstation --json state` reads `MERGED` (Geoff, 2026-10-14), and the fix is live. `grep -rlq decideCards ~/.dotfiles/approval-queue/build/server` succeeds, the 7907 listener's `/proc/<pid>/cmdline` names that build, and `stat -c %Y /proc/<pid>` is at or after the mtime of `build/server/chunks/cards.js`. This check needs no browser and no Host header.
   - `~/.dotfiles` has been pulled, and `git -C ~/.dotfiles status --porcelain secrets/` is empty.
   - The one-executor checks pass for `~/Projects/initiatives` and `~/.dotfiles`.
-  - `gitleaks git` and the name check pass over the local initiatives history, and then `glw907/initiatives` is created public from the local `main` (`gh repo create glw907/initiatives --public --source ~/Projects/initiatives --remote origin --push`).
+  - `gitleaks git` and the name check's history form pass over the local initiatives history, and then `glw907/initiatives` is created public from the local `main` (`gh repo create glw907/initiatives --public --source ~/Projects/initiatives --remote origin --push`).
   - `.claude/worktrees/` is excluded in each launch checkout (`pass-core` "Execute").
 - Files: none committed.
 - Acceptance: `gh repo view glw907/initiatives --json visibility` reads `PUBLIC`. `git rev-list --count` is 0 both ways between `HEAD` and `origin/main`, the `secrets/` porcelain line is empty, and `git check-ignore -q .claude/worktrees/x` succeeds in each launch checkout.
@@ -103,11 +103,11 @@ Estimates are minutes of work. A wait on Geoff or on another session is not coun
 
 **C2. Queue hand-overs and the empty queue repo (30, ordinary, live-account).**
 
-- Outcome: Geoff sees every decision item, and the queue's repo exists before initiatives PR 1 merges. The two design items go out only once the G-picks PR has merged and `~/.dotfiles` is pulled.
+- Outcome: the queue's repo exists right after C0, before I8's local legs need its row, and Geoff sees every decision item. The two design items go out only once C0 has confirmed the G-picks fix is live.
   - As each triage file is pushed, it goes to Geoff as `approval-queue triage glw907/<repo> "Retire ROADMAP.md in <repo>" <file>`. The map-calls brief from I3 goes as `approval-queue design initiatives "Migration map calls" <file>`, and the dry-run brief from I8 as `approval-queue design initiatives "Repo retirement dry run" <file>`. Each runs in the background, and its row goes into `items.tsv` as "Shared interfaces" states.
   - On a reject of a design item, the drafting session revises from the note, and the conductor re-hands the item and marks the old row `superseded`.
-  - The conductor creates `glw907/approval-queue` (public, with one README commit so an extract can arrive by PR: `gh repo create glw907/approval-queue --public --add-readme`). It clones it to `~/Projects/approval-queue` and excludes `.claude/worktrees/` there.
-- Acceptance, per item: its row's `item.json` exists with the matching title right after the hand-over, and `gh repo view glw907/approval-queue` succeeds.
+  - First, the conductor creates `glw907/approval-queue` (public, with one README commit so an extract can arrive by PR: `gh repo create glw907/approval-queue --public --add-readme`). It clones it to `~/Projects/approval-queue` and excludes `.claude/worktrees/` there.
+- Acceptance: first, `gh repo view glw907/approval-queue` succeeds and `~/Projects/approval-queue` exists. Then, per item, its row's `item.json` exists with the matching title right after the hand-over.
 - Test: none.
 
 **C6. Merges, pulls, and installs (50, runner).**
@@ -239,7 +239,7 @@ Estimates are minutes of work. A wait on Geoff or on another session is not coun
 
 - Outcome:
   - The session runs the local legs from its own worktree against the main checkouts in `scope.tsv`: the reference tool's baseline check, the inventory's `--local` and `--network` legs, and the worktree listing. Its own repo's row reads its worktree, since its own main checkout is the one the guard refuses. The outputs go to the state directory with the tool sha.
-  - It writes `repo-organization/research/2026-10-14-retirement-dry-run.md`, an approval-brief design doc. The doc lists every target and its action, every resource to tear down, every shared resource left in place, every manifest line to remove, the worktree calls, the archive path, the D1 exports, and the GitHub descriptions in this repo's register. The descriptions cover cairn-cms, poplar, 907-life, cairn-pub, phonebook, workstation, and approval-queue.
+  - It writes `repo-organization/research/2026-10-14-retirement-dry-run.md`, an approval-brief design doc. The doc lists every target and its action, every resource to tear down with each R2 bucket's object count, every shared resource left in place, every manifest line to remove, the worktree calls, the archive path, the D1 exports, and the GitHub descriptions in this repo's register. The descriptions cover cairn-cms, poplar, 907-life, cairn-pub, phonebook, workstation, and approval-queue.
   - The archive path lies under `/var/home`, outside `~/Projects` and the state directory, and never under `/tmp` or `/dev/shm`, which are tmpfs here.
   - The doc embeds `retire-manifest.tsv` verbatim. Its "Geoff does by hand" list starts with revoking `CAIRN_SCRATCH_CF_TOKEN`, then `gh auth refresh -s delete_repo`. A `### Decide:` block asks Geoff to confirm that `git -C ~/.dotfiles status --porcelain secrets/values.age` prints nothing on the thinkpad after a pull.
   - Its Worth knowing states that sharing was resolved across the scope list and the account's Worker bindings.
@@ -278,10 +278,10 @@ Close for I (45): the gate, the name check, the whole-branch review (with `pytho
 
 This session launches after Geoff approves the dry run. It acts only on the approved doc's embedded manifest, with its hash checked against `items.tsv`, and on the decision. It runs the tools from a fixed copy at the dry-run sha.
 
-**R0. The archive (30, ordinary, live-account).**
+**R0. The archive (40, ordinary, live-account).**
 
-- Outcome: one archive at the manifest's path holds `cairn-scratch`, `ecxc-ski-agent-memory`, `aksailingclub-sveltekit`, and a `wrangler d1 export` of each D1 database in the teardown rows (Geoff, 2026-10-14). The session writes it with no-clobber, refusing if the file exists, and requires `tar -c` to exit 0, then `tar -df` against the sources to exit 0, then `sync`. Its sha256 goes into the retirement log. A rerun that finds a logged, verified archive skips this task and never rewrites it.
-- Acceptance: for each archived directory, the tar's member count equals `find <dir> | wc -l` taken just before. The log's `archive` row reads `done` with the sha256.
+- Outcome: one archive at the manifest's path holds `cairn-scratch`, `ecxc-ski-agent-memory`, `aksailingclub-sveltekit`, and a D1 export of each D1 database in the teardown rows (Geoff, 2026-10-14). Each export runs as `npx --yes wrangler@4 d1 export <name> --remote --output <tmp>/<id>.sql`, with `CLOUDFLARE_API_TOKEN` sourced in the same command. Cloudflare documents that "A running export will block other database requests" and that export "is not supported for virtual tables", so a failed or empty export, the virtual-table case included, stops for Geoff before R1. The session writes the archive with no-clobber, refusing if the file exists, and requires `tar -c` to exit 0, then `tar -df` against the sources to exit 0, then `sync`. Its sha256 and the approved `doc_sha256` go into the retirement log. A rerun that finds a logged, verified archive skips this task and never rewrites it.
+- Acceptance: for each archived directory, the tar's member count equals `find <dir> | wc -l` taken just before. `tar -t` lists one non-empty `.sql` per D1 manifest row. The log's `archive` row reads `done` with both hashes.
 - Test: the acceptance itself, run before any destructive stage.
 
 **R1. Cloudflare teardown (70, ordinary, live-account).**
@@ -290,6 +290,7 @@ This session launches after Geoff approves the dry run. It acts only on the appr
   - A pre-flight call per resource kind confirms the token can read and delete that kind; KV and Email Routing aren't in the token's verified scopes. A pre-query must resolve every id.
   - Right before each delete, the session reruns the inventory's network leg for that id, and stops for Geoff on any id no longer `sole-owner`.
   - The order inside the stage is routes and custom domains, then Workers, then D1, KV, and R2, then DNS records, then Access apps last.
+  - A `sole-owner` R2 bucket that still holds objects stops the stage for Geoff. The dry run lists each bucket's object count, so he sees it in advance.
   - A delete that returns 404, when a GET also returns 404, is logged `already-absent`.
   - `CAIRN_SCRATCH_CF_TOKEN` is excluded, since it's Geoff's by hand, and PR 2 records it as owed.
 - Acceptance: each id returns the API's not-found code, with 403 and auth errors counted as failures. The check fails on empty `cloudflare` rows, and the log's `cloudflare` stage reads `done`.
@@ -297,15 +298,16 @@ This session launches after Geoff approves the dry run. It acts only on the appr
 
 **R2. GitHub deletions and descriptions (35, ordinary, live-account).**
 
-- Outcome: this task waits on two things. `gh api repos/glw907/workstation/compare/main...worktree-repo-organization --jq '.files[].filename'` lists `secrets/values.age`, and the `delete_repo` scope shows in `gh auth status`. The session notifies Geoff once if the scope is missing. Then it runs each approved `gh repo delete glw907/<r> --yes`, sets each approved description with `gh repo edit`, and logs the `github` stage.
+- Outcome: this task waits on two things. `gh api repos/glw907/workstation/compare/main...worktree-repo-organization --jq '.commits[].commit.message'` holds a message starting `W8 retire secrets from the store`, which the compare endpoint's 300-file cap on `files` can't hide, and the `delete_repo` scope shows in `gh auth status`. The session notifies Geoff once if the scope is missing. Then it runs each approved `gh repo delete glw907/<r> --yes`, sets each approved description with `gh repo edit`, and logs the `github` stage.
 - Acceptance: each deleted repo returns `Could not resolve to a Repository`, after a same-run positive, and each description reads as approved.
 
 **R3. Local retirement stage (45, ordinary, live-account).**
 
 - Outcome: after R2's stage is logged, the session works through the local rows.
   - It reruns the inventory's local leg per target and compares it with the manifest's `expect` column, refusing and listing any changed target.
-  - It removes `ecxc-ski-agent-memory` only after the ecxc-ski PR's fold commit is pushed (checked through `gh api`).
+  - It removes `ecxc-ski-agent-memory` only after a commit with the subject `S-ecxc-ski fold ecxc-ski-agent-memory` is on the ecxc-ski PR's branch, matched through `gh api`.
   - It removes each approved retired directory, appending a `local` row per item.
+  - It refuses by name the worktrees C9 reserves, even if the tool marks them removable.
   - It logs each worktree's removable verdict, with its six rule values, before it removes that worktree, and removes only those the tool marks removable at that moment.
 - Acceptance: the log holds a `done` row for every local manifest row and a verdict row for every removed worktree, and no approved retired directory remains.
 - Test: I6's worktree-rule tests.
@@ -367,7 +369,7 @@ Close for R (15): the name check, then PR 2 at PR-ready. Its body holds the log 
 - Outcome: this task waits on the dry-run approval and on R1's `cloudflare` stage.
   - `scripts/secrets/secret-set.sh` gains four overrides, each an environment variable defaulting to today's value: the store path (`VALUES`), `LOCAL_SECRETS`, the recipient (`RECIP`), and the identity cache (`CACHE`). The script hard-codes all four, and `--delete` always rewrites `LOCAL_SECRETS`. That change is its own commit, with its test first.
   - Just before the store commit, the session merges `origin/main` into the worktree and requires `git diff <merge-base> origin/main -- secrets/` to be empty.
-  - Then one commit removes each retired secret in the manifest from the worktree's `values.age` (`secret-set.sh NAME --delete`, with `VALUES` on the worktree store and `LOCAL_SECRETS` on a temp path) and from `secrets/registry.md`. The live `~/.local/secrets` is regenerated only by C6's `--sync` after the merge. The same commit removes every manifest line the manifest lists, such as the `bash/.bashrc`, `bluefin/bootstrap.sh`, and `SECOND-WORKSTATION.md` lines.
+  - Then one commit, with the subject `W8 retire secrets from the store` and pushed at once, removes each retired secret in the manifest from the worktree's `values.age` (`secret-set.sh NAME --delete`, with `VALUES` on the worktree store and `LOCAL_SECRETS` on a temp path) and from `secrets/registry.md`. The live `~/.local/secrets` is regenerated only by C6's `--sync` after the merge. The same commit removes every manifest line the manifest lists, such as the `bash/.bashrc`, `bluefin/bootstrap.sh`, and `SECOND-WORKSTATION.md` lines.
   - It refuses any name whose registry "Used by" names a non-target, any name in `sync.sh`'s `WORKER_SECRETS`, and `CLOUDFLARE_API_TOKEN`, `CF_ZT_TOKEN`, and the GitHub App keys, and stops for Geoff on a hit.
   - `diff-reviewer` reads each commit at task scope, and `RUN_GATE_IF_BUSY` is never set.
   - If the age key's tmpfs cache is gone and 1Password must unlock, the session notifies Geoff and waits.
@@ -418,7 +420,7 @@ Each S task applies its repo's triage decision.
 - Acceptance: the received rows' `new_path`s exist, and their count equals the map's count for the repo. The `defer`, `now`, and `drop` counts are measured as W5's are, `git grep -c '#project:'` is 0, and `test ! -e ROADMAP.md` succeeds (cairn-cms excepted). `refs check` over the worktree finds nothing new against the baseline.
 - Test: the gate, plus `roadmap-count` against the deleted file.
 
-Class is `ordinary`, unless a rewrite lands in `.github/workflows/**`, `scripts/**`, or `scripts/checks/**`, which makes the task `runner`. A sweep PR whose diff touches no `runner` path merges on a green full-suite home and a task-scope `diff-reviewer` accept, with one batched triage item telling Geoff what merged (Geoff, 2026-10-14).
+Class is `ordinary`, unless a rewrite lands in `.github/workflows/**`, `scripts/**`, or `scripts/checks/**`, which makes the task `runner`. A sweep PR merges itself (Geoff, 2026-10-14) when three things hold. Its diff touches no `runner` or `auth-data` path under the repo's adapter map, or under `pass-core`'s `runner` definition for a repo with no adapter. Its full-suite home is green. Its whole-branch review accepts with an empty "Found, not done" list, which is the review `pass-core`'s exception requires. The conductor then merges it in merge order, and one batched triage item tells Geoff what merged. Any other sweep PR goes to Geoff for a read.
 
 | Task | Minutes | Repo-specific work |
 |---|---|---|
@@ -426,7 +428,7 @@ Class is `ordinary`, unless a rewrite lands in `.github/workflows/**`, `scripts/
 | S-poplar | 75 | Receives its docs rows (the adapter work). CI watch. |
 | S-cairn-cms | 70 | References only. Its ROADMAP and every reference to it stay. `cairn-pass` fast lane, CI. |
 | S-aksailingclub-org | 80 | 21 entries. CI watch. |
-| S-ecxc-ski | 65 | Also folds the facts that still hold from `~/Projects/ecxc-ski-agent-memory` (read by path, or from R0's archive if the folder is gone). The PR body lists each of the folder's files with its disposition: folded to a named ecxc-ski file, or obsolete with a reason. It stops if neither source exists. |
+| S-ecxc-ski | 65 | Also folds the facts that still hold from `~/Projects/ecxc-ski-agent-memory` (read by path, or from R0's archive if the folder is gone). The PR body lists each of the folder's files with its disposition: folded to a named ecxc-ski file, or obsolete with a reason. It stops if neither source exists. The fold commit's subject is `S-ecxc-ski fold ecxc-ski-agent-memory`, which R3 matches. |
 | S-xcathletes-org | 60 | One `#project:` tag. |
 | S-907-life | 55 | |
 | S-cairn-pub | 50 | |
@@ -450,13 +452,14 @@ Close for D (30): run `refs apply` over the worktree, then the gate on the close
 
 **I11. Drafter docs into initiatives (30, ordinary).** It copies the `deferred:p5` initiatives rows from the scratch clone at the pin, in one commit naming it, runs `refs apply`, and opens initiatives PR 4. Acceptance: each row's `new_path` exists, and `refs check` finds nothing new. Test: the I4 tool.
 
-**W9. Drafter code and docs leave workstation (35, runner).** After the drafter PR merges, the session removes `docs-page-chain.js`, `cairn-docs-outline`, `scripts/drafter-gate.sh`, the five tests, and their fixtures, along with the four `check.sh` legs. The `cairn-run-gate` test drops its moved path, and `claude-tooling.md` records the workflow's new source repo. It deletes the `deferred:p5` docs rows and runs W7's draft check over the drafter rows. Files: those paths, `scripts/check.sh`, `tests/cairn-run-gate.test.sh`, `claude/.claude/docs/claude-tooling.md`. Acceptance: the gate passes with no leg naming a removed path, and the draft check passes over the drafter rows. Test: the gate and the draft check. Its close is the gate, the name check, and the review, and its `## Before merge` confirms the drafter PR merged.
+**W9. Drafter code and docs leave workstation (35, runner).** After the drafter PR and initiatives PR 4 merge, since its draft check needs every drafter row's destination on `origin/main`, the session removes `docs-page-chain.js`, `cairn-docs-outline`, `scripts/drafter-gate.sh`, the five tests, and their fixtures, along with the four `check.sh` legs. The `cairn-run-gate` test drops its moved path, and `claude-tooling.md` records the workflow's new source repo. It deletes the `deferred:p5` docs rows and runs W7's draft check over the drafter rows. Files: those paths, `scripts/check.sh`, `tests/cairn-run-gate.test.sh`, `claude/.claude/docs/claude-tooling.md`. Acceptance: the gate passes with no leg naming a removed path, and the draft check passes over the drafter rows. Test: the gate and the draft check. Close for W9 (30): the gate, the name check, and the review, with a `## Before merge` that confirms the drafter PR and PR 4 merged.
 
 ### initiatives-repo-organization-thinkpad (PR 3)
 
-**T1. The thinkpad leg (110, ordinary, live-account).**
+**T1. The thinkpad leg (115, ordinary, live-account).**
 
-- Outcome: Geoff launches this session on the thinkpad after the follow-up set merges. It is unisolated and makes its own initiatives worktree for its one commit, after excluding `.claude/worktrees/`. It works in this order:
+- Outcome: Geoff launches this session on the thinkpad after the follow-up set merges. It is unisolated and makes its own initiatives worktree for its one commit, after excluding `.claude/worktrees/`, and writes its clock file in that worktree's git dir. Its own checkout is exempt from the "no live session" pull rule, since Geoff's first command pulls it. It works in this order:
+  0. It clones every `edit` row missing on the thinkpad at its `origin/main`, and reports a missing `read` row `absent`. A fresh clone's baseline is taken from the clone. It checks that the committed dry-run file's sha256 equals the `doc_sha256` in the retirement log, and stops for Geoff on a mismatch.
   1. It records `refs-baseline-thinkpad-x1` against the thinkpad's main checkouts before any pull.
   2. It runs `thinkpad-cleanup` as a dry run against the approved manifest, prints it, then removes only the targets it marks removable.
   3. It records `batched-docs-tool-initiative.md`'s line count and sha256 in its results if the file exists, folds it into the drafter record, deletes it, and removes its index line. If it's absent, it records the file as lost and removes the line.
@@ -473,7 +476,7 @@ Here is the longest chain:
 
 | Step | Minutes |
 |---|---|
-| C0 | 25 |
+| C0 | 30 |
 | I1 | 85 |
 | Pair A (I3) | 115 |
 | Pair B (I4, I5) | 160 |
@@ -488,11 +491,11 @@ Here is the longest chain:
 | C6 | 50 |
 | C7 | 20 |
 | Follow-up merged (drafter waits on pass 5) | not counted |
-| T1 | 110 |
+| T1 | 115 |
 | C8 | 25 |
-| **Total** | **1,120** |
+| **Total** | **1,130** |
 
-The figure assumes the follow-up set merges by C7. If pass 5 lands later, the follow-up chain (D1 155, then W9 35 after the drafter merge, then C9 20, with I11 beside them) follows that uncounted wait and adds up to 210, for a path of 1,330, still under the ceiling. The chain works because the side branches finish ahead of the steps that need them:
+The figure rests on three assumptions. The follow-up set merges by C7. The sweeps pack into three slots of about 215 minutes: dubplate, aksailingclub-org, and phonebook; poplar, cairn-cms, and ecxc-ski; then xcathletes-org, 907-life, cairn-pub, and cairn-themes. And dubplate, poplar, and approval-queue are W7's only receivers. If pass 5 lands later, the follow-up chain (D1 155, then W9 with its close 65 after the drafter and PR 4 merges, then C9 20, with I11 beside them) follows that uncounted wait and adds up to 240, for 1,370. If I3's counts name another sweep repo as a receiver, W7 and the W close start after that repo merges, and the main path can reach about 1,255. Each case stays under the ceiling. The chain works because the side branches finish ahead of the steps that need them:
 
 - The retire chain (R0 30, R1 70, W8 90) starts at the dry-run approval, right after I8, and reaches W8's end at 765. The sweeps end at 910.
 - A1 (95 plus its 30 close) starts at the same approval and merges before W7 needs it.
@@ -500,9 +503,9 @@ The figure assumes the follow-up set merges by C7. If pass 5 lands later, the fo
 - The workstation executor's earlier tasks (W4, the W2 and W3 pair, W5, and W6) finish ahead of W8.
 - The follow-up set (D1 155, I11 30, W9 35, C9 20) waits on pass 5. That wait isn't counted, and its work runs beside the main set if pass 5 lands early.
 
-The task sum is 3,020: the conductor 170, initiatives 1,040 (its close 45 included), retire 195 (close 15), workstation 520 (close 50), queue 125 (close 30), sweeps 640 (each close included), the drafter follow-up 220 (D1 with its close 155, I11 30, W9 35), and the thinkpad 110. The sum excludes the G-picks PR, which lands before C0.
+The task sum is 3,070: the conductor 175, initiatives 1,040 (its close 45 included), retire 205 (close 15), workstation 520 (close 50), queue 125 (close 30), sweeps 640 (each close included), the drafter follow-up 250 (D1 with its close 155, I11 30, W9 with its close 65), and the thinkpad 115. The sum excludes the G-picks PR (#71) and its rebuild, which land before C0.
 
-At 1,120 minutes, the path is 1.33 times the design estimate and under the 1,680 ceiling. The rise from 875 comes from three sources. The old table carried C6 at 30, not its stated 45. It also left out the sweeps that run between PR 1's merge and the workstation merge. The rest is the review folds: the scope harness, the inventory's positive cases, the end-to-end tool, the manifest, and the archive task.
+At 1,130 minutes, the path is 1.35 times the design estimate and under the 1,680 ceiling. The rise from 875 comes from three sources. The old table carried C6 at 30, not its stated 45. It also left out the sweeps that run between PR 1's merge and the workstation merge. The rest is the review folds: the scope harness, the inventory's positive cases, the end-to-end tool, the manifest, and the archive task.
 
 The estimates come from these Score sections:
 
@@ -514,16 +517,16 @@ The estimates come from these Score sections:
 | drafter#6 | 175 | about 35 |
 | workstation#61 (its half) | about 180 | about 20 |
 
-drafter#11 recorded no actual. Actuals ran 7 to 25 percent of the planned path. The figures here stay at planning scale anyway, for two reasons: most of this pass is live-account and cross-repo work with no measured precedent, and the clock stop fires at twice a figure, so a figure cut to past actuals would stop on the first API retry or gate queue. Expect the actual well under 1,120.
+drafter#11 recorded no actual. Actuals ran 7 to 25 percent of the planned path. The figures here stay at planning scale anyway, for two reasons: most of this pass is live-account and cross-repo work with no measured precedent, and the clock stop fires at twice a figure, so a figure cut to past actuals would stop on the first API retry or gate queue. Expect the actual well under 1,130.
 
 ## Merge order
 
-1. The G-picks PR (before C0). `glw907/approval-queue` exists (C2). Then initiatives PR 1, then dubplate, then poplar.
+1. The G-picks PR, workstation#71, and its rebuild (before C0). `glw907/approval-queue` exists (C2). Then initiatives PR 1, then dubplate, then poplar.
 2. approval-queue.
 3. Initiatives PR 2 (retire), cairn-cms, aksailingclub-org, 907-life, cairn-pub, cairn-themes, ecxc-ski, phonebook, and xcathletes-org, in any order.
 4. workstation, last in the main set.
 5. On pavilion (C6), then on the thinkpad (T1): pull, restow, then the approval-queue install step, and `make -C ~/Projects/drafter install` once the follow-up has merged. Neither install runs before its workstation merge and the restow, because until then `~/.claude/workflows` is a folded link into `~/.dotfiles` and `~/.local/bin/approval-queue` is a stow link.
-6. The follow-up (C9): drafter, then initiatives PR 4, then the workstation follow-up PR.
+6. The follow-up (C9): drafter, then initiatives PR 4, then the workstation follow-up PR, whose session launches only after both.
 7. Initiatives PR 3 (thinkpad), after T1.
 
 Before-merge steps known now:
@@ -542,7 +545,7 @@ Before-merge steps known now:
 
 These come in order:
 
-1. Merge workstation#69, and read the G-picks PR (Geoff, 2026-10-14).
+1. Read the G-picks PR, workstation#71 (Geoff, 2026-10-14). workstation#69 has already merged.
 2. The ten ROADMAP triage items and the migration-calls item. The design's text implies the migration-calls item ("Geoff's call replaces the state", and three dubplate collisions differ), though the brief's list doesn't name it.
 3. The dry-run item, with its by-hand list: revoke the scratch-site token, run `gh auth refresh -s delete_repo` on pavilion, and pick the Decide block confirming the thinkpad's `values.age` is clean.
 4. A 1Password unlock at W8, only if the age key's cache has expired.

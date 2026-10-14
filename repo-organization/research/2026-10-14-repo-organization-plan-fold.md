@@ -1,7 +1,8 @@
 # Repo organization plan: fold record
 
 Target: `repo-organization/plans/2026-10-14-repo-organization-plan.md` and its launch prompts,
-reviewed at `f2362ab` and revised in place (uncommitted). Reviews folded:
+reviewed at `f2362ab` and revised as commit `657e621`, then revised again by the second round
+below (uncommitted). Reviews folded:
 `2026-10-14-repo-organization-plan-review-mechanics.md` (47 findings),
 `2026-10-14-repo-organization-plan-review-contract.md` (52), and
 `2026-10-14-repo-organization-plan-review-integrity.md` (24).
@@ -11,9 +12,10 @@ Geoff on 2026-10-14. No whole finding is refused. Three proposed parts of folded
 refused, each with its reason in its row. The launch prompts grow from 17 to 19:
 `initiatives-drafter` and `workstation-drafter` carry the drafter follow-up.
 
-New figures: path 1,120 minutes (was 875), task sum 3,020 (was 2,460). The path is 1.33 times the
-design's 840 and under the 1,680 ceiling. If pass 5 lands after C7, the follow-up chain adds up to
-210, for 1,330, still under it.
+New figures, after both rounds: path 1,130 minutes (was 875), task sum 3,070 (was 2,460). The
+path is 1.35 times the design's 840 and under the 1,680 ceiling. If pass 5 lands after C7, the
+follow-up chain adds up to 240, for 1,370. If a sweep repo beyond dubplate and poplar receives
+docs, the main path can reach about 1,255. Both stay under the ceiling.
 
 ## Verification
 
@@ -93,9 +95,18 @@ The plan narrows or reorders these design mechanisms, and the design isn't edite
 6. **The archive's contents.** Under ruling 3 the archive also holds a D1 export of each scratch
    and staging database. The design says only that the pass destroys scratch and staging data.
 7. **Self-merge for ordinary sweep PRs.** pass-core lets only an `ordinary` pass merge its own PR,
-   and this pass is `auth-data` at its highest. Ruling 4 lets the conductor merge an `ordinary`
-   sweep PR on a green home and a task-scope review accept, with one batched triage item to
-   Geoff.
+   and this pass is `auth-data` at its highest. Ruling 4 lets the conductor merge a sweep PR
+   whose diff touches no `runner` or `auth-data` path, on a green home, with one batched triage
+   item to Geoff. The ruling's text named a task-scope review accept. The plan uses pass-core's own
+   bar instead, an accepted whole-branch review with an empty "Found, not done" list, and sends a
+   PR with a non-empty list to Geoff.
+8. **The teardown list (erratum owed).** The design names `teardown.tsv`, and its check 5
+   queries "each id in `teardown.tsv`". The plan replaces the file with `retire-manifest.tsv`,
+   whose `cloudflare` rows serve that role. The check 5 sentence owes an erratum.
+9. **The queue repo's first commit.** The design creates `glw907/approval-queue` empty. The plan
+   creates it with one README commit, so the extract can arrive by PR.
+10. **Check 2's mechanism.** The design opens a session in `drafter`. The plan runs the hook
+   script from that directory, since a session can't be opened headlessly.
 
 ## Dispositions
 
@@ -280,10 +291,72 @@ Convergent findings fold once, at a root, and each member row points at its root
 | m10 neither machine rechecks `values.age` | Folded in T1, step 4. |
 | m11 R2 waits on W8 | Dropped, `optional`. |
 
+## Second round: fold verification
+
+Source: `2026-10-14-repo-organization-plan-fold-verification.md`, reading commit `657e621` (25
+findings: 1 blocker, 8 majors, 16 minors). Dispositions: 25 folded. One proposed part is refused:
+m15's bucket emptying. No finding is dropped.
+
+Probes for this round, run on pavilion on 2026-10-14 in the session scratchpad:
+
+- The name check, in a scratch repo with a bare `origin` and a branch. The old form,
+  `git log -p origin/main..HEAD | grep -wF -f -`, exited 1 with a planted canary in the branch, so
+  it can't catch anything. The new branch form, `git log -p origin/main..HEAD | grep -wF -f
+  <(names)`, printed the canary and exited 0. On a clean branch it printed nothing and exited 1.
+  The history form, `git log -p --all | grep -wF -f <(names)`, exited 1 on a clean history. It
+  exited 0 on a canary that one commit added and a later one removed, and on a canary only in a
+  commit message. The diff form, `git diff origin/main...HEAD`, missed both of those cases, so
+  the plan uses the `git log -p` forms.
+- The live fix, for C0's acceptance. The current build under `~/.dotfiles/approval-queue/build/
+  server` has 0 files holding `decideCards`, which predates the fix. A scratch build of #71's
+  commit `25f9449` (`npm ci && npm run build`) put `decideCards` in 4 files under `build/server`,
+  among them `chunks/cards.js`. The 7907 listener's `/proc/<pid>/cmdline` reads `node
+  /var/home/glw907/.dotfiles/approval-queue/build`, and `stat -c %Y /proc/<pid>` (1791999169) is
+  at or after `build/server/chunks/cards.js`'s mtime (1791999168). So the check fails today and
+  passes only after a rebuild and a restart. It needs no browser and no Host header.
+- The D1 export, for ruling 3. `npx --yes wrangler@4 d1 export cairn-scratch-b-auth --remote
+  --output <scratch>/probe.sql`, with the managed token sourced in the same command, exited 0 and
+  wrote 41 lines with 5 `CREATE TABLE` statements and no virtual table. The file was shredded
+  after counting. Cloudflare's import and export page says "A running export will block other
+  database requests" and "Export is not supported for virtual tables, including databases with
+  virtual tables". No global `wrangler` is installed, so R0 uses `npx`.
+- R2's wait. `gh api repos/glw907/workstation/compare/main...design-decide-picks --jq
+  '.commits[].commit.message'` returns each commit's message, so R2 can match W8's fixed subject
+  rather than the capped `files` list.
+
+| Finding | Disposition |
+|---|---|
+| B1 the name check is vacuous, and C0 has no form | Folded in "Shared interfaces" (the out-of-scope names entry), C0, and the conductor prompt. Patterns come through `<(...)`, a PR uses `git log -p origin/main..HEAD`, and C0 uses `git log -p --all`. Each must exit 1 clean, and a planted positive control must exit 0. Probed as above. |
+| M1 merging the G-picks PR doesn't put the fix live | Folded in "Shared interfaces" (G-picks), C0, C2, and the conductor prompt. The planning session rebuilds and restarts after #71 merges, and C0 checks the build for `decideCards` and the server's start time against it. Probed as above. The reviewer's approve-a-fixture probe is replaced by this check, which needs no Decide from Geoff. |
+| M2 the G-picks PR has no author or number | Folded: workstation#71, head `design-decide-picks`, owned by the planning session (dotfiles-32). |
+| M3 T1's first step can't run | Folded in T1 and the thinkpad prompt: step 0 clones missing `edit` rows, a missing `read` row is `absent`, and a fresh clone's baseline comes from the clone. |
+| M4 the thinkpad's manifest has no hash check | Folded: R0 logs `doc_sha256`, T1's step 0 compares the committed dry-run file with it, and P4's sentence now matches. |
+| M5 W9 doesn't wait for PR 4 | Folded in W9, merge order step 6, the conductor prompt, and the W9 prompt. |
+| M6 the D1 export is unprobed | Folded in R0 and the retire prompt: `--remote`, a stop on a failed or empty export before R1, and one listed `.sql` per D1 row. Probed as above. |
+| M7 self-merge can take an `auth-data` diff | Folded in the sweep section, the conductor prompt, and every sweep prompt's last message. |
+| M8 G-p5's live status is undefined | Folded: live means `state` isn't `done`, `p5-head` in the state directory carries the head name to D1 and I11, and a 72-hour stop goes to `stops.log` and Geoff. |
+| m1 deviation 7 understates ruling 4 | Folded in deviation 7, the sweep section, and the conductor prompt. The executor's whole-branch accept with an empty "Found, not done" list serves as the review, and a PR with a non-empty list goes to Geoff. The conductor's PR hand-over line excludes self-merged PRs. |
+| m2 the reader check is missing from two prompts | Folded in the workstation, dubplate, and poplar prompts. |
+| m3 three departures and an erratum are unrecorded | Folded: deviations 8 to 10 and erratum 3 below. |
+| m4 the path's assumptions are unstated | Folded in "Path" and the conductor prompt: the three-slot packing and the receiver assumption, with the 1,255 and 1,370 cases. |
+| m5 W9's close has no minutes | Folded: a 30-minute close. |
+| m6 R2's wait | Folded: W8's store commit gets a fixed subject and is pushed at once, and R2 matches it in `.commits[].commit.message`. |
+| m7 the queue clone's timing | Folded in C2: created and cloned first, as its first acceptance. |
+| m8 the session table cell | Folded. |
+| m9 touchpoint 1 names a merged PR | Folded. |
+| m10 standing answers leave out ruling 3 | Folded in the conductor prompt. |
+| m11 R3 could remove C9's worktrees | Folded in "Shared interfaces" (the manifest leaves them out), R3, and the retire prompt. |
+| m12 W9's session launches too early | Folded with M5. |
+| m13 T1 has no clock file and pulls its own checkout | Folded in T1 and the thinkpad prompt. |
+| m14 R3 can't recognize the fold commit | Folded: the fixed subject `S-ecxc-ski fold ecxc-ski-agent-memory`, set in S-ecxc-ski and matched in R3. |
+| m15 a non-empty R2 bucket | Folded in I8 (each bucket's object count in the dry run) and R1 (a stop for Geoff). Emptying a bucket is refused: no sole-owner bucket holding objects is known, and emptying is unprobed data destruction that Geoff can rule on when the dry run shows a count. |
+| m16 a failed wait has no resume | Folded in "Shared interfaces": the loop re-reads the newest open row on each pass. |
+
 ## Estimate
 
-The path re-derives to 1,120 minutes, against the old 875, and the task sum to 3,020, against
-2,460.
+The first round re-derived the path to 1,120 minutes, against the old 875, and the task sum to
+3,020, against 2,460. The second round adds 10 to the path (C0's live check +5, T1's step 0 +5)
+and 50 to the sum (those two, R0's exports +10, and W9's close +30), for 1,130 and 3,070.
 
 - Two corrections come first. C6 was carried at 30 in the path table against its stated 45, and
   the old chain left out the roughly 215 minutes of sweeps, three at a time, between PR 1's merge
@@ -297,7 +370,7 @@ The path re-derives to 1,120 minutes, against the old 875, and the task sum to 3
 - Moving the relay out of the conductor cuts its sum from 235 to 170. It doesn't shorten the path,
   because the relay steps were waits on the critical chain either way.
 
-The G-picks PR sits outside both figures, as workstation#69 did. The path stays under the 1,680
+The G-picks PR (#71) and its rebuild sit outside both figures, as workstation#69 did. The path stays under the 1,680
 ceiling, so nothing stops for Geoff.
 
 ## Rulings
@@ -307,11 +380,12 @@ each answer as "(Geoff, 2026-10-14)".
 
 1. **Should a small workstation PR fix the dropped Decide-picks bug before any design item goes
    out?** Ruled: yes, option (a) (Geoff, 2026-10-14).
-   - The G-picks PR is a prerequisite like workstation#69, read by Geoff, with its estimate
-     outside the pass.
-   - C0 gates on its merge, and C2 hands over neither the migration-calls item nor the dry-run
-     item until it has merged and `~/.dotfiles` is pulled. So I9 and the whole retirement wait on
-     it.
+   - The G-picks PR is workstation#71 (head `design-decide-picks`), a prerequisite like
+     workstation#69, owned by the planning session, read by Geoff, with its estimate outside the
+     pass. After it merges, the planning session rebuilds the app and restarts the 7907 server.
+   - C0 gates on the merge and on the fix being live, and C2 hands over neither the
+     migration-calls item nor the dry-run item before that. So I9 and the whole retirement wait
+     on it.
    - Every design decision's reader checks one `choices` entry per Decide block. The thinkpad
      store confirmation rides in the dry run as a Decide block.
    - The options not taken were (b), carrying each call as a triage row, and (c), Geoff typing
@@ -322,11 +396,13 @@ each answer as "(Geoff, 2026-10-14)".
    pass 5. The thinkpad leg runs after the follow-up merges, so check 4 runs once on each
    machine, and the cost is two more PR reads. Deviation 3 records the split.
 3. **Should the scratch and staging D1 data be exported into the archive before teardown?** Ruled:
-   yes (Geoff, 2026-10-14). R0 adds a `wrangler d1 export` of each D1 database in the teardown
+   yes (Geoff, 2026-10-14). R0 adds a `wrangler d1 export --remote` of each D1 database in the teardown
    rows to the one archive, verified before any destructive stage. Deviation 6.
 4. **Should the `ordinary` sweep PRs merge themselves, as pass-core allows an `ordinary` change?**
    Ruled: yes, option (a) (Geoff, 2026-10-14).
-   - A sweep PR whose diff touches no `runner` path is merged by the conductor, in merge order,
-     on a green full-suite home and a task-scope `diff-reviewer` accept.
+   - A sweep PR whose diff touches no `runner` or `auth-data` path is merged by the conductor, in
+     merge order, on a green full-suite home and an accepted whole-branch review with an empty
+     "Found, not done" list. That is pass-core's bar, which replaces the task-scope review the
+     ruling's text named (deviation 7).
    - Geoff gets one batched triage item naming what merged.
    - This cuts about nine PR reads. Deviation 7.

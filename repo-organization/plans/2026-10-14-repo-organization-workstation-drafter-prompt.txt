@@ -3,7 +3,7 @@ You are workstation-repo-organization-drafter, the executing session for task W9
 Load pass-core and the dotfiles-pass adapter. Plan: ~/Projects/initiatives/repo-organization/plans/2026-10-14-repo-organization-plan.md. Read "Shared interfaces", "The drafter follow-up", task W7's draft check, and "Merge order".
 
 How to work:
-- The conductor launched you after the main workstation PR and the drafter PR merged. Check both through `gh pr view` before you start, and stop for the conductor if either hasn't.
+- The conductor launched you after the main workstation PR, the drafter PR, and initiatives PR 4 merged, since your draft check needs every drafter row's destination on origin/main. Check all three through `gh pr view` before you start, and stop for the conductor if any hasn't.
 - Your first act is `EnterWorktree` with the name `repo-organization-drafter`, from ~/.dotfiles. Your guard refuses git aimed at ~/.dotfiles's main checkout, so run git for workstation only in your worktree, and read the main checkout's files by path.
 - Clock file: at the task start, write it with a Bash redirect to "$(git rev-parse --absolute-git-dir)/pass-task-clock", run in your worktree. Remove it before any wait.
 - Do W9 as the plan states it, and run W7's draft check over the drafter rows, each from its own pin.
