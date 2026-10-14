@@ -16,6 +16,12 @@ def read(name, default):
 
 class H(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
+        if self.path.endswith("/workers/domains"):
+            hosts = [h for h in read("domains", "keep.example").split(",") if h]
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(('{"result": [%s]}' % ",".join('{"hostname": "%s"}' % h for h in hosts)).encode())
+            return
         rid = self.path.rsplit("/", 1)[-1]
         code = 404 if rid in read("gone", "").split(",") else int(read("code", "200"))
         self.send_response(code)

@@ -1,0 +1,45 @@
+stage	kind	id	action	expect
+archive	tar	/var/home/glw907/Documents/retired-repos-2026-10-14.tar	create	members=cairn-scratch:158,ecxc-ski-agent-memory:17,aksailingclub-sveltekit:1153
+archive	d1-export	cbd3fdba-fc6b-47d7-b2a0-537543e880e9	export	name=asc-staging
+archive	d1-export	1fe11784-f64e-408f-8bc2-029e997c11a9	export	name=cairn-scratch-b-auth
+cloudflare	route	pings.907.life	delete	sole-owner
+cloudflare	route	staging.aksailingclub.org	delete	sole-owner
+cloudflare	worker	pings	delete	sole-owner
+cloudflare	worker	asc-staging	delete	sole-owner
+cloudflare	worker	cairn-scratch-b	delete	sole-owner
+cloudflare	d1	cbd3fdba-fc6b-47d7-b2a0-537543e880e9	delete	sole-owner
+cloudflare	d1	1fe11784-f64e-408f-8bc2-029e997c11a9	delete	sole-owner
+cloudflare	kv	5c126cfe4a984f74bd37e67bae3e9512	delete	sole-owner
+cloudflare	dns	a7c2b9103ec7d835d72f356489072e5b/6d431fecfc01ca963db1bf6c25c43664	delete	sole-owner
+cloudflare	dns	20c8739759428149d47508f0632bb1ff/19ce9467e40893f1d0e8215ddc934f52	delete	sole-owner
+cloudflare	access-app	f18fa6b9-79b4-4bd7-88ce-37eac144ece7	delete	sole-owner
+store	secret	PINGS_ADMIN_TOKEN	delete	used-by-target-only
+store	secret	CAIRN_SCRATCH_CF_TOKEN	delete	used-by-target-only
+manifest	line	bash/.bashrc:134	edit	# (poplar, jrnl-md) stays lean.
+manifest	line	bash/.bashrc:152	remove	"$HOME"/Projects/hugo-blog-template/*)
+manifest	line	bluefin/bootstrap.sh:786	remove	for item in aksailingclub-sveltekit cairn-scratch ecxc-ski-agent-memory; do
+manifest	line	bluefin/SECOND-WORKSTATION.md:79	edit	three repos with no remote (`healthy-diet`, `personal-styles`, `pings`), the
+manifest	line	bluefin/SECOND-WORKSTATION.md:253	edit	cairn-themes displaywidth drafter dubplate ecxc-ski phonebook poplar \
+github	repo	cairn-scratch-b	delete	main=5ed23f8bdbe745de02472ea99a86f6cf08510d37
+github	repo	displaywidth	delete	main=a9edf624090707441305e510a63d168832ffcbf2
+github	repo	kit	delete	main=f6910fe60764b4d1e4688c3386c42ca3680af891
+github	repo	jrnl-md	delete	main=8365de9e70713b7081bcbc75d496ae56c421964d
+github	repo	hugo-blog-template	delete	main=db7c035f7746dac6e4a5c78109f1762f91ad18bb
+github	description	cairn-cms	An embedded, magic-link, GitHub-committing CMS for SvelteKit sites on Cloudflare.	
+github	description	poplar	A terminal email client built with bubbletea, shipped as one Go binary.	
+github	description	907-life	Source for 907.life, a personal blog on SvelteKit and Cloudflare Workers.	
+github	description	cairn-pub	Source for cairn.pub, the cairn documentation site, on SvelteKit and Cloudflare Workers.	
+github	description	phonebook	A household phonebook for Yealink phones, served from a Cloudflare Worker.	
+github	description	workstation	Dotfiles and provisioning for two Bluefin DX workstations, managed with GNU Stow.	
+github	description	approval-queue	A local app and command that put PRs, designs, and triage lists in front of a reviewer for a decision.	
+local	local-dir	healthy-diet	remove	HEAD=37a8dac8014b81aea30b7615b2dc9ddfffc8b4f6 refs/heads/main=37a8dac8014b81aea30b7615b2dc9ddfffc8b4f6
+local	local-dir	pings	remove	HEAD=c79320a1032e2382ea48c26dbe22f2efc1f6972f refs/heads/master=c79320a1032e2382ea48c26dbe22f2efc1f6972f
+local	local-dir	personal-styles	remove	HEAD=c8359559cefdd029997723d37ba2aca7108fe79c refs/heads/master=c8359559cefdd029997723d37ba2aca7108fe79c
+local	local-tar	cairn-scratch	remove	mtime=1789226811 files=158
+local	local-tar	ecxc-ski-agent-memory	remove	mtime=1787266519 files=17
+local	local-tar	aksailingclub-sveltekit	remove	mtime=1788119492 files=1153
+local	local-dir	displaywidth	remove	remote
+local	local-dir	cairn-scratch-b	remove	remote
+local	local-dir	kit	remove	remote
+local	local-dir	jrnl-md	remove	remote
+local	local-dir	hugo-blog-template	remove	remote

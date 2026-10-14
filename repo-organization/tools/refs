@@ -208,7 +208,10 @@ def classify(ctx, tok, contain, relfile, history):
     return None
 
 
-def is_history(rel):
+def is_history(rel, repo=None):
+    # In the initiatives repo every file inside a record directory is a record of past work.
+    if repo == "initiatives" and "/" in rel:
+        return True
     return rel.startswith(HISTORY_DIRS) or os.path.basename(rel) == "HISTORY.md"
 
 
@@ -282,7 +285,7 @@ def gather(ctx):
             if real in seen or not os.path.isfile(real):
                 continue
             seen.add(real)
-            yield repo, repo, rel, p, is_history(rel)
+            yield repo, repo, rel, p, is_history(rel, repo)
     for repo, enc, d in memory_dirs(ctx):
         for name in sorted(os.listdir(d)):
             if not name.endswith(".md"):
