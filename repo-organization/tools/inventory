@@ -9,9 +9,11 @@ import fnmatch
 import json
 import os
 import re
+import shutil
 import socket
 import subprocess
 import sys
+import tempfile
 import tomllib
 import urllib.error
 import urllib.request
@@ -347,6 +349,18 @@ def github_target(repo):
 
 # ---------------------------------------------------------------- network leg: Cloudflare
 
+def github_copy(row, scratch):
+    """Return row, pointed at a shallow GitHub clone when its local path is absent."""
+    if not row["absent"]:
+        return row
+    dest = os.path.join(scratch, row["repo"])
+    owner = os.environ.get("INVENTORY_GH_OWNER", "glw907")
+    rc, _, _ = gh(["repo", "clone", f"{owner}/{row['repo']}", dest, "--", "--depth", "1", "--quiet"])
+    if rc != 0:
+        return row
+    return {**row, "path": dest, "absent": False}
+
+
 def credentials():
     script = ('source "$HOME/.local/secrets" >/dev/null 2>&1; '
               'printf "%s\\n%s\\n" "${CLOUDFLARE_API_TOKEN:-}" "${CLOUDFLARE_ACCOUNT_ID:-${CAIRN_CF_ACCOUNT_ID:-}}"')
@@ -584,8 +598,13 @@ def network_leg(rows, target_rows):
         if len(accts) != 1:
             raise Fail("cannot pick a Cloudflare account: set CLOUDFLARE_ACCOUNT_ID")
         cf.acct = acct = accts[0]["id"]
+    # A target with no local checkout still deploys from its GitHub copy, so its
+    # wrangler files come from a shallow clone.
+    scratch = tempfile.mkdtemp(prefix="inventory-")
+    target_rows = [github_copy(r, scratch) for r in target_rows]
     survivors = [Repo(r) for r in rows if r["role"] != "retire" and not r["absent"]]
     targets = {r["repo"]: Repo(r) for r in target_rows if not r["absent"]}
+    shutil.rmtree(scratch, ignore_errors=True)
     target_workers = set().union(*[t.facts["deploys"] for t in targets.values()]) if targets else set()
     cloud = Cloud(cf, target_workers)
 
