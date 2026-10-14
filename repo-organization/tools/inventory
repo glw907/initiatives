@@ -297,7 +297,8 @@ def gh(args):
 def gh_ok(args):
     rc, out, err = gh(args)
     if rc != 0:
-        if re.search(r"Could not resolve|HTTP 404|Not Found", err):
+        # A repo with issues switched off answers "disabled issues"; that is an empty list.
+        if re.search(r"Could not resolve|HTTP 404|Not Found|has disabled issues", err):
             return None
         raise Fail(f"gh {' '.join(args[:2])} failed: {err.strip()[:200]}")
     return out
