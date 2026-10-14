@@ -4,7 +4,7 @@
 
 Approving this item lets the pass delete five GitHub repos, tear down 11 Cloudflare resources that nothing else uses, and remove the local copies of 11 repos and folders, after it saves what can't be recovered to one archive. Nothing is removed until you approve, and each step rechecks that its target is unchanged.
 
-The pass can't delete anything safely until you have read the list below, because six of the folders have no remote and no backup. You already ruled on those on 2026-10-14. This item shows the exact targets so you can confirm them.
+The pass can't delete anything safely until you have read the list below, because six of the folders have no remote. You already ruled on those on 2026-10-14. This item shows the exact targets so you can confirm them.
 
 ### What changes
 
@@ -153,6 +153,8 @@ manifest	line	bash/.bashrc:134	edit	# (poplar, jrnl-md) stays lean.
 manifest	line	bash/.bashrc:152	remove	"$HOME"/Projects/hugo-blog-template/*)
 manifest	line	bluefin/bootstrap.sh:786	remove	for item in aksailingclub-sveltekit cairn-scratch ecxc-ski-agent-memory; do
 manifest	line	bluefin/SECOND-WORKSTATION.md:79	edit	three repos with no remote (`healthy-diet`, `personal-styles`, `pings`), the
+manifest	line	bluefin/SECOND-WORKSTATION.md:80	edit	local folders `cairn-scratch`, `ecxc-ski-agent-memory`, and
+manifest	line	bluefin/SECOND-WORKSTATION.md:81	edit	`aksailingclub-sveltekit`, the ASC age key, the `jrnl-md` config, and
 manifest	line	bluefin/SECOND-WORKSTATION.md:253	edit	cairn-themes displaywidth drafter dubplate ecxc-ski phonebook poplar \
 github	repo	cairn-scratch-b	delete	main=5ed23f8bdbe745de02472ea99a86f6cf08510d37
 github	repo	displaywidth	delete	main=a9edf624090707441305e510a63d168832ffcbf2
@@ -172,7 +174,7 @@ local	local-dir	personal-styles	remove	HEAD=c8359559cefdd029997723d37ba2aca7108f
 local	local-tar	cairn-scratch	remove	mtime=1789226811 files=158
 local	local-tar	ecxc-ski-agent-memory	remove	mtime=1787266519 files=17
 local	local-tar	aksailingclub-sveltekit	remove	mtime=1788119492 files=1153
-local	local-dir	displaywidth	remove	remote
+local	local-dir	displaywidth	remove	remote HEAD=a9edf624090707441305e510a63d168832ffcbf2 refs/heads/main=a9edf624090707441305e510a63d168832ffcbf2
 local	local-dir	cairn-scratch-b	remove	remote
 local	local-dir	kit	remove	remote
 local	local-dir	jrnl-md	remove	remote
