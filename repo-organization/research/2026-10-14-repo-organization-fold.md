@@ -1,7 +1,8 @@
 # Repo organization design: fold record
 
 Target: `repo-organization/specs/2026-10-14-repo-organization-design.md`, reviewed at `9da8e85` and
-revised in place (uncommitted). Reviews folded:
+revised in place as commit `090cc92`, then revised again by the second round below
+(uncommitted). Reviews folded:
 `2026-10-14-repo-organization-review-mechanics.md` (32 findings),
 `2026-10-14-repo-organization-review-contract.md` (19), and
 `2026-10-14-repo-organization-review-integrity.md` (20).
@@ -141,7 +142,7 @@ Convergent findings fold once at a root, named R1 to R10, and each member points
 | m8 memory index line and thinkpad copy | Folded in "Rules and tooling", together with integrity m6. |
 | m9 remove the `delete_repo` scope | Dropped, `optional`. |
 | m10 approval-queue visibility | Taken, not a fork: public. The extract's history is already public in `workstation`, so private hides nothing. Folded in the brief and "Code leaving workstation". |
-| m11 runner against auth-data | Taken, not a fork: `runner` stays, and no ruling to raise the class is needed. With R1 and ruling 1, the only data destroyed is scratch and staging data (`asc-staging`, `cairn-scratch-b-auth`), listed by id in a dry run Geoff confirms. Recorded in "Scope". |
+| m11 runner against auth-data | Taken, not a fork: `runner` stays, and no ruling to raise the class is needed. With R1 and ruling 1, the only Cloudflare data destroyed is scratch and staging data (`asc-staging`, `cairn-scratch-b-auth`), listed by id in a dry run Geoff confirms. Recorded in "Scope". |
 | m12 `#NN` autolinks | Dropped, `optional`. |
 | m13 "about 41 paths" | Dropped, `optional`. |
 | m14 `scripts/check` states | Folded in "The initiatives repo", with contract F5. |
@@ -166,7 +167,7 @@ Convergent findings fold once at a root, named R1 to R10, and each member points
 | F11 thinkpad baseline and memory | Folded, R3. |
 | F12 historical fixtures and goldens | Folded, R2. |
 | F13 rule and tooling promises have no check | Folded in "Rules and tooling" (one acceptance check per change, with failing fixtures) and in end-to-end check 6 (descriptions). The plan owns the individual checks. |
-| F14 triage for retiring repos | Dropped, `optional`. Under ruling 1, legacy's ROADMAP leaves the pass anyway. |
+| F14 triage for retiring repos | Dropped, `optional`, and not a fork: the approved design already set one triage item per repo, so the question has an answer. Under ruling 1, legacy's ROADMAP leaves the pass anyway, and `healthy-diet`'s holds one entry. |
 | F15 estimate breakdown | Dropped, `optional`. |
 | F16 deferred plans have no tracker | Folded in "Migration of past work" (`deferred:<pass>` rows plus a backlog item). |
 | F17 "merged" undefined | Folded, R9. |
@@ -198,6 +199,44 @@ Convergent findings fold once at a root, named R1 to R10, and each member points
 | m9 folded memory in public repos | Dropped, `optional`. |
 | m10 one tool rather than two | Folded as R2's mechanism, because R2's shared scope needs it, and the reviewer estimates it saves 20 to 30 path minutes. |
 
+## Second round: fold verification
+
+Source: `2026-10-14-repo-organization-fold-verification.md`, reading commit `090cc92` (14
+findings: 6 major, 8 minor). Dispositions: 12 folded, 1 refused, 1 dropped as `optional`.
+
+Probes for this round, run on pavilion on 2026-10-14:
+
+- filter-repo 2.47.0's source (`git-filter-repo`, near line 3475) walks `.git/logs` and aborts
+  with "expected at most one entry in the reflog for %s". Near line 4782 it writes
+  `.git/filter-repo/commit-map` with an `old new` header. A scratch probe confirmed three
+  outcomes: a plain clone runs, a clone reset to `HEAD~1` aborts with "Please operate on a fresh
+  clone instead", and `git clone --revision=<sha>` (git 2.56.0) runs. The commit-map maps each
+  old hash to its new one, and to zeros for a pruned commit.
+- `gh repo view glw907/approval-queue` fails with "Could not resolve to a Repository".
+  `cairn-pub`, `xcathletes-org`, `cairn-themes`, and `phonebook` are private.
+- 16 `cairn-cms/docs` files cite `cairn-scratch/`. Outside the ROADMAP itself, `ROADMAP` appears
+  in 105 tracked files in `dubplate`, 64 in `workstation`, 41 in `aksailingclub-org`, and 10 in
+  `poplar`.
+- `secrets/values.age` is modified in the `~/.dotfiles` main checkout (last commit 2026-10-13
+  18:57), and `secrets/registry.md` has no `DRAFTER_API_KEY` line.
+
+| Finding | Disposition |
+|---|---|
+| 1 pinning moves HEAD, so filter-repo refuses | Folded in "Code leaving workstation": the clone never moves HEAD, and it pins with `git clone --revision=<sha>` or records `HEAD`. Probed as above. |
+| 2 `--follow` compares rewritten hashes | Folded in "Code leaving workstation": first commits are compared through `.git/filter-repo/commit-map`. Probed as above. |
+| 3 unrewritten classes fail check 1 | Folded in "Migration of past work": moved code paths get map rows and are rewritten, history-file references to retired targets fall into a `retired-target` class that is listed and never fails, and live-file references are inventory ties edited by hand. Check 1 now excludes that class. Naming the tar path in the `cairn-scratch` citations is refused, because a local tar path resolves for no reader and the edit churns 16 history files. |
+| 4 the Cloudflare post-check is vacuous | Folded in "Repo retirement" step 2 (`teardown.tsv` with kind and id) and end-to-end check 5 (query each id; fail on an empty file). |
+| 5 `scripts/check` against missing and private repos | Folded in "The initiatives repo" and merge order step 1: CI skips the `repos` state, `scripts/check --repos` runs locally under Geoff's `gh` login, and `glw907/approval-queue` is created empty before the initiatives repo merges. The proposed `repos.txt` allowlist is refused, since it is a second list that can drift from GitHub. |
+| 6 the age-store gate has no resolver | Folded, by the coordinator's direction, in the brief's "If you approve" step 2 and "Repo retirement" steps 4 and 5. A separate small `auth-data` PR in `workstation` commits the uncommitted `values.age` change with its `DRAFTER_API_KEY` registry entry, Geoff reads it before the pass starts, and the pass checks it has merged before it asks for the dry-run confirmation. |
+| 7 the rulings never reach the queue as choices | Refused: Geoff ruled "yes to all" on 2026-10-14, so no choice is left open. The spec states each ruling with its date, and the brief adds no `### Decide:` block for them. |
+| 8 the per-target order conflicts with one store commit | Folded in "Repo retirement" step 5: the order runs in stages across every target. |
+| 9 the map omits the unplaced state | Folded in "Migration of past work": a `flagged` state blocks the copy, and a fixture entry must come out `flagged`. |
+| 10 check mode on the thinkpad has no pass worktrees | Folded in "Migration of past work": the main-checkout ban applies to apply mode only. |
+| 11 "only on pavilion" conflicts with the thinkpad bundle | Folded in the brief's "Worth knowing" ("have no remote") and "Repo retirement" step 6 (the thinkpad dry run lists the directories it holds). |
+| 12 the class argument overstates | Folded in "Scope": "The only Cloudflare data it destroys". The same wording is fixed in mechanics m11's row above. |
+| 13 F14 dropped without saying why it isn't a fork | Dropped, `optional`. The reason is now recorded in F14's row. |
+| 14 the record calls the revision uncommitted | Folded in this record's header. |
+
 ## Estimate
 
 The design estimate stays at 840 path minutes. Most folds pin down how the existing tasks run
@@ -211,8 +250,14 @@ it goes to Geoff.
 
 ## Rulings
 
+Geoff ruled "yes to all" on 2026-10-14, through the planning session. The spec states each
+answer with that date, and the brief carries no `### Decide:` block for them.
+
+Answers: 1, yes. 2, yes. 3, yes.
+
+
 1. **Should `aksailingclub-legacy` leave this pass, to be archived by the club's cutover pass
-   after the soak?** Recommendation: yes. Legacy deploys the live apex, `asc-ops`,
+   after the soak?** Ruled: yes (Geoff, 2026-10-14). Recommendation was yes. Legacy deploys the live apex, `asc-ops`,
    `asc-handbook`, and `asc-uptime` Workers. It runs the daily Workspace sync, and it holds the
    ASC secret store. You agreed to archive it without knowing it was production.
    - Yes builds: the pass leaves legacy's GitHub repo, local clone, ROADMAP, and ASC store
@@ -223,7 +268,7 @@ it goes to Geoff.
      before the archive. The live site can't deploy a fix until the cutover, and the estimate
      grows.
 2. **Should the pass save `cairn-scratch`, `ecxc-ski-agent-memory`, and `aksailingclub-sveltekit`
-   to one tar archive outside `~/Projects` before it deletes them?** Recommendation: yes. None of
+   to one tar archive outside `~/Projects` before it deletes them?** Ruled: yes (Geoff, 2026-10-14). Recommendation was yes. None of
    the three is a working git repo, about ten cairn-cms records cite `cairn-scratch` as evidence,
    and the archive is about 130 MB. Your no-backup ruling named only `healthy-diet`, `pings`, and
    `personal-styles`.
@@ -232,7 +277,7 @@ it goes to Geoff.
    - No builds: the dry-run item names all three as unrecoverable, and the pass deletes them like
      the other three. Only the 2026-10-12 handoff bundle would still hold older copies.
 3. **Should `cairn-cms`'s ROADMAP retire in its own follow-on pass under the `repo-organization`
-   record, rather than in this one?** Recommendation: yes. It holds 284 entries in 3,851 lines.
+   record, rather than in this one?** Ruled: yes (Geoff, 2026-10-14). Recommendation was yes. It holds 284 entries in 3,851 lines.
    Its "Toward 1.0" section is cited by CI workflows, check scripts, and the `cairn-release`
    skill, and it calls itself a pass dimension.
    - Yes builds: this pass retires the other ROADMAPs, about 80 entries, and leaves cairn-cms's
