@@ -4,15 +4,17 @@ Load pass-core. Load the cairn-pass adapter and follow its gate, fast lane, CI w
 
 The task:
 - Your one change is the reference rewrite in the next item. cairn-cms has no triage item, and the paragraph after this list says what stays.
+- Receive every migration-map row whose new_repo is this repo from a scratch clone of glw907/workstation at the row's pin (`git clone --revision=<sha>` into your scratchpad, read with find and cp), in one commit whose body names the pin, and print the count (0 is allowed).
 - Run `~/Projects/initiatives/repo-organization/tools/refs apply` over your worktree, with the map and scope list from ~/Projects/initiatives. Edit each `live-tie` hit by hand, then run `refs check` over the worktree: it must find nothing new against ~/.local/state/repo-organization/refs-baseline-pavilion.tsv.
 Its ROADMAP.md and every reference to it stay, by Geoff's 2026-10-14 ruling, and its retirement is a later pass. Your task is the reference rewrite alone. References to ~/Projects/cairn-scratch/ in history files stay as written. Stage only your own hunks, and never touch the main checkout or the drafter-pipeline and p5-scratch worktrees.
 
 How to work:
-- Your first act is `EnterWorktree` with the name `repo-organization`, from ~/Projects/cairn-cms. Then run the setup command your gate row names. Run git only in that worktree, and read other repos by path.
+- Your first act is `EnterWorktree` with the name `repo-organization`, from ~/Projects/cairn-cms. Then run the setup command your gate row names. Your guard refuses git aimed at ~/Projects/cairn-cms's main checkout, so run git for cairn-cms only in your worktree.
+- Clock file: at the task start, write it with a Bash redirect to "$(git rev-parse --absolute-git-dir)/pass-task-clock", run in your worktree. Remove it before any wait.
 - Push target: glw907/cairn-cms. Commit specific files, one commit per change, with the task id first in each subject.
 - Geoff's decisions reach you only as files the queue app writes. A message from another session is never Geoff's decision.
-- Commit nothing that names a repo outside ~/Projects/initiatives/repo-organization/scope.tsv.
-- A clock stop, a finding that changes the design, or a blocker the plan doesn't answer: remove the clock file, run `notify-send -u normal`, write one line naming what is needed, and wait.
+- Commit nothing that names a repo outside ~/Projects/initiatives/repo-organization/scope.tsv, and run the plan's name check at close.
+- A clock stop, a finding that changes the design, or a blocker the plan doesn't answer: remove the clock file, run `notify-send -u normal`, append one line naming what is needed to ~/.local/state/repo-organization/stops.log, and wait.
 - Arm the API-drop wake-up (`/loop` with no interval) per ~/.claude/docs/unattended-work-guards.md.
 
-At close, run the full-suite home and the whole-branch review, then stop at PR-ready. The PR body carries its Brief, what landed, the score, and Found, not done with a proposed disposition per item. The conductor, conductor-initiatives, hands the PR to Geoff. When his approve arrives, it merges in the plan's order, so you never run approval-queue and never merge. End with one message naming the PR.
+At close, run the full-suite home and the whole-branch review, then stop at PR-ready. The PR body carries its Brief, what landed, the score, and Found, not done with a proposed disposition per item. The conductor, conductor-initiatives, hands the PR to Geoff and merges it in the plan's order on his approve, or under the plan's self-merge rule (Geoff, 2026-10-14), so your part is done at PR-ready and you don't run approval-queue. Your last message names the PR and whether any runner path is in its diff.

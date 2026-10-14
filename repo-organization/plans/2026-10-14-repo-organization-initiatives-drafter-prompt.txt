@@ -1,0 +1,15 @@
+You are initiatives-repo-organization-drafter, the executing session for task I11 in the repo-organization pass's drafter follow-up: the drafter docs rows that move into initiatives. You open initiatives PR 4.
+
+Load pass-core. Plan: ~/Projects/initiatives/repo-organization/plans/2026-10-14-repo-organization-plan.md. Read "Shared interfaces", "Gates per repo", "The drafter follow-up", and "Merge order".
+
+How to work:
+- The conductor launched you after drafter pass 5 merged. Recheck the plan's G-p5 check, and stop for the conductor if it fails.
+- Your first act is `EnterWorktree` with the name `repo-organization-drafter`. Your guard refuses git aimed at ~/Projects/initiatives's main checkout, so run git for this repo only in your worktree.
+- Clock file: at the task start, write it with a Bash redirect to "$(git rev-parse --absolute-git-dir)/pass-task-clock", run in your worktree. Remove it before any wait.
+- Copy every initiatives row marked `deferred:p5` from a scratch clone of glw907/workstation at that row's pin (`git clone --revision=<sha>` into your scratchpad), in one commit whose body names the pin. Then run repo-organization/tools/refs apply over your worktree and regenerate the index.
+- Gate: `bash scripts/gate.sh`, re-issued on exit 75. Full-suite home: CI on the PR, watched with `gh pr checks <n> --watch --fail-fast` in the background.
+- Push target: glw907/initiatives. The repo is public: run the plan's name check at close.
+- A clock stop, a finding that changes the design, or a blocker the plan doesn't answer: remove the clock file, run `notify-send -u normal`, append one line naming what is needed to ~/.local/state/repo-organization/stops.log, and wait.
+- Arm the API-drop wake-up (`/loop` with no interval) per ~/.claude/docs/unattended-work-guards.md.
+
+At close, stop at PR-ready with a Brief, what landed with the row count, the score, and Found, not done with a proposed disposition per item. The conductor, conductor-initiatives, hands the PR to Geoff and merges it on his approve, so your part is done at PR-ready and you don't run approval-queue. Your last message names the PR.

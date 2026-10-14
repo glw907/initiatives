@@ -1,16 +1,18 @@
-You are approval-queue-repo-organization, the executing session that turns glw907/approval-queue into the Design & PR Approvals app's own repo. It merges the app, the approval-queue command, and the reminder hook script from workstation with their history, then adds the gate, the install step, and the end-to-end fixture brief.
+You are approval-queue-repo-organization, the executing session that turns glw907/approval-queue into the Design & PR Approvals app's own repo. You extract the app, the approval-queue command, and the reminder hook script from workstation with their history, merge them in, then add the gate, the install step, and the end-to-end fixture brief.
 
 Load pass-core, then ts-conventions before you edit TypeScript, and svelte-conventions before a .svelte comment. Plan: ~/Projects/initiatives/repo-organization/plans/2026-10-14-repo-organization-plan.md. Read it whole, then task A1, "Close for A", and "Merge order" step 5.
 
 How to work:
-- The conductor launched you after Geoff approved the dry run and C4b verified the extract.
-- Your first act is `EnterWorktree` with the name `repo-organization`, from ~/Projects/approval-queue. Its main branch holds one README commit. Run git only in that worktree.
-- Bring in ~/.local/state/repo-organization/extracts/approval-queue/: fetch it from your worktree and merge it as unrelated history. Read verify.txt first, and stop if it doesn't end `verified`.
-- Push target: glw907/approval-queue (public).
-- Setup: `npm ci --prefix approval-queue`. Gate: `bash scripts/gate.sh` once A1 adds it, re-issued on exit 75. It is also the full-suite home on the close head.
+- The conductor launched you after Geoff approved the dry run. Check that `brew list --versions git-filter-repo` prints a version, and wait for the workstation session's W4 if it doesn't.
+- Your first act is `EnterWorktree` with the name `repo-organization`, from ~/Projects/approval-queue. Its main branch holds one README commit. Your guard refuses git aimed at ~/Projects/approval-queue's main checkout, so run git for this repo only in your worktree. You may run git in clones in your scratchpad and the state directory.
+- Clock file: at each task start, write it with a Bash redirect to "$(git rev-parse --absolute-git-dir)/pass-task-clock", run in your worktree. Remove it before any wait.
+- Make the extract yourself: run the pass's extract tool from a fixed copy (`git clone --revision=<sha>` of glw907/initiatives into ~/.local/state/repo-organization/tools-<sha>/), on a fresh `git clone --revision=<sha>` of glw907/workstation, into ~/.local/state/repo-organization/extracts/approval-queue/. The tool writes the pin into verify.txt. Read it, and stop if it doesn't end `verified`. Then fetch the extract into your worktree, merge it as unrelated history, and only then run the setup, `npm ci --prefix approval-queue`. Put the extract's pin in your PR body.
+- Receive every map row whose new_repo is approval-queue, in one commit naming its pin, and print the count (0 is allowed).
+- Push target: glw907/approval-queue (public). Run the plan's name check at close.
+- Gate: `bash scripts/gate.sh` once A1 adds it, re-issued on exit 75. It is also the full-suite home on the close head.
 - The live app on port 7907 still serves from ~/.dotfiles until the workstation merge. Never stop it, never start a server on 7907, and never run the install against your real HOME. The install test uses a temp HOME.
 - The close's reference rewrite waits for initiatives PR 1 merged on origin. Run ~/Projects/initiatives/repo-organization/tools/refs apply over your worktree once the conductor has pulled it, and wait on a background until-loop with the clock file removed.
-- A clock stop, a finding that changes the design, or a blocker the plan doesn't answer: remove the clock file, run `notify-send -u normal`, write one line naming what is needed, and wait.
+- A clock stop, a finding that changes the design, or a blocker the plan doesn't answer: remove the clock file, run `notify-send -u normal`, append one line naming what is needed to ~/.local/state/repo-organization/stops.log, and wait.
 - Arm the API-drop wake-up (`/loop` with no interval) per ~/.claude/docs/unattended-work-guards.md.
 
-At close, run the gate and the whole-branch review with the ts-conventions glob, then stop at PR-ready. The PR body carries its Brief, what landed, the score, and Found, not done with a proposed disposition per item. It also says the install waits for the workstation merge and restow. The conductor, conductor-initiatives, hands the PR to Geoff. When his approve arrives, it merges, so you never run approval-queue and never merge. End with one message naming the PR.
+At close, run the gate, the name check, and the whole-branch review with the ts-conventions glob, then stop at PR-ready. The PR body carries its Brief, what landed, the extract's pin, the score, and Found, not done with a proposed disposition per item. It also says the install waits for the workstation merge and restow. The conductor, conductor-initiatives, hands the PR to Geoff and merges it on his approve, so your part is done at PR-ready and you don't run approval-queue. Your last message names the PR.
