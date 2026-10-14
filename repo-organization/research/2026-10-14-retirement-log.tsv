@@ -9,3 +9,4 @@ cloudflare	route:pings.907.life	done	2026-10-14T14:43:32-08:00
 cloudflare	route:staging.aksailingclub.org	done	2026-10-14T14:46:49-08:00
 cloudflare	worker:pings	done	2026-10-14T14:50:29-08:00
 cloudflare	worker:asc-staging	done	2026-10-14T14:53:46-08:00
+cloudflare	worker:cairn-scratch-b	done	2026-10-14T14:57:04-08:00
