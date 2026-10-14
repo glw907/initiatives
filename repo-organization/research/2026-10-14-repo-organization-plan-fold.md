@@ -12,10 +12,9 @@ Geoff on 2026-10-14. No whole finding is refused. Three proposed parts of folded
 refused, each with its reason in its row. The launch prompts grow from 17 to 19:
 `initiatives-drafter` and `workstation-drafter` carry the drafter follow-up.
 
-New figures, after both rounds: path 1,130 minutes (was 875), task sum 3,070 (was 2,460). The
-path is 1.35 times the design's 840 and under the 1,680 ceiling. If pass 5 lands after C7, the
-follow-up chain adds up to 240, for 1,370. If a sweep repo beyond dubplate and poplar receives
-docs, the main path can reach about 1,255. Both stay under the ceiling.
+New figures, after all three rounds: path 1,150 minutes (was 875), task sum 3,070 (was 2,460).
+The path is 1.37 times the design's 840 and under the 1,680 ceiling. If a sweep repo beyond
+dubplate and poplar receives docs, the path can reach about 1,275, still under it.
 
 ## Verification
 
@@ -311,8 +310,9 @@ Probes for this round, run on pavilion on 2026-10-14 in the session scratchpad:
   server` has 0 files holding `decideCards`, which predates the fix. A scratch build of #71's
   commit `25f9449` (`npm ci && npm run build`) put `decideCards` in 4 files under `build/server`,
   among them `chunks/cards.js`. The 7907 listener's `/proc/<pid>/cmdline` reads `node
-  /var/home/glw907/.dotfiles/approval-queue/build`, and `stat -c %Y /proc/<pid>` (1791999169) is
-  at or after `build/server/chunks/cards.js`'s mtime (1791999168). So the check fails today and
+  /var/home/glw907/.dotfiles/approval-queue/build`. This round compared `stat -c %Y /proc/<pid>`
+  (1791999169) with `build/server/chunks/cards.js`'s mtime (1791999168). The third round found
+  that a `/proc` directory's mtime isn't a start time, and the check now uses `ps -o lstart=`. So the check fails today and
   passes only after a rebuild and a restart. It needs no browser and no Host header.
 - The D1 export, for ruling 3. `npx --yes wrangler@4 d1 export cairn-scratch-b-auth --remote
   --output <scratch>/probe.sql`, with the managed token sourced in the same command, exited 0 and
@@ -352,11 +352,73 @@ Probes for this round, run on pavilion on 2026-10-14 in the session scratchpad:
 | m15 a non-empty R2 bucket | Folded in I8 (each bucket's object count in the dry run) and R1 (a stop for Geoff). Emptying a bucket is refused: no sole-owner bucket holding objects is known, and emptying is unprobed data destruction that Geoff can rule on when the dry run shows a count. |
 | m16 a failed wait has no resume | Folded in "Shared interfaces": the loop re-reads the newest open row on each pass. |
 
+## Third round: second fold verification
+
+Source: `2026-10-14-repo-organization-plan-fold-verification-2.md`, reading commit `7f7e8fa` (12
+findings: 4 majors, 8 minors). Dispositions: 12 folded. None is refused, dropped, or owed. This is
+the last round, and no read follows it.
+
+New facts from the planning session, 2026-10-14:
+
+- workstation#71 merged as `2d52695`. The planning session rebuilt `~/.dotfiles/approval-queue`
+  and restarted the 7907 server at about 11:38, so G-picks is met on pavilion.
+- Drafter pass 5 merged: drafter#37 (head `worktree-p5-pipeline`) and cairn-cms#124, and its
+  hand-over, workstation#73, merged too. `conductor-drafter` has ended. A read of `claude agents
+  --json` at fold time lists no `conductor-drafter` or `drafter-p` row, so G-p5 passes now.
+
+Probes for this round, run on pavilion on 2026-10-14:
+
+- The start time, for C0's live-fix check (M1). The 7907 listener, pid 1161925, has cmdline `node
+  /var/home/glw907/.dotfiles/approval-queue/build`. `build/server/chunks/cards.js` has mtime
+  1792006701 (11:38:21). The server's real start time is 1792006708 (11:38:28) by both `date -d
+  "$(ps -o lstart= -p <pid>)" +%s` and `btime + field 22 / CLK_TCK` from `/proc/<pid>/stat`, so the
+  positive case passes. In the negative case, the user's `systemd` (pid 2685) started at
+  1791927300 by both methods, before the build, and the check rejects it. The `/proc/<pid>`
+  directory's mtime is unsafe: an `npm exec` process (pid 227134) started at 1791941178 but its
+  `/proc` directory reads 1791951114, 9,936 seconds later. The plan now uses `ps -o lstart=` and
+  never the directory's mtime. The second round's probe line, which used `stat -c %Y /proc/<pid>`,
+  is corrected below.
+- The name list (M2). In a Claude Code session `type grep` reports a shell function, and `command
+  grep --version` reports GNU grep 3.12. With a blank line in the pattern file, `command grep -wF
+  -f` exited 0 on a clean branch, a false positive. With the blank line dropped, it exited 1. With
+  an empty pattern file, it exited 1 on `git log -p --all`, a vacuous pass, and a count guard of at
+  least one name refused that file. `gh repo list glw907 --limit 200 --json name --jq length`
+  returns 19.
+- G-p5's inputs (M3). `gh pr view 37 -R glw907/drafter` reads `MERGED`, head
+  `worktree-p5-pipeline`, at 2026-10-14T19:37:44Z. `gh pr view 124 -R glw907/cairn-cms` reads
+  `MERGED`, head `drafter-pipeline`. `gh pr view 71 -R glw907/workstation` reads `MERGED` at
+  `2d52695`.
+
+The follow-up set stays a separate set, with G-p5 met at C0. Collapsing W9 into the main
+workstation PR and D1 into the main set would save about 20 path minutes and one PR read. It
+would also rewrite W6, W9, the merge order, the conductor's launch list, and three prompts in a
+round no read follows. Keeping the structure is the smaller change, and it keeps the ruling's
+intent: no main-set PR waits on the drafter set. The cost is that W9, which launches only after
+the main workstation merge, now sits on the path.
+
+| Finding | Disposition |
+|---|---|
+| M1 C0 reads `/proc/<pid>`'s mtime as a start time | Folded in C0 and the conductor prompt: `ps -o lstart=` through `date -d`, and never the directory's mtime. Probed with a positive and a negative case, as above. |
+| M2 the name list can fail or come back partial | Folded in "Shared interfaces" and the conductor prompt. The list goes to a temp file in its own step, which checks `gh`'s exit status, drops blank lines, and holds at least the expected count. The check runs `command grep`, and the control's name comes from the list's GitHub half. Probed as above. |
+| M3 G-p5's head has no trigger, and its PR half has no stop | Folded: the head is named (`worktree-p5-pipeline`, drafter#37, merged), `p5-head` is gone, and the 72-hour stop covers either half. G-p5 now passes at C0. |
+| M4 a missing `read` row fails the thinkpad's tools | Folded in "Shared interfaces" and T1 step 0. Under `--host thinkpad-x1`, a missing `read` row is `absent` with exit 0, and every scope tool's tests carry the case. |
+| m1 the conductor's stale G-picks line | Folded: "before C0's live-fix check has passed". |
+| m2 stale side-branch figures | Folded: 780, 915, and the follow-up line rewritten. |
+| m3 the superseded clone sentence in T1 step 4 | Folded. |
+| m4 a doubled comma | Folded. |
+| m5 no log row for `doc_sha256` | Folded: its own `archive`/`doc_sha256` row, read with `awk`. |
+| m6 T1 hashes the file at the tip | Folded: R0 logs `doc_commit`, and T1 hashes and extracts from `git show <doc_commit>:...`. |
+| m7 no `auth-data` map for repos with no adapter | Folded in the sweep section, the conductor prompt, and the sweep prompts. A rewrite in a path matching `auth`, `credential`, `secret`, or `token` goes to Geoff. |
+| m8 the thinkpad launch has no `--add-dir` | Folded in "Geoff's touchpoints": four add-dirs before the `--`. |
+
 ## Estimate
 
 The first round re-derived the path to 1,120 minutes, against the old 875, and the task sum to
 3,020, against 2,460. The second round adds 10 to the path (C0's live check +5, T1's step 0 +5)
-and 50 to the sum (those two, R0's exports +10, and W9's close +30), for 1,130 and 3,070.
+and 50 to the sum (those two, R0's exports +10, and W9's close +30), for 1,130 and 3,070. The
+third round leaves the sum at 3,070 and adds 20 to the path. With G-p5 met at C0, the chain's tail
+is now W9 (65, after the main workstation merge), its merge (5), and C9 (20), in place of C6 (50)
+and C7 (20), which run beside W9. That gives 1,150.
 
 - Two corrections come first. C6 was carried at 30 in the path table against its stated 45, and
   the old chain left out the roughly 215 minutes of sweeps, three at a time, between PR 1's merge
@@ -370,7 +432,8 @@ and 50 to the sum (those two, R0's exports +10, and W9's close +30), for 1,130 a
 - Moving the relay out of the conductor cuts its sum from 235 to 170. It doesn't shorten the path,
   because the relay steps were waits on the critical chain either way.
 
-The G-picks PR (#71) and its rebuild sit outside both figures, as workstation#69 did. The path stays under the 1,680
+The G-picks PR (#71) and its rebuild sit outside both figures, as workstation#69 did. The path
+stays under the 1,680
 ceiling, so nothing stops for Geoff.
 
 ## Rulings
