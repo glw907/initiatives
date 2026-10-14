@@ -86,7 +86,7 @@ Counts: 4 blocker, 9 major, 6 minor (19 findings, 2 of them OWNER FORK).
 ### F13. Most rule and tooling promises have no check
 - severity: major | tag: correctness | location: spec L113, L115 to L121, L174
 - Defect: none of these has a criterion: the CLAUDE.md "Initiatives" section, the `log-project` rewrite, the `pass-core` `Initiative: <id>` header line, the adapter pointers, `bootstrap.sh` cloning (no initiatives string in `bluefin/bootstrap.sh` today), `check-drift` warning when the clone is missing or behind, the memory fold and delete, and the GitHub descriptions being set.
-- Fold: one line each in the plan's acceptance checks: `check-drift` warns with the clone moved aside (red fixture) and when it is one commit behind. `bootstrap.sh` in a temp HOME dry-run clones it. `gh repo view --json description` matches the dry-run text for each of the six repos. The memory file is gone and its facts appear in `initiatives/drafter/README.md`. A `log-project` dry run writes a valid record that `scripts/check` accepts.
+- Fold: one line each in the plan's acceptance checks: `check-drift` warns with the clone moved aside (red fixture) and when it is one commit behind. `bootstrap.sh` in a temp HOME dry-run clones it. `gh repo view --json description` matches the dry-run text for each of the six repos. The memory file is gone and its facts appear in `initiatives/docs-system/README.md`. A `log-project` dry run writes a valid record that `scripts/check` accepts.
 
 ## Minor
 

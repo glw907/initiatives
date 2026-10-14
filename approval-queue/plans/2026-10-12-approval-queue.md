@@ -192,7 +192,7 @@ In this order:
 4. `stow -R bin`. Confirm `~/.local/bin/review-desk` is gone, and `command -v approval-queue claude-approval-queue-reminder` prints both.
 5. `claude-tooling-sync apply`, which writes the live `~/.claude/settings.json` with the renamed hook.
 6. Remove the old app's ignored leftovers: `ls -A ~/.dotfiles/review-desk` should show only `build`, `node_modules`, and `.svelte-kit`. Then `rm -rf ~/.dotfiles/review-desk`.
-7. Prebuild: `npm --prefix ~/.dotfiles/approval-queue ci && npm --prefix ~/.dotfiles/approval-queue run build`. The first `approval-queue` call starts the server.
+7. Prebuild: `npm --prefix ~/Projects/approval-queue/approval-queue/ ci && npm --prefix ~/Projects/approval-queue/approval-queue/ run build`. The first `approval-queue` call starts the server.
 8. Send each live session noted in Before merge step 1 one line with `SendMessage` (pass-core's mechanism for a live session): the command is now `approval-queue`, a PR body and a design doc now open with `## Brief`, and the register is `~/.claude/docs/voice/approval-brief.md`.
 
 ## Later

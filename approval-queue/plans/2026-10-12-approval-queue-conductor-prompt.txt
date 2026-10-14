@@ -21,6 +21,6 @@ After merge, in this order:
 4. stow -R bin; confirm ~/.local/bin/review-desk is gone and command -v approval-queue claude-approval-queue-reminder prints both.
 5. claude-tooling-sync apply
 6. ls -A ~/.dotfiles/review-desk should show only build, node_modules, and .svelte-kit; then rm -rf ~/.dotfiles/review-desk.
-7. npm --prefix ~/.dotfiles/approval-queue ci && npm --prefix ~/.dotfiles/approval-queue run build
+7. npm --prefix ~/Projects/approval-queue/approval-queue/ ci && npm --prefix ~/Projects/approval-queue/approval-queue/ run build
 8. Send each live session noted in Before merge step 1 one line with SendMessage: the command is now approval-queue, a PR body and a design doc now open with ## Brief, and the register is ~/.claude/docs/voice/approval-brief.md.
 Then act on the triage decision's rows as pass-core says.

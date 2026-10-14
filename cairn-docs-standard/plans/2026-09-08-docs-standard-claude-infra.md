@@ -736,7 +736,7 @@ pass stay unless they are genuinely closed; do not silently drop another pass's 
 The document names the artifacts plan two's preflight verifies and the obligations plan two
 must add. It does **not** re-run acceptance criteria already proved per task; revision 2's
 nine items bought the same verification twice. Plan two's P1 opens this document at
-`~/.dotfiles/docs/superpowers/plans/2026-09-08-docs-standard-claude-infra-handoff.md`, and
+`~/Projects/initiatives/cairn-docs-standard/plans/2026-09-08-docs-standard-claude-infra-handoff.md`, and
 `docs/STATUS.md` carries that absolute path so P1 can find it without rediscovery.
 
 **The artifacts plan two's preflight verifies, by path and name, six items:**
