@@ -1,0 +1,360 @@
+#!/usr/bin/env python3
+"""Classify workstation docs/superpowers entries and moved code into migration-map.tsv."""
+import argparse
+import collections
+import json
+import os
+import re
+import subprocess
+import sys
+
+TOOL_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(TOOL_DIR))  # the initiatives repo checkout
+SCOPE_TSV = os.path.join(ROOT, "repo-organization", "scope.tsv")
+KINDS = ("specs", "plans", "research")
+COLUMNS = ["source_repo", "old_path", "new_repo", "new_path", "initiative", "state", "pin"]
+
+# Docs placement rules, first match wins on the entry name:
+# (pattern, new_repo, initiative id, state). An initiatives row lands in
+# <id>/<kind>/<name>, any other repo in docs/superpowers/<kind>/<name>.
+# A name no rule matches is flagged.
+DOC_RULES = [
+    (r"drafter", "initiatives", "drafter", "deferred:p5"),
+    (r"review-desk|approval-queue", "initiatives", "approval-queue", "moved"),
+    (r"docs-standard|claude-md-displacement", "initiatives", "cairn-docs-standard", "moved"),
+    (r"monthly-model-review", "initiatives", "monthly-model-review", "moved"),
+    (r"pings", "pings", "", "leaves-with-pings"),
+    (r"poplar", "poplar", "", "moved"),
+    (r"dubplate|uploader|music-|musicbox|upload-check|beets|ipados|architecture-refinement",
+     "dubplate", "", "moved"),
+    (r"lean-pass|infra|thunderbird|mail-colour|conductor|fable|authoring|code-comment"
+     r"|merge-guard|pass-catch|anthropic|prompt-audit|bluefin|post-review-fix|ai-drafting",
+     "workstation", "", "stays"),
+]
+
+# Code rows, as (path, new_repo, initiative, state). Directories end in "/".
+CODE_PATHS = [
+    ("claude/.claude/workflows/docs-page-chain.js", "drafter", "drafter", "deferred:p5"),
+    ("bin/.local/bin/cairn-docs-outline", "drafter", "drafter", "deferred:p5"),
+    ("scripts/drafter-gate.sh", "drafter", "drafter", "deferred:p5"),
+    ("tests/fixtures/docs-page-chain/", "drafter", "drafter", "deferred:p5"),
+    ("tests/fixtures/drafter/", "drafter", "drafter", "deferred:p5"),
+    ("approval-queue/", "approval-queue", "approval-queue", "moved"),
+    ("bin/.local/bin/approval-queue", "approval-queue", "approval-queue", "moved"),
+    ("bin/.local/bin/claude-approval-queue-reminder", "approval-queue", "approval-queue", "moved"),
+]
+# Tests under tests/ moved with a pattern on the file name: (pattern, repo, initiative, state).
+CODE_TEST_RULES = [
+    (r"docs-page-chain|drafter", "drafter", "drafter", "deferred:p5", 5),
+    (r"approval-queue", "approval-queue", "approval-queue", "moved", 2),
+]
+HISTORY_REPO = "approval-queue"
+DATE = re.compile(r"^\d{4}-\d{2}-\d{2}-")
+SLUG_TAIL = re.compile(
+    r"(-plan)?-(review|fold|plan-fold|planning-prompt|executor-prompt|conductor-prompt|prompt|handoff).*$")
+
+
+def expand(path):
+    home = os.environ.get("HOME", os.path.expanduser("~"))
+    if path.startswith("~/Projects/"):
+        root = os.environ.get("PROJECTS_ROOT") or os.path.join(home, "Projects")
+        return os.path.join(root, path[len("~/Projects/"):])
+    if path.startswith("~/"):
+        return os.path.join(home, path[2:])
+    return path
+
+
+def load_scope():
+    rows = []
+    with open(SCOPE_TSV) as f:
+        next(f)
+        for line in f:
+            repo, role, path = line.rstrip("\n").split("\t")
+            rows.append((repo, role, expand(path)))
+    return rows
+
+
+def slug(name):
+    s = DATE.sub("", name)
+    s = os.path.splitext(s)[0] if re.search(r"\.(md|txt|json|ya?ml)$", s) else s
+    s = SLUG_TAIL.sub("", s)
+    return re.sub(r"-(plan|design)$", "", s)
+
+
+def tree_digest(path):
+    if os.path.isfile(path):
+        with open(path, "rb") as f:
+            return {"": f.read()}
+    out = {}
+    for d, _, files in os.walk(path):
+        for fn in files:
+            p = os.path.join(d, fn)
+            with open(p, "rb") as f:
+                out[os.path.relpath(p, path)] = f.read()
+    return out
+
+
+def rule_for(name):
+    for pat, repo, init, state in DOC_RULES:
+        if re.search(pat, name):
+            return repo, init, state
+    return None
+
+
+def place(ws_docs, kind, name):
+    """Return (repo, initiative, state) for one entry, or None to flag it."""
+    hit = rule_for(name)
+    path = os.path.join(ws_docs, kind, name)
+    if hit or DATE.match(name) or not os.path.isdir(path):
+        return hit
+    # An undated folder (archive, assets) goes where all its children go.
+    kids = sorted(os.listdir(path))
+    placed = {place(ws_docs, os.path.join(kind, name), k) for k in kids}
+    return placed.pop() if len(placed) == 1 and None not in placed else None
+
+
+def open_pass_text(args, scope):
+    chunks = []
+    if args.agents_json:
+        with open(args.agents_json) as f:
+            agents = json.load(f)
+    else:
+        agents = json.loads(subprocess.run(["claude", "agents", "--json"], check=True,
+                                           capture_output=True, text=True).stdout)
+    checkouts = [os.path.realpath(p) for _, _, p in scope]
+    for a in agents:
+        if a.get("state", a.get("status")) == "done":
+            continue
+        cwd = os.path.realpath(a.get("cwd", ""))
+        if any(cwd == c or cwd.startswith(c + os.sep) for c in checkouts):
+            chunks.append(f"{a.get('name', '')} {a.get('cwd', '')}".lower())
+    status_files = args.status
+    if status_files is None:
+        status_files = [os.path.join(p, "docs", "STATUS.md") for _, role, p in scope if role == "edit"]
+    for sf in status_files:
+        if not os.path.isfile(sf):
+            continue
+        with open(sf) as f:
+            text = f.read()
+        for sec in re.split(r"(?m)^(?=## )", text):
+            if re.match(r"## .*(next|open)", sec, re.I):
+                chunks.append(sec.lower())
+    return "\n".join(chunks)
+
+
+def dest_root(args, repo, scope):
+    if repo in args.dest:
+        return args.dest[repo]
+    for r, _, p in scope:
+        if r == repo:
+            return p
+    return None
+
+
+def new_path_for(repo, init, kind, name):
+    if repo == "initiatives":
+        return f"{init}/{kind}/{name}"
+    return f"docs/superpowers/{kind}/{name}"
+
+
+def archive_variants(repo, init, kind, name):
+    if repo == "initiatives":
+        return [f"{init}/archive/{kind}/{name}", f"{init}/{kind}/archive/{name}"]
+    return [f"docs/superpowers/archive/{kind}/{name}", f"docs/superpowers/{kind}/archive/{name}"]
+
+
+def classify_docs(args, scope, pin, open_text):
+    ws_docs = os.path.join(args.ws, "docs", "superpowers")
+    rows = []
+    for kind in KINDS:
+        for name in sorted(os.listdir(os.path.join(ws_docs, kind))):
+            old = f"docs/superpowers/{kind}/{name}"
+            hit = place(ws_docs, kind, name)
+            if hit is None:
+                rows.append(["workstation", old, "", "", "", "flagged", pin])
+                continue
+            repo, init, state = hit
+            if state in ("stays", "leaves-with-pings"):
+                rows.append(["workstation", old, repo, "", init, state, pin])
+                continue
+            new = new_path_for(repo, init, kind, name)
+            if state == "moved":
+                s = slug(name)
+                if s and s in open_text:
+                    state = f"deferred:{s}"
+            if state == "moved":
+                root = dest_root(args, repo, scope)
+                if root:
+                    src = tree_digest(os.path.join(ws_docs, kind, name))
+                    for cand in [new] + archive_variants(repo, init, kind, name):
+                        if os.path.exists(os.path.join(root, cand)):
+                            same = tree_digest(os.path.join(root, cand)) == src
+                            state = "collision-identical" if same else "collision-differs"
+                            new = cand
+                            break
+            rows.append(["workstation", old, repo, new, init, state, pin])
+    return rows
+
+
+def git(ws, *a):
+    return subprocess.run(["git", "-C", ws, *a], check=True, capture_output=True, text=True).stdout
+
+
+def code_rows(args, pin):
+    rows = []
+    for path, repo, init, state in CODE_PATHS:
+        if not os.path.exists(os.path.join(args.ws, path)):
+            sys.exit(f"classify-docs: code path missing at the pin: {path}")
+        rows.append(["workstation", path, repo, path, init, state, pin])
+    for pat, repo, init, state, want in CODE_TEST_RULES:
+        found = sorted(f for f in os.listdir(os.path.join(args.ws, "tests"))
+                       if re.search(pat, f) and os.path.isfile(os.path.join(args.ws, "tests", f)))
+        if len(found) != want:
+            sys.exit(f"classify-docs: want {want} tests matching {pat}, found {found}")
+        rows += [["workstation", f"tests/{f}", repo, f"tests/{f}", init, state, pin] for f in found]
+    return rows
+
+
+def history_rows(args, pin):
+    renames = []
+    for line in git(args.ws, "log", "--all", "--diff-filter=R", "-M", "--name-status", "--format=").splitlines():
+        parts = line.split("\t")
+        if len(parts) == 3:
+            renames.append((parts[1], parts[2]))
+    rows, seen = [], set()
+    for r in code_rows(args, pin):
+        path = r[3]
+        if r[2] != HISTORY_REPO:
+            continue
+        frontier = [path.rstrip("/")]
+        isdir = path.endswith("/")
+        while frontier:
+            cur = frontier.pop()
+            for old, new in renames:
+                if isdir and new.startswith(cur + "/"):
+                    rel = new[len(cur):]
+                    if not old.endswith(rel):
+                        continue
+                    cand = old[:-len(rel)]
+                elif new == cur:
+                    cand = old
+                else:
+                    continue
+                if cand and cand not in seen and cand != cur:
+                    seen.add(cand)
+                    frontier.append(cand)
+                    rows.append(["workstation", cand + ("/" if isdir else ""), HISTORY_REPO,
+                                 path, "approval-queue", "history", pin])
+    return rows
+
+
+def counts(rows):
+    c = collections.Counter()
+    for r in rows:
+        c["workstation" if r[5] in ("stays", "leaves-with-pings", "flagged") else r[2]] += 1
+    return c
+
+
+def choose(text, name, scope):
+    """Return (choices, recommended index) for a flagged entry from in-scope repo mentions."""
+    mentions = collections.Counter()
+    for repo, role, _ in scope:
+        if role == "edit" and repo != "workstation":
+            n = len(re.findall(r"(?<![\w-])" + re.escape(repo) + r"(?![\w-])", text))
+            if n:
+                mentions[repo] = n
+    choices = [f"Move it to `{r}` under `docs/superpowers/`" for r, _ in mentions.most_common(3)]
+    stay = "Keep it in `workstation`"
+    choices.append(stay)
+    if len(choices) < 2:
+        choices.append("Delete it and let `workstation` history keep the original")
+    best = 0 if mentions and mentions.most_common(1)[0][1] >= 5 else choices.index(stay)
+    return choices, best
+
+
+def entry_text(ws, old):
+    p = os.path.join(ws, old)
+    if os.path.isfile(p):
+        files = [p]
+    else:
+        files = [os.path.join(d, f) for d, _, fs in os.walk(p) for f in fs]
+    out = ""
+    for f in sorted(files):
+        try:
+            with open(f, errors="ignore") as fh:
+                out += fh.read(20000)
+        except OSError:
+            pass
+    return out
+
+
+def write_calls(path, rows, args, scope):
+    flagged = [r for r in rows if r[5] == "flagged"]
+    diff = [r for r in rows if r[5] == "collision-differs"]
+    docs = [r for r in rows if r[1].startswith("docs/superpowers/")]
+    placed = len(docs) - len(flagged)
+    n = len(flagged) + len(diff)
+    L = ["# Migration map calls", "", "## Brief", "",
+         f"Approving this settles {n} placements the classifier could not make, so the docs copy can start.",
+         "",
+         f"The classifier placed {placed} of {len(docs)} entries on its own. A copy never runs while an entry "
+         "is unplaced, and a differing file in a destination repo is kept there unless you say otherwise.",
+         "", "### What changes", ""]
+    L.append(f"- {len(flagged)} unplaced {'entry gets' if len(flagged) == 1 else 'entries get'} a destination you pick.")
+    L.append(f"- {len(diff)} differing {'file stays' if len(diff) == 1 else 'files stay'} as the destination "
+             "copy unless you choose the workstation copy.")
+    L.append(f"- The other {placed} entries stay as the map places them.")
+    L += ["", "### If you approve", "",
+          "1. Your choices replace the `flagged` and `collision-differs` states in the migration map.",
+          "2. The copy step runs per destination repo, each in one commit that names the source commit.",
+          "3. Workstation deletes the moved files in a draft PR that waits on the verification check.", ""]
+    for r in diff:
+        name = os.path.basename(r[1])
+        L += [f"### Decide: {name} already exists in {r[2]}", "",
+              f"A different copy of `{name}` sits in `{r[2]}` at `{r[3]}`. The workstation copy would replace it, "
+              "so someone has to say which one is current.", "",
+              f"Source: `{r[1]}` against `{r[3]}` in `{r[2]}`", "",
+              "- Keep the destination (recommended)", "- Replace with the workstation copy", ""]
+    for r in flagged:
+        name = os.path.basename(r[1])
+        choices, best = choose(entry_text(args.ws, r[1]), name, scope)
+        L += [f"### Decide: Where {name} belongs", "",
+              f"No rule places `{name}`, so it has no destination yet. The options below are the repos its text "
+              "names most, plus leaving it where it is.", "",
+              f"Source: `{r[1]}`", ""]
+        L += [f"- {c}{' (recommended)' if i == best else ''}" for i, c in enumerate(choices)]
+        L.append("")
+    text = "\n".join(L).rstrip("\n") + "\n"
+    if re.search(r"desk", text, re.I):
+        sys.exit("classify-docs: generated brief names a retired term; rename the identifier")
+    with open(path, "w") as f:
+        f.write(text)
+
+
+def main():
+    ap = argparse.ArgumentParser(description="Classify workstation docs into migration-map.tsv.")
+    ap.add_argument("--ws", required=True, help="scratch clone of workstation at the pin")
+    ap.add_argument("--dest", action="append", default=[], metavar="REPO=PATH")
+    ap.add_argument("--agents-json", help="file standing in for `claude agents --json`")
+    ap.add_argument("--status", nargs="*", help="STATUS.md files standing in for the in-scope repos'")
+    ap.add_argument("--map", default=os.path.join(ROOT, "repo-organization/research/migration-map.tsv"))
+    ap.add_argument("--calls", default=os.path.join(ROOT, "repo-organization/research/migration-calls.md"))
+    args = ap.parse_args()
+    args.dest = dict(d.split("=", 1) for d in args.dest)
+    scope = load_scope()
+    pin = git(args.ws, "rev-parse", "HEAD").strip()
+    rows = classify_docs(args, scope, pin, open_pass_text(args, scope))
+    rows += code_rows(args, pin) + history_rows(args, pin)
+    os.makedirs(os.path.dirname(args.map), exist_ok=True)
+    with open(args.map, "w") as f:
+        f.write("\t".join(COLUMNS) + "\n")
+        for r in rows:
+            f.write("\t".join(r) + "\n")
+    write_calls(args.calls, rows, args, scope)
+    for repo, n in sorted(counts(rows).items()):
+        print(f"{repo}\t{n}")
+    print(f"total\t{len(rows)}")
+
+
+if __name__ == "__main__":
+    main()

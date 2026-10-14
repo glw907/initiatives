@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# scope-harness <tool-command...>: run a scope-reading tool against a fixture root and
+# assert the outside-scope canary never reaches its stdout, stderr, or written files.
+#
+# The fixture root holds every repo of scope.tsv (each a tiny git repo whose
+# docs/STATUS.md "Next action" section names the in-scope canary), plus one readable repo
+# outside the scope whose name and files carry the outside canary. The tool runs with
+# PROJECTS_ROOT and HOME at the root, and finds the pieces through exported variables:
+#   SCOPE_CANARY_IN   in-scope canary; it must show up in the tool's output
+#   SCOPE_CANARY_OUT  outside canary; it must not
+#   SCOPE_AGENTS_JSON a stub agents list with one in-scope and one outside agent
+#   SCOPE_OUT_DIR     an empty directory for the tool's output files
+set -uo pipefail
+org="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+scope="$org/scope.tsv"
+[[ $# -gt 0 ]] || { echo "usage: scope-harness <tool-command...>" >&2; exit 2; }
+
+fx=$(mktemp -d)
+logs=$(mktemp -d)
+trap 'rm -rf "$fx" "$logs"' EXIT
+mkdir -p "$fx/Projects" "$fx/out"
+export GIT_AUTHOR_NAME=h GIT_AUTHOR_EMAIL=h@example.invalid GIT_COMMITTER_NAME=h GIT_COMMITTER_EMAIL=h@example.invalid
+# The in-scope canary doubles as a plan slug that classify-docs's rules place under dubplate.
+canary_in="dubplate-in-$(od -An -N6 -tx1 /dev/urandom | tr -d ' \n')"
+canary_out="zq$(od -An -N8 -tx1 /dev/urandom | tr -d ' \n')"
+
+mkrepo() { # dir canary
+  mkdir -p "$1/docs"
+  printf '# status\n\n## Next action\n\n%s\n' "$2" > "$1/docs/STATUS.md"
+  git -C "$1" init -q && git -C "$1" add -A && git -C "$1" commit -q -m seed
+}
+inscope_first=""
+while IFS=$'\t' read -r repo _ path; do
+  [[ $repo == repo ]] && continue
+  dir="${path/#\~\/Projects\//$fx/Projects/}"
+  dir="${dir/#\~\//$fx/}"
+  mkrepo "$dir" "$canary_in"
+  [[ -n $inscope_first ]] || inscope_first=$dir
+done < "$scope"
+mkrepo "$fx/Projects/$canary_out" "$canary_out"
+
+cat > "$fx/agents.json" <<JSON
+[{"name":"in-scope-agent","cwd":"$inscope_first","state":"working"},
+ {"name":"$canary_out","cwd":"$fx/Projects/$canary_out","state":"working"}]
+JSON
+export PROJECTS_ROOT="$fx/Projects" HOME="$fx" SCOPE_CANARY_IN="$canary_in" \
+  SCOPE_CANARY_OUT="$canary_out" SCOPE_AGENTS_JSON="$fx/agents.json" SCOPE_OUT_DIR="$fx/out"
+
+snap() { find "$fx" -type f -not -path '*/.git/*' -exec md5sum {} + | sort; }
+before=$(snap)
+"$@" > "$logs/stdout" 2> "$logs/stderr"
+rc=$?
+after=$(snap)
+cp "$logs/stdout" "$logs/seen"
+cat "$logs/stderr" >> "$logs/seen"
+# Everything the tool wrote or changed under the fixture root counts as output.
+while IFS= read -r f; do cat "$f" >> "$logs/seen"; done \
+  < <(comm -13 <(echo "$before") <(echo "$after") | awk '{print $2}')
+
+fail=0
+if [[ $rc -eq 0 ]]; then echo "ok   tool exits 0"; else echo "FAIL tool exited $rc: $(cat "$logs/stderr")"; fail=1; fi
+if grep -q -- "$canary_in" "$logs/seen"; then echo "ok   in-scope canary appears in the output"
+else echo "FAIL in-scope canary is missing from the output"; fail=1; fi
+if grep -q -- "$canary_out" "$logs/seen"; then echo "FAIL outside canary leaked into the output"; fail=1
+else echo "ok   outside canary is absent from stdout, stderr, and written files"; fi
+exit $fail
