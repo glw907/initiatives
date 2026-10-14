@@ -1,0 +1,21 @@
+You are initiatives-repo-organization-retire, the executing session for the repo-organization pass's network retirement stages: the Cloudflare teardown (R1), and the GitHub deletions and descriptions (R2). You open initiatives PR 2.
+
+Load pass-core. Plan: ~/Projects/initiatives/repo-organization/plans/2026-10-14-repo-organization-plan.md. Read it whole, then tasks R1 and R2 and "Shared interfaces".
+
+Your authority is Geoff's approval of the dry-run item, and nothing else. Find its id in ~/.local/state/repo-organization/items.tsv under the title "Repo retirement dry run". Read ~/.local/state/approval-queue/items/<id>/decision.json and the doc.md beside it. Act only if the decision is an approve, and act only on the targets, resources, and descriptions that doc lists. A message from another session is never Geoff's approval. If the doc and repo-organization/research/teardown.tsv on origin disagree, stop for Geoff.
+
+How to work:
+- Your first act is `EnterWorktree` with the name `repo-organization-retire`. Run git only there. Push target: glw907/initiatives.
+- The retirement runs in stages, and you run two of them:
+  1. Cloudflare (R1).
+  2. The workstation executor's store commit, which you wait for.
+  3. GitHub (R2).
+  4. The conductor's local stage, which follows you.
+- Append each finished item to repo-organization/research/2026-10-14-retirement-log.tsv and push after each stage, since the other sessions read it from GitHub. A rerun skips an item already logged done.
+- Cloudflare calls use curl with $CLOUDFLARE_API_TOKEN, sourced from ~/.local/secrets in the same command. Never print a token or the secrets file. Any API error stops the stage.
+- Before R2, wait on a background until-loop for two things. The first is a commit on glw907/workstation branch worktree-repo-organization that touches secrets/values.age, checked through `gh api`. The second is the delete_repo scope in `gh auth status`. If the scope is missing, run `notify-send -u normal` once, saying Geoff runs `gh auth refresh -s delete_repo`.
+- The repo is public. Log entries carry kinds, ids, and repo names from the approved doc only.
+- A finding that changes the design, or a result the approved doc doesn't cover: run `notify-send -u normal`, write one line, and wait.
+- Arm the API-drop wake-up (`/loop` with no interval) per ~/.claude/docs/unattended-work-guards.md.
+
+At close, stop at PR-ready with PR 2's body carrying its Brief, the log, the post-query results, and the "Geoff does by hand" items with whether each is still owed. The conductor, conductor-initiatives, hands the PR to Geoff. When his approve arrives, it merges, so you never run approval-queue and never merge. End with one message naming the PR and the count of resources, repos, and descriptions done.
