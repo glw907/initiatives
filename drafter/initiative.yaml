@@ -1,0 +1,7 @@
+id: drafter
+title: Drafter
+summary: Generates cairn docs pages from page plans through a gated pipeline.
+status: active
+owner: glw907
+created: 2026-10-12
+repos: [drafter, workstation]

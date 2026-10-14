@@ -1,0 +1,7 @@
+id: monthly-model-review
+title: Monthly model review
+summary: Reviews the Claude models, effort settings, and skills each month and logs the result.
+status: active
+owner: glw907
+created: 2026-09-04
+repos: [workstation]

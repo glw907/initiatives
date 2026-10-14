@@ -1,0 +1,7 @@
+id: approval-queue
+title: Approval queue
+summary: Puts each PR, design, and triage list in front of Geoff in one app and returns his decision to the session.
+status: active
+owner: glw907
+created: 2026-10-11
+repos: [approval-queue, workstation]

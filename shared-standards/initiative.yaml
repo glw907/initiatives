@@ -1,0 +1,7 @@
+id: shared-standards
+title: Shared standards
+summary: Would package the skills, registers, and agents an outside developer needs as a Claude Code plugin marketplace.
+status: proposed
+owner: glw907
+created: 2026-10-14
+repos: [workstation]
