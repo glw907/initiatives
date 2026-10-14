@@ -2,7 +2,7 @@
 
 ## Summary
 
-The cairn docs standard sets how every cairn-family docs surface is written. Each surface has one published base style guide, and a register in `cairn-cms` overlays it with recorded departures. Vale and the comment linters check the rules a machine can check.
+The cairn docs standard sets how every cairn-family docs surface is written. Each surface has one published base style guide, and a register in `cairn-cms` overlays it with recorded departures. Vale and the comment linters check the rules a machine can check. This initiative builds on `docs-system`, which supplies the pipeline and the Claude infrastructure that apply the standard.
 
 ## Motivation
 
@@ -16,7 +16,7 @@ Sites and the engine share readers and tooling. Without one standard, each repo'
 
 ## Non-goals
 
-- Drafting the pages. The drafter initiative owns the pipeline that does it.
+- Drafting the pages. The `docs-system` initiative owns the pipeline that does it.
 - Standards for surfaces that aren't cairn-family docs, such as `workstation`'s internal docs.
 
 ## Where the work lives

@@ -20,8 +20,8 @@ workstation	docs/superpowers/specs/2026-10-11-review-desk-design.md	initiatives	
 workstation	docs/superpowers/specs/2026-10-11-review-desk-ui-design.md	initiatives	approval-queue/specs/2026-10-11-review-desk-ui-design.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/specs/2026-10-12-approval-queue-design.md	initiatives	approval-queue/specs/2026-10-12-approval-queue-design.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/specs/2026-10-12-approval-queue-mockups	initiatives	approval-queue/specs/2026-10-12-approval-queue-mockups	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/specs/2026-10-12-drafter-pipeline-design.md	initiatives	drafter/specs/2026-10-12-drafter-pipeline-design.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/specs/2026-10-13-drafter-completion-design.md	initiatives	drafter/specs/2026-10-13-drafter-completion-design.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-10-12-drafter-pipeline-design.md	initiatives	docs-system/specs/2026-10-12-drafter-pipeline-design.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-10-13-drafter-completion-design.md	initiatives	docs-system/specs/2026-10-13-drafter-completion-design.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/specs/2026-10-13-thunderbird-nord-mail-design.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/specs/assets	initiatives	approval-queue/specs/assets	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/plans/2026-08-30-bluefin-repo-reorg.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
@@ -63,24 +63,24 @@ workstation	docs/superpowers/plans/2026-10-11-review-desk.md	initiatives	approva
 workstation	docs/superpowers/plans/2026-10-12-approval-queue-conductor-prompt.txt	initiatives	approval-queue/plans/2026-10-12-approval-queue-conductor-prompt.txt	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/plans/2026-10-12-approval-queue-prompt.txt	initiatives	approval-queue/plans/2026-10-12-approval-queue-prompt.txt	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/plans/2026-10-12-approval-queue.md	initiatives	approval-queue/plans/2026-10-12-approval-queue.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-12-drafter-f1-executor-prompt.md	initiatives	drafter/plans/2026-10-12-drafter-f1-executor-prompt.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-12-drafter-f1-plan.md	initiatives	drafter/plans/2026-10-12-drafter-f1-plan.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-12-drafter-pass0-conductor-prompt.md	initiatives	drafter/plans/2026-10-12-drafter-pass0-conductor-prompt.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-12-drafter-pass0-executor-prompt.md	initiatives	drafter/plans/2026-10-12-drafter-pass0-executor-prompt.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-12-drafter-pass0-plan.md	initiatives	drafter/plans/2026-10-12-drafter-pass0-plan.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-13-drafter-completion-conductor-prompt.txt	initiatives	drafter/plans/2026-10-13-drafter-completion-conductor-prompt.txt	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-13-drafter-followups-executor-prompt.txt	initiatives	drafter/plans/2026-10-13-drafter-followups-executor-prompt.txt	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-13-drafter-followups-plan.md	initiatives	drafter/plans/2026-10-13-drafter-followups-plan.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-13-drafter-p1-foundations-executor-prompt.txt	initiatives	drafter/plans/2026-10-13-drafter-p1-foundations-executor-prompt.txt	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-13-drafter-p1-foundations-plan.md	initiatives	drafter/plans/2026-10-13-drafter-p1-foundations-plan.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-13-drafter-p2-money-executor-prompt.txt	initiatives	drafter/plans/2026-10-13-drafter-p2-money-executor-prompt.txt	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-13-drafter-p2-money-plan.md	initiatives	drafter/plans/2026-10-13-drafter-p2-money-plan.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-13-drafter-p3-prompts-handoff-executor-prompt.txt	initiatives	drafter/plans/2026-10-13-drafter-p3-prompts-handoff-executor-prompt.txt	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-13-drafter-p3-prompts-handoff-plan.md	initiatives	drafter/plans/2026-10-13-drafter-p3-prompts-handoff-plan.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-13-drafter-p4-page-parts-executor-prompt.txt	initiatives	drafter/plans/2026-10-13-drafter-p4-page-parts-executor-prompt.txt	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-13-drafter-p4-page-parts-plan.md	initiatives	drafter/plans/2026-10-13-drafter-p4-page-parts-plan.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-13-drafter-p5-pipeline-executor-prompt.txt	initiatives	drafter/plans/2026-10-13-drafter-p5-pipeline-executor-prompt.txt	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/plans/2026-10-13-drafter-p5-pipeline-plan.md	initiatives	drafter/plans/2026-10-13-drafter-p5-pipeline-plan.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-12-drafter-f1-executor-prompt.md	initiatives	docs-system/plans/2026-10-12-drafter-f1-executor-prompt.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-12-drafter-f1-plan.md	initiatives	docs-system/plans/2026-10-12-drafter-f1-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-12-drafter-pass0-conductor-prompt.md	initiatives	docs-system/plans/2026-10-12-drafter-pass0-conductor-prompt.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-12-drafter-pass0-executor-prompt.md	initiatives	docs-system/plans/2026-10-12-drafter-pass0-executor-prompt.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-12-drafter-pass0-plan.md	initiatives	docs-system/plans/2026-10-12-drafter-pass0-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-completion-conductor-prompt.txt	initiatives	docs-system/plans/2026-10-13-drafter-completion-conductor-prompt.txt	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-followups-executor-prompt.txt	initiatives	docs-system/plans/2026-10-13-drafter-followups-executor-prompt.txt	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-followups-plan.md	initiatives	docs-system/plans/2026-10-13-drafter-followups-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p1-foundations-executor-prompt.txt	initiatives	docs-system/plans/2026-10-13-drafter-p1-foundations-executor-prompt.txt	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p1-foundations-plan.md	initiatives	docs-system/plans/2026-10-13-drafter-p1-foundations-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p2-money-executor-prompt.txt	initiatives	docs-system/plans/2026-10-13-drafter-p2-money-executor-prompt.txt	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p2-money-plan.md	initiatives	docs-system/plans/2026-10-13-drafter-p2-money-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p3-prompts-handoff-executor-prompt.txt	initiatives	docs-system/plans/2026-10-13-drafter-p3-prompts-handoff-executor-prompt.txt	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p3-prompts-handoff-plan.md	initiatives	docs-system/plans/2026-10-13-drafter-p3-prompts-handoff-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p4-page-parts-executor-prompt.txt	initiatives	docs-system/plans/2026-10-13-drafter-p4-page-parts-executor-prompt.txt	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p4-page-parts-plan.md	initiatives	docs-system/plans/2026-10-13-drafter-p4-page-parts-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p5-pipeline-executor-prompt.txt	initiatives	docs-system/plans/2026-10-13-drafter-p5-pipeline-executor-prompt.txt	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p5-pipeline-plan.md	initiatives	docs-system/plans/2026-10-13-drafter-p5-pipeline-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/plans/2026-10-13-thunderbird-nord-mail-prompt.txt	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/plans/2026-10-13-thunderbird-nord-mail.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/plans/archive	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
@@ -119,7 +119,7 @@ workstation	docs/superpowers/research/2026-10-10-lean-pass-process-review-mechan
 workstation	docs/superpowers/research/2026-10-10-lean-pass-process-review-risk.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/research/2026-10-10-pass-catch-ledger.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/research/2026-10-11-anthropic-guidance-proportionality.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-11-cairn-cms-alignment-audit.md				flagged	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-cairn-cms-alignment-audit.md	cairn-cms	docs/superpowers/research/2026-10-11-cairn-cms-alignment-audit.md		moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/research/2026-10-11-infra-skill-plan-fold.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/research/2026-10-11-infra-skill-plan-review-mechanics.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/research/2026-10-11-infra-sweep-1-guard-fold-verification.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
@@ -146,45 +146,45 @@ workstation	docs/superpowers/research/2026-10-11-review-desk-ui-review-mechanics
 workstation	docs/superpowers/research/2026-10-11-review-desk-ui-review-risk.md	initiatives	approval-queue/research/2026-10-11-review-desk-ui-review-risk.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/research/2026-10-12-approval-queue-fold.md	initiatives	approval-queue/research/2026-10-12-approval-queue-fold.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/research/2026-10-12-approval-queue-review-mechanics.md	initiatives	approval-queue/research/2026-10-12-approval-queue-review-mechanics.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-12-drafter-pass0-plan-fold.md	initiatives	drafter/research/2026-10-12-drafter-pass0-plan-fold.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-12-drafter-pass0-plan-review-mechanics.md	initiatives	drafter/research/2026-10-12-drafter-pass0-plan-review-mechanics.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-12-drafter-pass0-t7	initiatives	drafter/research/2026-10-12-drafter-pass0-t7	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-12-drafter-pipeline-fold.md	initiatives	drafter/research/2026-10-12-drafter-pipeline-fold.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-12-drafter-pipeline-review-contract.md	initiatives	drafter/research/2026-10-12-drafter-pipeline-review-contract.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-12-drafter-pipeline-review-integrity.md	initiatives	drafter/research/2026-10-12-drafter-pipeline-review-integrity.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-12-drafter-pipeline-review-mechanics.md	initiatives	drafter/research/2026-10-12-drafter-pipeline-review-mechanics.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-drafter-pass0-plan-fold.md	initiatives	docs-system/research/2026-10-12-drafter-pass0-plan-fold.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-drafter-pass0-plan-review-mechanics.md	initiatives	docs-system/research/2026-10-12-drafter-pass0-plan-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-drafter-pass0-t7	initiatives	docs-system/research/2026-10-12-drafter-pass0-t7	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-drafter-pipeline-fold.md	initiatives	docs-system/research/2026-10-12-drafter-pipeline-fold.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-drafter-pipeline-review-contract.md	initiatives	docs-system/research/2026-10-12-drafter-pipeline-review-contract.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-drafter-pipeline-review-integrity.md	initiatives	docs-system/research/2026-10-12-drafter-pipeline-review-integrity.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-drafter-pipeline-review-mechanics.md	initiatives	docs-system/research/2026-10-12-drafter-pipeline-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/research/2026-10-12-planner-conductor-handoff-brief.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-13-drafter-completion-fold-verification-2.md	initiatives	drafter/research/2026-10-13-drafter-completion-fold-verification-2.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-13-drafter-completion-fold-verification.md	initiatives	drafter/research/2026-10-13-drafter-completion-fold-verification.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-13-drafter-completion-plan-fold.md	initiatives	drafter/research/2026-10-13-drafter-completion-plan-fold.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-13-drafter-followups-fold-verification.md	initiatives	drafter/research/2026-10-13-drafter-followups-fold-verification.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-13-drafter-followups-plan-fold.md	initiatives	drafter/research/2026-10-13-drafter-followups-plan-fold.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-13-drafter-followups-review-contract.md	initiatives	drafter/research/2026-10-13-drafter-followups-review-contract.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-13-drafter-followups-review-data-integrity.md	initiatives	drafter/research/2026-10-13-drafter-followups-review-data-integrity.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-13-drafter-followups-review-mechanics.md	initiatives	drafter/research/2026-10-13-drafter-followups-review-mechanics.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-13-drafter-p1-review-mechanics.md	initiatives	drafter/research/2026-10-13-drafter-p1-review-mechanics.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-13-drafter-p2-p5-review-contract.md	initiatives	drafter/research/2026-10-13-drafter-p2-p5-review-contract.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-13-drafter-p2-p5-review-integrity.md	initiatives	drafter/research/2026-10-13-drafter-p2-p5-review-integrity.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-13-drafter-p2-review-mechanics.md	initiatives	drafter/research/2026-10-13-drafter-p2-review-mechanics.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-13-drafter-p3-review-mechanics.md	initiatives	drafter/research/2026-10-13-drafter-p3-review-mechanics.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-13-drafter-p4-review-mechanics.md	initiatives	drafter/research/2026-10-13-drafter-p4-review-mechanics.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	docs/superpowers/research/2026-10-13-drafter-p5-review-mechanics.md	initiatives	drafter/research/2026-10-13-drafter-p5-review-mechanics.md	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-completion-fold-verification-2.md	initiatives	docs-system/research/2026-10-13-drafter-completion-fold-verification-2.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-completion-fold-verification.md	initiatives	docs-system/research/2026-10-13-drafter-completion-fold-verification.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-completion-plan-fold.md	initiatives	docs-system/research/2026-10-13-drafter-completion-plan-fold.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-followups-fold-verification.md	initiatives	docs-system/research/2026-10-13-drafter-followups-fold-verification.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-followups-plan-fold.md	initiatives	docs-system/research/2026-10-13-drafter-followups-plan-fold.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-followups-review-contract.md	initiatives	docs-system/research/2026-10-13-drafter-followups-review-contract.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-followups-review-data-integrity.md	initiatives	docs-system/research/2026-10-13-drafter-followups-review-data-integrity.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-followups-review-mechanics.md	initiatives	docs-system/research/2026-10-13-drafter-followups-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-p1-review-mechanics.md	initiatives	docs-system/research/2026-10-13-drafter-p1-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-p2-p5-review-contract.md	initiatives	docs-system/research/2026-10-13-drafter-p2-p5-review-contract.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-p2-p5-review-integrity.md	initiatives	docs-system/research/2026-10-13-drafter-p2-p5-review-integrity.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-p2-review-mechanics.md	initiatives	docs-system/research/2026-10-13-drafter-p2-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-p3-review-mechanics.md	initiatives	docs-system/research/2026-10-13-drafter-p3-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-p4-review-mechanics.md	initiatives	docs-system/research/2026-10-13-drafter-p4-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-p5-review-mechanics.md	initiatives	docs-system/research/2026-10-13-drafter-p5-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/research/2026-10-13-mail-colour-evidence	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/research/2026-10-13-thunderbird-nord-mail-plan-fold.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	docs/superpowers/research/2026-10-13-thunderbird-nord-mail-review-mechanics.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	claude/.claude/workflows/docs-page-chain.js	drafter	claude/.claude/workflows/docs-page-chain.js	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	bin/.local/bin/cairn-docs-outline	drafter	bin/.local/bin/cairn-docs-outline	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	scripts/drafter-gate.sh	drafter	scripts/drafter-gate.sh	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	tests/fixtures/docs-page-chain/	drafter	tests/fixtures/docs-page-chain/	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	tests/fixtures/drafter/	drafter	tests/fixtures/drafter/	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	claude/.claude/workflows/docs-page-chain.js	drafter	claude/.claude/workflows/docs-page-chain.js	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	bin/.local/bin/cairn-docs-outline	drafter	bin/.local/bin/cairn-docs-outline	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	scripts/drafter-gate.sh	drafter	scripts/drafter-gate.sh	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/fixtures/docs-page-chain/	drafter	tests/fixtures/docs-page-chain/	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/fixtures/drafter/	drafter	tests/fixtures/drafter/	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	approval-queue/	approval-queue	approval-queue/	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	bin/.local/bin/approval-queue	approval-queue	bin/.local/bin/approval-queue	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	bin/.local/bin/claude-approval-queue-reminder	approval-queue	bin/.local/bin/claude-approval-queue-reminder	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	tests/docs-page-chain-derivation.test.mjs	drafter	tests/docs-page-chain-derivation.test.mjs	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	tests/docs-page-chain-handoff.test.mjs	drafter	tests/docs-page-chain-handoff.test.mjs	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	tests/docs-page-chain-outline.test.mjs	drafter	tests/docs-page-chain-outline.test.mjs	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	tests/drafter-prompts-parity.sh	drafter	tests/drafter-prompts-parity.sh	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
-workstation	tests/drafter-render-prompts.mjs	drafter	tests/drafter-render-prompts.mjs	drafter	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/docs-page-chain-derivation.test.mjs	drafter	tests/docs-page-chain-derivation.test.mjs	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/docs-page-chain-handoff.test.mjs	drafter	tests/docs-page-chain-handoff.test.mjs	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/docs-page-chain-outline.test.mjs	drafter	tests/docs-page-chain-outline.test.mjs	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/drafter-prompts-parity.sh	drafter	tests/drafter-prompts-parity.sh	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/drafter-render-prompts.mjs	drafter	tests/drafter-render-prompts.mjs	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	tests/approval-queue.test.sh	approval-queue	tests/approval-queue.test.sh	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	tests/claude-approval-queue-reminder.test.sh	approval-queue	tests/claude-approval-queue-reminder.test.sh	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
 workstation	review-desk/	approval-queue	approval-queue/	approval-queue	history	8172e2fc9927886e18a74d3cdd1abceb671cc67f

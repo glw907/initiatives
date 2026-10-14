@@ -77,8 +77,8 @@ want $S/specs/2026-01-02-pings-worker-design.md 6 leaves-with-pings
 want $S/specs/2026-01-03-dubplate-thing-design.md 6 moved
 want $S/specs/2026-01-03-dubplate-thing-design.md 4 $S/specs/2026-01-03-dubplate-thing-design.md
 want $S/specs/2026-01-04-drafter-x-design.md 6 deferred:p5
-want $S/specs/2026-01-04-drafter-x-design.md 4 drafter/specs/2026-01-04-drafter-x-design.md
-want $S/specs/2026-01-04-drafter-x-design.md 5 drafter
+want $S/specs/2026-01-04-drafter-x-design.md 4 docs-system/specs/2026-01-04-drafter-x-design.md
+want $S/specs/2026-01-04-drafter-x-design.md 5 docs-system
 want $S/specs/2026-01-05-mystery-design.md 6 flagged
 want $S/specs/2026-01-06-dubplate-same-design.md 6 collision-identical
 want $S/specs/2026-01-07-dubplate-diff-design.md 6 collision-differs

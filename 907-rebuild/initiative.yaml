@@ -1,0 +1,7 @@
+id: 907-rebuild
+title: 907.life rebuild
+summary: Would rebuild 907.life on the current cairn, re-skinned on Survey with its cairn layer.
+status: proposed
+owner: glw907
+created: 2026-10-14
+repos: [907-life]

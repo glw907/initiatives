@@ -1,0 +1,7 @@
+id: household-phonebook
+title: Household phonebook
+summary: Serves one shared phonebook to the household's Yealink phones and a web app from a Cloudflare Worker.
+status: active
+owner: glw907
+created: 2026-10-07
+repos: [phonebook, cairn-themes]

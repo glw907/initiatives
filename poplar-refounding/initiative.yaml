@@ -1,0 +1,7 @@
+id: poplar-refounding
+title: Poplar re-founding
+summary: Rebuilds the poplar email client from the ground up against a settled architecture.
+status: active
+owner: glw907
+created: 2026-07-19
+repos: [poplar]

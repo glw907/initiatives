@@ -1,0 +1,7 @@
+id: ecxc-rebuild
+title: ECXC rebuild
+summary: Would rebuild ecxc.ski on the current cairn once the cairn docs standard is complete.
+status: proposed
+owner: glw907
+created: 2026-10-14
+repos: [ecxc-ski]

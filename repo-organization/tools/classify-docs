@@ -19,7 +19,7 @@ COLUMNS = ["source_repo", "old_path", "new_repo", "new_path", "initiative", "sta
 # <id>/<kind>/<name>, any other repo in docs/superpowers/<kind>/<name>.
 # A name no rule matches is flagged.
 DOC_RULES = [
-    (r"drafter", "initiatives", "drafter", "deferred:p5"),
+    (r"drafter", "initiatives", "docs-system", "deferred:p5"),
     (r"review-desk|approval-queue", "initiatives", "approval-queue", "moved"),
     (r"docs-standard|claude-md-displacement", "initiatives", "cairn-docs-standard", "moved"),
     (r"monthly-model-review", "initiatives", "monthly-model-review", "moved"),

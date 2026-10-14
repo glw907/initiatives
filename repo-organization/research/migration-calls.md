@@ -53,3 +53,12 @@ Source: `docs/superpowers/research/2026-10-11-cairn-cms-alignment-audit.md`
 
 - Move it to `cairn-cms` under `docs/superpowers/` (recommended)
 - Keep it in `workstation`
+
+## Decisions applied
+
+Geoff decided each block on 2026-10-14, and the map reflects the calls.
+
+- `2026-08-30-dubplate-go-rewrite-design.md`: keep the destination. The `dubplate` copy stays and `workstation` deletes the source.
+- `2026-08-31-dubplate-uploader-design.md`: keep the destination, same handling.
+- `2026-08-31-dubplate-uploader.md`: keep the destination, same handling. The row keeps the state `collision-differs`, and the pass does not overwrite the `dubplate` file.
+- `2026-10-11-cairn-cms-alignment-audit.md`: move it to `cairn-cms` under `docs/superpowers/research/`. Its map row is now `moved` with `new_repo` cairn-cms, so the `cairn-cms` sweep receives it.
