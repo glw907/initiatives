@@ -70,7 +70,7 @@ its "Later" item are removed.
 
 ## Deviations from the design, and errata owed
 
-The plan narrows or reorders these design mechanisms, and the design isn't edited:
+The plan narrows or reorders these design mechanisms. The planning session applied the three owed errata (2, 5, and 8) to the design on 2026-10-14, in the commit after `19ca1cc`; the rest stand as recorded deviations:
 
 1. **The memory scope.** The design's `~/.claude/projects/*/memory/*.md` glob reads memory
    directories of repos outside the scope list. The plan builds the directories from `scope.tsv`
