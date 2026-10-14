@@ -2,7 +2,7 @@
 
 ## Brief
 
-Approving this design starts a pass that gives every initiative a written record in a new initiatives repo, moves past work to the repo where it belongs, and deletes eleven repos you no longer use.
+Approving this design starts a pass that gives every initiative a written record in a new initiatives repo, moves past work to the repo where it belongs, and deletes eleven repos and folders you no longer use.
 
 Work that spans repos has no home today, so its specs and plans pile up in `workstation`. Neither you, a session on either machine, nor a future collaborator can look up where new work belongs. The approval queue's project grouping and the shared standards effort both build on these records, so this pass comes first.
 
@@ -10,18 +10,18 @@ Work that spans repos has no home today, so its specs and plans pile up in `work
 
 - A public `glw907/initiatives` repo holds one record per initiative, with its goals, non-goals, repos, and status.
 - Every session prints the initiatives its repo serves when it starts.
-- ROADMAP.md retires in every repo, and each of its entries becomes a record, a backlog item, or nothing, by your call.
+- ROADMAP.md retires in every repo, and each of its entries becomes a record, a backlog item, or nothing, by your call. `cairn-cms`'s 284-entry file gets a follow-on pass of its own (pending Geoff's ruling, see fold record).
 - Cross-repo specs and plans move to their initiative, and another repo's single-repo docs move into that repo.
-- The drafter pieces in `workstation` move to `drafter`, and the approval queue moves to a repo of its own, both with their history.
-- The pass deletes eleven repos and archives `aksailingclub-legacy`.
+- The drafter pieces in `workstation` move to `drafter`, and the approval queue moves to a public repo of its own, both with their history.
+- The pass deletes eleven repos and folders, and tears down only the Cloudflare resources that nothing else uses. `aksailingclub-legacy` still serves the live club site, so it leaves this pass and archives with the cutover (pending Geoff's ruling, see fold record).
 
 ### If you approve
 
 1. The session writes the pass plan, and you review it before the pass starts.
 2. The pass builds the initiatives repo, the records, and the tooling, and opens a PR in each repo it touches.
 3. You make the ROADMAP calls in one triage item per repo.
-4. Before the pass removes anything, you confirm one dry-run item that lists every deletion, archive, teardown, and GitHub description.
-5. You run `gh auth refresh -s delete_repo` once when the pass reaches the deletions.
+4. Before the pass removes anything, you confirm one dry-run item that lists every deletion, teardown, shared resource left in place, and GitHub description.
+5. You run `gh auth refresh -s delete_repo` once when the pass reaches the deletions, and you revoke the account-owned scratch-site token in the dashboard, which the pass's token can't do.
 
 ### Decide: estimate ceiling
 
@@ -34,11 +34,11 @@ Source: `pass-core`, "Plan"
 
 ### Worth knowing
 
-The pass deletes the three repos that exist only on pavilion (`healthy-diet`, `pings`, and `personal-styles`) without a backup copy, as you ruled on 2026-10-14. Once you confirm the dry run, nothing can bring them back.
+Six of the retiring directories exist only on pavilion. The pass deletes `healthy-diet`, `pings`, and `personal-styles` without a backup copy, as you ruled on 2026-10-14. It saves `cairn-scratch`, `ecxc-ski-agent-memory`, and `aksailingclub-sveltekit` to one tar archive first, because cairn-cms records cite `cairn-scratch` as evidence (pending Geoff's ruling, see fold record). The 2026-10-12 handoff bundle on R2 also holds older copies of all six, and the pass leaves it as it is.
 
 ### The rulings behind this design
 
-You made every call in this design in chat on 2026-10-14. Initiatives are the unit of grouping, recorded in a central repo in the shape of a Kubernetes enhancement proposal (KEP). Cross-repo specs and plans live with their initiative, and past work migrates. Shared standards is a separate initiative that comes next. ROADMAP.md retires everywhere. Drafter and the approval queue move out of `workstation`, and `workstation` otherwise stays as it is. The pass deletes the local-only repos outright.
+You made every call in this design in chat on 2026-10-14. Initiatives are the unit of grouping, recorded in a central repo in the shape of a Kubernetes enhancement proposal (KEP). Cross-repo specs and plans live with their initiative, and past work migrates. Shared standards is a separate initiative that comes next. ROADMAP.md retires everywhere. Drafter and the approval queue move out of `workstation`, and `workstation` otherwise stays as it is. The pass deletes the local-only repos outright. The fold record lists the rulings the review opened.
 
 ## Scope
 
@@ -47,10 +47,13 @@ This pass builds the initiative records and the tooling that keeps them in use. 
 The pass leaves the following work to later initiatives:
 
 - The approval queue's grouping by initiative and its new sidebar, which follow this pass with prototypes.
-- Shared standards, a Claude Code plugin marketplace that carries the skills, registers, and agents an outside developer would need. Until it lands, the `cairn-docs-drafter` agent and the `approval-brief.md` register stay in `workstation`.
+- Shared standards, a Claude Code plugin marketplace that carries the skills, registers, and agents an outside developer would need. Until it lands, the `cairn-docs-drafter` and `cairn-register-editor` agents and the `approval-brief.md` register stay in `workstation`.
 - Any move of code beyond the drafter and approval-queue moves.
+- The retirement of `cairn-cms`'s ROADMAP, a follow-on pass under the `repo-organization` record, and the archive of `aksailingclub-legacy`, which the club's cutover pass closes with (both pending Geoff's ruling, see fold record).
 
-The pass is class `runner`, because it edits skills, settings, scripts, and tests. It carries the `live-account` flag because it deletes GitHub repos and can tear down Cloudflare resources.
+The pass is class `runner`, because it edits skills, settings, scripts, and tests. It carries the `live-account` flag because it deletes GitHub repos and tears down Cloudflare resources. The only data it destroys is scratch and staging data, listed by id in the dry-run item Geoff confirms, so no task rises to `auth-data`.
+
+Drafter pass 5 is in flight. This pass starts its drafter moves, and moves the docs pass 5 reads by path, only after pass 5's PRs merge.
 
 ## The initiatives repo
 
@@ -67,18 +70,19 @@ initiatives/
     └── specs/  plans/  research/    cross-repo docs only
 ```
 
-An initiative's `initiative.yaml` holds only the fields that tools read. A record's status is one of `proposed`, `active`, `paused`, `done`, or `withdrawn`.
+An initiative's `initiative.yaml` holds only the fields that tools read. A record's status is one of `proposed`, `active`, `paused`, `done`, or `withdrawn`. The `repos` list holds GitHub repo names only. Surfaces that aren't repos, such as Google Docs, go in the README's "Where the work lives".
 
 ```yaml
 id: drafter
 title: Drafter
+summary: Generates cairn docs pages from page plans through a gated pipeline.
 status: active
 owner: glw907
 created: 2026-10-12
 repos: [drafter, workstation]
 ```
 
-The record's `README.md` takes the KEP sections a small team needs: Summary, Motivation, Goals, Non-goals, Where the work lives, and Records. "Where the work lives" gives one line per repo saying what that repo carries, and "Records" links the initiative's specs, plans, and PRs. A status change adds a dated line to the README, so the history stays with the record. The non-goals carry the most weight, because they're what settles whether a piece of work belongs to the initiative.
+The record's `README.md` takes the KEP sections a small team needs: Summary, Motivation, Goals, Non-goals, Where the work lives, and Records. "Where the work lives" gives one line per repo or surface saying what it carries, and "Records" links the initiative's specs, plans, and PRs. A status change adds a dated line to the README, so the history stays with the record. The non-goals carry the most weight, because they're what settles whether a piece of work belongs to the initiative.
 
 The top-level README states the placement rule as the following steps:
 
@@ -86,7 +90,9 @@ The top-level README states the placement rule as the following steps:
 2. When no record fits, the work is ordinary work for that repo's backlog or the start of a new initiative, which gets a `proposed` record.
 3. A fix with no larger purpose needs no initiative.
 
-The same README also notes that `~/Projects/workstation` is a symlink to `~/.dotfiles`, so both names refer to the same repo. A script generates the README's index table from the YAML files, and `scripts/check` fails when the two disagree.
+The same README also notes that `~/Projects/workstation` is a symlink to `~/.dotfiles`, so both names refer to the same repo. A script generates the README's index table from the YAML files.
+
+`scripts/check` fails, naming the file, on each of these states: no records at all, a directory without `initiative.yaml`, YAML that doesn't parse, an `id` that differs from its directory name, a duplicate `id`, an unknown `status`, a missing required field, a `repos` entry that isn't a `glw907` repo, and an index that disagrees with the YAML. Its tests carry one bad fixture per state.
 
 `REGISTER.md` records Geoff's ruling of 2026-10-14 that the repo's prose follows the cairn developer-docs brief in `cairn-cms/docs/internal/docs-register.md`, on the Google developer documentation style guide. Until now the brief has governed only cairn's surfaces, and the file records that extension with its provenance, as the voice system requires of any overlay.
 
@@ -94,13 +100,13 @@ The pass writes these records first:
 
 | Record | Status | Repos |
 |---|---|---|
-| `repo-organization` (this effort) | `active` | `initiatives`, every repo it touches |
+| `repo-organization` (this effort) | `active` | `initiatives`, `workstation`, `drafter`, `approval-queue`, and each repo whose ROADMAP or docs it changes |
 | `drafter` | `active` | `drafter`, `workstation` |
 | `approval-queue` | `active` | `approval-queue`, `workstation` |
-| `cairn-docs-standard` | `active` | `cairn-cms`, `workstation`, the sites |
+| `cairn-docs-standard` | `active` | `cairn-cms`, `workstation`, `ecxc-ski`, `907-life`, `aksailingclub-org`, `xcathletes-org`, `cairn-pub` |
 | `monthly-model-review` | `active` | `workstation` |
-| `personal-design-system` | `proposed` | `907-life`, `cairn-themes`, `approval-queue`, Google Docs |
-| `shared-standards` | `proposed` | a new marketplace repo, `workstation` |
+| `personal-design-system` | `proposed` | `907-life`, `cairn-themes`, `approval-queue` |
+| `shared-standards` | `proposed` | `workstation` |
 
 The ROADMAP triage adds further records. The personal design system's record links Survey in `cairn-themes`, the 907-life theme, the approval queue, and Docs letterhead as the pieces it would unify. It also records that the deleted `personal-styles` repo defined a collection shape (a style sheet, a decision log, and benchmark renders) worth reusing.
 
@@ -108,17 +114,25 @@ The ROADMAP triage adds further records. The personal design system's record lin
 
 The pass gives each rule a home where it runs, so that sessions find the records and keep them current.
 
-ROADMAP.md retires in every repo. The repos hold about 80 entries, 22 of them in `workstation`. The session drafts a disposition for each entry, which is to become a record, to move to the repo's `BACKLOG.md`, or to be dropped. Geoff makes the calls in one approval-queue triage item per repo, and the pass applies them and deletes each ROADMAP.md.
+ROADMAP.md retires in every repo but `cairn-cms` and `aksailingclub-legacy`. Those repos hold about 80 entries, 22 of them in `workstation`. An entry is a top-level bullet, or a `###` heading in a repo that uses headings, and the triage item states each repo's count. The session drafts a disposition for each entry, which is to become a record, to move to the repo's `BACKLOG.md`, or to be dropped. Geoff makes the calls in one approval-queue triage item per repo, and the pass applies them and deletes each ROADMAP.md. The applied dispositions must equal each repo's count.
 
-The SessionStart hook, which already prints `## Host`, also prints the `active` and `proposed` initiatives whose `repos` include the session's repo, each with its summary line. No CLAUDE.md lists initiatives by name, which keeps a hand-kept list from drifting. The global CLAUDE.md gains a short "Initiatives" section that names the repo and the placement rule.
+ROADMAP is read and written beyond the skills named below. The plan's file list takes the whole set: `log-issue` and its `roadmap_path` and `#project:<slug>` tag, the 32 `#project:` tags in `dubplate` and `xcathletes-org` backlogs, every `.claude/project-tracking.json`, the `cairn-pass`, `site-pass`, `cairn-release`, `dependency-upgrade`, `pass-core`, `claude-infra`, and `cairn-figure` skills, and `claude-memory-write-check`. A `#project:<slug>` tag becomes `#initiative:<id>` or goes, by its entry's disposition. Under the follow-on ruling, references to `cairn-cms`'s ROADMAP stay until its own pass.
 
-Three skills change:
+The SessionStart hook, which already prints `## Host`, also prints the `active` and `proposed` initiatives whose `repos` include the session's repo, each with its `summary`. The hook names the repo from the `origin` remote's basename, resolved through `git rev-parse --git-common-dir` so a worktree session gets its parent repo. The `~/.dotfiles` checkout therefore resolves to `workstation`. It reads the YAML with `yq`. A missing clone prints `initiatives: no clone at ~/Projects/initiatives`, a record that fails to parse prints `initiatives: unreadable <file>`, and no match prints nothing. The hook always exits 0.
 
-- `log-project` creates and updates records in the initiatives repo. `log-issue` doesn't change.
+The hook's tests cover each of these states against a fixture initiatives tree.
+
+No CLAUDE.md lists initiatives by name, which keeps a hand-kept list from drifting. The global CLAUDE.md sits one line under its 200-line cap, so the placement rule enters as one line that points at the initiatives README, and an equal count of lines moves to `claude-md-archive.md` if the line doesn't fit an existing section.
+
+Three skills change in their own right:
+
+- `log-project` creates and updates records in the initiatives repo, and never creates a ROADMAP.md.
 - `pass-core`'s design step names the initiative or says none applies. A session writes a cross-repo spec or plan in `initiatives/<id>/`, and the plan header carries an `Initiative: <id>` line.
 - `dotfiles-pass` and the other adapters point at the new location for cross-repo docs.
 
-`bluefin/bootstrap.sh` clones the initiatives repo, and `check-drift` warns when the clone is missing or behind its remote. The one machine-local memory about an initiative, `batched-docs-tool-initiative.md`, folds into the drafter record, and the pass then deletes it.
+Each rule and tooling change in this section carries its own acceptance check in the plan, with a failing fixture wherever the check could pass on nothing.
+
+`bluefin/bootstrap.sh` clones the initiatives repo and runs the `drafter` and `approval-queue` install steps. `check-drift` warns when the clone is missing, and checks whether it's behind its remote with `git ls-remote` under a short timeout, reporting an unreachable remote as its own non-failing line. The one machine-local memory about an initiative, `batched-docs-tool-initiative.md`, isn't on pavilion, where only its `MEMORY.md` index line remains. The pass takes the file from the thinkpad if it's there, folds it into the drafter record, then deletes it and its index line on both machines. If it's on neither machine, the pass records it as lost and removes the index line.
 
 ## Migration of past work
 
@@ -129,55 +143,72 @@ Three skills change:
 - Work that concerns only `workstation`, such as the pass process, the infrastructure sweeps, and the Thunderbird theme, stays.
 - The pings plans leave the tree with the pings repo and remain in `workstation`'s history.
 
-A script classifies every entry and writes `migration-map.tsv`, which lists the old path, the new path, and the initiative for each entry. The script flags an entry the rule can't place, and Geoff makes that call. The pass commits the map so the move stays auditable.
+A script classifies every entry and writes `migration-map.tsv`, which lists the old path, the new path, the initiative, and a collision state for each entry. The map has exactly one row per entry at the pass's start commit, and every row has a new path or says `stays`, `leaves-with-pings`, or `deferred:<pass>`. The script flags an entry the rule can't place, and Geoff makes that call. A destination that already holds a file of the same name, `archive/` included, is a collision: an identical file means the source is deleted and its references point at the existing file, and a differing one goes to Geoff, with the destination kept by default. Three of dubplate's five cases differ. The pass commits the map so the move stays auditable.
 
-Docs move by copy and delete. Each destination repo receives its files in one commit whose body names the source `workstation` commit, and `workstation` then deletes them while its history keeps the originals. The pass doesn't graft docs history across repos with `git filter-repo`, since the source commit is one `git show` away.
+Docs move by copy and delete. Each destination repo receives its files in one commit whose body names the source `workstation` commit, and `workstation` then deletes them while its history keeps the originals. The pass doesn't graft docs history across repos with `git filter-repo`, since the source commit is one `git show` away. The `workstation` deletion PR stays a draft until a check confirms two facts: every destination path exists on its repo's `origin/main`, and `git diff <source commit> origin/main` over every moved path is empty. A non-empty diff means a session edited a moved file after the copy, and the pass re-copies it.
 
-A rewrite script applies the map across every repo, `~/.claude`, and the auto-memory files. A new reference checker scans the same places for `docs/superpowers/` paths and fails on a path that doesn't resolve. It runs once before the migration to record the references already broken, and once after, when it must find nothing new. The pass regenerates the test goldens in `workstation` that embed these paths, and the gate must pass after it does. The rewrite reaches `docs/HISTORY.md` despite its freeze under ruling 8, since a path fix leaves its content unchanged (Geoff, 2026-10-14). The rewrite skips stale worktrees, which the pass removes instead.
+One reference tool, with a check mode and an apply mode, rewrites and checks paths over one shared scope. The map is keyed on the source repo and the path. A bare `docs/superpowers/` path resolves against the repo that contains it, since a dozen repos carry their own tree, and a `~/`, `/var/home/`, or `~/Projects/<repo>/` path resolves literally. The tool edits only references that resolved to a moved `workstation` entry before the move. It matches the old paths, the new `initiatives/<id>/` paths, the moved code paths, paths into retired repos, and links to a retired ROADMAP.md. Its tests plant a reference to a missing `initiatives/<id>/` path, which the check mode must report.
 
-The PRs merge in an order that leaves no file without a home:
+The scope is git-tracked text files, read from each repo's pass worktree, never its main checkout and never through the `~/.claude` symlinks. It excludes `.claude/worktrees/`, lockfiles, `_salvage/`, and a named list of fixtures that record past PRs or runs, such as `tests/fixtures/ci-green/pr-107-files.txt`. Memory files join the scope as `~/.claude/projects/*/memory/*.md` only, without `*.tmp` files. The tool tars those directories before its first write, and writes each file through a temp file and a rename. Transcripts, `history.jsonl`, `file-history/`, `plugins/`, and `sessions/` stay outside the scope. Paths are deduplicated by `realpath`, and a second apply run must change nothing.
+
+The check mode runs once before the migration to record the references already broken, keyed by machine, file, and path, and once after, when it must find nothing new. The pass regenerates only the test goldens whose embedded path the map changes, after the drafter extract, so each passes in the repo that now holds it. The rewrite reaches `docs/HISTORY.md` despite its freeze under ruling 8, since a path fix leaves its content unchanged (Geoff, 2026-10-14).
+
+The PRs merge in an order that leaves no file or command without a home:
 
 1. The initiatives repo merges, then `dubplate`, then `poplar`, so every destination holds its files.
-2. The reference fixes merge in `cairn-cms` and the other repos.
-3. `workstation`'s deletions merge last.
+2. The `drafter` and `approval-queue` extracts merge.
+3. The reference fixes merge in `cairn-cms` and the other repos.
+4. `workstation`'s deletions merge last.
+5. On each machine, the pass pulls, runs `stow -R bin claude`, and then runs both install steps.
 
-Before it moves any plan, the pass runs the one-executor-per-worktree checks. A plan with an open pass stays where it is until that pass closes, and a short follow-up then moves it.
+Before it moves any plan, the pass runs the one-executor-per-worktree checks. A plan with an open pass stays where it is, marked `deferred:<pass>` in the map with a `workstation` backlog item, until that pass closes and a short follow-up moves it.
 
 ## Code leaving workstation
 
-Code moves with its history, unlike docs. For each move, `git filter-repo --path` extracts the history on a throwaway clone of `workstation`, so the real repo's history stays as it was.
+Code moves with its history, unlike docs. For each move, `git filter-repo --path` extracts the history on a fresh clone of `glw907/workstation` from GitHub, pinned at an `origin/main` commit the map records, never with `--force`. The filter-repo manual warns, "renames are NOT followed so you may need to specify multiple paths", so each extract lists every path its files ever held, such as the `review-desk` names the approval queue carried before 2026-10-12. Before the push, the extract's tip tree must equal the source tree at the pinned commit, and `git log --follow` on each moved file must reach the same first commit as in `workstation`. The pass installs `git-filter-repo` through Homebrew and records it in the Brewfile.
 
-The drafter pieces move to `drafter`: the docs page chain workflow (`claude/.claude/workflows/docs-page-chain.js`), `scripts/drafter-gate.sh`, five tests, and their fixtures under `tests/fixtures/docs-page-chain/` and `tests/fixtures/drafter/`. The extract merges into `drafter` as unrelated history, so `git log` on a moved file still reaches its first commit. The four gate legs leave `workstation`'s `scripts/check.sh` and join `drafter`'s CI. The workflow reaches `~/.claude/workflows/` through a stow symlink today. After the move, an install target in `drafter` links it, and the `claude-tooling` manifest records the new source, so `claude-tooling-sync verify` still tracks it.
+The drafter pieces move to `drafter`: the docs page chain workflow (`claude/.claude/workflows/docs-page-chain.js`), its `cairn-docs-outline` helper (`bin/.local/bin/cairn-docs-outline`), `scripts/drafter-gate.sh`, five tests, and their fixtures under `tests/fixtures/docs-page-chain/` and `tests/fixtures/drafter/`. The extract keeps its paths and merges into `drafter` as unrelated history. `git log` on a moved file then still reaches its first commit. Two tests read agent files that stay in `workstation`, and they find them through a `WORKSTATION_DIR` that defaults to `~/Projects/workstation`. The four gate legs leave `workstation`'s `scripts/check.sh` and join `drafter`'s `make check`, which stays a local gate as it is today. The `cairn-run-gate` test drops its moved path, and its assertion travels with the workflow.
 
-The approval queue moves to a new `glw907/approval-queue` repo built from its extract. The move carries the app's 60 tracked files, the `approval-queue` command, the `claude-approval-queue-reminder` hook script, and the tests for both. The repo's install step links the two commands into `~/.local/bin` on both machines. The hook's entry in `settings.json` stays in `workstation` and calls the command by name. The app's gate leg moves to the new repo's CI.
+`~/.claude/workflows` is a folded stow link today, and `docs-page-chain.js` is the only file under it. A scratch probe showed that once `workstation` deletes the file, `stow -R claude` removes the dangling link, and that a real directory in its place holds both an outside link and any later stowed file without touching the `workstation` tree. So `drafter`'s install step runs after that restow, creates `~/.claude/workflows` as a directory, and links the workflow and the helper with `ln -sfn`. The `claude-tooling` manifest records the workflow's new source repo.
+
+The approval queue moves to a new public `glw907/approval-queue` repo built from its extract. Its history is already public in `workstation`. The move carries the app's 60 tracked files, the `approval-queue` command, the `claude-approval-queue-reminder` hook script, and the tests for both. The extract keeps `bin/.local/bin/approval-queue` and `approval-queue/` at its root, since the command finds the app by that relative layout. The test that reads the brief register finds it through a `REGISTER` variable that defaults to `~/.claude/docs/voice/approval-brief.md`, the path `src/lib/brief.ts` already names. The repo's install step links the two commands into `~/.local/bin` on both machines. The hook's entry in `settings.json` stays in `workstation` and calls the command by name. The app's gate leg becomes the new repo's local gate.
+
+The pass relies on the queue for its triage and dry-run items, so the queue moves after Geoff confirms the dry run. The move then stops the server on port 7907 and removes the untracked `node_modules/` and `build/` left under `~/.dotfiles/approval-queue/` on both machines.
 
 `workstation` otherwise stays as it is, and the `~/Projects/workstation` symlink stays with it.
 
 ## Repo retirement
 
-The pass retires the following repos:
+The pass retires the following repos and folders:
 
 - Delete: `cairn-scratch-b`, `displaywidth`, `kit`, `jrnl-md`, `hugo-blog-template`, `personal-styles`, `aksailingclub-sveltekit`, `cairn-scratch`, `healthy-diet`, and `pings`.
 - Fold, then delete: `ecxc-ski-agent-memory`, whose facts that still hold move into `ecxc-ski`.
-- Archive: `aksailingclub-legacy`, on GitHub, with its local clone removed.
+- Out of this pass: `aksailingclub-legacy`, which deploys the live site, runs the club's daily Workspace sync, and holds the ASC secret store. The cutover pass archives it (pending Geoff's ruling, see fold record).
+
+Before deletion, the pass saves `cairn-scratch`, `ecxc-ski-agent-memory`, and `aksailingclub-sveltekit` to one tar archive outside `~/Projects` (pending Geoff's ruling, see fold record).
 
 Every retirement follows the same steps:
 
-1. An inventory script lists each repo's ties: unpushed branches and stashes, open PRs and issues, references from other repos and `~/.claude`, and Cloudflare Workers, D1, KV, R2, DNS records, and age-registry secrets bound to it. It also lists manifest entries such as Brewfile lines and anything `check-drift` tracks. The pass moves or tears down each tie before its repo goes, so no deployed resource outlives its source.
-2. One approval-queue item shows the dry run: every repo with its action, every resource to tear down, every manifest line to remove, and the GitHub descriptions from the next section.
-3. After Geoff confirms, the pass deletes and archives through `gh` and removes the local directories. A short script performs the same local cleanup on the thinkpad, which may hold clones of its own.
+1. An inventory script lists each target's kind (`git`, `orphaned-worktree`, or `plain-dir`) and its ties. A git target lists its unpushed branches and stashes. The other two kinds list their files and modification times, and are marked unrecoverable once removed. Each GitHub repo lists its open PRs, issues, releases, and branches that aren't in its upstream, and a fork also lists the open PRs it carries on its parent. The script also finds references from other repos and `~/.claude`, manifest entries such as Brewfile lines, the bootstrap and `.bashrc` lines that name a target, and age-registry secrets whose "Used by" points into it.
+2. The script derives Cloudflare ties from each target's own files, never from names: every `wrangler.*` name and binding, and every workflow's deploy targets. It covers Workers, routes and custom domains, cron triggers, D1, KV, R2, DNS records, Access applications, Email Routing, and API tokens. It resolves each resource by id across every surviving repo's wrangler configs and marks it `sole-owner` or `shared-with <repo>`. Only `sole-owner` resources are torn down. `aksailingclub-sveltekit`, for instance, binds the `asc-handbook` and `asc-uptime` Workers and the `asc-event-images` bucket that `aksailingclub-legacy` also binds, so they stay.
+3. The script sources `~/.local/secrets` itself and exits nonzero on any API or auth error, so an empty answer never reads as "no ties". Its tests run it against a fixture of known ties, such as the `pings` Worker and `PINGS_ADMIN_TOKEN`, and it must report each one.
+4. One approval-queue item shows the dry run: every target with its action, every resource to tear down, every shared resource left in place, every manifest line to remove, the GitHub descriptions from the next section, and a "Geoff does by hand" list that starts with revoking the account-owned scratch-site token.
+5. After Geoff confirms, the pass works each target in a fixed order: Cloudflare teardown, then registry and age-store entries, then the `gh` delete, then the local directory. A rerun treats a step already done as done. Age-store edits run from the pass worktree in one commit with the `registry.md` edits, and only after both machines report `secrets/values.age` clean and at `origin/main`.
+6. A short script performs the same local cleanup on the thinkpad. It first runs the inventory's local legs against the thinkpad's own clones, prints its dry run, and refuses a target with unpushed or uncommitted work.
 
 ## Worktrees and descriptions
 
-The pass lists every worktree in every repo with its branch, whether that branch is merged, and whether it has uncommitted changes. It removes merged, clean worktrees, such as `p5-scratch` and `drafter-pipeline` under `cairn-cms/.claude/worktrees/` if they pass. Any other worktree goes in the dry-run item for Geoff's call.
+The pass lists every worktree in every repo with its branch, whether it's merged, whether it's locked, and whether it has uncommitted or ignored files. A worktree is merged when its branch's PR is merged or its tip is an ancestor of `origin/main` after a fetch. The pass removes a worktree only when it's merged, clean under `git status --ignored`, unlocked, unused by any process (`pgrep -f <path>`), and untouched for a day. A worktree whose branch still equals its base is new, not merged. The drafter `agent-*` worktrees from passes 1 to 4 qualify once pass 5's PRs merge, and `p5-scratch` and `drafter-pipeline` under `cairn-cms/.claude/worktrees/` qualify if they pass. Any other worktree goes in the dry-run item for Geoff's call.
 
 `cairn-cms`, `poplar`, `907-life`, `cairn-pub`, and `phonebook` have no GitHub description, and `workstation`'s still describes an Ubuntu setup. The pass drafts a one-line description for each, and for the new `approval-queue` repo, in this repo's register. The descriptions ride in the dry-run item and are set after Geoff confirms it.
 
 ## End-to-end check
 
-On the thinkpad, after it pulls every repo and runs the install steps, the pass runs the following checks in order:
+On the thinkpad, after it pulls every repo and runs the install steps in the merge order, the pass runs the following checks in order:
 
-1. The reference checker reports no broken path that the pre-migration run didn't already record.
-2. A session opened in `drafter` prints the drafter record at startup.
-3. `approval-queue design` from the new repo's install opens an item in Design & PR Approvals.
-4. `claude-tooling-sync verify` passes with the docs page chain installed from `drafter`.
+1. The reference tool's check mode reports no broken path beyond the thinkpad's own baseline, which the thinkpad script records before it pulls, and finds no broken path in the thinkpad's memory files after its local rewrite.
+2. A session opened in `drafter` prints the drafter record at startup, a session in `~/.dotfiles` prints the `workstation` records, and a session in a worktree prints its parent repo's records.
+3. With no process on port 7907 and no `~/.dotfiles/approval-queue/` left, `approval-queue design` on a committed fixture brief from the new install starts a server whose working directory is under `~/Projects/approval-queue`, and the item appears in Design & PR Approvals. The pass then withdraws the item.
+4. `~/.claude/workflows/docs-page-chain.js` exists and its `realpath` is under `~/Projects/drafter`, and `git -C ~/.dotfiles status --porcelain` is empty after the drafter install.
+5. `gh repo view` fails for each deleted repo, no retired directory remains under `~/Projects` on either machine, and a rerun of the inventory's Cloudflare leg finds nothing bound to a retired target.
+6. No ROADMAP.md remains in a repo whose ROADMAP this pass retires, and each repo's GitHub description matches the text Geoff confirmed.
