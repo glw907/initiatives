@@ -1,0 +1,181 @@
+#!/usr/bin/env python3
+"""List every worktree of every edit and read repo in scope.tsv and mark which are removable."""
+import argparse
+import datetime
+import os
+import re
+import subprocess
+import sys
+import time
+
+TOOL_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(TOOL_DIR))
+DEFAULT_SCOPE = os.path.join(ROOT, "repo-organization", "scope.tsv")
+OWNER = "glw907"
+DAY = 24 * 3600
+HEADER = ["repo", "role", "path", "branch", "merged", "locked", "dirty", "ignored", "process",
+          "mtime", "r1_merged", "r2_clean", "r3_unlocked", "r4_no_process", "r5_untouched",
+          "r6_edit_row", "verdict"]
+
+
+def expand(path):
+    home = os.environ.get("HOME", os.path.expanduser("~"))
+    if path.startswith("~/Projects/"):
+        root = os.environ.get("PROJECTS_ROOT") or os.path.join(home, "Projects")
+        return os.path.join(root, path[len("~/Projects/"):])
+    if path.startswith("~/"):
+        return os.path.join(home, path[2:])
+    return path
+
+
+def git(path, *args):
+    return subprocess.run(["git", "-C", path, *args], capture_output=True, text=True)
+
+
+def tool_sha():
+    out = subprocess.run(["git", "-C", TOOL_DIR, "rev-parse", "HEAD"], capture_output=True, text=True)
+    return out.stdout.strip() if out.returncode == 0 and out.stdout.strip() else "unknown"
+
+
+def read_scope(path):
+    with open(path) as f:
+        rows = [line.rstrip("\n").split("\t") for line in f if line.strip()]
+    return [dict(zip(rows[0], r)) for r in rows[1:]]
+
+
+def parse_worktrees(repo_dir):
+    out = git(repo_dir, "worktree", "list", "--porcelain")
+    if out.returncode != 0:
+        raise SystemExit(f"worktrees: not a git checkout: {repo_dir}")
+    trees = []
+    for block in out.stdout.strip().split("\n\n"):
+        wt = {"locked": False, "branch": "(detached)", "head": ""}
+        for line in block.splitlines():
+            key, _, val = line.partition(" ")
+            if key == "worktree":
+                wt["path"] = val
+            elif key == "HEAD":
+                wt["head"] = val
+            elif key == "branch":
+                wt["branch"] = re.sub(r"^refs/heads/", "", val)
+            elif key == "locked":
+                wt["locked"] = True
+        if "path" in wt:
+            trees.append(wt)
+    return trees
+
+
+def pr_merged(gh, repo, branch):
+    if branch == "(detached)":
+        return False
+    try:
+        out = subprocess.run([gh, "pr", "list", "-R", f"{OWNER}/{repo}", "--head", branch,
+                              "--state", "merged", "--json", "number"],
+                             capture_output=True, text=True)
+    except OSError:
+        return False
+    return out.returncode == 0 and re.search(r"\d", out.stdout) is not None
+
+
+def merged_state(repo_dir, wt, repo, origin, gh):
+    """Return merged, with a branch at its base counting as new."""
+    base = git(repo_dir, "rev-parse", "--verify", "-q", origin + "^{commit}")
+    base_sha = base.stdout.strip() if base.returncode == 0 else ""
+    if base_sha and wt["head"] == base_sha:
+        return False
+    if base_sha and git(repo_dir, "merge-base", "--is-ancestor", wt["head"], base_sha).returncode == 0:
+        return True
+    return pr_merged(gh, repo, wt["branch"])
+
+
+def holds_path(path):
+    out = subprocess.run(["pgrep", "-f", re.escape(path)], capture_output=True, text=True)
+    mine = {os.getpid(), os.getppid()}
+    return any(int(p) not in mine for p in out.stdout.split())
+
+
+def status_files(path):
+    out = git(path, "status", "--porcelain", "--ignored")
+    dirty, ignored = [], []
+    for line in out.stdout.splitlines():
+        (ignored if line.startswith("!!") else dirty).append(line[3:].strip('"'))
+    return dirty, ignored
+
+
+def newest_mtime(path, listed):
+    newest = os.stat(path).st_mtime
+    for rel in listed:
+        try:
+            newest = max(newest, os.lstat(os.path.join(path, rel)).st_mtime)
+        except OSError:
+            pass
+    return newest
+
+
+def evaluate(role, wt, merged, now):
+    """Return the facts and the six rule values for one worktree."""
+    path = wt["path"]
+    if not os.path.isdir(path):
+        return dict(dirty=0, ignored=0, process=False, mtime="absent"), [False] * 6
+    dirty, ignored = status_files(path)
+    proc = holds_path(path)
+    mtime = newest_mtime(path, dirty + ignored)
+    rules = [merged, not dirty and not ignored, not wt["locked"], not proc,
+             now - mtime > DAY, role == "edit"]
+    stamp = datetime.datetime.fromtimestamp(mtime, datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return dict(dirty=len(dirty), ignored=len(ignored), process=proc, mtime=stamp), rules
+
+
+def yn(b):
+    return "yes" if b else "no"
+
+
+def run(args):
+    scope = read_scope(args.scope)
+    now = time.time()
+    gh = os.environ.get("WORKTREES_GH", "gh")
+    lines = [f"worktrees {tool_sha()}", "\t".join(HEADER)]
+    for r in scope:
+        if r["role"] not in ("edit", "read"):
+            continue
+        repo_dir = expand(r["path"])
+        if not os.path.isdir(repo_dir):
+            if r["role"] == "read" and args.host == "thinkpad-x1":
+                lines.append("\t".join([r["repo"], "read", repo_dir] + ["-"] * 13 + ["absent"]))
+                continue
+            print(f"worktrees: scope row {r['repo']} ({r['role']}) is missing: {repo_dir}", file=sys.stderr)
+            return 1
+        if not args.no_fetch:
+            git(repo_dir, "fetch", "--quiet", "origin")
+        for i, wt in enumerate(parse_worktrees(repo_dir)):
+            merged = i > 0 and merged_state(repo_dir, wt, r["repo"], args.origin, gh)
+            facts, rules = evaluate(r["role"], wt, merged, now)
+            if i == 0:
+                verdict = "main checkout"
+            elif r["role"] == "read":
+                verdict = "left for the cutover"
+            else:
+                verdict = "removable" if all(rules) else "not removable"
+            lines.append("\t".join([r["repo"], r["role"], wt["path"], wt["branch"], yn(merged),
+                                    yn(wt["locked"]), str(facts["dirty"]), str(facts["ignored"]),
+                                    yn(facts["process"]), facts["mtime"], *map(yn, rules), verdict]))
+    text = "\n".join(lines) + "\n"
+    sys.stdout.write(text)
+    if args.out:
+        with open(args.out, "w") as f:
+            f.write(text)
+    return 0
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--scope", default=DEFAULT_SCOPE)
+    ap.add_argument("--origin", default="origin/main", help="ref a branch is merged into")
+    ap.add_argument("--no-fetch", action="store_true")
+    ap.add_argument("--host", default="")
+    ap.add_argument("--out")
+    sys.exit(run(ap.parse_args()))
+
+
+if __name__ == "__main__":
+    main()
