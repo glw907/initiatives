@@ -32,3 +32,15 @@ github	description:approval-queue	done	2026-10-14T15:44:07-08:00
 github	stage	done (5 repos deleted, 7 descriptions set; post-query with positive control)	2026-10-14T15:44:07-08:00
 local	worktrees-verdict	tool listed 58 rows; 0 marked removable (every row fails r1 to r6 or is a main checkout); 0 removed; C9-reserved worktrees refused by name	2026-10-14T15:45:03-08:00
 local	precheck	7 local rows match expect (HEAD and branch tips, file counts, mtimes); 4 remote-only rows absent locally; ecxc-ski fold commit present on branch worktree-repo-organization (PR not yet open)	2026-10-14T15:45:03-08:00
+local	dir:healthy-diet	done (removed after matching expect)	2026-10-14T15:46:06-08:00
+local	dir:pings	done (removed after matching expect)	2026-10-14T15:46:06-08:00
+local	dir:personal-styles	done (removed after matching expect)	2026-10-14T15:46:06-08:00
+local	dir:cairn-scratch	done (removed after matching expect)	2026-10-14T15:46:06-08:00
+local	dir:ecxc-ski-agent-memory	done (removed after matching expect)	2026-10-14T15:46:06-08:00
+local	dir:aksailingclub-sveltekit	done (removed after matching expect)	2026-10-14T15:46:06-08:00
+local	dir:displaywidth	done (removed after matching expect)	2026-10-14T15:46:06-08:00
+local	dir:cairn-scratch-b	already-absent (no local copy on pavilion)	2026-10-14T15:46:06-08:00
+local	dir:kit	already-absent (no local copy on pavilion)	2026-10-14T15:46:06-08:00
+local	dir:jrnl-md	already-absent (no local copy on pavilion)	2026-10-14T15:46:06-08:00
+local	dir:hugo-blog-template	already-absent (no local copy on pavilion)	2026-10-14T15:46:06-08:00
+local	stage	done	2026-10-14T15:46:06-08:00
