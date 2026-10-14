@@ -13,3 +13,4 @@ cloudflare	worker:cairn-scratch-b	done	2026-10-14T14:57:04-08:00
 cloudflare	d1:cbd3fdba-fc6b-47d7-b2a0-537543e880e9	done	2026-10-14T15:00:32-08:00
 cloudflare	d1:1fe11784-f64e-408f-8bc2-029e997c11a9	done	2026-10-14T15:03:51-08:00
 cloudflare	kv:5c126cfe4a984f74bd37e67bae3e9512	done	2026-10-14T15:07:12-08:00
+cloudflare	dns:a7c2b9103ec7d835d72f356489072e5b/6d431fecfc01ca963db1bf6c25c43664	already-absent	2026-10-14T15:07:14-08:00
