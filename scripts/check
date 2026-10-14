@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+"""Validate every initiative record and the README index; exit 1 on any failure.
+
+Usage: scripts/check [--repos] [ROOT]
+
+--repos adds the one check CI skips: each `repos` entry must be a repo of
+glw907, read from `gh repo list` under the caller's login (private repos
+show only there). INITIATIVES_GH names a replacement for the `gh` binary.
+"""
+
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import records  # noqa: E402
+
+
+def github_repos() -> set[str]:
+    """Return the repo names of glw907, failing loudly if gh does."""
+    gh = os.environ.get("INITIATIVES_GH", "gh")
+    run = subprocess.run(
+        [gh, "repo", "list", "glw907", "--limit", "200", "--json", "name", "--jq", ".[].name"],
+        capture_output=True,
+        text=True,
+    )
+    if run.returncode != 0 or not run.stdout.strip():
+        sys.exit(f"scripts/check: gh repo list failed: {run.stderr.strip() or 'empty list'}")
+    return set(run.stdout.split())
+
+
+def main(argv: list[str]) -> int:
+    args = [a for a in argv if a != "--repos"]
+    root = Path(args[0]) if args else Path(__file__).resolve().parent.parent
+    recs, errors = records.load(root)
+    if recs:
+        readme = root / "README.md"
+        block = records.index_block(readme.read_text()) if readme.is_file() else None
+        if block is None:
+            errors.append(("README.md", "has no index markers"))
+        elif block != records.render_index(recs):
+            errors.append(("README.md", "index disagrees with the records; run scripts/index"))
+    if "--repos" in argv:
+        known = github_repos()
+        for dirname, data in recs:
+            for repo in data["repos"]:
+                if repo not in known:
+                    errors.append((f"{dirname}/initiative.yaml", f"repo {repo!r} is not a glw907 repo"))
+    for path, message in errors:
+        print(f"{path}: {message}")
+    return 1 if errors else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

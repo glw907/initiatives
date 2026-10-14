@@ -1,0 +1,7 @@
+id: alpha
+title: Title of alpha
+summary: A fixture record named alpha.
+status: active
+owner: glw907
+created: 2026-10-12
+repos: [workstation, drafter]
