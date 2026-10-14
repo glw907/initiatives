@@ -1,0 +1,375 @@
+#!/usr/bin/env python3
+"""Run the repo-organization pass's six end-to-end checks over scope.tsv for one host."""
+import argparse
+import glob
+import json
+import os
+import re
+import shlex
+import shutil
+import signal
+import subprocess
+import sys
+import tempfile
+import time
+import urllib.error
+import urllib.request
+
+TOOL_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(TOOL_DIR))
+ORG = os.path.join(ROOT, "repo-organization")
+OWNER = "glw907"
+ROADMAP_REPOS = ["907-life", "aksailingclub-org", "cairn-pub", "cairn-themes", "dubplate",
+                 "ecxc-ski", "phonebook", "poplar", "workstation", "xcathletes-org"]
+NOT_FOUND_REPO = "Could not resolve to a Repository"
+CF_PATHS = {  # manifest kind -> API path under the account
+    "worker": "workers/scripts/{}",
+    "d1": "d1/database/{}",
+    "r2": "r2/buckets/{}",
+    "kv": "storage/kv/namespaces/{}",
+    "pages": "pages/projects/{}",
+    "access-app": "access/apps/{}",
+}
+
+
+class Ctx:
+    def __init__(self, args):
+        self.args = args
+        self.home = os.environ.get("E2E_HOME") or os.environ.get("HOME") or os.path.expanduser("~")
+        self.gh = shlex.split(os.environ.get("E2E_GH", "gh"))
+        self.timeout = float(os.environ.get("E2E_TIMEOUT", "30"))
+
+    def expand(self, path):
+        if path.startswith("~/Projects/"):
+            root = os.environ.get("PROJECTS_ROOT") or os.path.join(self.home, "Projects")
+            return os.path.join(root, path[len("~/Projects/"):])
+        if path.startswith("~/"):
+            return os.path.join(self.home, path[2:])
+        return path
+
+    def run(self, cmd, **kw):
+        return subprocess.run(cmd, capture_output=True, text=True, **kw)
+
+
+def tool_sha():
+    out = subprocess.run(["git", "-C", TOOL_DIR, "rev-parse", "HEAD"], capture_output=True, text=True)
+    return out.stdout.strip() if out.returncode == 0 and out.stdout.strip() else "unknown"
+
+
+def read_tsv(path):
+    with open(path) as f:
+        rows = [line.rstrip("\n").split("\t") for line in f if line.strip()]
+    return [dict(zip(rows[0], r)) for r in rows[1:]]
+
+
+def read_manifest(path):
+    """Return the manifest rows (stage, kind, id, action, expect); the one place its format is parsed."""
+    return read_tsv(path)
+
+
+def scope_path(ctx, repo):
+    for r in read_tsv(ctx.args.scope):
+        if r["repo"] == repo:
+            return ctx.expand(r["path"])
+    return None
+
+
+def check_refs(ctx):
+    a = ctx.args
+    baseline = os.path.join(a.state_dir, f"refs-baseline-{a.host}.tsv")
+    if not os.path.isfile(baseline):
+        return False, f"baseline {baseline} is missing"
+    refs = shlex.split(os.environ.get("E2E_REFS", os.path.join(TOOL_DIR, "refs")))
+    cmd = refs + ["check", "--host", a.host, "--state-dir", a.state_dir, "--scope", a.scope]
+    if a.map:
+        cmd += ["--map", a.map]
+    p = ctx.run(cmd)
+    bad = [ln for ln in p.stdout.splitlines() if ln.split("\t")[0] in ("broken", "live-tie")]
+    if p.returncode != 0 or bad:
+        return False, f"refs check exit {p.returncode}, {len(bad)} new broken or live-tie path(s)"
+    return True, "no new broken or live-tie path (retired-target excluded)"
+
+
+def records(ctx):
+    out = []
+    for f in sorted(glob.glob(os.path.join(ctx.args.records, "*", "initiative.yaml"))):
+        text = open(f).read()
+        rid = re.search(r"^id:\s*(\S+)", text, re.M)
+        status = re.search(r"^status:\s*(\S+)", text, re.M)
+        repos = re.search(r"^repos:\s*\[(.*)\]", text, re.M)
+        if rid and status and status.group(1) in ("active", "proposed"):
+            names = [s.strip() for s in repos.group(1).split(",")] if repos else []
+            out.append((rid.group(1), [n for n in names if n]))
+    return out
+
+
+def check_session(ctx):
+    gather = ctx.args.gather or ctx.expand("~/.dotfiles/claude/.claude/gather-dotfiles.sh")
+    recs = records(ctx)
+    parent = "initiatives"
+    parent_dir = scope_path(ctx, parent)
+    if not parent_dir or not os.path.isdir(parent_dir):
+        return False, f"no checkout of {parent} to hang a worktree on"
+    tmp = tempfile.mkdtemp(prefix="e2e-wt-")
+    wt = os.path.join(tmp, "wt")
+    made = ctx.run(["git", "-C", parent_dir, "worktree", "add", "--detach", wt])
+    if made.returncode != 0:
+        shutil.rmtree(tmp, ignore_errors=True)
+        return False, f"could not add a worktree of {parent}: {made.stderr.strip()}"
+    cases = [("drafter", ctx.expand("~/Projects/drafter"), "drafter"),
+             ("workstation", ctx.expand("~/.dotfiles"), "workstation"),
+             ("worktree", wt, parent)]
+    problems = []
+    try:
+        for label, cwd, repo in cases:
+            want = [rid for rid, repos in recs if repo in repos]
+            if not want:
+                problems.append(f"{label}: no active or proposed record lists {repo}")
+                continue
+            if not os.path.isdir(cwd):
+                problems.append(f"{label}: {cwd} is missing")
+                continue
+            p = ctx.run(["bash", gather], cwd=cwd)
+            missing = [w for w in want if not re.search(rf"(?<![\w-]){re.escape(w)}(?![\w-])", p.stdout)]
+            if p.returncode != 0:
+                problems.append(f"{label}: gather exited {p.returncode}")
+            elif missing:
+                problems.append(f"{label}: output lacks {', '.join(missing)}")
+    finally:
+        ctx.run(["git", "-C", parent_dir, "worktree", "remove", "--force", wt])
+        shutil.rmtree(tmp, ignore_errors=True)
+    if problems:
+        return False, "; ".join(problems)
+    return True, "drafter, ~/.dotfiles, and a worktree print their records"
+
+
+def listener_pid(port):
+    inodes = set()
+    for f in ("/proc/net/tcp", "/proc/net/tcp6"):
+        try:
+            lines = open(f).read().splitlines()[1:]
+        except OSError:
+            continue
+        for ln in lines:
+            cols = ln.split()
+            if cols[3] == "0A" and int(cols[1].rsplit(":", 1)[1], 16) == port:
+                inodes.add(cols[9])
+    for fd in glob.glob("/proc/[0-9]*/fd/*"):
+        try:
+            tgt = os.readlink(fd)
+        except OSError:
+            continue
+        m = re.fullmatch(r"socket:\[(\d+)\]", tgt)
+        if m and m.group(1) in inodes:
+            return int(fd.split("/")[2])
+    return None
+
+
+def wait_for(fn, timeout):
+    end = time.time() + timeout
+    while time.time() < end:
+        v = fn()
+        if v:
+            return v
+        time.sleep(0.1)
+    return fn()
+
+
+def check_queue(ctx):
+    port = int(os.environ.get("E2E_QUEUE_PORT", "7907"))
+    state = os.environ.get("E2E_QUEUE_STATE") or ctx.expand("~/.local/state/approval-queue")
+    items = os.path.join(state, "items")
+    brief = ctx.expand("~/Projects/approval-queue/tests/fixtures/e2e-brief.md")
+    build = ctx.expand("~/Projects/approval-queue/approval-queue/build")
+    if os.path.isdir(ctx.expand("~/.dotfiles/approval-queue")):
+        return False, "~/.dotfiles/approval-queue/ still exists"
+    if not os.path.isfile(brief):
+        return False, f"fixture brief {brief} is missing"
+    if listener_pid(port) is not None:
+        return False, f"a process already listens on port {port}"
+    cmd = shlex.split(os.environ.get("E2E_APPROVAL_QUEUE", "approval-queue"))
+    before = set(glob.glob(os.path.join(items, "*", "item.json")))
+    proc = subprocess.Popen(cmd + ["design", "approval-queue", "e2e check", brief],
+                            stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                            stderr=subprocess.DEVNULL, start_new_session=True)
+    why = None
+    item = None
+    try:
+        def new_item():
+            return next(iter(set(glob.glob(os.path.join(items, "*", "item.json"))) - before), None)
+        item = wait_for(new_item, ctx.timeout)
+        if not item:
+            why = "no new item.json appeared"
+        else:
+            pid = wait_for(lambda: listener_pid(port), ctx.timeout)
+            if pid is None:
+                why = f"nothing listens on port {port}"
+            else:
+                try:
+                    argv = open(f"/proc/{pid}/cmdline").read().split("\0")
+                except OSError:
+                    argv = []
+                if not any(build in arg for arg in argv):
+                    why = f"serving process {pid} does not name {build}"
+    finally:
+        if proc.poll() is None:
+            proc.send_signal(signal.SIGTERM)
+        try:
+            proc.wait(timeout=ctx.timeout)
+        except subprocess.TimeoutExpired:
+            os.killpg(proc.pid, signal.SIGKILL)
+            why = why or "the waiting command ignored TERM"
+    if why:
+        return False, why
+    if not wait_for(lambda: not os.path.exists(item), ctx.timeout):
+        return False, "item.json outlived the waiting command"
+    return True, "item served by the build under approval-queue, then withdrawn"
+
+
+def check_realpaths(ctx):
+    drafter = os.path.realpath(ctx.expand("~/Projects/drafter"))
+    problems = []
+    details = []
+    for p in ("~/.claude/workflows/docs-page-chain.js", "~/.local/bin/cairn-docs-outline"):
+        real = os.path.realpath(ctx.expand(p))
+        details.append(f"{p} -> {real}")
+        if not os.path.exists(real) or not real.startswith(drafter + os.sep):
+            problems.append(f"{p} does not resolve under drafter")
+    st = ctx.run(["git", "-C", ctx.expand("~/.dotfiles"), "status", "--porcelain"])
+    if st.returncode != 0:
+        problems.append("git status of ~/.dotfiles failed")
+    elif st.stdout.strip():
+        problems.append("~/.dotfiles is dirty")
+    if problems:
+        return False, "; ".join(problems)
+    return True, "; ".join(details) + "; ~/.dotfiles clean"
+
+
+def cf_gone(kind, rid):
+    """Return (gone, detail); only an HTTP 404 counts as gone."""
+    token = os.environ.get("CLOUDFLARE_API_TOKEN")
+    acct = os.environ.get("CLOUDFLARE_ACCOUNT_ID")
+    if not token or not acct:
+        return False, "no API token or account id in the environment"
+    if kind not in CF_PATHS and kind not in ("dns", "route"):
+        return False, f"unknown cloudflare kind {kind}"
+    base = os.environ.get("E2E_CF_API", "https://api.cloudflare.com/client/v4")
+    if kind == "dns":  # id is <zone id>/<record id>
+        zone, _, rec = rid.partition("/")
+        url = f"{base}/zones/{zone}/dns_records/{rec}"
+    elif kind == "route":  # id is a custom-domain hostname; the list has no per-host 404
+        url = f"{base}/accounts/{acct}/workers/domains"
+    else:
+        url = f"{base}/accounts/{acct}/{CF_PATHS[kind].format(rid)}"
+    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {token}"})
+    try:
+        with urllib.request.urlopen(req, timeout=20) as r:
+            if kind == "route":
+                result = json.load(r).get("result")
+                if not isinstance(result, list) or not result:
+                    return False, f"route {rid}: the domain list is empty or malformed, so absence proves nothing"
+                if any(d.get("hostname") == rid for d in result):
+                    return False, f"route {rid} still resolves"
+                return True, ""
+            return False, f"{kind} {rid} still resolves (HTTP {r.status})"
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return True, ""
+        return False, f"{kind} {rid} gave HTTP {e.code}, not a not-found"
+    except (urllib.error.URLError, OSError) as e:
+        return False, f"{kind} {rid} query failed: {e}"
+
+
+def check_retirement(ctx):
+    rows = read_manifest(ctx.args.manifest)
+    cf = [r for r in rows if r["stage"] == "cloudflare"]
+    repos = [r for r in rows if r["kind"] == "repo" and r["action"] == "delete"]
+    if not cf:
+        return False, "manifest has no cloudflare rows"
+    if not repos:
+        return False, "manifest has no deleted-repo rows"
+    pos = ctx.run(ctx.gh + ["repo", "view", f"{OWNER}/initiatives"])
+    if pos.returncode != 0:
+        return False, "inconclusive: gh repo view glw907/initiatives failed"
+    problems = []
+    for r in cf:
+        gone, why = cf_gone(r["kind"], r["id"])
+        if not gone:
+            problems.append(why)
+    for r in repos:
+        p = ctx.run(ctx.gh + ["repo", "view", f"{OWNER}/{r['id']}"])
+        if p.returncode == 0 or NOT_FOUND_REPO not in p.stderr + p.stdout:
+            problems.append(f"repo {r['id']} is not reported gone")
+    for s in read_tsv(ctx.args.scope):
+        if s["role"] == "retire" and os.path.exists(ctx.expand(s["path"])):
+            problems.append(f"retired directory {s['repo']} still exists")
+    if problems:
+        return False, "; ".join(problems)
+    return True, f"{len(cf)} cloudflare ids and {len(repos)} repos gone, no retired directory"
+
+
+def check_roadmap(ctx):
+    names = os.environ.get("E2E_ROADMAP_REPOS")
+    repos = [n for n in names.split(",") if n] if names is not None else ROADMAP_REPOS
+    if len(repos) != 10:
+        return False, f"ROADMAP repo list numbers {len(repos)}, not 10"
+    desc = {r["id"]: r["action"] for r in read_manifest(ctx.args.manifest) if r["kind"] == "description"}
+    if not desc:
+        return False, "manifest has no description rows"
+    problems = []
+    for repo in repos:
+        d = scope_path(ctx, repo)
+        if not d or not os.path.isdir(d):
+            problems.append(f"{repo}: no local checkout")
+        elif os.path.exists(os.path.join(d, "ROADMAP.md")):
+            problems.append(f"{repo}: local ROADMAP.md exists")
+        p = ctx.run(ctx.gh + ["api", f"repos/{OWNER}/{repo}/contents/ROADMAP.md"])
+        if p.returncode == 0:
+            problems.append(f"{repo}: ROADMAP.md on origin/main")
+        elif "404" not in p.stderr + p.stdout:
+            problems.append(f"{repo}: ROADMAP query gave no 404")
+        if repo not in desc:
+            problems.append(f"{repo}: no approved description in the manifest")
+    for repo, text in desc.items():
+        p = ctx.run(ctx.gh + ["repo", "view", f"{OWNER}/{repo}", "--json", "description",
+                              "--jq", ".description"])
+        if p.returncode != 0 or p.stdout.rstrip("\n") != text:
+            problems.append(f"{repo}: description differs from the approved text")
+    if problems:
+        return False, "; ".join(problems)
+    return True, "no ROADMAP.md in the ten repos, descriptions match"
+
+
+CHECKS = [(1, "refs", check_refs), (2, "session-start", check_session), (3, "queue", check_queue),
+          (4, "realpaths", check_realpaths), (5, "retirement", check_retirement),
+          (6, "roadmap-descriptions", check_roadmap)]
+
+
+def main():
+    ap = argparse.ArgumentParser(prog="e2e-check", description=__doc__)
+    ap.add_argument("--host", required=True)
+    ap.add_argument("--only", type=int, choices=range(1, 7), metavar="N")
+    ap.add_argument("--state-dir", default=os.path.expanduser("~/.local/state/repo-organization"))
+    ap.add_argument("--scope", default=os.path.join(ORG, "scope.tsv"))
+    ap.add_argument("--map", help="migration map passed to refs")
+    ap.add_argument("--manifest", default=os.path.join(ORG, "research", "retire-manifest.tsv"))
+    ap.add_argument("--records", default=ROOT, help="directory of <id>/initiative.yaml records")
+    ap.add_argument("--gather", help="path of gather-dotfiles.sh")
+    args = ap.parse_args()
+    ctx = Ctx(args)
+    print(f"e2e-check {tool_sha()}")
+    failed = 0
+    for n, name, fn in CHECKS:
+        if args.only and args.only != n:
+            continue
+        try:
+            ok, detail = fn(ctx)
+        except Exception as e:  # a crashed check is a failed check
+            ok, detail = False, f"{type(e).__name__}: {e}"
+        failed += not ok
+        print(f"{'ok  ' if ok else 'FAIL'} {n} {name}: {detail}")
+    sys.exit(1 if failed else 0)
+
+
+if __name__ == "__main__":
+    main()

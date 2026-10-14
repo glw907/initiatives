@@ -1,0 +1,7 @@
+id: beta
+title: Title of beta
+summary: A fixture record named beta.
+status: proposed
+owner: glw907
+created: 2026-10-12
+repos: [workstation, no-such-repo]

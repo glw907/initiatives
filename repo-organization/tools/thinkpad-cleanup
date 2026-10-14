@@ -1,0 +1,168 @@
+#!/usr/bin/env python3
+"""Plan, and with --apply perform, the removal of retired local directories on the thinkpad.
+
+Manifest rows (stage, kind, id, action, expect) matter when kind is local-dir or local-tar,
+action is remove, and id names a retire row of scope.tsv. A git target's expect is
+space-separated tokens, HEAD=<sha> and refs/heads/<branch>=<sha>; a plain directory's is
+mtime=<newest file mtime, whole seconds> and files=<file count>.
+"""
+import argparse
+import hashlib
+import os
+import shutil
+import subprocess
+import sys
+
+TOOL_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(TOOL_DIR))
+DEFAULT_SCOPE = os.path.join(ROOT, "repo-organization", "scope.tsv")
+MANIFEST_HEADER = "stage\tkind\tid\taction\texpect"
+
+
+def expand(path):
+    home = os.environ.get("HOME", os.path.expanduser("~"))
+    if path.startswith("~/Projects/"):
+        root = os.environ.get("PROJECTS_ROOT") or os.path.join(home, "Projects")
+        return os.path.join(root, path[len("~/Projects/"):])
+    if path.startswith("~/"):
+        return os.path.join(home, path[2:])
+    return path
+
+
+def tool_sha():
+    out = subprocess.run(["git", "-C", TOOL_DIR, "rev-parse", "HEAD"], capture_output=True, text=True)
+    return out.stdout.strip() if out.returncode == 0 and out.stdout.strip() else "unknown"
+
+
+def die(msg):
+    print(f"thinkpad-cleanup {SHA}: {msg}", file=sys.stderr)
+    sys.exit(2)
+
+
+def git(path, *args):
+    return subprocess.run(["git", "-C", path, *args], capture_output=True, text=True)
+
+
+def read_tsv(lines):
+    rows = [ln.split("\t") for ln in lines if ln.strip()]
+    return [dict(zip(rows[0], r + [""] * (len(rows[0]) - len(r)))) for r in rows[1:]]
+
+
+def manifest_lines(args):
+    if args.manifest:
+        with open(args.manifest) as f:
+            return f.read().splitlines()
+    with open(args.doc, "rb") as f:
+        data = f.read()
+    if not args.doc_sha256:
+        die("--doc needs --doc-sha256")
+    if hashlib.sha256(data).hexdigest() != args.doc_sha256.lower():
+        die("doc sha256 mismatch; nothing was done")
+    blocks, cur = [], None
+    for line in data.decode().splitlines():
+        if line.startswith("```"):
+            if cur is None:
+                cur = []
+            else:
+                blocks.append(cur)
+                cur = None
+        elif cur is not None:
+            cur.append(line)
+    for block in blocks:
+        if block and block[0] == MANIFEST_HEADER:
+            return block
+    die("no fenced manifest block in the doc")
+
+
+def git_facts(path):
+    facts = {"HEAD=" + git(path, "rev-parse", "HEAD").stdout.strip()}
+    for line in git(path, "for-each-ref", "--format=%(refname)=%(objectname)", "refs/heads").stdout.split():
+        facts.add(line)
+    return facts
+
+
+def dir_facts(path):
+    newest, count = 0, 0
+    for base, _, names in os.walk(path):
+        for n in names:
+            count += 1
+            newest = max(newest, int(os.lstat(os.path.join(base, n)).st_mtime))
+    return {f"mtime={newest}", f"files={count}"}
+
+
+def judge(path, expect, kind):
+    """Return (remote note, verdict, detail) for one existing target."""
+    is_git = os.path.isdir(os.path.join(path, ".git"))
+    remotes = git(path, "remote").stdout.split() if is_git else []
+    note = "remote" if remotes else "no remote"
+    # A stash lives only in this checkout, so removing the directory would lose it.
+    if is_git and git(path, "stash", "list").stdout.strip():
+        return note, "refused", "stash present"
+    if remotes:
+        dirty = git(path, "status", "--porcelain").stdout.strip()
+        unpushed = [r.split("=")[0] for r in git_facts(path) if r.startswith("refs/heads/")
+                    and not git(path, "branch", "-r", "--contains", r.split("=")[1]).stdout.strip()]
+        if dirty or unpushed:
+            return note, "refused", "uncommitted or unpushed work: " + " ".join(unpushed or ["dirty tree"])
+        return note, "removable", "clean and pushed"
+    want = set(expect.split())
+    have = git_facts(path) if is_git else dir_facts(path)
+    if is_git and git(path, "status", "--porcelain").stdout.strip():
+        return note, "refused", "uncommitted changes"
+    if have == want:
+        return note, "removable", "matches expect: " + " ".join(sorted(have))
+    detail = "differs from expect; found " + " ".join(sorted(have)) + "; expected " + " ".join(sorted(want))
+    if kind == "local-tar":
+        detail += "; join the thinkpad tar under R0's rules before any removal (not run by this tool)"
+    return note, "refused", detail
+
+
+def run(args):
+    scope = read_tsv(open(args.scope).read().splitlines())
+    retire = {r["repo"]: expand(r["path"]) for r in scope if r["role"] == "retire"}
+    rows = read_tsv(manifest_lines(args))
+    by_id = {r["id"]: r for r in rows if r["kind"] in ("local-dir", "local-tar") and r["id"] in retire}
+    print(f"thinkpad-cleanup {SHA}")
+    print(f"mode: {'apply' if args.apply else 'dry run'}")
+    removable, refused = [], []
+    for repo, path in retire.items():
+        row = by_id.get(repo)
+        if row is None:
+            print(f"{repo}\tskipped\tno manifest row")
+            continue
+        if row["action"] != "remove":
+            print(f"{repo}\tskipped\taction {row['action']!r} is not handled here")
+            continue
+        if not os.path.isdir(path) or os.path.islink(path):
+            print(f"{repo}\tabsent\t{path}")
+            continue
+        note, verdict, detail = judge(path, row["expect"], row["kind"])
+        print(f"{repo}\t{note}\t{verdict}\t{detail}")
+        (removable if verdict == "removable" else refused).append((repo, path))
+    if refused:
+        print("for Geoff: " + ", ".join(r for r, _ in refused))
+    if args.apply:
+        for repo, path in removable:
+            if os.path.realpath(path) != os.path.realpath(retire[repo]):
+                die(f"refusing to remove a path outside the scope retire row for {repo}")
+            shutil.rmtree(path)
+            print(f"{repo}\tremoved\t{path}")
+        return 1 if refused else 0
+    return 0
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--scope", default=DEFAULT_SCOPE)
+    src = ap.add_mutually_exclusive_group(required=True)
+    src.add_argument("--manifest")
+    src.add_argument("--doc")
+    ap.add_argument("--doc-sha256")
+    ap.add_argument("--apply", action="store_true")
+    sys.exit(run(ap.parse_args()))
+
+
+SHA = tool_sha()
+
+if __name__ == "__main__":
+    main()

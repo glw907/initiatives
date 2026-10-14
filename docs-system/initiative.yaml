@@ -1,0 +1,7 @@
+id: docs-system
+title: Docs system
+summary: Builds the pipeline, outline standard, and Claude infrastructure that handle docs for every project.
+status: active
+owner: glw907
+created: 2026-10-12
+repos: [drafter, workstation]

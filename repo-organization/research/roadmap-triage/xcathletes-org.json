@@ -1,0 +1,27 @@
+{
+  "headline": "You sort the 4 roadmap entries of the XC Athletes site; approving moves each one where you marked it and retires the roadmap.",
+  "lede": "This roadmap holds 4 entries. Do now turns an entry into its own initiative record, Do later moves it to the backlog, and Don't do drops it.",
+  "rows": [
+    {
+      "action": "#1 The data contract (`data-contract`)",
+      "why": "now: becomes record `xcathletes-data-contract`. Your 2026-08-23 ruling makes it the platform's purpose, and pass 6 is next.",
+      "proposed": "now",
+      "detail": "Proposed record id `xcathletes-data-contract`, repos: `xcathletes-org`."
+    },
+    {
+      "action": "#2 PR test CI (`pr-test-ci`)",
+      "why": "defer: moves to BACKLOG.md. A small workflow addition with no larger purpose.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#3 Comprehensive voice sweep (`voice-sweep`)",
+      "why": "defer: moves to BACKLOG.md. A scoped sweep with a named remaining list.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#4 Conformance certification mark (`xclog-mark`)",
+      "why": "defer: moves to BACKLOG.md. You ruled it deferred until a dated conformance result exists.",
+      "proposed": "defer"
+    }
+  ]
+}

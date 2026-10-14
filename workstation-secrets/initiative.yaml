@@ -1,0 +1,7 @@
+id: workstation-secrets
+title: Workstation secrets
+summary: Would track the age-encrypted secrets across both workstations so no machine holds one the other lacks.
+status: proposed
+owner: glw907
+created: 2026-10-14
+repos: [workstation]

@@ -1,0 +1,7 @@
+id: cairn-pub-rebuild
+title: Cairn.pub rebuild
+summary: Would rebuild cairn.pub on the current cairn as the site the docs system publishes to.
+status: proposed
+owner: glw907
+created: 2026-10-14
+repos: [cairn-pub]

@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+"""Rewrite the README index table from the initiative.yaml files.
+
+Usage: scripts/index [ROOT]
+"""
+
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import records  # noqa: E402
+
+
+def main(argv: list[str]) -> int:
+    root = Path(argv[0]) if argv else Path(__file__).resolve().parent.parent
+    recs, errors = records.load(root)
+    if errors:
+        for path, message in errors:
+            print(f"{path}: {message}", file=sys.stderr)
+        print("scripts/index: fix the records first", file=sys.stderr)
+        return 1
+    readme = root / "README.md"
+    text = readme.read_text()
+    if records.index_block(text) is None:
+        print("README.md: has no index markers", file=sys.stderr)
+        return 1
+    readme.write_text(records.splice_index(text, records.render_index(recs)))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

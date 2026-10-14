@@ -1,0 +1,7 @@
+id: gamma
+title: Title of gamma
+summary: A fixture record named gamma.
+status: active
+owner: glw907
+created: 2026-10-12
+repos: [workstation, drafter]

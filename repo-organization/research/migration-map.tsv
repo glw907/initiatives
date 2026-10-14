@@ -1,0 +1,194 @@
+source_repo	old_path	new_repo	new_path	initiative	state	pin
+workstation	docs/superpowers/specs/2026-06-22-ai-drafting-prose-system-design.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-06-22-authoring-standards-design.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-06-22-code-comment-standards-design.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-08-21-fable-conductor-design.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-08-30-architecture-refinement-charter.md	dubplate	docs/superpowers/specs/2026-08-30-architecture-refinement-charter.md		moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-08-30-dubplate-go-rewrite-design.md	dubplate	docs/superpowers/specs/2026-08-30-dubplate-go-rewrite-design.md		collision-differs	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-08-30-music-library-design.md	dubplate	docs/superpowers/specs/2026-08-30-music-library-design.md		moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-08-30-music-vps-build-design.md	dubplate	docs/superpowers/specs/2026-08-30-music-vps-build-design.md		moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-08-30-pings-worker-design.md	pings			leaves-with-pings	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-08-30-upload-check-design.md	dubplate	docs/superpowers/specs/2026-08-30-upload-check-design.md		moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-08-31-dubplate-uploader-design.md	dubplate	docs/superpowers/specs/2026-08-31-dubplate-uploader-design.md		collision-differs	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-09-04-fable-5-1-infra-update-design.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-09-28-claude-infra-sweep-design.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-10-10-lean-pass-process-design.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-10-11-infra-skill-and-proportionality-design.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-10-11-infra-sweep-2-design.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-10-11-merge-guard-design.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-10-11-review-desk-design.md	initiatives	approval-queue/specs/2026-10-11-review-desk-design.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-10-11-review-desk-ui-design.md	initiatives	approval-queue/specs/2026-10-11-review-desk-ui-design.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-10-12-approval-queue-design.md	initiatives	approval-queue/specs/2026-10-12-approval-queue-design.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-10-12-approval-queue-mockups	initiatives	approval-queue/specs/2026-10-12-approval-queue-mockups	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-10-12-drafter-pipeline-design.md	initiatives	docs-system/specs/2026-10-12-drafter-pipeline-design.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-10-13-drafter-completion-design.md	initiatives	docs-system/specs/2026-10-13-drafter-completion-design.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/2026-10-13-thunderbird-nord-mail-design.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/specs/assets	initiatives	approval-queue/specs/assets	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-08-30-bluefin-repo-reorg.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-08-30-dubplate-go-rewrite.md	dubplate	docs/superpowers/plans/2026-08-30-dubplate-go-rewrite.md		collision-identical	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-08-30-music-vps-build.md	dubplate	docs/superpowers/plans/2026-08-30-music-vps-build.md		moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-08-30-musicbox-arch-refinement-findings.json	dubplate	docs/superpowers/plans/2026-08-30-musicbox-arch-refinement-findings.json		moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-08-30-musicbox-arch-refinement.md	dubplate	docs/superpowers/plans/2026-08-30-musicbox-arch-refinement.md		moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-08-30-pings-worker.md	pings			leaves-with-pings	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-08-30-post-review-fix-pass.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-08-31-dubplate-uploader.md	dubplate	docs/superpowers/archive/plans/2026-08-31-dubplate-uploader.md		collision-differs	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-09-04-fable-5-1-infra-update.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-09-04-fable-5-1-outside-evidence.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-09-04-prompt-audit-report.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-09-08-claude-md-displacement-candidates.md	initiatives	cairn-docs-standard/plans/2026-09-08-claude-md-displacement-candidates.md	cairn-docs-standard	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-09-08-docs-standard-claude-infra-handoff.md	initiatives	cairn-docs-standard/plans/2026-09-08-docs-standard-claude-infra-handoff.md	cairn-docs-standard	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-09-08-docs-standard-claude-infra.md	initiatives	cairn-docs-standard/plans/2026-09-08-docs-standard-claude-infra.md	cairn-docs-standard	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-09-12-claude-infra-round-handoff.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-09-12-claude-infra-round.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-09-19-docs-infra-currency-pass.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-09-28-infra-sweep-a-core-b.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-10-lean-pass-cutover-prompts	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-10-lean-pass-cutover.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-conductor-prompt.txt	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-infra-skill-planning-prompt.txt	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-infra-skill-prompt.txt	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-infra-skill.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-infra-sweep-1-guard-prompt.txt	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-infra-sweep-1-guard.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-infra-sweep-2-planning-prompt.txt	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-infra-sweep-2-prompt.txt	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-infra-sweep-2.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-poplar-adapter-planning-prompt.txt	poplar	docs/superpowers/plans/2026-10-11-poplar-adapter-planning-prompt.txt		moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-review-desk-planning-prompt.txt	initiatives	approval-queue/plans/2026-10-11-review-desk-planning-prompt.txt	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-review-desk-prompt.txt	initiatives	approval-queue/plans/2026-10-11-review-desk-prompt.txt	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-review-desk-ui-planning-prompt.txt	initiatives	approval-queue/plans/2026-10-11-review-desk-ui-planning-prompt.txt	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-review-desk-ui-prompt.txt	initiatives	approval-queue/plans/2026-10-11-review-desk-ui-prompt.txt	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-review-desk-ui.md	initiatives	approval-queue/plans/2026-10-11-review-desk-ui.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-11-review-desk.md	initiatives	approval-queue/plans/2026-10-11-review-desk.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-12-approval-queue-conductor-prompt.txt	initiatives	approval-queue/plans/2026-10-12-approval-queue-conductor-prompt.txt	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-12-approval-queue-prompt.txt	initiatives	approval-queue/plans/2026-10-12-approval-queue-prompt.txt	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-12-approval-queue.md	initiatives	approval-queue/plans/2026-10-12-approval-queue.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-12-drafter-f1-executor-prompt.md	initiatives	docs-system/plans/2026-10-12-drafter-f1-executor-prompt.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-12-drafter-f1-plan.md	initiatives	docs-system/plans/2026-10-12-drafter-f1-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-12-drafter-pass0-conductor-prompt.md	initiatives	docs-system/plans/2026-10-12-drafter-pass0-conductor-prompt.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-12-drafter-pass0-executor-prompt.md	initiatives	docs-system/plans/2026-10-12-drafter-pass0-executor-prompt.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-12-drafter-pass0-plan.md	initiatives	docs-system/plans/2026-10-12-drafter-pass0-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-completion-conductor-prompt.txt	initiatives	docs-system/plans/2026-10-13-drafter-completion-conductor-prompt.txt	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-followups-executor-prompt.txt	initiatives	docs-system/plans/2026-10-13-drafter-followups-executor-prompt.txt	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-followups-plan.md	initiatives	docs-system/plans/2026-10-13-drafter-followups-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p1-foundations-executor-prompt.txt	initiatives	docs-system/plans/2026-10-13-drafter-p1-foundations-executor-prompt.txt	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p1-foundations-plan.md	initiatives	docs-system/plans/2026-10-13-drafter-p1-foundations-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p2-money-executor-prompt.txt	initiatives	docs-system/plans/2026-10-13-drafter-p2-money-executor-prompt.txt	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p2-money-plan.md	initiatives	docs-system/plans/2026-10-13-drafter-p2-money-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p3-prompts-handoff-executor-prompt.txt	initiatives	docs-system/plans/2026-10-13-drafter-p3-prompts-handoff-executor-prompt.txt	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p3-prompts-handoff-plan.md	initiatives	docs-system/plans/2026-10-13-drafter-p3-prompts-handoff-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p4-page-parts-executor-prompt.txt	initiatives	docs-system/plans/2026-10-13-drafter-p4-page-parts-executor-prompt.txt	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p4-page-parts-plan.md	initiatives	docs-system/plans/2026-10-13-drafter-p4-page-parts-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p5-pipeline-executor-prompt.txt	initiatives	docs-system/plans/2026-10-13-drafter-p5-pipeline-executor-prompt.txt	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-drafter-p5-pipeline-plan.md	initiatives	docs-system/plans/2026-10-13-drafter-p5-pipeline-plan.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-thunderbird-nord-mail-prompt.txt	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/2026-10-13-thunderbird-nord-mail.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/plans/archive	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-08-31-beets-plugin-tally.json	dubplate	docs/superpowers/research/2026-08-31-beets-plugin-tally.json		moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-08-31-beets-plugin-usage.md	dubplate	docs/superpowers/research/2026-08-31-beets-plugin-usage.md		collision-identical	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-08-31-ipados-picker-facts.md	dubplate	docs/superpowers/research/2026-08-31-ipados-picker-facts.md		moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-08-31-uploader-gates-and-ipad-infra.md	dubplate	docs/superpowers/research/2026-08-31-uploader-gates-and-ipad-infra.md		moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-08-31-uploader-prior-art.md	dubplate	docs/superpowers/research/2026-08-31-uploader-prior-art.md		moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-08-31-uploader-ux-practices.md	dubplate	docs/superpowers/research/2026-08-31-uploader-ux-practices.md		moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-09-12-claude-infra-round-review-contract.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-09-12-claude-infra-round-review-domain.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-09-12-claude-infra-round-review-mechanics.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-09-12-claude-infra-round-survey.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-09-28-infra-a-core-b-plan-fold-verification.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-09-28-infra-a-core-b-plan-fold.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-09-28-infra-a-core-b-plan-review-contract.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-09-28-infra-a-core-b-plan-review-domain.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-09-28-infra-a-core-b-plan-review-mechanics.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-09-28-infra-sweep-fold-verification.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-09-28-infra-sweep-fold.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-09-28-infra-sweep-review-anthropic.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-09-28-infra-sweep-review-consistency.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-09-28-infra-sweep-review-contract.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-09-28-infra-sweep-review-mechanics.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-10-anthropic-agentic-guidance.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-10-lean-pass-cutover-plan-final-verification.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-10-lean-pass-cutover-plan-fold-verification.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-10-lean-pass-cutover-plan-fold.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-10-lean-pass-cutover-plan-review-contract.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-10-lean-pass-cutover-plan-review-mechanics.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-10-lean-pass-cutover-plan-review-risk.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-10-lean-pass-process-fold-verification.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-10-lean-pass-process-fold.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-10-lean-pass-process-review-contract.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-10-lean-pass-process-review-mechanics.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-10-lean-pass-process-review-risk.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-10-pass-catch-ledger.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-anthropic-guidance-proportionality.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-cairn-cms-alignment-audit.md	cairn-cms	docs/superpowers/research/2026-10-11-cairn-cms-alignment-audit.md		moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-infra-skill-plan-fold.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-infra-skill-plan-review-mechanics.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-infra-sweep-1-guard-fold-verification.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-infra-sweep-1-guard-plan-fold.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-infra-sweep-1-guard-review-contract.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-infra-sweep-1-guard-review-mechanics.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-infra-sweep-1-guard-review-risk.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-infra-sweep-2-facts.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-infra-sweep-2-found.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-infra-sweep-2-plan-fold.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-infra-sweep-2-review-mechanics.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-infra-sweep-survivor-ledger.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-review-desk-fold-verification.md	initiatives	approval-queue/research/2026-10-11-review-desk-fold-verification.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-review-desk-plan-fold.md	initiatives	approval-queue/research/2026-10-11-review-desk-plan-fold.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-review-desk-review-contract.md	initiatives	approval-queue/research/2026-10-11-review-desk-review-contract.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-review-desk-review-mechanics.md	initiatives	approval-queue/research/2026-10-11-review-desk-review-mechanics.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-review-desk-review-risk.md	initiatives	approval-queue/research/2026-10-11-review-desk-review-risk.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-review-desk-ui-a11y-review.md	initiatives	approval-queue/research/2026-10-11-review-desk-ui-a11y-review.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-review-desk-ui-catalogue.md	initiatives	approval-queue/research/2026-10-11-review-desk-ui-catalogue.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-review-desk-ui-fold-verification.md	initiatives	approval-queue/research/2026-10-11-review-desk-ui-fold-verification.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-review-desk-ui-plan-fold.md	initiatives	approval-queue/research/2026-10-11-review-desk-ui-plan-fold.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-review-desk-ui-review-contract.md	initiatives	approval-queue/research/2026-10-11-review-desk-ui-review-contract.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-review-desk-ui-review-mechanics.md	initiatives	approval-queue/research/2026-10-11-review-desk-ui-review-mechanics.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-11-review-desk-ui-review-risk.md	initiatives	approval-queue/research/2026-10-11-review-desk-ui-review-risk.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-approval-queue-fold.md	initiatives	approval-queue/research/2026-10-12-approval-queue-fold.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-approval-queue-review-mechanics.md	initiatives	approval-queue/research/2026-10-12-approval-queue-review-mechanics.md	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-drafter-pass0-plan-fold.md	initiatives	docs-system/research/2026-10-12-drafter-pass0-plan-fold.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-drafter-pass0-plan-review-mechanics.md	initiatives	docs-system/research/2026-10-12-drafter-pass0-plan-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-drafter-pass0-t7	initiatives	docs-system/research/2026-10-12-drafter-pass0-t7	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-drafter-pipeline-fold.md	initiatives	docs-system/research/2026-10-12-drafter-pipeline-fold.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-drafter-pipeline-review-contract.md	initiatives	docs-system/research/2026-10-12-drafter-pipeline-review-contract.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-drafter-pipeline-review-integrity.md	initiatives	docs-system/research/2026-10-12-drafter-pipeline-review-integrity.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-drafter-pipeline-review-mechanics.md	initiatives	docs-system/research/2026-10-12-drafter-pipeline-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-12-planner-conductor-handoff-brief.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-completion-fold-verification-2.md	initiatives	docs-system/research/2026-10-13-drafter-completion-fold-verification-2.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-completion-fold-verification.md	initiatives	docs-system/research/2026-10-13-drafter-completion-fold-verification.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-completion-plan-fold.md	initiatives	docs-system/research/2026-10-13-drafter-completion-plan-fold.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-followups-fold-verification.md	initiatives	docs-system/research/2026-10-13-drafter-followups-fold-verification.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-followups-plan-fold.md	initiatives	docs-system/research/2026-10-13-drafter-followups-plan-fold.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-followups-review-contract.md	initiatives	docs-system/research/2026-10-13-drafter-followups-review-contract.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-followups-review-data-integrity.md	initiatives	docs-system/research/2026-10-13-drafter-followups-review-data-integrity.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-followups-review-mechanics.md	initiatives	docs-system/research/2026-10-13-drafter-followups-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-p1-review-mechanics.md	initiatives	docs-system/research/2026-10-13-drafter-p1-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-p2-p5-review-contract.md	initiatives	docs-system/research/2026-10-13-drafter-p2-p5-review-contract.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-p2-p5-review-integrity.md	initiatives	docs-system/research/2026-10-13-drafter-p2-p5-review-integrity.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-p2-review-mechanics.md	initiatives	docs-system/research/2026-10-13-drafter-p2-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-p3-review-mechanics.md	initiatives	docs-system/research/2026-10-13-drafter-p3-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-p4-review-mechanics.md	initiatives	docs-system/research/2026-10-13-drafter-p4-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-drafter-p5-review-mechanics.md	initiatives	docs-system/research/2026-10-13-drafter-p5-review-mechanics.md	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-mail-colour-evidence	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-thunderbird-nord-mail-plan-fold.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	docs/superpowers/research/2026-10-13-thunderbird-nord-mail-review-mechanics.md	workstation			stays	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	claude/.claude/workflows/docs-page-chain.js	drafter	claude/.claude/workflows/docs-page-chain.js	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	bin/.local/bin/cairn-docs-outline	drafter	bin/.local/bin/cairn-docs-outline	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	scripts/drafter-gate.sh	drafter	scripts/drafter-gate.sh	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/fixtures/docs-page-chain/	drafter	tests/fixtures/docs-page-chain/	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/fixtures/drafter/	drafter	tests/fixtures/drafter/	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	approval-queue/	approval-queue	approval-queue/	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	bin/.local/bin/approval-queue	approval-queue	bin/.local/bin/approval-queue	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	bin/.local/bin/claude-approval-queue-reminder	approval-queue	bin/.local/bin/claude-approval-queue-reminder	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/docs-page-chain-derivation.test.mjs	drafter	tests/docs-page-chain-derivation.test.mjs	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/docs-page-chain-handoff.test.mjs	drafter	tests/docs-page-chain-handoff.test.mjs	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/docs-page-chain-outline.test.mjs	drafter	tests/docs-page-chain-outline.test.mjs	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/drafter-prompts-parity.sh	drafter	tests/drafter-prompts-parity.sh	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/drafter-render-prompts.mjs	drafter	tests/drafter-render-prompts.mjs	docs-system	deferred:p5	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/approval-queue.test.sh	approval-queue	tests/approval-queue.test.sh	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/claude-approval-queue-reminder.test.sh	approval-queue	tests/claude-approval-queue-reminder.test.sh	approval-queue	moved	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	review-desk/	approval-queue	approval-queue/	approval-queue	history	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	bin/.local/bin/review-desk	approval-queue	bin/.local/bin/approval-queue	approval-queue	history	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	bin/.local/bin/claude-desk-reminder	approval-queue	bin/.local/bin/claude-approval-queue-reminder	approval-queue	history	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/review-desk.test.sh	approval-queue	tests/approval-queue.test.sh	approval-queue	history	8172e2fc9927886e18a74d3cdd1abceb671cc67f
+workstation	tests/claude-desk-reminder.test.sh	approval-queue	tests/claude-approval-queue-reminder.test.sh	approval-queue	history	8172e2fc9927886e18a74d3cdd1abceb671cc67f

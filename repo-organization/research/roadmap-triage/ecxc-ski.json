@@ -1,0 +1,42 @@
+{
+  "headline": "You sort the 7 roadmap entries of the ECXC ski site; approving moves each one where you marked it and retires the roadmap.",
+  "lede": "This roadmap holds 7 entries. Do now turns an entry into its own initiative record, Do later moves it to the backlog, and Don't do drops it.",
+  "rows": [
+    {
+      "action": "#1 ECXC standalone site (`ecnordic-standalone`)",
+      "why": "now: becomes record `ecnordic-standalone`. A multi-pass site build that forks from the 907.life site.",
+      "proposed": "now",
+      "detail": "Proposed record id `ecnordic-standalone`, repos: `ecxc-ski`, `907-life`."
+    },
+    {
+      "action": "#2 Idiomatic 2026 Exemplar (`idiomatic-2026`)",
+      "why": "drop: dropped. Passes 7 and 8 landed; the one open spike is already a backlog item.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#3 Cairn CMS platform (`cairn-cms`)",
+      "why": "drop: dropped. The 907-life roadmap marks this direction superseded.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#4 PR test CI (`pr-test-ci`)",
+      "why": "defer: moves to BACKLOG.md. A small workflow addition with no larger purpose.",
+      "proposed": "defer"
+    },
+    {
+      "action": "#5 Migrate 907.life and ecnordic.ski to Cairn (`site-migrations`)",
+      "why": "drop: dropped. The 907-life roadmap says both sites are already migrated.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#6 AKS Sailing Club site (`aksailingclub`)",
+      "why": "drop: dropped. The aksailingclub-org repo owns this work now.",
+      "proposed": "drop"
+    },
+    {
+      "action": "#7 DC-23 ECXC scoring anchors (`dc23-anchors`)",
+      "why": "defer: moves to BACKLOG.md. A filing task with no build work.",
+      "proposed": "defer"
+    }
+  ]
+}

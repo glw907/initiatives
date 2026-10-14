@@ -1,0 +1,7 @@
+id: cairn-docs-standard
+title: Cairn docs standard
+summary: Keeps every cairn-family docs surface on one published base style guide plus a recorded register.
+status: active
+owner: glw907
+created: 2026-07-18
+repos: [cairn-cms, workstation, ecxc-ski, 907-life, aksailingclub-org, xcathletes-org, cairn-pub]

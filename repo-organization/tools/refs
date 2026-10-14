@@ -1,0 +1,452 @@
+#!/usr/bin/env python3
+"""Check and rewrite references to moved, new, and retired paths across the scope."""
+import argparse
+import collections
+import os
+import re
+import socket
+import subprocess
+import sys
+import tarfile
+import time
+import urllib.parse
+
+TOOL_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(TOOL_DIR))  # the initiatives repo checkout
+DEFAULT_SCOPE = os.path.join(ROOT, "repo-organization", "scope.tsv")
+DEFAULT_MAP = os.path.join(ROOT, "repo-organization", "research", "migration-map.tsv")
+OWNER = "glw907"
+HOME_LITERAL = "/var/home/glw907"
+NO_REWRITE = ("stays", "history", "flagged", "leaves-with-pings")
+LOCKFILES = {"package-lock.json", "yarn.lock", "pnpm-lock.yaml", "go.sum", "uv.lock",
+             "poetry.lock", "Cargo.lock", "bun.lockb", "Gemfile.lock", "composer.lock"}
+FIXTURES = {"tests/fixtures/ci-green/pr-107-files.txt"}
+HISTORY_DIRS = ("docs/superpowers/", "docs/internal/record/", "docs/internal/history/")
+TOKEN = re.compile(r"[~/\w.@+-][\w.@+/~-]*")
+SKIP_DIRS = (".claude/worktrees/", "_salvage/")
+
+
+def expand(path):
+    home = os.environ.get("HOME", os.path.expanduser("~"))
+    if path.startswith("~/Projects/"):
+        root = os.environ.get("PROJECTS_ROOT") or os.path.join(home, "Projects")
+        return os.path.join(root, path[len("~/Projects/"):])
+    if path.startswith("~/"):
+        return os.path.join(home, path[2:])
+    return path
+
+
+def tool_sha():
+    try:
+        out = subprocess.run(["git", "-C", TOOL_DIR, "rev-parse", "HEAD"],
+                             capture_output=True, text=True)
+        return out.stdout.strip() if out.returncode == 0 and out.stdout.strip() else "unknown"
+    except OSError:
+        return "unknown"
+
+
+def read_tsv(path):
+    with open(path) as f:
+        rows = [line.rstrip("\n").split("\t") for line in f if line.strip()]
+    header = rows[0]
+    return [dict(zip(header, r + [""] * (len(header) - len(r)))) for r in rows[1:]]
+
+
+def git_files(checkout):
+    out = subprocess.run(["git", "-C", checkout, "ls-files", "-z"], capture_output=True)
+    if out.returncode != 0:
+        raise SystemExit(f"refs: not a git checkout: {checkout}")
+    return sorted(p for p in out.stdout.decode("utf-8", "surrogateescape").split("\0") if p)
+
+
+class Ctx:
+    def __init__(self, args):
+        self.args = args
+        self.scope = read_tsv(args.scope)
+        self.rows = read_tsv(args.map)
+        self.checkout = {}
+        for r in self.scope:
+            self.checkout[r["repo"]] = expand(r["path"])
+        for spec in args.checkout or []:
+            name, _, d = spec.partition("=")
+            self.checkout[name] = d
+        self.retired = {r["repo"] for r in self.scope if r["role"] == "retire"}
+        self.edit = [r["repo"] for r in self.scope if r["role"] == "edit"]
+        self.ids = {r["initiative"] for r in self.rows if r["initiative"]}
+        self.rewritable = [r for r in self.rows if r["new_repo"] and r["new_path"]
+                           and r["state"] not in NO_REWRITE and not r["state"].startswith("deferred:")]
+        self.gh_cache = {}
+        self.tracked = {}
+        # literal prefixes: (text prefix, repo)
+        self.prefixes = []
+        for r in self.scope:
+            p = r["path"]
+            for base in (p, p.replace("~", HOME_LITERAL, 1)):
+                self.prefixes.append((base.rstrip("/") + "/", r["repo"]))
+
+    def tracked_set(self, repo):
+        if repo not in self.tracked:
+            try:
+                self.tracked[repo] = set(git_files(self.checkout[repo]))
+            except (SystemExit, KeyError):
+                self.tracked[repo] = set()
+        return self.tracked[repo]
+
+    def gh_exists(self, repo, path):
+        key = (repo, path)
+        if key not in self.gh_cache:
+            gh = os.environ.get("REFS_GH", "gh")
+            url = f"repos/{OWNER}/{repo}/contents/{urllib.parse.quote(path.rstrip('/'))}?ref=main"
+            try:
+                rc = subprocess.run([gh, "api", url], capture_output=True).returncode
+            except OSError:
+                rc = 1
+            self.gh_cache[key] = rc == 0
+        return self.gh_cache[key]
+
+    def dest_resolves(self, repo, path):
+        """Resolve a destination through the map first, then the repo's origin/main."""
+        for r in self.rows:
+            if r["new_repo"] == repo and r["new_path"] and r["new_path"].rstrip("/") == path.rstrip("/"):
+                return True
+        return self.gh_exists(repo, path)
+
+    def src_resolved_before(self, row, rel):
+        if rel == row["old_path"]:
+            return True  # the row itself attests the entry existed
+        src = self.checkout.get(row["source_repo"])
+        if not src:
+            return False
+        if os.path.exists(os.path.join(src, rel)):
+            return True
+        pin = row["pin"]
+        return bool(pin) and subprocess.run(
+            ["git", "-C", src, "cat-file", "-e", f"{pin}:{rel}"], capture_output=True).returncode == 0
+
+
+def match_row(rows, key_repo, key_col, path_col, rel):
+    for r in rows:
+        if r[key_col] != key_repo:
+            continue
+        old = r[path_col]
+        if not old:
+            continue
+        if old.endswith("/"):
+            if rel == old.rstrip("/") or rel.startswith(old):
+                return r
+        elif rel == old:
+            return r
+    return None
+
+
+def split_literal(ctx, tok):
+    """Return (repo, rel, prefix-style) for a literal path token, else None."""
+    for prefix, repo in ctx.prefixes:
+        if tok.startswith(prefix):
+            return repo, tok[len(prefix):], prefix
+    return None
+
+
+def new_text(ctx, row, rel, style, contain):
+    suffix = rel[len(row["old_path"]):] if row["old_path"].endswith("/") else ""
+    newp = row["new_path"] + suffix
+    if style is None and row["new_repo"] == contain:
+        return newp
+    if style is not None and style.startswith(HOME_LITERAL):
+        base = HOME_LITERAL + "/"
+        base += ".dotfiles/" if row["new_repo"] == "workstation" else f"Projects/{row['new_repo']}/"
+        return base + newp
+    if row["new_repo"] == "workstation":
+        return "~/.dotfiles/" + newp
+    return f"~/Projects/{row['new_repo']}/{newp}"
+
+
+def classify(ctx, tok, contain, relfile, history):
+    """Return (class, replacement) for one path token, or None for no hit."""
+    lit = split_literal(ctx, tok)
+    style = None
+    init_ref = False  # a reference written as a new initiatives/<id>/ path
+    if lit:
+        repo, rel, style = lit
+        init_ref = repo == "initiatives" and rel.split("/")[0] in ctx.ids
+    elif tok.startswith(("~/", "/")):
+        return None
+    elif tok.startswith("initiatives/"):
+        repo, rel, init_ref = "initiatives", tok[len("initiatives/"):], True
+        if not rel.split("/")[0]:
+            return None
+    elif tok.startswith(("./", "../")):
+        repo = contain
+        rel = os.path.normpath(os.path.join(os.path.dirname(relfile), tok))
+        if rel.startswith(".."):
+            return None
+    else:
+        repo, rel = contain, tok
+    if repo in ctx.retired:
+        return ("retired-target" if history else "live-tie"), None
+    if os.path.basename(rel) == "ROADMAP.md" and rel == "ROADMAP.md":
+        if repo in ctx.checkout and "ROADMAP.md" not in ctx.tracked_set(repo):
+            return ("retired-target" if history else "live-tie"), None
+        return None
+    row = match_row(ctx.rows, repo, "source_repo", "old_path", rel)
+    if row is not None:
+        if row not in ctx.rewritable:
+            return None
+        if not ctx.src_resolved_before(row, rel):
+            return "broken", None
+        suffix = rel[len(row["old_path"]):] if row["old_path"].endswith("/") else ""
+        if not ctx.dest_resolves(row["new_repo"], row["new_path"] + suffix):
+            return "broken", None
+        return "rewrite", new_text(ctx, row, rel, style, contain)
+    if init_ref:
+        if os.path.exists(os.path.join(ctx.checkout.get("initiatives", "/nonexistent"), rel)):
+            return None
+        return None if ctx.dest_resolves("initiatives", rel) else ("broken", None)
+    new_row = match_row(ctx.rewritable, repo, "new_repo", "new_path", rel)
+    if new_row is not None and not (new_row["source_repo"] == repo and new_row["old_path"] == new_row["new_path"]):
+        return (None if ctx.dest_resolves(repo, rel) else ("broken", None))
+    return None
+
+
+def is_history(rel, repo=None):
+    # In the initiatives repo every file inside a record directory is a record of past work.
+    if repo == "initiatives" and "/" in rel and not rel.startswith(("scripts/", "tests/", ".github/")):
+        return True
+    return rel.startswith(HISTORY_DIRS) or os.path.basename(rel) == "HISTORY.md"
+
+
+def scan_text(ctx, text, contain, relfile, history):
+    """Return (hits, spans) where a span is (start, end, replacement)."""
+    hits, spans = [], []
+    for m in TOKEN.finditer(text):
+        tok = m.group(0).rstrip(".")
+        if not tok or tok.startswith("//") or ("/" not in tok and tok != "ROADMAP.md"):
+            continue
+        res = classify(ctx, tok, contain, relfile, history)
+        if res is None:
+            continue
+        cls, new = res
+        hits.append((cls, tok, new or ""))
+        if cls == "rewrite":
+            spans.append((m.start(), m.start() + len(tok), new))
+    return hits, spans
+
+
+def read_text(path):
+    try:
+        with open(path, "rb") as f:
+            data = f.read()
+    except OSError:
+        return None
+    if b"\0" in data[:8192]:
+        return None
+    return data.decode("utf-8", "surrogateescape")
+
+
+def excluded(rel):
+    if os.path.basename(rel) in LOCKFILES or rel in FIXTURES:
+        return True
+    return any(rel.startswith(d) or ("/" + d) in rel for d in SKIP_DIRS)
+
+
+def encode(path):
+    return re.sub(r"[/.]", "-", path)
+
+
+def memory_dirs(ctx):
+    home = os.environ.get("HOME", os.path.expanduser("~"))
+    base = os.path.join(home, ".claude", "projects")
+    out = []
+    for r in ctx.scope:
+        if r["role"] not in ("edit", "read"):
+            continue
+        enc = encode(ctx.checkout.get(r["repo"], expand(r["path"])))
+        names = [enc]
+        if os.path.isdir(base):
+            wt = enc + "--claude-worktrees-"
+            names += sorted(n for n in os.listdir(base) if n.startswith(wt))
+        for n in names:
+            d = os.path.join(base, n, "memory")
+            if os.path.isdir(d):
+                out.append((r["repo"], n, d))
+    return out
+
+
+def gather(ctx):
+    """Yield (repo, containing repo, relfile, abs path, history) for every scanned entry."""
+    seen = set()
+    for repo in ctx.edit:
+        d = ctx.checkout[repo]
+        for rel in git_files(d):
+            # The pass's own tools and their fixtures name paths on purpose.
+            if excluded(rel) or (repo == "initiatives" and rel.startswith("repo-organization/tools/")):
+                continue
+            p = os.path.join(d, rel)
+            real = os.path.realpath(p)
+            if real in seen or not os.path.isfile(real):
+                continue
+            seen.add(real)
+            yield repo, repo, rel, p, is_history(rel, repo)
+    for repo, enc, d in memory_dirs(ctx):
+        for name in sorted(os.listdir(d)):
+            if not name.endswith(".md"):
+                continue
+            p = os.path.join(d, name)
+            real = os.path.realpath(p)
+            if real in seen or not os.path.isfile(real):
+                continue
+            seen.add(real)
+            yield "memory", repo, f"{enc}/{name}", p, False
+
+
+def check_scope(ctx):
+    bad = 0
+    for r in ctx.scope:
+        d = ctx.checkout[r["repo"]]
+        if os.path.isdir(d):
+            continue
+        if r["role"] == "retire":
+            print(f"absent\t{r['repo']}\t{r['role']}")
+        elif r["role"] == "read" and ctx.args.host == "thinkpad-x1":
+            print(f"absent\t{r['repo']}\t{r['role']}")
+        else:
+            print(f"refs: scope row {r['repo']} ({r['role']}) is missing: {d}", file=sys.stderr)
+            bad = 1
+    return bad
+
+
+def baseline_path(args):
+    return os.path.join(args.state_dir, f"refs-baseline-{args.host}.tsv")
+
+
+def within(real, root):
+    return real == root or real.startswith(root.rstrip("/") + "/")
+
+
+def make_tar(ctx, tar_dir):
+    os.makedirs(tar_dir, exist_ok=True)
+    name = os.path.join(tar_dir, f"memory-{os.getpid()}-{int(time.time())}.tar")
+    with tarfile.open(name, "w") as tar:
+        for _, enc, d in memory_dirs(ctx):
+            for fn in sorted(os.listdir(d)):
+                p = os.path.join(d, fn)
+                if os.path.isfile(p):
+                    tar.add(os.path.realpath(p), arcname=f"{enc}/memory/{fn}")
+    if not os.path.isfile(name):
+        raise SystemExit("refs: memory tar was not written")
+    return name
+
+
+def write_atomic(real, text):
+    tmp = f"{real}.refs-tmp"
+    st = os.stat(real)
+    with open(tmp, "wb") as f:
+        f.write(text.encode("utf-8", "surrogateescape"))
+    os.chmod(tmp, st.st_mode & 0o7777)
+    os.replace(tmp, real)
+
+
+def run(args):
+    ctx = Ctx(args)
+    print(f"refs {tool_sha()}")
+    if check_scope(ctx):
+        return 2
+    root = os.path.realpath(args.root) if args.mode == "apply" else None
+    if args.mode == "apply" and not root:
+        print("refs: apply needs --root", file=sys.stderr)
+        return 2
+    all_hits, plans = [], []
+    nfiles = 0
+    for repo, contain, rel, p, history in gather(ctx):
+        text = read_text(p)
+        if text is None:
+            continue
+        nfiles += 1
+        hits, spans = scan_text(ctx, text, contain, rel, history)
+        for cls, tok, new in hits:
+            all_hits.append((cls, repo, rel, tok, new))
+        if spans:
+            plans.append((repo, rel, p, os.path.realpath(p), text, spans))
+    unique = list(dict.fromkeys(all_hits))
+    if args.mode == "check":
+        return report_check(ctx, args, unique, nfiles)
+    for h in unique:
+        print("\t".join(h))
+    skips, todo = [], []
+    for repo, rel, p, real, text, spans in plans:
+        if not within(real, root):
+            skips.append((repo, rel, "outside-root"))
+        else:
+            todo.append((repo, rel, real, text, spans))
+    for _, enc, d in memory_dirs(ctx):
+        if not within(os.path.realpath(d), root):
+            skips.append(("memory", enc + "/memory", "memory-dir-outside-root"))
+    if todo:
+        tar = make_tar(ctx, args.tar_dir or os.path.join(args.state_dir, "tars"))
+        print(f"tar\t{tar}")
+    changed = 0
+    for repo, rel, real, text, spans in todo:
+        out, last = [], 0
+        for s, e, new in spans:
+            out.append(text[last:s])
+            out.append(new)
+            last = e
+        out.append(text[last:])
+        write_atomic(real, "".join(out))
+        changed += 1
+        print(f"rewrote\t{repo}\t{rel}\t{len(spans)}")
+    for repo, rel, why in skips:
+        print(f"skip\t{repo}\t{rel}\t{why}")
+    print_summary(unique, nfiles)
+    print(f"summary\tfiles-rewritten\t{changed}")
+    return 0
+
+
+def print_summary(unique, nfiles):
+    counts = collections.Counter(h[0] for h in unique)
+    print(f"summary\tfiles-scanned\t{nfiles}")
+    for cls in ("rewrite", "retired-target", "live-tie", "broken"):
+        print(f"summary\t{cls}\t{counts.get(cls, 0)}")
+
+
+def report_check(ctx, args, unique, nfiles):
+    key = lambda h: (args.host, h[1], h[2], h[3])
+    if args.record:
+        os.makedirs(args.state_dir, exist_ok=True)
+        with open(baseline_path(args), "w") as f:
+            for h in unique:
+                f.write("\t".join(key(h)) + "\n")
+        shown = unique
+    else:
+        known = set()
+        try:
+            with open(baseline_path(args)) as f:
+                known = {tuple(line.rstrip("\n").split("\t")) for line in f}
+        except OSError:
+            pass
+        shown = [h for h in unique if key(h) not in known]
+    for h in shown:
+        print("\t".join(h))
+    print_summary(shown, nfiles)
+    if args.record:
+        return 0
+    return 1 if any(h[0] in ("broken", "live-tie") for h in shown) else 0
+
+
+def main():
+    ap = argparse.ArgumentParser(prog="refs", description=__doc__)
+    ap.add_argument("mode", choices=("check", "apply"))
+    ap.add_argument("--host", default=socket.gethostname().split(".")[0])
+    ap.add_argument("--state-dir", default=os.path.expanduser("~/.local/state/repo-organization"))
+    ap.add_argument("--map", default=DEFAULT_MAP)
+    ap.add_argument("--scope", default=DEFAULT_SCOPE)
+    ap.add_argument("--root", help="apply only: edit files whose realpath lies under DIR")
+    ap.add_argument("--tar-dir", help="apply only: where the memory tar goes")
+    ap.add_argument("--record", action="store_true", help="check only: write the baseline")
+    ap.add_argument("--checkout", action="append", metavar="REPO=DIR",
+                    help="scan DIR (a worktree) in place of REPO's scope checkout")
+    sys.exit(run(ap.parse_args()))
+
+
+if __name__ == "__main__":
+    main()

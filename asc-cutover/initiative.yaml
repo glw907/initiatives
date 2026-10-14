@@ -1,0 +1,7 @@
+id: asc-cutover
+title: ASC cutover
+summary: Takes the rebuilt club site live in place of the legacy site and retires the old one.
+status: active
+owner: glw907
+created: 2026-10-14
+repos: [aksailingclub-org, aksailingclub-legacy]

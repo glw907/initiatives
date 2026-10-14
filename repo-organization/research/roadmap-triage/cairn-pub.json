@@ -1,0 +1,11 @@
+{
+  "headline": "You sort the 1 roadmap entries of the cairn.pub site; approving moves each one where you marked it and retires the roadmap.",
+  "lede": "This roadmap holds 1 entries. Do now turns an entry into its own initiative record, Do later moves it to the backlog, and Don't do drops it.",
+  "rows": [
+    {
+      "action": "#1 PR test CI (`pr-test-ci`)",
+      "why": "defer: moves to BACKLOG.md. A small workflow addition with no larger purpose.",
+      "proposed": "defer"
+    }
+  ]
+}
