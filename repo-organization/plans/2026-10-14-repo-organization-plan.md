@@ -466,7 +466,7 @@ Close for D (30): run `refs apply` over the worktree, then the gate on the close
   4. It checks that `git -C ~/.dotfiles status --porcelain secrets/` is empty, and stops for Geoff if it isn't. It pulls every `edit` row in `scope.tsv` in merge order with `git pull --ff-only`, and reports any repo that can't fast-forward as stale and leaves it alone. Only if `~/.dotfiles`, drafter, and approval-queue all fast-forwarded does it restow, run both install steps, and run `secret-set.sh --sync`. Otherwise it stops for Geoff before the restow.
   5. It runs `refs apply` over the thinkpad's scope memory directories.
   6. It runs `e2e-check --host thinkpad-x1`, and `grep -c batched-docs-tool-initiative` in each `MEMORY.md` must be 0.
-- Files: `drafter/README.md` (the fold) and `repo-organization/research/2026-10-14-thinkpad-checks.md`, which holds the tool's output.
+- Files: `docs-system/README.md` (the fold; the drafter record became docs-system by the 2026-10-14 record-set ruling) and `repo-organization/research/2026-10-14-thinkpad-checks.md`, which holds the tool's output.
 - Acceptance: the tool exits 0, and check 1 is diffed against the thinkpad's own baseline.
 - Test: the tool's own tests.
 
