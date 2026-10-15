@@ -38,3 +38,4 @@ On 2026-10-14 the queue took 49 items, mostly from one initiative. Eleven PRs ar
 - Research: the three research reports and the three polish-audit ledgers in [research/](research/).
 
 Status: proposed (2026-10-14), design written and in review.
+Status: active (2026-10-14), design approved with both rulings; the unattended pass launches 2026-10-17 00:01.

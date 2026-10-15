@@ -21,24 +21,6 @@ On that day you met 11 changes twice, once as a PR and once as its triage, and s
 2. The pass lands five PRs in order: the register, then the packet kind and the app in `approval-queue`, then the workstation Claude setup (a new `approval-packet` skill, `pass-core` and the other skills and docs that name the queue), then two wording PRs in `dubplate` and `poplar`.
 3. The `pr`, `design`, and `triage` commands keep working throughout, so no session in flight breaks.
 
-### Decide: Raise the merge-authorization tasks to auth-data
-
-The server's approve action and the command's decision handling decide which PRs merge and at which commit. Under `runner`, one whole-branch review reads them at close. Under `auth-data`, those tasks are written test-first, `diff-reviewer` reads each of their commits while the pass runs, and the whole pass takes that class. Only your ruling raises a class.
-
-Source: mechanics review M11; `pass-core` "Lifecycle"
-
-- Raise those tasks to `auth-data` (recommended)
-- Keep the pass at `runner`
-
-### Decide: Let a session start a backlog in a repo that has none
-
-Seven repos have no `log-issue` config: `approval-queue`, `cairn-cms`, `cairn-pub`, `drafter`, `fishwright`, `initiatives`, and `workstation`. There `log-issue` stops to ask setup questions that an unattended session cannot answer. With a backlog, `log-issue` gains a no-questions path that writes the config with defaults and creates `BACKLOG.md` where it is missing. Without one, a follow-up in those repos goes to the packet's initiative record, or stays in the PR body when the packet names no initiative.
-
-Source: mechanics review M7; `~/.claude/skills/log-issue/SKILL.md` step 1
-
-- Create the backlog with defaults (recommended)
-- Route those follow-ups to the initiative record
-
 ### Worth knowing
 
 Two visual calls from the polish round are easy to reverse: the summary box has no left rule, and the parts inside the brief sit 24px apart against 32px between sections. The `pass-core` self-merge rule keeps today's meaning, so moving follow-ups out of the queue lets no extra PR merge without you.
@@ -283,6 +265,8 @@ Asks follow. Each ask is a radio group with nothing preselected. Its question, i
 
 The routine table follows the asks. Each verdict shows as text, icon, and color. A two- or three-option override sits in each row, and an overridden row takes a left rule. Each part's detail, such as the PR's diff and checks or the design doc, opens behind a disclosure whose summary states the verdict-changing fact. A failing or unchecked part keeps that fact outside any disclosure.
 
+**A withdrawn item.** When a session withdraws an item while its page is open (the command exits and its trap removes `item.json`), a decision posted from that page returns "This item was withdrawn by its session; nothing was recorded" and offers the board. It never shows a bare "not found" (Geoff hit this on 2026-10-14).
+
 **The decision bar** stays at the bottom of the viewport.
 
 - "Approve packet" uses `aria-disabled`, not `disabled`. While locked it says what it waits on ("Answer 2 more asks"), and pressing it moves focus to the first open ask. The click and keyboard handlers check the lock state, since `aria-disabled` leaves the button's `.disabled` false.
@@ -346,7 +330,7 @@ The register stays the prose standard. The skill names it and never restates it.
 |---|---|
 | `pass-core` "Lifecycle" step 1 (the design hand-over), "Conductor" (puts each PR or design before Geoff; ends when the triage is acted on), "Close" (the triage shape and hand-over, `## Before merge`, `choices`), "Scope", the clock stop's list of attended events, and "Launch prompt" | Each names the packet and points to `approval-packet`, as "The sender side" sets out. |
 | `spec-plan-review` | An owner fork becomes a `### Decide:` block in the design's brief, so Geoff rules it as an ask in the design's packet. |
-| `log-issue` | The no-questions path, if ruling 2 is yes. |
+| `log-issue` | The no-questions path, by ruling 2. |
 | `writing-voice` router row for the approval brief | Names the packet brief and the PR-body brief, and keeps the triage file for backlog triage. |
 | `docs/voice/commit-and-pr.md` | A PR body still opens with `## Brief`, as the record on GitHub, and the packet is the hand-over. |
 | `docs/voice/approval-brief.md` | As "The register" says. |
@@ -395,7 +379,7 @@ The old kinds' shell tests stay green, unchanged, through all five.
 
 ## Risk class and testing
 
-The pass is `runner`, because it changes a skill (`pass-core`) and the gate's register test, unless ruling 1 raises the merge-authorization tasks to `auth-data`. `approval-queue` has no repo adapter, so the plan header states the adapter facts: the gate is `bash scripts/gate.sh`, the full-suite home is local with no CI, and the path map names the approve action, the decision builder, and the command's decision handling as the merge-authorization path. The whole-branch review reads that path closely. A part you did not approve must never reach `"verdict": "approve"`, and a PR's `head` must be the commit the page showed.
+The pass is `auth-data`, because a pass takes its highest task's class and ruling 1 makes the merge-authorization tasks `auth-data`. Its other tasks are `runner`, since they change skills (`pass-core`, `approval-packet`) and the gate's register test. `approval-queue` has no repo adapter, so the plan header states the adapter facts: the gate is `bash scripts/gate.sh`, the full-suite home is local with no CI, and the path map names the approve action, the decision builder, and the command's decision handling as the merge-authorization path. The whole-branch review reads that path closely. A part you did not approve must never reach `"verdict": "approve"`, and a PR's `head` must be the commit the page showed.
 
 The tests run in three layers:
 
@@ -456,9 +440,9 @@ All from Geoff, in the design session of 2026-10-14.
 - Restyle the brief's four parts to show the hierarchy. Background text stays consistent when opened. "Not checked" draws the eye less.
 - A polish pass with latitude to go deeper where the research supports a better-working page.
 
-## Rulings needed
+## Rulings given at approval
 
-Each is also a `### Decide:` block in the brief, so you can answer it in the queue.
+Geoff approved this design on 2026-10-14 and took both recommendations.
 
-1. **Raise the merge-authorization tasks to `auth-data`?** Recommend yes. Yes makes the approve action, the decision builder, and the command's decision handling test-first tasks with a `diff-reviewer` read per commit, and the pass runs as `auth-data` under the conductor. No keeps the pass at `runner`, with those tasks read once in the whole-branch review.
-2. **Let a session start a backlog in a repo that has none?** Recommend yes. Yes adds a no-questions path to `log-issue` that writes `.claude/project-tracking.json` with defaults (`BACKLOG.md`, the repo's name as its one domain, `medium`) and creates `BACKLOG.md` where it is missing. No leaves `log-issue` as it is, and `pass-core` routes a follow-up in a repo without a config to the packet's initiative record, or keeps it in the PR body when the packet names no initiative.
+1. **The merge-authorization tasks are `auth-data`.** The approve action, the decision builder, and the command's decision handling are test-first tasks with a `diff-reviewer` read per commit, and the pass runs as `auth-data` under the conductor.
+2. **A session may start a backlog in a repo that has none.** `log-issue` gains a no-questions path that writes `.claude/project-tracking.json` with defaults (`BACKLOG.md`, the repo's name as its one domain, `medium`) and creates `BACKLOG.md` where it is missing.
