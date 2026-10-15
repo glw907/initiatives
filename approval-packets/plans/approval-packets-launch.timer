@@ -1,5 +1,5 @@
 [Unit]
-Description=Launch the approval-packets conductor once, at 2026-10-17 00:01
+Description=Launch the approval-packets planner once, at 2026-10-17 00:01
 
 [Timer]
 OnCalendar=2026-10-17 00:01
