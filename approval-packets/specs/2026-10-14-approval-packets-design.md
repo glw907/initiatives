@@ -13,11 +13,12 @@ On that day you met 11 changes twice, once as a PR and once as its triage, and s
 - The home page becomes a board of initiatives with packets waiting, and follow-ups go to the backlog, never to the queue.
 - The server checks every answer against the packet it stored, so a part you did not approve never comes back approved, and a PR merges only at the commit you saw.
 - Each decision is logged per part, and a monthly review sends you proposed rule changes as a packet.
+- A new `approval-packet` skill teaches every session to build a packet, and every skill, doc, and CLAUDE.md line that names the queue moves to it.
 
 ### If you approve
 
 1. The initiative record goes `active`, and a pass plan for `approval-queue` and `workstation` is written to `initiatives/approval-packets/plans/`.
-2. The pass lands as three PRs in order: the register with its packet exemplars, then the packet kind and the app in `approval-queue`, then the `pass-core` and `log-issue` changes with the review timer.
+2. The pass lands five PRs in order: the register, then the packet kind and the app in `approval-queue`, then the workstation Claude setup (a new `approval-packet` skill, `pass-core` and the other skills and docs that name the queue), then two wording PRs in `dubplate` and `poplar`.
 3. The `pr`, `design`, and `triage` commands keep working throughout, so no session in flight breaks.
 
 ### Decide: Raise the merge-authorization tasks to auth-data
@@ -56,7 +57,7 @@ Three reviews read this design for mechanics, contract, and data integrity, and 
 
 ## Scope
 
-The work spans two repos. `approval-queue` gains the packet kind, the board, the packet screen, the decision log, and the monthly review's prompt and log. `workstation` gets the rewritten brief register, the `pass-core` hand-over change, the `log-issue` change, and the review's timer and notify script.
+The work spans four repos. `approval-queue` gains the packet kind, the board, the packet screen, the decision log, and the monthly review's prompt and log. `workstation` gets the rewritten brief register, the new `approval-packet` skill, the changes to every skill, doc, and CLAUDE.md line that names the queue, and the review's timer and notify script. `dubplate` and `poplar` each get a wording change in their pass skills.
 
 Three things are out of scope. Nothing lands without your approval, and a class earns auto-land only through a later monthly-review ruling. No engine moves decision classes on its own. The queue holds no follow-up lane.
 
@@ -323,6 +324,47 @@ The register keeps its `brief` and `brief-triage` exemplars, which the `pr`, `de
 
 The PR body still opens with `## Brief`. That is the record on GitHub, while the packet is the hand-over.
 
+## Workstation Claude infrastructure
+
+Every rule about the queue moves to the packet in the same pass, in the home where it executes (`claude-infra`: "A rule lives where it executes"). A survey of `~/.dotfiles`, `~/.claude`, and every project's `CLAUDE.md` and `.claude/` on 2026-10-14 found the sites below, and the pass changes each one. Anthropic's guidance for the split: "Put it in a skill if it's reference material Claude needs sometimes", and CLAUDE.md carries only a fact that applies every turn (<https://code.claude.com/docs/en/features-overview>).
+
+**One new skill, `approval-packet`**, user scope, in `~/.dotfiles/claude/.claude/skills/approval-packet/`, with its entry in the tooling manifest and the inventory in `claude-tooling.md`. It holds the procedure a session follows at a hand-over, which today is spread across `pass-core` and the register:
+
+1. When to send a packet, and that a conductor's sweep is one hand-over.
+2. Gathering the parts and giving each its canonical ref.
+3. Sorting each part into a lane by the seven ask rules, including the forced asks (a failing check, a `fix` or `escalate` review, a `## Before merge` step).
+4. Researching each ask as completed staff work: which files, PRs, findings, and logs to read, and citing each fact's source. A question the facts settle becomes a routine part.
+5. Writing the layers summary first, per the register.
+6. Checking the file before sending with `approval-queue packet --check <initiative> <file>`, which runs the same parser and refusals without queuing. The command gains this flag for the skill.
+7. Acting on the decision JSON: the per-part merges in plan order, a stop at the first failure, the report back, and the follow-ups filed through `log-issue`.
+
+The register stays the prose standard. The skill names it and never restates it. `pass-core` points to the skill at each hand-over site and keeps the lifecycle rules.
+
+**Existing pieces that change:**
+
+| Site | Change |
+|---|---|
+| `pass-core` "Lifecycle" step 1 (the design hand-over), "Conductor" (puts each PR or design before Geoff; ends when the triage is acted on), "Close" (the triage shape and hand-over, `## Before merge`, `choices`), "Scope", the clock stop's list of attended events, and "Launch prompt" | Each names the packet and points to `approval-packet`, as "The sender side" sets out. |
+| `spec-plan-review` | An owner fork becomes a `### Decide:` block in the design's brief, so Geoff rules it as an ask in the design's packet. |
+| `log-issue` | The no-questions path, if ruling 2 is yes. |
+| `writing-voice` router row for the approval brief | Names the packet brief and the PR-body brief, and keeps the triage file for backlog triage. |
+| `docs/voice/commit-and-pr.md` | A PR body still opens with `## Brief`, as the record on GitHub, and the packet is the hand-over. |
+| `docs/voice/approval-brief.md` | As "The register" says. |
+| The global `CLAUDE.md` "pass process" line ("Geoff's touchpoints are the design in chat and the PR") | Names the packet as the touchpoint. |
+| `claude-approval-queue-reminder` (in `approval-queue`) | On `gh pr create`, it tells the session to include the PR in its hand-over packet through `approval-packet`, in place of `approval-queue pr`. It keeps its skip clause for an executor whose conductor hands over and an `ordinary` pass that merges itself. |
+| `~/.dotfiles/docs/STATUS.md` (follow-ups owed to the next pass) | Follow-ups go to `BACKLOG.md` through `log-issue`. |
+| `~/.dotfiles/BACKLOG.md` item 11, "Approval queue hardening" | The item is updated to drop what this pass delivers: a malformed `item.json` or `decision.json` no longer takes down the index, since the board skips an unreadable item and names it, and the shell tests gain the start-the-app branch the command's tests now exercise. The rest stays open. |
+| `dubplate` `CLAUDE.md` and `dubplate-pass`, and `poplar-pass` ("The design approval and the PR read are `pass-core`'s") | "The design approval and the packet read". |
+| `approval-queue` `README.md` | Documents the `packet` kind, `--check`, and the decision log. |
+
+**Pieces that stay as they are, and why:**
+
+- `settings.json`. The hook entries keep their command names, and the `gh pr merge * --match-head-commit *` allow rule already covers the `-R` form.
+- `claude-merge-guard`. Merges stay one PR at a time, and the guard still reads each PR's own `## Before merge` and its `PREMERGE_DONE=<n>`. The packet raises that section as a forced ask, so the session answers it before the guard checks.
+- The agents and the `docs-page-chain` workflow, which name no queue term. They report to a conductor, not to Geoff.
+
+The pass's close runs `claude-tooling-sync verify`, `/skill-doctor` on `approval-packet`, and Anthropic's `skill-creator` review of it, per `claude-infra` step 6.
+
 ## The monthly decision review
 
 The review shares the timer shape of the monthly model review and the notify shape of `check-drift-notify`, which only raises a notification. It adds no app code.
@@ -339,13 +381,17 @@ The review shares the timer shape of the monthly model review and the notify sha
 
 ## Landing order
 
-The pass lands three PRs in this order, so each gate stays green and no session in flight breaks:
+The pass lands five PRs in this order, so each gate stays green and no session in flight breaks:
 
 1. `workstation`: the register with its packet exemplars, keeping the old ones. Nothing reads the packet exemplars yet, so this breaks nothing.
-2. `approval-queue`: the packet kind, the app, and the review's prompt. Its branch gate runs with `REGISTER` pointing at the register on the first PR's branch until that PR merges. The pass's install step rebuilds the app and restarts the server.
-3. `workstation`: the `pass-core` and `log-issue` changes, and the review's timer and notify script. `pass-core` names `approval-queue packet` only once the command exists.
+2. `approval-queue`: the packet kind with `--check`, the app, the reminder hook's new wording, the README, and the review's prompt. Its branch gate runs with `REGISTER` pointing at the register on the first PR's branch until that PR merges. The pass's install step rebuilds the app and restarts the server.
+3. `workstation`: the `approval-packet` skill, the `pass-core`, `spec-plan-review`, `log-issue`, and `writing-voice` changes, `commit-and-pr.md`, the global `CLAUDE.md` line, `STATUS.md`, backlog item 11, the tooling manifest and inventory, and the review's timer and notify script. They name `approval-queue packet` only once the command exists.
+4. `dubplate`: the `CLAUDE.md` line and `dubplate-pass`.
+5. `poplar`: `poplar-pass`.
 
-The old kinds' shell tests stay green, unchanged, through all three.
+PRs 4 and 5 are wording only and may land in either order after PR 3. The conductor hands PRs 2 through 5 over together as one packet, the first under the new kind, through `approval-packet`. PR 1 goes before them as a `pr` item, since the packet kind does not exist until PR 2 merges.
+
+The old kinds' shell tests stay green, unchanged, through all five.
 
 ## Risk class and testing
 
@@ -375,14 +421,14 @@ Geoff gave these on 2026-10-14 for the unattended run, and the planner, conducto
 | Situation | Standing answer |
 |---|---|
 | Planning | Unattended. The planner writes the plan, runs its review, commits the conductor prompt, and arms the launch without Geoff. |
-| The plan's path passes twice the estimate (1,200 minutes) | Launch anyway up to three times the estimate, 1,800 path minutes. Past that, stop, write STATUS, and notify. |
+| The plan's path passes twice the estimate (1,440 minutes) | Launch anyway up to three times the estimate, 2,160 path minutes. Past that, stop, write STATUS, and notify. |
 | A task passes twice its estimate (the clock stop) | Rewrite the clock file's `estimate=` once, to four times the original, and continue. Past four times, stop, write STATUS, and notify. |
 | Merging | Every PR waits for Geoff's approve in Design & PR Approvals. The conductor merges only on approve, at the approved head. |
 | Host and start | Pavilion, launched by a user timer at 2026-10-17 00:01 local time. Lingering is on, so the launch needs no login session. |
 
 ## Estimate
 
-The design's estimate is 600 path minutes. The closest recent pass is `workstation` PR 43, "Rebuild the approval queue around a brief", which touched the same app, command, register, and `pass-core` with a planned path of 555 minutes. This pass adds the merge-authorization tests and two screens, and it reuses the brief parser's groundwork. Recent scores ran well under plan: PR 43 took about 70 minutes against 555, PR 74 about 150 against 455, PR 61 about 20 against 180, and `approval-queue` PR 1 about 15 against 95. The expected clock is therefore 100 to 200 minutes, and the 600-minute figure is the line the plan's path is held to. "Standing answers" sets what the run does on an overrun.
+The design's estimate is 720 path minutes: 600 for the queue work and 120 for the Claude infrastructure. The closest recent pass is `workstation` PR 43, "Rebuild the approval queue around a brief", which touched the same app, command, register, and `pass-core` with a planned path of 555 minutes. This pass adds the merge-authorization tests and two screens, and it reuses the brief parser's groundwork. Recent scores ran well under plan: PR 43 took about 70 minutes against 555, PR 74 about 150 against 455, PR 61 about 20 against 180, and `approval-queue` PR 1 about 15 against 95. The expected clock is therefore 100 to 200 minutes, and the 720-minute figure is the line the plan's path is held to. The infrastructure's 120 minutes cover the new skill with its audit and about fifteen small edits across three repos. "Standing answers" sets what the run does on an overrun.
 
 ## Later
 

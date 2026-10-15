@@ -4,4 +4,4 @@ summary: Turns Design & PR Approvals into one packet per session hand-over, grou
 status: proposed
 owner: glw907
 created: 2026-10-14
-repos: [approval-queue, workstation]
+repos: [approval-queue, workstation, dubplate, poplar]

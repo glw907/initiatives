@@ -16,6 +16,7 @@ On 2026-10-14 the queue took 49 items, mostly from one initiative. Eleven PRs ar
 - The home page is a board of initiatives with packets waiting.
 - Follow-ups go to the backlog, never to the queue.
 - Each decision is logged per part, and a monthly review proposes rule changes as a packet.
+- Every session builds packets through one skill, and every piece of workstation Claude setup that names the queue describes the packet.
 
 ## Non-goals
 
@@ -27,8 +28,9 @@ On 2026-10-14 the queue took 49 items, mostly from one initiative. Eleven PRs ar
 ## Where the work lives
 
 - `approval-queue`: the packet kind, the command, the board and packet screens, the decision log, and the monthly review's prompt and log.
-- `workstation`: the brief register `approval-brief.md`, the `pass-core` hand-over rules, and the review's timer and notify script.
-- Local only: the prototype built from the 2026-10-14 items, at `~/.local/share/approval-packets/prototype-2026-10-14/`. It names private repos and people, so it stays out of both public repos.
+- `workstation`: the brief register `approval-brief.md`, the new `approval-packet` skill, `pass-core` and every other skill, doc, and CLAUDE.md line that names the queue, and the review's timer and notify script.
+- `dubplate` and `poplar`: wording in their pass skills (and dubplate's `CLAUDE.md`).
+- Local only: the prototype built from the 2026-10-14 items, at `~/.local/share/approval-packets/prototype-2026-10-14/`. It names private repos and people, so it stays out of every public repo.
 
 ## Records
 
