@@ -409,6 +409,8 @@ Geoff gave these on 2026-10-14 for the unattended run, and the planner, conducto
 | A task passes twice its estimate (the clock stop) | Rewrite the clock file's `estimate=` once, to four times the original, and continue. Past four times, stop, write STATUS, and notify. |
 | Merging | Every PR waits for Geoff's approve in Design & PR Approvals. The conductor merges only on approve, at the approved head. |
 | Host and start | Pavilion, launched by a user timer at 2026-10-17 00:01 local time. Lingering is on, so the launch needs no login session. |
+| The target | By 09:00 on 2026-10-17, all five PRs wait in Design & PR Approvals, PR 1 as a `pr` item and PRs 2 to 5 as one packet. After Geoff's approve, the conductor merges in landing order, rebuilds and restarts the app, pulls each main checkout, and confirms the new queue serves. |
+| Not PR-ready at 08:00 | The conductor sends one normal-urgency notification saying where the run is and what remains, and the run keeps going. Nothing is trimmed. |
 
 ## Estimate
 
