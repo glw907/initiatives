@@ -38,15 +38,6 @@ Source: mechanics review M7; `~/.claude/skills/log-issue/SKILL.md` step 1
 - Create the backlog with defaults (recommended)
 - Route those follow-ups to the initiative record
 
-### Decide: Plan unattended, with a 1,500-minute ceiling
-
-The estimate is 600 path minutes, set from recent passes' scores (see "Estimate"). With unattended planning, the planner writes the plan and hands it to the conductor without you. It stops only when the plan's path passes the ceiling you set here, in place of the default stop at twice the estimate (1,200 minutes).
-
-Source: `pass-core` "Lifecycle" steps 1 and 4
-
-- Plan unattended up to 1,500 path minutes (recommended)
-- Bring the plan to you before launch
-
 ### Worth knowing
 
 Two visual calls from the polish round are easy to reverse: the summary box has no left rule, and the parts inside the brief sit 24px apart against 32px between sections. The `pass-core` self-merge rule keeps today's meaning, so moving follow-ups out of the queue lets no extra PR merge without you.
@@ -377,9 +368,21 @@ The end-to-end check hands over a fixture packet with two asks and two routine P
 
 Step 6 is a gate, not part of `gate.sh`. In the same session the driven browser exercises, by hand, the promises no unit test can reach: the lock and its focus move, Mod+Enter, the hold with its pause and status region, an override and its left rule, the recommendation reveal, the irreversible confirmation, the sort control, and the 640px stacking of the board and the bar. The repo takes no Playwright dependency.
 
+## Standing answers
+
+Geoff gave these on 2026-10-14 for the unattended run, and the planner, conductor, and executor apply them in place of stopping.
+
+| Situation | Standing answer |
+|---|---|
+| Planning | Unattended. The planner writes the plan, runs its review, commits the conductor prompt, and arms the launch without Geoff. |
+| The plan's path passes twice the estimate (1,200 minutes) | Launch anyway up to three times the estimate, 1,800 path minutes. Past that, stop, write STATUS, and notify. |
+| A task passes twice its estimate (the clock stop) | Rewrite the clock file's `estimate=` once, to four times the original, and continue. Past four times, stop, write STATUS, and notify. |
+| Merging | Every PR waits for Geoff's approve in Design & PR Approvals. The conductor merges only on approve, at the approved head. |
+| Host and start | Pavilion, launched by a user timer at 2026-10-17 00:01 local time. Lingering is on, so the launch needs no login session. |
+
 ## Estimate
 
-The design's estimate is 600 path minutes. The closest recent pass is `workstation` PR 43, "Rebuild the approval queue around a brief", which touched the same app, command, register, and `pass-core` with a planned path of 555 minutes. This pass adds the merge-authorization tests and two screens, and it reuses the brief parser's groundwork. Recent scores ran well under plan: PR 43 took about 70 minutes against 555, PR 74 about 150 against 455, PR 61 about 20 against 180, and `approval-queue` PR 1 about 15 against 95. The expected clock is therefore 100 to 200 minutes, and the 600-minute figure is the line the plan's path is held to. Ruling 3 sets the standing answer for an overrun.
+The design's estimate is 600 path minutes. The closest recent pass is `workstation` PR 43, "Rebuild the approval queue around a brief", which touched the same app, command, register, and `pass-core` with a planned path of 555 minutes. This pass adds the merge-authorization tests and two screens, and it reuses the brief parser's groundwork. Recent scores ran well under plan: PR 43 took about 70 minutes against 555, PR 74 about 150 against 455, PR 61 about 20 against 180, and `approval-queue` PR 1 about 15 against 95. The expected clock is therefore 100 to 200 minutes, and the 600-minute figure is the line the plan's path is held to. "Standing answers" sets what the run does on an overrun.
 
 ## Later
 
@@ -413,4 +416,3 @@ Each is also a `### Decide:` block in the brief, so you can answer it in the que
 
 1. **Raise the merge-authorization tasks to `auth-data`?** Recommend yes. Yes makes the approve action, the decision builder, and the command's decision handling test-first tasks with a `diff-reviewer` read per commit, and the pass runs as `auth-data` under the conductor. No keeps the pass at `runner`, with those tasks read once in the whole-branch review.
 2. **Let a session start a backlog in a repo that has none?** Recommend yes. Yes adds a no-questions path to `log-issue` that writes `.claude/project-tracking.json` with defaults (`BACKLOG.md`, the repo's name as its one domain, `medium`) and creates `BACKLOG.md` where it is missing. No leaves `log-issue` as it is, and `pass-core` routes a follow-up in a repo without a config to the packet's initiative record, or keeps it in the PR body when the packet names no initiative.
-3. **Plan unattended, with a 1,500-minute ceiling?** Recommend yes. Yes lets the planner write the plan and hand it to the conductor without you, stopping only past 1,500 path minutes. No brings the plan to you before launch, as an attended design does.
