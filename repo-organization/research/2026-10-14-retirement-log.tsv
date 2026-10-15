@@ -1,0 +1,46 @@
+stage	item	result	time
+archive	doc_sha256	63f771e88d77f854b1c027dabfc5102c8f2f908f7dca009b8899878df573b63f	2026-10-14T13:43:32-08:00
+archive	doc_commit	37ebb4e257edd4087395fd42864d800b7fcf568d	2026-10-14T13:43:32-08:00
+archive	d1-export:cbd3fdba-fc6b-47d7-b2a0-537543e880e9	done	2026-10-14T13:43:32-08:00
+archive	d1-export:1fe11784-f64e-408f-8bc2-029e997c11a9	done	2026-10-14T13:43:32-08:00
+archive	tar:/var/home/glw907/Documents/retired-repos-2026-10-14.tar	done sha256=9f71149aa6a23d2331963e287769b5b010a8a2bb3d279210265943c602b07908 verified	2026-10-14T13:43:32-08:00
+cloudflare	route:pings.907.life	already-absent	2026-10-14T14:22:36-08:00
+cloudflare	route:pings.907.life	done	2026-10-14T14:43:32-08:00
+cloudflare	route:staging.aksailingclub.org	done	2026-10-14T14:46:49-08:00
+cloudflare	worker:pings	done	2026-10-14T14:50:29-08:00
+cloudflare	worker:asc-staging	done	2026-10-14T14:53:46-08:00
+cloudflare	worker:cairn-scratch-b	done	2026-10-14T14:57:04-08:00
+cloudflare	d1:cbd3fdba-fc6b-47d7-b2a0-537543e880e9	done	2026-10-14T15:00:32-08:00
+cloudflare	d1:1fe11784-f64e-408f-8bc2-029e997c11a9	done	2026-10-14T15:03:51-08:00
+cloudflare	kv:5c126cfe4a984f74bd37e67bae3e9512	done	2026-10-14T15:07:12-08:00
+cloudflare	dns:a7c2b9103ec7d835d72f356489072e5b/6d431fecfc01ca963db1bf6c25c43664	already-absent	2026-10-14T15:07:14-08:00
+cloudflare	dns:20c8739759428149d47508f0632bb1ff/19ce9467e40893f1d0e8215ddc934f52	already-absent	2026-10-14T15:07:16-08:00
+cloudflare	access-app:f18fa6b9-79b4-4bd7-88ce-37eac144ece7	done (delete accepted 202, GET 404)	2026-10-14T15:11:01-08:00
+cloudflare	stage	done (post-query 11 of 11 not found, positive control 200)	2026-10-14T15:11:01-08:00
+github	repo:cairn-scratch-b	done (head matched manifest, then not found)	2026-10-14T15:44:07-08:00
+github	repo:displaywidth	done (head matched manifest, then not found)	2026-10-14T15:44:07-08:00
+github	repo:kit	done (head matched manifest, then not found)	2026-10-14T15:44:07-08:00
+github	repo:jrnl-md	done (head matched manifest, then not found)	2026-10-14T15:44:07-08:00
+github	repo:hugo-blog-template	done (head matched manifest, then not found)	2026-10-14T15:44:07-08:00
+github	description:cairn-cms	done	2026-10-14T15:44:07-08:00
+github	description:poplar	done	2026-10-14T15:44:07-08:00
+github	description:907-life	done	2026-10-14T15:44:07-08:00
+github	description:cairn-pub	done	2026-10-14T15:44:07-08:00
+github	description:phonebook	done	2026-10-14T15:44:07-08:00
+github	description:workstation	done	2026-10-14T15:44:07-08:00
+github	description:approval-queue	done	2026-10-14T15:44:07-08:00
+github	stage	done (5 repos deleted, 7 descriptions set; post-query with positive control)	2026-10-14T15:44:07-08:00
+local	worktrees-verdict	tool listed 58 rows; 0 marked removable (every row fails r1 to r6 or is a main checkout); 0 removed; C9-reserved worktrees refused by name	2026-10-14T15:45:03-08:00
+local	precheck	7 local rows match expect (HEAD and branch tips, file counts, mtimes); 4 remote-only rows absent locally; ecxc-ski fold commit present on branch worktree-repo-organization (PR not yet open)	2026-10-14T15:45:03-08:00
+local	dir:healthy-diet	done (removed after matching expect)	2026-10-14T15:46:06-08:00
+local	dir:pings	done (removed after matching expect)	2026-10-14T15:46:06-08:00
+local	dir:personal-styles	done (removed after matching expect)	2026-10-14T15:46:06-08:00
+local	dir:cairn-scratch	done (removed after matching expect)	2026-10-14T15:46:06-08:00
+local	dir:ecxc-ski-agent-memory	done (removed after matching expect)	2026-10-14T15:46:06-08:00
+local	dir:aksailingclub-sveltekit	done (removed after matching expect)	2026-10-14T15:46:06-08:00
+local	dir:displaywidth	done (removed after matching expect)	2026-10-14T15:46:06-08:00
+local	dir:cairn-scratch-b	already-absent (no local copy on pavilion)	2026-10-14T15:46:06-08:00
+local	dir:kit	already-absent (no local copy on pavilion)	2026-10-14T15:46:06-08:00
+local	dir:jrnl-md	already-absent (no local copy on pavilion)	2026-10-14T15:46:06-08:00
+local	dir:hugo-blog-template	already-absent (no local copy on pavilion)	2026-10-14T15:46:06-08:00
+local	stage	done	2026-10-14T15:46:06-08:00
