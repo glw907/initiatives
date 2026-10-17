@@ -39,3 +39,4 @@ On 2026-10-14 the queue took 49 items, mostly from one initiative. Eleven PRs ar
 
 Status: proposed (2026-10-14), design written and in review.
 Status: active (2026-10-14), design approved with both rulings; the unattended pass launches 2026-10-17 00:01.
+Status: done (2026-10-17), all five PRs merged (workstation#82 and #78, approval-queue#2, dubplate#8, poplar#3); the queue serves packets from the approval-queue main checkout.
