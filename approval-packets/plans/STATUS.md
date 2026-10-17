@@ -12,9 +12,11 @@ The conductor ran the pre-launch checks at 08:43. All four main checkouts are on
 
 ## Next action
 
-The conductor handed over at about 11:05. PR 1 (glw907/workstation#82) came back approved at `3fcbf12`, and the conductor merged it as `fa3e9ea`. PRs 2 to 5 wait in Design & PR Approvals as one packet under `approval-packets`, from `/var/home/glw907/.local/share/approval-packets/handover/2026-10-17-packet.md`, with two `gate-failed` asks (poplar#3's macOS job, dubplate#8's local lint) and #2 and #78 as routine approves. The conductor waits on the packet command and acts on the decision.
+The conductor handed over at about 10:40. PR 1 came back approved and merged as `fa3e9ea`. The packet came back at 10:42: approve on #2 and #78, send-back on poplar#3 and dubplate#8 (both `gate-failed` asks, choice "Send back"). The conductor ran the packet's steps 1 to 3: #2 merged as `0856b4b`, the approval-queue checkout pulled and rebuilt, 7907 restarted from the main checkout (`/` answers, the listener runs the main build, the usage line names `packet`), and the hand-over worktree removed; #78 merged as `517f22f`. Steps 4 and 5 are skipped (sent back).
 
-The 7907 server runs the hand-over build from `/var/home/glw907/Projects/approval-queue/.claude/worktrees/handover` (PR 2's head `74e7526`) until the packet is decided. Stale: `/var/home/glw907/.dotfiles` was not pulled after #82, because the live session `dotfiles-d1` works there; step 3's stow and timer commands wait on it.
+In flight: one fix subagent each in the poplar and dubplate pass worktrees, fixing poplar's four macOS `uerr` tests (backlog #78) and dubplate's three `errcheck` findings (backlog #102). The conductor then pushes, waits for poplar's CI, and sends both as a new packet with the installed command.
+
+Stale: `/var/home/glw907/.dotfiles` is not pulled (the live session `dotfiles-d1` works there), so #82 and #78 are not yet in the live checkout, and step 3's `stow -R claude bin upkeep`, `systemctl --user daemon-reload`, `systemctl --user enable --now decision-review.timer`, and `claude-tooling-sync verify` are deferred until it can be pulled.
 
 PR-ready came at about 10:36, when the executor finished.
 
@@ -46,8 +48,8 @@ Landing order, with each head the page shows:
 | PR | Repo and number | Title | Head |
 |---|---|---|---|
 | 1 | glw907/workstation#82 | Rewrite the approval brief register around the packet | merged as `fa3e9ea` at `3fcbf12` |
-| 2 | glw907/approval-queue#2 | Add the packet kind and the approval board | `74e7526f61400a548c1b971cd89ba383e6b9d19c` |
-| 3 | glw907/workstation#78 | Add the approval-packet skill and move queue rules to the packet | `115cf846afd9539ae821906c9f76b44f274b1b9d` |
+| 2 | glw907/approval-queue#2 | Add the packet kind and the approval board | merged as `0856b4b` at `74e7526` |
+| 3 | glw907/workstation#78 | Add the approval-packet skill and move queue rules to the packet | merged as `517f22f` at `115cf84` |
 | 4 | glw907/dubplate#8 | Name the packet in the design approval and packet read | `2346f2f0a6e0426426e712745df906c72aae8d93` |
 | 5 | glw907/poplar#3 | Name the packet in the design approval and packet read | `649a28e657df7f44dac385246d40f8b332e98453` |
 
