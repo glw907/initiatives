@@ -1,0 +1,7 @@
+id: self-hosting
+title: Self-hosting
+summary: Would move mail, photos, music, and passwords off Fastmail, PikaPods, and 1Password onto self-hosted Hetzner servers and Proton Pass, with USB backups and a runbook.
+status: proposed
+owner: glw907
+created: 2026-10-17
+repos: [workstation, dubplate, poplar]
