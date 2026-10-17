@@ -12,7 +12,16 @@ The conductor ran the pre-launch checks at 08:43. All four main checkouts are on
 
 ## Next action
 
-The executor `approval-queue-approval-packets` runs the plan from P0 and owns this file until PR-ready. The conductor watches it, then hands PR 1 and the packet over.
+The executor `approval-queue-approval-packets` (id `b335451c`) runs the plan from P0 and owns this file until PR-ready. Task in flight: P0 (setup done 2026-10-17; T1 and W2a dispatching). Wake-up armed. The conductor watches it, then hands PR 1 and the packet over.
+
+Worktrees:
+- approval-queue: `/var/home/glw907/Projects/approval-queue/.claude/worktrees/approval-packets` (`worktree-approval-packets`)
+- workstation register: `/var/home/glw907/.dotfiles/.claude/worktrees/approval-packets-register`
+- workstation infra: `/var/home/glw907/.dotfiles/.claude/worktrees/approval-packets-infra`
+- dubplate: `/var/home/glw907/Projects/dubplate/.claude/worktrees/approval-packets`
+- poplar: `/var/home/glw907/Projects/poplar/.claude/worktrees/approval-packets`
+
+Denied-edit sites: none.
 
 ## Sessions
 
