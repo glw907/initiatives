@@ -1,6 +1,8 @@
 # The blueprint architecture design
 
-Status: designed with Geoff in chat, 2026-10-17. Awaiting Geoff's review of the written text. This
+Status: designed with Geoff in chat, 2026-10-17. Approved by Geoff, 2026-10-17, with two review
+fixes folded (the coordinated-change case in detection, and clearing `origin: human` ahead of the
+lock). This
 spec reshapes sub-projects 2 to 4 of the docs system and changes three rulings of the drafter
 pipeline design (`2026-10-12-drafter-pipeline-design.md`), listed under "Changes to earlier
 rulings". Everything in that spec that this one doesn't change still stands.
@@ -289,9 +291,11 @@ An agent never edits page prose, with one exception (Geoff, 2026-10-17). A proje
 fail a code change whose pages still name something the change renamed or removed. cairn's
 `check:symbols`, `check:reference`, and link checks do. In that pull request, the agent may make
 only the page edits the gate demands, such as a renamed symbol or a moved link or anchor. It also
-changes the blueprint to match. The nightly run treats those page edits as human edits and
-restates the section in the house voice. Any other prose edit by an agent breaks the rule, and the
-nightly run also treats it as a human edit.
+changes the blueprint to match. The page edit and the blueprint change reach `main` in one pull
+request's merge, so the nightly run reads them as one coordinated change, never as a conflict (see
+"The nightly run"). It writes back the page edits as human edits and restates the section in the
+house voice. Any other prose edit by an agent breaks the rule, and the nightly run also treats it
+as a human edit.
 
 A person may edit a blueprint or a page (Geoff, 2026-10-17). A blueprint edit takes the same path
 as an agent's.
@@ -328,8 +332,11 @@ gives it that in two ways.
 - A style note guards against regression. drafter checks mechanically that the old wording doesn't
   come back, and the register editor reads each note as a known failure of the house voice.
 
-An `origin: human` mark clears when a redraft carrying it is accepted and merged, so blueprints
-don't fill with old marks. A style note stays until Geoff promotes it into the register or rejects
+An `origin: human` mark clears when a redraft carrying it is accepted, so blueprints don't fill
+with old marks. The clearing goes into the page's own commit, before its lock entry records the
+blueprint hash. The lock then matches the cleared blueprint, and clearing a mark never sets off
+the next night's redraft. A night whose pull request doesn't merge leaves the marks on `main`
+untouched. A style note stays until Geoff promotes it into the register or rejects
 it, so it keeps guarding the section in the meantime.
 
 The report collects every new style note as a candidate register rule, grouped by the pattern it
@@ -346,7 +353,11 @@ the cycle ceiling or the nightly cap can't cover its first stage.
    these cases:
    - Blueprint changed.
    - Page edited by hand.
-   - Both changed (a conflict).
+   - Both changed in one first-parent commit on `main`, which is one pull request's merge (a
+     coordinated change). The page's hunks go to the write-back seat against the blueprint as
+     committed, and the page then redrafts like a changed blueprint. The prose exception always
+     lands this way, and so does a person who edits a page and its blueprint together.
+   - Both changed in different first-parent commits (a conflict).
    - New blueprint.
    - Page with no blueprint, or blueprint with no page (an orphan).
    - Unchanged.
@@ -556,9 +567,12 @@ he made.
 5. A fact change or an outline-entry change counts as a blueprint change. A register change
    doesn't.
 6. A page edited by hand and changed in its blueprint since the last run is a conflict for the
-   whole page, never resolved by guessing. Section-level conflict handling can come later.
+   whole page, never resolved by guessing, unless both changes arrived in one first-parent commit
+   on `main`. That case is one coordinated change, which keeps the prose exception out of the
+   conflict list. Section-level conflict handling can come later.
 7. An uncertain write-back records the edit as both meaning and style.
-8. `origin: human` clears on merge. A style note stays until Geoff rules on it.
+8. `origin: human` clears in the accepted page's commit, ahead of its lock entry. A style note
+   stays until Geoff rules on it.
 9. The blueprint read runs nightly on the API, scoped to changed sections, and its acceptance is
    cached in the lock.
 10. The nightly run uses one pull request, auto-merged on green CI, with per-page commits. Merging
