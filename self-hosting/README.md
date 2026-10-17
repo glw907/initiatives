@@ -2,7 +2,7 @@
 
 ## Summary
 
-This initiative would move Geoff's mail, photos, and music onto servers he runs himself, and his passwords and masked email onto Proton Pass. Two Debian 13 servers run every service in containers: a small one for Stalwart and 907.life mail, and a second for Immich and dubplate, which moves off `musicbox`. Pavilion pulls backups from both onto a USB drive, and one runbook in a new server repo covers every service. Success means Fastmail, PikaPods, and 1Password are cancelled, and the second operator can restart a service or restore a backup from the runbook alone.
+This initiative would move Geoff's mail, photos, and music onto servers he runs himself, and his passwords and masked email onto Proton Pass. Two Debian 13 servers in Hetzner's EU region run the services: a small one for Stalwart and 907.life mail, and a second for Immich and dubplate, which moves off `musicbox`. Each server backs up nightly to Cloudflare R2, and one runbook in a new `servers` repo covers every service. Success means Fastmail, PikaPods, and 1Password are cancelled, and the second operator can restart a service or restore a backup from the runbook alone.
 
 ## Motivation
 
@@ -18,14 +18,13 @@ Fastmail, PikaPods, and 1Password each hold part of the household's data on some
 - Proton Pass replaces 1Password on both workstations, including the age-key fetch, `sudo -A`, the browser integration, and the guard hooks, and 1Password is uninstalled.
 - A third household member moves from 1Password to Proton Pass as well, on the household's Proton Pass plan (Geoff, 2026-10-17).
 - Hylki replaces Thunderbird as the desktop mail client, and poplar points at Stalwart's JMAP endpoint.
-- Pavilion backs both servers up to an encrypted USB drive on a timer, and a restore has been tested.
+- Both servers back up nightly to Cloudflare R2 under bucket locks, and a restore of each has been tested (Geoff, 2026-10-17, replacing the USB drive).
 - One runbook in the server repo lets the second operator restart services and restore from backup, and it catalogs the official documentation for every service.
 - The runbook records every Claude infrastructure change this initiative makes, including permission rules, guard hooks, secret access, and which sessions may reach the servers. It stays current as those change (Geoff, 2026-10-17).
 - Mail filters can be managed through Stalwart's API. The filters themselves are written in a later session, after the migration.
 
 ## Non-goals
 
-- An off-site backup copy. The USB drive on pavilion is the only backup, by Geoff's ruling of 2026-10-17.
 - Migrating Fastmail's existing filters. The new filters start from scratch.
 - dubplate's own build, which stays with the dubplate-server initiative.
 - Poplar features beyond pointing it at the new account.
@@ -40,7 +39,10 @@ Fastmail, PikaPods, and 1Password each hold part of the household's data on some
 
 ## Records
 
-- Brainstorm state, rulings, open questions, and next steps: [specs/2026-10-17-brainstorm-decisions.md](specs/2026-10-17-brainstorm-decisions.md).
+- Design: [specs/2026-10-17-self-hosting-design.md](specs/2026-10-17-self-hosting-design.md).
+- Brainstorm state and the pavilion handoff: [specs/2026-10-17-brainstorm-decisions.md](specs/2026-10-17-brainstorm-decisions.md). The design supersedes it where they differ.
 - Research: the per-area briefs in [research/](research/).
 
 Status: proposed (2026-10-17), research complete; the design waits on Geoff's answers to the open questions.
+
+Status: proposed (2026-10-17), design drafted on thinkpad-x1 with every open question answered; it waits on Geoff's approval.

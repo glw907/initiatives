@@ -2,6 +2,8 @@
 
 Initiative: self-hosting
 
+Superseded on 2026-10-17 by [the design](2026-10-17-self-hosting-design.md), which records the later rulings. This file stays as the handoff record.
+
 This file holds the state of the 2026-10-17 brainstorm on pavilion, so another session can pick up the design. The research briefs in [../research/](../research/) carry the evidence and citations. Household members other than Geoff appear here by role, because this repo is public. The next session gets their names from Geoff or from the handoff message.
 
 ## Geoff's rulings
