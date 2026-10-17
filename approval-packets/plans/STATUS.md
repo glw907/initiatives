@@ -12,7 +12,9 @@ The conductor ran the pre-launch checks at 08:43. All four main checkouts are on
 
 ## Next action
 
-The executor `approval-queue-approval-packets` (id `b335451c`) runs the plan from P0 and owns this file until PR-ready. Task in flight: P0 (setup done 2026-10-17; T1 and W2a dispatching). Wake-up armed. The conductor watches it, then hands PR 1 and the packet over.
+The executor `approval-queue-approval-packets` (id `b335451c`) owns this file until PR-ready. Every task (P0 to P3, T8) is done and pushed; the close (T9) is in flight: whole-branch reviews are back, one batched fix chain runs on the approval-queue branch, then the gates, the backlog follow-ups, the PR bodies, and `gh pr ready`. Wake-up armed. The conductor watches it, then hands PR 1 and the packet over.
+
+Both auth-data tasks (T2, T4) were read at task scope and accepted (T2 after one fix: a `decision.json` holding no decision or two).
 
 Worktrees:
 - approval-queue: `/var/home/glw907/Projects/approval-queue/.claude/worktrees/approval-packets` (`worktree-approval-packets`)
@@ -31,7 +33,9 @@ Denied-edit sites: none.
 
 ## PRs
 
-None yet. Landing order: PR 1 workstation register, PR 2 approval-queue, PR 3 workstation infra, PR 4 dubplate, PR 5 poplar.
+All five are open as drafts. Landing order: PR 1 workstation register (#82), PR 2 approval-queue (#2), PR 3 workstation infra (#78), PR 4 dubplate (#8), PR 5 poplar (#3).
+
+Known and not caused by this pass: dubplate's gate fails on three `errcheck` lines in untouched Go test files (golangci-lint 2.15.0), and poplar's macOS job fails `TestLog*` in `internal/uerr`, which fails the same way on poplar `master` at the same base commit (run 38667231501).
 
 ## Open decisions
 
