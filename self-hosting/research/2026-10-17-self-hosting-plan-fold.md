@@ -2,7 +2,7 @@
 
 Fold of the three lens reviews of `self-hosting/plans/2026-10-17-self-hosting-plan.md` at `7061df9`: mechanics (`...-plan-review-mechanics.md`), contract (`...-plan-review-contract.md`), and data (`...-plan-review-data.md`). Fold agent: `claude-opus-5-5`, under `superpowers:receiving-code-review` and `spec-plan-review` "The fold". Each finding was checked against the plan, the design at `27a154d`, and the workstation source before it was folded. Every `optional` finding is dropped. Convergent findings fold once, at the root named in their row.
 
-Counts: 104 findings. 87 folded, 13 of them through another finding's root, 7 with a part refused, and 3 with the method changed; none refused in whole; 1 owner fork (mechanics M17) plus one owner-fork sub-part (contract B1, row 2); 16 dropped as optional. Two rulings go to Geoff, under the plan's "Rulings needed". Two candidate forks were taken in the plan instead, with the reason below.
+Counts: 104 findings. 87 folded, 13 of them through another finding's root, 7 with a part refused, and 3 with the method changed; none refused in whole; 1 owner fork (mechanics M17) plus one owner-fork sub-part (contract B1, row 2); 16 dropped as optional. Round 2 (the verification read, below) turned data M7's rebuild-protection call into a third owner fork, so three rulings go to Geoff, under the plan's "Rulings needed". One candidate fork was taken in the plan instead, with the reason below.
 
 ## Findings
 
@@ -106,7 +106,7 @@ Locations name the revised plan's task ids and sections.
 | M4 | folded | L6 header token and Message-ID list; L8 deletes by exact id with counts; class `auth-data` |
 | M5 | folded | I1 statistics and newest asset ids before the switch; the rollback list; re-upload with the Immich CLI; no wipe while the list holds |
 | M6 | folded | M5 `scripts/pod-pull.sh`, `rclone copy` only, test-first |
-| M7 | folded; fork taken in the plan | Path map; M1's checks; L3's `--keep-stopped`. The rebuild-protection fork is not a fork: the design grants Claude rebuild authority, and option (a) would revoke it, which is a design change. Recorded in "Standing answers" |
+| M7 | folded; owner fork (round 2) | Path map; M1's checks; L3's `--keep-stopped`. Round 1 took the rebuild-protection question as no fork, on the premise that protection could stay off; the verification read showed Hetzner couples rebuild to delete protection, so it is ruling 3 |
 | M8 | folded; part refused | Adapter "Test harness" and `SERVERS_TEST=1` refusal. Refused: unsetting tokens in the setup command, because shell state doesn't persist between Bash calls (the Bash tool's contract); and refusing `--apply` inside `.claude/worktrees/`, because the main-loop executor works in one and every live step would refuse |
 | M9 | folded through mechanics M9; part refused | Each task adds its private values to the patterns file; the check covers commit messages and PR bodies. Refused: holding the file in the age store (the private repo carries it to both hosts with no new store) and a line-count floor (no measured defect past the missing, empty, and blank cases the check covers) |
 | M10 | folded; method changed | 0.11: Geoff types the paper key into `age-keygen -y`, which prints only the public recipient. `secret-receive` always pipes into the age store (its header: "the value is piped straight into secret-set.sh --stdin"), so it can't hold the key in tmpfs alone |
@@ -131,10 +131,10 @@ Locations name the revised plan's task ids and sections.
 
 1. Contract B1 row 2, how the members' mailboxes get the send and receive test: ruling 1.
 2. Mechanics M17, the estimate line and ceiling with the overrun answer: ruling 2.
+3. Data M7 with verification M1, production rebuilds under coupled protection: ruling 3.
 
 Taken in the plan, not asked:
 
-- **Rebuild protection** (data M7): the design's ruling grants rebuild authority (design, "Rulings"), so leaving protection off is the only answer that keeps the design.
 - **The conductor launching each pass** (the plan's proposed standing answer): `pass-core` "Conductor" says the conductor "launches the next committed prompt from the main checkout after the 'Execute' pre-launch checks", so the process already sets it.
 
 ## Probes and quotes
@@ -180,3 +180,44 @@ The design is not edited. Each item is a place where the revised plan changes th
 4. **"Workstation wiring" and "Migration order" step 4**: `ws-pass-key` reads `op` on a host whose keyring holds no agent token, and `claude-block-op` stays beside `claude-block-pass`, both until the 1Password uninstall in step 10.
 5. **"Claude's operating authority"**: the pre-rebuild backup runs with the service kept stopped (the mail unit's `--keep-stopped` mode), and `provision.sh` checks that the backup and snapshot postdate the stop; the standard mail unit restarts Stalwart at its step 4, which would let mail arrive between the backup and the wipe.
 6. **"Access"**: the CA lines and `ca.pub` land with the cloudflared role through `apply.sh`, not through cloud-init, because each Access application has its own CA, which exists only after the application does.
+7. **"Claude's operating authority" and "Rulings" (Claude's authority on Hetzner)**, pending ruling 3: under the recommended answer, Claude rebuilds a production server only after Geoff turns its protection off, because Hetzner couples rebuild protection to delete protection. Unlike items 1 to 6, this touches a ruling, so it waits for Geoff.
+8. **"Order of work" items 2 and 5**: media's lock rules move from the media pass to the first step of the Immich cutover (I1), and mail's from the mail pass to the first step of the mail cutover (C1), each once the restic password is on `origin/main`. The timing still meets "Lock rules" ("after `restic init` and the first verified backup on media, and after the last rehearsal import on mail, before cutover").
+9. **"Claude's operating authority"**: the design's "guard hooks" are deny rules plus the secret-store lock; 0.10 adds no hook script.
+10. **"Migration order" step 10**: 1Password's uninstall moves from "once step 5 has passed on both" to P4's PR, because `ws-pass-key`'s `op` branch (item 4) needs it until then.
+
+## Round 2: the verification read
+
+Fold of `self-hosting/research/2026-10-17-self-hosting-plan-fold-verification.md` (1 blocker, 2 majors, 16 minors), read against the plan at `e43cdb5`. Each finding was checked before folding. All 19 are `correctness` and all fold; none is left owed.
+
+| Id | Disposition | Where the revision carries it, or why |
+|---|---|---|
+| B1 | folded; parts refused | New section "Secrets in the age store": every secret goes into the pass's own workstation worktree (`VALUES` pointed there, which the script's header documents), is committed after each store, and rides in a draft PR from the first push, so the main checkout's `values.age` never changes and `git pull --ff-only` keeps working. 0.10's PR carries every Pass 0 credential; Pass 1's workstation PR carries F3's names. Media's lock moves to I1's first step and mail's to C1's, each gated on the password's commit being on `origin/main`; the design citation checks out (design "Lock rules": "after `restic init` and the first verified backup on media, and after the last rehearsal import on mail, before cutover"), and "Order of work" items 2 and 5 become erratum 8. A `values.age` conflict is resolved by a merge of `origin/main` and re-storing the branch's names, never a rebase or a side pick; no force-push. W5's round trip uses scratch `VALUES` and `LOCAL_SECRETS`. The lock file moves to `$XDG_RUNTIME_DIR`. Refused: `secret-pull.sh`, because no published source or team runs it and the measured defect it answers (a pull blocked by a dirty `values.age`) can't arise once nothing writes the main checkout's store. Refused: relying on `refs/pull/<n>/head` as a backstop, which the verifier left unprobed; the no-force-push rule and the draft PR carry the copy |
+| M1 | owner fork | Ruling 3, recommended (a). Quote, Hetzner's own API spec (`https://docs.hetzner.cloud/cloud.spec.json`, `/servers/{id}/actions/change_protection`): "If true, prevents the Server from being deleted (currently delete and rebuild attribute needs to have the same value)" and "If true, prevents the Server from being rebuilt (currently delete and rebuild attribute needs to have the same value)". Weighed against the design: (a) narrows the rebuild grant in "Rulings" to rebuilding after Geoff's flip, while (b) keeps the grant but breaks the "Claude's operating authority" rule that no script disables protection. Both are design-level, so Geoff rules; (a) is recommended because no production rebuild is planned and a packet is cheap. The plan is written to (a): standing answer, M1, and its fake `hcloud` modelling the coupling |
+| M2 | folded | Pass 1's workstation PR carries F3's names (the producer); F6b's entry is that PR merged plus Geoff at thinkpad-x1, with a `--ff-only` pull and `sync.sh --local`; new F6c (5 min, attended) clones the servers repo there |
+| m1 | folded | D4 `absent` rows for `fm1` to `fm3` |
+| m2 | folded | 0.10 SSH proof targets `geoff@mail.907.life`, which doesn't resolve until L4 |
+| m3 | folded | 0.10 deny rule `hcloud * rebuild` |
+| m4 | folded | "Path" states the sequence as a conservative bound; ruling 2 sums only the passes on the path |
+| m5 | folded | Ruling 2's basis, from merged PR Score sections: dubplate #6 (intake-1, about 9.5 hours against a 725-minute path), dubplate #4 (admin-api-1, about 475 against 695), approval-queue #2 and workstation #78 (about 105 against 540), workstation #75 (about 20 against 35) |
+| m6 | folded | "Secrets in the age store": the workstation registry holds every name, the servers registry the reader |
+| m7 | folded | Pass 2 and Pass 5 headers create the workstation worktree and launch with `--add-dir` |
+| m8 | folded | M4 renders F3's heartbeat token and generates only the tunnel token |
+| m9 | folded | 0.10's survivor check exempts the `--delete` name, with a test |
+| m10 | folded | 0.12's refused DNS write is a TXT at a fixed scratch name |
+| m11 | folded | M8 names its three waits; Pass 2's path note |
+| m12 | folded | Errata 9 and 10 |
+| m13 | folded | L2 checks the IPv4 only, since Stalwart sends over IPv4 only |
+| m14 | folded | Ruling 1 carries both facts; C3 deletes its messages by Message-ID and routes a changed password to the household path |
+| m15 | folded | M8 names the route: an R2 REST `DELETE` in the main loop on a `servers-scratch-` name, or the monthly review on a denial |
+| m16 | folded | Data M7's row and "Owner forks" updated |
+
+Probes and quotes for round 2:
+
+| Mechanism | Evidence |
+|---|---|
+| Hetzner protection coupling | Hetzner's OpenAPI spec, fetched to the scratchpad: the two `change_protection` field descriptions quoted above |
+| `secret-set.sh` path overrides | Source, lines 33 to 37: "Each path can be overridden from the environment, so a test or a worktree edit can point the script at a scratch store without touching the live one", then `VALUES`, `LOCAL_SECRETS`, `CACHE` defaults |
+| Recent actual-against-planned paths | `gh pr list --state merged` and `gh pr view` Score sections on glw907/approval-queue, glw907/dubplate, glw907/workstation, glw907/cairn-cms, as cited in ruling 2 |
+| Pull, conflict, and PR #81 timing | The verification read's probes, taken as recorded there |
+
+Path after round 2: unchanged at **3,490**. M6 (-15) and L7 (-15) hand their lock steps to I1 (+15) and C1 (+15). F6c adds 5 minutes off the path, so the task sum is 3,960 and the total with hand-overs 4,320.
