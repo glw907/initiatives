@@ -31,3 +31,4 @@ Hand-drafted pages drift from the register and from the facts they cite. A syste
 - Done when the system is built and the projects use it.
 - Status
   - 2026-10-14: active. This record replaces the draft `drafter` record (Geoff, 2026-10-14).
+  - 2026-10-17: the blueprint architecture is designed (`specs/2026-10-17-blueprint-architecture-design.md`, branch `docs-system-blueprint-design`), builder-checked, with Geoff's answers folded. It awaits Geoff's read of the written text. Next: on Geoff's approval, a planning session writes the pass plans under `pass-core`, starting from the spec's "The pilot" and "Calls made in this design". Launch prompt: "Read `docs-system/specs/2026-10-17-blueprint-architecture-design.md` whole and the 2026-10-12 pipeline spec it amends, apply Geoff's review notes, then plan the build under pass-core."
