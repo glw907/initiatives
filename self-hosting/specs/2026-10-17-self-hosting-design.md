@@ -82,6 +82,7 @@ Geoff made these rulings in the brainstorm on pavilion and in the thinkpad-x1 se
   - **Geoff's Proton move.** It starts in Pass 0 and runs alongside the server passes: his account and FIDO2 keys, his 1Password import, the `Workstation` and `Servers emergency` vaults and agent tokens, and the workstation security PR. New credentials from Pass 0 go into Proton Pass, never 1Password.
   - **Three 1Password users.** Geoff, the second operator, and household member C use 1Password today. The second operator creates his Proton account in Pass 0 and handles his own migration. Household member C uses no masked addresses, so their move is a plain vault import with written macOS and iOS steps, later. 1Password is cancelled only after all three have moved. Household members A and B join Proton Pass without a 1Password vault.
   - **Four mailboxes migrate.** Fastmail has four users today, Geoff, the second operator, and household members A and B, each a separate login with their own mailbox and contacts, and perhaps calendars. All four move to Stalwart.
+  - **Start at $24 a month.** Both servers start as CX33s even if the measured mailboxes make the mail disk tight. A larger type comes later, when the disk alert says so.
 
 ## Rulings needed
 
@@ -132,7 +133,7 @@ Each server gets a Hetzner Primary IPv4 and IPv6. They are created before the se
 
 The servers and R2 come to about $24 a month, inside Geoff's $40 ceiling. Proton Pass Family adds $59.88 a year:
 
-- Mail server: $9.99, plus $0.60 for IPv4 and about $2 for Hetzner Backups. A CX43 instead costs $18.49 plus about $3.70 for backups.
+- Mail server: $9.99, plus $0.60 for IPv4 and about $2 for Hetzner Backups. A later rescale to a CX43 costs $18.49 plus about $3.70 for backups.
 - Media server: $9.99, plus $0.60 for IPv4.
 - R2: about $1 at first, growing with the backups (see "Retention"). R2 charges $0.015 per GB-month past the first 10 GB.
 - Proton Pass Family: $59.88 a year, about $5 a month.
@@ -252,7 +253,7 @@ Configuration is a `config.json` plus an NDJSON plan applied with `stalwart-cli 
 
 ### Size
 
-Geoff's mailbox measured 5.14 GiB across 35,576 messages (read-only JMAP, 2026-10-17). The other three are unmeasured. The disk holds the live store, the backup's staging copy, and room for a side-by-side restore, each at roughly 1.5 times the raw mail, plus about 5 GB for the system. Geoff's mailbox alone would fill a CX23's 40 GB disk to about 75%, leaving no room for the other three, so the mail server is a CX33. A CX33 holds about 12 GB of raw mail across all four mailboxes under the 80% alert. The mail pass measures the other three before it provisions anything. If the four total more than about 12 GB, the mail server is a CX43 instead (8 vCPUs, 16 GB, 160 GB, $18.49), keeping the store on local disk and so inside Hetzner's backup images and snapshots; a Hetzner Volume would fall outside them. Either type keeps the recurring total well under the $40 ceiling. Vandelay runs on a workstation, so its archives never take server disk. The health timer alerts at 80% full.
+Geoff's mailbox measured 5.14 GiB across 35,576 messages (read-only JMAP, 2026-10-17). The other three are unmeasured. The disk holds the live store, the backup's staging copy, and room for a side-by-side restore, each at roughly 1.5 times the raw mail, plus about 5 GB for the system. Geoff's mailbox alone would fill a CX23's 40 GB disk to about 75%, leaving no room for the other three, so the mail server is a CX33. A CX33 holds about 12 GB of raw mail across all four mailboxes under the 80% alert. The mail pass measures the other three before it provisions anything. The mail server starts as a CX33 either way, by Geoff's ruling to start at $24 a month. Past about 12 GB of raw mail, the server gives up the side-by-side restore room. That raises the limit to about 17 GB. Restore drills already run on a throwaway server. When the 80% disk alert fires, Claude rescales the server to a CX43 (8 vCPUs, 16 GB, 160 GB, $18.49) within the $40 ceiling. The rescale keeps the store on local disk, inside Hetzner's backup images and snapshots. A Hetzner Volume would fall outside them. A rescale that grows the disk can't be undone. Vandelay runs on a workstation, so its archives never take server disk. The health timer alerts at 80% full.
 
 ### Delivery
 
@@ -792,7 +793,7 @@ Each item is checked in the pass that needs it, and each has a fallback named no
 
 | Item | Checked in | If it fails |
 |---|---|---|
-| The sizes of the second operator's, A's, and B's mailboxes | Mail | A CX43 past about 12 GB of raw mail; if no CX43 is in stock within the seven-day retry, the pass reports to Geoff |
+| The sizes of the second operator's, A's, and B's mailboxes | Mail | Start on the CX33 regardless; drop the side-by-side restore room past about 12 GB of raw mail, and rescale to a CX43 when the disk alert fires |
 | Whether the `music-library` bucket holds the whole library | Media | The restic copy from musicbox is the record either way |
 | Whether DMARC Management's reports are readable through the API | Mail | Read `dmarc-reports@` over JMAP |
 | Whether Email Sending delivers to `probe.907.life` | Mail | The DMARC-report check in "Monitoring" |

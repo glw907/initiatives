@@ -46,3 +46,5 @@ Fastmail, PikaPods, and 1Password each hold part of the household's data on some
 Status: proposed (2026-10-17), research complete; the design waits on Geoff's answers to the open questions.
 
 Status: proposed (2026-10-17), design drafted on thinkpad-x1 with every open question answered; it waits on Geoff's approval.
+
+Status: proposed (2026-10-17), design reviewed and folded; the approval packet ([specs/2026-10-17-self-hosting-design-packet.md](specs/2026-10-17-self-hosting-design-packet.md)) goes to Geoff from pavilion, and PR 8 squash-merges on approval.
