@@ -12,7 +12,11 @@ The conductor ran the pre-launch checks at 08:43. All four main checkouts are on
 
 ## Next action
 
-PR-ready (2026-10-17 about 10:36). All five PRs are marked ready with their bodies written, and the executor `approval-queue-approval-packets` (id `b335451c`) is done. The conductor hands PR 1 over as a `pr` item and PRs 2 to 5 as one packet, per the plan's "Handing over the packet before PR 2 merges".
+The conductor handed over at about 11:05. PR 1 (glw907/workstation#82) came back approved at `3fcbf12`, and the conductor merged it as `fa3e9ea`. PRs 2 to 5 wait in Design & PR Approvals as one packet under `approval-packets`, from `/var/home/glw907/.local/share/approval-packets/handover/2026-10-17-packet.md`, with two `gate-failed` asks (poplar#3's macOS job, dubplate#8's local lint) and #2 and #78 as routine approves. The conductor waits on the packet command and acts on the decision.
+
+The 7907 server runs the hand-over build from `/var/home/glw907/Projects/approval-queue/.claude/worktrees/handover` (PR 2's head `74e7526`) until the packet is decided. Stale: `/var/home/glw907/.dotfiles` was not pulled after #82, because the live session `dotfiles-d1` works there; step 3's stow and timer commands wait on it.
+
+PR-ready came at about 10:36, when the executor finished.
 
 Auth-data verdicts: T4 (server) `accept`; T2 (command) `fix` on the first read (a `decision.json` holding no decision or two exited 0), then `accept`; the close fix chain's server changes `accept`. Whole-branch verdicts: PR 1 `accept`, PR 2 `accept`, PR 3 `fix` then `accept` on the re-read, PR 4 `accept`, PR 5 `accept`. `visual-verifier` found one structural gap (no irreversible marker on the board), fixed.
 
@@ -41,7 +45,7 @@ Landing order, with each head the page shows:
 
 | PR | Repo and number | Title | Head |
 |---|---|---|---|
-| 1 | glw907/workstation#82 | Rewrite the approval brief register around the packet | `3fcbf12820afa1f432507f5e4177d39af795dc39` |
+| 1 | glw907/workstation#82 | Rewrite the approval brief register around the packet | merged as `fa3e9ea` at `3fcbf12` |
 | 2 | glw907/approval-queue#2 | Add the packet kind and the approval board | `74e7526f61400a548c1b971cd89ba383e6b9d19c` |
 | 3 | glw907/workstation#78 | Add the approval-packet skill and move queue rules to the packet | `115cf846afd9539ae821906c9f76b44f274b1b9d` |
 | 4 | glw907/dubplate#8 | Name the packet in the design approval and packet read | `2346f2f0a6e0426426e712745df906c72aae8d93` |
