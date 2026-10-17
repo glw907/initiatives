@@ -8,8 +8,8 @@ the plan's design resolution n; "S<n>" names its "Settled by the planning sessio
 
 Counts over 68 findings: 59 folded or taken (six of them in part, each refused part with its
 reason), 5 dropped as optional, 4 settled by the planning session (contract M2; contract m6 and
-integrity 6, one ruling; mechanics 14). Path estimate 600 to 755 minutes (design estimate 300,
-approval 900).
+integrity 6, one ruling; mechanics 14). Path estimate 600 to 755 minutes at the fold, then 780
+after the verification read below (design estimate 300, approval 900).
 
 ## Convergent findings, folded once
 
@@ -104,6 +104,33 @@ approval 900).
 11. folded: lock commit (B1.5 step 7), fetch before the worktree (Shape), no edits during a read and existing facts to "Found, not done" (B1.5 step 6). The restore of an unwritten page needs no change once nothing is edited during a read.
 12. dropped: optional. The dry-run half is answered by mechanics 23; the blank-line lock layout doesn't remove work.
 13. folded in part: the one-executor launch check in Shape, as directed. The baseline gate stays.
+
+## Verification read
+
+Source: `2026-10-17-drafter-b1-fold-verification.md` (1 blocker, 1 major, 7 minors), each checked
+against drafter `d3447d9`. Path 755 to 780: B1.2 130 to 140, B1.4 210 to 225.
+
+- B-1. folded: B1.4 skips the chain's args guard (`docs-page-chain.js:606-608`) when `HOST` is set, plus a `read_test.go` row loading the real module through a `read.go` handoff. Supplying args was rejected: `:649` runs `registerSectionsFor` on each `args.pages` entry and throws on an unknown track (`:634`), and B1's outline has no track. The Workflow guard and the parity matrix (full args) are unchanged.
+- M-1. folded: R10 collects a backticked token the store holds on any number of bullets, or one with the store's shared id prefix through `:`; `Facts` gains an exported count. B1.2 rows for a typo'd and a doubled framing id.
+- m1. folded: R14 takes `run.TryLock` in `read.go`, writes only on no error and no stop, and leaves the file byte-identical when nothing changed.
+- m2. folded: R9 names the exported `plan.Outline` constructor (B1.2 files), line 1 for page-level findings, and one `_framing-<field>` synthetic item per framing field.
+- m3. folded: B1.4's prompt names neither the page nor the blueprint path; the golden row asserts no `=== file:` block for either and the blueprint's bytes once.
+- m4. folded: R12 builds the resumed outline entry from `Head` read through `run.LoadState`; the facts store's fresh reload is stated as the exception.
+- m5. folded: B1.5 step 8's seeded gaps must pass `drafter check`, and an accept discards the lock change.
+- m6. dropped: optional, and carrying `track` adds a field now; R1 already hands the track to B3.
+- m7. folded: R8 names `git rev-parse <commit>:<path>` for committed files and `git hash-object` for the new blueprint, with no call to the unexported helper.
+- Planning session: Close step 6 no longer edits the initiatives repo; the drafter PR body carries the pipeline spec amendment, and the conductor commits it in its hand-over.
+
+## For Geoff's packet
+
+Routine rows, each settled with its reason and visible so Geoff can veto it. Nothing waits on them.
+
+1. A missed milestone closes B1 (plan S1). A scope call: the build has its own acceptance, and pass 5's "not pilot-ready" close is the precedent.
+2. Every converted page redrafts once (plan S2). It keeps call 15's letter, since the reshape is a blueprint change, but not its "at no cost": the spend lands in B3 and B4, on pages the pilot drafts anyway.
+3. No `page` block; job, type, title, and path live only in the outline and the path rule (R1). The design names both homes (design:107 and :133); one home follows design:90-92.
+4. No `registerSections` field (R1). `register.<track>` already holds them; B3 finds each page's track.
+5. Blob ids and no commit field in the lock (R8). The lock's format is left to the builder, and a commit can't name itself. B4's hunk diff reads the blob (`git cat-file blob <id>`), not `git show <commit>:<page>` (design:306).
+6. The framing's "Departures" section is dropped to the commit message (R10), per format change 4 (design:243-246).
 
 ## Rulings for Geoff
 

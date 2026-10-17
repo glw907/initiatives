@@ -9,7 +9,8 @@ approved by Geoff on 2026-10-17 with two review fixes folded (commit `b3665ea` o
 jobs", and "The edit catalog"), and "The pilot" first milestone. It amends
 `specs/2026-10-12-drafter-pipeline-design.md`, whose stage 1 ("Plan check") and stop table this pass
 extends. Planning fact sheet (paths and line numbers at drafter `d3447d9`): `research/2026-10-17-drafter-b1-factsheet.md`.
-Review fold: `research/2026-10-17-drafter-b1-plan-fold.md` (three lenses, folded at this revision).
+Review fold: `research/2026-10-17-drafter-b1-plan-fold.md` (three lenses and the fold's verification
+read, `research/2026-10-17-drafter-b1-fold-verification.md`, folded at this revision).
 
 ## Outcome
 
@@ -67,12 +68,13 @@ when the one before it merges, from what B1's pilot shows.
   line, since every later red would be ambiguous.
 - Clock file: the drafter worktree's git dir for B1.1 to B1.4 and Close; the cairn worktree's git
   dir for B1.5 (settled ruling 3). A wait on Geoff removes the clock file first.
-- Path estimate: 755 minutes. B1.1 (180), B1.2 and B1.3 as a pair (130) plus the post-merge rows
-  (15), B1.4 (210), B1.5 (160, not counting batch waits), Close (60). The design's estimate is 300
+- Path estimate: 780 minutes. B1.1 (180), B1.2 and B1.3 as a pair (140) plus the post-merge rows
+  (15), B1.4 (225), B1.5 (160, not counting batch waits), Close (60). The design's estimate is 300
   path minutes, set from recent actuals (pass 4 planned 285 and ran about 70; pass 5 was not
   measured). The path was 600 before the review fold; the fold added the blueprint view, the hash
   and lock rules, the read's request block, and the lock-after-run write, and dropped the live
-  smoke run. The path is 2.5x the estimate, inside the 3x approval.
+  smoke run; the fold's verification added the module load fix, the framing citation rule, and the
+view's outline constructor. The path is 2.6x the estimate, inside the 3x approval.
 - Pair subagents run on `sonnet` at `medium` with the `description` `b1-blueprint-format task <n>`.
 - Standing approvals (Geoff, 2026-10-17):
   - The plan proceeds within 3x its design estimate (900 path minutes).
@@ -137,9 +139,12 @@ The design leaves these to the builder. The plan takes them so the executor does
    `blueprint`; drafter never edits a blueprint in B1.
 7. `drafter read` stops after stage 1. The tree must be clean, as for `drafter page`, so each
    read round runs on a committed blueprint and the round history is the git log.
-8. The lock's hashes. A page or blueprint hash is the file's git blob id, computed as
-   `gitHashObject` runs it (`internal/pipeline/page.go:371-380`), so `git rev-parse HEAD:<file>`
-   reproduces it and B4 retrieves drafter's last text with `git cat-file blob <id>`. The lock has
+8. The lock's hashes. A page or blueprint hash is the file's git blob id. For a committed file
+   (the page seed and the accepted id) it's `git rev-parse <commit>:<path>`; for the new,
+   uncommitted blueprint it's `git hash-object -- <file>`, the command pipeline's unexported
+   `gitHashObject` runs (`internal/pipeline/page.go:371-380`) without its `-w`. The new code shells
+   out itself rather than calling that helper. B4 retrieves drafter's last text with
+   `git cat-file blob <id>`. The lock has
    no commit field: an entry committed with its page can't name that commit. A section hash is
    `sha256:<hex>` (`hashBytes`, `internal/pipeline/record.go:138`) over the section's region as
    coverage splits a page (`internal/coverage/sections.go:16-26`), with the text above the first
@@ -147,31 +152,52 @@ The design leaves these to the builder. The plan takes them so the executor does
    missing key reads as changed.
 9. The blueprint view. `internal/blueprint` projects a blueprint and its outline entry onto a
    `*plan.Plan`, keeping line numbers. The shared checks (`plan.Check`), the consistency prompt,
-   and coverage's split run on the view unchanged. An `example` item's facts and the framing's
-   citations enter the view's placed facts.
+   and coverage's split run on the view unchanged. An `example` item's facts enter the view's
+   placed facts. Three parts complete it:
+   - The crossLinks check needs a `*plan.Outline`, whose fields are unexported and which only JSON
+     files build (`internal/plan/outline.go:16-20,29-66`), so `internal/plan` gains an exported
+     constructor from paths, slugs, and crossLinks.
+   - The view's `Page` comes from the outline entry and the path rule, so a finding on a page-level
+     field cites line 1 of the blueprint.
+   - Each framing field with citations becomes one synthetic `example` item in the view, its
+     `facts` the field's citations and its line the field's line, with the id `_framing-<field>`,
+     which the item pattern can't produce. `eachFactsList` (`internal/plan/check.go:122-130`) and
+     `refs` then see them.
 10. The `framing` block holds the framing record's four descriptive sections ("Who arrives, from
     where, and why", "Background the page rests on", "Place in the doc set", "Intro plan").
     "Departures from the plan's introduction" narrates the planning session's moves against the old
     plan, which format change 4 puts in the commit message, so the converter drops it. Framing
-    prose cites a fact as a backticked id, as the records do today; drafter collects those
-    citations by matching each backticked token against the facts store (`facts.Get`,
-    `internal/plan/facts.go:63`), so `refs`, the facts check, the consistency read, and the read's
-    fact block all see them.
+    prose cites a fact as a backticked id, as the records do today. drafter has no fact-id pattern
+    (`factIDRe` takes any leading code span, `internal/plan/facts.go:21`), so the store supplies
+    one: a backticked token is a citation when the store holds any bullet with that id, or when it
+    starts with the prefix every id in the store shares through its first `:` (cairn's `f:`).
+    `Facts.Get` alone won't do, since it hides an id on no bullet or on two
+    (`internal/plan/facts.go:62-68`), so `Facts` gains an exported count or id list. A typo'd id
+    then reaches the facts check as "in no facts file" and a doubled one as "on 2 bullets"
+    (`internal/plan/check.go:419-436`), and `refs`, the consistency read, and the read's fact
+    block see every citation.
 11. Section ids and item ids share one namespace, unique within the blueprint, with the item id
     pattern `^[a-z0-9][a-z0-9_-]*$` (`schema/plan.schema.json:227`).
-12. The read reads one version of the blueprint. Every stage-1 input for a blueprint page (the
-    local check, the consistency read, and the blueprint read) loads the blueprint and the outline
-    from `git show <head>:<path>`, where `<head>` is the commit the run started at
-    (`internal/pipeline/start.go:160-168`, `r.state.Head`). The accepted id is that file's blob id
-    at `<head>`. A blueprint committed during a batch wait, or between a stop and its resume, is
-    never stamped as accepted.
+12. The read reads one version of the blueprint and its outline entry. Every stage-1 input for a
+    blueprint page (the local check, the consistency read, and the blueprint read) loads the
+    blueprint and the outline from `git show <head>:<path>`, where `<head>` is the commit the run
+    started at (`internal/pipeline/start.go:160-168`, `r.state.Head`). On `--resume`, `read.go`
+    reads `Head` from the run's state before calling `Run` (`run.LoadState`,
+    `internal/run/state.go:116`, in the run directory `internal/pipeline/resume.go:38-45`
+    computes) and builds the handoff's outline entry from that commit too. The accepted id is the
+    blueprint's blob id at `<head>`. A blueprint committed during a batch wait, or between a stop
+    and its resume, is never stamped as accepted. The facts store is the exception: a resume
+    reloads it from disk (`internal/pipeline/resume.go:73-77`), which Later's fact item covers.
 13. The `blueprint` seat joins `seatNames` but not the default `seats` list
     (`internal/config/apply.go:29`), so `drafter page` validates and runs as before on every
     existing config. `drafter read` always runs the seat, validates it itself, and refuses to start
     (exit 2) when `[seat.blueprint]` is incomplete.
-14. The lock is written once per run, after the run ends. `cmd/drafter/read.go` writes
-    `drafted.lock` when `pipeline.Run` returns a summary with no stop, from each accepted page's
-    blueprint id. A stopped run leaves the lock untouched, so `checkTree`
+14. The lock is written once per run, after the run ends. `Run` releases its locks before it
+    returns (`internal/pipeline/pipeline.go:120`) and can return a summary with an error
+    (`pipeline.go:124-129`). So `cmd/drafter/read.go` takes `run.TryLock` on
+    `<git dir>/drafter.lock` itself, and writes `drafted.lock` only when `Run` returned no error
+    and no stop, from each accepted page's blueprint id. It leaves the file byte-identical when no
+    accepted id changed. A stopped run leaves the lock untouched, so `checkTree`
     (`internal/pipeline/resume.go:257-304`) never meets a lock change it doesn't own, and the
     resume path runs unchanged. A crash after the run ends and before the lock write loses that
     acceptance; the recovery is to read again.
@@ -277,7 +303,7 @@ and no workstation path goes into drafter.
     fixture facts file. B1.2 extends the test to assert `check` passes.
 - Test: the drafter gate.
 
-### B1.2 `drafter check` and `drafter refs` (130 min, ordinary)
+### B1.2 `drafter check` and `drafter refs` (140 min, ordinary)
 
 - Outcome: `drafter check [--root dir] [--json] [<blueprint>...]` validates every blueprint under
   the project's blueprint root, or the ones named, offline.
@@ -309,13 +335,16 @@ and no workstation path goes into drafter.
     - `blueprints.required` (default false)
     - `blueprints.outline` (default `<root>/outline.yaml`)
     - `facts.dir` (unchanged). When it's unset and `<root>/facts` exists, it defaults there.
-- Files: `internal/blueprint/` (the check and refs), `cmd/drafter/check.go`, `cmd/drafter/refs.go`
-  and their tests, `internal/config/` and its docs test, `docs/configuration.md`,
+- Files: `internal/blueprint/` (the check and refs), `internal/plan/outline.go` and
+  `internal/plan/facts.go` (R9's constructor and R10's count), `cmd/drafter/check.go`,
+  `cmd/drafter/refs.go` and their tests, `internal/config/` and its docs test, `docs/configuration.md`,
   `docs/blueprint-format.md` (the checks section).
 - Acceptance:
   - Each new check has a failing fixture and a passing twin.
   - Each adapted v1 check has a failing blueprint fixture asserting its check name, including a
     fact cited from an `example` item and from framing prose.
+  - Framing citations: a typo'd framing id is a `facts` error "in no facts file", and an id on two
+    bullets reports "on 2 bullets", each at its framing field's line.
   - A synthetic project with a managed page and no blueprint warns with `blueprints.required` false
     and errors with it true.
   - Each "can't run" state has a row with its exit code and message: no blueprint root, no
@@ -382,7 +411,7 @@ and no workstation path goes into drafter.
 - Test: the drafter gate.
 - Pair: with B1.2.
 
-### B1.4 The blueprint read and `drafter read` (210 min, runner)
+### B1.4 The blueprint read and `drafter read` (225 min, runner)
 
 - Outcome: stage 1 runs on blueprints.
   - A blueprint page starts at a new local step, which runs `drafter check`'s logic on the
@@ -400,9 +429,18 @@ and no workstation path goes into drafter.
     Its answer is `assemble.AnswerRead`. Its request is resolution 6's: the module's prompt with
     `fileBlocks`, then drafter's block, through a field on `assemble.Input` that `fileBlocks` never
     scans.
+  - The chain module loads under drafter with no chain args. Its guard
+    (`docs-page-chain.js:606-608`) throws on a missing `args.worktree`, `args.gate`, or
+    `args.pages` before `if (HOST) return DRAFTER_SEATS` (`:2261`), and `read.go`'s handoffs carry
+    none. The guard runs only when `HOST` is unset. Supplying args instead would need a real
+    `track` per page, since `:649` runs `registerSectionsFor` on every `args.pages` entry and it
+    throws on an unknown track (`:634`), and B1's outline carries no track. The Workflow run keeps
+    its guard, and the parity matrix supplies full args, so both are unchanged.
   - The prompt is a `blueprint` export in the chain's prompts module, `claude/.claude/workflows/
     docs-page-chain.js`, added to `DRAFTER_SEATS`. It reads only `c.page` and module constants that
-    don't depend on `args.worktree` or `args.outline`, and names no facts file. It's adapted from
+    don't depend on `args.worktree` or `args.outline` (so not `common` or `registerLine`). It
+    names no facts file, and neither the page path nor the blueprint path as a bare path, since
+    `fileBlocks` would inline either (`internal/assemble/files.go:104-116,178-197`). It's adapted from
     `structurePrompt(p, "plan")`:
     - order, pace, and user goal
     - the introduction's three parts
@@ -457,8 +495,12 @@ and no workstation path goes into drafter.
   - A blueprint edited and committed after a stop: the resume reads and records the start
     commit's version.
   - Golden request: the `blueprint` request holds the fixture blueprint's bytes, its outline entry,
-    the bullet of each placed and cited fact, no bullet for an unplaced fact, and no facts-file or
-    code-excerpt block.
+    the bullet of each placed and cited fact, no bullet for an unplaced fact, no facts-file or
+    code-excerpt block, no `=== file:` block for the page or the blueprint path, and the
+    blueprint's bytes exactly once.
+  - Real module: a `cmd/drafter/read_test.go` row builds the handoff as `read.go` does, loads
+    `claude/.claude/workflows/docs-page-chain.js` through `prompts.Load` with that handoff's host,
+    and renders the `blueprint` seat.
   - Every `Create` the fake records follows a reserve line, as in pass 5's money rows, which run
     unchanged and pass.
   - `--dry-run` prints both stage-1 requests' estimates, submits nothing, and writes no lock.
@@ -521,8 +563,12 @@ and no workstation path goes into drafter.
   7. On `accept`, commit `blueprints/drafted.lock`.
   8. Control read: on a throwaway branch in the cairn worktree, commit the final blueprint with two
      seeded gaps (one step removed whose output a later step requires in prose only, and one
-     failure item removed), and run `drafter read` once. It must answer `fix` with a blocking
-     finding on each gap. Return to `blueprint-pilot` and delete the branch. This proves the final
+     failure item removed). Each gap must leave `drafter check` passing, or the page is set aside
+     before any request: remove a step that no `from` or `requires` names, and a failure whose
+     step keeps another failure or has its `canFail` cleared, with no `handledBy` left dangling.
+     Run `drafter check`, then `drafter read` once. It must answer `fix` with a blocking finding on
+     each gap. If it accepts, discard the lock change. Return to `blueprint-pilot` and delete the
+     branch. This proves the final
      prompt still bites, including after any prompt edit.
   9. Time `drafter check` on a scratch root holding the blueprint copied to the path-rule location
      of each of the 11 stage 2b pages, with the new `outline.yaml`.
@@ -556,9 +602,10 @@ and no workstation path goes into drafter.
    `internal/*/testdata/`, `e2e/testdata/`), `tests/fixtures/`, and `docs/` for workstation paths
    and for anything shaped like an `sk-ant-` key; the grep must find nothing.
 5. Run cairn-pass's close checklist items for the cairn branch, including the friction-log triage.
-6. Record the pipeline spec amendment: stage 1 and the stop table in
-   `specs/2026-10-12-drafter-pipeline-design.md` gain the blueprint step, the `blueprint` seat, and
-   its stop row, as built.
+6. The executor never edits the initiatives repo. The drafter PR body carries the pipeline spec
+   amendment's text: stage 1 and the stop table gain the blueprint step, the `blueprint` seat, and
+   its stop row, as built. The conductor commits it to `specs/2026-10-12-drafter-pipeline-design.md`
+   in its hand-over.
 7. Push, and open the PRs on `glw907/drafter` and `glw907/cairn-cms`. The drafter PR opens ready,
    since drafter has no CI; the cairn PR stays a draft until its CI is green. Each PR body names
    the other and opens with `## Brief`.
@@ -568,7 +615,7 @@ and no workstation path goes into drafter.
    - B1.5's record: each read round's verdict, its blocking findings, and their disposition, the
      control read's result, plus the ledger total from `drafter spend --since 2026-10-17` by seat
    - any prompt edit with the findings it answers
-   - the score rows, where the Work and review row puts the 755-minute path beside the actual
+   - the score rows, where the Work and review row puts the 780-minute path beside the actual
    - the milestone statement: "first blueprint accepted", or "missed" with the classification
 
    The cairn PR carries:
