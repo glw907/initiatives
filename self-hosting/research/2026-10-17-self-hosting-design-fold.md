@@ -229,3 +229,39 @@ Geoff ruled on the open owner calls in chat, and the spec's "Rulings" section no
   - The triage stays Geoff's 165 masks plus any the others hold. The second operator lists his own in the first week; Claude checks A's and B's over their API tokens in the mail pass.
 
 tellgrader (`--register docs --profile docs-register`) exits 0 on the spec, and the brief parser accepts it.
+
+## Second verification round, and Geoff's planning rulings (2026-10-17)
+
+A fresh agent read the spec at commit `7e1f6f4` and wrote [2026-10-17-self-hosting-design-fold-verification-2.md](2026-10-17-self-hosting-design-fold-verification-2.md): 0 blockers, 3 majors, 12 minors. Each finding was checked before it was folded.
+
+Checks made in this round:
+
+- Live Hetzner read, `hcloud server-type list -o json`, 2026-10-17 22:27 UTC, read-only. CX33 (x86, 4 vCPU, 8 GB, 80 GB, $9.99) was orderable in hel1 only. CX23 was orderable in fsn1, nbg1, and hel1. CX43 ($18.49, 160 GB), CAX21, CAX31, CPX21, and CPX31 were orderable nowhere in the EU. CPX22 ($22.99, 80 GB) was orderable everywhere. The hosting brief's morning read had CX33 sold out everywhere, so stock moves within hours.
+- Hetzner's Primary IP FAQ: a Primary IP is assigned only to a powered-off server, in its own location, that has no Primary IP of that type. The FAQ says nothing about IPv6 network configuration afterwards, so the spec marks that unverified.
+- restic on a read-only repository: `check --no-lock` passed. My `recover --no-lock` stopped on a lock, which is consistent with the verifier's "permission denied" probe.
+
+| Finding | Disposition |
+|---|---|
+| M1 a Volume takes mail out of the images | Folded: no Volume. The overflow past about 12 GB of raw mail is a CX43, which keeps the store on local disk and inside the images. Both types stay well under the $40 ceiling. |
+| M2 contacts and calendar changes after the final pass | Folded: cutover steps 5 and 6 (Thunderbird repointed; every device turns off Fastmail contacts and calendars and makes Stalwart the default), a T+7 Vandelay contacts and calendar delta check that repeats for the T+30 packet, and the packet's evidence row. Owed: a rollback doesn't carry contacts and calendar edits made in Stalwart back to Fastmail. Vandelay's export to Fastmail is untested (mail-cutover brief), so the rehearsal can test it if Geoff wants that covered. |
+| M3 `recover` under a read-only token | Folded: the media drill proves `recover` on a local copy made with `rclone` and the read-only token, never against the bucket. If the disk can't hold both the copy and the restore, it runs as its own drill. |
+| m1 false CX23 reason | Folded: "would fill a CX23 to about 75%, leaving no room for the other three". |
+| m2 stock | Folded, with the live read above. Location order fsn1, nbg1, hel1; a daily retry for seven days, then a stall report to Geoff. The verifier's Arm fallback (CAX21) isn't used: it was out of stock in the live read, and Stalwart's arm64 image is unverified. CPX22 isn't named either, because at $22.99 it would leave the mail server at about $28 and the total near the ceiling. |
+| m3 growth estimate and mail lock timing | Folded: the estimate says it leaves out mail compaction, the rehearsal week measures mail growth for the cutover packet, and the mail bucket's rules land after the last rehearsal import. |
+| m4 restic under the locks | Folded: the drill runs `check --no-lock`, and the runbook says changing a restic password needs Geoff to lift the `keys/` rule. The optional re-PUT note is dropped. |
+| m5 missing owner asks | Folded: the Proton password share before cutover, the T+30 device-removal message, the plan check in Pass 0 item 7, and the token scopes in items 8 and 9. |
+| m6 Fastmail packet order | Folded in all three places: remove the three users, rename Geoff's login if needed, then remove 907.life and downgrade. |
+| m7 per-account samples and Android | Folded: the samples are drawn per account, and the rehearsal has an Android row. |
+| m8 Claude's reach into members' mail (owner fork) | Folded as a stated rule, by the dispatching session's direction: Claude reads only counts and metadata, never message content, and checks a member's masks with `MaskedEmail/get` alone. The rule sits in "Migration" and triage step 2. |
+| m9 port 25 relay option | Folded: one trigger (a refusal, a stall, or a lasting Microsoft block) in both places; Geoff still creates the account; the relay joins the senders. |
+| m10 brief wording (optional) | Folded, since it corrects facts: "the research questions", the chat and planning rulings in "The rulings behind this design", and the lede now describes the attended first pass. |
+| m11 overstated secret claims | Folded with the verifier's wording. |
+| m12 `promote.sh` mechanics | Folded: `--hold` pins the location, and `promote.sh` powers off, swaps the IPs, sets the host name, and turns on Hetzner Backups. IPv6 configuration is unverified. |
+
+Geoff's planning rulings, recorded in the spec's "Rulings" with the date:
+
+- **Pass 0, "Attended access".** It's a new first pass with Geoff present. The first-week owner items moved into "What Geoff does" under "Pass 0", with two additions: the scoped Cloudflare tokens (Claude's token can't create tokens) and a closing dry run of every credential. The permission-rule PR and guard hooks moved from the foundation pass into Pass 0. The order of work is now 0 to 7.
+- **Geoff's Proton move.** It starts in Pass 0 and runs alongside the server passes. "Migration order" splits into Geoff's six steps (account, the `op` listing, import, vaults and agent tokens with the workstation security PR, the key check, passkeys) and the others' later steps. The emergency-vault copies come after the media and mail passes.
+- **Three 1Password users.** The second operator creates his Proton account in Pass 0 and moves his own data. Household member C does a plain import with macOS and iOS steps. A and B have no 1Password vault. The 1Password packet requires all three moved. "What changes" and the brief's "If you approve" are updated to match.
+
+tellgrader (`--register docs --profile docs-register`) exits 0 on the spec and this record, and the brief parser accepts the spec.

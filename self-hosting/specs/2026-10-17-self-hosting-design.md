@@ -2,16 +2,16 @@
 
 ## Brief
 
-Approving this design starts a plan that moves 907.life mail, photos, music, and passwords onto two Hetzner servers and Proton Pass, with backups in Cloudflare R2. The work runs unattended except for a short list of things only you can do.
+Approving this design starts a plan that moves 907.life mail, photos, music, and passwords onto two Hetzner servers and Proton Pass, with backups in Cloudflare R2. The work runs unattended after one attended first pass, in which you and Claude gather every credential the later passes need.
 
-Fastmail, PikaPods, and 1Password each hold household data on someone else's terms. The 165 masked addresses on fastmail.com also make leaving Fastmail slower every month. The research is done, you answered every open question on 2026-10-17, and three reviews have tested the design since, so the plan can be written to run with few stops.
+Fastmail, PikaPods, and 1Password each hold household data on someone else's terms. The 165 masked addresses on fastmail.com also make leaving Fastmail slower every month. The research is done, you answered the research questions on 2026-10-17, and three reviews and two verification reads have tested the design since, so the plan can be written to run with few stops.
 
 ### What changes
 
 - Mail for 907.life moves to Stalwart on a small Hetzner server in Germany, sending directly on port 25. All four Fastmail mailboxes migrate: yours, the second operator's, and household members A's and B's.
 - Immich moves from PikaPods to a second Hetzner server in Germany. photos.907.life keeps its name, and uploads over 100 MB start working.
 - The same media server is ready for dubplate when dubplate's own build ships. musicbox retires.
-- Proton Pass Family replaces 1Password for five people. Your new masked addresses end in `m.907.life`.
+- Proton Pass Family covers five people and replaces 1Password for the three who use it. Your new masked addresses end in `m.907.life`.
 - Every server backs up nightly to R2. Under the recommended lock, no server can destroy what it has backed up, even if an attacker takes it over. The mail server also gets Hetzner's daily images.
 - A Cloudflare Worker watches every service and the backups in R2. It alerts your desktops, and the second operator's phone, through ntfy, and an all-quiet message every 6 hours proves the alert path still works.
 - The second operator gets a browser terminal through Cloudflare Access, signed in with GitHub, and a runbook of copy-paste steps.
@@ -19,9 +19,9 @@ Fastmail, PikaPods, and 1Password each hold household data on someone else's ter
 ### If you approve
 
 1. The session writes the pass plan and sends it to you as a packet.
-2. You do the first-week actions in "What Geoff does". The port 25 request comes first, because mail waits on Hetzner's answer.
+2. You and Claude run Pass 0 together: every account and credential, the permission rules, and a dry run of every token. The port 25 request comes first, because mail waits on Hetzner's answer. Your own move to Proton Pass starts here and runs alongside the server passes.
 3. The plan builds the repo, the monitor, and the media server, then moves Immich.
-4. The plan moves passwords to Proton Pass. You and the household move your own vaults with the steps the plan writes.
+4. The second operator and household member C move off 1Password with steps the plan writes. 1Password is cancelled after all three users have moved.
 5. The plan builds the mail server and rehearses the migration. When the rehearsal passes, Claude proposes a cutover date and you confirm it.
 6. Claude runs the cutover while you stay on call. The masked-address triage follows, at your pace.
 7. Each irreversible step comes to you as its own packet, carrying the evidence listed in "Irreversible steps": deleting musicbox and the PikaPods pod, closing Fastmail, and cancelling 1Password.
@@ -42,7 +42,7 @@ Mail can't cut over until Hetzner lifts the port 25 block, and your ruling sends
 Source: the contract review's finding M17.
 
 - Pause the mail passes, and send you an options packet after a refusal or 14 days with no answer. (recommended)
-- Pre-approve a relay on port 587, SMTP2GO's free tier or Amazon SES, for that case only, set up then and not before.
+- Pre-approve a relay on port 587, SMTP2GO's free tier or Amazon SES, for a refusal, a stall, or a lasting Microsoft block. You'd still create the relay account; Claude does the rest.
 
 ### Worth knowing
 
@@ -50,7 +50,7 @@ This design reverses one earlier ruling. The 2026-10-17 brainstorm ruled out any
 
 ### The rulings behind this design
 
-Every ruling is listed with its date in "Rulings". The ones made after the pavilion handoff: OVH is out for business stability, both servers go to Hetzner in the EU, mail sends directly on port 25, backups go to R2 only, and the second operator gets full sudo and a browser terminal.
+Every ruling is listed with its date in "Rulings". The ones made after the pavilion handoff: OVH is out for business stability, both servers go to Hetzner in the EU, mail sends directly on port 25, backups go to R2 only, and the second operator gets full sudo and a browser terminal. Later rulings in chat added a $40 monthly spend ceiling, the age key on paper, four migrating mailboxes, and an attended Pass 0 that starts your own move to Proton Pass.
 
 ## Rulings
 
@@ -78,6 +78,9 @@ Geoff made these rulings in the brainstorm on pavilion and in the thinkpad-x1 se
   - **Spend ceiling.** Claude may run recurring services up to $40 a month in total across Hetzner, R2, and Cloudflare without asking. Any one-time purchase, any new vendor account, and anything that would take the recurring total past $40 comes to Geoff.
   - **The age key on paper.** The workstation age key goes on paper in the recovery kit, kept locked up at home.
   - **Workers Paid.** The Cloudflare account is already on Workers Paid.
+  - **Pass 0.** A new first pass, "Attended access", runs with Geoff present throughout. It gathers every account and API credential the later passes need, lands the Claude infrastructure changes, and ends with a dry run proving every token works.
+  - **Geoff's Proton move.** It starts in Pass 0 and runs alongside the server passes: his account and FIDO2 keys, his 1Password import, the `Workstation` and `Servers emergency` vaults and agent tokens, and the workstation security PR. New credentials from Pass 0 go into Proton Pass, never 1Password.
+  - **Three 1Password users.** Geoff, the second operator, and household member C use 1Password today. The second operator creates his Proton account in Pass 0 and handles his own migration. Household member C uses no masked addresses, so their move is a plain vault import with written macOS and iOS steps, later. 1Password is cancelled only after all three have moved. Household members A and B join Proton Pass without a 1Password vault.
   - **Four mailboxes migrate.** Fastmail has four users today, Geoff, the second operator, and household members A and B, each a separate login with their own mailbox and contacts, and perhaps calendars. All four move to Stalwart.
 
 ## Rulings needed
@@ -85,7 +88,7 @@ Geoff made these rulings in the brainstorm on pavilion and in the thinkpad-x1 se
 Two questions are open, and the brief's two `### Decide:` blocks carry them with their choices. The backup lock matters more, because it fixes what the backups promise.
 
 1. **How deep the backup lock goes.** The recommended answer is the design in "Backups". The other answer moves `data/` to a 30-day rule, adds a monthly `prune`, and adds a daily listing of `data/` that reports deleted packs.
-2. **If Hetzner refuses or stalls port 25.** The recommended answer adds a 14-day follow-up and an options packet. The other answer adds a relay route, configured only after a refusal or a lasting Microsoft block.
+2. **If Hetzner refuses or stalls port 25.** The recommended answer adds a 14-day follow-up and an options packet. The other answer adds a relay route for a refusal, a stall, or a lasting Microsoft block. Geoff still creates the relay account, and the relay joins "Senders of 907.life".
 
 ## Who uses what
 
@@ -103,12 +106,12 @@ Three of the five Proton Pass users are on Apple devices, so the Safari, macOS, 
 
 ## Architecture
 
-Two Debian 13 servers in Hetzner's Falkenstein location (`fsn1`) carry the services. Cloudflare carries DNS, backups, monitoring, and the second operator's access. The workstations carry Claude, the repo, and the Proton Pass command line.
+Two Debian 13 servers in Hetzner's EU locations carry the services. Cloudflare carries DNS, backups, monitoring, and the second operator's access. The workstations carry Claude, the repo, and the Proton Pass command line.
 
 | Piece | Where | Runs |
 |---|---|---|
-| Mail server | Hetzner CX33 (4 vCPU, 8 GB, 80 GB), fsn1 | Stalwart in Docker on host networking, `cloudflared`, the health timer, the backup timer |
-| Media server | Hetzner CX33 (4 vCPU, 8 GB, 80 GB), fsn1 | Immich in Docker Compose, Caddy, the dubplate host side, `cloudflared`, the health and backup timers |
+| Mail server | Hetzner CX33 (4 vCPU, 8 GB, 80 GB), EU | Stalwart in Docker on host networking, `cloudflared`, the health timer, the backup timer |
+| Media server | Hetzner CX33 (4 vCPU, 8 GB, 80 GB), EU | Immich in Docker Compose, Caddy, the dubplate host side, `cloudflared`, the health and backup timers |
 | Backups | R2 buckets `servers-backup-mail`, `servers-backup-media`, `servers-archive` | restic repositories with bucket locks; cold archives |
 | Monitor | Worker `servers-monitor` with a D1 database | cron probes, heartbeat intake, the R2 snapshot check, ntfy alerts, the daily inbound mail probe |
 | MTA-STS | Worker on `mta-sts.907.life` | the static policy file |
@@ -119,7 +122,7 @@ Both servers live in a Hetzner project of their own. Hetzner API tokens belong t
 
 ### Locations and types
 
-Both servers go in fsn1, the closest EU site at a measured 193 ms minimum round trip. The fallbacks are nbg1 and then hel1. Hetzner's cost-optimized stock moves within hours. `provision.sh` therefore reads live availability and stops with a clear message instead of guessing. A Primary IP belongs to one location and can't move, so the script settles the location before it creates anything. The media server is x86 rather than Arm. dubplate's existing amd64 binary runs on it unchanged.
+Both servers are CX33s, x86 with 4 vCPUs, 8 GB, and an 80 GB local disk at $9.99 a month. The location order is fsn1, nbg1, then hel1. The hosting brief measured minimum round trips of 203 to 226 ms from Anchorage across the three, a difference that doesn't matter for mail or photos. Hetzner's cost-optimized stock moves within hours. A live read on 2026-10-17 at 22:27 UTC (`hcloud server-type list`) showed the CX33 orderable in hel1 only, the CX23 in all three, and the CX43 and CAX21 nowhere, though the hosting brief found CAX21 in fsn1 that morning. So `provision.sh` reads live availability, takes the first location in order that has the type, and stops with a clear message instead of guessing. If no EU location has it, the pass retries daily for seven days, then reports a stall to Geoff. A Primary IP belongs to one location and can't move, so the script settles the location before it creates anything. The media server stays x86, so dubplate's existing amd64 binary runs on it unchanged.
 
 ### IPs
 
@@ -129,7 +132,7 @@ Each server gets a Hetzner Primary IPv4 and IPv6. They are created before the se
 
 The servers and R2 come to about $24 a month, inside Geoff's $40 ceiling. Proton Pass Family adds $59.88 a year:
 
-- Mail server: $9.99, plus $0.60 for IPv4 and about $2 for Hetzner Backups.
+- Mail server: $9.99, plus $0.60 for IPv4 and about $2 for Hetzner Backups. A CX43 instead costs $18.49 plus about $3.70 for backups.
 - Media server: $9.99, plus $0.60 for IPv4.
 - R2: about $1 at first, growing with the backups (see "Retention"). R2 charges $0.015 per GB-month past the first 10 GB.
 - Proton Pass Family: $59.88 a year, about $5 a month.
@@ -230,7 +233,7 @@ Cloudflare marks short-lived certificates as legacy and "not recommended for new
 
 Stalwart's web admin sits behind the same Access login. Stalwart's `/admin` also stays loopback-only on the public listener, and the admin account is limited to loopback, as the Stalwart brief recommends. Immich's admin pages stay on photos.907.life behind Immich's own login, since the hostname is public anyway.
 
-If Cloudflare is down, Geoff and Claude still reach both servers over SSH. The second operator also becomes a member of the servers' Hetzner project. That gives him the console and the mail server's backup images when nothing else answers. He holds no Hetzner API token and no production secret, so rebuilding a deleted server isn't his job (see "Restore").
+If Cloudflare is down, Geoff and Claude still reach both servers over SSH. The second operator also becomes a member of the servers' Hetzner project. That gives him the console and the mail server's backup images when nothing else answers. He holds no Hetzner API token and no secret that renders a server's configuration, so rebuilding a deleted server isn't his job (see "Restore").
 
 ## Mail
 
@@ -249,7 +252,7 @@ Configuration is a `config.json` plus an NDJSON plan applied with `stalwart-cli 
 
 ### Size
 
-Geoff's mailbox measured 5.14 GiB across 35,576 messages (read-only JMAP, 2026-10-17). The other three are unmeasured. The disk holds the live store, the backup's staging copy, and room for a side-by-side restore, each at roughly 1.5 times the raw mail. Geoff's mailbox alone rules out a CX23's 40 GB disk, so the mail server is a CX33. The mail pass measures the other three mailboxes before it provisions anything. A CX33 holds about 12 GB of raw mail across all four, keeping the disk under the 80% alert; past that, a Hetzner Volume carries the mail store. Vandelay runs on a workstation, so its archives never take server disk. The health timer alerts at 80% full.
+Geoff's mailbox measured 5.14 GiB across 35,576 messages (read-only JMAP, 2026-10-17). The other three are unmeasured. The disk holds the live store, the backup's staging copy, and room for a side-by-side restore, each at roughly 1.5 times the raw mail, plus about 5 GB for the system. Geoff's mailbox alone would fill a CX23's 40 GB disk to about 75%, leaving no room for the other three, so the mail server is a CX33. A CX33 holds about 12 GB of raw mail across all four mailboxes under the 80% alert. The mail pass measures the other three before it provisions anything. If the four total more than about 12 GB, the mail server is a CX43 instead (8 vCPUs, 16 GB, 160 GB, $18.49), keeping the store on local disk and so inside Hetzner's backup images and snapshots; a Hetzner Volume would fall outside them. Either type keeps the recurring total well under the $40 ceiling. Vandelay runs on a workstation, so its archives never take server disk. The health timer alerts at 80% full.
 
 ### Delivery
 
@@ -295,6 +298,7 @@ Stalwart's generated `dnsZoneFile` is the source for the mail records:
 Vandelay, run on a workstation, copies each Fastmail account into a SQLite archive, then into Stalwart:
 
 - All four accounts move: Geoff's, the second operator's, and household members A's and B's. Each needs its own Fastmail API token, DAV app password, and IMAP app password, because each is a separate login.
+- Migration runs on each member's credentials, but Claude reads only counts and metadata for verification, never message content; the body check compares hashes. A member's masked addresses are checked with `MaskedEmail/get` alone. This is the mail side of the rule that Claude never reads a personal vault.
 - Mail and contacts go over JMAP, using `--account-id` rather than `--account-name`. Geoff's token also reaches a shared, contacts-only account, which moves with his.
 - Calendars go over CalDAV, with a DAV app password for each account.
 - Fastmail's Trash and Junk stay behind. If Vandelay can't skip them, Claude empties them in Stalwart by mailbox role right after the import, first checking that the count matches the archive's. The final Vandelay pass would bring them back, so the step repeats after it.
@@ -310,16 +314,18 @@ The rehearsal runs on the real mail server while MX still points at Fastmail. It
 |---|---|
 | Mail counts | Per mailbox, total and unread equal the archive's counts from `vandelay inspect`, Trash and Junk excluded |
 | Flags | `$flagged` and `$answered` counts are equal |
-| Dates | `receivedAt` matches on 50 messages drawn across the date range |
-| Bodies | The SHA-256 of the raw message matches on 20 messages, after removing any header Stalwart adds |
+| Dates | `receivedAt` matches on 50 messages per account, drawn across its date range |
+| Bodies | The SHA-256 of the raw message matches on 20 messages per account, after removing any header Stalwart adds |
 | Contacts | The count per address book is equal, the shared account included |
 | Calendars | The event count per calendar is equal, and three recurring events and one event in another time zone match |
 | Late mail | A date-scoped imapsync sweep into Stalwart passes the body check, and a reverse sync into a scratch Fastmail folder works |
 | Clients | Hylki and poplar read mail, contacts, and calendars. A test account's profile installs on one iOS and one macOS device, and mail, an event, and a contact sync both ways |
+| Android | The second operator's Android client reads mail, contacts, and calendars from a test account |
 | Sending | The outbound test in "Delivery" passes |
 | Receiving | Test mail arrives by direct SMTP connection, and the monitor's probe arrives |
 | Trash expiry | An old message moved to Trash, then a maintenance run, shows whether expiry counts from the move or from the received date, and `expungeTrashAfter` is set from the result |
 | Restore | The mail server's pre-go-live drill in "Drills" passes |
+| Backup growth | `restic stats --mode raw-data` over the rehearsal week gives the mail repository's daily growth, which goes in the cutover packet |
 | Image restore | Last night's Hetzner backup image, restored in place from the console, boots and Stalwart starts |
 
 Claude repeats the rehearsal until every row passes. After two failed rehearsals on the same defect, that data type moves to its fallback, imapsync for mail or `.ics` and vCard import for calendars and contacts, and `decisions.md` records the switch. Before the final pass, Claude deletes the rehearsal's test messages from the real mailboxes. Then Claude proposes a cutover date. Geoff confirms the date. That confirmation is the one planned stop before cutover.
@@ -332,8 +338,8 @@ Claude runs cutover day, with Geoff on call. Steps 1 to 5 run in one window of a
 2. Run a final Vandelay pass.
 3. Switch MX to `mail.907.life` through the API.
 4. Run the inbound probe from outside, and a send from inside Fastmail, which catches Fastmail delivering locally to a domain it hosts.
-5. Point Hylki and poplar at Stalwart. `vdirsyncer` either moves to Stalwart with a fresh status directory after a one-way first sync, or retires if nothing reads its local copy.
-6. Send the second operator a short guide for his Android client, and household members A and B their configuration profiles. Their Fastmail accounts come off their devices at T+30.
+5. Point Hylki and poplar at Stalwart, and repoint Thunderbird at Stalwart for mail, contacts, and calendars until it retires in the wind-down, so nothing on the workstations still writes to Fastmail. `vdirsyncer` either moves to Stalwart with a fresh status directory after a one-way first sync, or retires if nothing reads its local copy.
+6. Send the second operator a short guide for his Android client, and household members A and B their configuration profiles. On every device, the steps turn off Contacts and Calendars on the Fastmail account and make Stalwart the default for mail, contacts, and calendars. The Fastmail account stays for rollback until T+30.
 7. Point Immich's SMTP, and dubplate's if it is deployed, at Stalwart on 587, and send a test mail from each to a household mailbox.
 
 Failed checks lead here:
@@ -350,15 +356,17 @@ Claude decides a rollback inside the window and tells Geoff. Rollback is a rever
 
 ### After cutover
 
+- **T+7:** a Vandelay export of each Fastmail account's contacts and calendars, compared with the cutover archive by count and change date. Any difference is carried to Stalwart, and the same check repeats for the T+30 packet.
 - **T+1, T+3, and T+7:** date-scoped imapsync sweeps of every Fastmail folder except Trash and Junk, in all four accounts. Each sweep logs the messages it copied per folder. A daily sweep then continues until the masked-mail forward is live.
 - **T+30, if clean.** Clean means no rollback happened, the last three sweeps copied nothing, the reports pass for every sender in "Senders of 907.life", and no household member has reported missing mail. Then:
+  - Ask the household, with a drafted message, to remove the Fastmail account from their devices.
   - Drop Fastmail's SPF include and move SPF to `-all`.
   - Move MTA-STS to `enforce` and DMARC to `p=quarantine`.
-  - Send Geoff the Fastmail packet in "Irreversible steps": remove 907.life, remove the three users other than Geoff, and downgrade to Individual. Which plan the account is on today is unverified; the mail-cutover brief lists Individual and Duo, and four users need more than either. After that, Geoff sets the masked-mail forward to Stalwart.
+  - Send Geoff the Fastmail packet in "Irreversible steps": remove the three users other than Geoff, rename Geoff's login if it's on 907.life, then remove 907.life and downgrade to Individual. Which plan the account is on today is unverified; the mail-cutover brief lists Individual and Duo, and four users need more than either. After that, Geoff sets the masked-mail forward to Stalwart.
 - **Later:** DMARC moves to `p=reject` once the reports allow it.
 - **When triage ends:** Fastmail closes through its own packet, and the `fm*` CNAMEs go with it.
 
-In the first week Claude checks whether Geoff's Fastmail login is an @907.life address. If it is, the login is renamed before the domain removal.
+In Pass 0 Claude checks whether Geoff's Fastmail login is an @907.life address. If it is, the login is renamed before the domain removal.
 
 ### Clients
 
@@ -368,7 +376,7 @@ Each Apple user gets one `.mobileconfig` carrying the mail, CalDAV, and CardDAV 
 
 ## Masked email
 
-Proton Pass custom domain `m.907.life` holds Geoff's new masked addresses. Geoff adds the domain in the Proton Pass web app during the passwords pass, so the critical-tier triage can start before mail moves. It gets its own MX, verification, SPF, DKIM, and DMARC records, with the values copied from the Pass Info tab. Its default mailbox is `geoff@907.life`. Delivery follows 907.life's MX, so the mailbox works before and after cutover with no change.
+Proton Pass custom domain `m.907.life` holds Geoff's new masked addresses. Geoff adds the domain in the Proton Pass web app as part of his own Proton move, so the critical-tier triage can start before mail moves. It gets its own MX, verification, SPF, DKIM, and DMARC records, with the values copied from the Pass Info tab. Its default mailbox is `geoff@907.life`. Delivery follows 907.life's MX, so the mailbox works before and after cutover with no change.
 
 Proton's docs don't say whether Family members can use the owner's custom domain. If they can't, members keep Proton's own alias domains, which is their own choice to make.
 
@@ -378,8 +386,8 @@ Aliases are disabled during triage, never deleted, because Proton can't recover 
 
 The 165 @fastmail.com masked addresses move one service at a time, along with any the other three users hold:
 
-1. Claude snapshots every masked address over JMAP into an age-encrypted file outside git. The second operator lists his own masked addresses and Fastmail-only logins in the first week. Whether household members A and B have any is unknown; Claude checks over each one's API token in the mail pass.
-2. Claude adds message counts and sender domains for the last year, and joins the list against the Proton Pass logins after the import.
+1. Claude snapshots every masked address over JMAP into an age-encrypted file outside git. The second operator lists his own masked addresses and Fastmail-only logins in Pass 0. Whether household members A and B have any is unknown; Claude checks over each one's API token in the mail pass.
+2. For Geoff's masks, Claude adds message counts and sender domains for the last year, and joins the list against the Proton Pass logins after the import. Other members' masks get `MaskedEmail/get` alone.
 3. Each address gets a tier: critical (banks, government, health, utilities, domain and hosting, account recovery), active, dormant, or never used.
 4. Geoff works the list at his own pace: create the alias inline in the service's form, change the address at the service, confirm the verification mail arrives, then disable the Fastmail mask. No bulk path exists, so this is the one long stretch of human work in the initiative. Critical services go first.
 5. Claude recounts from the API each week and reports what is left. Mail to a disabled mask gets its own line, because it marks a service that was missed.
@@ -431,7 +439,7 @@ A restic repository is a `config` object plus the `keys/`, `data/`, `index/`, `s
 
 So a server taken over by an attacker can't destroy anything it has backed up. It can delete snapshot files older than 30 days, and the index, and both come back from the locked packs. A local probe on 2026-10-17 deleted every snapshot and index file from a test repository. `restic repair index` and then `restic recover` rebuilt a snapshot that restored every file. The first `recover` run failed with "nodes are not ordered or duplicate" and the second succeeded, so the runbook says to run it again on that error, and the media drill proves `recover` once.
 
-The rules land after `restic init` and the first verified backup, because R2 can't empty a bucket while any rule is set, and rebuilding a repository during the build would otherwise need a rule lifted. `cloudflare/r2.sh` only adds rules. Only Geoff lifts one, by hand, and never as part of an unattended run.
+The rules land after `restic init` and the first verified backup on media, and after the last rehearsal import on mail, before cutover, because R2 can't empty a bucket while any rule is set, and rebuilding a repository during the build would otherwise need a rule lifted. `cloudflare/r2.sh` only adds rules. Only Geoff lifts one, by hand, and never as part of an unattended run.
 
 Probes on 2026-10-17 checked the mechanics:
 
@@ -447,7 +455,7 @@ Probes on 2026-10-17 checked the mechanics:
 - Weekly: `restic check --read-data-subset=10%`, the cut line's integrity check.
 - Never automatically: `prune`. Data from forgotten snapshots stays in the locked packs.
 
-Storage therefore grows by each day's new data. Nobody has measured the rate. Immich's nightly dump is gzipped, about 38.6 MB, and the backups brief notes that one changed row shifts a whole gzipped stream, so restic deduplicates it poorly. The dumps alone could add about 14 GB a year. New photos and Stalwart's RocksDB files, which compaction rewrites, add an unmeasured amount on top. A rough 15 to 40 GB a year costs about $0.25 to $0.60 a month more each year, at R2's $0.015 per GB-month. The media pass checks whether an uncompressed dump deduplicates better, and the monthly review tracks growth with `restic stats --mode raw-data`. When the backup buckets pass 200 GB together, a cleanup comes to Geoff as a packet: he lifts the `data/` rule, Claude runs `prune` and `restic check`, and `r2.sh` puts the rule back.
+Storage therefore grows by each day's new data. Nobody has measured the rate, and the estimate below leaves out mail. Immich's nightly dump is gzipped, about 38.6 MB, and the backups brief notes that one changed row shifts a whole gzipped stream, so restic deduplicates it poorly. The dumps alone could add about 14 GB a year. New photos add an unmeasured amount on top. Stalwart's RocksDB files, which compaction rewrites, could add as much again; the rehearsal week measures that figure. A rough 15 to 40 GB a year costs about $0.25 to $0.60 a month more each year, at R2's $0.015 per GB-month. The media pass checks whether an uncompressed dump deduplicates better, and the monthly review tracks growth with `restic stats --mode raw-data`. When the backup buckets pass 200 GB together, a cleanup comes to Geoff as a packet: he lifts the `data/` rule, Claude runs `prune` and `restic check`, and `r2.sh` puts the rule back.
 
 One unit runs the nightly and weekly jobs in order under `flock`. It runs `restic unlock` first, which removes only stale locks, and passes `--retry-lock 30m`. A backup that exits with status 3, a snapshot with unreadable files, counts as a failure. The health heartbeat carries each job's result.
 
@@ -486,18 +494,18 @@ The second operator runs it from the browser terminal. Two other paths cover wor
 
 ### Drills
 
-A drill server must never act as production or hold its secrets. `restore-drill.sh` builds it in the servers' project, labeled `purpose=drill`:
+A drill server must never act as production or hold a credential to an outside production service. `restore-drill.sh` builds it in the servers' project, labeled `purpose=drill`:
 
 - Its role list is fixed, with no `backup`, `health`, or `cloudflared`, so it never writes to a bucket, posts a heartbeat, or joins the production tunnel. The script refuses to run if any of the three is in the list.
 - It renders only what a restore needs: the restic password and the read-only R2 token. No write token, heartbeat token, tunnel token, or Spamhaus key reaches it.
 - It runs behind two firewalls in turn. While it restores, with every service stopped, `firewall-drill-restore.json` allows outbound 53, 80, 123, and 443. Before any service starts, `firewall-drill-closed.json` allows outbound DNS only. Hetzner's rules allow traffic and drop the rest once any outbound rule exists, so a restored Stalwart can't send its queue or place an ACME order.
 - Checks run over loopback.
 
-A drill passes when `restic check` is clean and the restored counts match the snapshot's manifest: exactly for media, and within 10 messages per mailbox for mail, since mail can arrive between the count and the stop. For mail, a JMAP login works and the DKIM selector matches. For media, the integrity page shows zero errors, the SHA-256 of three sampled originals matches, and a shared link opens.
+A drill passes when `restic check --no-lock` is clean, since the read-only token can't write a lock, and the restored counts match the snapshot's manifest: exactly for media, and within 10 messages per mailbox for mail, since mail can arrive between the count and the stop. For mail, a JMAP login works and the DKIM selector matches. For media, the integrity page shows zero errors, the SHA-256 of three sampled originals matches, and a shared link opens.
 
-Each server gets one drill before go-live, and the media drill also proves `restic recover` once. A server built from a Hetzner image would carry every production secret, so the image path is tested in place on the real mail server during the rehearsal, before MX moves, when nothing depends on it yet. After that, a drill runs twice a year. Before any Stalwart or Immich minor or major upgrade, the upgrade runs on a drill copy of the previous night's backup first, and production follows only if the counts still match. Results go in `docs/restore-drill-log.md`.
+Each server gets one drill before go-live. The media drill also proves `restic recover` once, on a copy: during the restore phase it copies the repository's objects to local disk with the read-only token, using `rclone` from Debian's archive, then deletes the copy's `snapshots/` and `index/` and runs `repair index` and `recover` there. `recover` and `repair index` need to write locks, so they can't run against the bucket with that token, and the proof never touches the production bucket. If the disk can't hold both the copy and the restore, the proof runs as its own drill. A server built from a Hetzner image would carry every production secret, so the image path is tested in place on the real mail server during the rehearsal, before MX moves, when nothing depends on it yet. After that, a drill runs twice a year. Before any Stalwart or Immich minor or major upgrade, the upgrade runs on a drill copy of the previous night's backup first, and production follows only if the counts still match. Results go in `docs/restore-drill-log.md`.
 
-`restore-drill.sh` destroys the drill server at the end unless it runs with `--hold`, which leaves it running behind the closed firewall. Promotion is a separate, deliberate step: `scripts/promote.sh HOST SERVER` takes a held drill server that passed and sets the production label and firewall, turns on delete protection, attaches the Primary IPs, applies the full role list, and renders the production secrets from `~/.local/secrets`. Claude runs it from a workstation, and only when the production server it replaces is already gone. Replacing a production server that still exists stays with Geoff.
+`restore-drill.sh` destroys the drill server at the end unless it runs with `--hold`, which builds it in the production Primary IPs' location and leaves it running behind the closed firewall. Promotion is a separate, deliberate step: `scripts/promote.sh HOST SERVER` takes a held drill server that passed and sets the production label and firewall, and turns on delete protection. It powers the server off, unassigns the drill's IPs, and assigns the production Primary IPs, since Hetzner assigns one only to a powered-off server in its own location that holds none of that type. Then it applies the full role list, renders the production secrets from `~/.local/secrets`, sets the host name, and turns on Hetzner Backups for mail. Whether the IPv6 address needs manual network configuration afterwards is unverified, and the first promotion checks it. Claude runs it from a workstation, and only when the production server it replaces is already gone. Replacing a production server that still exists stays with Geoff.
 
 ### Archive
 
@@ -561,7 +569,7 @@ Two FIDO2 keys as the second factor, never a phone. A paper recovery phrase in t
 - **`Workstation`** holds only the age key. Scripts read it through a 3-month agent token per host, and every read carries a reason.
 - **`Servers emergency`** is shared with the second operator. It holds the restic passwords, the read-only R2 restore tokens, `operator2`'s console password, and the Stalwart and Immich admin credentials.
 
-Geoff creates both vaults and the agent tokens in one web-login session with a FIDO2 touch, during the passwords pass, and shares `Servers emergency` with the second operator. Claude never calls `pass-cli`, so it can't fill the emergency vault itself. It stages the values in a 0600 file under `/dev/shm`, Geoff copies each into the vault, and Claude removes the file. That happens at the end of the passwords pass and again after the mail pass. Until then, the drills read the same read-only tokens from the age store.
+Geoff creates both vaults and the agent tokens in one web-login session with a FIDO2 touch, during Pass 0, and shares `Servers emergency` with the second operator once his Proton account exists. Claude never calls `pass-cli`, so it can't fill the emergency vault itself. It stages the values in a 0600 file under `/dev/shm`, Geoff copies each into the vault, and Claude removes the file. That happens after the media pass and again after the mail pass. Until then, the drills read the same read-only tokens from the age store.
 
 ### Workstation wiring
 
@@ -576,17 +584,23 @@ The workstation changes follow the mapping table in the Proton Pass brief, secti
 
 ### Migration order
 
-The order matters, because the age key lives in 1Password today:
+Three people use 1Password today: Geoff, the second operator, and household member C. Household members A and B join Proton Pass with no 1Password vault to move. The order matters, because the age key lives in 1Password today.
 
-1. Geoff buys the plan, sets up his account, and invites the four members.
+Geoff's move starts in Pass 0 and runs alongside the server passes:
+
+1. Geoff buys the plan, sets up his account with two FIDO2 keys and the paper recovery phrase, and invites the four members. From here on, every new credential goes into Proton Pass, never 1Password.
 2. Claude takes a count listing from 1Password and lists every login that holds a passkey. The `op` reads happen once, in one session Geoff approves.
-3. Geoff exports 1PUX to `/dev/shm` and imports it in the extension. From the export on, 1Password is read-only, and the household message says so. Geoff runs a count script in his own `pass-cli` session, which prints only per-vault, per-category counts, so Claude never reads a personal vault. Claude compares them with the 1Password listing and records the importer's ignored list. Geoff checks five TOTP codes and opens two attachments. Claude then archives the export through `scripts/archive.sh` and removes the plaintext.
-4. Geoff creates the vaults and one agent token per host in his FIDO2 session, and stores each host's token in its keyring with the command the workstation PR provides. Claude lands that PR with tests against a scratch store.
+3. Geoff exports 1PUX to `/dev/shm` and imports it in the extension. From the export on, his 1Password is read-only. Geoff runs a count script in his own `pass-cli` session, which prints only per-vault, per-category counts, so Claude never reads a personal vault. Claude compares them with the 1Password listing and records the importer's ignored list. Geoff checks five TOTP codes and opens two attachments. Claude then archives the export through `scripts/archive.sh` and removes the plaintext.
+4. In one FIDO2 session Geoff creates the vaults and one agent token per host, and stores each host's token in its keyring with the command the workstation security PR provides. Claude lands that PR (`secret-receive`, `secret-set.sh` and `sync.sh`, the sudo dialog, the guard hooks, and the browser policies) with tests against a scratch store.
 5. On each host in turn, Claude clears the cached age key, fetches it through `ws-pass-key` alone, decrypts the age store, and compares the result with `~/.local/secrets`. It also searches the dotfiles for any remaining `op` call. A cached key could otherwise hide a broken Proton path until the next reboot.
 6. Geoff re-enrolls each passkey site by site. Passkeys aren't in any 1Password export.
-7. Household member C moves their own 1Password vault with the same steps, written for macOS.
-8. Before cancelling, Claude compares a fresh 1Password listing's change dates with the export's and re-carries anything changed since. Each member confirms that autofill works in Safari on macOS and iOS and that their ten most-used logins are present.
-9. 1Password is uninstalled from both workstations once step 5 has passed on both. The subscription is cancelled after a 30-day overlap, through the 1Password packet.
+
+The other two move later, in the passwords pass:
+
+7. The second operator, who created his Proton account in Pass 0, moves his own 1Password data. He's highly technical, so he gets the importer's steps and does the rest himself.
+8. Household member C uses no masked addresses, so their move is a plain vault import, with steps written for macOS and iOS.
+9. Before cancelling, Claude compares a fresh listing of Geoff's 1Password with his export's change dates and re-carries anything changed since. The second operator and household member C each confirm that autofill works and that their ten most-used logins are present.
+10. 1Password is uninstalled from both workstations once step 5 has passed on both. The subscription is cancelled after all three users have moved and a 30-day overlap, through the 1Password packet.
 
 ## Claude's operating authority
 
@@ -602,7 +616,7 @@ Production servers and Primary IPs carry Hetzner delete protection, and the API 
 
 A rebuild wipes the disk, so `provision.sh` rebuilds a production server only after it stops the service, runs a backup, and takes a Hetzner snapshot in the same run. The move to Hetzner US and every upgrade follow the same order.
 
-Deleting a production server, IP, or bucket stays with Geoff. So do Fastmail, PikaPods, and 1Password account closures, and every purchase outside the spend ruling. By that ruling, Claude may run recurring services up to $40 a month in total across Hetzner, R2, and Cloudflare without asking. Any one-time purchase, any new vendor account, and anything that would take the recurring total past $40 comes to Geoff. The rules land in a workstation PR that Geoff approves before the first unattended run. That PR and the Proton workstation PR both edit the dotfiles, so they land one after the other.
+Deleting a production server, IP, or bucket stays with Geoff. So do Fastmail, PikaPods, and 1Password account closures, and every purchase outside the spend ruling. By that ruling, Claude may run recurring services up to $40 a month in total across Hetzner, R2, and Cloudflare without asking. Any one-time purchase, any new vendor account, and anything that would take the recurring total past $40 comes to Geoff. The rules and guard hooks land in a workstation PR that Geoff approves and merges in Pass 0, before the first unattended run. That PR and the Proton workstation security PR both edit the dotfiles, so they land one after the other.
 
 The runbook's Claude infrastructure section records each of these:
 
@@ -621,9 +635,9 @@ Each comes to Geoff as its own packet, and each packet cites its evidence for ev
 |---|---|
 | Delete the PikaPods pod | The final dump is in `servers-archive` and passed its decrypt round trip. The first media snapshot after cutover passes `restic check --read-data`. The integrity page shows zero errors, the counts match the pod's at the freeze, and the week in "Photos" passed. |
 | Delete musicbox and the `music-library` bucket | The library copy restored from restic matches musicbox's SHA-256 sums. No DNS record, tunnel, or Access application points at musicbox. |
-| Remove 907.life and the three other users from Fastmail, and downgrade | T+30 is clean. No service still authenticates to Fastmail's SMTP: Immich and dubplate send through Stalwart. Every masked address and Fastmail-only login on the three accounts has moved, and the Vandelay archives cover all four accounts. The three @907.life masked addresses exist in Stalwart. Removing the domain ends the rollback path. |
+| Remove the three other users and 907.life from Fastmail, and downgrade | T+30 is clean. The T+30 contacts and calendar check found nothing left to carry. No service still authenticates to Fastmail's SMTP: Immich and dubplate send through Stalwart. Every masked address and Fastmail-only login on the three accounts has moved, and the Vandelay archives cover all four accounts. The three @907.life masked addresses exist in Stalwart. Removing the domain ends the rollback path. |
 | Close Fastmail | The exit rule in "Masked email" has held for 30 days. A final Vandelay pass ran, and the archives pass `vandelay inspect` with matching counts. The final mask list is archived. |
-| Cancel 1Password | The key check in "Passwords" passed on both hosts. Changes since the export were re-carried, the ignored list is resolved, and every member confirmed. |
+| Cancel 1Password | All three users, Geoff, the second operator, and household member C, have moved and confirmed. The key check in "Passwords" passed on both hosts. Geoff's changes since his export were re-carried, and his ignored list is resolved. |
 
 ## The runbook
 
@@ -640,7 +654,7 @@ Each comes to Geoff as its own packet, and each packet cites its evidence for ev
    - Who to call.
 2. **Operator, for Geoff and Claude.**
    - Provision, apply, rebuild, and upgrade Debian, Docker, Stalwart, and Immich.
-   - DNS and rDNS, rotating a key, adding a user, the restore drill, and Stalwart's recovery mode.
+   - DNS and rDNS, rotating a key, adding a user, the restore drill, and Stalwart's recovery mode. Changing a restic password removes the old key file, which the `keys/` rule refuses, so that step needs Geoff to lift the rule.
    - Geoff's steps to lift a bucket's lock rule by hand, and Claude's to put it back.
    - Promoting a rebuilt server with `promote.sh`.
    - The change checklist and the move to Hetzner US.
@@ -649,42 +663,54 @@ Each comes to Geoff as its own packet, and each packet cites its evidence for ev
 
 ## What Geoff does
 
-These are the steps only Geoff, or the people he asks, can take. The plan front-loads them so the runs don't stop. Claude drafts every message to the household.
+These are the steps only Geoff, or the people he asks, can take. Claude drafts every message to the household.
 
-**First week:**
+### Pass 0: attended access
+
+Geoff is present throughout. The pass gathers everything the later passes need, so they run unattended, and new credentials go into Proton Pass, never 1Password:
 
 1. File Hetzner's port 25 limit request in the console. Mail waits on the answer.
 2. Make sure the Cloudflare, Hetzner, Proton, GitHub, and Fastmail logins recover through an address that isn't on 907.life. Store their 2FA backup codes offline.
-3. Create a Hetzner project for the servers, with an API token made in its console for Claude. Hand it over with `secret-receive`.
-4. Buy Proton Pass Family and invite the four members. Have two FIDO2 keys on hand.
-5. Enable SFTP on the PikaPods pod and hand its credentials over with `secret-receive`. Update the stale "immich" admin login while you're there.
-6. In your own Fastmail login, create an IMAP app password and a DAV app password, and confirm the list of 907.life addresses Fastmail accepts, including any catch-all.
-7. Arrange with household members A and B for each to create a Fastmail API token, a DAV app password, and an IMAP app password, and hand them over with `secret-receive`. Whether a Fastmail admin can create these for another user is unverified, so plan on each member doing it in their own login, with your help.
-8. Invite the second operator to the Hetzner project, and send him Claude's drafted message. It asks him to:
-   - Create a Fastmail API token, an IMAP app password, and a DAV app password in his own login, and hand them over.
+3. Create a Hetzner project for the servers, with an API token made in its console for Claude.
+4. Create the scoped Cloudflare tokens Claude lists: DNS for 907.life, one R2 Object Read & Write token per backup bucket, the read-only R2 restore tokens, and the Workers deploy token. Claude's own token can't create tokens.
+5. Start your Proton move: buy Proton Pass Family, invite the four members, and set up your account (see "Migration order").
+6. Enable SFTP on the PikaPods pod. Update the stale "immich" admin login while you're there.
+7. In your own Fastmail login, create an IMAP app password and a DAV app password. Confirm the list of 907.life addresses Fastmail accepts, including any catch-all, and which plan the account is on.
+8. Arrange with household members A and B for each to create, in their own Fastmail login, an API token with read access to mail, contacts, and masked email, a DAV app password, and an IMAP app password. Whether a Fastmail admin can create these for another user is unverified, so plan on each member doing it with your help.
+9. Invite the second operator to the Hetzner project, and send him Claude's drafted message. It asks him to:
+   - Create the same Fastmail token and two app passwords in his own login.
    - Confirm his GitHub username and the email on it.
    - Install the ntfy app on his phone.
    - Create a Proton account with a Proton Mail address, and accept the Family and Emergency Access invites.
    - List his own masked addresses and Fastmail-only logins.
-9. Create the GitHub OAuth app for Cloudflare Access, using the callback URL Claude gives you, and hand over its client ID and secret.
-10. Sign up for a free Spamhaus DQS key.
-11. Create a Gmail and an Outlook.com test account for the delivery tests. Signup captchas stop Claude.
-12. Approve the workstation PR that adds Claude's permission rules.
-13. Make the recovery kit, per your ruling: the Proton recovery phrase, and the workstation age key written by hand. Keep it locked up at home, never photographed or scanned, because the key decrypts every workstation secret.
+10. Create the GitHub OAuth app for Cloudflare Access, using the callback URL Claude gives you.
+11. Sign up for a free Spamhaus DQS key.
+12. Create a Gmail and an Outlook.com test account for the delivery tests. Signup captchas stop Claude.
+13. Approve and merge the workstation PR with Claude's permission rules and guard hooks.
+14. Make the recovery kit, per your ruling: the Proton recovery phrase, and the workstation age key written by hand. Keep it locked up at home, never photographed or scanned, because the key decrypts every workstation secret.
 
-**Later, each when the plan reaches it:**
+Every credential reaches Claude through `secret-receive`. The pass ends with a dry run: Claude makes one read-only call with each token and app password and reports any that fail, so no later pass stops for a credential.
 
-- Add `m.907.life` as a custom domain in the Proton Pass web app, hand over the Info tab's values, and verify `geoff@907.life` as the default mailbox with the code Proton sends.
+### Geoff's Proton move, alongside the server passes
+
 - Approve the one `op` read session.
+- Export and import 1Password, run the count script, check five TOTP codes and two attachments.
+- One FIDO2 session: create the `Workstation` and `Servers emergency` vaults and the agent tokens, share `Servers emergency` with the second operator, and store each host's token.
+- Approve the workstation security PR.
+- Re-enroll passkeys.
+- Add `m.907.life` as a custom domain in the Proton Pass web app, hand over the Info tab's values, and verify `geoff@907.life` as the default mailbox with the code Proton sends.
+
+### Later, each when the plan reaches it
+
 - Lend the plan a household phone for the `photos-new` check and the large upload.
-- In the passwords pass, one FIDO2 session: create the `Workstation` and `Servers emergency` vaults and the agent tokens, share `Servers emergency` with the second operator, and store each host's token. Copy the staged emergency values into the vault then, and again after the mail pass.
+- Copy the staged emergency values into `Servers emergency` after the media pass, and again after the mail pass.
 - Arrange one session with a household member's iPhone and Mac for the mail rehearsal's profile test.
 - Ask the household to pause photo uploads for the Immich cutover window, and to close Fastmail clients for the mail cutover window.
-- Export and import 1Password, run the count script, check five TOTP codes and two attachments, then re-enroll passkeys.
-- Send household member C the drafted steps for moving their own 1Password vault, and send every member the drafted request to confirm autofill and their ten most-used logins.
+- Send household member C the drafted steps for their 1Password import, and ask the second operator and member C to confirm autofill and their ten most-used logins.
+- Before cutover, share each member's Stalwart password with them through Proton Pass.
 - Confirm the mail cutover date.
-- Ask household members A and B to install their configuration profiles on cutover day, with Claude's drafted steps.
-- After T+30, in Fastmail's web settings, which have no API: remove 907.life, remove the three other users, downgrade, and create the masked-mail forward with SRS.
+- Ask household members A and B to install their configuration profiles on cutover day, and every member to turn off Fastmail contacts and calendars on their devices, with Claude's drafted steps.
+- At T+30, ask the household to remove the Fastmail account from their devices. Then, in Fastmail's web settings, which have no API: remove the three other users, rename your login if it's on 907.life, remove 907.life, downgrade, and create the masked-mail forward with SRS.
 - Work the masked-address list.
 - Sit with the second operator for one session while he restarts a service and runs a restore from the runbook.
 - Approve each irreversible step in "Irreversible steps", including each backup cleanup, where you lift the `data/` rule yourself.
@@ -694,12 +720,13 @@ These are the steps only Geoff, or the people he asks, can take. The plan front-
 
 The plan splits the work into passes in this order. Each pass merges through the normal packet flow.
 
-1. **Foundation.** The `servers` repo and its gate, the permission-rule PR, the R2 buckets and the archive's lock, and the monitor and MTA-STS Workers. The Access tunnel setup lands with the first server.
+0. **Attended access.** Everything in "Pass 0" above, with Geoff present, ending in the token dry run. Geoff's own Proton move starts here and runs alongside passes 1 to 5.
+1. **Foundation.** The `servers` repo and its gate, the R2 buckets and the archive's lock, and the monitor and MTA-STS Workers. The Access tunnel setup lands with the first server.
 2. **Media server.** Provision, harden, install Docker, Caddy, and Immich, and run the Immich rehearsal under `photos-new`. Set up the backup, add the lock rules after the first verified backup, check them with the server's own token, and run the media drill.
 3. **Immich cutover and musicbox.** The upload freeze, the move, and a week of watching. The musicbox library copy.
-4. **Passwords.** The Proton Pass migration, Geoff's vault session, the workstation PR, and the `m.907.life` domain, so critical-tier triage can start. This can run alongside pass 2 or 3, though its workstation PR lands after the permission-rule PR.
-5. **Mail server.** Measure the three unmeasured mailboxes and check A's and B's accounts for masked addresses, then provision, Stalwart, and DNS preparation. The rehearsal, the client and authentication tests, and the mail drill. Needs the port 25 approval.
-6. **Mail cutover.** On the confirmed date, then the sweeps and the T+30 steps.
+4. **Passwords.** The second operator's and household member C's moves, the members' Proton setup, the start of critical-tier triage on `m.907.life`, and the 1Password packet once all three users have moved. This can run alongside pass 2 or 3.
+5. **Mail server.** Measure the three unmeasured mailboxes and check A's and B's accounts for masked addresses, then provision, Stalwart, and DNS preparation. The rehearsal, the client and authentication tests, the mail drill, and then the mail bucket's lock rules after the last rehearsal import. Needs the port 25 approval.
+6. **Mail cutover.** On the confirmed date, then the sweeps, the contacts and calendar check, and the T+30 steps.
 7. **Wind-down.** Masked-address triage support, Hylki in place of Thunderbird, and the irreversible retirements, each as its own packet.
 
 ## Periodic work
@@ -755,7 +782,8 @@ The initiative is done when all of these hold:
 - Every Proton Pass member is signed in, the import counts match, each member confirmed autofill, and every site on the passkey list is re-enrolled.
 - On both workstations, `sync.sh` and `secret-set.sh` work through the agent token with the cache cleared, and `check-drift` reports the token's expiry.
 - Hylki reads mail, contacts, and calendars from Stalwart, and Thunderbird is gone.
-- The media drill rebuilt a deleted snapshot with `restic recover`, and the mail rehearsal booted the server from a Hetzner image.
+- The media drill rebuilt deleted snapshot and index files on a local copy with `restic recover`, and the mail rehearsal booted the server from a Hetzner image.
+- Pass 0's dry run reached every service with every token and app password.
 - The second operator has restarted a service and run a restore, using only the runbook and the emergency vault.
 
 ## Not checked
@@ -764,14 +792,14 @@ Each item is checked in the pass that needs it, and each has a fallback named no
 
 | Item | Checked in | If it fails |
 |---|---|---|
-| The sizes of the second operator's, A's, and B's mailboxes | Mail | A Hetzner Volume for the mail store past about 12 GB of raw mail |
+| The sizes of the second operator's, A's, and B's mailboxes | Mail | A CX43 past about 12 GB of raw mail; if no CX43 is in stock within the seven-day retry, the pass reports to Geoff |
 | Whether the `music-library` bucket holds the whole library | Media | The restic copy from musicbox is the record either way |
 | Whether DMARC Management's reports are readable through the API | Mail | Read `dmarc-reports@` over JMAP |
 | Whether Email Sending delivers to `probe.907.life` | Mail | The DMARC-report check in "Monitoring" |
 | Which email GitHub hands to Access | Media | The second operator's Unix name follows whatever it is |
 | Whether Family members can use `m.907.life` | Passwords | Members use Proton's own alias domains |
-| Whether a Fastmail admin can create tokens and app passwords for another user | First week | Each member creates their own, arranged by Geoff |
-| Which Fastmail plan the account is on today | First week | The T+30 packet names the plan Geoff downgrades from |
+| Whether a Fastmail admin can create tokens and app passwords for another user | Pass 0 | Each member creates their own, arranged by Geoff |
+| Which Fastmail plan the account is on today | Pass 0 | The T+30 packet names the plan Geoff downgrades from |
 | Apple profile details for Stalwart, including the password prompt | Mail rehearsal | Manual account setup on each device |
 | Hylki's service discovery | Mail rehearsal | Manual server settings |
 | Whether five-minute TLS probes count as loitering for auto-ban | Mail rehearsal | Drop the 993 and 465 probes; `/healthz/live` and the inbound probe remain |
