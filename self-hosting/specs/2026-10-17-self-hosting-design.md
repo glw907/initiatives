@@ -8,8 +8,8 @@ Fastmail, PikaPods, and 1Password each hold household data on someone else's ter
 
 ### What changes
 
-- Mail for 907.life moves to Stalwart on a small Hetzner server in Germany, sending directly on port 25. All four Fastmail mailboxes migrate: yours, the second operator's, and household members A's and B's.
-- Immich moves from PikaPods to a second Hetzner server in Germany. photos.907.life keeps its name, and uploads over 100 MB start working.
+- Mail for 907.life moves to Stalwart on a small Hetzner server in the EU, sending directly on port 25. All four Fastmail mailboxes migrate: yours, the second operator's, and household members A's and B's.
+- Immich moves from PikaPods to a second Hetzner server in the EU. photos.907.life keeps its name, and uploads over 100 MB start working.
 - The same media server is ready for dubplate when dubplate's own build ships. musicbox retires.
 - Proton Pass Family covers five people and replaces 1Password for the three who use it. Your new masked addresses end in `m.907.life`.
 - Every server backs up nightly to R2. Under the recommended lock, no server can destroy what it has backed up, even if an attacker takes it over. The mail server also gets Hetzner's daily images.
