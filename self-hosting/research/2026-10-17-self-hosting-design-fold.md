@@ -176,3 +176,56 @@ Left unverified, each named in the spec's "Not checked" table with its pass and 
 | m24 masked list backup (optional) | Dropped as optional; the reviewer judged it acceptable. |
 | m25 monitor beyond the cut line (optional) | Refused: the alert ruling and the Cloudflare ruling postdate the cut line, and a hosted checker can't run the inbound probe. Recorded in "Contestable calls". |
 | m26 shredding tmpfs (optional) | Folded: removes ceremony; the archive round trip comes first. |
+
+## Verification round (2026-10-17)
+
+A fresh agent read the folded spec at commit `1bf2f10` and wrote [2026-10-17-self-hosting-design-fold-verification.md](2026-10-17-self-hosting-design-fold-verification.md): 1 blocker, 7 major, 11 minor. Each finding was checked before it was folded, and the dispatching session gave direction on B1, M1 to M7, m2, m8, and m11. This round supersedes the first round's lock design: the rows above for mechanics 1 and 2, data B1, and data M18 describe a 30-day `data/` rule that this round replaces.
+
+Checks made in this round:
+
+- B1 reproduced locally with restic 0.19.1: after deleting only the packs from a first backup, `restore latest` restored 976.562 KiB of 3.815 MiB, and `check --read-data` reported "repository contains errors". The first round's live R2 probe never tested this, because it deleted only packs no snapshot used.
+- `restic recover` after deleting every snapshot and index file: `repair index` rebuilt the index, the first `recover` failed with "nodes are not ordered or duplicate", and a second run saved a snapshot that restored both files.
+- `gh repo view glw907/workstation`: `"visibility":"PUBLIC"`, and `secrets/values.age` is tracked there.
+- dubplate's identity design (`dubplate/docs/superpowers/specs/2026-09-08-rung-5-identity-auth.md`, Fork 2) names Fastmail on 587, and the same spec names `pings@907.life` sending through Cloudflare.
+- R2 pricing: $0.015 per GB-month, 10 GB a month free, no egress charge (Cloudflare's R2 pricing page). The growth estimate uses the Immich brief's 38.6 MB dump and the backups brief's note that gzipped dumps deduplicate poorly; the rest is unmeasured, and the spec says so.
+
+| Finding | Disposition |
+|---|---|
+| B1 Age locks leave old packs deletable | Folded: `config`, `keys/`, and `data/` Indefinite, `snapshots/` 30 days, nightly `forget`, no automatic prune, growth estimate, a cleanup packet at 200 GB ("Lock rules", "Retention"). Every claim that the last 30 days were safe is rewritten, in "What changes", the lock `### Decide:` block, "Rulings needed", and "Risks". The recommendation flips to the Indefinite design. |
+| M1 image drill boots a production copy | Folded differently from the proposed fix: the copy is dropped altogether, because a server made from an image holds every production secret on disk even behind a closed firewall. The image path is tested in place on the real mail server during the rehearsal, before MX moves (new rehearsal row). |
+| M2 drill joins the tunnel | Folded: no `cloudflared` role, and `restore-drill.sh` refuses a role list holding `backup`, `health`, or `cloudflared`. The drill renders only the restic password and the read-only token. |
+| M3 server-gone path can't make production | Folded: `--keep` is gone. `restore-drill.sh --hold` keeps a passed drill server behind the closed firewall, and `scripts/promote.sh` makes it production; Claude runs it only when the old server is already gone. The second operator's real path is written plainly: call Geoff, and copy any backup out with a read-only token. The Hetzner token leaves the emergency vault. |
+| M4 emergency vault has no creator | Folded: Geoff's one FIDO2 session in the passwords pass creates both vaults and the agent tokens and shares `Servers emergency`. Claude stages values in a tmpfs file for Geoff to copy in. The drills read the read-only tokens from the age store until then. |
+| M5 dubplate's Fastmail SMTP | Folded: senders text and table (Immich, dubplate, the pings Worker), cutover step 7, the Fastmail packet's evidence row, and "Music". |
+| M6 late owner inputs | Folded: A's and B's addresses live only in the private `servers` repo; the Apple session is Geoff's to arrange; Geoff creates the two test accounts. Yahoo is dropped on evidence: its published rules match Google's (mail-cutover brief, section 1), and Microsoft is the documented problem receiver. Member C's vault move and the members' confirmations are drafted messages in "Later". |
+| M7 the paper key and public ciphertext (owner fork) | Folded as a contestable call, by the dispatching session's direction, which raises it with Geoff in chat. The spec states the public-ciphertext fact and the storage rule (handwritten, sealed, locked away, never photographed or scanned) and names the passphrase-wrapped alternative. |
+| m1 drill ACME | Folded: the closed firewall goes on before any service starts, which stops ACME without relying on an unverified Stalwart setting. |
+| m2 who lifts a lock | Folded: `r2.sh` only adds rules, only Geoff lifts one, by hand, and the backup buckets' rules land after `init` and the first verified backup. |
+| m3 delete protection overstated | Folded: reworded as accident protection, and the gate fails on `disable-protection` in the repo's scripts. |
+| m4 alerts on normal operation | Folded: the snapshot alert fires only when a snapshot younger than 35 days disappears; the mailbox threshold is 10%. |
+| m5 all-quiet false alarm | Folded: every 6 hours. |
+| m6 urgent alerts before cutover | Folded: every mail condition goes to the routine topic until cutover day. |
+| m7 drill count race | Folded: within 10 messages per mailbox for mail. |
+| m8 purchase ceiling (owner fork) | Folded as a placeholder, by direction: "[CEILING: Geoff sets this]" in "Claude's operating authority". Workers Paid is back as a confirm-in-foundation item that comes to Geoff as a purchase if the account is on Free. Owed: the dispatching session fills the ceiling. |
+| m9 A and B wait a month (owner fork) | Not raised as a `### Decide:` block: the packet's asks stay at two, and the dispatching session gave no direction. It stays in "Contestable calls" as one line Geoff can overrule. Owed: the dispatching session may raise it in chat. |
+| m10 cut-line items | Folded: the MTA-STS Worker and the CI container checks are in "Contestable calls", and "per the cut line" is corrected. |
+| m11 duplicated asks (optional) | Folded, since it removes duplication: "Rulings needed" is a pointer with one line per fork, and the evidence paragraph is a link to this record. |
+
+Counts for this round: 19 findings, 17 folded, 2 left to the dispatching session (m8's ceiling value and m9), 0 refused outright.
+
+## Geoff's chat rulings (2026-10-17)
+
+Geoff ruled on the open owner calls in chat, and the spec's "Rulings" section now records them with the date.
+
+- Spend ceiling: recurring services up to $40 a month in total across Hetzner, R2, and Cloudflare; any one-time purchase, new vendor account, or recurring total past $40 comes to him. This replaces the `[CEILING]` placeholder in "Claude's operating authority" and closes verification m8.
+- The age key on paper, kept locked up at home. It leaves "Contestable calls" and closes verification M7.
+- Workers Paid is already on the account. The confirm-in-foundation item and the conditional cost line are gone.
+- Four mailboxes migrate. Household members A and B have their own Fastmail logins today, so they're migrated accounts, not new mailboxes. Consequences carried through the spec:
+  - "What changes", "Who uses what", "Migration", the rehearsal's import, the sweeps, and the reverse imapsync all cover four accounts.
+  - A and B each need a Fastmail API token, DAV app password, and IMAP app password. Whether a Fastmail admin can create them for another user is unverified, so it's an owner action Geoff arranges with each member, handed over through `secret-receive` (owner item 7, and a "Not checked" row).
+  - Their client move at cutover is the configuration profile (cutover step 6). A rollback no longer strands anyone, so the "New mailboxes after T+30" contestable call and the matching cutover paragraph are gone, and verification m9 is moot.
+  - The T+30 packet removes three users, not one, before the downgrade to Individual. The account's current plan is unverified (the mail-cutover brief lists Individual and Duo, and four users need more), and a "Not checked" row covers it.
+  - Geoff's 5.14 GiB alone rules out a CX23, so the mail server is a CX33 (cost now about $24 a month). The mail pass measures the other three mailboxes before provisioning, and a Hetzner Volume carries the store past about 12 GB of raw mail.
+  - The triage stays Geoff's 165 masks plus any the others hold. The second operator lists his own in the first week; Claude checks A's and B's over their API tokens in the mail pass.
+
+tellgrader (`--register docs --profile docs-register`) exits 0 on the spec, and the brief parser accepts it.
