@@ -1,0 +1,9 @@
+[Unit]
+Description=Launch the approval-packets planner, which folds the plan review and launches conductor-approval-queue
+
+[Service]
+Type=oneshot
+KillMode=process
+WorkingDirectory=/var/home/glw907/Projects/approval-queue
+Environment=PATH=/var/home/glw907/.local/share/mise/installs/node/lts/bin:/var/home/glw907/.local/share/mise/shims:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/var/home/glw907/.local/bin:/usr/lib64/ccache:/usr/local/sbin:/usr/local/bin:/usr/bin
+ExecStart=/usr/bin/bash -c 'f=/var/home/glw907/.local/share/approval-packets/launch/planner-prompt.txt; [ -r "$$f" ] || { notify-send -u normal "approval-packets did not launch: planner prompt missing at $$f"; exit 1; }; if claude agents --json 2>/dev/null | jq -e ".[] | select(.name==\\"approval-queue-approval-packets-planner\\" or .name==\\"conductor-approval-queue\\")" >/dev/null; then notify-send -u normal "approval-packets did not launch: a planner or conductor is already running"; exit 0; fi; exec /home/linuxbrew/.linuxbrew/bin/claude --bg --add-dir /var/home/glw907/Projects/initiatives /var/home/glw907/.dotfiles /var/home/glw907/Projects/dubplate /var/home/glw907/Projects/poplar /var/home/glw907/.local/share/approval-packets --model claude-opus-5-5 --effort high --name approval-queue-approval-packets-planner "$$(cat "$$f")"'

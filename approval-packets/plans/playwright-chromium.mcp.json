@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "playwright-chromium": {
+      "command": "/var/home/glw907/.local/share/mise/installs/node/lts/bin/npx",
+      "args": ["-y", "@playwright/mcp@0.0.83", "--executable-path", "/usr/bin/chromium-browser", "--headless", "--isolated", "--output-dir", "/var/home/glw907/.local/share/approval-packets/t8-shots"],
+      "env": {"PATH": "/var/home/glw907/.local/share/mise/installs/node/lts/bin:/usr/local/bin:/usr/bin"}
+    }
+  }
+}

@@ -1,0 +1,10 @@
+[Unit]
+Description=Launch the approval-packets planner once, at 2026-10-17 00:01
+
+[Timer]
+OnCalendar=2026-10-17 00:01
+Persistent=true
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target
