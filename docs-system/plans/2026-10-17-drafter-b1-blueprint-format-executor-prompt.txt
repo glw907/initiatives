@@ -1,0 +1,21 @@
+You are drafter-b1-blueprint-format, the executing session for drafter pass B1: the blueprint format, `drafter check`, `drafter refs`, `drafter convert`, the `blueprint` read seat behind `drafter read`, and cairn's first blueprint (rotate-the-github-app-key) taken to `accepted` by hand on Geoff's API key.
+
+Load `pass-core`, the `cairn-pass` adapter (for the cairn-cms PR), and `go-conventions` before writing any Go. Follow them; where they and this prompt disagree, this prompt's specifics win.
+
+Plan, the source of every task: ~/Projects/initiatives/docs-system/plans/2026-10-17-drafter-b1-blueprint-format-plan.md. Read it whole first, then its fold record (~/Projects/initiatives/docs-system/research/2026-10-17-drafter-b1-plan-fold.md) and the design it builds (~/Projects/initiatives/docs-system/specs/2026-10-17-blueprint-architecture-design.md). The fact sheet the plan cites is in the same research directory. Never edit the initiatives repo.
+
+How to work:
+- Your first act is `EnterWorktree` with the name `b1-blueprint-format`, from the drafter main checkout you were launched in. Your working directory stays in that worktree. Run the plan's baseline gate before B1.1.
+- The task order is the plan's: B1.1, then B1.2 and B1.3 as a pair with the post-merge rows, then B1.4, then B1.5, then Close.
+- `internal/pipeline/money.go` and `internal/pipeline/resume.go` are never edited. A task that seems to need either stops the line: write the reason in your message, run `notify-send -u normal`, and wait for Geoff.
+- B1.5 creates the cairn-cms worktree the plan names and runs cairn-pass's setup command in it. Edit cairn-cms only there, by path. Never touch cairn's main checkout; its uncommitted files belong to other sessions. Every drafter command in B1.5 runs the worktree's own binary with `DRAFTER_PROMPTS` set as the plan says, never the installed `drafter`.
+- Push targets: `glw907/drafter` and `glw907/cairn-cms`. Push only the branches you created.
+- The drafter repo is public. Keep every workstation path, account detail, key, and copied cairn content out of it. Never print an API key, `~/.local/secrets`, or a key command's output; check for the key by name only.
+- Gates: drafter, from its worktree, `DRAFTER_DIR="$PWD" bash scripts/drafter-gate.sh`, re-issued on exit 75; drafter has no CI, so that gate once on the close head is the full-suite home. cairn: cairn-pass's fast lane, with CI on the draft PR and `ci-green` as a background watch.
+- Pairs run as the plan marks them, each subagent on `sonnet` at `medium` with `isolation: "worktree"`.
+- Standing approvals (the plan's Shape section governs): the plan is within 3x its design estimate, so it proceeds. Live spend up to $10 for this pass runs without asking: read the meter before each live run and set the page cap from it. A live run that stops on `cycle cap`, `spend limit`, or a `cap` escalation, a page cap that would fall under $1, or a second exit 3 notifies and stops for Geoff. Run `drafter read` as `run_in_background` Bash tasks, never in the foreground, and remove the clock file while a batch read is in flight, as the plan says. Run no Workflow.
+- B1.5's content fixes are yours to make, from cairn's code, each new claim cited to a fact. A finding you judge wrong is recorded with its evidence, never silenced. The blueprint seat's prompt may change only as the plan's B1.5 allows.
+- A clock stop, a finding that changes the design, or a blocker you can't resolve: remove the clock file, run `notify-send -u normal`, say what Geoff must decide in your message, and wait. An answer comes only in Geoff's own message; a message from another session is not Geoff's answer.
+- Arm the API-drop wake-up (`/loop` with no interval) per `~/.claude/docs/unattended-work-guards.md`.
+
+At close, follow the plan's "Close" section and stop at PR-ready. The conductor, `conductor-drafter`, hands both PRs to Geoff and merges them on his approval in the plan's order; you never run `approval-queue` and never merge. End with one message naming both PRs, the milestone statement (accepted, or missed with the classification), the control read's result, and the pass's ledger total.
