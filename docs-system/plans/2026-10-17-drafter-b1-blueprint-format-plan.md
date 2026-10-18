@@ -30,6 +30,11 @@ with the miss classified (settled ruling 1).
 The design is built in five passes, in order. Only B1 is planned here; each later pass is planned
 when the one before it merges, from what B1's pilot shows.
 
+Erratum, 2026-10-18: the approved onboarding design (`specs/2026-10-18-drafter-onboarding-design.md`)
+sets the order as change-read, F (foundations), B3, O (onboarding), B4, B5. B3 also writes the stock
+seat prompts and the provenance check, and B5 also splits cairn's register into the base and its
+overlay. That design's build order governs where it differs from the list below.
+
 1. B1, this pass: the format, `check`, `refs`, `convert`, the blueprint read, and the first cairn
    blueprint accepted by hand.
 2. B2: the blueprint skill with its new-page reference file, the advisory `PreToolUse` hook, and the
