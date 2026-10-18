@@ -23,12 +23,12 @@ Summary: F1's plan will be ready when this pass merges. Choose whether F1 launch
 Background: You ruled earlier today that F1 launches after change-read whatever its test scored, then put this pass ahead of F. The two rulings leave open whether a miss here holds F1.
 
 Facts: F1 and this pass share no code.
-- F1's plan touches config, `drafter check`'s fact verification, `drafter init`, `drafter gate`, and lock seeding (`docs-system/plans/2026-10-18-drafter-f1-setup-checks-plan.md`, in review)
+- F1's plan touches config, `drafter check`'s fact verification, `drafter init`, `drafter gate`, and lock seeding, and its plan is in review (`docs-system/specs/2026-10-18-drafter-f-foundations-design.md`)
 - This pass touches the skill and one section of the format page (`docs-system/specs/2026-10-18-drafter-skill-rules-design.md`)
 
 Choices:
-- F1 launches when this pass merges, whatever it scores
-- F1 waits for your call if this pass misses the bar
+- F1 launches when this pass merges, whatever it scores: setup work keeps moving, and a miss comes to you as its own question
+- F1 waits for your call if this pass misses the bar: nothing starts after a miss until you rule
 
 ## Routine
 | Part | Verdict | Fact | Why |
