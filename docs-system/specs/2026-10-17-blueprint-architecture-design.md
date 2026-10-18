@@ -57,6 +57,9 @@ the spot. Either way, the prose follows overnight.
   what the page says.
 - An agent can make a typical small change to a blueprint correctly on its first attempt, checked
   offline in seconds.
+  Erratum (Geoff, 2026-10-19): this goal splits into `drafter check` green on the first try and the
+  read accepting the change in the same session within three reads; see
+  `specs/2026-10-19-drafter-edit-quality-design.md`.
 - A changed blueprint becomes a reviewed, merged page by the next morning, with no human step
   unless something failed.
 - A person can edit a page directly, and their meaning survives in the house voice.
