@@ -11,6 +11,10 @@ Rulings at plan approval (Geoff, 2026-10-17, plan packet), each the recommended 
 2. The line is 3,515 path minutes and the ceiling 5,273. A task past twice its estimate extends once to four times, then stops.
 3. Geoff turns a production server's protection off for Claude's rebuilds and the L6 image restore. The second operator's emergency screen tells him to turn it off, restore, and turn it back on.
 
+Rulings during Pass 0 (Geoff, 2026-10-18):
+- Geoff migrates to Proton first; the other household members follow only after his migration and once the new system is up. The Family and Emergency Access invites, and members A, B, and C's asks, wait for that.
+- Chromium becomes Geoff's daily browser as part of his Proton move. Pass W lands it: CLAUDE.md's "Browsers" line changes when the switch happens, and W3 decides how Claude's browser automation, which also drives Chromium, stays out of the profile that holds an unlocked Proton Pass (likely a separate Chromium profile, with the extension installed per profile rather than by a browser-wide policy).
+
 ## Next action
 
 Geoff sits for Pass 0 with Claude, on whichever host he is at. Start it from the workstation checkout:
