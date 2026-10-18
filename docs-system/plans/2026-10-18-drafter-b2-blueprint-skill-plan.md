@@ -18,9 +18,9 @@ graded by `drafter check` and the scoped read on its first try. The bar is four 
 closes the pass with the result (standing answer 2).
 
 - Risk class `runner` (a skill, a hook, a workflow prompt). `live-account`: API credit.
-- Path estimate: 495 minutes. B2.1 (240) paired with B2.2 (140), with B2.3 (55) beside them in the
-  pair's shadow, then B2.3's `check` line after the merge (5), B2.4 (155), Close (45), plus 50 for
-  the dotfiles PR and the post-merge rows. The design's estimate is 300; 495 is 1.65x, inside
+- Path estimate: 530 minutes. B2.1 (255) paired with B2.2 (140), with B2.3 (55) beside them in the
+  pair's shadow, then B2.3's `check` line after the merge (5), B2.4 (165), Close (45), plus 60 for
+  the dotfiles PR and the post-merge rows. The design's estimate is 300; 530 is 1.77x, inside
   standing answer 1 (proceed up to 780).
 - Clock file: the drafter worktree's git dir, except B2.4, which runs with its shell `cd`'d into the
   cairn worktree and writes the clock in that worktree's git dir. A wait on Geoff removes it first.
@@ -35,8 +35,9 @@ closes the pass with the result (standing answer 2).
      --json`, its `total` plus `open.worst`. Each live run sets `DRAFTER_PAGE_CAP` to the smaller of
      2 and 10 minus the meter; a cap under $1 stops for Geoff. Exit 3 with `cycle cap` or `spend
      limit`, or a page escalated on rule `cap`, stops for Geoff after `notify-send -u normal`. Any
-     other exit 3 gets one `drafter read --resume <run-id>` with the same blueprint arguments and
-     without `--since` (the run's state carries the scope); a second stops.
+     other exit 3 gets one `drafter read --resume <run-id>` with the same blueprint arguments,
+     without `--since` (the run's state carries the scope), and with the binary and
+     `DRAFTER_PROMPTS` the run started with (in B2.4, `<drafter wt>/drafter`); a second stops.
 - Depends on, checked at launch:
   - One executor per worktree: `pgrep -f` on the two worktree paths this pass creates finds
     nothing, `claude agents --json` shows no session in drafter, cairn-cms, or dotfiles, and all
@@ -83,7 +84,10 @@ closes the pass with the result (standing answer 2).
 3. **`--since` across a resume.** The run records the resolved since SHA once and each page's state
    and ids in that page's `work` struct, which `resume.go`'s `rehydrate` already decodes. Every
    decision that depends on the scope (the prompt and the lock rule) reads it from state on a
-   resume, so `--resume` needs no `--since`. `--since` and `--resume` together is rejected in `RunE`
+   resume, so `--resume` needs no `--since`. An unchanged page never enters the run's state, so on
+   `--resume` `runRead` keeps only the blueprint arguments whose page key the loaded state holds and
+   prints `unchanged (not in run)` for the rest (`cmd/drafter/read.go` only; `rehydrate` refuses a
+   handoff the state lacks). `--since` and `--resume` together is rejected in `RunE`
    through `usageError` (exit 2). The fields are additive with `omitempty` and `StateSchema` stays
    2, so an older state resumes as whole. `internal/pipeline/money.go` and `resume.go` stay
    untouched; if the state field forces a change to either, the line stops.
@@ -104,7 +108,11 @@ closes the pass with the result (standing answer 2).
    format page stays the catalog's one home, per the architecture's "one home" rule and
    `catalog_test.go`), `drafter check` in the loop, `drafter refs` before a fact correction, the one
    prose exception, and that page prose is otherwise off limits. Every format rule is a link into
-   `docs/blueprint-format.md` by heading, never a copy. `new-page.md` carries the new-page procedure
+   `docs/blueprint-format.md` by heading, never a copy. The link form is `format.md#<heading>`,
+   where `format.md` is a relative symlink in the skill directory to `../../../../docs/blueprint-format.md`,
+   so it resolves through the `~/.claude/skills/blueprint` link with no private path in the repo
+   (probed 2026-10-18: a headless session read a skill's in-directory symlink to a file outside its
+   working directory once that file's directory was granted with `--add-dir`). `new-page.md` carries the new-page procedure
    from `pageInputsPrompt`, `planPrompt`, and `framingPrompt` (`docs-page-chain.js:997-1406`),
    restated for an agent writing a blueprint and an outline entry rather than a plan file. The
    chain's three prompts stay as they are (design, "Out of scope").
@@ -137,16 +145,20 @@ closes the pass with the result (standing answer 2).
      wt>/claude/.claude/skills/blueprint ~/.claude/skills/blueprint`, removed when B2.4 ends.
    - Each tweak is a fresh headless session from the format-test worktree: `claude -p --model
      sonnet --effort medium --permission-mode acceptEdits --output-format stream-json --verbose
-     --allowedTools "Bash(git *) Bash(drafter *)" --disallowedTools "Bash(drafter read *)
-     Bash(git push *)"` (deny beats allow headless, probed 2026-10-18). The prompt is the tweak's
-     request and "use the blueprint skill", nothing else.
+     --add-dir <drafter wt>/docs --allowedTools "Bash(git *) Bash(drafter *)" --disallowedTools
+     "Bash(drafter read *) Bash(drafter page *) Bash(drafter convert *) Bash(git push *)"` (deny
+     beats allow headless, probed 2026-10-18), with the prompt on stdin, since the variadic
+     `--disallowedTools` would take a trailing prompt as a tool name. The prompt is the tweak's
+     request and "use the blueprint skill", nothing else. Reads under `<drafter wt>/docs` count as
+     the skill's own.
    - Each prompt names behavior in a developer's words and carries no section id, item id, fact id,
      item kind, field name, or drafter command. The executor picks the content from cairn's code
      before dispatch, so the tweak's facts are true, and the prompt goes verbatim into the row.
    - Before each tweak: `git reset --hard <base>`, so every tweak starts from rotate as merged and
      any lock a prior whole read wrote is gone. Record the cairn and drafter main checkouts' status.
    - After each tweak: exactly one new commit (`git rev-list --count <base>..HEAD` is 1), no
-     upstream, both main checkouts unchanged; any other outcome is a protocol breach and a miss. The
+     upstream, `git status --porcelain` empty in the format-test worktree, both main checkouts
+     unchanged; any other outcome (the row records the stray files) is a protocol breach and a miss. The
      transcript must show a `Skill` call naming `blueprint` and no read under
      `~/Projects/initiatives` or of `docs-page-chain.js`; otherwise a breach and a miss.
    - Grade: `drafter check` on the commit, then, only when it passes, `<drafter wt>/drafter read
@@ -170,7 +182,7 @@ closes the pass with the result (standing answer 2).
 
 ## Tasks
 
-### B2.1: the scoped comparison, `drafter read --since`, and the scoped prompt (240 min), paired with B2.2
+### B2.1: the scoped comparison, `drafter read --since`, and the scoped prompt (255 min), paired with B2.2
 
 - Outcome: resolutions 1 through 4.
 - Risk class: `runner`.
@@ -180,7 +192,9 @@ closes the pass with the result (standing answer 2).
   blueprint seat echoes `c.scope`), a golden of the unscoped blueprint prompt captured from
   `9915232`'s module before any edit, `claude/.claude/workflows/docs-page-chain.js`
   (`blueprintPrompt`, `DRAFTER_SEATS.blueprint`, the header comment),
-  `tests/fixtures/drafter/matrix.json`. The flag is documented in `read`'s `--help` only.
+  `tests/fixtures/drafter/matrix.json`, and `docs/blueprint-format.md` ("What `drafter read` does
+  with a blueprint" only: one sentence on `--since` and the no-lock rule). The flag is also in
+  `read`'s `--help`.
 - Acceptance:
   - A table test in `internal/blueprint`: unchanged, reformatted (unchanged), an item edit, a new
     section (scoped), a removed section, a reorder, a level change, a field outside `sections`, an
@@ -193,7 +207,9 @@ closes the pass with the result (standing answer 2).
     `<rev>` exits 2; `--since` with `--resume` exits 2; each page's scope prints on stdout and in
     `--json`.
   - Through `runRead`: a scoped accept writes no lock and prints its line; a whole `--since` accept
-    writes the lock; a resumed scoped run keeps its scope and writes no lock.
+    writes the lock; a resumed scoped run keeps its scope and writes no lock; a two-page `--since`
+    run, one page unchanged and one scoped, stopped and resumed with both arguments, exits 0 and
+    writes no lock.
   - The parity test passes with the new scoped matrix case. `git diff --stat 9915232 --
     internal/pipeline/money.go internal/pipeline/resume.go` is empty.
 - Test: `make check`.
@@ -203,10 +219,12 @@ closes the pass with the result (standing answer 2).
 - Outcome: resolutions 5 and 6.
 - Risk class: `runner`.
 - Files: `claude/.claude/skills/blueprint/SKILL.md`, `claude/.claude/skills/blueprint/new-page.md`,
-  `Makefile` (`install` only), `tests/install.test.sh`.
+  the `claude/.claude/skills/blueprint/format.md` symlink, `Makefile` (`install` only),
+  `tests/install.test.sh`.
 - Acceptance: `make install` with a scratch `HOME` and `CLAUDE_DIR` links the skill and the hook
-  script; every link from the skill into `docs/blueprint-format.md` names an existing heading
-  (grep); `vale --config ~/Projects/cairn-cms/.vale.ini` on both skill files reports 0 errors in 2
+  script (the hook link asserted with `under_repo`, which passes before B2.3's file exists);
+  `readlink -e` resolves `format.md` to `docs/blueprint-format.md`, and every `format.md#` anchor
+  in the skill names an existing heading (grep); `vale --config ~/Projects/cairn-cms/.vale.ini` on both skill files reports 0 errors in 2
   files. The "link, never copy" rule goes to the Close `diff-reviewer`.
 - Test: `make check`.
 
@@ -218,14 +236,16 @@ closes the pass with the result (standing answer 2).
   `Makefile` `check` target gains the test (5 min, on the path).
 - Acceptance: the test covers a managed page (output passes `jq -e '.hookSpecificOutput.hookEventName
   == "PreToolUse" and (.hookSpecificOutput.additionalContext |
-  contains("rotate-the-github-app-key.blueprint.yaml"))'`), the same page by its `/home/...` path,
+  contains("rotate-the-github-app-key.blueprint.yaml"))'`), the same page through a symlinked parent directory (the `/home` case),
   an unmanaged page, a non-`.md` file, a non-repo path, a new file in a missing directory, a
   malformed payload, and a `PATH` without `jq`; every case after the first two exits 0 with no
-  output. Against cairn's main checkout, a payload for `docs/extend/rotate-the-github-app-key.md`
-  prints the context and one for `docs/extend/migration-notes.md` prints nothing.
+  output. The test builds a synthetic repo. A one-off executor check, recorded in the PR and kept
+  out of the test file: against cairn's main checkout, a payload for
+  `docs/extend/rotate-the-github-app-key.md` prints the context and one for
+  `docs/extend/migration-notes.md` prints nothing.
 - Test: `make check`.
 
-### B2.4: the format test (155 min)
+### B2.4: the format test (165 min)
 
 - Outcome: resolution 9, run live; the result table in the PR body.
 - Risk class: `runner`, `live-account`.
@@ -233,8 +253,10 @@ closes the pass with the result (standing answer 2).
   `<base>`; copy `~/.config/drafter/cairn-cms.local.toml` to `<cairn wt>/drafter.local.toml`,
   confirm `git -C <cairn wt> check-ignore drafter.local.toml`, and confirm `<drafter wt>/drafter
   config --json` run in the cairn worktree exits 0 and shows `prompts`; link the skill (resolution
-  9) and confirm `readlink -f ~/.claude/skills/blueprint` is the worktree's skill directory. Check
-  the spend meter before every dispatch.
+  9) and confirm `readlink -f ~/.claude/skills/blueprint` is the worktree's skill directory; run
+  one probe session (about $0.01) from the format-test worktree with the exact tweak flags that
+  invokes the skill and reads one `format.md#` heading, and confirm its stream shows the `Skill`
+  call and no `permission_denials`. Check the spend meter before every dispatch.
 - Acceptance: five rows and the control row, each appended as it is recorded to
   `<drafter wt git dir>/b2-format-test.md` with the tweak's patch (`git show`) beside it. A row
   holds the verbatim prompt, whether the skill fired, whether `refs` ran before the edit (tweak 2),
@@ -268,12 +290,15 @@ closes the pass with the result (standing answer 2).
    `~/.claude/workflows/docs-page-chain.js`. Remove the drafter worktree only after this.
 2. glw907/dotfiles (the settings entry and the layout row), then `claude-tooling-sync apply` and
    `claude-tooling-sync verify`.
-3. The end-to-end check from the design, in a throwaway cairn worktree removed afterward: a fresh
-   `claude -p --output-format stream-json --verbose --include-hook-events` session asked to fix a
-   real gap on the rotate page, with no skill named. Its stream shows a `hook_response` carrying the
-   blueprint's path, and whether the `blueprint` skill fired is recorded (a miss goes to the
-   backlog). A second session editing `docs/extend/migration-notes.md` shows no such context.
-   `git -C ~/Projects/cairn-cms status --porcelain` is empty at the end.
+3. The end-to-end check from the design, in a throwaway cairn worktree removed afterward. Each
+   session is a fresh `claude -p --permission-mode acceptEdits --output-format stream-json
+   --verbose --include-hook-events --add-dir ~/Projects/drafter/docs`, prompt on stdin.
+   - The hook: a session told to make a named one-line edit to
+     `docs/extend/rotate-the-github-app-key.md` shows a `hook_response` carrying the blueprint's
+     path; a session making the same kind of edit to `docs/extend/migration-notes.md` shows none.
+   - The trigger: a separate session asked to fix a real gap on the rotate page, with no skill
+     named, records whether a `Skill` call named `blueprint` (a miss goes to the backlog).
+   - `git -C ~/Projects/cairn-cms status --porcelain` is empty at the end.
 
 ## Later
 

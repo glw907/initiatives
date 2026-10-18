@@ -138,5 +138,52 @@ new names.
 - Folded in part: 1 (I5); its `make install` link guard is refused.
 - Owner forks remaining: none.
 
-Path: 420 to 495 minutes (B2.1 240 in the pair, B2.3's `check` line 5, B2.4 155, Close 45,
-post-merge 50), inside the 780 ceiling.
+Path after this fold: 495 minutes (the pair at 240 with B2.3's 55 in its shadow, B2.3's `check`
+line 5, B2.4 155, Close 45, post-merge 50), up from the draft's 420 and inside the 780 ceiling. The
+verification fold below moves it to 530.
+
+## Verification
+
+Source: `2026-10-18-drafter-b2-fold-verification.md` (V), read against the plan at `cc8930a`: 0
+blockers, 3 majors, 8 minors (2 optional). Each was checked against source before its
+disposition.
+
+Probe run for the new mechanism (V1): a scratch skill directory linked into a headless session's
+project skills, holding `format.md` as a relative symlink to a file outside the working directory.
+Without `--add-dir` the Read of `<skill base>/format.md` landed in `permission_denials`; with
+`--add-dir <target's tree>` it read the file. The same probe ran with the prompt on stdin and a
+trailing `--disallowedTools`, which confirms V5's fix.
+
+1. Folded. Resolution 6 names the link form (`format.md#<heading>`, a relative in-skill symlink to
+   `docs/blueprint-format.md`, no private path in the public repo); resolution 9 adds `--add-dir
+   <drafter wt>/docs` and counts reads there as the skill's own; B2.2 Files gain the symlink and
+   its acceptance checks `readlink -e` plus anchors; B2.4 "Before it" runs the one probe session.
+2. Folded. Merge order row 3 splits into a named one-line edit on each page (the design's check) and
+   a separate trigger session, all with `--permission-mode acceptEdits` and `--add-dir`. Verified
+   against the design's "End-to-end check".
+3. Folded. Resolution 3: on `--resume`, `runRead` drops arguments the state lacks and prints
+   `unchanged (not in run)`; `read.go` only (verified `resume.go:164-166` refuses an unknown page).
+   B2.1 acceptance gains the two-page resume row.
+4. Folded. Standing answer 4 names the run's own binary and `DRAFTER_PROMPTS`.
+5. Folded. Resolution 9: prompt on stdin (probed above).
+6. Folded. Resolution 9 denies `drafter page` and `drafter convert` too (verified `page_cap = 10`
+   in the user config).
+7. Folded. Resolution 9 after-tweak checks require a clean format-test worktree (verified
+   `requireClean` in `start.go`).
+8. Folded. B2.1 Files gain `docs/blueprint-format.md`, the "What `drafter read` does with a
+   blueprint" section only (verified `:355-364`); B2.2 no longer edits that file, so the pair stays
+   disjoint.
+9. Folded (free). B2.2 asserts the hook link with `under_repo`.
+10. Folded (free). B2.3's cairn-checkout half is a one-off executor check recorded in the PR; the
+    test builds a synthetic repo, and its `/home` case uses a symlinked parent it creates.
+11. Folded. The stale path line ("Checked and sound": the fold record's "420 to 495" listed parts
+    summing to 445 before the 50) is rewritten above as 495 with its parts.
+
+Counts: V's header says 3 majors and 8 minors; its body numbers ten findings, and the eleventh
+minor is the stale path line. All 11 folded (3 majors, 6 correctness minors, 2 optional minors
+folded as free), none refused, no owner fork.
+
+Path: 530 minutes. B2.1 rises to 255 (the resume filter and the format-page sentence), B2.4 to 165
+(the link probe and flags), post-merge to 60 (the split end-to-end check); the pair, B2.3's 5,
+and Close 45 are unchanged. 530 is 1.77x the design's 300, inside the 780 ceiling. Nothing changes
+the approved design: the symlink is the skill pointing at the format page, not copying it.
