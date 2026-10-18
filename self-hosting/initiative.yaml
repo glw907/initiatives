@@ -4,4 +4,4 @@ summary: Would move mail, photos, music, and passwords off Fastmail, PikaPods, a
 status: proposed
 owner: glw907
 created: 2026-10-17
-repos: [workstation, dubplate, poplar]
+repos: [workstation, dubplate, poplar, servers]
