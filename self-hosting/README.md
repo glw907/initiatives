@@ -40,6 +40,7 @@ Fastmail, PikaPods, and 1Password each hold part of the household's data on some
 ## Records
 
 - Design: [specs/2026-10-17-self-hosting-design.md](specs/2026-10-17-self-hosting-design.md).
+- Pass plan: [plans/2026-10-17-self-hosting-plan.md](plans/2026-10-17-self-hosting-plan.md), with its reviews and fold records in [research/](research/).
 - Brainstorm state and the pavilion handoff: [specs/2026-10-17-brainstorm-decisions.md](specs/2026-10-17-brainstorm-decisions.md). The design supersedes it where they differ.
 - Research: the per-area briefs in [research/](research/).
 
@@ -48,3 +49,5 @@ Status: proposed (2026-10-17), research complete; the design waits on Geoff's an
 Status: proposed (2026-10-17), design drafted on thinkpad-x1 with every open question answered; it waits on Geoff's approval.
 
 Status: proposed (2026-10-17), design reviewed and folded; the approval packet ([specs/2026-10-17-self-hosting-design-packet.md](specs/2026-10-17-self-hosting-design-packet.md)) goes to Geoff from pavilion, and PR 8 squash-merges on approval.
+
+Status: proposed (2026-10-17), design approved with both recommended rulings; the pass plan is reviewed, folded, and sent to Geoff in its packet.
