@@ -6,7 +6,7 @@ Three reviews and two verification reads have tested the plan, and three questio
 The self-hosting design you approved on 2026-10-17 moves 907.life mail, photos, music, and passwords onto two Hetzner servers and Proton Pass. This plan splits it into nine passes: Pass 0 gathers every credential with you present, a workstation pass moves the scripts from 1Password to Proton Pass, and passes 1 to 7 build and cut over. Path minutes are the hands-on clock time along the longest chain of passes; calendar waits such as Hetzner's answer and T+30 aren't counted.
 
 ## If you approve
-1. [session] Squash-merge glw907/initiatives#PRNUM, which files the plan, its reviews, and the fold records on main.
+1. [session] Squash-merge glw907/initiatives#10, which files the plan, its reviews, and the fold records on main.
 2. [session] Write STATUS and the Pass 0 checklist, and draft the port 25 request text.
 3. [you: run Pass 0 with Claude] File the port 25 request first, then the accounts, tokens, and the permissions PR.
 
@@ -70,7 +70,7 @@ Choices:
 | Part | Verdict | Fact | Why |
 |---|---|---|---|
 | glw907/initiatives:self-hosting/plans/2026-10-17-self-hosting-plan.md | approve | Every blocker and major from three reviews and two verification reads is closed in the plan text. | Your design rulings and both approval rulings bind it. |
-| glw907/initiatives#PRNUM | approve | `scripts/check` passes, and the PR files only records. | The record stays proposed until Pass 0 starts. |
+| glw907/initiatives#10 | approve | `scripts/check` passes, and the PR files only records. | The record stays proposed until Pass 0 starts. |
 | step:1 | session | A squash merge can be reverted. | Records only. |
 | step:2 | session | STATUS is a self-merged hand-over. | Nothing is built yet. |
 | step:3 | you | Pass 0 needs your logins, FIDO2 keys, and purchases. | It's the one long attended session. |
