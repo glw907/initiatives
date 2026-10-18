@@ -25,7 +25,7 @@ The order and the port 25 request text are in `2026-10-17-pass0-checklist.md`. T
 
 | Step | State |
 |---|---|
-| 0.0 Servers repo | not started |
+| 0.0 Servers repo | done 2026-10-17: `glw907/servers` private, README and PR #1 (privacy check, patterns, empty registry) merged |
 | 0.1 Port 25 filed | not filed; the 14-day clock starts at filing |
 | 0.2 Recovery | not started |
 | 0.3 Tools | not started |
