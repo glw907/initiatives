@@ -25,15 +25,16 @@ cd ~/.dotfiles && claude --model sonnet --effort medium --name workstation-self-
 
 The order and the port 25 request text are in `2026-10-17-pass0-checklist.md`. The port 25 request goes first among Geoff's steps, because mail waits on Hetzner's answer.
 
-## Resume note (2026-10-18)
+## Resume note (2026-10-18, second sitting)
 
-Geoff continues Pass 0 in a fresh session, so the launch prompt applies unchanged. State to pick up:
+Geoff continues Pass 0 in a fresh session with the launch prompt above, unchanged. State to pick up:
 
-- Stored: `HCLOUD_TOKEN_SERVERS`, in workstation PR #88 (draft, branch `self-hosting-pass0`, worktree `.claude/worktrees/self-hosting-pass0`). The dead musicbox `HCLOUD_TOKEN` was removed there. Store with `VALUES=<that worktree>/secrets/values.age`; the main checkout's store is clean.
-- The servers branch `pass0-patterns` adds one private pattern and is unmerged; run the privacy check with `PRIVACY_PATTERNS` pointing at its file until it lands.
-- This branch (`self-hosting-pass0-status`) is behind initiatives `main`; merge `origin/main` before the hand-over PR.
-- Open with Geoff: 0.2 confirmations, the second operator's Hetzner invite, the eight Cloudflare tokens (0.5), and whether `servers-fb` (thinkpad-x1) should hold any part of this. Its handoff request was answered with state only; nothing was transferred.
-- Retire the old session before launching a new one: `workstation-self-hosting-pass0` (pavilion) holds the worktrees above.
+- Stored in workstation PR #88 (draft, branch `self-hosting-pass0`, worktree `~/.dotfiles/.claude/worktrees/self-hosting-pass0`): `HCLOUD_TOKEN_SERVERS`, the five Cloudflare tokens and their R2 S3 pairs, and the PikaPods SFTP host, user, and password. Store with `VALUES=<that worktree>/secrets/values.age`. The branch is behind workstation `main`; merge `origin/main` and resolve `values.age` by re-encrypting, never by taking one side, before the hand-over.
+- The servers branch `pass0-patterns` (worktree `~/Projects/servers/.claude/worktrees/pass0-privacy`) adds two private patterns and is unmerged; run the privacy check with `PRIVACY_PATTERNS` pointing at its `privacy/patterns.txt` until it lands.
+- This branch (`self-hosting-pass0-status`) merges `origin/main` before the hand-over PR.
+- Next is 0.9, waiting on Geoff: the GitHub OAuth app `servers-access` (homepage `https://907.life`, callback in the 0.9 row), the Spamhaus DQS key, and the Gmail and Outlook.com test accounts. Each value arrives through `secret-receive`; then Claude adds the GitHub identity provider with `CF_ZT_TOKEN` and Geoff signs in once through Access. Then 0.10, 0.11 (waits on 0.6), and 0.12.
+- Workstation change landed the same sitting (workstation#93, merged): Firefox and Thunderbird retired, Chromium daily in Geoff's own profile (`Geoff`), Claude's browser extension alone in `Default`, Proton Pass alone in Geoff's profile, both installed by hand, and Kagi set by Chromium policy. Hylki is the mail client, with GNOME Contacts and Calendar through Online Accounts. Pass W's W3 takes this as given: no browser-wide extension policy, and no 1Password extension anywhere. Firefox's RPM leaves at the next reboot; backups are in `~/.local/state/browser-mail-retire-2026-10-18/`.
+- Retire the old session before launching: the Pass 0 session `009a2597` on pavilion holds the worktrees above and ends at this hand-over.
 
 ## Pass 0 rows
 
@@ -67,7 +68,8 @@ Geoff continues Pass 0 in a fresh session, so the launch prompt applies unchange
 
 ## Open decisions
 
-None.
+- Pass W scope (asked 2026-10-18): whether Proton Drive, VPN, or the Mail and Calendar desktop apps join Pass W as one install task. Recommended: none unless Geoff names them; Pass W stays as planned.
+- Kagi homepage (asked 2026-10-18): Chromium's policy locks it; Geoff may want it as a changeable default (`HomepageLocation` moves to a recommended policy).
 
 ## Sessions
 
