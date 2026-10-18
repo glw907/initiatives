@@ -1,0 +1,29 @@
+You are running Pass 1 of the self-hosting initiative: foundation. Your session name is servers-foundation, launched from the servers main checkout /var/home/glw907/Projects/servers on pavilion. You run unattended; conductor-servers owns your PRs and the packet to Geoff, so your work ends at PR-ready.
+
+Read these first, in order:
+1. /var/home/glw907/Projects/initiatives/self-hosting/plans/STATUS.md
+2. /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-17-self-hosting-plan.md: the header, "Privacy", "Secrets in the age store", "Repos and sessions", "Adapter facts for the servers repo", "Dispatch note", and "Pass 1: foundation" (tasks F1 to F8). Where STATUS's "Owed" lists a plan amendment, STATUS wins.
+3. The design, /var/home/glw907/Projects/initiatives/self-hosting/specs/2026-10-17-self-hosting-design.md, for any mechanism a task names.
+4. The pass-core and vps-conventions skills. The servers repo has no adapter skill; the plan's "Adapter facts for the servers repo" stands in for one.
+
+What Pass 0 left you (all on servers main at 44ad38a unless noted):
+- scripts/privacy-check.sh, privacy/patterns.txt, scripts/dry-run.sh, scripts/lib/secrets.sh, docs/runbook.md and secrets/registry.md (the five Cloudflare tokens and where each is read), docs/addresses.md. Run `bash scripts/dry-run.sh <id>` to prove a credential. Its rows are per check, not per credential.
+- The branch origin/pass0-patterns adds two private patterns and is unmerged. Merge it into your pass branch before your first commit, and the privacy check then runs with the repo's own privacy/patterns.txt.
+- Credentials are in ~/.local/secrets: HCLOUD_TOKEN_SERVERS and five Cloudflare tokens, not eight: ws-servers (DNS, Workers, Access and Tunnel together), ws-r2-archive-rw, ws-r2-backups-ro (one restore token for both backup buckets), mail-r2-backup-rw, media-r2-backup-rw. Scopes and readers are in the runbook. Plan text that names the old eight tokens yields to this.
+- Not yet stored, so their dry-run rows read OWED or FAIL and stay that way: the GitHub OAuth pair (access-github-idp), SPAMHAUS_DQS_KEY, and the Gmail and Outlook.com test accounts. They wait on Geoff's Proton Pass move. None of Pass 1 needs them.
+- The workstation's settings.json has the allow and deny rules from workstation#88. The store rules take exact forms, and you must write them exactly: the absolute /var/home/glw907/.dotfiles/scripts/secrets/secret-set.sh (or secret-receive), then NAME and its mode, then one `--values /var/home/glw907/.dotfiles/.claude/worktrees/self-hosting-<pass>/secrets/values.age`, then one `--local /run/user/1000/self-hosting/<file>`. Each flag appears once, and no path holds `..`; the scripts refuse a repeat. The servers script rules (provision.sh, apply.sh, dns.sh and the rest, in relative form from the worktree root) are proven by F1's stubs and `claude -p --permission-mode dontAsk`.
+- Musicbox is gone. Nothing in Pass 1 touches it.
+
+Setup before F1:
+- Run `git -C /var/home/glw907/Projects/servers fetch origin` and confirm the checkout is on main with `git rev-list --count HEAD..origin/main` printing 0.
+- Create the other two repos' worktrees first: `git -C /var/home/glw907/.dotfiles worktree add .claude/worktrees/self-hosting-foundation -b self-hosting-foundation origin/main` and `git -C /var/home/glw907/Projects/initiatives worktree add .claude/worktrees/self-hosting-foundation -b self-hosting-foundation origin/main`. You were launched with --add-dir for both repos.
+- Your first act in the servers repo is EnterWorktree named foundation, then merge origin/pass0-patterns and run `npm ci` in each cloudflare/*/ directory that has a package.json (none exists yet).
+- Every secret F3 creates (the two ntfy topic names and both heartbeat tokens) goes into the workstation worktree above with `--values` its secrets/values.age and `--local /run/user/1000/self-hosting/secrets-foundation`, never into the main checkout. Add each topic name to privacy/patterns.txt in the same step. Store, decrypt back and compare hashes, commit, push, and confirm the pushed blob decrypts to the same hash, as "Secrets in the age store" sets out. Deploy the monitor from your branch with deploy.sh after the secrets are in the overlay; the loader reads overlays then ~/.local/secrets.
+- Write pass-task-clock for each task as pass-core "Clock stop" sets out. A task past twice its estimate extends once to four times its original estimate and continues; past four times it stops, writes STATUS lines, and runs `notify-send -u normal`.
+- Arm the API-drop wake-up per ~/.claude/docs/unattended-work-guards.md.
+
+Run F1 through F8 as the plan states them, with the plan's pairs (F3 with F4). Pair arms follow the plan's "Dispatch note" and never touch a live account. F6b and F6c are attended on thinkpad-x1 and stay open; list them under your STATUS lines. A live account is touched only in the main loop. Every auth-data task is test-first and gets a diff-reviewer task-scope read of its commit.
+
+Class: auth-data and live-account. Privacy: glw907/workstation and glw907/initiatives are public, so household members appear by role only there. Before every commit and PR body in those two repos, run `bash /var/home/glw907/Projects/servers/scripts/privacy-check.sh <changed files> <message or body file>`.
+
+Push targets: glw907/servers, glw907/workstation, and glw907/initiatives. Open each PR as a draft at the first push. Never merge a PR and never send a packet: conductor-servers owns both. At the close: the servers gate green on the head and CI green, one whole-branch diff-reviewer, one `gitleaks git` history scan, the plan's close checklist, and `git -C ~/.dotfiles diff --quiet -- secrets/values.age` clean on the main checkout. Each PR body opens with `## Brief`, carries the score, and puts your STATUS lines under a `## STATUS lines` heading; you do not edit STATUS yourself. Report the PR numbers and heads as your last act.

@@ -4,51 +4,64 @@ Plan: `self-hosting/plans/2026-10-17-self-hosting-plan.md`. Design: `self-hostin
 
 ## Current state
 
-Planned, and nothing is built. Geoff approved the design and the pass plan on 2026-10-17. The plan merged in glw907/initiatives#10 as `c5f91d4`. No servers repo, account, token, or server exists yet.
+Pass 0 closed 2026-10-18 with four rows owed on Geoff's Proton move. Built and merged: the servers repo (privacy check, runbook, addresses, the credential dry run and loader), workstation#88 (permission rules and the `--values` and `--local` store flags), and every Hetzner, Cloudflare, PikaPods, Immich, and Fastmail credential the design asks for. The live dry run passes 17 credentials at servers `6147022`. `conductor-servers` owns this file from its launch.
 
 Rulings at plan approval (Geoff, 2026-10-17, plan packet), each the recommended answer:
 1. Claude tests the household members' mailboxes in C3, reading only its own test messages' headers.
 2. The line is 3,515 path minutes and the ceiling 5,273. A task past twice its estimate extends once to four times, then stops.
 3. Geoff turns a production server's protection off for Claude's rebuilds and the L6 image restore. The second operator's emergency screen tells him to turn it off, restore, and turn it back on.
 
+Rulings during Pass 0 (Geoff, 2026-10-18):
+- Geoff migrates to Proton first; the other household members follow only after his migration and once the new system is up. The Family and Emergency Access invites, and members A, B, and C's asks, wait for that.
+- Step 0.9 waits for the migration: the OAuth app, the Spamhaus key, and the test accounts go into Proton Pass, not 1Password. Geoff's Proton account was re-created the same day after he lost its password, and his 1Password import may need running again. The Proton Pass extension is set up in his Chromium profile.
+- Chromium is Geoff's daily browser (workstation#93, merged). Pass W's W3 takes that as given: no browser-wide extension policy, and no 1Password extension anywhere.
+
 ## Next action
 
-Geoff sits for Pass 0 with Claude, on whichever host he is at. Start it from the workstation checkout:
-
-```
-cd ~/.dotfiles && claude --model sonnet --effort medium --name workstation-self-hosting-pass0 "$(cat ~/Projects/initiatives/self-hosting/plans/2026-10-17-pass0-prompt.txt)"
-```
-
-The order and the port 25 request text are in `2026-10-17-pass0-checklist.md`. The port 25 request goes first among Geoff's steps, because mail waits on Hetzner's answer.
+`conductor-servers` launches Pass 1 (`servers-foundation`) from its committed prompt, `2026-10-18-pass1-prompt.txt`; the conductor's own prompt is `2026-10-18-pass1-conductor-prompt.txt`. Geoff's next step is his Proton migration: the account's two FIDO2 keys and paper phrase (0.6), then the OAuth app, Spamhaus key, and test accounts (0.9) and the recovery kit (0.11). Each value goes through `secret-receive` in an attended sitting.
 
 ## Pass 0 rows
 
 | Step | State |
 |---|---|
-| 0.0 Servers repo | not started |
-| 0.1 Port 25 filed | not filed; the 14-day clock starts at filing |
-| 0.2 Recovery | not started |
-| 0.3 Tools | not started |
-| 0.4 Hetzner | not started |
-| 0.5 Cloudflare | not started |
-| 0.6 Proton | not started |
-| 0.7 PikaPods and Fastmail | not started |
-| 0.8 Household | not started |
-| 0.9 Access and test accounts | not started |
-| 0.10 Permissions PR | not started |
-| 0.11 Recovery kit | not started |
-| 0.12 Dry run | not started |
+| 0.0 Servers repo | done 2026-10-17: `glw907/servers` private, README and PR #1 (privacy check, patterns, empty registry) merged |
+| 0.1 Port 25 | done 2026-10-17: filed and validated automatically; Hetzner unblocks ports 25 and 465 on all the account's Cloud Servers within minutes. No 14-day wait, so Pass 5's port 25 entry condition is met and the daily JMAP check and the options-packet standing answer are moot |
+| 0.2 Recovery | done 2026-10-18: Cloudflare done 2026-10-18 (recovery address off 907.life). Hetzner done 2026-10-18: login, main contact, and invoice addresses all moved off 907.life, so a mail outage on the Hetzner server can't lock Geoff out of the account that rebuilds it. Geoff ruled 2026-10-18 that one general recovery address, off 907.life, serves every account, so no per-account address is asked for. GitHub done 2026-10-18 (a verified address off 907.life receives resets). 2FA backup codes for Cloudflare, Hetzner, and GitHub stored offline 2026-10-18. Fastmail done 2026-10-18 (recovery address set off 907.life). Fastmail's 2FA backup codes are in the offline set too. Proton takes the address as its recovery address in 0.6 |
+| 0.3 Tools | done 2026-10-17: `hcloud` 1.70.1, `shfmt` 3.14.1, `yamllint` 1.38.0, `imapsync` 2.314, `proton-pass-cli` 2.4.2 (pinned) installed and in the Brewfile (workstation PR #88). `pass-cli` is homebrew-core's `proton-pass-cli`, not a Proton tap, and its version was read from brew, never by running it. `check-drift` is clean once the PR merges |
+| 0.4 Hetzner | token done 2026-10-17: `HCLOUD_TOKEN_SERVERS` stored (workstation PR #88, draft); empty server list and SSH key create/delete pass. Deferred by Geoff 2026-10-18: the second operator's project invite waits until he has his accounts set up (0.8 asks for his GitHub account) |
+| 0.5 Cloudflare | done 2026-10-18. Buckets created 2026-10-17: `servers-backup-mail`, `servers-backup-media`, `servers-archive`, empty, no lock rules. Geoff ruled 2026-10-18 that tokens follow the workstation API token scheme (`~/.claude/docs/cloudflare-estate-inventory.md`, workstation branch `cf-token-scheme`), which replaces the plan's eight tokens with five: `ws-servers` (DNS, Workers, Access and Tunnel in one), `ws-r2-archive-rw`, `ws-r2-backups-ro` (one restore token for both buckets), `mail-r2-backup-rw`, `media-r2-backup-rw`. Scopes and readers are in the servers repo's `docs/runbook.md` and `secrets/registry.md` (branch `pass0-tokens`). Done 2026-10-18: Claude minted the five as account-owned tokens through the API with Geoff's two temporary token-management tokens, stored each (and each R2 S3 pair) in workstation PR #88, and confirmed the pushed store decrypts to the same hashes. Smoke tests pass: each R2 token lists its own bucket and is refused another, the restore token reads both, and `ws-servers` reads 907.life DNS and is refused another zone's DNS and R2. `ws-servers` carries Workers Admin, since its scripts create and delete Workers. Both temporary tokens are deleted and verified refused. Estate cleanup the same day: three tokens renamed to the scheme, and the dead musicbox R2 write token on `music-library` deleted on Geoff's go |
+| 0.6 Proton | owed, in progress on Geoff's side. His account was re-created 2026-10-18 after he lost its password, and the Proton Pass extension is set up in his Chromium profile. Still to confirm: two FIDO2 keys, the paper phrase, and the Family and Emergency Access invites (after his own migration). 0.11's recovery kit waits on the new phrase |
+| 0.7 PikaPods and Fastmail | done 2026-10-18. SFTP done 2026-10-18: credentials stored (workstation PR #88), and the listing shows the six directories the design names under `photos/`, the newest backup from 2026-10-17. Fastmail: Geoff ruled 2026-10-18 to reuse the existing `FASTMAIL_DAV_PASSWORD` (an app password covering IMAP, SMTP, CalDAV, CardDAV) for the migration instead of two new app passwords; the address list comes from the existing `FASTMAIL_API_TOKEN`. The Immich API key stored 2026-10-17 (`IMMICH_PIKAPODS_API_KEY`) is an admin key and reaches the database-backup endpoint, so no new key was made; Geoff may delete an unused January key. The pod's admin login stays as it is (Geoff). The confirmed address list is committed in the servers repo's `docs/addresses.md`: four user mailboxes and one alias; two unused identities dropped; the site's send-only From address recorded for the DNS cutover |
+| 0.8 Household | in progress. Geoff sent the second operator's message 2026-10-18 (Fastmail API token and one app password, GitHub username and email, ntfy app, Proton account, masked addresses). Owed from him: each of those; his Fastmail credentials arrive in an attended sitting through `secret-receive`. Geoff deferred household members A, B, and C on 2026-10-18 until the new system is up and ready, so their Fastmail credentials and the Proton note wait; the Fastmail admin-credential check waits with them |
+| 0.9 Access and test accounts | owed: waits on Geoff's Proton Pass, which he needs to sign in to GitHub and the other sites. Done so far: The account's one Zero Trust organization was the sailing club's; on Geoff's go 2026-10-18 Claude renamed it "Wright Family" and moved its team domain to `907wrights.cloudflareaccess.com` (every other setting read back unchanged). The GitHub OAuth callback is `https://907wrights.cloudflareaccess.com/cdn-cgi/access/callback`. The club's Google sign-in fails until that callback is added to its Google OAuth client; Geoff deferred the fix 2026-10-18, since he is its only user. Open: Geoff creates the GitHub OAuth app, the Spamhaus DQS key, and the Gmail and Outlook.com test accounts; Claude stores each and adds the GitHub identity provider |
+| 0.10 Permissions PR | done 2026-10-18: workstation#88 merged as `dcd3468` on Geoff's packet approval. Allow rules for the servers scripts and SSH to the mail and media hosts (no musicbox rule, the project is deleted), deny rules for raw `hcloud` and `wrangler` destructive calls, `--values` and `--local` on `secret-set.sh` and `sync.sh` with a store lock and a dropped-name check, and a refusal of a repeated flag or a `..` path (found by the whole-branch review). `dontAsk` proofs: `hcloud server delete` refused, the SSH rule runs, the store rule runs, and a repeated-`--values` bypass is denied. Script rules are proven against stubs in F1. `claude-tooling-sync apply` ran |
+| 0.11 Recovery kit | owed: waits on the new Proton phrase from 0.6. Geoff writes the phrase and the age key by hand and types the key into `age-keygen -y`; Claude compares the recipient |
+| 0.12 Dry run | done 2026-10-18 for every arrived credential, servers#3 merged as `44ad38a` on Geoff's packet approval: the loader `scripts/lib/secrets.sh` and `scripts/dry-run.sh`, 47 and 9 test cases, three review blockers fixed. Live run at `6147022`: 17 credentials pass, Hetzner, the four R2 tokens, PikaPods SFTP, the Immich key, Fastmail JMAP, IMAP and DAV, and the five `ws-servers` checks (rows are per check, not per credential). Fails or owed, all on 0.9: `access-github-idp`, `spamhaus-dqs`, `test-gmail`, `test-outlook`. Re-run `bash scripts/dry-run.sh <id>` after 0.9 |
 
 ## Owed
 
+- Pass 0 rows 0.6, 0.9, and 0.11, and the 0.8 asks to the second operator and members A, B, and C, all wait on Geoff's Proton Pass move. Re-run `bash scripts/dry-run.sh access-github-idp spamhaus test-` once 0.9 stores its values (`access-github-idp` fails and the other three read OWED today).
+- Geoff's 1Password import into the re-created Proton account (W6 in Pass W). Pass W has no executor prompt yet; the conductor writes it.
+- The dry-run table's rows are per check, not per credential (`cf-ws-servers` has five). The plan's 0.12 wording is per credential.
+- thinkpad-x1: the servers repo clone, workstation checkout pull, and the `~/.local/secrets` sync happen with F6b and F6c.
+
+- Musicbox: Geoff deleted the musicbox Hetzner project on 2026-10-17, before I3. The server, its 50 GB volume, and its old token are gone (token removed from the store in PR #88). Pass 3 I3 can no longer copy `/srv/music/library` or `/var/lib/dubplate` from it; the only possible copy is the R2 bucket `music-library`, whose contents I3 was already to read. The next plan revision rewrites I3, I4's musicbox packet, and the dubplate host-contract rows. Until then dubplate has no host.
 - Design errata: the plan's fold record (`research/2026-10-17-self-hosting-plan-fold.md`) lists eleven for the next design revision. Ruling 3 settled items 7 and 11, so none waits on Geoff. Until that revision, the plan governs where the record names an erratum.
 - thinkpad-x1 per-host steps: the servers repo clone, the ntfy subscriber, the agent token, and the W5 key check. Each is open until done on that host.
 - Human steps: every row in the plan's "Human steps" table is open.
+- Plan amendments from the 2026-10-18 token ruling, for the next plan revision: 0.5's token list becomes the five above; 0.12's dry run proves `ws-servers` once per job (a DNS write and a refused write on another zone, the probe Worker, a test tunnel), and the one restore token reads both buckets and is refused a write on each; the close checklist's "`servers-` name prefix (Cloudflare)" holds for buckets and Workers, and tokens are checked against the runbook's credentials table instead.
+- Plan amendment from the 2026-10-18 Fastmail ruling: 0.7 creates no Fastmail app passwords, and 0.8's ask to household members A and B shrinks to one app password covering IMAP and DAV plus the API token.
+- Fastmail login rename: JMAP shows Geoff's Fastmail login is an @907.life address, so per the design's "Irreversible steps" the Fastmail packet renames it before 907.life is removed from the account.
+- Members A and B's Fastmail credentials (deferred 2026-10-18): the migration rehearsals for their mailboxes, and their 0.12 dry-run rows, wait until Geoff asks them.
+- Estate-wide follow-up, outside this initiative: the `ci-deploy` token for the five site repos and Workers Builds, and retiring `CF_ZT_TOKEN`, per the scheme's table.
 
 ## Open decisions
 
-None.
+- Pass W scope (asked 2026-10-18): whether Proton Drive, VPN, or the Mail and Calendar desktop apps join Pass W as one install task. Recommended: none unless Geoff names them; Pass W stays as planned.
+- Kagi homepage (asked 2026-10-18): Chromium's policy locks it; Geoff may want it as a changeable default (`HomepageLocation` moves to a recommended policy).
 
 ## Sessions
 
-- Planner: session `26c03024` on pavilion. It wrote the plan and this file, and it ends after this hand-over merges.
+- Pass 0: session `workstation-self-hosting-pass0`, with a second build session of the same name, both ended at this hand-over.
+- Conductor: `conductor-servers`, launched at this hand-over from the servers main checkout; Pass 1's executor `servers-foundation` is launched by it.
+- Planner: session `26c03024` on pavilion ended after the plan merged.
