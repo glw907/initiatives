@@ -29,7 +29,7 @@ The order and the port 25 request text are in `2026-10-17-pass0-checklist.md`. T
 | 0.1 Port 25 filed | not filed; the 14-day clock starts at filing |
 | 0.2 Recovery | not started |
 | 0.3 Tools | not started |
-| 0.4 Hetzner | not started |
+| 0.4 Hetzner | token done 2026-10-17: `HCLOUD_TOKEN_SERVERS` stored (workstation PR #88, draft); empty server list and SSH key create/delete pass. Open: invite the second operator to the project |
 | 0.5 Cloudflare | not started |
 | 0.6 Proton | not started |
 | 0.7 PikaPods and Fastmail | not started |
@@ -41,6 +41,7 @@ The order and the port 25 request text are in `2026-10-17-pass0-checklist.md`. T
 
 ## Owed
 
+- Musicbox: Geoff deleted the musicbox Hetzner project on 2026-10-17, before I3. The server, its 50 GB volume, and its old token are gone (token removed from the store in PR #88). Pass 3 I3 can no longer copy `/srv/music/library` or `/var/lib/dubplate` from it; the only possible copy is the R2 bucket `music-library`, whose contents I3 was already to read. The next plan revision rewrites I3, I4's musicbox packet, and the dubplate host-contract rows. Until then dubplate has no host.
 - Design errata: the plan's fold record (`research/2026-10-17-self-hosting-plan-fold.md`) lists eleven for the next design revision. Ruling 3 settled items 7 and 11, so none waits on Geoff. Until that revision, the plan governs where the record names an erratum.
 - thinkpad-x1 per-host steps: the servers repo clone, the ntfy subscriber, the agent token, and the W5 key check. Each is open until done on that host.
 - Human steps: every row in the plan's "Human steps" table is open.
