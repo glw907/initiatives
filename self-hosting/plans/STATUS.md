@@ -26,7 +26,7 @@ The order and the port 25 request text are in `2026-10-17-pass0-checklist.md`. T
 | Step | State |
 |---|---|
 | 0.0 Servers repo | done 2026-10-17: `glw907/servers` private, README and PR #1 (privacy check, patterns, empty registry) merged |
-| 0.1 Port 25 filed | not filed; the 14-day clock starts at filing |
+| 0.1 Port 25 | done 2026-10-17: filed and validated automatically; Hetzner unblocks ports 25 and 465 on all the account's Cloud Servers within minutes. No 14-day wait, so Pass 5's port 25 entry condition is met and the daily JMAP check and the options-packet standing answer are moot |
 | 0.2 Recovery | not started |
 | 0.3 Tools | not started |
 | 0.4 Hetzner | token done 2026-10-17: `HCLOUD_TOKEN_SERVERS` stored (workstation PR #88, draft); empty server list and SSH key create/delete pass. Open: invite the second operator to the project |
