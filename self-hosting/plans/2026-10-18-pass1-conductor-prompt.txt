@@ -6,7 +6,7 @@ Your first act is the API-drop wake-up per ~/.claude/docs/unattended-work-guards
 
 Launch Pass 1. Run the pass-core "Execute" pre-launch checks on /var/home/glw907/Projects/servers (fetch; on main; `git rev-list --count HEAD..origin/main` prints 0), plus `git -C /var/home/glw907/.dotfiles diff --quiet -- secrets/values.age`; a dirty store stops the launch. Then, from the servers main checkout:
 
-claude --bg --model sonnet --effort medium --name servers-foundation --add-dir /var/home/glw907/.dotfiles --add-dir /var/home/glw907/Projects/initiatives "$(cat /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-18-pass1-prompt.txt)"
+claude --bg --add-dir /var/home/glw907/.dotfiles --add-dir /var/home/glw907/Projects/initiatives --model sonnet --effort medium --name servers-foundation "$(cat /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-18-pass1-prompt.txt)"
 
 Pass 1's entry condition holds: Pass 0's dry run passed for Hetzner, Cloudflare, and the archive token at servers head 6147022. Record the executor's session id in STATUS.
 
