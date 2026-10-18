@@ -5,7 +5,8 @@ Load pass-core and read its "Conductor", "Execute", and "Close" sections; they g
 Repos and checkouts: glw907/drafter at ~/Projects/drafter (the executor launches from its main checkout); glw907/dotfiles at ~/.dotfiles (the pass's second PR, worked in a worktree); glw907/cairn-cms at ~/Projects/cairn-cms (the format test's throwaway worktree only, never pushed); glw907/initiatives at ~/Projects/initiatives (the records; your hand-over).
 
 The pass is `runner` and `live-account`. Launch it after pass-core's pre-launch checks on ~/Projects/drafter (fetch, on main, HEAD..origin/main counts 0, no live session working it per `claude agents --json`) and the plan's "Depends on" list:
-  claude --bg --model sonnet --effort medium --name drafter-b2-blueprint-skill --add-dir ~/Projects/cairn-cms --add-dir ~/Projects/initiatives --add-dir ~/.dotfiles "$(cat ~/Projects/initiatives/docs-system/plans/2026-10-18-drafter-b2-blueprint-skill-executor-prompt.txt)"
+  claude --bg --model sonnet --effort medium --name drafter-b2-blueprint-skill "$(cat ~/Projects/initiatives/docs-system/plans/2026-10-18-drafter-b2-blueprint-skill-executor-prompt.txt)" --add-dir ~/Projects/cairn-cms ~/Projects/initiatives ~/.dotfiles
+(The prompt goes before `--add-dir`, which takes several values and would swallow a prompt placed after it.)
 `git -C ~/Projects/drafter check-ignore -q .claude/worktrees/x` must exit 0 first; if it doesn't, append `.claude/worktrees/` to the file `git -C ~/Projects/drafter rev-parse --path-format=absolute --git-path info/exclude` names. Do the same check for ~/.dotfiles and ~/Projects/cairn-cms.
 
 Standing answers from the design, applied in place of stopping:
