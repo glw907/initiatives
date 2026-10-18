@@ -13,6 +13,7 @@ Rulings at plan approval (Geoff, 2026-10-17, plan packet), each the recommended 
 
 Rulings during Pass 0 (Geoff, 2026-10-18):
 - Geoff migrates to Proton first; the other household members follow only after his migration and once the new system is up. The Family and Emergency Access invites, and members A, B, and C's asks, wait for that.
+- Step 0.9 waits for the 1Password to Proton Pass migration to finish (Geoff, 2026-10-18, third sitting): the OAuth app, the Spamhaus key, and the test accounts go into Proton Pass, not 1Password. Until then Claude builds the offline work: 0.10 and 0.12's loader and `dry-run.sh`, split across two sessions that share the Pass 0 name (ids `250c33` builds, `cdc417` owns the worktree `self-hosting-pass0`, secrets, and STATUS).
 - Chromium becomes Geoff's daily browser as part of his Proton move. Pass W lands it: CLAUDE.md's "Browsers" line changes when the switch happens, and W3 decides how Claude's browser automation, which also drives Chromium, stays out of the profile that holds an unlocked Proton Pass (likely a separate Chromium profile, with the extension installed per profile rather than by a browser-wide policy).
 
 ## Next action
