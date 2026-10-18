@@ -1,7 +1,7 @@
 # Onboarding a new project to drafter
 
 Status: designed with Geoff in chat, 2026-10-18; revised after four reviews
-(`research/2026-10-18-drafter-onboarding-design-fold.md`); awaiting his approval. Initiative:
+(`research/2026-10-18-drafter-onboarding-design-fold.md`); forks ruled 2026-10-18; awaiting his approval. Initiative:
 `docs-system`. It amends `2026-10-17-blueprint-architecture-design.md` ("arch") at the lines named
 under "Changes to the architecture spec".
 
@@ -27,29 +27,19 @@ passes:
 
 The cairn release waits at least one pass longer.
 
-### Decide: existing pages keep their prose
+### Rulings on the review's forks
 
-Should onboarding keep each existing page's prose, by seeding its lock entry as conversion does,
-and offer a priced full redraft once? Recommended: yes. Without a seed, the first run redrafts
-every existing page whole, at $3 to $4.50 a page (arch 416), in a voice the developer never saw.
-Yes builds a seeding command in F, and the skill asks the question once. No means each existing
-page is redrafted whole on its first run.
+Geoff ruled the three forks the reviews raised in chat on 2026-10-18, each as recommended.
 
-### Decide: a stock price table
-
-Should drafter ship a dated price table for its stock models, which the user layer can override,
-while `page_cap`, `cycle_ceiling`, and `workspace_id` stay required and the skill asks for them?
-Recommended: yes. Prices are published facts, and today a developer copies five rates per model
-by hand (`docs/configuration.md:146-167`). Yes builds the table in F, and every run report shows
-its date. No keeps prices as user settings that the skill helps fill.
-
-### Decide: build only what has a consumer
-
-Should the Microsoft package and the register kit (template, guide, and `init --register`) wait
-for their first consumer, rather than being built in F to O? Recommended: yes. drafter's own docs
-and the O fixture are developer docs on Google, so nothing in F to O would test either piece.
-cairn's register split in B5 is the kit's first real consumer. Yes builds Google only and adds the
-others when a project needs them. No builds both packages and the kit in F to O, untested.
+- **Existing pages keep their prose.** Onboarding seeds each existing page's lock entry, as
+  conversion does, and offers one priced full redraft. F builds the seeding command. Without it,
+  the first run would redraft every existing page whole, at $3 to $4.50 a page (arch 416).
+- **A stock price table.** drafter ships a dated price table for its stock models, which the user
+  layer can override. `page_cap`, `cycle_ceiling`, and `workspace_id` stay required, and the skill
+  asks for them. F builds the table, and every run report shows its date.
+- **Build only what has a consumer.** F to O build the Google package only. The Microsoft package
+  waits for the first end-user project, and the register kit (template, guide, and
+  `init --register`) waits for cairn's register split in B5.
 
 ## Goal and anti-goal
 
