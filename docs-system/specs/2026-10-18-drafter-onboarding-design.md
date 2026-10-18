@@ -55,14 +55,17 @@ The register is the fuzziest part of the system, so drafter makes setting one up
 and says plainly what belongs in it (Geoff, 2026-10-18).
 
 - **Setup.** `drafter init` writes the register from a template with fixed sections: the base
-  guide for each track, the tracks and their reader profiles, the project's names and terms, and an
-  empty overrides table. The onboarding skill fills it in one sitting by asking the developer about
+  guide for each track, the tracks and their reader profiles, and the project's names and terms.
+  The onboarding skill fills it in one sitting by asking the developer about
   their readers and their terms. The developer rules on the tracks; Claude drafts the profiles and
   the names list from the code audit.
-- **Day one has no overrides** (Geoff, 2026-10-18). A rule earns a place from evidence: a style
-  note from a human edit, a Vale finding the developer disputes, or a pattern the morning report's
-  style candidates show. Nobody invents house style before a page shows the need.
-- **What counts as a rule.** cairn's test (Geoff, 2026-09-28) becomes the general one. A
+- **A base standard alone is a complete register** (Geoff, 2026-10-18: "Most projects will probably
+  just use MS/Google/etc standards, and that's fine"). The template has no overrides table, and
+  onboarding never asks for one. A project that later wants a departure adds the table then, from
+  evidence such as a Vale finding the developer disputes. Style notes on human edits still guard
+  each section against regression, but promoting one to a register rule is the project's choice,
+  never a step drafter prompts.
+- **When a project does add a rule.** cairn's test (Geoff, 2026-09-28) becomes the general one. A
   tightening forbids only a form the base guide permits or is silent on, and it needs no record. An
   override forbids a form the guide recommends, or permits one it forbids. An override exists only
   as a row naming the base rule, what the project does instead, the evidence, and the owner's
