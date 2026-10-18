@@ -18,7 +18,7 @@ Rulings during Pass 0 (Geoff, 2026-10-18):
 
 ## Next action
 
-`conductor-servers` launches Pass 1 (`servers-foundation`) from its committed prompt, `2026-10-18-pass1-prompt.txt`; the conductor's own prompt is `2026-10-18-pass1-conductor-prompt.txt`. Geoff's next step is his Proton migration: the account's two FIDO2 keys and paper phrase (0.6), then the OAuth app, Spamhaus key, and test accounts (0.9) and the recovery kit (0.11). Each value goes through `secret-receive` in an attended sitting.
+Pass 1 (`servers-foundation`, session `e8e7f4d7`) runs unattended from its committed prompt, `2026-10-18-pass1-prompt.txt`, launched 2026-10-18 at servers `44ad38a`. `conductor-servers` (session `5df9ba7e`) watches it and sends Geoff one packet for its three PRs, merged in the order workstation, servers, initiatives. Running path: 435 minutes (Pass 0 at plan) against the 3,515 line. Geoff's next step is his Proton migration: the account's two FIDO2 keys and paper phrase (0.6), then the OAuth app, Spamhaus key, and test accounts (0.9) and the recovery kit (0.11). Each value goes through `secret-receive` in an attended sitting.
 
 ## Pass 0 rows
 
@@ -63,5 +63,6 @@ Rulings during Pass 0 (Geoff, 2026-10-18):
 ## Sessions
 
 - Pass 0: session `workstation-self-hosting-pass0`, with a second build session of the same name, both ended at this hand-over.
-- Conductor: `conductor-servers`, launched at this hand-over from the servers main checkout; Pass 1's executor `servers-foundation` is launched by it.
+- Conductor: `conductor-servers`, session `5df9ba7e`, on pavilion from the servers main checkout.
+- Pass 1: `servers-foundation`, session `e8e7f4d7`, launched by the conductor 2026-10-18. A first launch (`5c10c3ea`) got no prompt: `--add-dir` takes a variadic list and swallowed the prompt, so it was stopped and removed, and the conductor prompt's line now puts `--add-dir` before the named flags.
 - Planner: session `26c03024` on pavilion ended after the plan merged.
