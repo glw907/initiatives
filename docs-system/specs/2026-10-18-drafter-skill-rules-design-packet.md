@@ -6,7 +6,7 @@ You chose "Teach the skill first" on the change-read packet, so this small pass 
 The docs-system initiative builds drafter, which turns a page's blueprint into a reviewed page. The change-read pass (glw907/drafter#48) fixed the read: no edit was blocked for an old defect. Its format test still scored 1 of 5, because four agent edits added content the read rightly blocked, such as invented example output and a caution with no next step. This pass adds a short "Check what you add" section to drafter's format page, each rule cited from a published source, has the skill walk it before committing, and reruns the test. F1's plan is written and in review, waiting behind this pass.
 
 ## If you approve
-1. [session] Merge glw907/initiatives#21, which files this design.
+1. [session] Merge glw907/initiatives#22, which files this design.
 2. [session] Plan the pass (mechanics lens, fold, and verification read), and hand it to conductor-drafter.
 3. [you: read the pass's packet] Read its packet with the rerun's result.
 
@@ -34,7 +34,7 @@ Choices:
 | Part | Verdict | Fact | Why |
 |---|---|---|---|
 | glw907/initiatives:docs-system/specs/2026-10-18-drafter-skill-rules-design.md | approve | It carries out your "Teach the skill first" ruling with the same base, prompts, and bar as the last two runs. | The rules land in drafter's base, as the onboarding design requires. |
-| glw907/initiatives#21 | approve | The PR files the design and this packet. | It changes no behavior. |
+| glw907/initiatives#22 | approve | The PR files the design and this packet. | It changes no behavior. |
 | step:1 | session | A merge can be reverted. | The design is a record. |
 | step:2 | session | The pass is live-account, so it takes the full review depth. | The rerun spends API credit. |
 | step:3 | you | The pass comes back to you as one packet. | Nothing merges unread. |
