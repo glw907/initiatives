@@ -8,10 +8,11 @@ section on onboarding, and a new build order. Everything else in that spec stand
 
 Approving this makes setup for a new developer on a new project a first-class goal of drafter, not
 a sub-project 5 afterthought (Geoff, 2026-10-18). Before drafter can draft anything, a new project
-needs four things built with Claude: a facts store from a code audit, a style register, a
-doc-set register, and an outline. The developer reads a system overview first, then runs an
-onboarding skill in Claude Code that builds all four with them. The design also says plainly what
-belongs in a register, and makes introductions and background part of drafter's base.
+needs three things built with Claude: a facts store from a code audit, its reader tracks, each on
+a published style standard, and an outline. The developer reads a system overview first, then runs
+an onboarding skill in Claude Code that builds all three with them. A house register is optional,
+for a writer or an organization with a house style of its own. Introductions and background become
+part of drafter's base.
 
 The order changes. After the change-read pass, a foundations pass gives drafter the stock pieces
 every project needs, so B3 builds on those rather than on cairn's own. The onboarding skill and the
@@ -31,55 +32,54 @@ waits about one pass longer.
 
 ## What a new project builds
 
-Four pieces come before any blueprint. The developer rules on everything a person must decide;
+Three pieces come before any blueprint. The developer rules on everything a person must decide;
 Claude does the reading and the drafting.
 
 1. **The facts store.** Claude audits the code and writes each fact with its source. drafter
    verifies mechanically that each cited source exists, which cairn's gates do today.
-2. **The style register.** The developer picks a base guide for each track (Google for developer
-   docs, Microsoft for end-user docs). The register then records each departure with its provenance
-   and the developer's ruling. Claude may propose departures; only the developer rules.
-3. **The doc-set register.** This says which pages exist, on a published base: reader tracks, with
-   Diátaxis modes inside each (tutorial, how-to, reference, explanation) and Good Docs Project
-   templates for the page anatomies (Geoff, 2026-10-18). The project declares its tracks, each with
-   a reader profile, and records any page type beyond the base as a departure. cairn's four tracks
-   and its symptom-row type are one project's overlay on this base. cairn's register already uses
-   Diátaxis and the Good Docs templates, internally.
-4. **The outline.** Claude proposes the doc set from what the audit found: each track's surfaces,
+2. **The tracks.** This says which pages exist, on a published base: reader tracks, with Diátaxis
+   modes inside each (tutorial, how-to, reference, explanation) and Good Docs Project templates for
+   the page anatomies (Geoff, 2026-10-18). The project declares its tracks in `outline.yaml`, each
+   with a reader profile and the published style standard its pages follow (Google for developer
+   docs, Microsoft for end-user docs, or another). cairn's four tracks and its symptom-row type are
+   one project's tracks on this base; cairn's register already uses Diátaxis and the Good Docs
+   templates, internally.
+3. **The outline.** Claude proposes the doc set from what the audit found: each track's surfaces,
    the tasks the code supports, and the concepts a reader needs. The developer approves it, and it
-   becomes `blueprints/outline.yaml`.
+   becomes the pages of `blueprints/outline.yaml`.
 
-### The register
+### The house register, optional
 
-The register is the fuzziest part of the system, so drafter makes setting one up straightforward
-and says plainly what belongs in it (Geoff, 2026-10-18).
+A house register is an optional overlay on the published standards (Geoff, 2026-10-18). Most
+projects will use the Microsoft or Google guide as it stands, and that's fine. A register matters
+to a writer who cares about house voice, and to an organization that already has a house style. A
+project with no register is complete, and nothing in drafter requires one. Introductions, the page
+anatomies, and every rule drafter's stock prompts rely on live in drafter's base, never in a
+register.
 
-- **Setup.** `drafter init` writes the register from a template with fixed sections: the base
-  guide for each track, the tracks and their reader profiles, and the project's names and terms.
-  The onboarding skill fills it in one sitting by asking the developer about
-  their readers and their terms. The developer rules on the tracks; Claude drafts the profiles and
-  the names list from the code audit.
-- **A base standard alone is a complete register** (Geoff, 2026-10-18: "Most projects will probably
-  just use MS/Google/etc standards, and that's fine"). The template has no overrides table, and
-  onboarding never asks for one. A project that later wants a departure adds the table then, from
-  evidence such as a Vale finding the developer disputes. Style notes on human edits still guard
-  each section against regression, but promoting one to a register rule is the project's choice,
-  never a step drafter prompts.
-- **When a project does add a rule.** cairn's test (Geoff, 2026-09-28) becomes the general one. A
-  tightening forbids only a form the base guide permits or is silent on, and it needs no record. An
-  override forbids a form the guide recommends, or permits one it forbids. An override exists only
-  as a row naming the base rule, what the project does instead, the evidence, and the owner's
-  ruling with its date. Only the owner adds a row.
+When a project wants one, setting it up is straightforward:
+
+- **Start or bring one.** `drafter init --register` writes a register from a template, or the
+  project points `register` at the house style guide it already keeps. The onboarding skill offers
+  the choice once and moves on when the developer declines.
+- **What counts as a rule.** cairn's test (Geoff, 2026-09-28) becomes the general one. A tightening
+  forbids only a form the base guide permits or is silent on, and it needs no record. An override
+  forbids a form the guide recommends, or permits one it forbids. An override exists only as a row
+  naming the base rule, what the project does instead, the evidence, and the owner's ruling with its
+  date. Only the owner adds a row.
 - **What a register never holds:** copies of base-guide rules, a rule for one page (that goes in the
   blueprint's `constraints`), or history (that goes in the commit message).
 - **What drafter ships:** the template, a guide page that explains the rules above with worked
   examples, and cairn's register as a full example of a mature register.
 
+Style notes on human edits still guard each section against regression, with or without a register.
+Promoting a style note to a register rule is the project's choice, never a step drafter prompts.
+
 ### Introductions and background
 
 Introductions and background were a weak spot on the pages drafted so far, so drafter's base
 carries how they're handled, and the system overview explains it (Geoff, 2026-10-18). It's stock
-behavior every project gets, not something each register restates.
+behavior every project gets, with or without a register.
 
 - **Every page opens with an introduction and ends with the closing section its type calls for.**
   The introduction is reasoned fresh for each page, never filled from a template. It answers
@@ -103,12 +103,12 @@ write-back seat (B4).
 
 ## Who drives it
 
-A Claude Code session running the onboarding skill drives it (Geoff, 2026-10-18). Two of the four
-pieces need the developer's rulings, and the audit needs an agent that can explore a repo. The
+A Claude Code session running the onboarding skill drives it (Geoff, 2026-10-18). The tracks and the outline
+need the developer's rulings, and the audit needs an agent that can explore a repo. The
 skill calls drafter for the mechanical steps: `drafter init`, `drafter check`, and fact
 verification.
 
-Before the skill, the developer reads the system overview (Geoff, 2026-10-18). It explains the four
+Before the skill, the developer reads the system overview (Geoff, 2026-10-18). It explains the three
 pieces, the blueprint rule, the nightly run, and what each piece costs, so the skill's questions
 make sense when they come. It is drafter's own published documentation, written to the Google
 developer documentation style guide.
@@ -118,11 +118,11 @@ developer documentation style guide.
 - Stock prompts built into the binary, generalized from the chain's seat prompts. A project may
   still point `prompts` at its own module, as cairn does.
 - `drafter init`, which writes `drafter.toml`, `blueprints/outline.yaml` with the base types, a
-  facts directory, and the register from its template.
+  facts directory, and, with `--register`, a register from its template.
 - Fact verification and a stock docs gate (`drafter check`, Vale on the base package, and a link
   check). The gate is the default `gate.command`, so a new project needs no gate of its own.
 - The base doc-set standard as a reference page, the page anatomies as the new-page reference,
-  the register guide, and the introduction guidance.
+  the introduction guidance, and the optional register's guide.
 - The blueprint skill, the onboarding skill, and the page hook, packaged as a Claude Code plugin so
   one install covers them on any machine.
 
