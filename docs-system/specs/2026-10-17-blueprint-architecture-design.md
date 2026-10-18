@@ -7,6 +7,10 @@ spec reshapes sub-projects 2 to 4 of the docs system and changes three rulings o
 pipeline design (`2026-10-12-drafter-pipeline-design.md`), listed under "Changes to earlier
 rulings". Everything in that spec that this one doesn't change still stands.
 
+Erratum, 2026-10-18: the onboarding design (`2026-10-18-drafter-onboarding-design.md`), approved by
+Geoff the same day, amends this spec. Its "Changes to the architecture spec" table names the lines
+it supersedes (85 to 552) and calls 8, 21, and 22; read it before relying on those lines.
+
 ## Brief
 
 Approving this makes a page's blueprint the only place an agent changes documentation. Agents edit
