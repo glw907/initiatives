@@ -2,7 +2,7 @@
 
 Fold of the three lens reviews of `self-hosting/plans/2026-10-17-self-hosting-plan.md` at `7061df9`: mechanics (`...-plan-review-mechanics.md`), contract (`...-plan-review-contract.md`), and data (`...-plan-review-data.md`). Fold agent: `claude-opus-5-5`, under `superpowers:receiving-code-review` and `spec-plan-review` "The fold". Each finding was checked against the plan, the design at `27a154d`, and the workstation source before it was folded. Every `optional` finding is dropped. Convergent findings fold once, at the root named in their row.
 
-Counts: 104 findings. 87 folded, 13 of them through another finding's root, 7 with a part refused, and 3 with the method changed; none refused in whole; 1 owner fork (mechanics M17) plus one owner-fork sub-part (contract B1, row 2); 16 dropped as optional. Round 2 (the verification read, below) turned data M7's rebuild-protection call into a third owner fork, so three rulings go to Geoff, under the plan's "Rulings needed". One candidate fork was taken in the plan instead, with the reason below.
+Counts: 104 findings. 87 folded, 13 of them through another finding's root, 7 with a part refused, and 3 with the method changed; none refused in whole; 1 owner fork (mechanics M17) plus one owner-fork sub-part (contract B1, row 2); 16 dropped as optional. Round 2 (the verification read, below) turned data M7's rebuild-protection call into a third owner fork, so three rulings go to Geoff, under the plan's "Rulings needed". One candidate fork was taken in the plan instead, with the reason below. Round 3 adds the second verification read's 9 findings: 8 folded and 1 owner-fork evidence fold, none dropped.
 
 ## Findings
 
@@ -15,7 +15,7 @@ Locations name the revised plan's task ids and sections.
 | B1 | folded (root, with data M2) | F5's set-replacement semantics and `absent` rows; I1, C1 save the live set and commit the rollback declaration; L4 rehearses switch and rollback on a scratch name |
 | B2 | folded | 0.0 creates, clones, and seeds the servers repo; F1 lays the tree in a worktree |
 | M1 | folded | F5 declares nothing in Pass 1; `--check` lists the zone through the API |
-| M2 | folded (root, with contract m2) | M6 acceptance: `r2.sh --check` first, named canary under `data/zz/`, `config` overwritten with its own bytes, dummy under `locks/`, 409 code; L7 "as M6 does" |
+| M2 | folded (root, with contract m2) | M6 acceptance: `r2.sh --check` first, named canary under `data/zz/`, `config` overwritten with its own bytes, dummy under `locks/`, 409 code; L7 "as M6 does"; superseded by round 2, B1: the lock moved to I1 and C1 |
 | M3 | folded | 0.10 allow rules (`access.sh`, `provision.sh snapshot`, `deploy.sh` carrying the `d1` and `secret put` steps, musicbox SSH), relative form; F1 `dontAsk` stub probes; standing answer for a classifier denial |
 | M4 | folded (root, with contract M5) | 0.5 token list adds Single Redirect Edit and the Access and Tunnel token; 0.12 probe Worker, redirect write and delete, tunnel create and delete |
 | M5 | folded | M2 drops the CA lines; M4's `access.sh` creates the per-application CA and the cloudflared role installs `ca.pub`; account from the 0.8 email, renamed after the Access log check |
@@ -99,7 +99,7 @@ Locations name the revised plan's task ids and sections.
 
 | Id | Disposition | Where the revision carries it, or why |
 |---|---|---|
-| B1 | folded; part refused | 0.10 `flock` and the survivor check (every old name must survive, which covers an update as well as an add); M6's storage order, used by M4, L3, and L7. Refused: requiring the commit on `origin/main` before the lock, because `secrets/**` is `auth-data` in `dotfiles-pass`, so its merge is Geoff's and would stall the pass; a pushed branch gives the off-machine copy, as workstation PR #81 did |
+| B1 | folded; part refused | 0.10 `flock` and the survivor check (every old name must survive, which covers an update as well as an add); M6's storage order, used by M4, L3, and L7. Refused: requiring the commit on `origin/main` before the lock, because `secrets/**` is `auth-data` in `dotfiles-pass`, so its merge is Geoff's and would stall the pass; a pushed branch gives the off-machine copy, as workstation PR #81 did; superseded by round 2, B1: the lock moved to I1 and C1, and the refusal was reversed |
 | M1 | folded; part refused | 0.10 deny rules; F2 `lock add` only, gate fails on `lock remove`, `lock set`, `bucket delete`, `--check` after every apply. Refused: wrapper tests and `curl` deny patterns, because a deny rule "doesn't match the same program invoked in a different form" and "isn't a security boundary around the program" (permissions docs), so those tests fail by design, and a `curl` PUT pattern would also catch routine R2 object writes. The runbook lift procedure is already Geoff's by the design |
 | M2 | folded through mechanics B1 | F5, I1, C1; L4 adds the scratch-name rehearsal and the TTL check |
 | M3 | folded | C1 count and flag rows before the switch; L5 idempotence probe |
@@ -112,7 +112,7 @@ Locations name the revised plan's task ids and sections.
 | M10 | folded; method changed | 0.11: Geoff types the paper key into `age-keygen -y`, which prints only the public recipient. `secret-receive` always pipes into the age store (its header: "the value is piped straight into secret-set.sh --stdin"), so it can't hold the key in tmpfs alone |
 | M11 | folded; method changed | W1: `ws-pass-key` reads `op` only where the keyring holds no agent token, a check of real state rather than a marker file; `check-drift` shows the path; standing answer on token expiry. This keeps `claude-block-op` until P4, since `op` stays callable |
 | M12 | folded | M4's prefix check and the `userdel` guard |
-| minor 1 | folded through mechanics M15 | L7 runs the drill before the lock |
+| minor 1 | folded through mechanics M15 | L7 runs the drill before the lock; superseded by round 2, B1: the lock moved to I1 and C1 |
 | minor 2 | folded | F2 drops the scratch-bucket probe |
 | minor 3 | folded | F2 timestamped keys and the 409 test; L5 keeps local archives until C1 |
 | minor 4 | folded | M8 and L7 hash check through W3's hash mode; the staged file removed by a trap |
@@ -184,6 +184,7 @@ The design is not edited. Each item is a place where the revised plan changes th
 8. **"Order of work" items 2 and 5**: media's lock rules move from the media pass to the first step of the Immich cutover (I1), and mail's from the mail pass to the first step of the mail cutover (C1), each once the restic password is on `origin/main`. The timing still meets "Lock rules" ("after `restic init` and the first verified backup on media, and after the last rehearsal import on mail, before cutover").
 9. **"Claude's operating authority"**: the design's "guard hooks" are deny rules plus the secret-store lock; 0.10 adds no hook script.
 10. **"Migration order" step 10**: 1Password's uninstall moves from "once step 5 has passed on both" to P4's PR, because `ws-pass-key`'s `op` branch (item 4) needs it until then.
+11. **Rehearsal table, "Image restore" row, and the runbook's broken-mail-server path**, pending ruling 3: restoring a backup image in place is a Hetzner rebuild, so under the recommended answer each needs protection turned off first and back on after, by Geoff in L6 and, on the second operator's emergency screen, by the second operator himself.
 
 ## Round 2: the verification read
 
@@ -221,3 +222,21 @@ Probes and quotes for round 2:
 | Pull, conflict, and PR #81 timing | The verification read's probes, taken as recorded there |
 
 Path after round 2: unchanged at **3,490**. M6 (-15) and L7 (-15) hand their lock steps to I1 (+15) and C1 (+15). F6c adds 5 minutes off the path, so the task sum is 3,960 and the total with hand-overs 4,320.
+
+## Round 3: the second verification read
+
+Fold of `self-hosting/research/2026-10-17-self-hosting-plan-fold-verification-2.md` (2 majors, 7 minors, 5 of the minors `correctness`), read against the plan at `af54e36`. Each finding was checked against the workstation scripts at `2739239` and Hetzner's sources before folding. This is the last round, so no verification read follows.
+
+| Id | Disposition | Where the revision carries it, or why |
+|---|---|---|
+| N1 | folded, method changed | Checked: `secret-set.sh` honors `VALUES` and `LOCAL_SECRETS` from the environment (its lines 33 to 37) and rewrites the whole plaintext file from the store it read (`write_local`); `sync.sh` hardcodes both paths to its own checkout and `$HOME/.local/secrets` (lines 25 to 27); `secret-receive` hardcodes `$HOME/.local/secrets` for its post-store check (line 19). So every branch store rewrites `~/.local/secrets` and the last writer wins. The fold takes the verifier's overlay with the smallest script change: 0.10 adds `--values` and `--local` flags over the existing overrides, and `secret-receive` passes both through and checks the `--local` path, with a test. Each pass stores into its worktree and an overlay at `$XDG_RUNTIME_DIR/self-hosting/secrets-<pass>`, so `~/.local/secrets` is written only from `main` and never loses a live name. The servers loader `scripts/lib/secrets.sh` (0.12, tested) sources the overlays and then `~/.local/secrets`, so `main` wins a repeated name. The "If another session regenerates it" sentence is gone. `sync.sh` and W5's compare stay as written |
+| N2 | owner-fork evidence folded | Quote, Hetzner `cloud.spec.json`, `/servers/{id}/actions/rebuild`: "Rebuilds a Server overwriting its disk with the content of an Image ... The Image can either be one you have created earlier (`backup` or `snapshot` Image) or it can be a completely fresh `system` Image provided by us"; the spec's paths have no restore action (only `enable_backup` and `disable_backup`). Ruling 3 now names L6's in-place image restore (certain) and the runbook's broken-mail screen as the known production rebuilds, drops "no production rebuild is planned", and carries the second operator's question as its second part, recommended yes. Quote, Hetzner Cloud FAQ (`docs.hetzner.com/cloud/general/faq/`), role table: Member "Can create, modify and delete all resources in the project, such as Floating IPs, Volumes, servers, images, etc., except for creating and deleting DNS zones", and Restricted is barred from, among others, "Creating or deleting servers" and "Creating Snapshots". The table doesn't name protection, so the ruling says so. Under (a): a "Human steps" row where Geoff turns protection off, runs the console restore, and turns it on; L6's acceptance reads protection on again; F7's mail screen carries the protection steps; D5 has him find the setting without changing it. Erratum 11 |
+| n1 | folded | The lock gate checks content: decrypt `origin/main:secrets/values.age` and compare the password's hash, since the workstation repo allows squash and rebase merges and the ancestry check gives a false negative after a squash |
+| n2 | folded | 0.10 adds the two flags and one narrow allow rule for the main checkout's `secret-set.sh` and `secret-receive` with `--values` under the self-hosting worktrees and `--local` under the runtime directory, proven by a `--dry-run` in the same `dontAsk` session. Quote: the plan's own permissions quote, an allow rule "won't match past an assignment of any other variable" |
+| n3 | folded | "The main checkout's store stays clean": `git -C ~/.dotfiles diff --quiet -- secrets/values.age` in the conductor's pre-launch checks and in the close checklist |
+| n4 | folded | The closing session test-merges `origin/main` before the packet, decrypts the branch store to `/dev/shm` under a trap (checked: `secret-set.sh` shreds its copy on exit), and re-stores the branch's names |
+| n5 | folded | F3: the topic names and heartbeat tokens are generated in the main loop into Pass 1's worktree and overlay |
+| n6 | folded | M1: a trap re-enables both flags on every exit path after Geoff's flip; the fake `hcloud` fails a rebuild and protection ends on |
+| n7 | folded (costs nothing) | The three round-1 rows carry "superseded by round 2, B1"; F6c follows F6b |
+
+Path after round 3: **3,515** (Pass 0 435: 0.10 +15 for the flags, their test, and the allow rule; 0.12 +10 for the loader and its test). Task sum 3,985; with hand-overs 4,345. Ruling 2's ceiling at 1.5 times is 5,273. Owed design errata: 11.
