@@ -372,6 +372,14 @@ batch in `batch` mode or one after another in `sync` mode; "batched" below means
    batched consistency read then checks the placed fact bullets against each other and against the
    headings of every linked page. A `check-plan` error or a consistency finding escalates to the
    planning session before any drafting spend.
+   For a blueprint page, stage 1 is the blueprint check. The plan checks and the blueprint checks
+   run on the blueprint and its outline entry as committed at the run's start commit. When the
+   project has a facts store, one batch then holds the consistency read and the blueprint read. A
+   check error, a consistency finding, or a blocking blueprint finding escalates before any
+   drafting spend. When the run ends with every page decided, `drafter read` records each accepted
+   blueprint's blob id in `drafted.lock`. The `blueprint` seat joins the seat names but not the
+   default `seats`, and `drafter read` refuses to start, with exit status 2, when the seat is
+   incomplete. (Amended 2026-10-17 by drafter pass B1, glw907/drafter#46, as built.)
 2. Draft. One batched call returns the page and its brief. drafter runs the index-link command,
    then the gate. A red gate opens an edit-contract exchange in the same conversation, with this
    page's failing gate sections as the numbered blocking findings, inside the gate-fix budget
@@ -394,6 +402,7 @@ A read that returned nothing, didn't parse, or failed its schema never counts as
 | Where | Trigger | Budget | Outcome |
 |---|---|---|---|
 | Plan check | A `check-plan` error or a consistency finding | none | escalate: `plan` |
+| Blueprint check | A check error, a consistency finding, or a blocking blueprint finding | none | escalate: `plan` (seat check, consistency, or blueprint) |
 | Draft | A truncated or unparseable answer, or a brief that isn't JSON | one retry | escalate: `unreadable draft` |
 | Draft | A red gate naming this page | `retries.gate_fix` | escalate: `red gate` |
 | Any stage | A red gate naming no file of this page | none | the page holds; see "Shared worktree" |
