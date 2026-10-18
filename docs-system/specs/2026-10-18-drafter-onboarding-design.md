@@ -48,6 +48,28 @@ Claude does the reading and the drafting.
    the tasks the code supports, and the concepts a reader needs. The developer approves it, and it
    becomes the pages of `blueprints/outline.yaml`.
 
+### The standard package
+
+Every track writes to a standard package, whether or not the project has a house register (Geoff,
+2026-10-18). drafter ships one stock package for each base standard it supports, Google and
+Microsoft first, and a house register extends the same parts.
+
+| Part | Stock package | A house register adds |
+|---|---|---|
+| Description | The standard, the audience it suits, and its source | The project's tracks and scope, and which standard it overlays |
+| Rules | The published guide itself, never copied | Overrides, each a row with its base rule, evidence, and ruling, plus tightenings; each rule cites its source |
+| Linter | Vale with the standard's package | Project styles for the rules a machine can check |
+| Corpus | A small, curated set of excellent outside pages, each cited (Geoff, 2026-10-18) | The project's own exemplars, or a replacement set |
+| Names | The project's names and terms from the code audit, as Vale vocabulary | Words to use and to avoid, with reasons |
+| Tells | The patterns every standard rules out, with before-and-after pairs | Patterns that mark bad prose in this house |
+| Reviewer rubric | What the editor seat grades against | The house's own checklist |
+
+A project's accepted pages join its corpus as they accumulate. A house register also carries a
+procedure for a disputed lint finding: a misread line is a vocabulary or rule fix with no ruling,
+and a disagreement with the guide becomes an override. Its document keeps fixed section headings,
+so drafter's prompts can load each section by name, and `drafter check` fails a rule with no row or
+a row missing its evidence or ruling.
+
 ### The house register, optional
 
 A house register is an optional overlay on the published standards (Geoff, 2026-10-18). Most
@@ -69,8 +91,9 @@ When a project wants one, setting it up is straightforward:
   date. Only the owner adds a row.
 - **What a register never holds:** copies of base-guide rules, a rule for one page (that goes in the
   blueprint's `constraints`), or history (that goes in the commit message).
-- **What drafter ships:** the template, a guide page that explains the rules above with worked
-  examples, and cairn's register as a full example of a mature register.
+- **What drafter ships:** the template with the package's fixed sections, a guide page that
+  explains the rules above with worked examples, and cairn's register as a full example of a mature
+  register.
 
 Style notes on human edits still guard each section against regression, with or without a register.
 Promoting a style note to a register rule is the project's choice, never a step drafter prompts.
@@ -122,7 +145,8 @@ developer documentation style guide.
 - Fact verification and a stock docs gate (`drafter check`, Vale on the base package, and a link
   check). The gate is the default `gate.command`, so a new project needs no gate of its own.
 - The base doc-set standard as a reference page, the page anatomies as the new-page reference,
-  the introduction guidance, and the optional register's guide.
+  the introduction guidance, a standard package for Google and for Microsoft, and the optional
+  register's guide.
 - The blueprint skill, the onboarding skill, and the page hook, packaged as a Claude Code plugin so
   one install covers them on any machine.
 
