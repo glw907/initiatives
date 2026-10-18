@@ -6,7 +6,7 @@ Design: `~/Projects/initiatives/docs-system/specs/2026-10-18-drafter-change-read
 by Geoff on 2026-10-18 (glw907/initiatives#17, merge `56b2c9c`). It reworks B2's scoped read
 (glw907/drafter#47) and reruns B2's format test. Facts below are quoted at drafter `main` after
 #47 (`f7d9034`) and cairn-cms `50dc211d9`. Review: three lenses, folded in
-`plans/2026-10-18-drafter-change-read-plan-fold.md`.
+`research/2026-10-18-drafter-change-read-plan-fold.md`.
 
 ## Outcome
 
@@ -21,9 +21,9 @@ drafter on a new project must be highly ergonomic for a new developer).
 
 - Risk class `runner` (the read's workflow prompt and the skill). `live-account`: API credit,
   budget $10.
-- Path estimate: 260 minutes. CR.1 (150), with CR.2 (15) run by the session in CR.1's shadow; then
-  CR.3 (80, using `--sync`, so no batch waits); then Close (30). The design's estimate is 120, and
-  260 is 2.2x, inside the standing answer's 360.
+- Path estimate: 275 minutes. The session runs CR.1 (150) itself, then CR.2 (15), then CR.3 (80,
+  using `--sync`, so no batch waits), then Close (30). The design's estimate is 120, and 275 is
+  2.3x, inside the standing answer's 360.
 - Clock file: the drafter worktree's git dir, except CR.3, which writes it in the cairn worktree's
   git dir with the session's cwd there.
 - Standing answers (design, "Standing answers"; Geoff, 2026-10-18):
@@ -39,7 +39,8 @@ drafter on a new project must be highly ergonomic for a new developer).
      `DRAFTER_PROMPTS`, as B2's did.
 - Depends on, checked at launch:
   - One executor per worktree: `pgrep -f` on the two worktree paths this pass creates finds
-    nothing, `claude agents --json` shows no session in drafter or cairn-cms, both main checkouts
+    nothing, `claude agents --json` shows no session in drafter or cairn-cms other than the launching
+    conductor's own, both main checkouts
     are clean and on `main`, and no worktree named `change-read` or `format-test` exists in either
     repo.
   - drafter `origin/main` holds #47 (`internal/blueprint/since.go` exists).
@@ -87,10 +88,12 @@ drafter on a new project must be highly ergonomic for a new developer).
    empty.
 4. **The consistency rule.** In `completeBlueprintRead` (`internal/pipeline/blueprint.go`), a
    scoped page demotes a conflict only when its `facts` is non-empty, every id in it is a store id
-   outside `Scope.Facts`, and `with` is exactly a store id outside `Scope.Facts` or exactly a page
-   the plan links (as `ConsistencyPrompt` lists them). Every other conflict is touched, including
+   outside `Scope.Facts`, and `with` is exactly a store id outside `Scope.Facts`, or a page the plan
+   links (as `ConsistencyPrompt` lists them) once any `#heading` is cut from it, since the answer
+   schema asks for `page#heading` (`internal/assemble/schema.go:108`). Every other conflict is touched, including
    an empty `facts`, an unknown id, and a `with` that matches neither form, so the rule fails
-   closed. When any conflict is touched the page escalates on `consistency` listing every conflict,
+   closed. These fail-closed cases go past the design's wording on purpose: an unreadable conflict
+   blocks. When any conflict is touched the page escalates on `consistency` listing every conflict,
    as today. When none is, each goes to the record as a warning starting "Already present:", and
    the page goes on to the blueprint verdict. A whole read escalates on any conflict, as today. A
    scoped page from a state that predates `Scope.Facts` (nil after decode) reads as whole for the
@@ -129,9 +132,12 @@ drafter on a new project must be highly ergonomic for a new developer).
      (`~/.claude/projects/-var-home-glw907-Projects-drafter--claude-worktrees-b2-blueprint-skill/69b40c50-ef79-4971-9804-17db5aacf17b.jsonl`,
      the `s-interval` step); if the patch can't be recovered from it, it is re-seeded to that
      description and its row marked "re-seeded". Expected: a blocking finding at the seeded step.
+   - A control-1 miss means the bar is not met, whatever the five tweaks score, because the read
+     then misses a seeded defect.
    - Control 2 (planning ruling 2), outside the bar, about $0.35: a commit that changes one item so
      an untouched section's `requires` now has no source. Expected: a blocking finding located at
-     the changed item.
+     the changed item. A miss is recorded in the PR and filed through `log-issue`; it doesn't
+     change the bar.
    - Patches and rows are kept outside the public repo and outside any worktree's git dir (the
      session's scratchpad), so they survive the worktree's removal.
 
@@ -156,19 +162,26 @@ drafter on a new project must be highly ergonomic for a new developer).
     change and the entry change have empty `IDs`. An item edited from fact A to fact B has both in
     `Scope.Facts` and no others. An uncited fact's bullet change leaves the page unchanged. Absent
     and undecodable at `<rev>` stay whole.
+    - Fixture for the change-block and outline-only checks: a `newSinceProject` variant with a
+    facts store and a since commit earlier than head. The request is asserted from the pipeline
+    harness; the paragraph's text is asserted from the real chain module's render, since the
+    harness's stub prompts can't show it.
   - Change block, with a since commit earlier than head that edits one item, one cited bullet, and
     the outline entry: the request holds the item's hunk, the fact id with both texts, and the
     entry's old and new JSON, after `BlueprintBlock` in the data and not in the prompt. With the
     entry unchanged, no entry JSON. A whole read sends no block. A resumed scoped page sends the
     same block bytes as the first attempt, and its `Scope.Facts` survives the round trip.
-  - An outline-only change (empty `IDs`) yields a request carrying the change-read paragraph and
-    the change block, and a summary line `scoped: page`.
+  - An outline-only change (empty `IDs`) yields a request whose seat context has `scope` `page` and
+    carries the change block, a chain render for `page` holding the change-read paragraph, and a
+    summary line `scoped: page`.
   - Consistency table, each with a blueprint answer of `ok`: an untouched fact conflict accepts
     and records the "Already present:" warning and the consistency verdict; a touched fact in
     `facts` escalates naming `consistency`; a touched fact only in `with` escalates; an empty
     `facts`, an unknown id, and an unmatched `with` each escalate; a whole read escalates on an
-    untouched conflict; an untouched conflict with a blueprint `fix` escalates on `blueprint`; a
-    scoped state with no `facts` key escalates on an untouched conflict.
+    untouched conflict; an untouched conflict with a blueprint `fix` escalates on `blueprint`; a scoped state with no `facts` key escalates on an untouched conflict; an untouched conflict whose
+    `with` is a linked page as `page#heading` accepts as "Already present:", and one naming an
+    unlinked page escalates. The accepting case's summary counts one demoted conflict, and the
+    record names the verdict it keeps for it.
   - A scoped `ok` read with one non-blocking "Already present:" finding accepts, the record keeps
     the finding, and the summary counts it.
   - The unscoped blueprint render equals B2's golden. The scoped render contains the change block's
@@ -180,7 +193,7 @@ drafter on a new project must be highly ergonomic for a new developer).
 - Gate: `make check`. `money.go` and `resume.go` are untouched; a need to edit either stops the
   line.
 
-### CR.2: the skill's `refs` step and failure sentence (15 min), run by the session in CR.1's shadow
+### CR.2: the skill's `refs` step and failure sentence (15 min), after CR.1
 
 - Risk class: `runner`.
 - Outcome: resolution 7.
@@ -218,7 +231,8 @@ drafter on a new project must be highly ergonomic for a new developer).
   transcript shows `drafter refs` before the edit, and #4 only if tweak 4's commit adds a `failure`
   item with `handledBy`; otherwise each stays open with its row. #1 closed if the bar is met, or
   left open with the result. New follow-ups go through `log-issue`.
-- A comment on drafter#43 with the rerun's table. The issue closes if the bar is met.
+- A comment on drafter#43 with the rerun's table. The issue stays open: it records the whole read
+  not converging, which this pass doesn't change, and the onboarding design's O waits on it.
 - The PR body opens with `## Brief` and carries the table, the classified findings, and the score.
   The executor stops at PR-ready, and `conductor-drafter` sends the packet.
 
