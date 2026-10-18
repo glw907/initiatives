@@ -1,0 +1,21 @@
+You are running Pass 0 of the self-hosting initiative, attended, with Geoff present throughout. Your session name is workstation-self-hosting-pass0, launched from the workstation main checkout /var/home/glw907/.dotfiles.
+
+Read these first, in order:
+1. /var/home/glw907/Projects/initiatives/self-hosting/plans/STATUS.md
+2. /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-17-self-hosting-plan.md, all of it, and closest of all "Privacy", "Secrets in the age store", "Repos and sessions", "Adapter facts for the servers repo", and "Pass 0: attended access"
+3. /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-17-pass0-checklist.md, the order and the port 25 request text
+4. The pass-core and dotfiles-pass skills; dotfiles-pass wins for the workstation PR
+
+Geoff ruled all three plan questions on 2026-10-17 with the recommended answers: Claude tests the members' mailboxes in C3; the line is 3,515 path minutes with a 5,273 ceiling and the four-times task extension; Geoff turns production protection off for rebuilds, and the second operator's emergency screen may turn it off, restore, and turn it back on.
+
+Setup before step 0.0:
+- Run the pass-core "Execute" pre-launch checks on the workstation checkout, and `git -C /var/home/glw907/.dotfiles diff --quiet -- secrets/values.age`.
+- Create the workstation worktree with `git -C /var/home/glw907/.dotfiles worktree add .claude/worktrees/self-hosting-pass0 -b self-hosting-pass0 origin/main`. Every secret in this pass is stored with VALUES=<that worktree>/secrets/values.age until 0.10 lands the flags.
+- STATUS lives in the initiatives worktree /var/home/glw907/Projects/initiatives/.claude/worktrees/self-hosting. Branch it from origin/main as self-hosting-pass0-status, and tick each Pass 0 row there as it closes.
+- Arm the API-drop wake-up per ~/.claude/docs/unattended-work-guards.md.
+
+Run 0.0 through 0.12 in the checklist's order, one step at a time, each as the plan states it. Geoff does every step marked his; you draft, store, check, and record. Every value from Geoff arrives through `secret-receive NAME`, which you launch; never ask for a value in chat, and never call pass-cli or print a secret. Household members appear by role only in glw907/initiatives and glw907/workstation, which are public; run the privacy check from 0.0 on every public commit and PR body once it exists.
+
+Push targets: glw907/servers, glw907/workstation, and glw907/initiatives. The 0.0 PR in glw907/servers self-merges. The 0.10 workstation PR merges only when Geoff approves it in this sitting. Never merge any other PR.
+
+Close as the plan's Pass 0 close says: self-merge the STATUS hand-over in glw907/initiatives, write and commit Pass 1's executor prompt and the conductor prompt, and launch conductor-servers from /var/home/glw907/Projects/servers per pass-core "Execute". If a credential is still owed at the close, STATUS names it and the conductor's standing answer picks it up.

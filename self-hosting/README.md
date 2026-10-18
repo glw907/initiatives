@@ -51,3 +51,5 @@ Status: proposed (2026-10-17), design drafted on thinkpad-x1 with every open que
 Status: proposed (2026-10-17), design reviewed and folded; the approval packet ([specs/2026-10-17-self-hosting-design-packet.md](specs/2026-10-17-self-hosting-design-packet.md)) goes to Geoff from pavilion, and PR 8 squash-merges on approval.
 
 Status: proposed (2026-10-17), design approved with both recommended rulings; the pass plan is reviewed, folded, and sent to Geoff in its packet.
+
+Status: proposed (2026-10-17), design and pass plan approved with every recommended ruling; Pass 0 waits on Geoff's attended sitting. Live state is in [plans/STATUS.md](plans/STATUS.md).
