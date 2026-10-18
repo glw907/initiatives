@@ -21,13 +21,23 @@ cd ~/.dotfiles && claude --model sonnet --effort medium --name workstation-self-
 
 The order and the port 25 request text are in `2026-10-17-pass0-checklist.md`. The port 25 request goes first among Geoff's steps, because mail waits on Hetzner's answer.
 
+## Resume note (2026-10-18)
+
+Geoff continues Pass 0 in a fresh session, so the launch prompt applies unchanged. State to pick up:
+
+- Stored: `HCLOUD_TOKEN_SERVERS`, in workstation PR #88 (draft, branch `self-hosting-pass0`, worktree `.claude/worktrees/self-hosting-pass0`). The dead musicbox `HCLOUD_TOKEN` was removed there. Store with `VALUES=<that worktree>/secrets/values.age`; the main checkout's store is clean.
+- The servers branch `pass0-patterns` adds one private pattern and is unmerged; run the privacy check with `PRIVACY_PATTERNS` pointing at its file until it lands.
+- This branch (`self-hosting-pass0-status`) is behind initiatives `main`; merge `origin/main` before the hand-over PR.
+- Open with Geoff: 0.2 confirmations, the second operator's Hetzner invite, the eight Cloudflare tokens (0.5), and whether `servers-fb` (thinkpad-x1) should hold any part of this. Its handoff request was answered with state only; nothing was transferred.
+- Retire the old session before launching a new one: `workstation-self-hosting-pass0` (pavilion) holds the worktrees above.
+
 ## Pass 0 rows
 
 | Step | State |
 |---|---|
 | 0.0 Servers repo | done 2026-10-17: `glw907/servers` private, README and PR #1 (privacy check, patterns, empty registry) merged |
 | 0.1 Port 25 | done 2026-10-17: filed and validated automatically; Hetzner unblocks ports 25 and 465 on all the account's Cloud Servers within minutes. No 14-day wait, so Pass 5's port 25 entry condition is met and the daily JMAP check and the options-packet standing answer are moot |
-| 0.2 Recovery | not started |
+| 0.2 Recovery | in progress: Cloudflare done 2026-10-18 (recovery address off 907.life). Open: Hetzner, GitHub, Fastmail, the offline 2FA backup codes; Proton closes in 0.6 |
 | 0.3 Tools | done 2026-10-17: `hcloud` 1.70.1, `shfmt` 3.14.1, `yamllint` 1.38.0, `imapsync` 2.314, `proton-pass-cli` 2.4.2 (pinned) installed and in the Brewfile (workstation PR #88). `pass-cli` is homebrew-core's `proton-pass-cli`, not a Proton tap, and its version was read from brew, never by running it. `check-drift` is clean once the PR merges |
 | 0.4 Hetzner | token done 2026-10-17: `HCLOUD_TOKEN_SERVERS` stored (workstation PR #88, draft); empty server list and SSH key create/delete pass. Open: invite the second operator to the project |
 | 0.5 Cloudflare | buckets created 2026-10-17: `servers-backup-mail`, `servers-backup-media`, `servers-archive`, empty, no lock rules. Open: Geoff creates the tokens, Claude stores each |
