@@ -43,6 +43,9 @@ EOF
 printf 'whole: docs/superpowers/specs/y.md\n' > docs/superpowers/plans/whole.md
 printf 'snapshot docs/superpowers/specs/y.md id 0123456789abcdef\n' > tests/snap.txt
 ln -s docs/superpowers/specs/y.md link.md
+mkdir notes && printf 'target\n' > notes/target.md && ln -s target.md notes/alias.md
+printf '[a](alias.md)\n' > notes/index.md
+printf '[l](../link.md)\n' > notes/dangling.md
 printf 'docs/superpowers/specs/y.md\n' > .claude/worktrees/w/skip.md
 git add -A && git commit -q -m fixture
 base=$(git rev-parse HEAD)
@@ -100,14 +103,14 @@ sed -i 's|docs/superpowers/\*\*|docs/{plans,specs}/**|' src/app.ts
 out=$(T --check "$r"); rc=$?
 [[ $rc -eq 0 && -z $out ]] && ok "--check exits 0 once only records and pins remain" || bad "--check exits 0 once only records and pins remain (rc=$rc: $out)"
 out=$(T --links "$base" "$r"); rc=$?
-[[ $rc -eq 0 && -z $out ]] && ok "--links finds no link the move broke" || bad "--links finds no link the move broke (rc=$rc: $out)"
+[[ $rc -eq 1 && $out == "broken notes/dangling.md:1: link.md" ]] && ok "--links names only a link to a symlink the move left dangling" || bad "--links names only a link to a symlink the move left dangling (rc=$rc: $out)"
 
 git add -A && git commit -q -m rewrite
 T "$r" >/dev/null && git diff --quiet && ok "a second apply changes nothing" || bad "a second apply changes nothing"
 
 sed -i 's|\[out\](../internal/x.md)|[out](../../internal/x.md)|' docs/plans/p.md
 out=$(T --links "$base" "$r"); rc=$?
-[[ $rc -eq 1 && $out == "broken docs/plans/p.md:1: internal/x.md" ]] && ok "--links names a link the move broke" || bad "--links names a link the move broke (rc=$rc: $out)"
+[[ $rc -eq 1 && $out == $'broken docs/plans/p.md:1: internal/x.md\nbroken notes/dangling.md:1: link.md' ]] && ok "--links names a link the move broke" || bad "--links names a link the move broke (rc=$rc: $out)"
 git checkout -q docs/plans/p.md
 printf 'stray docs/superpowers/specs/y.md\n' >> docs/plans/pinned.md
 out=$(T --check "$r"); rc=$?
