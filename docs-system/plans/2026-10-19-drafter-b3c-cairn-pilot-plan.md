@@ -564,6 +564,21 @@ fix is listed in the drafter PR's `## Decisions`. The run stops only on the $80 
 ceiling, a cause it cannot trace, the same cause returning after its fix, or a design change. An
 escalated page is still reported and the run continues (standing answer 3).
 
+**Geoff's ruling, 2026-10-19: a returning cause gets a standing answer.** Under pass-core
+"Design" step 1 (workstation `b22f6b2`), this replaces the stop on a cause that returns after its
+fix. The first return gets one structural fix: the session replaces the unit the patches kept
+missing, such as a whole handler or step, instead of patching it again. If the cause returns after
+that, the session escalates the item in the drafter PR's `## Decisions` and goes on with the rest.
+Items the session may escalate:
+
+- Any single page, rotate among them, while at least three pages can still reach `accepted`
+  for the pilot bar.
+
+Items it may not escalate, which still stop the line: drafter's code deliverables (the lock's
+bar, `--whole`, `blueprints.brief_path`, and the chain's blueprint mode and `coherence` seat), an
+edit to `money.go` or `fingerprint.go`, and an escalation that leaves fewer than three pages able
+to reach `accepted`. The $80 and 800-minute ceilings and an untraced cause still stop it too.
+
 **P1, the first reads.** One `$B3C_DRAFTER read --sync --json` call takes all eight blueprints:
 rotate and the seven, after B3c.5. Each blocked whole read leaves a bar, and the session commits the
 lock at once ("Record the first blueprint reads").
