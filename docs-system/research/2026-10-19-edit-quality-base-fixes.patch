@@ -1,0 +1,411 @@
+From a9f65e132fd76773d8a184712b3fea96f98e6e5b Mon Sep 17 00:00:00 2001
+From: glw907 <geoff-login@907.life>
+Date: Sun, 18 Oct 2026 16:45:54 -0800
+Subject: [PATCH 1/4] Fix the rotate blueprint's recurring base defects
+
+Test base for drafter's edit-quality pass. Handlers for x-third-verify, x-check-threw, and
+x-logs-empty now give a next action; s-rec-checks stops pointing at its own section and drops
+a requirement a no-key reader can't meet; x-editor gains a from; s-third-generate gains the key
+limit failure; the fingerprint failure keeps one row; rb-fact carries the cache bound; verify
+points to the logs; five use fields scope their fact instead of restating it.
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+---
+ .../rotate-the-github-app-key.blueprint.yaml  | 66 ++++++++++++-------
+ 1 file changed, 41 insertions(+), 25 deletions(-)
+
+diff --git a/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml b/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml
+index 6f93f2d17..d640203ec 100644
+--- a/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml
++++ b/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml
+@@ -632,7 +632,7 @@ sections:
+           The fingerprint matches the old key, or no key on the App.
+         cause: |
+           The Worker holds a key other than the one just generated.
+-        handledBy: ver-recover-link
++        handledBy: rec-push-link
+       - id: s-live
+         kind: step
+         text: |
+@@ -647,9 +647,8 @@ sections:
+         kind: fact
+         fact: f:1pb077
+         use: |
+-          Only the expected result: a 200 with `githubAppToken` ok, which proves GitHub accepts the
+-          key, and that a settled result is served for 60 seconds. Omit the failure classes, the
+-          rate bound, the shared mint, and the timeouts, and say nothing about polling.
++          Only the success answer and the 60-second serve of a settled result. Omit the failure
++          classes, the rate bound, the shared mint, and the timeouts, and say nothing about polling.
+       - id: ver-live-wait
+         kind: sentence
+         mode: claim
+@@ -666,6 +665,15 @@ sections:
+         cause: |
+           GitHub did not issue a token for the key, or could not be reached.
+         handledBy: ver-recover-link
++      - id: ver-logs-pointer
++        kind: sentence
++        mode: claim
++        text: |
++          The Workers Logs query for `github.unreachable`, which needs observability on, reads a
++          failed key's signal in the recovery rows and is not one of the three checks.
++        facts:
++          - f:7u49xs
++          - f:prb2os
+       - id: ver-recover-link
+         kind: link
+         target: '#recover-from-a-failed-key'
+@@ -686,7 +694,8 @@ sections:
+         kind: fact
+         fact: f:lg2ae8
+         use: |
+-          Only the consequence, stated before the step: GitHub restores no deleted key.
++          Only the no-restore clause, stated before the step. Omit the route to a third key, which
++          [[generate-a-third-key]] carries.
+       - id: del-third-link
+         kind: link
+         target: '#generate-a-third-key'
+@@ -723,6 +732,7 @@ sections:
+     items:
+       - id: x-editor
+         kind: failure
++        from: s-push-node
+         symptom: |
+           An editor reports that Publish failed while the editor stayed open with the message
+           `Something went wrong and your changes were not saved. Your writing is still here. Try
+@@ -744,8 +754,8 @@ sections:
+         kind: fact
+         fact: f:vg42j3
+         use: |
+-          Only the timing of the cause: a cold isolate mints from the current key, and a warm one
+-          keeps its token for up to 55 minutes.
++          Only the clause on which requests meet the failure. Omit the cache's scope and the key
++          swap mechanics, which [[verify-the-new-key]] carries.
+       - id: rec-lead
+         kind: sentence
+         mode: verbatim
+@@ -755,9 +765,7 @@ sections:
+         kind: step
+         text: |
+           Run the three checks in [[verify-the-new-key]] that you have not run, and read each
+-          answer against the rows of [[recover-from-a-failed-key]].
+-        requires:
+-          - new-key-pushed
++          answer against the rows that follow.
+         produces:
+           - checks-read
+       - id: x-not-configured
+@@ -790,21 +798,14 @@ sections:
+           `/healthz` answers 503 with the detail `health check failed`.
+         cause: |
+           The check itself threw; the anonymous route never shows the thrown message.
+-        handledBy: rec-health-failed
++        handledBy: s-logs
++        facts:
++          - f:paotzb
+       - id: rec-health-failed
+         kind: fact
+         fact: f:paotzb
+         use: |
+           Only the thrown-error clause: the fixed detail and the `health.failed` log event.
+-      - id: x-wrong-key
+-        kind: failure
+-        from: s-fingerprint
+-        symptom: |
+-          `/healthz` answers 200, but its `fingerprint` does not match the one GitHub shows for the
+-          new key.
+-        cause: |
+-          The Worker holds a different key from the one just generated.
+-        handledBy: rec-push-link
+       - id: x-refused
+         kind: failure
+         from: s-live
+@@ -894,9 +895,12 @@ sections:
+           The query returns no events.
+         cause: |
+           Workers Logs records nothing unless observability is enabled.
+-        handledBy: rec-logs-observability
++        handledBy: rec-logs-on-link
+         facts:
+           - f:prb2os
++      - id: rec-logs-on-link
++        kind: link
++        target: '#before-you-begin'
+       - id: rec-logs
+         kind: reason
+         text: |
+@@ -918,7 +922,7 @@ sections:
+         kind: fact
+         fact: f:prb2os
+         use: |
+-          Only the empty-log clause: without observability an empty query proves nothing.
++          Only the empty-log clause. Omit the observability setting, which [[before-you-begin]] carries.
+       - id: rec-log-events-link
+         kind: link
+         target: ../reference/log-events.md
+@@ -952,7 +956,8 @@ sections:
+         fact: f:sszb7b
+         use: |
+           Only the re-push of the old key's value with the same command, which works while the old
+-          key stays undeleted.
++          key stays undeleted, and the bound that a warm isolate keeps serving the token it already
++          minted with the newer key until that entry expires after 55 minutes.
+       - id: s-rollback
+         kind: step
+         text: |
+@@ -1031,7 +1036,7 @@ sections:
+         kind: fact
+         fact: f:lg2ae8
+         use: |
+-          Only that a deleted key has no restore, so a third key replaces a failed new key.
++          Only the no-restore clause. Omit the rollback route, which [[roll-back-to-the-old-key]] carries.
+       - id: s-third-generate
+         kind: step
+         text: |
+@@ -1040,6 +1045,17 @@ sections:
+           - app-settings-access
+         produces:
+           - third-key-file
++        canFail: true
++      - id: x-third-generate-limit
++        kind: failure
++        from: s-third-generate
++        symptom: |
++          GitHub refuses to generate another key.
++        cause: |
++          The App already holds the most keys GitHub allows.
++        handledBy: gen-limit-handoff
++        facts:
++          - f:zoekqt
+       - id: s-third-push
+         kind: step
+         text: |
+@@ -1071,7 +1087,7 @@ sections:
+           A check fails for the third key.
+         cause: |
+           The same causes as for the first new key.
+-        handledBy: rec-lead
++        handledBy: s-rec-checks
+       - id: s-third-delete
+         kind: step
+         text: |
+-- 
+2.56.0
+
+
+From 61cc96bb0ee6df957c4050dc2fb15713555169c1 Mon Sep 17 00:00:00 2001
+From: glw907 <geoff-login@907.life>
+Date: Sun, 18 Oct 2026 16:49:39 -0800
+Subject: [PATCH 2/4] Fix the rotate blueprint's first whole-read findings
+
+x-editor stays free-standing; the recovery routes that send a reader to push now offer generation
+first; bb-healthz drops a clause its fact does not hold.
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+---
+ .../rotate-the-github-app-key.blueprint.yaml  | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml b/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml
+index d640203ec..0c835ecf7 100644
+--- a/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml
++++ b/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml
+@@ -315,8 +315,8 @@ sections:
+         kind: fact
+         fact: f:paotzb
+         use: |
+-          Only the route's placement at the site root and that the scaffold ships it. The status
+-          codes wait for [[verify-the-new-key]].
++          Only the route's placement at the site root. The status codes wait for
++          [[verify-the-new-key]].
+       - id: bb-healthz-link
+         kind: link
+         target: ../reference/sveltekit.md#loadhealth
+@@ -632,7 +632,7 @@ sections:
+           The fingerprint matches the old key, or no key on the App.
+         cause: |
+           The Worker holds a key other than the one just generated.
+-        handledBy: rec-push-link
++        handledBy: rec-push-handoff
+       - id: s-live
+         kind: step
+         text: |
+@@ -732,7 +732,6 @@ sections:
+     items:
+       - id: x-editor
+         kind: failure
+-        from: s-push-node
+         symptom: |
+           An editor reports that Publish failed while the editor stayed open with the message
+           `Something went wrong and your changes were not saved. Your writing is still here. Try
+@@ -776,7 +775,7 @@ sections:
+           `GITHUB_APP_PRIVATE_KEY_B64 is not configured`.
+         cause: |
+           The Worker holds no key.
+-        handledBy: rec-push-link
++        handledBy: rec-push-handoff
+       - id: rec-details
+         kind: fact
+         fact: f:5dwnh1
+@@ -790,7 +789,7 @@ sections:
+         cause: |
+           The secret is not a usable private key, for instance a file other than the new PEM file
+           was encoded.
+-        handledBy: rec-push-link
++        handledBy: rec-push-handoff
+       - id: x-check-threw
+         kind: failure
+         from: s-healthz
+@@ -842,9 +841,11 @@ sections:
+       - id: rec-debug-link
+         kind: link
+         target: debug-your-site.md#read-the-structured-logs
+-      - id: rec-push-link
+-        kind: link
+-        target: '#push-the-new-key-to-the-worker'
++      - id: rec-push-handoff
++        kind: handoff
++        text: |
++          If you hold no PEM file for the new key, generate one first, as [[generate-a-new-key]]
++          describes. Then push it again, as [[push-the-new-key-to-the-worker]] describes.
+       - id: s-logs
+         kind: step
+         text: |
+-- 
+2.56.0
+
+
+From b7b3f35a87c2e09eb4ab0550d9247cfde7c7362c Mon Sep 17 00:00:00 2001
+From: glw907 <geoff-login@907.life>
+Date: Sun, 18 Oct 2026 16:51:26 -0800
+Subject: [PATCH 3/4] Fix the rotate blueprint's second whole-read findings
+
+push-ps-fact and ver-fingerprint scope their facts to what the facts hold.
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+---
+ .../docs/extend/rotate-the-github-app-key.blueprint.yaml   | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml b/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml
+index 0c835ecf7..dab7d2fb9 100644
+--- a/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml
++++ b/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml
+@@ -480,9 +480,8 @@ sections:
+         kind: fact
+         fact: f:dbue4k
+         use: |
+-          Only two clauses: `[Convert]::ToBase64String` returns unwrapped base64, and the form pipes
+-          the value to Wrangler and writes no file. Omit the `Out-File` encoding note, which has no
+-          step on this page.
++          Only the clause that `[Convert]::ToBase64String` returns unwrapped base64. Omit the
++          `Out-File` encoding note, which has no step on this page.
+       - id: push-ps-code
+         kind: code
+         text: |
+@@ -624,7 +623,7 @@ sections:
+         fact: f:h252kb
+         use: |
+           Only what the fingerprint is and that it matches the value GitHub shows for the key. Omit
+-          the openssl pipeline, the `spki` mechanics, and the omitted-fingerprint clause.
++          the openssl pipeline and the `spki` mechanics.
+       - id: x-fingerprint
+         kind: failure
+         from: s-fingerprint
+-- 
+2.56.0
+
+
+From 2c69e5da675e082a78655720218d6a86c1862e61 Mon Sep 17 00:00:00 2001
+From: glw907 <geoff-login@907.life>
+Date: Sun, 18 Oct 2026 16:53:40 -0800
+Subject: [PATCH 4/4] Fix the rotate blueprint's third whole-read findings
+
+The logs query gets rows for the health events, the checks name curl.exe for Windows, and two
+small wording gaps close.
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+---
+ .../rotate-the-github-app-key.blueprint.yaml  | 38 ++++++++++++++++++-
+ 1 file changed, 37 insertions(+), 1 deletion(-)
+
+diff --git a/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml b/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml
+index dab7d2fb9..531d10dd6 100644
+--- a/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml
++++ b/blueprints/docs/extend/rotate-the-github-app-key.blueprint.yaml
+@@ -317,6 +317,12 @@ sections:
+         use: |
+           Only the route's placement at the site root. The status codes wait for
+           [[verify-the-new-key]].
++      - id: bb-curl
++        kind: sentence
++        mode: verbatim
++        text: |
++          The checks on this page use `curl`. On Windows PowerShell, call `curl.exe`, because
++          `curl` there is an alias for a different command.
+       - id: bb-healthz-link
+         kind: link
+         target: ../reference/sveltekit.md#loadhealth
+@@ -888,6 +894,27 @@ sections:
+         handledBy: s-rec-checks
+         facts:
+           - f:7u49xs
++      - id: x-logs-health-failed
++        kind: failure
++        from: s-logs
++        symptom: |
++          A `health.failed` event carries the error the check threw.
++        cause: |
++          The check itself threw, which the anonymous route never shows.
++        handledBy: rec-health-handoff
++        facts:
++          - f:paotzb
++      - id: x-logs-health-scope
++        kind: failure
++        from: s-logs
++        symptom: |
++          A `github.unreachable` event carries `scope: 'health'` and the failure class as `reason`.
++        cause: |
++          The live check's mint failed.
++        handledBy: rec-live-handoff
++        facts:
++          - f:1pb077
++          - f:7u49xs
+       - id: x-logs-empty
+         kind: failure
+         from: s-logs
+@@ -898,6 +925,14 @@ sections:
+         handledBy: rec-logs-on-link
+         facts:
+           - f:prb2os
++      - id: rec-health-handoff
++        kind: handoff
++        text: |
++          Fix what the logged error names, then run the three checks in [[verify-the-new-key]] again.
++      - id: rec-live-handoff
++        kind: handoff
++        text: |
++          Read the `reason` against the rows for `/healthz?live=1` in this section.
+       - id: rec-logs-on-link
+         kind: link
+         target: '#before-you-begin'
+@@ -930,7 +965,7 @@ sections:
+         kind: sentence
+         mode: claim
+         text: |
+-          The opening's two routes, with their condition first: before the deletion and with the
++          The two recovery routes, with their condition first: before the deletion and with the
+           old key's file, roll back; after the deletion, or with no copy of the old key, generate a
+           third key.
+         facts:
+@@ -1009,6 +1044,7 @@ sections:
+         text: |
+           On the App's settings page on GitHub, delete the failed key, the one you generated for
+           this rotation. Its fingerprint differs from the `fingerprint` that `/healthz` returned.
++          Leave any other key you keep.
+         requires:
+           - old-key-identified
+         produces:
+-- 
+2.56.0
+
