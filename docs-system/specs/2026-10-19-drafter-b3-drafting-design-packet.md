@@ -6,7 +6,7 @@ Two calls are yours before the run starts: whether cairn's half waits for its ow
 The docs-system initiative builds drafter, which turns a page's blueprint into a reviewed page. F2 merged tonight (glw907/drafter#52), so B3 is next. B3 makes `drafter page` take a blueprint, writes the lock (drafter's record of what it last drafted), redrafts only the sections a blueprint change touched, and adds drafter's own prompts for every seat, plus a provenance check that ties each sentence to a fact. A seat is one model role in the pipeline, such as the drafter or the editor.
 
 ## If you approve
-1. [session] Merge glw907/initiatives#PR, which files this design.
+1. [session] Merge glw907/initiatives#38, which files this design.
 2. [session] Plan B3 tonight (three lenses, the fold, and a verification read), and hand it to conductor-drafter, which launches the executor.
 3. [you: read the pass's packet] Read B3's packet in the morning, with the live check's result.
 
@@ -52,7 +52,7 @@ Choices:
 | Part | Verdict | Fact | Why |
 |---|---|---|---|
 | glw907/initiatives:docs-system/specs/2026-10-19-drafter-b3-drafting-design.md | approve | Its scope is the B1 build sequence's B3 plus the onboarding design's B3 additions, less cairn's half if you split. | It adds nothing those designs didn't name. |
-| glw907/initiatives#PR | approve | The PR files the design and this packet. | It changes no behavior. |
+| glw907/initiatives#38 | approve | The PR files the design and this packet. | It changes no behavior. |
 | step:1 | session | A merge can be reverted. | The design is a record. |
 | step:2 | session | The pass spends API credit, budget $20 of your $200 monthly credit; $24 is spent so far this month. | The live check drafts one synthetic page twice. |
 | step:3 | you | The pass comes back to you as one packet. | Nothing merges unread. |
