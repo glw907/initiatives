@@ -337,3 +337,4 @@ workstation	docs/superpowers/research/2026-10-13-thunderbird-nord-mail-review-me
 workstation	scripts/check-moves.sh	record tool: verifies migration-map moves by old path
 workstation	tests/check-moves.test.sh	record tool's test: builds old-path fixtures
 workstation	tests/fixtures/ci-green/pr-107-files.txt	record: the file list of cairn-cms PR #107 as merged
+workstation	claude/.claude/skills/brainstorming/SKILL.md	record: vendored upstream text (obra/superpowers); its vendored-skills.json note overrides the path it names

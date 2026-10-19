@@ -230,7 +230,10 @@ def broken_links(repo, base):
     base_files = git(repo, "ls-tree", "-r", "--name-only", base).stdout.splitlines()
     base_exists = existing(base_files)
     resolved_before = {(new_path(f), n, i) for (f, n, i), r in links_at(repo, base).items() if r in base_exists}
-    head_exists = existing(tracked(repo))
+    # A symlink counts only while its target resolves: the rewrite never edits one, so a symlink
+    # into the old folder dangles after the move, and a link to it is broken.
+    listed = git(repo, "ls-files", "-z").stdout.split("\0")
+    head_exists = existing([f for f in listed if f and os.path.exists(os.path.join(repo, f))])
     count = 0
     for key, r in sorted(links_at(repo, None).items()):
         if key in resolved_before and r not in head_exists:
