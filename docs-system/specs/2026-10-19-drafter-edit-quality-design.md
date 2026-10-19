@@ -95,3 +95,11 @@ checked offline in seconds" becomes "An agent can make a typical small change to
 `drafter check` green on its first attempt, in seconds and offline, and the blueprint read accepts
 the change in the same session, within three reads, with no human step" (Geoff, 2026-10-19). The
 spec carries an erratum line pointing here.
+
+## Erratum
+
+2026-10-19, planning session: outcome 1's "the nightly read is the backstop" is out of the skill
+until B4 builds the nightly read; the skill reports open findings to the user instead. The plan's
+reviews also found three mechanics the design didn't name (a read needs a committed tree, `drafter
+read` must print its findings, and the cache breakpoint runs through `internal/batch` and `Worst`);
+the plan records each as a method-call departure.
