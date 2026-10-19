@@ -600,6 +600,13 @@ while the probe runs. When the probe ends:
     five-read cap, for rotate only), and on accept the probe draft reruns once inside the budget.
     A blocking sixth read, or a second escalation of the rerun, stops the line.
 
+  - Geoff's ruling at rotate's read-6 stop (2026-10-19): read 6 (run 20261019T181236Z-242f62eb)
+    ran with no `--since` after an accepted read, so it read the whole blueprint and blocked on
+    four older defects plus two consistency pairs on cache wording. The session fixes the four and
+    the two wordings in the blueprint (never the facts store), takes read 7 as a bar read scoped
+    against them, and on accept reruns the probe draft once. A blocking read 7, or a second
+    escalation of the rerun, stops the line. Every read after an accepted read passes `--since`.
+
   Any other escalation stops the line: review seats still blocking after the redrafts, the final
   reader, a gate red the fix exchanges can't clear, or `cap` again on the batch rerun. STATUS
   carries the run id, the record excerpt, and one question, and `notify-send -u normal` tells
