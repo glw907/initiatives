@@ -60,23 +60,39 @@ infrastructure audit.
 
 ## Username repair
 
-The import carried no username for many logins, Kagi among them. Kagi's 1Password item had none
-either, so the fix derives each address rather than copying one. Geoff asked on 2026-10-18 that
+The import carried no username for some logins, Kagi among them. Geoff asked on 2026-10-18 that
 Claude correct them, which authorizes the writes below.
 
+How the import placed each login name, read from Proton's open-source importer
+(`ProtonMail/WebClients`, `packages/pass/lib/import/`, branch `main`, 2026-10-18):
+
+- Proton Pass keeps two fields where 1Password keeps one: `Email`, the main field, and `Username`,
+  behind the plus beside it.
+- `providers/1password/1pux.reader.ts` reads the login field with the `username` designation and
+  passes it to `getEmailOrUsername` (`helpers/transformers.ts:36`). A value that passes
+  `is_email_valid` goes to `Email`, and any other value goes to `Username`.
+- Every other field becomes a custom field: `extract1PasswordExtraFields`
+  (`providers/1password/1p.utils.ts:192`) turns a string, date, or URL into a text field and a
+  concealed value into a hidden one, and drops only SSH keys, files, and Wi-Fi keys.
+- `op_to_1pux.py` writes the `USERNAME`-purpose field with the `username` designation and every
+  other field as a section field, an `EMAIL` field as a string.
+
+So no login name 1Password held was lost. An address that sat in 1Password's username field shows
+in Proton's `Email` with `Username` empty. A login name in an unlabeled field shows as a custom
+field. A login with neither had no login name in 1Password, which is Kagi's case, since its item
+shows no custom field.
+
+The repair:
+
 1. With the 1Password beta unlocked, one read-only `op` listing of field labels, types, and
-   purposes, never values, finds every login with no username field and any login whose address
-   sits in an unlabeled field.
-2. Each gap is matched against Geoff's Fastmail masked addresses by their recorded domain (the
-   checklist at `~/.local/state/self-hosting/masked-email-checklist.md`, and JMAP for the domain
-   field), then against his own addresses. An item with no match goes to Geoff as a question.
-3. Proton Pass splits what 1Password keeps in one username field into two: `Email`, the main
-   field (`itemEmail` in its export), and `Username`, revealed by the plus beside it. Proton added
-   the second so a login can hold both without custom fields
-   (<https://yall.theatl.social/post/3213270/5478605>). How its 1Password importer chooses between
-   them is undocumented, so the listing reads both fields of each imported item, and the table
-   puts an address in `Email` and any other name in `Username`.
-4. Geoff reviews the proposed table, kept in `/dev/shm` or the private servers repo, never in a
+   purposes, never values, finds every login with an empty or missing `USERNAME`-purpose field.
+   Any such login with an address in another field is a custom-field case and gets that value.
+2. Each remaining gap is matched against Geoff's Fastmail masked addresses by their recorded
+   domain (the checklist at `~/.local/state/self-hosting/masked-email-checklist.md`, and JMAP for
+   the domain field), then against his own addresses. An item with no match goes to Geoff as a
+   question.
+3. Geoff reviews the proposed table, kept in `/dev/shm` or the private servers repo, never in a
    public repo.
-5. Claude writes each value into its field through a Proton Pass session from `secret-receive --pass` (W2) in an
-   attended sitting, then lists the items again to confirm each one.
+4. Claude writes each address into `Email`, and any other name into `Username`, through a Proton
+   Pass session from `secret-receive --pass` (W2) in an attended sitting, then lists the items
+   again to confirm each one.
