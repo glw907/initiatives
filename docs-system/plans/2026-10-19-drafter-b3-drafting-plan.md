@@ -87,25 +87,28 @@ stock seat against the fixture. It finds no path the fixture lacks and no cairn-
   `internal/pipeline/resume.go` follows the ALLOW ruling above. None is expected: the lock is written
   after `pipeline.Run` returns (resolution 2), and `resume.go` has no switch on step names
   (factsheet "Step machinery"). `internal/pipeline/fingerprint.go` is never edited (finding 6).
-- Path estimate: 665 minutes, against the design's 360 (1.85x), inside the 720-minute standing
+- Path estimate: 690 minutes, against the design's 360 (1.92x), inside the 720-minute standing
   answer. The path is the longest chain of tasks run in sequence, a pair counting once at its
   larger estimate (pass-core, "Plan"). The chain:
   - B3.0: 60.
-  - Pair A: 215. B3.1 (215) runs beside B3.3 (130), and the session runs B3.2 (170) in the
-    pair's shadow, so the segment is max(215, 130, 170) = 215.
+  - Pair A: 225. B3.1 (225) runs beside B3.3 (135), and the session runs B3.2 (155) in the
+    pair's shadow, so the segment is max(225, 135, 155) = 225.
   - Merge and named-test check: 10.
   - Pair B: 125. B3.4 (125) runs beside B3.5 (50): max(125, 50) = 125. The session has no
     shadow task; B3.6 is folded into B3.7.
   - Merge and named-test check: 10.
-  - B3.7: 205 (the live harness 50, the offline end-to-end test 50, the live rows 105).
+  - B3.7: 220 (the live harness 50, the offline end-to-end test 65, the live rows 105).
   - Close: 40.
 
-  The sum is 60 + 215 + 10 + 125 + 10 + 205 + 40 = 665. The fold added 165 minutes to the first
-  draft's 500: B3.1's section decision, gate-fix and decline rules, and per-exchange bound rows
-  (+45); B3.2's brief widening, walk fixes, warning, and resume tests, inside pair A's shadow (+0
-  on the path); the request goldens (+10); the named-test checks (+10); B3.4's states and clean
-  count (+15); and B3.7's offline end-to-end test and folded harness (+85). F2 planned 310 and
-  closed early. B3.7 carries batch waits for the live rows.
+  The sum is 60 + 225 + 10 + 125 + 10 + 220 + 40 = 690. The review fold added 165 minutes to the
+  first draft's 500: B3.1's section decision, gate-fix and decline rules, and per-exchange bound
+  rows (+45); B3.2's brief widening, walk fixes, warning, and tests, inside pair A's shadow (+0 on
+  the path); the request goldens (+10); the named-test checks (+10); B3.4's states and clean count
+  (+15); and B3.7's offline end-to-end test and folded harness (+85). The verification fold added
+  25 more: B3.1's write log, coherence step mapping, and retest rows (+10), and the lock and
+  `SkipRead` rows moved from B3.2 into B3.7's offline test with canned answers (+15). B3.2 drops to
+  155 and B3.3 rises to 135, both still under B3.1. F2 planned 310 and closed early. B3.7 carries
+  batch waits for the live rows.
 - Clock file: `pass-task-clock` in the session worktree's git dir (`git rev-parse
   --absolute-git-dir` run in `.claude/worktrees/b3-drafting`). During a pair it holds the task the
   session runs in the shadow. When a pair returns, the session checks each pair task against twice
@@ -331,8 +334,10 @@ On a blueprint page:
   projection: `doCoverage`, `completeCoverage`, and any other caller the executor greps.
 - `missingSeats` (`page.go:163`) needs the following for a blueprint page with `Draft` set:
   `blueprint` unless the read is skipped, `draft`, and each review seat and `reader` that
-  `p.runs` reports. A section redraft also needs `coherence`. Without `Draft`, the page needs
-  only `blueprint`, as today.
+  `p.runs` reports. A page whose scope is `ScopeScoped` with non-empty `IDs` also needs
+  `coherence`: `loadModules` runs `missingSeats` for every page before the first stage spends
+  (`start.go:316-317`), before the section decision of resolution 5, so any page that may become a
+  section redraft must have the seat. Without `Draft`, the page needs only `blueprint`, as today.
 - `missingSeatsError` drops its stock-module suffix, "carries only the blueprint read until …",
   since the stock module now defines every seat.
 
@@ -380,7 +385,7 @@ first write and a resume must not decide again.
   - `complete` calls `completeExchange`.
   - `advance` calls `stageExchange`, with a branch for the first turn.
   - `exchangeStage` gives `s2`, `coveragePhase` gives `covInitial`, and `exchangeStep` gives
-    `stSection`.
+    `stSection`. Its default is `stGateFix` (`check.go:125-133`), so each new kind is named.
 
   A red gate spends the `exSection.contract` budget (`redGate`, `check.go:197`), as other
   non-draft kinds do.
@@ -458,12 +463,19 @@ The flow runs in two new steps:
 - **A first `fix` opens the fix, `stCoherenceFix`.** It is an exchange of kind `exCoherence`, with
   the read's findings, on stage `s8`, and no bound, gate-fix turns included. Its edits may touch
   any section. A red gate inside it spends the `exCoherence.contract` budget, as other non-draft
-  kinds do (`redGate`). As the fix opens, the pipeline writes the page as it stands to
-  `coherence.page.md` in the page's run directory, the way `snapshotRound1` writes
-  `round1.page.md` (`steps.go:387-403`), so live row 2 can show the bound held up to that point.
-  `coveragePhase(exCoherence)` gives a new phase, `covCoherence`. After the gate and coverage, a
-  coverage miss escalates with rule `coherence`. A clean coverage sets the retest flag in `work`
-  and returns to `stCoherence`.
+  kinds do (`redGate`). `exchangeStep(exCoherence)` gives `stCoherenceFix` and
+  `exchangeStage(exCoherence)` gives `s8`; their defaults are `stGateFix` and `s2`
+  (`check.go:125-133`, `steps.go:211-219`), so the coherence fix's gate-fix turns stay on
+  `stCoherenceFix`. `coveragePhase(exCoherence)` gives a new phase, `covCoherence`. After the gate
+  and coverage, a coverage miss escalates with rule `coherence`. A clean coverage sets the retest
+  flag, a third new `work` bool, `coherence_retest` (`omitempty`), and returns to `stCoherence`.
+
+**The write log.** Every `writeFiles` call (`page.go:206`) also appends one entry to `record.json`'s
+new `writes` list: the write number `n` (the `write<n>.page.md` and `write<n>.brief.json` files it
+saves in the page's run directory), the step, the exchange kind (empty for a whole draft), and
+`gate_fix`. The record lives in `work` (`p.w.Rec`), so a resume keeps it, and the saved files stay
+in the run directory after the run. Live row 2 reads it to attribute each out-of-scope change to
+the write that made it.
 - **The retest.** A `fix` on the retest escalates with rule `coherence`, seat `coherence`, and the
   findings numbered.
 
@@ -646,9 +658,11 @@ The gate's exit codes are unchanged.
 The fixture (resolution 11) commits `prompts-matrix.json`, the one case list for the new seats.
 B3.3 writes it, since it writes the prompts; the stock package's test and B3.5's check both read
 it. It has the shape `stock/testdata/matrix.json` already has (`host` and `cases` of `name`,
-`seat`, `context`; `stock/stock_test.go:20-32`, `checkprompts.go:51-55`), which keeps F2's
-blueprint cases and their six goldens. It holds one case per stock seat and per shape each seat
-renders:
+`seat`, `context`; `stock/stock_test.go:20-32`, `checkprompts.go:51-55`). `stock/testdata/matrix.json`
+stays F2's six-case list with its six goldens. The fixture matrix names only paths the fixture
+tracks and has no register case: F2's register cases name `docs/house-style.md`
+(`stock/testdata/matrix.json:27`), which the fixture doesn't track, so B3.5's `path` check would
+fail on them. It holds one case per stock seat and per shape each seat renders:
 
 - `blueprint`: whole and change.
 - `draft`: whole round 1, section round 1 with findings and scope, round-2 redraft, and the final
@@ -736,17 +750,21 @@ batch mode, the default, at half price.
 main checkout's base name (`internal/run/id.go:38-48`). The test removes it only when every row
 passes. On a failure it logs the run id, the project path, and the resume command, and the PR body
 carries them, since a run left stopped in a removed directory can never be resumed and its open
-intent counts at worst case in the ledger for good (`internal/ledger/store.go`, `cycleTotal`).
+intent counts at worst case in the ledger for good (`internal/ledger/store.go`, `cycleTotal`). The
+PR body says to resume with a binary built from the branch head: `TestMain` removes its binary
+(`e2e/e2e_test.go:22-27`), and the installed pre-B3 binary refuses the run (finding 6).
 
 **The budget.** Before each `drafter page` call, the test reads `drafter spend --since 2026-10-19
 --json` and computes the budget left: $20 minus (the total, minus `DRAFTER_LIVE_BASELINE`, plus
 `open.worst`). At or below $0 it fails with the reading. Otherwise it sets `DRAFTER_PAGE_CAP` to the
-budget left for that call (standing answer 2).
+budget left for that call (standing answer 2). On a resume the cap is conservative: the page cap
+spans the run (`ledger.go:124`), so the run's own earlier spend counts once in the budget left and
+again against the cap. That fails safe and stays.
 
 | Row | Action | Assertions |
 |---|---|---|
 | 1 | `drafter page docs/count-items.md --json` | Exit 0; the page is accepted. Its scope is `kind: whole` with a `Why` naming the missing lock entry. The lock entry's `page` equals `git hash-object` of the page, `blueprint` equals the blueprint's blob at HEAD, `sections` equals `SectionHashes` over the page, and `accepted` equals the blueprint's blob at HEAD. `drafter gate --page docs/count-items.md` exits 0, prints no `provenance check skipped` line, and prints the `provenance:` count line. Then commit the page, the brief, and the lock. |
-| 2 | Change the second section's `sentence` item text (resolution 11), commit, and run `drafter page docs/count-items.md --json` again | Exit 0; the page is accepted, scoped to exactly that section's id. The run's `record.json` holds a `coherence` seat verdict on stage `s8`. Cut with the blueprint's headings, the page outside that section (preamble, other sections, heading lines) equals row 1's committed page in the final page when the coherence fix didn't run, and in the run's `coherence.page.md` when it did; any later out-of-scope difference is then the coherence exchange's, and the PR reports it (the clarification of the design's Check row 2, below). The lock entry is updated: new `page`, new `blueprint`, and `accepted` kept. The gate check of row 1 passes again. Commit. |
+| 2 | Change the second section's `sentence` item text (resolution 11), commit, and run `drafter page docs/count-items.md --json` again | Exit 0; the page is accepted, scoped to exactly that section's id. The run's `record.json` holds a `coherence` seat verdict on stage `s8`. Cut with the blueprint's headings, each write in `record.json`'s `writes` list is compared with the page before it (row 1's committed page before write 1, then each `write<n>.page.md`): a bounded write (kind `exSection`, `exRedraft`, or `exFinal` with `gate_fix` false) leaves the page outside that section (preamble, other sections, heading lines) unchanged, and the row fails otherwise. Every out-of-scope difference from a gate-fix or coherence write is reported in the PR, not failed (the clarification of the design's Check row 2, below). The lock entry is updated: new `page`, new `blueprint`, and `accepted` kept. The gate check of row 1 passes again. Commit. |
 | 3 | `drafter page docs/count-items.md --json` again | Exit 0; it prints `up to date with drafted.lock`. The summary's `run_id` is empty and its cost zero, the set of run ids under the repo's runs directory is the same before and after, and the meter's row for this repo (`spendRow.Repo`) is unchanged. |
 
 Each row runs only after the one before passes (`t.Fatal` on a miss), so a row 2 miss doesn't also
@@ -755,8 +773,10 @@ report a row 3 failure.
 **The clarification of Check row 2.** The design's row 2 says "the page diff outside it is empty",
 and its build item 5 lets the coherence fix touch any section. The planning session ruled that
 out-of-scope regions are compared against the page before the coherence fix, and every
-out-of-scope change must come from the coherence exchange. The PR body names this as a departure
-from the design's wording.
+out-of-scope change must come from the coherence exchange. Ruling 6 also leaves every gate-fix turn
+unbounded, so a gate fix is named beside the coherence exchange: an out-of-scope change must come
+from a gate-fix or coherence write, and the write log shows which. This stays inside ruling 2's
+departure. The PR body names it as a departure from the design's wording.
 
 ## Tasks
 
@@ -767,9 +787,11 @@ Outcome: what both pairs build on, with no behavior change beyond the new seat's
 0. At launch, before any edit: record `drafter spend --since 2026-10-19 --json` into STATUS (the
    baseline, standing answer 2). Then, on the `f286162` code, capture and commit two request
    goldens, so B3.1's and B3.2's "byte-identical" rows compare with the old code rather than with
-   themselves: the fixture blueprint's `drafter read --dry-run` request body (written once the
-   fixture of item 1 exists, still before any pipeline or cmd edit), and the stage-1 blueprint-read
-   request from `newBlueprintHarness`. The B3.0 commit message body quotes the baseline JSON.
+   themselves: the body of the `count_tokens` request that `drafter read --dry-run` sends for the
+   fixture blueprint, captured at an httptest stub that records request bodies, as `readStub`
+   records Messages bodies (a dry run counts tokens and prints no body, `internal/pipeline/dry.go`;
+   written once the fixture of item 1 exists, still before any pipeline or cmd edit), and the
+   stage-1 blueprint-read request the scripted `fakeAPI` receives from `newBlueprintHarness`. The B3.0 commit message body quotes the baseline JSON.
 1. The fixture of resolution 11, except `prompts-matrix.json`, which B3.3 writes.
 2. The `coherence` seat's configuration (resolution 6): `seatNames`, `stock.toml`, the smoke lists,
    and `docs/configuration.md`'s "Seats and prompts" row, which says the seat runs on every section
@@ -795,7 +817,7 @@ Outcome: what both pairs build on, with no behavior change beyond the new seat's
   tests: `TestStockModuleSeats` and the three stockmodule tests. The session commits before pair
   A starts.
 
-### B3.1: the pipeline's drafting path (215 min), paired with B3.3, `opus` at `high`
+### B3.1: the pipeline's drafting path (225 min), paired with B3.3, `opus` at `high`
 
 Outcome: resolutions 4, 5, and 6, and the pipeline half of 7.
 
@@ -806,7 +828,8 @@ Outcome: resolutions 4, 5, and 6, and the pipeline half of 7.
     beside `Instructions`).
   - `internal/coverage/sections.go` and its test.
   - `internal/assemble/blueprint.go` (the facts block's drafting variant).
-  - `docs/prompts-module.md` ("The context object": the `scope` values and the blocks).
+  - Not `docs/prompts-module.md`: B3.3 owns the whole file, so the pair's files are disjoint
+    (pass-core "Pairs").
 - Never `money.go` or `fingerprint.go`. `resume.go` only per the ALLOW ruling: test-first, then a
   task-scope `diff-reviewer` read with the auth-data bar on each commit touching it, before the
   next task.
@@ -849,16 +872,20 @@ Outcome: resolutions 4, 5, and 6, and the pipeline half of 7.
   - The refusal reaches the model through `refused`, and the contract budget escalates as today.
   - Coherence:
     - `ok` accepts;
-    - a first `fix` writes `coherence.page.md`, runs an unbounded exchange that may edit any
-      section, then the gate and coverage (`covCoherence`, stage `s8`), then the retest;
-    - a red gate inside the fix spends `exCoherence.contract`;
+    - a first `fix` runs an unbounded exchange that may edit any section, then the gate and
+      coverage (`covCoherence`, stage `s8`), then the retest with `coherence_retest` set;
+    - a red gate inside the fix spends `exCoherence.contract`, and its gate-fix turn is on
+      `stCoherenceFix`;
     - a retest `fix` escalates with rule `coherence`;
     - a coverage miss after the fix escalates with rule `coherence`;
     - a whole draft never runs coherence.
-  - `missingSeats` lists `coherence` only for a section redraft.
+  - `missingSeats` lists `coherence` for a scoped `Draft` page with `IDs`, and not for a whole
+    draft; a test module lacking `coherence` is refused before any request on such a page.
+  - The write log: a section redraft with a gate fix and a coherence fix records one `writes`
+    entry per write, numbered as its `write<n>` files, with step, kind, and `gate_fix`.
   - A resume across each new step: a run stopped with an open intent at `stSection`, at
-    `stCoherence`, and at `stCoherenceFix`, and one stopped after a section write with
-    `PendingGate` set. Each resumes, finishes, and spends no request twice. These follow
+    `stCoherence` (first read and, with `coherence_retest` set, the retest), and at
+    `stCoherenceFix`, and one stopped after a section write with `PendingGate` set. Each resumes, finishes, and spends no request twice. These follow
     `resume_test.go`'s pattern. If a resume fails because `checkTree` or `wantHashes` can't account
     for a new step, that's the ALLOW case: the failing test first, then the fix.
   - A pre-B3 state: its `work` JSON with no `draft` field decodes as a read; and a stopped run
@@ -869,15 +896,16 @@ Outcome: resolutions 4, 5, and 6, and the pipeline half of 7.
   `PASS` under `go test -run '<names>' -v`. The commit message lists every step function wired for
   each new step and names the tests.
 
-### B3.3: the stock seat prompts and the Google standard package (130 min), paired with B3.1, `opus` at `medium`
+### B3.3: the stock seat prompts and the Google standard package (135 min), paired with B3.1, `opus` at `medium`
 
 Outcome: resolutions 7 and 8, the prompt half.
 
 - Files: `stock/prompts.js`, `stock/google-{description,tells,rubric,corpus}.md`,
   `stock/stock_test.go`, `stock/testdata/` (one golden per new seat), the fixture's
-  `e2e/testdata/cli/prompts-matrix.json` (resolution 10), and `docs/prompts-module.md` ("The stock
-  module": the seats and the package files). Coordinate on `docs/prompts-module.md` by section:
-  B3.1 owns "The context object", B3.3 owns "The stock module". The merge keeps both.
+  `e2e/testdata/cli/prompts-matrix.json` (resolution 10), and all of `docs/prompts-module.md`:
+  "The context object" (the `scope` values and the blocks, from resolution 7, the contract this
+  task writes against) and "The stock module" (the seats and the package files). B3.1 doesn't
+  touch the file, so the pair's files are disjoint.
 - Risk class `runner`.
 - Load `writing-voice` first for the four reference pages, which follow Google developer
   documentation style. The prompts are written to resolution 7's context and nothing beyond it,
@@ -905,7 +933,7 @@ Outcome: resolutions 7 and 8, the prompt half.
   each corpus excerpt's URL and license, and states that each was checked against that page's
   footer.
 
-### B3.2: `drafter page` from blueprints, the lock scope, and the lock write (170 min), by the session in pair A's shadow
+### B3.2: `drafter page` from blueprints, the lock scope, and the lock write (155 min), by the session in pair A's shadow
 
 Outcome: resolutions 1, 2, and 3.
 
@@ -940,8 +968,11 @@ Outcome: resolutions 1, 2, and 3.
     citing that fact widens `IDs` to it. A preamble sentence citing it makes the scope whole.
   - A seeded page (lock entry with a `page` id, no brief at the start commit) with a one-item
     edit drafts whole.
-  - `SkipRead`: `accepted` equal to the blueprint blob at the start commit, with a fact-only
-    change, sets `SkipRead` and sends no stage-1 request; a stale `accepted` leaves it unset.
+  - `SkipRead`, at the `pipeline.Options` boundary: the function that builds the run's options
+    from the lock and scopes is pure and tested directly. `accepted` equal to the blueprint blob at
+    the start commit, with a fact-only change, sets `SkipRead` for the page; a stale `accepted`
+    leaves it unset. That no stage-1 request is sent needs B3.1's pipeline, so it is asserted in
+    B3.7's offline end-to-end test.
   - `TestBlueprintHandoffs` on the fixture asserts `Inputs.PageType`, `Inputs.FactIDs` (taken from
     the start commit's bytes, not the working tree), and `Inputs.ExemplarSources`.
   - An all-unchanged run prints `up to date with drafted.lock`, exits 0, and resolves no key: the
@@ -956,13 +987,10 @@ Outcome: resolutions 1, 2, and 3.
     - a dry run and a stopped run write nothing;
     - a write that changes nothing leaves the bytes alone;
     - with HEAD moved past the start commit by a fact edit, the write warns and names the file.
-  - The lock write through a real run, on `readStub` (`cmd/drafter/read_test.go:342-392`) in sync
-    mode:
-    - a run stopped by `failFrom` after page A was accepted, then `--resume` with the same
-      arguments, writes A's entry with the start commit's blueprint blob;
-    - a finished run whose lock write failed (the worktree lock held by the test) prints the
-      summary and the resume command, and that `--resume` writes the lock and submits no Messages
-      request.
+  - The lock write through a real run (a resume after a stop, and a failed lock write) needs a
+    page that drafts, so those two rows are in B3.7's offline end-to-end test. Before pair A
+    merges, `Draft` is ignored and a `readStub` run would pass vacuously; after it, `readStub`'s
+    fixed read answer fails `validate` at `stDraft` (`handle.go:204-214`).
   - `entryJSON` carries `brief`, `standard`, and `reader`, and the standard is `google` with no
     tracks.
   - `drafter read`'s dry-run request on the fixture blueprint equals B3.0's committed golden
@@ -979,6 +1007,8 @@ Outcome: resolution 9.
   `internal/blueprint/brief.go` (`BriefPath`), and `cmd/drafter/read.go`'s line 393 swap to
   `BriefPath`. `docs/blueprint-format.md` gains a section, "The brief", covering the brief's shape
   and what the gate checks. `drafter gate --help`'s `Long` gains step 4, provenance, and renumbers.
+  `stock/prompts.js` and the draft seat's golden under `stock/testdata/`, only when a rule
+  changes (below); B3.5 touches neither, so pair B stays disjoint.
 - Risk class `runner`.
 - Tests, table-driven, with one row per rule and message:
   - each shape defect;
@@ -1030,7 +1060,7 @@ Outcome: resolution 10.
   - The matrix holds a case for every seat `stock` defines, checked by the test.
 - Acceptance: `make check` green, and each row above, by test name, shows `PASS`.
 
-### B3.7: the live harness, then acceptance offline and live (205 min), by the session after pair B merges
+### B3.7: the live harness, then acceptance offline and live (220 min), by the session after pair B merges
 
 Outcome: the design's "Check", run end to end. B3.6, the live harness, is folded in here, since it
 was a single deliverable (pass-core, "Plan").
@@ -1043,19 +1073,41 @@ was a single deliverable (pass-core, "Plan").
      nothing, though the executor's shell holds the key.
    - With `DRAFTER_LIVE=1`, an unset or unparseable `DRAFTER_LIVE_BASELINE` fails, not skips.
    - The meter helper's arithmetic and the `DRAFTER_PAGE_CAP` value it sets have a table-driven
-     unit test, including the at-or-below-$0 refusal.
-2. **The offline end-to-end test (50 min), before any live run.** A new e2e test,
+     unit test, including the at-or-below-$0 refusal. The helper and its test live in an untagged
+     e2e file (`e2e/meter.go` and `e2e/meter_test.go`), so `make check` runs the test; only
+     `live_test.go` carries the tag.
+2. **The offline end-to-end test (65 min), before any live run.** A new e2e test,
    `e2e/draft_test.go`, runs the built `drafter page` in sync mode on a git copy of the fixture,
    against a scripted stub with `api_base_url`, as `e2e/page_test.go` points the binary at
    `apiStub`. The stub answers `/v1/messages` by the request's output schema
    (`output_config.format.schema`, set from `Request.Schema` in `internal/batch/request.go:44-49`):
    a draft answer, edits, a read, a reader turn, coverage, or consistency, so each seat gets a
-   well-formed answer without the stub parsing prompts. The real `drafter gate` runs, with the
-   built binary's directory on `PATH` and Vale resolving the fixture's offline style. It runs
-   live rows 1 to 3 with the same assertions, plus a fourth case: a fact-bullet edit run with
-   `SkipRead`, which sends no stage-1 request. This joins B3.1, B3.2, B3.3, and B3.4 through the
-   command layer before money is spent. B3.1's coherence rows already cover the coherence fix and
-   retest on the fake API, so no separate pipeline test repeats them.
+   well-formed answer without the stub parsing prompts. The answers are canned fixture files under
+   `e2e/testdata/cli-answers/`, set per row in the stub's state, and their content is what lets
+   the rows pass, not only their shape:
+   - row 1's draft answer: a page and brief written to pass the real stock gate, provenance
+     included (every sentence classified, every id resolving, every token contained, every fact
+     item cited);
+   - coverage answers whose quotes sit on that page;
+   - row 2's section answer: edits whose old span is the canned second-section sentence, replacing
+     it with one that carries the edited `sentence` item, resolving the section finding `edited`;
+   - `ok` for every read, the coherence read included.
+
+   The real `drafter gate` runs, with the built binary's directory on `PATH` and Vale resolving
+   the fixture's offline style. It runs live rows 1 to 3 with the same assertions, plus these
+   cases moved from B3.2, since each needs a page that drafts:
+   - a fact-bullet edit run with `SkipRead`, which sends no stage-1 request; the edit keeps the
+     canned sentence's tokens contained in the bullet;
+   - a run stopped after page acceptance by a stub that refuses from a set request on (as
+     `readStub`'s `failFrom` does), then `--resume` with the same arguments, writes the entry with
+     the start commit's blueprint blob;
+   - a finished run whose lock write failed (the test holds `<git dir>/drafter.lock`) prints the
+     summary and the resume command, and that `--resume` writes the lock and submits no Messages
+     request.
+
+   This joins B3.1, B3.2, B3.3, and B3.4 through the command layer before money is spent. B3.1's
+   coherence rows already cover the coherence fix and retest on the fake API, so no separate
+   pipeline test repeats them.
 3. **Live (105 min).** Read the baseline from STATUS and pass it as `DRAFTER_LIVE_BASELINE`. Run
    `make live` from the worktree. The test computes the budget and sets `DRAFTER_PAGE_CAP` before
    each `drafter page` (standing answer 2).
@@ -1066,7 +1118,8 @@ was a single deliverable (pass-core, "Plan").
    - A miss that remains when the budget would be exceeded ends the live work. The PR opens with
      the miss, the record excerpt, the spend, and any kept project path and resume command
      (standing answer 4).
-- Files: `e2e/live_test.go`, `e2e/draft_test.go`, the `Makefile`, plus whatever a live miss's fix
+- Files: `e2e/live_test.go`, `e2e/{meter.go,meter_test.go}`, `e2e/draft_test.go`,
+  `e2e/testdata/cli-answers/`, the `Makefile`, plus whatever a live miss's fix
   touches, each named in the PR body.
 - Risk class `runner`, with `live-account` (API spend).
 - Acceptance:
@@ -1097,7 +1150,7 @@ was a single deliverable (pass-core, "Plan").
    - the corpus licenses;
    - every departure from this plan, with its reason;
    - any `resume.go` verdicts;
-   - the score, per pass-core "Score", with the Work and review row naming 665 path minutes beside
+   - the score, per pass-core "Score", with the Work and review row naming 690 path minutes beside
      the actual.
 4. Each "Found, not done" item worth doing goes to drafter's `BACKLOG.md` through `log-issue`,
    tagged `#initiative:docs-system`, and is listed in the PR body with its number. The six

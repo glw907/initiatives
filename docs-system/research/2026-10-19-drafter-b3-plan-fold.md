@@ -244,3 +244,75 @@ it as a departure.
 
 None to a ratified document. The design's Check row 2 wording is clarified by ruling 2 inside the
 plan and the PR body, and the design itself is not edited.
+
+## Applying the verification
+
+Input: `docs-system/research/2026-10-19-drafter-b3-plan-fold-verification.md` (0 blockers, 4
+majors, 9 minors), applied to the plan at `78a3294`. Each finding was checked against drafter
+`main` `f286162` before acting. No task edits `money.go` or `fingerprint.go`. Nothing is committed.
+
+Sources checked for this pass: `start.go:292-317` (`loadModules` calls `missingSeats` for every page
+before the first stage); `steps.go:211-219` (`exchangeStage` defaults to `s2`); `check.go:125-133`
+(`exchangeStep` defaults to `stGateFix`); `page.go:206-235` (`writeFiles` numbers each write `n`
+and saves `write<n>.*` in the page's run directory, which the run never removes; the only removal
+is of repo files, at `page.go:355`); `record.go:17-32` (`record` is `p.w.Rec`, held in `work`);
+`dry.go` (a dry run sends `CountTokens` and prints no body); `stock/testdata/matrix.json:27`
+(`docs/house-style.md`); `handle.go:204-214` (`validate` at `stDraft` wants a draft answer).
+
+The write log replaces the review fold's `coherence.page.md` snapshot. Once gate-fix turns are
+unbounded (ruling 6), a snapshot taken before the coherence fix can't tell a gate-fix edit from a
+bounded one, and the write files `writeFiles` already keeps plus one record entry per write can.
+So the net new state is three `omitempty` bools (`work.section`, `work.coherence_retest`,
+`exchange.gate_fix`) and a `writes` list in `record.json`, with no new file.
+
+1. Major, folded. Resolution 4 `missingSeats` needs `coherence` for every blueprint page with
+   `Draft` set whose scope is `ScopeScoped` with non-empty `IDs`, with the reason
+   (`start.go:316-317`). The B3.1 row is reworded, and a module that lacks the seat is refused
+   before any request.
+2. Major, folded. Resolution 6 "The write log": each `writeFiles` call appends `{n, step, kind,
+   gate_fix}` to `record.json`'s `writes`. Live row 2 checks every bounded write (`exSection`,
+   `exRedraft`, `exFinal` with `gate_fix` false) against the page before it, and reports gate-fix
+   and coherence writes. "The clarification of Check row 2" now names gate fixes beside the
+   coherence exchange, inside ruling 2's departure. This adds a B3.1 write-log row and drops
+   `coherence.page.md`.
+3. Major, folded. B3.2's `SkipRead` row is now a pure options-boundary test. The "no stage-1
+   request" assertion and both real-run lock rows (a stop then a resume, and a failed lock write
+   then a resume) move to B3.7 item 2. B3.2's text gives the reason (`handle.go:204-214`).
+4. Major, folded. B3.3 owns all of `docs/prompts-module.md`, "The context object" included, and
+   B3.1's file list excludes the file. Pair A's files are disjoint.
+5. Minor, folded. B3.7 item 2 now specifies canned answers under `e2e/testdata/cli-answers/`:
+   - row 1's gate-passing page and brief;
+   - coverage quotes that sit on that page;
+   - row 2's edits answer, which replaces the canned second-section sentence and resolves the
+     section finding `edited`;
+   - `ok` for every read;
+   - a fact edit that keeps the canned sentence's tokens contained.
+6. Minor, folded. Resolution 6 maps `exchangeStep(exCoherence)` to `stCoherenceFix` and
+   `exchangeStage(exCoherence)` to `s8`. Resolution 5 notes the default. B3.1's coherence row
+   asserts that a gate-fix turn stays on `stCoherenceFix`.
+7. Minor, folded. The retest flag is named `work.coherence_retest` (`omitempty`), and B3.1's
+   resume row covers `stCoherence` with it set.
+8. Minor, folded. Resolution 10: `stock/testdata/matrix.json` stays F2's six-case list. The fixture
+   matrix names only tracked paths and has no register case.
+9. Minor, folded. B3.0 item 0 captures the `count_tokens` request body at a body-recording httptest
+   stub, plus the stage-1 request the scripted `fakeAPI` receives.
+10. Minor, folded. The meter helper and its table test go in untagged `e2e/meter.go` and
+    `e2e/meter_test.go`, so `make check` runs the test.
+11. Minor, optional, folded as a note at no cost. Resolution 12 records that a resume counts the
+    run's earlier spend twice, which fails safe. The cap formula is unchanged.
+12. Minor, folded. Resolution 12 "The project": the PR body says to resume a kept project with a
+    binary built from the branch head.
+13. Minor, folded. B3.4's file list names `stock/prompts.js` and the draft seat's golden, for use
+    only when a rule changes. Pair B stays disjoint.
+
+None is refused, and none is owed: every correctness minor was folded, and the one optional was
+cheap. Owner forks: none.
+
+**Path.** This uses the same rule as before. B3.0 60, then pair A max(B3.1 225, B3.3 135, B3.2 155)
+= 225, then the merge check 10, then pair B max(B3.4 125, B3.5 50) = 125, then the merge check 10,
+then B3.7 220 (harness 50, offline end-to-end 65, live 105), then close 40.
+
+60 + 225 + 10 + 125 + 10 + 220 + 40 = **690**, within 720. Against the review fold's 665:
+- B3.1 +10 (the write log, the coherence mapping, and the retest rows);
+- B3.7 +15 (the moved rows and the canned answers);
+- B3.3 +5 (the second docs section) and B3.2 −15 (the moved rows), both still under B3.1.
