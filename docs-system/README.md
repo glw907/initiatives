@@ -14,6 +14,7 @@ Hand-drafted pages drift from the register and from the facts they cite. A syste
 - Keep the page outline standard that every page plan follows.
 - Own the Claude infrastructure the pipeline runs on: the drafting and register-editing agents, the registers they read, and the gates they pass.
 - Document how any project handles its docs with the system.
+- Once the system is ready, hold a monthly review that makes small, steady gains in output quality, cost, and usability (Geoff, 2026-10-18).
 
 ## Non-goals
 
