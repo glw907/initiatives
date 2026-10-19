@@ -80,8 +80,9 @@ are method calls a reviewer may want to argue.
    the lock write. The guard that stops every pre-B3c command is the config: `brief_path` fails
    the strict decode (`file.go:98-106`; probed, "unknown key blueprints.brief_path", exit 2). The
    drafter PR therefore merges and installs before the cairn PR merges (Merge order), and this
-   pass's binary refuses a lock that fails to decode on the page path too (resolution 1). The alternative, a file in drafter's state directory, would lose the bar on the other
-   workstation and break the onboarding rule.
+   pass's binary refuses a lock that fails to decode on the page path too (resolution 1). The
+   alternative, a file in drafter's state directory, would lose the bar on the other workstation
+   and break the onboarding rule.
 5. **Check 1 may move off rotate.** Rotate's blueprint was edited after its last API read
    (`dca26f670`: "This commit has not been read through the API"), and it may accept on its first
    whole read. Then no second read is needed on rotate, and Check 1's row (a whole read blocks, a
@@ -203,8 +204,8 @@ The chain drafts blueprint pages and defines `coherence`.
   - Clean main checkouts: `~/Projects/drafter` and `~/Projects/cairn-cms` each print nothing for
     `git status --porcelain`, each is on `main`, and `git rev-list --count HEAD..origin/main`
     prints 0 after `git fetch origin`.
-  - Tools: `go version`, `node --version`, `vale --version` (3.x), `cairn-run-gate`, `ci-green`,
-    and `cairn-docs-outline` resolve. `DRAFTER_API_KEY` is set in the executor's environment (check
+  - Tools: `go version`, `node --version`, `vale --version` (3.x), `yq --version` (4.x),
+    `cairn-run-gate`, `ci-green`, and `cairn-docs-outline` resolve. `DRAFTER_API_KEY` is set in the executor's environment (check
     that it's set; never print it). `drafter config` in cairn's main checkout resolves `page_cap =
     10` and `cycle_ceiling = 160` from the user layer. `~/.config/drafter/cairn-cms.local.toml`
     exists.
@@ -274,6 +275,8 @@ commit holds a bar for the page, the page's read is the bar's change read:
   blocked read at <short sha>; fix its <n> findings and commit" with its own status, `held`, not
   `statusUnchanged`, since `exitCodeFor` maps `statusUnchanged` to 0 (`page.go:65-72`). `drafter
   read` and `drafter page` exit 1 when any page is `held`, since that blueprint isn't accepted.
+  `drafter read`'s early return when no page is left to read (`read.go:131-142`) skips
+  `exitCodeFor` today, so it must map `held` to 1 as well.
 - `Compare` gives `ScopeWhole` (the bar's commit is gone, or the blueprint didn't decode there): the
   read is an ordinary whole read, with no bar. When the commit is gone, drafter prints "the blocked
   read's commit <short> is not in this repository; reading whole", so a bar lost to a squash or
@@ -513,7 +516,8 @@ A reshape prompt names everything the subagent reads, since it starts with no co
   hand afterward, since that breaks its lock entry (Check 3).
 - **Recovery.** Each STATUS row for a live call is written before the call, then gets the run id
   once printed, and an "after" cell when the call returns. A session that finds a row with no
-  "after" cell doesn't restore or commit the tree first. It resumes that run with `--resume <id>`
+  "after" cell doesn't restore or commit the tree first. A row whose "after" cell reads
+  "abandoned (stall rule)" is skipped. The session resumes that run with `--resume <id>`
   in the same mode, on a fresh meter reading. A dirty tree that holds only `blueprints/drafted.lock`,
   after a run whose summary shows it finished, is committed as is. Any other dirty state stops the
   line.
@@ -523,8 +527,10 @@ A reshape prompt names everything the subagent reads, since it starts with no co
 At launch, B3c.0 records `drafter spend --since 2026-10-19 --json` into STATUS and into the B3c.0
 commit body. Before every live call:
 
-- `used = total − baseline.total + open.worst`, read fresh from the same command, and `left = 80 −
-  used`.
+- `used = total − baseline.total + open.worst`, read fresh, and `left = 80 − used`. After B3c.5
+  the read is `$B3C_DRAFTER spend --since 2026-10-19 --json`, since `drafter spend` loads the
+  project config and the installed binary refuses `brief_path`. Both binaries read the same
+  user-layer state directory.
 - At `left <= 0` the call doesn't start, and the pass stops and asks Geoff (standing answer 4).
 - Otherwise the call runs with `DRAFTER_PAGE_CAP` set to `min(10, left / N)`, where N is the
   number of blueprints or pages the call takes.
@@ -606,17 +612,21 @@ session commits the round once and runs the next.
   edits cairn's facts store. A conflict the blueprint causes is fixed like a finding.
 - **The stall rule.** When a batch shows no result after 60 minutes, the session runs these steps
   in order:
-  1. Cancel the batch through the API. drafter, still polling, reads the canceled results and
+  1. Cancel the batch through the API: the `batch_id` on the run state's intents
+     (`internal/run/state.go:77`), sent to `POST /v1/messages/batches/<id>/cancel` with the key
+     from the environment, never printed. drafter, still polling, reads the canceled results and
      resubmits them once (`batch/classify.go:11`, `ActionResubmitThenStop`); cancel that batch
      too. The second cancel halts the run with `StopInfrastructure` (`pipeline/handle.go:146-149`):
      it exits 3, saves its state as stopped, and releases the worktree lock. Confirm with `pgrep`
      that the process has exited. Never kill it: drafter has no signal handling, so a killed run
      stays `running`, with its batch live and its reservations open.
-  2. Record the run id in STATUS as abandoned, with its `open.worst`, which keeps counting against
-     the budget and errs safe.
+  2. Write the run's "after" cell in STATUS as "abandoned (stall rule)", with its `open.worst`.
+     That figure keeps counting against the budget and errs safe, and Recovery skips the row.
   3. For a `drafter page` run, print `git status --porcelain` and `git clean -n` to STATUS as the
      dry run, then restore the tree to HEAD, since a stopped run restores nothing.
-  4. Rerun the remaining pages as a new `--sync` run, on a fresh meter reading.
+  4. Rerun the remaining pages as a new `--sync` run, on a fresh meter reading. A stalled cap
+     rerun stops the line instead, since `--sync` brings back the full-price worst case that
+     tripped the cap.
 
   A `--sync` call needs no hang rule: each streamed call is bounded by the client's stream timeout
   (`batch/calls.go:177`), and a timeout stops the run, resumable.
@@ -664,8 +674,8 @@ Each row maps to the design's "Check".
   index edits turned red. The cairn PR reports that result as Check 2, with claude-code's row
   naming the components that skip `docs/claude-code` (finding 3), and states how many pages reached
   `accepted` against the pilot's three-page bar (settled by the planning session).
-- **Check 3.** Run after each accepted page's commit. Each accepted page's entry at the close head
-  matches:
+- **Check 3.** Run at `HEAD` after each accepted page's commit, and again at close (Close 3). Each
+  accepted page's entry matches:
   - `page` equals `git hash-object <page>`, which also proves `sections`, since `DraftedEntry`
     hashes both from the same page bytes (`drafted.go:15-39`);
   - `blueprint` equals `git rev-parse HEAD:<blueprint>`;
@@ -695,10 +705,12 @@ Outcome: everything the pass builds on.
    (`cmd/drafter/read_test.go:190-235`: args `{}`, no scope, then `Scope: "intro,steps"`), as
    `tests/fixtures/drafter/blueprint-seat-renders.golden.json`. Only the whole read has a golden
    today (`cmd/drafter/testdata/blueprint-prompt.golden.txt`), and the live bar reads are change
-   reads.
+   reads. Commit the matrix it rendered from as
+   `tests/fixtures/drafter/blueprint-seat-baseline.matrix.json`, so B3c.3 renders the same input.
 
 - Files: `tests/fixtures/drafter/handoff-renders.golden.json`,
-  `tests/fixtures/drafter/blueprint-seat-renders.golden.json`.
+  `tests/fixtures/drafter/blueprint-seat-renders.golden.json`,
+  `tests/fixtures/drafter/blueprint-seat-baseline.matrix.json`.
 - Risk class `runner`.
 - Acceptance: `make check` green. `drafter config`, run in the cairn worktree, shows `prompts` from
   the local layer at the drafter worktree's chain path, and `page_cap = 10`.
@@ -845,8 +857,9 @@ Outcome: resolution 4, and the chain half of resolution 1's prompt.
   - The section draft says to change only the sections in `scope`.
   - The coherence read names the changed sections and says findings may lie anywhere. The retest
     says it is the retest.
-  - The blueprint seat with empty `findings` equals B3c.0's whole-read and change-read goldens
-    (regression), and `go test ./cmd/drafter -run TestRealModuleRendersTheBlueprintSeat` passes in
+  - The blueprint seat with empty `findings`, rendered from B3c.0's
+    `blueprint-seat-baseline.matrix.json` against the edited chain, equals B3c.0's whole-read and
+    change-read goldens (regression; never regenerate the golden), and `go test ./cmd/drafter -run TestRealModuleRendersTheBlueprintSeat` passes in
     the pair worktree, so a break shows before the B3c.5 merge. With a bar it holds the bar
     paragraph, every finding, and the sentence that an unfixed listed finding blocks whatever its
     class.
@@ -877,7 +890,10 @@ Outcome: resolution 5. The seven blueprints pass `drafter check`, ready for thei
 ### B3c.5: merge the pair, build, and set up the cairn runs (50 min), by the session
 
 1. Merge B3c.2 and B3c.3. Run the named-test check (see "Clock file"), then `make check`, then `make
-   build`. Set `$B3C_DRAFTER` and record the commit.
+   build`. Record the binary's absolute path and commit in STATUS. Shell state doesn't persist
+   between Bash calls and a subagent starts with an empty environment, so `$B3C_DRAFTER` is a
+   name in this plan, never a shell variable: every command and fix prompt writes the absolute
+   path out literally.
 2. In the cairn worktree:
    - Commit `drafter.toml`'s `brief_path` (resolution 3).
    - `$B3C_DRAFTER config` shows `blueprints.brief_path` from `drafter.toml` and `prompts` from the
@@ -913,11 +929,13 @@ Outcome: resolution 5. The seven blueprints pass `drafter check`, ready for thei
      prompt; and every exemplar path a draft body names exists under
      `~/.local/share/cairn/exemplars`.
    - Planning's fold probe ran this on B3's binary and chain against the planning clone: the read
-     dry run on rotate recorded 187 KB of bodies, and the page dry run reproduced finding 1's throw ("unknown
-     track \"undefined\"") from the real context, at no cost.
-   - Delete the clone and stop the stub. Later, after rotate's fix commit, run `$B3C_DRAFTER read
-     --dry-run --json` on rotate the same way and grep the body for "Still open", which proves the
-     bar reached the chain's prompt before the paid read.
+     dry run on rotate recorded 187 KB of bodies, and the page dry run reproduced finding 1's
+     throw ("unknown track \"undefined\"") from the real context, at no cost.
+   - Delete the clone and stop the stub. Later, after rotate's fix commit, make a fresh shared
+     clone of the head with no lock edit, copy in the local layer, point it at the stub, run
+     `$B3C_DRAFTER read --dry-run --json` on rotate there, and grep the body for "Still open",
+     which proves the bar reached the chain's prompt before the paid read. The lock edit above
+     would drop rotate's `blocked`, so this check never makes it.
 
 - Risk class `runner`.
 - Acceptance: each step's output as stated, recorded in STATUS.
@@ -934,8 +952,9 @@ finding 5's fallback.
   changes, and the seven blueprints only through the round-1 fix branches, merged after the probe
   ends. In drafter, only a mechanical fix under resolution 8, each with its test.
 - Acceptance: Check 1's row (or its fallback, noted), rotate's Check 3 row, and its gate result
-  from inside the run (Check 2's rerun is at close). Every `b3c-fix-*-r1` worktree is merged after
-  resolution 6's file check, then removed with its branch. Otherwise the line stops with STATUS and `notify-send` as resolution 8 says.
+  from inside the run (Check 2's rerun is at close). Every round-1 fix branch is committed and
+  left unmerged for B3c.7's first step. Otherwise the line stops with STATUS and `notify-send` as
+  resolution 8 says.
 
 ### B3c.7: the seven's read loop (90 min), by the session with fix subagents
 
