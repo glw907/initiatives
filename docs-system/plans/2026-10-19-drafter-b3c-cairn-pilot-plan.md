@@ -556,6 +556,14 @@ a page whole for $3 to $4.50.
 
 ### 8. The run order, the read loop, and the stops
 
+**Geoff's ruling, 2026-10-19: the caps are loop guards.** From the read-7 step on, every count
+cap in this resolution and in B3c.7 to B3c.9 (reads, reruns, fix cycles, the probe's stops) is a
+loop guard under pass-core "Design" step 1 (workstation `7723a93`). Past a cap, the run goes on
+while each retry fixes a cause the session has traced and spend stays inside $80, and each such
+fix is listed in the drafter PR's `## Decisions`. The run stops only on the $80 or 800-minute
+ceiling, a cause it cannot trace, the same cause returning after its fix, or a design change. An
+escalated page is still reported and the run continues (standing answer 3).
+
 **P1, the first reads.** One `$B3C_DRAFTER read --sync --json` call takes all eight blueprints:
 rotate and the seven, after B3c.5. Each blocked whole read leaves a bar, and the session commits the
 lock at once ("Record the first blueprint reads").
