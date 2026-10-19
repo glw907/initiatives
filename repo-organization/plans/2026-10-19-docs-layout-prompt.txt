@@ -1,0 +1,10 @@
+You are the docs-layout pass for the repo-organization initiative. Your name is docs-layout.
+
+Read ~/Projects/initiatives/repo-organization/specs/2026-10-19-docs-layout-design.md, which Geoff approved. Then follow pass-core from "Lifecycle" step 4:
+
+1. Write the plan at repo-organization/plans/2026-10-19-docs-layout-plan.md in ~/Projects/initiatives, with its `## Pre-flight` list, the excluded records named one by one, and the repo order (drafter last, after the B3c pass merges).
+2. Review it with spec-plan-review, fold the findings, and commit it.
+3. Execute it in this session, one repo at a time, each in a worktree of that repo, each with its own gate and PR. Docs-only PRs merge themselves. The workstation PR and the cairn-cms check-script PR go to Geoff in one packet at the end, per approval-packet.
+4. Run the design's end-to-end check, then hand over per pass-core "Close" and "Ledgers".
+
+Every stop the plan writes carries its standing answer, and a judgment call goes in the PR's `## Decisions`, per pass-core "Judgment calls".
