@@ -14,7 +14,8 @@ What changed since the plan (Geoff's rulings, 2026-10-18 and 2026-10-19):
 - Musicbox is deleted, and nothing here may depend on it. music.907.life has no record: M3 lays down the dubplate-host rows from dubplate's server-runbook with no certificate request for that name, and M8 leaves music_ping off.
 - M6's dubplate request: glw907/dubplate is not a push target. Put its exact text under the servers PR's "Found, not done"; the conductor files it.
 - M8's override binding doesn't exist. deploy.sh takes only `monitor` or `mta-sts`, and the allow rule matches only `cloudflare/deploy.sh monitor`, so add the override in a way that exact command deploys, revert it in the next commit, and record the shape under ## Decisions. Create and delete servers-scratch-stale with CLOUDFLARE_API_TOKEN from the main loop (ws-servers has no R2 scope).
-- Runbook: under "The alerts on the workstation", add that a Proton filter files the monitor's mail into the Services folder (filter source: the workstation repo's docs/proton/services-filter.sieve), and that without it the mail stays in the inbox. In "Archive a file", replace "with 1Password unlocked" with the ws-pass-key path. The recovery address never appears outside the servers repo.
+- Runbook: in "Archive a file", replace "with 1Password unlocked" with the ws-pass-key path. The recovery address never appears outside the servers repo.
+- Secrets registry: add `ACCESS_GITHUB_CLIENT_ID`, `ACCESS_GITHUB_CLIENT_SECRET` to the servers repo's `secrets/registry.md`, read by nothing at run time: the Access GitHub identity provider holds them (set by the conductor in pre-flight item 1, 2026-10-19, workstation#109).
 
 Setup:
 - Your first act is EnterWorktree with name media, your only EnterWorktree call. Push the branch as pass2-media (`git push origin worktree-media:pass2-media`). Run `npm ci` in cloudflare/monitor and cloudflare/mta-sts.
