@@ -1,0 +1,299 @@
+#!/usr/bin/env python3
+"""Move a repo's docs/superpowers/ children up to docs/ and rewrite every citation of the old path."""
+import argparse
+import json
+import os
+import posixpath
+import re
+import subprocess
+import sys
+import tempfile
+
+TOOL_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(TOOL_DIR))
+DEFAULT_EXCLUDED = os.path.join(ROOT, "repo-organization", "research", "docs-layout-excluded.tsv")
+OLD = "docs/superpowers/"
+SKIP_DIRS = (".claude/worktrees/",)
+PENDING = "docs-layout-pending.json"
+
+PREFIX = re.compile(r"docs/superpowers/(?=[\w])")
+# A markdown inline link, a reference definition, or an HTML href or src.
+LINKS = [
+    re.compile(r"\]\(\s*<?([^)\s>]+)"),
+    re.compile(r"^\s*\[[^\]]+\]:\s*<?([^\s>]+)", re.M),
+    re.compile(r"""(?:href|src)=["']([^"']+)["']"""),
+]
+LINK_GREP = r"\]\(|^\s*\[[^]]+\]:|href=|src="
+# A relative token like ../superpowers/plans/x.md; `.superpowers/` and docs/superpowers/ are not one.
+TOKEN = re.compile(r"(?<![\w./-])((?:\.\.?/)*)superpowers/([\w.@+/-]*[\w/])")
+HAND = re.compile(r"docs/superpowers")
+# A hex token with a digit and a letter names a commit, so an old path beside it is a fact about that commit.
+PIN = re.compile(r"\b(?=[0-9a-f]*[0-9])(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b")
+# In prose the design's literal swap holds; in code a bare folder name may be a pattern.
+PROSE = (".md", ".markdown", ".mdx", ".txt")
+BARE = re.compile(r"docs/superpowers(?![\w/-])")
+DEFAULT_FOLDERS = ("specs", "plans", "research")
+
+
+def git(repo, *args, check=True):
+    out = subprocess.run(["git", "-C", repo, *args], capture_output=True, text=True,
+                         env={**os.environ, "GIT_OPTIONAL_LOCKS": "0"})
+    if check and out.returncode != 0:
+        raise SystemExit(f"docs-layout: git {' '.join(args)}: {out.stderr.strip()}")
+    return out
+
+
+def repo_name(repo):
+    url = git(repo, "remote", "get-url", "origin").stdout.strip()
+    return re.sub(r"\.git$", "", url.rstrip("/").rsplit("/", 1)[-1].rsplit(":", 1)[-1])
+
+
+def new_path(path):
+    if path + "/" == OLD:
+        return "docs"
+    return "docs/" + path[len(OLD):] if path.startswith(OLD) else path
+
+
+def read_excluded(tsv, name):
+    """Return the whole-file records and the files whose pins are not facts, each by old path and new.
+
+    A row whose reason starts with "pin" only documents a pinned record; the detector finds those lines
+    live. A "follow" row marks a file whose hex tokens are not commits, such as a test snapshot.
+    """
+    with open(tsv) as f:
+        rows = [line.rstrip("\n").split("\t") for line in f if line.strip()]
+    mine = [r for r in rows[1:] if r[0] == name]
+    whole = {r[1] for r in mine if not r[2].startswith(("pin", "follow"))}
+    follow = {r[1] for r in mine if r[2].startswith("follow")}
+    return whole | {new_path(p) for p in whole}, follow | {new_path(p) for p in follow}
+
+
+def tracked(repo):
+    """Return tracked regular files; a symlink (mode 120000) is never rewritten."""
+    out = git(repo, "ls-files", "-s", "-z").stdout
+    files = []
+    for entry in out.split("\0"):
+        if not entry:
+            continue
+        meta, path = entry.split("\t", 1)
+        if not meta.startswith("120000") and not path.startswith(SKIP_DIRS):
+            files.append(path)
+    return files
+
+
+def text_files(repo, pattern, *paths):
+    out = git(repo, "grep", "-lIz", "-e", pattern, "--", *paths, check=False).stdout
+    return [p for p in out.split("\0") if p]
+
+
+def existing(files):
+    """Return every tracked file and every directory that holds one."""
+    seen = set(files)
+    for f in files:
+        d = posixpath.dirname(f)
+        while d and d not in seen:
+            seen.add(d)
+            d = posixpath.dirname(d)
+    return seen
+
+
+def split_target(target):
+    """Return a relative link's path and its anchor or query, or None for a URL, an anchor, or an absolute path."""
+    if re.match(r"^[a-z][a-z0-9+.-]*:|^[#/~]", target, re.I):
+        return None
+    path, tail = re.match(r"([^#?]*)(.*)", target, re.S).groups()
+    return (path, tail) if path else None
+
+
+def relocate(target, old_file, exists):
+    """Return the target rewritten for the file's new home, or None to leave it as written."""
+    parts = split_target(target)
+    if parts is None:
+        return None
+    path, tail = parts
+    resolved = posixpath.normpath(posixpath.join(posixpath.dirname(old_file), path))
+    if resolved.startswith("..") or resolved not in exists:
+        return None
+    if not (old_file.startswith(OLD) or resolved.startswith(OLD) or resolved + "/" == OLD):
+        return None
+    rel = posixpath.relpath(new_path(resolved), posixpath.dirname(new_path(old_file)) or ".")
+    if path.endswith("/") and not rel.endswith("/"):
+        rel += "/"
+    return None if rel == path else rel + tail
+
+
+def rewrite(text, old_file, exists, folders):
+    for link in LINKS:
+        def fix(m):
+            rel = relocate(m.group(1), old_file, exists)
+            return m.group(0) if rel is None else m.group(0).replace(m.group(1), rel, 1)
+        text = link.sub(fix, text)
+
+    def fix_token(m):
+        token = m.group(0)
+        rel = relocate(token, old_file, exists)
+        if rel is not None:
+            return rel
+        # A docs-relative mention (`superpowers/plans/x.md` in a root file) drops the segment.
+        if not m.group(1) and "docs/" + token.rstrip("/") in exists:
+            return m.group(2)
+        return token
+    text = TOKEN.sub(fix_token, text)
+    if old_file.endswith(PROSE):
+        # The folder named as a whole becomes the list of folders it held, which keeps the sentence true.
+        return BARE.sub(folders, text.replace(OLD, "docs/"))
+    return PREFIX.sub("docs/", text)
+
+
+def is_pin(line, follow, f):
+    return f not in follow and HAND.search(line) and PIN.search(line)
+
+
+def plan(repo, whole, follow):
+    files = tracked(repo)
+    exists = existing(files)
+    old = [f for f in files if f.startswith(OLD)]
+    children = sorted({f[len(OLD):].split("/", 1)[0] for f in old})
+    collisions = [c for c in children if any(f == "docs/" + c or f.startswith(f"docs/{c}/")
+                                             for f in files if not f.startswith(OLD))]
+    dirs = [c for c in children if any(f.startswith(f"{OLD}{c}/") for f in old)] or DEFAULT_FOLDERS
+    folders = "docs/{" + ",".join(dirs) + "}"
+    candidates = set(text_files(repo, "superpowers")) | set(text_files(repo, "", OLD))
+    changes, hands, pins = {}, [], 0
+    for f in sorted(candidates):
+        if f in whole or f not in exists or f.startswith(SKIP_DIRS):
+            continue
+        with open(os.path.join(repo, f), "rb") as fh:
+            before = fh.read().decode("utf-8", "surrogateescape")
+        lines = before.splitlines(keepends=True)
+        if any(is_pin(line, follow, f) for line in lines):
+            # A pinned line stays as written, so the rest of the file is rewritten line by line.
+            after = "".join(line if is_pin(line, follow, f) else rewrite(line, f, exists, folders)
+                            for line in lines)
+        else:
+            after = rewrite(before, f, exists, folders)
+        if after != before:
+            changes[new_path(f)] = after
+        for n, line in enumerate(after.splitlines(), 1):
+            if is_pin(line, follow, f):
+                hands.append(f"\0pin {new_path(f)}:{n}: {line.strip()[:160]}")
+                pins += 1
+            elif HAND.search(line):
+                hands.append(f"{new_path(f)}:{n}: {line.strip()[:160]}")
+    return children, collisions, changes, hands, pins
+
+
+def write_atomic(repo, path, text):
+    full = os.path.join(repo, path)
+    fd, tmp = tempfile.mkstemp(dir=os.path.dirname(full), prefix=".docs-layout-")
+    with os.fdopen(fd, "wb") as fh:
+        fh.write(text.encode("utf-8", "surrogateescape"))
+    os.chmod(tmp, os.stat(full).st_mode)
+    os.replace(tmp, full)
+
+
+def check(repo, whole, follow):
+    """Print the old folder if it exists, then each file with an unpinned old-path line outside a record."""
+    count = 0
+    if any(f.startswith(OLD) for f in tracked(repo)):
+        print("docs/superpowers exists")
+        count += 1
+    for f in text_files(repo, "docs/superpowers"):
+        if f in whole or f.startswith(SKIP_DIRS):
+            continue
+        with open(os.path.join(repo, f), errors="replace") as fh:
+            if any(HAND.search(l) and not is_pin(l, follow, f) for l in fh):
+                print(f)
+                count += 1
+    return count
+
+
+def links_at(repo, rev):
+    """Return each relative link as (file, line, index) -> resolved path, read at rev or the work tree."""
+    spec = [rev] if rev else []
+    out = git(repo, "grep", "-I", "-n", "-E", LINK_GREP, *spec, "--", "*.md", "*.html", check=False).stdout
+    found = {}
+    for row in out.splitlines():
+        if rev:
+            row = row[len(rev) + 1:]
+        f, n, text = row.split(":", 2)
+        targets = [m.group(1) for link in LINKS for m in link.finditer(text)]
+        for i, t in enumerate(targets):
+            parts = split_target(t)
+            if parts:
+                found[(f, n, i)] = posixpath.normpath(posixpath.join(posixpath.dirname(f), parts[0]))
+    return found
+
+
+def broken_links(repo, base):
+    """Print each relative link that resolved at base and no longer resolves; return the count."""
+    base_files = git(repo, "ls-tree", "-r", "--name-only", base).stdout.splitlines()
+    base_exists = existing(base_files)
+    resolved_before = {(new_path(f), n, i) for (f, n, i), r in links_at(repo, base).items() if r in base_exists}
+    head_exists = existing(tracked(repo))
+    count = 0
+    for key, r in sorted(links_at(repo, None).items()):
+        if key in resolved_before and r not in head_exists:
+            print(f"broken {key[0]}:{key[1]}: {r}")
+            count += 1
+    return count
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("repo")
+    mode = ap.add_mutually_exclusive_group()
+    mode.add_argument("--dry-run", action="store_true", help="print the moves, rewrites, and hand items")
+    mode.add_argument("--finish", action="store_true", help="write the rewrites a moving apply left pending")
+    mode.add_argument("--check", action="store_true", help="exit 1 while the folder or an unpinned citation remains")
+    mode.add_argument("--links", metavar="BASE", help="exit 1 when a link that resolved at BASE no longer does")
+    ap.add_argument("--excluded", default=DEFAULT_EXCLUDED)
+    args = ap.parse_args()
+    repo = os.path.abspath(args.repo)
+    whole, follow = read_excluded(args.excluded, repo_name(repo))
+    pending = os.path.join(git(repo, "rev-parse", "--absolute-git-dir").stdout.strip(), PENDING)
+
+    if args.check:
+        sys.exit(1 if check(repo, whole, follow) else 0)
+    if args.links:
+        sys.exit(1 if broken_links(repo, args.links) else 0)
+    if args.finish:
+        with open(pending) as fh:
+            for path, text in json.load(fh).items():
+                write_atomic(repo, path, text)
+        os.remove(pending)
+        return
+
+    if not args.dry_run and (git(repo, "status", "--porcelain").stdout or os.path.exists(pending)):
+        raise SystemExit("docs-layout: the tree is not clean; reset it and run again")
+    children, collisions, changes, hands, pins = plan(repo, whole, follow)
+    if collisions:
+        for c in collisions:
+            print(f"collision: docs/{c} already holds files", file=sys.stderr)
+        sys.exit(2)
+    for c in children:
+        print(f"move {OLD}{c} -> docs/{c}")
+    for f in changes:
+        print(f"rewrite {f}")
+    for h in hands:
+        print(h[1:] if h.startswith("\0") else f"hand {h}")
+    print(f"{len(children)} moves, {len(changes)} rewrites, {len(hands) - pins} hand lines, {pins} pinned lines")
+    if args.dry_run:
+        return
+
+    if not children:
+        for path, text in changes.items():
+            write_atomic(repo, path, text)
+        return
+    for c in children:
+        git(repo, "mv", OLD + c, "docs/" + c)
+    leftover = os.path.join(repo, OLD)
+    if os.path.isdir(leftover) and not os.listdir(leftover):
+        os.rmdir(leftover)
+    with open(pending, "w") as fh:
+        json.dump(changes, fh)
+    print("moved; commit the renames, then run --finish")
+
+
+if __name__ == "__main__":
+    main()
