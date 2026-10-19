@@ -564,9 +564,9 @@ lock at once ("Record the first blueprint reads").
 findings, with the blueprint skill, until `$B3C_DRAFTER check <rotate's blueprint>` reports 0
 errors. It commits the fix, runs B3c.5 step 4's stub check on rotate's bar read (the body holds
 every bar finding and "Still open"), and reads rotate again, `--sync`. That second read is a bar
-read, and it should accept. Rotate gets at most four reads.
+read, and it should accept. Rotate gets at most five reads (Geoff, 2026-10-19, at the B3c.6 stop: rotate's read 4 blocked only on a gap its read-3 fix opened, so the cap rose from four to five).
 
-- When rotate's read 4 still blocks, the line stops: the #13 rule hasn't converged on the probe.
+- When rotate's read 5 still blocks, the line stops: the #13 rule hasn't converged on the probe.
 - The one exception is a mechanical fault in the bar machinery, such as a bar read that wasn't
   scoped or a prompt missing the findings. The session fixes it in the drafter worktree with a
   test, runs `make check`, rebuilds, and reads again.
@@ -606,7 +606,7 @@ edits its one blueprint in the pass's cairn worktree without committing, under r
 binary rule. When they return, `git status --porcelain` must name only those blueprints, and the
 session commits the round once and runs the next.
 
-- A page gets at most four reads. A page whose fourth read blocks escalates with its bar committed
+- A page gets at most five reads (Geoff, 2026-10-19). A page whose fifth read blocks escalates with its bar committed
   in the lock and stays out of the waves.
 - A read that escalates on a consistency conflict between two facts escalates the page: B3c never
   edits cairn's facts store. A conflict the blueprint causes is fixed like a finding.
@@ -958,7 +958,7 @@ finding 5's fallback.
 
 ### B3c.7: the seven's read loop (90 min), by the session with fix subagents
 
-Outcome: each of the seven blueprints accepted, or escalated at its fourth read with its bar
+Outcome: each of the seven blueprints accepted, or escalated at its fifth read with its bar
 committed.
 
 - Live. Batch reads under resolution 7's cap.
