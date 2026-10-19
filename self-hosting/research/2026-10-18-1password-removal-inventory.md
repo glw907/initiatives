@@ -77,22 +77,27 @@ How the import placed each login name, read from Proton's open-source importer
 - `op_to_1pux.py` writes the `USERNAME`-purpose field with the `username` designation and every
   other field as a section field, an `EMAIL` field as a string.
 
-So no login name 1Password held was lost. An address that sat in 1Password's username field shows
-in Proton's `Email` with `Username` empty. A login name in an unlabeled field shows as a custom
-field. A login with neither had no login name in 1Password, which is Kagi's case, since its item
-shows no custom field.
+The listing on 2026-10-18 (one `op` session, field labels and types only, no values) found 277
+logins. 189 carry a value in the `USERNAME`-purpose field, and Proton placed each correctly, 142 in
+`Email` and the rest in `Username`. 88 have that field empty. In 72 of them the address sits in a
+separate field labeled "email", "Email", or "Email address" with type `EMAIL`, which 1Password
+shows as the login name. `op_to_1pux.py` wrote that field as a section string, so Proton imported
+it as a custom text field, where it doesn't autofill. Kagi and Substack are two of them. The other
+16 hold no address in any field.
+
+The converter should have promoted an `EMAIL` field to the username designation when the
+`USERNAME` field was empty. A re-import would duplicate items, so the repair edits them in place.
 
 The repair:
 
-1. With the 1Password beta unlocked, one read-only `op` listing of field labels, types, and
-   purposes, never values, finds every login with an empty or missing `USERNAME`-purpose field.
-   Any such login with an address in another field is a custom-field case and gets that value.
-2. Each remaining gap is matched against Geoff's Fastmail masked addresses by their recorded
+1. Done 2026-10-18: the listing above, kept as a TSV in `/dev/shm` (titles, hosts, and field
+   labels only). For the 72, the value is the address in their `EMAIL` field, read at write time.
+2. Each of the 16 is matched against Geoff's Fastmail masked addresses by their recorded
    domain (the checklist at `~/.local/state/self-hosting/masked-email-checklist.md`, and JMAP for
    the domain field), then against his own addresses. An item with no match goes to Geoff as a
    question.
 3. Geoff reviews the proposed table, kept in `/dev/shm` or the private servers repo, never in a
    public repo.
 4. Claude writes each address into `Email`, and any other name into `Username`, through a Proton
-   Pass session from `secret-receive --pass` (W2) in an attended sitting, then lists the items
-   again to confirm each one.
+   Pass session from `secret-receive --pass` (W2) in an attended sitting, removes the 72's duplicate
+   custom field, then lists the items again to confirm each one.
