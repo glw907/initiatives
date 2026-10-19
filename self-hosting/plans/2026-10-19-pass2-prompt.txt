@@ -1,0 +1,55 @@
+You are running Pass 2 of the self-hosting initiative: the media server. Your session name is servers-media, launched by conductor-servers from the servers main checkout /var/home/glw907/Projects/servers on pavilion, with --add-dir for /var/home/glw907/.dotfiles and /var/home/glw907/Projects/initiatives. You run unattended; conductor-servers owns your PRs and the packet to Geoff, so your work ends at PR-ready.
+
+Read these first, in order:
+1. /var/home/glw907/Projects/initiatives/self-hosting/plans/STATUS.md
+2. /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-17-self-hosting-plan.md: the header, "Privacy", "Adapter facts for the servers repo", "Repos and sessions", "Secrets in the age store", "Standing answers", "Dispatch note", "Human steps", and "Pass 2: media server". The plan is the task list. Where STATUS's "Owed" amends it, STATUS wins; where this prompt differs from either, this prompt wins.
+3. /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-19-pass2-preflight.md. Its "Before launch" items are done; "The media sitting" is the stop you write at M8.
+4. The design (/var/home/glw907/Projects/initiatives/self-hosting/specs/2026-10-17-self-hosting-design.md) for any mechanism a task names; dubplate's host contract in /var/home/glw907/Projects/dubplate/docs/server-runbook.md (read only); the servers repo's README.md, docs/runbook.md, and docs/decisions.md; the pass-core and vps-conventions skills. The servers repo has no adapter skill and no CLAUDE.md, so the plan's adapter facts stand in.
+
+What changed since the plan (Geoff's rulings, 2026-10-18 and 2026-10-19):
+- ntfy is gone, and every ntfy line in the plan is void. The monitor Worker emails urgent alerts and a weekly note to Geoff's recovery address through Cloudflare Email Service, and serves a token-guarded /alerts that pavilion's monitor-subscribe polls. M8's "both alerts show on pavilion" means monitor-subscribe shows them at normal urgency.
+- 1Password is gone, and the age key comes through ws-pass-key. You never call the Proton Pass CLI; the claude-block-pass hook refuses any Bash command that names it, so Geoff's vault steps live only in files and PR bodies.
+- Vendors: use the existing set. A new vendor only where that set has no good way, and since it means a new account, that is a stop with the reason.
+- The ssh-media.907.life Access policy admits Geoff's GitHub identity only. The second operator's identity, Unix account, patterns lines, and first sign-in wait for his GitHub username and email: record that under ## Decisions and list each as owed. Pre-flight added the GitHub identity provider (`bash scripts/dry-run.sh access-github-idp`).
+- Musicbox is deleted, and nothing here may depend on it. music.907.life has no record: M3 lays down the dubplate-host rows from dubplate's server-runbook with no certificate request for that name, and M8 leaves music_ping off.
+- M6's dubplate request: glw907/dubplate is not a push target. Put its exact text under the servers PR's "Found, not done"; the conductor files it.
+- M8's override binding doesn't exist. deploy.sh takes only `monitor` or `mta-sts`, and the allow rule matches only `cloudflare/deploy.sh monitor`, so add the override in a way that exact command deploys, revert it in the next commit, and record the shape under ## Decisions. Create and delete servers-scratch-stale with CLOUDFLARE_API_TOKEN from the main loop (ws-servers has no R2 scope).
+- Runbook: under "The alerts on the workstation", add that a Proton filter files the monitor's mail into the Services folder (filter source: the workstation repo's docs/proton/services-filter.sieve), and that without it the mail stays in the inbox. In "Archive a file", replace "with 1Password unlocked" with the ws-pass-key path. The recovery address never appears outside the servers repo.
+
+Setup:
+- Your first act is EnterWorktree with name media, your only EnterWorktree call. Push the branch as pass2-media (`git push origin worktree-media:pass2-media`). Run `npm ci` in cloudflare/monitor and cloudflare/mta-sts.
+- Reach other repos by absolute path and `git -C`. Fetch the workstation repo, then run `git -C /var/home/glw907/.dotfiles worktree add .claude/worktrees/self-hosting-media -b self-hosting-media origin/main`. No task plans an initiatives edit.
+- Write pass-task-clock per pass-core "Clock stop" with these estimates: M1 105 and M2 80 (a pair, counted at 105), M3 120, M4 105, M5 100, M6 105, M7 105, M8 40, for a 680-minute path. A task past twice its estimate extends once to four times the original. Calendar waits (the sitting, the scratch object's two days) are outside the clock.
+- Arm the API-drop wake-up per ~/.claude/docs/unattended-work-guards.md.
+
+Secrets: every secret this pass creates (the tunnel token, media's restic password, and any value a server can't be rebuilt without, such as Immich's database password) goes through the exact rule form: /var/home/glw907/.dotfiles/scripts/secrets/secret-set.sh, NAME and its mode, one `--values /var/home/glw907/.dotfiles/.claude/worktrees/self-hosting-media/secrets/values.age`, and one `--local /run/user/1000/self-hosting/secrets-media`. Before `restic init`, store, compare hashes, commit with the workstation registry entry, push, and confirm the pushed blob decrypts to the same hashes. Never rebase or force-push that branch, and before PR-ready, test-merge origin/main and resolve any values.age conflict as the plan sets out. Render F3's HEARTBEAT_TOKEN_MEDIA, never regenerate it. Add the server's IPs to privacy/patterns.txt when you learn them.
+
+Run M1 through M8 as the plan states them. Pair arms follow the "Dispatch note" and never touch a live account. No production rebuild runs: `provision.sh rebuild` is tested against the fake only. M7 deletes only the drill servers it created, inside restore-drill.sh. Before the sitting, prove a 150 MB upload to photos-new yourself with the Immich CLI, so the phone step tests only the client. No R2 lock rule lands before I1.
+
+Class: auth-data and live-account. auth-data tasks are test-first, and each auth-data commit gets a diff-reviewer task-scope read.
+
+Judgment calls and stops: take your own recommendation on a reversible call inside the plan, budget, and path ceiling, and record it under ## Decisions. A count cap is a loop guard: past it, go on while each retry fixes a cause you have traced, listing each fix under ## Decisions. Stop only for:
+- a purchase or the spend ceiling
+- the path ceiling, or a task past four times its estimate
+- a cause you cannot trace, or one that returns after its fix
+- an irreversible act outside the plan's authority
+- a secret only Geoff has, or a new vendor
+- a design change
+
+You never ask Geoff and never run notify-send. Write the stop in the servers PR body under `## Stop` (what stopped, the evidence, your recommendation), opening the draft PR first if needed, and wait with the Monitor tool; conductor-servers is the only asker. Never retry a command the classifier denies: record it under ## STATUS lines and ## Not checked and go on.
+
+The media sitting: once M7 closes and M8's emergency values are staged in a 0600 file under /dev/shm, write `## Stop: the media sitting` in the servers PR body with the pre-flight's three steps and the file's path. A background task whose trap removes the file holds it. Continue M8's monitor steps, and watch each step's evidence yourself, as the pre-flight's checks name it. A step that hasn't happened stays owed. Once every hash matches, remove the staged file and the hash file.
+
+Privacy: glw907/workstation and glw907/initiatives are public. Before every commit and PR body there, and on the dubplate text, run `bash /var/home/glw907/Projects/servers/scripts/privacy-check.sh <changed files> <message or body file>`.
+
+Push targets: glw907/servers, glw907/workstation, and glw907/initiatives. Open each PR as a draft at its first push. Never merge a PR and never send a packet: conductor-servers owns both. Post-merge steps (the overlay's removal after `sync.sh --local`) go under `## After merge`, and `## Before merge` appears only for a step that must run first.
+
+At the close:
+- the servers gate and CI are green on the head, and the workstation gate is green
+- one whole-branch diff-reviewer and one `gitleaks git` history scan run over each changed branch
+- the plan's close checklist passes, including a clean `git -C /var/home/glw907/.dotfiles diff --quiet -- secrets/values.age`
+- the scratch bucket is gone or listed as owed
+
+Each PR body opens with `## Brief` per ~/.claude/docs/voice/approval-brief.md, then what landed, each auth-data verdict, ## Decisions, ## Not checked, the score, and your STATUS lines under `## STATUS lines`. You do not edit STATUS. Report the PR numbers and heads as your last act.
+
+Returning causes (pass-core "Lifecycle" step 1): the items you may escalate in the PR without breaking the design are M5's SMTP check, M8's stale-snapshot check against the scratch bucket, and the music_ping probe; any other item that would need escalating stops for the conductor.
