@@ -615,6 +615,13 @@ while the probe runs. When the probe ends:
     against them, and on accept reruns the probe draft once. A blocking read 7, or a second
     escalation of the rerun, stops the line. Every read after an accepted read passes `--since`.
 
+  - Geoff's ruling at rotate's read-11 stop (2026-10-19): read 11 (run 20261019T193033Z-bcd8ca2c)
+    blocked again on `rb-repush`, the rollback re-push handler, a cause read 10 named. The session
+    rewrites `rb-repush` once so any repeat answer that does not change after a spaced re-push
+    exits to generate-a-third-key, fixes the two rollback nits, takes read 12 as a bar read, and on
+    accept runs the probe as the batch cap rerun. A third block on the rollback handler escalates
+    rotate for good, and the run goes on to B3c.7.
+
   Any other escalation stops the line: review seats still blocking after the redrafts, the final
   reader, a gate red the fix exchanges can't clear, or `cap` again on the batch rerun. STATUS
   carries the run id, the record excerpt, and one question, and `notify-send -u normal` tells
