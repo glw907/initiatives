@@ -6,7 +6,7 @@ It carries out your ruling on whole reads, and it launches once you merge B3 in 
 The docs-system initiative builds drafter, which turns a page's blueprint into a reviewed page. B3 builds drafting tonight on a synthetic page; B3c is the cairn half you split off. cairn's release waits on its docs. A whole read reviews an entire blueprint, and until now each round found something new, so no cairn blueprint was ever accepted. Your ruling makes each later round judge only the earlier findings and the fixes.
 
 ## If you approve
-1. [session] Merge glw907/initiatives#PR, which files this design.
+1. [session] Merge glw907/initiatives#39, which files this design.
 2. [session] Plan B3c tonight (three lenses, the fold, and a verification read), and hand it to conductor-drafter to launch after B3 merges.
 3. [you: read the pass's packet] Read B3c's packet with the drafted pages.
 
@@ -53,7 +53,7 @@ Choices:
 | Part | Verdict | Fact | Why |
 |---|---|---|---|
 | glw907/initiatives:docs-system/specs/2026-10-19-drafter-b3c-cairn-pilot-design.md | approve | It builds your whole-read ruling and drafts the pages B3 left out, with cairn staying on its own prompts module until B5. | Moving cairn onto drafter's stock prompts waits for the register split. |
-| glw907/initiatives#PR | approve | The PR files the design and this packet. | It changes no behavior. |
+| glw907/initiatives#39 | approve | The PR files the design and this packet. | It changes no behavior. |
 | step:1 | session | A merge can be reverted. | The design is a record. |
 | step:2 | session | B3c builds on B3's code, so it can't launch before B3 merges. | The plan is ready when B3 lands. |
 | step:3 | you | The drafted pages come back to you in one cairn PR. | Nothing merges unread. |
