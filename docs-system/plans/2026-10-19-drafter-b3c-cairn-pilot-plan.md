@@ -593,6 +593,13 @@ while the probe runs. When the probe ends:
     file, the brief misses the schema the same way on every turn, or a step errors. At most two
     such cycles.
 
+  - Geoff's ruling at the probe draft's stop (2026-10-19): run 20261019T173938Z-6c42aff9
+    escalated on "second fix verdict" from the editor seat, traced to rotate's blueprint, where
+    gradual deployments live only in push-retry's handoff. The session gives gradual deployments
+    an optional step of its own before `s-push-node`, rotate takes a sixth read (past the
+    five-read cap, for rotate only), and on accept the probe draft reruns once inside the budget.
+    A blocking sixth read, or a second escalation of the rerun, stops the line.
+
   Any other escalation stops the line: review seats still blocking after the redrafts, the final
   reader, a gate red the fix exchanges can't clear, or `cap` again on the batch rerun. STATUS
   carries the run id, the record excerpt, and one question, and `notify-send -u normal` tells
