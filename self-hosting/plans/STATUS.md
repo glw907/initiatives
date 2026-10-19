@@ -18,7 +18,7 @@ Rulings during Pass 0 (Geoff, 2026-10-18):
 
 ## Next action
 
-Pass 1 (`servers-foundation`, session `e8e7f4d7`) runs unattended from its committed prompt, `2026-10-18-pass1-prompt.txt`, launched 2026-10-18 at servers `44ad38a`. `conductor-servers` (session `5df9ba7e`) watches it and sends Geoff one packet for its three PRs, merged in the order workstation, servers, initiatives. Running path: 435 minutes (Pass 0 at plan) against the 3,515 line. Geoff's next step is his Proton migration: the account's two FIDO2 keys and paper phrase (0.6), then the OAuth app, Spamhaus key, and test accounts (0.9) and the recovery kit (0.11). Each value goes through `secret-receive` in an attended sitting.
+Pass 1 (`servers-foundation`, session `e8e7f4d7`) runs unattended from its committed prompt, `2026-10-18-pass1-prompt.txt`, launched 2026-10-18 at servers `44ad38a`. `conductor-servers` (session `5df9ba7e`) watches it and sends Geoff one packet for its three PRs, merged in the order workstation, servers, initiatives. Running path: 435 minutes (Pass 0 at plan) against the 3,515 line. Pass W (`workstation-self-hosting-proton`, session `c27d5d8f`) runs alongside from `2026-10-18-passW-prompt.txt`, launched 2026-10-18 from the workstation main checkout, W0 to W4 unattended; the conductor owns its PR and packet. Its time is reported, not summed. Geoff's next step is his Proton migration: the account's two FIDO2 keys and paper phrase (0.6), then the OAuth app, Spamhaus key, and test accounts (0.9) and the recovery kit (0.11). Each value goes through `secret-receive` in an attended sitting.
 
 ## Pass 0 rows
 
@@ -41,7 +41,10 @@ Pass 1 (`servers-foundation`, session `e8e7f4d7`) runs unattended from its commi
 ## Owed
 
 - Pass 0 rows 0.6, 0.9, and 0.11, and the 0.8 asks to the second operator and members A, B, and C, all wait on Geoff's Proton Pass move. Re-run `bash scripts/dry-run.sh access-github-idp spamhaus test-` once 0.9 stores its values (`access-github-idp` fails and the other three read OWED today).
-- Geoff's 1Password import into the re-created Proton account (W6 in Pass W). Pass W has no executor prompt yet; the conductor writes it.
+- W6's import is done by another route: the 1Password Linux app can't export, so workstation#94 (`f6ba2a3`) added `scripts/migrate/op_to_1pux.py`. It moved 283 items (Private 225 logins and 2 notes, Parents 37 logins and 3 cards, Family 15 logins and 1 card), and Geoff confirmed the Proton counts match. Moved by hand: 1 driver license, 2 API credentials, 3 identities, 2 servers, 1 SSH key, 1 wireless router. Still owed in W6: the passkey list (from the 1Password app, since `op` can't list passkeys), a TOTP code generating in Proton Pass, the two attachment checks, the `archive.sh` round trip, and no plaintext in `/dev/shm`. P4's uninstall PR removes the script.
+- Only the 1Password beta 8.12.42 (`~/.local/opt/1password-beta-dl`, run with `--no-sandbox`) opens Geoff's data; the installed stable 8.12.40 refuses it. `sudo -A` and the age-key read work only while that beta runs unlocked, which blocked Pass 1's F2, F3, and F6 live steps on 2026-10-18. Delete the tarball once `ujust update` brings a stable build that opens the data.
+- Pavilion's 1Password uninstall (Geoff, 2026-10-18, relayed): he keeps 1Password on his other machines, so pavilion's removal need not wait out P4's 30 days. After W5 passes on pavilion, a workstation PR removes the packages, `claude-block-op`, `secret-receive --op`, and `ws-pass-key`'s `op` branch, and deletes the beta tarball; it needs a reboot and goes in a packet. Open: those files are shared with thinkpad-x1, which has no agent token, so the PR is either scoped to pavilion or waits for thinkpad-x1's W5. 0.11's paper copy of the age key comes first.
+- Geoff's Fastmail masked-email list is at `~/.local/state/self-hosting/masked-email-checklist.md` (private, 0600, outside every repo): 168 enabled, 1 disabled, 20 deleted. P3's snapshot starts from it.
 - The dry-run table's rows are per check, not per credential (`cf-ws-servers` has five). The plan's 0.12 wording is per credential.
 - thinkpad-x1: the servers repo clone, workstation checkout pull, and the `~/.local/secrets` sync happen with F6b and F6c.
 
@@ -64,5 +67,6 @@ Pass 1 (`servers-foundation`, session `e8e7f4d7`) runs unattended from its commi
 
 - Pass 0: session `workstation-self-hosting-pass0`, with a second build session of the same name, both ended at this hand-over.
 - Conductor: `conductor-servers`, session `5df9ba7e`, on pavilion from the servers main checkout.
+- Pass W: `workstation-self-hosting-proton`, session `c27d5d8f`, launched by the conductor 2026-10-18 after the Pass 0 session relayed Geoff's word that the cutover off 1Password comes next.
 - Pass 1: `servers-foundation`, session `e8e7f4d7`, launched by the conductor 2026-10-18. A first launch (`5c10c3ea`) got no prompt: `--add-dir` takes a variadic list and swallowed the prompt, so it was stopped and removed, and the conductor prompt's line now puts `--add-dir` before the named flags.
 - Planner: session `26c03024` on pavilion ended after the plan merged.
