@@ -1,14 +1,14 @@
 # drafter pass 2 plan: key and money
 
-Design: `~/.dotfiles/docs/superpowers/specs/2026-10-13-drafter-completion-design.md`, pass 2,
+Design: `~/.dotfiles/docs/specs/2026-10-13-drafter-completion-design.md`, pass 2,
 approved by Geoff on 2026-10-13. Geoff ruled this pass `auth-data` ("You can use it."), and ruled
 that its live smoke moves to pass 5, since no key exists before then (Technical notes 8). Spec:
-`~/.dotfiles/docs/superpowers/specs/2026-10-12-drafter-pipeline-design.md`, sections "The tool" (the
+`~/.dotfiles/docs/specs/2026-10-12-drafter-pipeline-design.md`, sections "The tool" (the
 `key`, `batch`, and `ledger` rows, and `drafter spend`), "Caps", "The ledger", "A server-side
 backstop" (read only, for the client's spend-limit handling), "The key", "Caching" (no
 `cache_control` is sent), "Concurrency" (the client starts no goroutines), "Failures", and "Testing"
 (the Caps and the ledger row, the key row, and the `make smoke` paragraph). Fold record:
-`~/.dotfiles/docs/superpowers/research/2026-10-13-drafter-completion-plan-fold.md`.
+`~/.dotfiles/docs/research/2026-10-13-drafter-completion-plan-fold.md`.
 
 ## Outcome
 

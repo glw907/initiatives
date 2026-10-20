@@ -4,7 +4,7 @@ Design: Geoff's ruling of 2026-10-13 in conductor-drafter's session. The "now" i
 triage of passes 1 and 2 run as one pass after pass 4 merges and before pass 5, whose live runs
 use the spend ledger. The scope is exactly five `glw907/drafter` issues: #12, #17, #18, #19, and
 #20. Read each with `gh issue view <n> -R glw907/drafter`. Initiative design, for context only:
-`~/.dotfiles/docs/superpowers/specs/2026-10-13-drafter-completion-design.md`. The ledger's
+`~/.dotfiles/docs/specs/2026-10-13-drafter-completion-design.md`. The ledger's
 contract is pass 2's plan, `2026-10-13-drafter-p2-money-plan.md`, section "Interfaces", the
 `internal/ledger` rows.
 

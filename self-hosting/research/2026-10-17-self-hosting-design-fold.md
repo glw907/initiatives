@@ -186,7 +186,7 @@ Checks made in this round:
 - B1 reproduced locally with restic 0.19.1: after deleting only the packs from a first backup, `restore latest` restored 976.562 KiB of 3.815 MiB, and `check --read-data` reported "repository contains errors". The first round's live R2 probe never tested this, because it deleted only packs no snapshot used.
 - `restic recover` after deleting every snapshot and index file: `repair index` rebuilt the index, the first `recover` failed with "nodes are not ordered or duplicate", and a second run saved a snapshot that restored both files.
 - `gh repo view glw907/workstation`: `"visibility":"PUBLIC"`, and `secrets/values.age` is tracked there.
-- dubplate's identity design (`dubplate/docs/superpowers/specs/2026-09-08-rung-5-identity-auth.md`, Fork 2) names Fastmail on 587, and the same spec names `pings@907.life` sending through Cloudflare.
+- dubplate's identity design (`dubplate/docs/specs/2026-09-08-rung-5-identity-auth.md`, Fork 2) names Fastmail on 587, and the same spec names `pings@907.life` sending through Cloudflare.
 - R2 pricing: $0.015 per GB-month, 10 GB a month free, no egress charge (Cloudflare's R2 pricing page). The growth estimate uses the Immich brief's 38.6 MB dump and the backups brief's note that gzipped dumps deduplicate poorly; the rest is unmeasured, and the spec says so.
 
 | Finding | Disposition |

@@ -1,6 +1,6 @@
 # Hand-off: docs-standard Claude infrastructure to plan two
 
-Plan one, `docs/superpowers/plans/2026-09-08-docs-standard-claude-infra.md`, is closed. This
+Plan one, `docs/plans/2026-09-08-docs-standard-claude-infra.md`, is closed. This
 document names the artifacts plan two's preflight verifies and the obligations plan two must
 add to itself. It does not re-run acceptance criteria already proved per task.
 
@@ -46,7 +46,7 @@ The exact JSON plan two commits at `~/Projects/cairn-cms/.tellgrader.json`:
 {
   "profile": "docs-register",
   "include": ["docs/**"],
-  "exclude": ["docs/internal/**", "docs/superpowers/**"]
+  "exclude": ["docs/internal/**", "docs/**"]
 }
 ```
 
@@ -121,7 +121,7 @@ All five verdict values are present; the agent returns one verdict per figure wi
 ## Still owed, carried, not verified
 
 The four lines in each `CLAUDE.md`, pending the owner's pick from
-`docs/superpowers/plans/2026-09-08-claude-md-displacement-candidates.md`, batched with the
+`docs/plans/2026-09-08-claude-md-displacement-candidates.md`, batched with the
 corpus approval sitting (decision 7). Unit 3c closes at that sitting, not here.
 
 One additional note for that sitting, not part of task 6's own scope: the "paragraphs outside

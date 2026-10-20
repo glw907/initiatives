@@ -12,7 +12,7 @@ Work falls under one of three cases. Check them in order.
 2. When no record fits, the work is ordinary work for that repo's backlog, or the start of a new initiative. A new initiative gets a record with status `proposed`.
 3. A fix with no larger purpose needs no initiative.
 
-A document that concerns one repo only stays in that repo's `docs/superpowers/`, even when it belongs to an initiative.
+A document that concerns one repo only stays in that repo's `docs/`, even when it belongs to an initiative.
 
 ## Add or change a record
 

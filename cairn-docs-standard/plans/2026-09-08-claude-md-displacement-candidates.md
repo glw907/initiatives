@@ -28,7 +28,7 @@ no measure it reports gates.
 
 ```
 - The cairn documentation standard governs every published docs page; see
-  `~/Projects/cairn-cms/docs/superpowers/specs/2026-09-08-docs-standard-design.md`.
+  `~/Projects/cairn-cms/docs/specs/2026-09-08-docs-standard-design.md`.
 - Any page an outside reader opens leads with a one-paragraph brief and carries one section
   per read; do not make a reader assemble the page's point from its parts.
 - A claim about the owner, or about cairn's own stance, resolves to a line in an owner brief,
@@ -41,7 +41,7 @@ no measure it reports gates.
 
 ```
 - This repo follows the cairn documentation standard; see
-  `docs/superpowers/specs/2026-09-08-docs-standard-design.md` for the full design.
+  `docs/specs/2026-09-08-docs-standard-design.md` for the full design.
 - Any page an evaluator, editor, or extending developer reads leads with a brief and holds one
   section per read, never a page that makes the reader assemble the point from its parts.
 - A claim about Geoff or about cairn's own stance resolves to a line in an owner brief, never
@@ -72,7 +72,7 @@ clears the 625-byte requirement on its own.
 2. **The "Engine-level UI mechanics, every cairn site" section (2,142 bytes).** The mechanic
    vs. choice distinction, the consultation-first path, and the mid-pass filing fallback are
    the same protocol the `engine-consult` skill implements and that
-   `cairn-cms/docs/superpowers/specs/2026-08-26-engine-consultation-design.md` and
+   `cairn-cms/docs/specs/2026-08-26-engine-consultation-design.md` and
    `cairn-cms/docs/internal/engine-rulings.md` state in full. A single-paragraph pointer to
    the skill and the rulings ledger preserves the trigger ("this repo has patched this
    before") without restating the whole procedure here.

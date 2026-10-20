@@ -1,13 +1,13 @@
 # drafter pass 1 plan: foundations
 
-Design: `~/.dotfiles/docs/superpowers/specs/2026-10-13-drafter-completion-design.md`, pass 1, approved
+Design: `~/.dotfiles/docs/specs/2026-10-13-drafter-completion-design.md`, pass 1, approved
 by Geoff on 2026-10-13 with unattended planning and execution. Spec:
-`~/.dotfiles/docs/superpowers/specs/2026-10-12-drafter-pipeline-design.md`, sections "The tool" (the
+`~/.dotfiles/docs/specs/2026-10-12-drafter-pipeline-design.md`, sections "The tool" (the
 `atomicfile`, `config`, and `run` rows, and `drafter config`), "Configuration" (all of it),
 "Records" (run IDs, the run directory, retention), "Run inputs" (the state schema version), "One run
 per worktree" (the locks), and "Testing" (the Configuration and Retention rows). The eight open
 drafter issues (#2, #3, #4, #5, #7, #8, #9, #10) close here. Fold record:
-`~/.dotfiles/docs/superpowers/research/2026-10-13-drafter-completion-plan-fold.md`.
+`~/.dotfiles/docs/research/2026-10-13-drafter-completion-plan-fold.md`.
 
 ## Outcome
 

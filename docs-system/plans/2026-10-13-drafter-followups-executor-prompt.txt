@@ -4,7 +4,7 @@ items from the triage of passes 1 and 2 (glw907/drafter issues #12, #17, #18, #1
 Load `pass-core` and `go-conventions` before writing any Go. Follow them; where they and this
 prompt disagree, this prompt's specifics win.
 
-Plan, the source of every task: `~/.dotfiles/docs/superpowers/plans/2026-10-13-drafter-followups-plan.md`.
+Plan, the source of every task: `~/.dotfiles/docs/plans/2026-10-13-drafter-followups-plan.md`.
 Read it whole first, including its "Interfaces" section, which pass 5 builds against. Read each
 issue with `gh issue view <n> -R glw907/drafter`.
 

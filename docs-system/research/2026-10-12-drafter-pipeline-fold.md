@@ -1,6 +1,6 @@
 # drafter pipeline spec: fold record
 
-Target: `docs/superpowers/specs/2026-10-12-drafter-pipeline-design.md`, revised in place from
+Target: `docs/specs/2026-10-12-drafter-pipeline-design.md`, revised in place from
 commit 1e92788. Reviews folded: `2026-10-12-drafter-pipeline-review-mechanics.md` (M),
 `-contract.md` (C), and `-integrity.md` (I). Each finding was verified against source, docs, or a
 probe before it was acted on. Section names below are the revised spec's.

@@ -2,7 +2,7 @@
 
 Status: design approved section by section by Geoff, 2026-10-12, in the session that ran the
 spike. Revised the same day by the fold of three reviews (mechanics, contract, integrity); the fold
-record is `docs/superpowers/research/2026-10-12-drafter-pipeline-fold.md`. Geoff ruled the three
+record is `docs/research/2026-10-12-drafter-pipeline-fold.md`. Geoff ruled the three
 questions under "Owner rulings" the same day, and in the same session approved the changes for
 generality, the "Configuration" section, and sub-project 5. This spec covers sub-project 1 of
 five. It awaits Geoff's review of the written text before a plan is written.

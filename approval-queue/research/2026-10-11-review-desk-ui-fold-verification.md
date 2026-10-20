@@ -1,8 +1,8 @@
 # Review desk UI plan: fold verification
 
 A fresh read of the folded plan at `bc91f01`
-(`docs/superpowers/plans/2026-10-11-review-desk-ui.md`, its prompt
-`docs/superpowers/plans/2026-10-11-review-desk-ui-prompt.txt`, and the fold record) against the three
+(`docs/plans/2026-10-11-review-desk-ui.md`, its prompt
+`docs/plans/2026-10-11-review-desk-ui-prompt.txt`, and the fold record) against the three
 reviews, the approved design, the first desk plan's inherited conventions, pass-core, and
 `bin/.local/bin/review-desk`. 2026-10-11.
 

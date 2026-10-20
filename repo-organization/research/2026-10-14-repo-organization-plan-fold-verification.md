@@ -33,7 +33,7 @@ Counts: 1 blocker, 8 majors, 16 minors.
   databases with virtual tables."
 - `~/Projects/initiatives` has no remote. `~/Projects/approval-queue` doesn't exist yet. Nine
   sweep repos plus workstation have a ROADMAP.md, and drafter and initiatives have none, which
-  matches I7's ten. `docs/superpowers/` holds 281 tracked files, and `approval-queue/` holds 60.
+  matches I7's ten. `docs/` holds 281 tracked files, and `approval-queue/` holds 60.
 
 ## Blocker
 

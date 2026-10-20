@@ -9,7 +9,7 @@ readable treatment throughout.
 
 The desk becomes a productive daily tool: everything waiting in one place, each decision a key
 press away, and the screen calm enough to read for long stretches. It matches the approved
-mockups in `docs/superpowers/specs/assets/2026-10-11-review-desk-ui/` (`pr-b.html`,
+mockups in `docs/specs/assets/2026-10-11-review-desk-ui/` (`pr-b.html`,
 `design-b.html`, `triage-c2.html`, `empty-b.html`).
 
 ## What Geoff sees

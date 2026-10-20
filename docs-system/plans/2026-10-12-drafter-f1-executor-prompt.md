@@ -3,10 +3,10 @@ You are the executing session for drafter F1: the plan-format additions from cai
 Load `pass-core`, then the `dotfiles-pass` adapter, then `go-conventions` before writing any Go.
 Follow them. Where they and this prompt disagree, this prompt's specifics win.
 
-Plan, the source of every task: `docs/superpowers/plans/2026-10-12-drafter-f1-plan.md` in
+Plan, the source of every task: `docs/plans/2026-10-12-drafter-f1-plan.md` in
 `~/.dotfiles`. Read it whole first. The interim format sheet it folds in is
 `/var/home/glw907/.local/share/drafter/plan-format-v1.md`. The Pass 0 plan,
-`docs/superpowers/plans/2026-10-12-drafter-pass0-plan.md`, is background only.
+`docs/plans/2026-10-12-drafter-pass0-plan.md`, is background only.
 
 How to work:
 - Your first act is `EnterWorktree` in `~/.dotfiles`. Your working directory stays in that worktree

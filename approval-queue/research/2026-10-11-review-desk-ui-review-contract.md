@@ -1,6 +1,6 @@
 # Review desk UI plan: contract and criteria review
 
-Reviewer lens: contract and criteria. Target: `docs/superpowers/plans/2026-10-11-review-desk-ui.md`
+Reviewer lens: contract and criteria. Target: `docs/plans/2026-10-11-review-desk-ui.md`
 at `439f1b0`, read against the approved design, the a11y review record, the catalogue, the first desk
 plan's conventions, the current `review-desk/` app, `bin/.local/bin/review-desk`, pass-core "Close",
 and the dotfiles-pass adapter. Every claim below was checked against source or a live `gh` read on

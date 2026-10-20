@@ -138,10 +138,10 @@ Each rule and tooling change in this section carries its own acceptance check in
 
 ## Migration of past work
 
-`workstation`'s `docs/superpowers/` holds 173 entries: 25 specs, 60 plans, and 88 research files and folders. About 41 distinct paths in other repos point into it. Each entry goes where the new rule would have put it:
+`workstation`'s `docs/` holds 173 entries: 25 specs, 60 plans, and 88 research files and folders. About 41 distinct paths in other repos point into it. Each entry goes where the new rule would have put it:
 
 - Cross-repo work, such as drafter's specs and the docs standard's infrastructure plan, moves to `initiatives/<id>/`.
-- Another repo's single-repo work moves into that repo's `docs/superpowers/`. The dubplate Go rewrite, the uploader, the music VPS, and the poplar adapter are the known cases.
+- Another repo's single-repo work moves into that repo's `docs/`. The dubplate Go rewrite, the uploader, the music VPS, and the poplar adapter are the known cases.
 - Work that concerns only `workstation`, such as the pass process, the infrastructure sweeps, and the Thunderbird theme, stays.
 - The pings plans leave the tree with the pings repo and remain in `workstation`'s history.
 
@@ -149,10 +149,10 @@ A script classifies every entry and writes `migration-map.tsv`, which lists the 
 
 Docs move by copy and delete. Each destination repo receives its files in one commit whose body names the source `workstation` commit, and `workstation` then deletes them while its history keeps the originals. The pass doesn't graft docs history across repos with `git filter-repo`, since the source commit is one `git show` away. The `workstation` deletion PR stays a draft until a check confirms two facts: every destination path exists on its repo's `origin/main`, and `git diff <source commit> origin/main` over every moved path is empty. A non-empty diff means a session edited a moved file after the copy, and the pass re-copies it.
 
-One reference tool, with a check mode and an apply mode, rewrites and checks paths over one shared scope. The map is keyed on the source repo and the path. A bare `docs/superpowers/` path resolves against the repo that contains it, since a dozen repos carry their own tree, and a `~/`, `/var/home/`, or `~/Projects/<repo>/` path resolves literally. It matches the old paths, the new `initiatives/<id>/` paths, the moved code paths, paths into retired repos, and links to a retired ROADMAP.md, and gives each class a disposition:
+One reference tool, with a check mode and an apply mode, rewrites and checks paths over one shared scope. The map is keyed on the source repo and the path. A bare `docs/` path resolves against the repo that contains it, since a dozen repos carry their own tree, and a `~/`, `/var/home/`, or `~/Projects/<repo>/` path resolves literally. It matches the old paths, the new `initiatives/<id>/` paths, the moved code paths, paths into retired repos, and links to a retired ROADMAP.md, and gives each class a disposition:
 
 - A reference to a moved docs entry or code path is rewritten. Moved code paths get map rows like the docs entries, and the tool edits only references that resolved to a moved entry before the move.
-- A reference to a retired repo or ROADMAP from a history file (`docs/superpowers/`, `docs/internal/record/`, `docs/internal/history/`, or `HISTORY.md`) stays as written. The check mode lists it in a `retired-target` class and never fails on it, since a retired target has no new path. About 230 files mention a ROADMAP, most of them history, and `cairn-cms` cites `~/Projects/cairn-scratch/` in about 16 docs.
+- A reference to a retired repo or ROADMAP from a history file (`docs/`, `docs/internal/record/`, `docs/internal/history/`, or `HISTORY.md`) stays as written. The check mode lists it in a `retired-target` class and never fails on it, since a retired target has no new path. About 230 files mention a ROADMAP, most of them history, and `cairn-cms` cites `~/Projects/cairn-scratch/` in about 16 docs.
 - A reference from a live file, such as `secrets/registry.md`, `bash/.bashrc`, or a skill, is a tie the inventory lists, and the pass edits it by hand.
 
 Its tests plant a reference to a missing `initiatives/<id>/` path, which the check mode must report.

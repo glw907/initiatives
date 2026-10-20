@@ -1,13 +1,13 @@
 # drafter pass 3 plan: prompts and handoff
 
-Design: `~/.dotfiles/docs/superpowers/specs/2026-10-13-drafter-completion-design.md`, pass 3,
+Design: `~/.dotfiles/docs/specs/2026-10-13-drafter-completion-design.md`, pass 3,
 approved by Geoff on 2026-10-13. Spec:
-`~/.dotfiles/docs/superpowers/specs/2026-10-12-drafter-pipeline-design.md`, sections "Seat prompts"
+`~/.dotfiles/docs/specs/2026-10-12-drafter-pipeline-design.md`, sections "Seat prompts"
 ("Beside the chain" and "Checking the prompts"; "At cutover" is read for the module contract only),
 "The handoff" (all of it), "The tool" (the `prompts` and `handoff` rows and `drafter
 check-prompts`), and "Testing" (the handoff row). The dotfiles half builds the chain's three
 `DRAFTER_HOST` pieces, `backHalf`, and the `// === HANDOFF ===` block. Fold record:
-`~/.dotfiles/docs/superpowers/research/2026-10-13-drafter-completion-plan-fold.md`.
+`~/.dotfiles/docs/research/2026-10-13-drafter-completion-plan-fold.md`.
 
 ## Outcome
 

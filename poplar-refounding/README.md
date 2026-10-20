@@ -19,7 +19,7 @@ The previous client is archived on the `legacy` branch and the `poplar-legacy` t
 
 ## Where the work lives
 
-- `poplar`: the code, the charter (`docs/superpowers/specs/2026-07-19-poplar-refounding-charter.md`), and the cursor (`docs/superpowers/specs/poplar-refounding-STATUS.md`).
+- `poplar`: the code, the charter (`docs/specs/2026-07-19-poplar-refounding-charter.md`), and the cursor (`docs/specs/poplar-refounding-STATUS.md`).
 
 ## Records
 

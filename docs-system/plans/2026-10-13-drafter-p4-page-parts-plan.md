@@ -1,12 +1,12 @@
 # drafter pass 4 plan: page parts
 
-Design: `~/.dotfiles/docs/superpowers/specs/2026-10-13-drafter-completion-design.md`, pass 4,
+Design: `~/.dotfiles/docs/specs/2026-10-13-drafter-completion-design.md`, pass 4,
 approved by Geoff on 2026-10-13. Spec:
-`~/.dotfiles/docs/superpowers/specs/2026-10-12-drafter-pipeline-design.md`, sections "Input
+`~/.dotfiles/docs/specs/2026-10-12-drafter-pipeline-design.md`, sections "Input
 assembly", "The edit contract", "Coverage", "Projects without facts", "Shared worktree", "The gate",
 "The plan format" (the consistency read's answer), and "Testing" (the edit contract, coverage, input
 assembly, gate, and projects-without-facts rows, as this plan assigns them). Fold record:
-`~/.dotfiles/docs/superpowers/research/2026-10-13-drafter-completion-plan-fold.md`.
+`~/.dotfiles/docs/research/2026-10-13-drafter-completion-plan-fold.md`.
 
 ## Outcome
 

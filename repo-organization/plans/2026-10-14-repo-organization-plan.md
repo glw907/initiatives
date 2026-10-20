@@ -152,14 +152,14 @@ Estimates are minutes of work. A wait on Geoff or on another session is not coun
 
 - Outcome: `scope.tsv` holds the 26 rows "Shared interfaces" names.
   - `repo-organization/tools/classify-docs` reads a scratch clone of `glw907/workstation` at the pinned commit. The pinned commit is `origin/main` at task start, taken with `gh api`.
-  - The tool also reads scratch clones of the destination repos, and writes `migration-map.tsv` with one row per `docs/superpowers/` entry and per moved code path, including the `review-desk` names as history rows that aren't rewritten. It prints the row count per `new_repo`.
+  - The tool also reads scratch clones of the destination repos, and writes `migration-map.tsv` with one row per `docs/` entry and per moved code path, including the `review-desk` names as history rows that aren't rewritten. It prints the row count per `new_repo`.
   - It runs the one-executor checks, with `claude agents --json` rows filtered to `cwd`s under in-scope checkouts, and each in-scope repo's STATUS read by path. It marks a plan with an open pass `deferred:<pass>`, and every drafter row `deferred:p5`.
   - It writes `repo-organization/research/migration-calls.md`, an approval-brief design doc with one `### Decide:` block per `flagged` row and per `collision-differs` row. For a collision, "Keep the destination" is recommended.
   - `repo-organization/tools/tests/scope-harness` is the shared outside-scope test every scope-reading tool calls. It builds a fixture root with in-scope repos and one readable outside repo, `.git` included, whose name and contents carry a unique canary. It runs the tool with `PROJECTS_ROOT` and `HOME` pointed at the fixture root, and asserts that the canary appears in no stdout, stderr, or file the tool writes, while an in-scope canary does appear.
 - Files: `repo-organization/scope.tsv`, `repo-organization/tools/classify-docs`, `repo-organization/tools/tests/classify/`, `repo-organization/tools/tests/scope-harness`, `repo-organization/research/migration-map.tsv`, `repo-organization/research/migration-calls.md`.
 - Acceptance:
   - `scope.tsv` holds the 26 named rows.
-  - The docs rows equal `ls docs/superpowers/{specs,plans,research} | wc -l` at the pinned commit (173 expected), counted apart from the classifier, and every row holds a placed state. The code rows equal the design's two lists, checked by exact path.
+  - The docs rows equal `ls docs/{specs,plans,research} | wc -l` at the pinned commit (173 expected), counted apart from the classifier, and every row holds a placed state. The code rows equal the design's two lists, checked by exact path.
   - A fixture entry the rule can't place comes out `flagged`. An identical file of the same name in `archive/` comes out `collision-identical`, and a differing one comes out `collision-differs`.
   - `migration-calls.md` passes `approval-queue`'s brief check, and its block count equals the `flagged` plus `collision-differs` row count (3 or more).
 - Test: fixture trees for each state, a stubbed agents list and STATUS for `deferred:<pass>`, and the scope harness.
@@ -180,7 +180,7 @@ Estimates are minutes of work. A wait on Geoff or on another session is not coun
 **I4. Reference tool (160, ordinary).**
 
 - Outcome: `repo-organization/tools/refs`, with `check` and `apply` modes, reads the map and `scope.tsv`.
-  - It resolves bare `docs/superpowers/` paths against the containing repo, and `~/`, `/var/home/`, and `~/Projects/<repo>/` paths literally.
+  - It resolves bare `docs/` paths against the containing repo, and `~/`, `/var/home/`, and `~/Projects/<repo>/` paths literally.
   - It classes each hit as `rewrite`, `retired-target` (from history files, never a failure), `live-tie`, or `broken`. A rewritten path resolves against its map row's destination on that repo's `origin/main` through `gh api`, or against the map itself while the destination is unmerged.
   - Its scope is git-tracked text files, minus `.claude/worktrees/`, lockfiles, `_salvage/`, and the named fixture list. Memory files are the scope memory directories ("Shared interfaces").
   - Apply mode takes one root and edits only files whose `realpath` lies under it, listing every skip. It tars the memory directories first, writes through a temp file and a rename, and deduplicates by `realpath`.
@@ -384,7 +384,7 @@ Close for R (15): the name check, then PR 2 at PR-ready. Its body holds the log 
   - It runs `refs apply` over the worktree, edits `live-tie` hits by hand, and adds a backlog item per `deferred:<pass>` row other than `deferred:p5`.
   - It regenerates only the goldens whose embedded path the map changes.
   - It runs the draft check per row from that row's `pin`. Every destination path exists on its repo's `origin/main`, seen through `gh api`. For a row not in a `collision-*` state, the destination blob equals the source blob at the pin. `git diff <pin> origin/main` over the row's moved path is empty. A docs-row hit is re-copied by its destination's session, and a code-row hit stops for a cherry-pick into approval-queue.
-- Files: `docs/superpowers/**` deletions, files `refs` rewrites, `BACKLOG.md`.
+- Files: `docs/**` deletions, files `refs` rewrites, `BACKLOG.md`.
 - Acceptance: the draft check passes with its checked-row count equal to the map's moved-row count, `refs check` finds nothing new against the baseline, and the PR leaves draft only after the check passes.
 - Test: the draft check's fixtures for an edited moved file, a missing destination, and an edited code row. Each must fail.
 

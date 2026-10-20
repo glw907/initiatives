@@ -1,7 +1,7 @@
 # drafter Pass 0 plan review fold
 
 Folds `2026-10-12-drafter-pass0-plan-review-mechanics.md` (30 findings) into
-`docs/superpowers/plans/2026-10-12-drafter-pass0-plan.md`, 2026-10-12. Each finding was checked
+`docs/plans/2026-10-12-drafter-pass0-plan.md`, 2026-10-12. Each finding was checked
 against source or a probe before it was acted on. Task numbers below are the revised plan's: old T6
 merged into T4, old T7 is now T6, and old T8 is now T7.
 

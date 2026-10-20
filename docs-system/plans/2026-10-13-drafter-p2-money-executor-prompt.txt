@@ -4,9 +4,9 @@ ledger, `drafter spend`, and `make smoke`.
 Load `pass-core` and `go-conventions` before writing any Go, and `claude-api` before the client
 task. Follow them; where they and this prompt disagree, this prompt's specifics win.
 
-Plan, the source of every task: `~/.dotfiles/docs/superpowers/plans/2026-10-13-drafter-p2-money-plan.md`.
+Plan, the source of every task: `~/.dotfiles/docs/plans/2026-10-13-drafter-p2-money-plan.md`.
 Read it whole first, including its "Interfaces" section, which passes 4 and 5 build against. The
-spec sections it builds are named in its header, at absolute paths under `~/.dotfiles/docs/superpowers/`.
+spec sections it builds are named in its header, at absolute paths under `~/.dotfiles/docs/`.
 
 How to work:
 - Your first act is `EnterWorktree` with the name `p2-money`, from the drafter main checkout you

@@ -4,9 +4,9 @@ validator, plus the docs page chain's switch to YAML plans.
 Load `pass-core`, then the `dotfiles-pass` adapter, then `go-conventions` before writing any Go.
 Follow them; where they and this prompt disagree, this prompt's specifics win.
 
-Plan, the source of every task: `docs/superpowers/plans/2026-10-12-drafter-pass0-plan.md` in
+Plan, the source of every task: `docs/plans/2026-10-12-drafter-pass0-plan.md` in
 `~/.dotfiles` (read it whole first, including "Standing approvals" and "Launch"). Spec section it
-builds: "The plan format" in `docs/superpowers/specs/2026-10-12-drafter-pipeline-design.md`.
+builds: "The plan format" in `docs/specs/2026-10-12-drafter-pipeline-design.md`.
 
 How to work:
 - Your first act is `EnterWorktree` in `~/.dotfiles`. Your working directory stays in that worktree

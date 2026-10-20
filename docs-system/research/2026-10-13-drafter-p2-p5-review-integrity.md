@@ -1,8 +1,8 @@
 # drafter P2 and P5 plan review: data integrity and failure risk
 
 Reviewer lens: integrity and failure risk. Targets at `456b409`:
-`docs/superpowers/plans/2026-10-13-drafter-p2-money-plan.md` (P2) and
-`docs/superpowers/plans/2026-10-13-drafter-p5-pipeline-plan.md` (P5), read against the completion
+`docs/plans/2026-10-13-drafter-p2-money-plan.md` (P2) and
+`docs/plans/2026-10-13-drafter-p5-pipeline-plan.md` (P5), read against the completion
 design and the pipeline spec's "Operations". Line references are to those files at that commit.
 
 ## Verdict

@@ -28,8 +28,8 @@ Counts: 4 blocker, 9 major, 6 minor (19 findings, 2 of them OWNER FORK).
 
 ### F2. The reference checker cannot see the paths the migration creates
 - severity: blocker | tag: correctness | location: spec L136, L180
-- Defect: the checker "scans ... for `docs/superpowers/` paths". Cross-repo entries are rewritten to `initiatives/<id>/specs|plans|research/...` (L127), and those paths carry no `docs/superpowers/` segment. A rewrite that maps an entry to a wrong or missing initiatives path removes a checked reference and adds an unchecked one, so E2E 1 gets greener as the rewrite gets worse. The existing `scripts/check-claude-refs.py` also defers every `~/Projects` and bare repo-relative span to a "cross-repo mode" (its lines 24 and 198) that does not exist yet. Nothing current covers this either.
-- Fold: the checker's pattern set is every old path plus every new path in `migration-map.tsv`: any span that matches `docs/superpowers/` or `initiatives/[^/]+/(specs|plans|research)/`. Add a criterion with its fixture: a planted ref to `initiatives/drafter/specs/nonexistent.md` must fail the post-run.
+- Defect: the checker "scans ... for `docs/` paths". Cross-repo entries are rewritten to `initiatives/<id>/specs|plans|research/...` (L127), and those paths carry no `docs/` segment. A rewrite that maps an entry to a wrong or missing initiatives path removes a checked reference and adds an unchecked one, so E2E 1 gets greener as the rewrite gets worse. The existing `scripts/check-claude-refs.py` also defers every `~/Projects` and bare repo-relative span to a "cross-repo mode" (its lines 24 and 198) that does not exist yet. Nothing current covers this either.
+- Fold: the checker's pattern set is every old path plus every new path in `migration-map.tsv`: any span that matches `docs/` or `initiatives/[^/]+/(specs|plans|research)/`. Add a criterion with its fixture: a planted ref to `initiatives/drafter/specs/nonexistent.md` must fail the post-run.
 
 ### F3. The SessionStart check can pass with the wrong repo name, and passes silently when the clone is missing
 - severity: blocker | tag: correctness | location: spec L113, L181
@@ -56,7 +56,7 @@ Counts: 4 blocker, 9 major, 6 minor (19 findings, 2 of them OWNER FORK).
 ### F7. The migration map can classify zero entries, and its total is never checked
 - severity: major | tag: correctness | location: spec L125, L132
 - Defect: the spec gives the count (173, confirmed: 25 specs, 60 plans, 88 research), but no criterion ties the map to it. A classifier that skips research folders, or treats a folder as one entry where it holds many files, still writes a valid TSV. "Flags an entry the rule can't place" has no fixture either.
-- Fold: criteria: map rows equal `ls docs/superpowers/{specs,plans,research} | wc -l` at the pass's start commit. Every row has a non-empty new path or an explicit `stays`/`leaves-with-pings`. After the deletions merge, the paths left under `docs/superpowers/` equal exactly the `stays` rows. Add a fixture entry the rule can't place, which must come out flagged.
+- Fold: criteria: map rows equal `ls docs/{specs,plans,research} | wc -l` at the pass's start commit. Every row has a non-empty new path or an explicit `stays`/`leaves-with-pings`. After the deletions merge, the paths left under `docs/` equal exactly the `stays` rows. Add a fixture entry the rule can't place, which must come out flagged.
 
 ### F8. "With their history" has no check
 - severity: major | tag: correctness | location: spec L15, L148 to L150
@@ -75,7 +75,7 @@ Counts: 4 blocker, 9 major, 6 minor (19 findings, 2 of them OWNER FORK).
 
 ### F11. The thinkpad has no pre-migration baseline, and its auto-memory is never rewritten
 - severity: major | tag: correctness | location: spec L136, L178, L180
-- Defect: the auto-memory files are machine-local (`~/.claude/projects/*/memory`, not stowed; 5 files cite `docs/superpowers` on pavilion). The rewrite and the baseline run happen on pavilion. On the thinkpad, E2E 1 has no "pre-migration run" to diff against, and nothing rewrites its memory files. Either the thinkpad check fails on unrewritten memory, or it gets waved through without a baseline.
+- Defect: the auto-memory files are machine-local (`~/.claude/projects/*/memory`, not stowed; 5 files cite `docs/{specs,plans,research}` on pavilion). The rewrite and the baseline run happen on pavilion. On the thinkpad, E2E 1 has no "pre-migration run" to diff against, and nothing rewrites its memory files. Either the thinkpad check fails on unrewritten memory, or it gets waved through without a baseline.
 - Fold: the thinkpad cleanup script (L168) also runs the rewrite over the thinkpad's auto-memory. Its baseline is the pavilion baseline filtered to repo-tracked files, and machine-local files must come back with zero broken refs. State the thinkpad baseline's provenance in E2E 1.
 
 ### F12. Rewriting historical fixtures corrupts data, or the checker flags it

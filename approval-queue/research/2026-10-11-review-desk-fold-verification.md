@@ -1,6 +1,6 @@
 # Fold verification: review desk plan and launch prompt at 7246c66 (verification read, claude-opus-5-5, 2026-10-11)
 
-Read: `docs/superpowers/plans/2026-10-11-review-desk.md` (plan), its prompt, the fold record, the
+Read: `docs/plans/2026-10-11-review-desk.md` (plan), its prompt, the fold record, the
 three lenses, and the approved design. Mechanisms checked against the unpacked `@sveltejs/kit`
 3.0.1 and `@sveltejs/adapter-node` 6.0.0 sources, the Survey core, this repo's gate scripts, and
 probes in `/var/home/glw907/.claude/jobs/c01b6758/tmp/verify/`.
@@ -62,7 +62,7 @@ probes in `/var/home/glw907/.claude/jobs/c01b6758/tmp/verify/`.
 ### 1. Blocker: the detached app inherits the start lock's fd, so every hand-over after the first hangs
 
 - **Tag:** correctness
-- **Location:** `docs/superpowers/plans/2026-10-11-review-desk.md:379-385` (T3 step 2), `:389`
+- **Location:** `docs/plans/2026-10-11-review-desk.md:379-385` (T3 step 2), `:389`
   (T3 step 4), `:184-185` (probed fact "Shell mechanics")
 - **Defect:** T3 step 2 takes `exec 9>"$lock"; flock 9` and, still under the lock, starts the
   app with `setsid -f node <app>/build`. Bash does not mark fd 9 close-on-exec, so the detached
@@ -88,7 +88,7 @@ probes in `/var/home/glw907/.claude/jobs/c01b6758/tmp/verify/`.
 ### 2. Major: T4's wait-and-merge rule fights the launch prompt that pass-core has sessions write
 
 - **Tag:** correctness
-- **Location:** `docs/superpowers/plans/2026-10-11-review-desk.md:416-432` (T4),
+- **Location:** `docs/plans/2026-10-11-review-desk.md:416-432` (T4),
   `claude/.claude/skills/pass-core/SKILL.md:193-197` ("Launch prompt")
 - **Defect:** The fold's C7 text puts "stays open until each command exits" and "an approve on
   the desk is Geoff's merge authorization, the one a launch prompt's 'never merge' otherwise
@@ -110,7 +110,7 @@ probes in `/var/home/glw907/.claude/jobs/c01b6758/tmp/verify/`.
 ### 3. Minor: the e2e runs before the close review's fix chain, so it may not run on the close head
 
 - **Tag:** correctness
-- **Location:** `docs/superpowers/plans/2026-10-11-review-desk.md:24` ("On the close head"),
+- **Location:** `docs/plans/2026-10-11-review-desk.md:24` ("On the close head"),
   `:447-458` (Close steps 3 and 4)
 - **Defect:** Step 3 runs the end-to-end check, then step 4's `diff-reviewer` can start a fix
   chain that edits `review-desk/` or `bin/.local/bin/review-desk`. The gate reruns after the
@@ -122,7 +122,7 @@ probes in `/var/home/glw907/.claude/jobs/c01b6758/tmp/verify/`.
 ### 4. Minor: the `src/env.ts` fact does not quote the file it probed
 
 - **Tag:** correctness
-- **Location:** `docs/superpowers/plans/2026-10-11-review-desk.md:118-130`, `:292`
+- **Location:** `docs/plans/2026-10-11-review-desk.md:118-130`, `:292`
 - **Defect:** The params fact quotes its probed file, but the env fact gives only the entry
   (`REVIEW_DESK_STATE: { schema: ... }`) and never the module or export name. The conventions say
   "build on these and never on recall", and `defineEnvVars` is new in kit 3.
@@ -134,7 +134,7 @@ probes in `/var/home/glw907/.claude/jobs/c01b6758/tmp/verify/`.
 ### 5. Minor: this pass's own Close uses the old hand-over without saying why
 
 - **Tag:** optional
-- **Location:** `docs/superpowers/plans/2026-10-11-review-desk.md:467-469`; prompt:44-46
+- **Location:** `docs/plans/2026-10-11-review-desk.md:467-469`; prompt:44-46
 - **Defect:** After T4, the worktree's pass-core tells the handing-over session to run
   `review-desk pr` and wait. This pass marks its PR ready, sends `notify-send`, and ends instead.
   That is correct, since the tool is live only after the merge and `stow -R bin`, and the session
@@ -181,7 +181,7 @@ new flock handling is proven.
 ### S1. Minor: T4's new grep phrase can wrap across lines in pass-core
 
 - **Tag:** optional
-- **Location:** `docs/superpowers/plans/2026-10-11-review-desk.md:443-445`
+- **Location:** `docs/plans/2026-10-11-review-desk.md:443-445`
 - **Defect:** `grep -n` matches one line at a time. pass-core's prose is wrapped near 100
   columns, and `merges only on Geoff's desk approve` is a five-word phrase that a rewrap can split.
   The grep would then fail on text that is correct. The same risk applies, more weakly, to

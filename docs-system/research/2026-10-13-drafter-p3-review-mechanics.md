@@ -1,7 +1,7 @@
 # Pass 3 plan review: mechanics and feasibility
 
 Reviewer: `plan-reviewer`, at commit 456b409. Saved by the planning session, every finding kept.
-Citations: `plan:N` is `docs/superpowers/plans/2026-10-13-drafter-p3-prompts-handoff-plan.md`; `chain:N` is `claude/.claude/workflows/docs-page-chain.js`.
+Citations: `plan:N` is `docs/plans/2026-10-13-drafter-p3-prompts-handoff-plan.md`; `chain:N` is `claude/.claude/workflows/docs-page-chain.js`.
 
 Verdict: feasible. The plan's three hooks on a scratch copy of today's chain load in goja (top-level `await resolvePages()` included), and eight renders (draft r1, r2, after final read; structure narrowed; editor scoped; fact; reader) match Node byte for byte. Probe module: the session scratchpad's `goja/`. goja newest master `v0.0.0-20261013122152-245c54f48cfc`. After `RunScript` the async wrapper's promise is already fulfilled. `require`, `fetch`, `process`, `console`, `setTimeout`, `structuredClone`, `queueMicrotask` are undefined. `export const meta` is `SyntaxError ... Unexpected reserved word`; a bare top-level `return` is `Illegal return statement`. Wrapper prefix on line 1 with no added newline preserves line numbers.
 
