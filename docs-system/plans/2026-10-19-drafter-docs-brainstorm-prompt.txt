@@ -1,0 +1,10 @@
+Use superpowers:brainstorming first, then pass-core's "Lifecycle" step 1. This is a design session with Geoff for drafter's next pass: build drafter's own docs with drafter. The pass writes blueprints for drafter's pages, then reads and drafts them through `drafter read` and `drafter page`.
+
+Settle three things with Geoff before any plan: drafter's docs set, its audience, and the published standard that audience loads (through the writing-voice skill). Start from drafter's own needs, not cairn's page set or register. Geoff gave three reasons: drafter is smaller, it needs fewer docs, and its audience is different.
+
+Read first:
+- B3c's record: glw907/drafter#55 and glw907/cairn-cms#132 (the eight-page table, the escalations, `## Decisions`, `## Planning misses`), and the docs-system README's 2026-10-19 B3c line.
+- `~/Projects/initiatives/docs-system/specs/2026-10-19-drafter-b3c-cairn-pilot-design.md`.
+- drafter's `BACKLOG.md` items tagged `#initiative:docs-system`.
+
+The design takes B3c's findings as input: reviewer-seat escalations ("second fix verdict"), cap trips, `max_tokens` stops, gate false positives, and how the #13 read bar behaved. It names its initiative (docs-system) and goes to Geoff as a design part in a packet, per approval-packet.
