@@ -579,6 +579,12 @@ bar, `--whole`, `blueprints.brief_path`, and the chain's blueprint mode and `coh
 edit to `money.go` or `fingerprint.go`, and an escalation that leaves fewer than three pages able
 to reach `accepted`. The $80 and 800-minute ceilings and an untraced cause still stop it too.
 
+**Geoff's ruling at B3c's stop 5 (2026-10-19).** Wave 2 left only restrict-admin-access and
+scaffolded-site-files able to reach `accepted`, so the three-page bar can't be met. The session
+reruns those two once each, alone, with `--whole`, inside the budget left, then closes with the
+bar unmet and every escalation reported in the cairn PR. No other page reruns, and an escalation
+of either rerun is reported, not a stop. Fixing cairn's own gate checks is out of B3c's scope.
+
 **P1, the first reads.** One `$B3C_DRAFTER read --sync --json` call takes all eight blueprints:
 rotate and the seven, after B3c.5. Each blocked whole read leaves a bar, and the session commits the
 lock at once ("Record the first blueprint reads").
