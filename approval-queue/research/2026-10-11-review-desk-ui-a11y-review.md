@@ -2,7 +2,7 @@
 
 The `daisyui-a11y-reviewer` agent (Opus, medium) reviewed the second-round mockups in the conductor
 session `4bea6e68` on 2026-10-11. The mockup builder then folded the findings into the approved
-mockups in `docs/superpowers/specs/assets/2026-10-11-review-desk-ui/`. The design says every
+mockups in `docs/specs/assets/2026-10-11-review-desk-ui/`. The design says every
 finding carries into the build. This file copies the reviewer's final report verbatim from the
 conductor transcript (`4bea6e68-41c7-44c2-8635-1cf9b88f0358.jsonl`), so the build and its close
 review can cite it. File names in the report are the earlier mockups' names (`triage.html`,

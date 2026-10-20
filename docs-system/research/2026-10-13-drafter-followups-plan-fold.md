@@ -1,6 +1,6 @@
 # drafter follow-ups plan review: fold record
 
-Target: `docs/superpowers/plans/2026-10-13-drafter-followups-plan.md` and its executor prompt at
+Target: `docs/plans/2026-10-13-drafter-followups-plan.md` and its executor prompt at
 4c9c544, against the three lens files of 2026-10-13 (mechanics, contract, data integrity). Fold
 agent: Opus. Each finding was checked against drafter `main` before its disposition. Convergent
 findings fold once, at the first lens that raised them.

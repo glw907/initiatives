@@ -1,14 +1,14 @@
 # Review desk UI: implementation plan
 
-**Design:** `docs/superpowers/specs/2026-10-11-review-desk-ui-design.md` (approved by Geoff
+**Design:** `docs/specs/2026-10-11-review-desk-ui-design.md` (approved by Geoff
 2026-10-11, with unattended planning approved). No separate spec: the design is a page, and
 `spec-plan-review` gives a design of a page or less none. **References:** the four approved
-mockups in `docs/superpowers/specs/assets/2026-10-11-review-desk-ui/` and their sixteen renders in
+mockups in `docs/specs/assets/2026-10-11-review-desk-ui/` and their sixteen renders in
 `renders/` (`<mockup>-<light|dark>-<1440|390>.png`); the device and behavior catalogue
-`docs/superpowers/research/2026-10-11-review-desk-ui-catalogue.md`; the mockups' accessibility
-review `docs/superpowers/research/2026-10-11-review-desk-ui-a11y-review.md`. **Review:**
-`docs/superpowers/research/2026-10-11-review-desk-ui-review-*.md` and the fold record
-`docs/superpowers/research/2026-10-11-review-desk-ui-plan-fold.md`.
+`docs/research/2026-10-11-review-desk-ui-catalogue.md`; the mockups' accessibility
+review `docs/research/2026-10-11-review-desk-ui-a11y-review.md`. **Review:**
+`docs/research/2026-10-11-review-desk-ui-review-*.md` and the fold record
+`docs/research/2026-10-11-review-desk-ui-plan-fold.md`.
 
 **Outcome.** The desk shows every waiting item in a queue beside the open item, each decision is a
 key press or a click, a 5-second undo holds every decision in the page, the next item loads in the
@@ -132,7 +132,7 @@ run as a pair, so the path is about 35 + 65 + 55 + 70 = 225 minutes.
 
 ## Launch
 
-Prompt file: `docs/superpowers/plans/2026-10-11-review-desk-ui-prompt.txt`. The plan lives on
+Prompt file: `docs/plans/2026-10-11-review-desk-ui-prompt.txt`. The plan lives on
 branch `worktree-desk-ui-plan` (planning commits on top of the design branch
 `worktree-desk-ui-design`). The executing session works in a new worktree, `desk-ui-build`, and
 its first act after `EnterWorktree` is `git merge --no-edit worktree-desk-ui-plan`. Launch from
@@ -148,7 +148,7 @@ git -C ~/.dotfiles rev-parse worktree-desk-ui-plan origin/worktree-desk-ui-plan 
 git -C ~/.dotfiles worktree list | grep -c '/worktrees/desk-ui-build '   # must print 0
 claude agents --json                                    # no live session whose cwd is ~/.dotfiles/.claude/worktrees/desk-ui-build
 cd ~/.dotfiles && claude --bg --model sonnet --effort medium --name desk-ui-build \
-  "$(git -C ~/.dotfiles show worktree-desk-ui-plan:docs/superpowers/plans/2026-10-11-review-desk-ui-prompt.txt)"
+  "$(git -C ~/.dotfiles show worktree-desk-ui-plan:docs/plans/2026-10-11-review-desk-ui-prompt.txt)"
 ```
 
 The prompt is read with `git show` because the plan is not on `main` until this pass's PR merges.
@@ -158,7 +158,7 @@ The prompt is read with `git show` because the plan is not on `main` until this 
 Each was read from source or run on 2026-10-11. A task builds on these, and on the first desk
 plan's "SvelteKit 3, the project files", "adapter-node 6 host and port", "SvelteKit 3 origin and
 CSRF", "Rendered markdown", and "Shell mechanics" facts
-(`docs/superpowers/plans/2026-10-11-review-desk.md`), never on recall.
+(`docs/plans/2026-10-11-review-desk.md`), never on recall.
 
 - **The HTML rule for `window.close()`.** HTML, "script-closable": "A navigable is script-closable
   if it is a top-level traversable, and any of the following are true: its is created by web

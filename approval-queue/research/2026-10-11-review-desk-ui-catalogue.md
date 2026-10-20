@@ -1,13 +1,13 @@
 # Review desk UI: device and behavior catalogue
 
-Source: the four approved mockups in `docs/superpowers/specs/assets/2026-10-11-review-desk-ui/`
+Source: the four approved mockups in `docs/specs/assets/2026-10-11-review-desk-ui/`
 (`pr-b.html`, `design-b.html`, `triage-c2.html`, `empty-b.html`), read in full, against the design
-`docs/superpowers/specs/2026-10-11-review-desk-ui-design.md`. Values below are quoted from the
+`docs/specs/2026-10-11-review-desk-ui-design.md`. Values below are quoted from the
 mockup source. Line numbers are the mockup's own.
 
 ## Renders
 
-Sixteen full-page PNGs sit in `docs/superpowers/specs/assets/2026-10-11-review-desk-ui/renders/`,
+Sixteen full-page PNGs sit in `docs/specs/assets/2026-10-11-review-desk-ui/renders/`,
 named `<mockup>-<light|dark>-<1440|390>.png`. They were taken in Chromium (`/usr/bin/chromium-browser`
 driven by the Playwright npm package, since the Playwright MCP server could not find its Chrome
 build), with `colorScheme` emulated, `reducedMotion: reduce`, after `networkidle`, `document.fonts.ready`,

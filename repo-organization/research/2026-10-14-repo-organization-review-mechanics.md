@@ -47,7 +47,7 @@ policy prose is cited by `.github/workflows/publish.yml:66`, `tsgo.yml:4,24`,
 docs-link gate (`scripts/checks/docs-links.mjs:27,63`) filters ROOT_DOCS through `existsSync`,
 so deleting the file passes there, but every link to it elsewhere in `docs/` breaks. The 840-minute
 estimate and the "one triage item per repo" step can't cover this file at the stated scale. The
-spec's reference checker scans only `docs/superpowers/` paths, so it won't see any of these
+spec's reference checker scans only `docs/` paths, so it won't see any of these
 links.
 
 **OWNER FORK.** Options:
@@ -59,7 +59,7 @@ pass under the `repo-organization` record.
 session proposes as records, and move "Toward 1.0" verbatim to `docs/internal/`.
 Recommendation: (b). It keeps this pass's estimate honest and isolates the cairn-pass and
 cairn-release rewiring. Under any option, add a `ROADMAP.md` reference sweep (a checker like the
-`docs/superpowers` one) to the pass.
+`docs/{specs,plans,research}` one) to the pass.
 
 ### B3. The moved drafter tests read workstation files that stay, and drafter has no CI (blocker, correctness)
 
@@ -181,14 +181,14 @@ serving process's cwd is under `~/Projects/approval-queue` (`readlink /proc/<pid
 Geoff withdraws or decides the test item. The cleanup removes the untracked leftovers on both
 machines.
 
-### M6. Bare `docs/superpowers/` paths are ambiguous: every repo has its own tree (major, correctness)
+### M6. Bare `docs/` paths are ambiguous: every repo has its own tree (major, correctness)
 
 Location: `design.md:125`, `design.md:132`, `design.md:136`.
 
-Defect: Twelve repos carry their own `docs/superpowers/` (cairn-cms 659 files, dubplate 506,
+Defect: Twelve repos carry their own `docs/` (cairn-cms 659 files, dubplate 506,
 poplar 278, and others: about 1,600 outside workstation). Workstation files cite cairn-cms's tree
 by bare path: `docs-page-chain.js:1,122,197,229` and `tests/docs-page-chain-outline.test.mjs:687`
-name files that exist only in `cairn-cms/docs/superpowers/` (verified for three). "A rewrite
+name files that exist only in `cairn-cms/docs/` (verified for three). "A rewrite
 script applies the map across every repo" keyed on bare old paths would rewrite such references
 wherever a filename collides. A checker "fails on a path that doesn't resolve" needs a stated
 resolution base. Separately, `tests/fixtures/ci-green/pr-107-files.txt:100-109` is a captured
@@ -207,7 +207,7 @@ Location: `design.md:128`, `design.md:134`.
 
 Defect: `cmp` shows workstation `specs/2026-08-30-dubplate-go-rewrite-design.md` and
 `specs/2026-08-31-dubplate-uploader-design.md` differ from dubplate's same-named files.
-`plans/2026-08-31-dubplate-uploader.md` differs from `dubplate/docs/superpowers/archive/plans/...`.
+`plans/2026-08-31-dubplate-uploader.md` differs from `dubplate/docs/archive/plans/...`.
 `plans/2026-08-30-dubplate-go-rewrite.md` and `research/2026-08-31-beets-plugin-usage.md` are
 byte-identical. "Copy and delete" overwrites or duplicates them.
 
@@ -463,7 +463,7 @@ the option name against the manual before relying on it.
 
 Location: `design.md:125`.
 
-Defect: A grep for workstation-prefixed `docs/superpowers/` paths in other repos finds 15
+Defect: A grep for workstation-prefixed `docs/` paths in other repos finds 15
 distinct paths. Bare-path references can't be counted without M6's resolution rule.
 
 Fold: drop the figure and let the checker's pre-run report the count.
@@ -501,6 +501,6 @@ Fold: the plan cites design sections by heading instead of restating them.
 - Workstation's checked-out branch changed during this review (`roadmap-decide-bug`, then
   `main`), and worktree `top-bar-tidy` is live. Another session is active in `~/.dotfiles`, and
   the one-executor checks (`design.md:144`) apply at dispatch.
-- Verified as stated: the docs/superpowers entry counts (25, 60, 88; 281 tracked files), the
+- Verified as stated: the docs/{specs,plans,research} entry counts (25, 60, 88; 281 tracked files), the
   four gate legs (`check.sh:71-74`), the hook command called by name (`settings.json:128`), and
   the `gh` scopes (`repo` present, `delete_repo` absent).

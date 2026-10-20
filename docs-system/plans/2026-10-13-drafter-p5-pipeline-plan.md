@@ -1,15 +1,15 @@
 # drafter pass 5 plan: the pipeline
 
-Design: `~/.dotfiles/docs/superpowers/specs/2026-10-13-drafter-completion-design.md`, pass 5, "The
+Design: `~/.dotfiles/docs/specs/2026-10-13-drafter-completion-design.md`, pass 5, "The
 end-to-end check", "Your setup step", and Technical notes 1 to 8, approved by Geoff on 2026-10-13.
-Spec: `~/.dotfiles/docs/superpowers/specs/2026-10-12-drafter-pipeline-design.md`, sections "The
+Spec: `~/.dotfiles/docs/specs/2026-10-12-drafter-pipeline-design.md`, sections "The
 pipeline" (stages, stop rules, the final reader's two turns, projects without facts, shared
 worktree), "Records", "Run inputs", "One run per worktree", "Resume", "Concurrency", "Failures",
 "Models", "The tool" (the `pipeline` row and `drafter page`), "drafter's own docs", "A server-side
 backstop" (for the setup guide), and "Testing" (the pipeline state machine row, the facts-free
 stage-1 row, the end-to-end paragraph, the `make smoke` paragraph, and the edit-contract rows pass 4
 left to the pipeline). Fold record:
-`~/.dotfiles/docs/superpowers/research/2026-10-13-drafter-completion-plan-fold.md`.
+`~/.dotfiles/docs/research/2026-10-13-drafter-completion-plan-fold.md`.
 
 ## Outcome
 
@@ -459,7 +459,7 @@ before P5.7. Every pipeline test sets the key variable to a sentinel shaped like
     on a page already linked, from the scratch worktree, and check it exits 0 with no change: a
     quoting bug surfaces here before any spend.
   - Take the chain's arguments from the last chain run's plan,
-    `docs/superpowers/plans/2026-10-11-draft-docs-2b-part1.md` in cairn (gate, lane, outline, Vale
+    `docs/plans/2026-10-11-draft-docs-2b-part1.md` in cairn (gate, lane, outline, Vale
     rules), with the page's own entry, `backHalf: "drafter"`, and `worktree` set to the scratch
     worktree, and run the `docs-page-chain` Workflow on that one page.
   - Commit every path `git status --porcelain` lists on the scratch branch (the plan, the framing

@@ -25,4 +25,4 @@ The household's phones each hold their own contacts. A single phonebook that the
 
 ## Records
 
-- Spec: `docs/superpowers/specs/2026-10-07-phonebook-design.md` in `phonebook`.
+- Spec: `docs/specs/2026-10-07-phonebook-design.md` in `phonebook`.

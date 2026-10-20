@@ -1,9 +1,9 @@
 # Review desk, lean v1: implementation plan
 
-**Design:** `docs/superpowers/specs/2026-10-11-review-desk-design.md` (approved by Geoff and
+**Design:** `docs/specs/2026-10-11-review-desk-design.md` (approved by Geoff and
 re-scoped to lean v1, 2026-10-11). No separate spec: the design is a page, and `spec-plan-review`
 gives a design of a page or less none. **Review:** the three lenses, the fold, and the verification
-read, `docs/superpowers/research/2026-10-11-review-desk-{review-contract,review-mechanics,review-risk,plan-fold,fold-verification}.md`.
+read, `docs/research/2026-10-11-review-desk-{review-contract,review-mechanics,review-risk,plan-fold,fold-verification}.md`.
 
 **Outcome.** A session runs `review-desk <kind> <repo> <title> <source>` as a background Bash
 command. The item opens in Firefox on a local SvelteKit app styled with the Survey theme. Geoff
@@ -48,7 +48,7 @@ path is about 85 + 80 + 25 + 60 = 250 minutes.
 
 ## Launch
 
-Prompt file: `docs/superpowers/plans/2026-10-11-review-desk-prompt.txt`. The plan lives on branch
+Prompt file: `docs/plans/2026-10-11-review-desk-prompt.txt`. The plan lives on branch
 `worktree-review-desk-lean` (planning commits, on top of the design branch `worktree-review-desk`).
 The executing session works in a new worktree, `review-desk-v1` (the name `review-desk` is taken by
 the design worktree, and `EnterWorktree` would reopen it), and its first act after `EnterWorktree`
@@ -65,7 +65,7 @@ git -C ~/.dotfiles rev-parse worktree-review-desk-lean origin/worktree-review-de
 git -C ~/.dotfiles worktree list | grep -c '/worktrees/review-desk-v1 '   # must print 0
 claude agents --json                                    # no live session whose cwd is exactly ~/.dotfiles/.claude/worktrees/review-desk-v1
 cd ~/.dotfiles && claude --bg --model sonnet --effort medium --name review-desk-v1 \
-  "$(git -C ~/.dotfiles show worktree-review-desk-lean:docs/superpowers/plans/2026-10-11-review-desk-prompt.txt)"
+  "$(git -C ~/.dotfiles show worktree-review-desk-lean:docs/plans/2026-10-11-review-desk-prompt.txt)"
 ```
 
 The prompt is read with `git show` because the plan is not on `main` until this pass's PR merges.

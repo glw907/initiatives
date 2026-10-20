@@ -3,9 +3,9 @@ closed. Your job is to launch the executor, watch it, put its two PRs before Geo
 his approval, and finish the close. You write no feature code.
 
 Load `pass-core` and read its "Conductor", "Execute", and "Close" sections. Then read the plan
-whole: `docs/superpowers/plans/2026-10-12-drafter-pass0-plan.md` in `~/.dotfiles`, especially
+whole: `docs/plans/2026-10-12-drafter-pass0-plan.md` in `~/.dotfiles`, especially
 "Standing approvals", "Close", and "Launch". The design behind it is
-`docs/superpowers/specs/2026-10-12-drafter-pipeline-design.md`.
+`docs/specs/2026-10-12-drafter-pipeline-design.md`.
 
 Already done by the planner: the spec, plan, and reviews are merged to dotfiles `main`; the
 checkout is on `main`; `~/Projects/drafter` exists with `go.mod` and a README on `main`, pushed to
@@ -18,7 +18,7 @@ uncommitted `bash/.bashrc` change in `~/.dotfiles` belongs to another session: n
    executing in `~/.dotfiles` or `~/Projects/drafter`. Any failure is a stop: tell Geoff with
    `notify-send -u normal` and wait.
 2. Launch, from `~/.dotfiles`:
-   `claude --bg --model sonnet --effort medium --name drafter-pass0 --add-dir ~/Projects/drafter "$(cat docs/superpowers/plans/2026-10-12-drafter-pass0-executor-prompt.md)"`
+   `claude --bg --model sonnet --effort medium --name drafter-pass0 --add-dir ~/Projects/drafter "$(cat docs/plans/2026-10-12-drafter-pass0-executor-prompt.md)"`
    Record the session's name and id.
 3. Watch with the Monitor tool over `claude agents --json`, reading each field with `.get`. When the
    executor stops, read its STATUS question. Answer from the plan's standing approvals where they

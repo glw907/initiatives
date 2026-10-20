@@ -1,6 +1,6 @@
 # Review desk UI plan: mechanics and feasibility review
 
-The `plan-reviewer` agent (Opus, medium) reviewed `docs/superpowers/plans/2026-10-11-review-desk-ui.md`
+The `plan-reviewer` agent (Opus, medium) reviewed `docs/plans/2026-10-11-review-desk-ui.md`
 at `439f1b0` on 2026-10-11. The planning session saved its reply here verbatim.
 
 ---

@@ -1,10 +1,10 @@
 # Pass 0 plan for the YAML plan format and `drafter check-plan`
 
 Design: approved by Geoff, 2026-10-12, in session dotfiles-5a ("You can include it. Draft the
-plan."). Spec: `docs/superpowers/specs/2026-10-12-drafter-pipeline-design.md`, section "The plan
+plan."). Spec: `docs/specs/2026-10-12-drafter-pipeline-design.md`, section "The plan
 format". This pass builds only that section's offline part; the rest of the spec is later passes.
-The mechanics review (`docs/superpowers/research/2026-10-12-drafter-pass0-plan-review-mechanics.md`)
-is folded per `docs/superpowers/research/2026-10-12-drafter-pass0-plan-fold.md`.
+The mechanics review (`docs/research/2026-10-12-drafter-pass0-plan-review-mechanics.md`)
+is folded per `docs/research/2026-10-12-drafter-pass0-plan-fold.md`.
 
 ## Outcome
 

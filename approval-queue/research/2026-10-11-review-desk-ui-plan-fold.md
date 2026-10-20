@@ -207,7 +207,7 @@ None.
 
 ## Verification read
 
-Folds `docs/superpowers/research/2026-10-11-review-desk-ui-fold-verification.md` (a fresh read of
+Folds `docs/research/2026-10-11-review-desk-ui-fold-verification.md` (a fresh read of
 the plan at `bc91f01`) into the plan and prompt. 12 findings: 9 folded (finding 10, tagged
 optional, at the planning session's direction), 0 refused, 3 dropped as optional. The tally at the
 top covers the three lenses only.

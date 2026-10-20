@@ -5,8 +5,8 @@ the name `desk-ui-plan`, then run `git merge --no-edit worktree-desk-ui-design`,
 the approved design, its four reference mockups, and this prompt; a conflict is a stop.
 
 Load `dotfiles-pass` (it loads `pass-core`), `visual-fidelity`, and the `daisyui` skill. Read the
-approved design in full: `docs/superpowers/specs/2026-10-11-review-desk-ui-design.md`, and open its
-reference mockups under `docs/superpowers/specs/assets/2026-10-11-review-desk-ui/` (`pr-b.html`,
+approved design in full: `docs/specs/2026-10-11-review-desk-ui-design.md`, and open its
+reference mockups under `docs/specs/assets/2026-10-11-review-desk-ui/` (`pr-b.html`,
 `design-b.html`, `triage-c2.html`, `empty-b.html`), which are the visual reference the build is
 graded against. Read the current app in `review-desk/` and the `review-desk` command in
 `bin/.local/bin/`. Arm the API-drop wake-up and the lid-switch hold per
@@ -34,8 +34,8 @@ Run pass-core Lifecycle steps 2 to 4 without Geoff:
 1. Spec, only if `spec-plan-review`'s depth calls for one. Quote or probe every mechanism it
    states, never recall it, including how `history.replaceState` keeps the tab script-closable and
    how SvelteKit client navigation interacts with it.
-2. Plan. Write `docs/superpowers/plans/2026-10-11-review-desk-ui.md` in the lean format (see
-   `docs/superpowers/plans/2026-10-11-review-desk.md` for this repo's shape). Tasks are test-first
+2. Plan. Write `docs/plans/2026-10-11-review-desk-ui.md` in the lean format (see
+   `docs/plans/2026-10-11-review-desk.md` for this repo's shape). Tasks are test-first
    where there is logic (undo hold, queue order, keyboard map, triage moves). The close runs
    `visual-verifier` against the four mockups in light and dark, `daisyui-a11y-reviewer`, and the
    Blueprint quality inspector from the main loop (`claude-tooling.md` "DaisyUI"). The PR's "What
@@ -43,7 +43,7 @@ Run pass-core Lifecycle steps 2 to 4 without Geoff:
    `bash scripts/gate.sh`. Then run `spec-plan-review` on the plan (and the spec, if one exists)
    at the depth it sets, with the fold.
 3. Write the executor's launch prompt as a committed file beside the plan, in the shape of
-   `docs/superpowers/plans/2026-10-11-review-desk-prompt.txt`, continuing your branch, and follow
+   `docs/plans/2026-10-11-review-desk-prompt.txt`, continuing your branch, and follow
    `pass-core` as it stands for how the executor hands its PR to Geoff (the review desk) and what
    happens on his decision.
 

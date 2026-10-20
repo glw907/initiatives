@@ -45,7 +45,7 @@ Counts: 2 blockers, 8 majors, 10 minors (one of them over-ceremony).
   filter, no write mode, no idempotence, and no deduplication. The live state shows five ways
   this corrupts data:
   1. `~/.claude` holds 89 session transcripts (`projects/*/*.jsonl`) that mention
-     `docs/superpowers`, plus `history.jsonl`, `file-history/` (rewind backups), `plugins/`,
+     `docs/{specs,plans,research}`, plus `history.jsonl`, `file-history/` (rewind backups), `plugins/`,
      `sessions/`, and `.credentials.json`. Concurrent sessions append to these files, so an
      in-place rewrite loses writes and alters history that tools replay.
   2. `~/.claude/{docs,agents,workflows,instructions,output-styles,tooling,CLAUDE.md}` are stow
@@ -57,7 +57,7 @@ Counts: 2 blockers, 8 majors, 10 minors (one of them over-ceremony).
   3. `~/Projects/workstation` is a symlink to `~/.dotfiles`, and the memory dirs exist under both
      `-home-glw907` and `-var-home-glw907`. A walk that follows symlinks, or that iterates over
      `~/Projects/*` and also `~/.dotfiles`, visits workstation twice. Single-repo docs keep the same
-     relative tail (`docs/superpowers/plans/x.md`) at their destination, so a rewrite that matches
+     relative tail (`docs/plans/x.md`) at their destination, so a rewrite that matches
      that tail isn't idempotent. A second visit, or a rerun after a crash, prefixes the path again,
      for example `~/Projects/dubplate/` twice.
   4. Nothing excludes binaries (`secrets/values.age`, PNG captures), `node_modules/`, `build/`,
@@ -163,7 +163,7 @@ Counts: 2 blockers, 8 majors, 10 minors (one of them over-ceremony).
   `~/.claude/projects/*/memory/` files are machine-local, and the plan runs the rewrite only on
   pavilion, so the end-to-end check at `spec:180` fails there, or passes only against pavilion's
   baseline. Unpushed thinkpad commits that touch moved paths come back as modify/delete
-  conflicts, or recreate files under `docs/superpowers/` after the deletion PR merges.
+  conflicts, or recreate files under `docs/` after the deletion PR merges.
 - Fold: the thinkpad script first runs the inventory's refuse-on-dirty checks on every repo
   (`git status`, `git log @{u}..`, `git stash list`) and stops on any hit. It records its own
   pre-migration reference baseline before pulling, and it runs the memory rewrite locally.
@@ -201,14 +201,14 @@ Counts: 2 blockers, 8 majors, 10 minors (one of them over-ceremony).
 ### M8. The reference checker resolves ambiguous paths and misses some of the moves
 
 - Severity: major. Tag: `correctness`. Location: `spec:132`, `spec:136`.
-- Defect: `cairn-cms`, `dubplate`, and the other repos have their own `docs/superpowers/`. A
-  bare `docs/superpowers/...` there can mean the repo's own file or a workstation file, and a map
+- Defect: `cairn-cms`, `dubplate`, and the other repos have their own `docs/`. A
+  bare `docs/...` there can mean the repo's own file or a workstation file, and a map
   keyed on the relative path can't tell them apart. The spec doesn't say which base the checker
   resolves against, so it can pass a reference that points at the wrong repo's file. The checker
-  only matches `docs/superpowers/`. It misses the moved code paths (`approval-queue/`,
+  only matches `docs/`. It misses the moved code paths (`approval-queue/`,
   `docs-page-chain.js`, `scripts/drafter-gate.sh`) and references into deleted directories
   (`~/Projects/pings/scripts/...` in `registry.md:478-480`, the `cairn-scratch/` citations).
-  References appear in three forms: bare, `~/.dotfiles/docs/superpowers/...` (46 hits), and
+  References appear in three forms: bare, `~/.dotfiles/docs/...` (46 hits), and
   `/var/home/glw907/.dotfiles/...` (6 hits).
 - Fold: key the map on (source repo, path). The checker resolves bare paths against the repo that
   contains them, and resolves the absolute and `~` forms literally. Extend its patterns to the

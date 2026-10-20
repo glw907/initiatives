@@ -1,7 +1,7 @@
 # Fold record: review desk plan (fold agent, claude-opus-5-5, 2026-10-11, on 841fd1f)
 
 Inputs: the three lenses (`review-mechanics` M, `review-contract` C, `review-risk` R) against
-`docs/superpowers/plans/2026-10-11-review-desk.md` and its launch prompt. The design was not edited
+`docs/plans/2026-10-11-review-desk.md` and its launch prompt. The design was not edited
 and the revision changes none of its meaning, so no erratum is owed.
 
 **Task minutes:** 315 after the verification findings below (T1 85, T2 80, T3 65, T4 25, close

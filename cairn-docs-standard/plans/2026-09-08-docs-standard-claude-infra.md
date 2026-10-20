@@ -5,7 +5,7 @@
 measure definition, a set of voice files, review agents, and skills that already carry the
 standard.
 
-**Spec:** `~/Projects/cairn-cms/docs/superpowers/specs/2026-09-08-docs-standard-design.md`,
+**Spec:** `~/Projects/cairn-cms/docs/specs/2026-09-08-docs-standard-design.md`,
 sections "Claude setup", "Where each piece lives", "Unit 3c: the workstation setup", and
 "Owner decisions". Its parent proposal is
 `~/Projects/cairn-cms/docs/internal/record/2026-09-08-polish-inputs/docs-standard-proposal.md`,
@@ -189,7 +189,7 @@ finding, changes an exit code, or blocks a hook.
   {
     "profile": "docs-register",
     "include": ["docs/**"],
-    "exclude": ["docs/internal/**", "docs/superpowers/**"]
+    "exclude": ["docs/internal/**", "docs/**"]
   }
   ```
 
@@ -450,7 +450,7 @@ own directory name contains `superpowers` stops being exempted. Revision 2 said 
 2. The `/superpowers/` skip is a path-segment test, and the `.md` test uses
    `os.path.splitext` on the basename (an extension is not a path segment; revision 2's
    wording invited an invented mechanism). Pytest cases prove a file at
-   `/x/mysuperpowers/docs/a.md` is linted and one at `/x/docs/superpowers/a.md` is skipped.
+   `/x/mysuperpowers/docs/a.md` is linted and one at `/x/docs/a.md` is skipped.
 3. On a findings path, the advisory and error messages name the config root the hook resolved
    and the path it linted relative to that root. A pytest case asserts both strings. The hook
    prints nothing when there are no findings, so this criterion is asserted only where
@@ -637,7 +637,7 @@ satisfy. **This task is the pass's split point**: if the ceiling runs short, cut
 
 **Files:**
 
-- Create: `docs/superpowers/plans/2026-09-08-claude-md-displacement-candidates.md`
+- Create: `docs/plans/2026-09-08-claude-md-displacement-candidates.md`
 
 **The budget arithmetic the document must state.** `claude-context-budget` allows 6,000
 approximate tokens, computed as bytes divided by four, so 24,000 bytes.
@@ -731,7 +731,7 @@ pass stay unless they are genuinely closed; do not silently drop another pass's 
 
 **Files:**
 
-- Create: `docs/superpowers/plans/2026-09-08-docs-standard-claude-infra-handoff.md`
+- Create: `docs/plans/2026-09-08-docs-standard-claude-infra-handoff.md`
 
 The document names the artifacts plan two's preflight verifies and the obligations plan two
 must add. It does **not** re-run acceptance criteria already proved per task; revision 2's
@@ -878,7 +878,7 @@ checks. `check-drift` reports the rebuilt `tellgrader` binary as the only drift 
 introduces; the Plexamp flatpak and GNOME sleep-setting drift it also reports predate this pass
 and are unrelated to any file this plan touches. The six hand-off artifacts each carry a real
 command and its pasted output in
-`docs/superpowers/plans/2026-09-08-docs-standard-claude-infra-handoff.md`.
+`docs/plans/2026-09-08-docs-standard-claude-infra-handoff.md`.
 
 **Decisions locked.** The review agents carry no `--profile` flag and refuse nothing for lack
 of a corpus entry (task 4). The tell scanner is the canonical measurement instrument, with

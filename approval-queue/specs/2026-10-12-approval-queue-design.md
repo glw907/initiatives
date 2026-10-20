@@ -61,7 +61,7 @@ Five names change, and no alias is left behind.
 | `claude-desk-reminder` hook | `claude-approval-queue-reminder` |
 | "Review desk" window title | "Design & PR Approvals" |
 
-Every live reference goes, with no alias left behind (Geoff, 2026-10-12: "Make sure the review-desk references are fully expunged from the claude infa."). That covers all 16 dotfiles files that name the desk: `pass-core`, `settings.json`, the command and the hook, `scripts/check.sh`, the tests, STATUS, and ROADMAP. A new leg in `scripts/check.sh` fails the gate if `review-desk` or `claude-desk-reminder` appears anywhere in the repo outside `docs/superpowers/` and `docs/HISTORY.md`, so the name cannot come back. Plans and prompts that have already run, in any repo, are history and stay as written.
+Every live reference goes, with no alias left behind (Geoff, 2026-10-12: "Make sure the review-desk references are fully expunged from the claude infa."). That covers all 16 dotfiles files that name the desk: `pass-core`, `settings.json`, the command and the hook, `scripts/check.sh`, the tests, STATUS, and ROADMAP. A new leg in `scripts/check.sh` fails the gate if `review-desk` or `claude-desk-reminder` appears anywhere in the repo outside `docs/` and `docs/HISTORY.md`, so the name cannot come back. Plans and prompts that have already run, in any repo, are history and stay as written.
 
 The PR's `## Before merge` section confirms that no session is calling `review-desk` and no item is waiting. Its `## After merge` section then moves the state folder and sends each live cairn-cms or dubplate session the new command name, since `approval-queue` does not exist until the merge (plan review M7).
 

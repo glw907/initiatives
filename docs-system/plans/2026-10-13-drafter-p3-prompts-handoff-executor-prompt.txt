@@ -5,10 +5,10 @@ Load `pass-core`, the `dotfiles-pass` adapter, and `go-conventions` before writi
 `ts-conventions` before editing the chain or its tests. Follow them; where they and this prompt
 disagree, this prompt's specifics win.
 
-Plan, the source of every task: `~/.dotfiles/docs/superpowers/plans/2026-10-13-drafter-p3-prompts-handoff-plan.md`.
+Plan, the source of every task: `~/.dotfiles/docs/plans/2026-10-13-drafter-p3-prompts-handoff-plan.md`.
 Read it whole first. Its "The contracts this pass fixes" section binds both repos and the later
 passes; build to it exactly. The spec sections it builds are named in its header, at absolute
-paths under `~/.dotfiles/docs/superpowers/`.
+paths under `~/.dotfiles/docs/`.
 
 How to work:
 - Your first act is `EnterWorktree` with the name `p3-prompts-handoff`, from the drafter main

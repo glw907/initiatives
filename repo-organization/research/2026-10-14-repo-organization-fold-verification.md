@@ -91,7 +91,7 @@ directories exist under `~/Projects`, and the managed token lacks API-token mana
 
   The baseline run happens before the deletions, so none of these is in it.
 - Fix: give each class a disposition in the spec. Moved code paths get map rows and are
-  rewritten. References into a retired repo or ROADMAP from a history file (`docs/superpowers/`,
+  rewritten. References into a retired repo or ROADMAP from a history file (`docs/`,
   `docs/internal/record/`, `docs/internal/history/`, `HISTORY.md`) are reported as a
   `retired-target` class that check 1 lists but doesn't fail on. Under ruling 2's "yes", the
   `cairn-scratch` citations can name the tar archive's path instead. Live files (`registry.md`,

@@ -1,10 +1,10 @@
 # drafter P2 and P5 plans: contract-and-criteria review
 
 Reviewer lens: contract and acceptance criteria. Targets at `456b409`:
-`docs/superpowers/plans/2026-10-13-drafter-p2-money-plan.md` (P2) and
-`docs/superpowers/plans/2026-10-13-drafter-p5-pipeline-plan.md` (P5), against the completion design
-(`docs/superpowers/specs/2026-10-13-drafter-completion-design.md`) and the pipeline spec
-(`docs/superpowers/specs/2026-10-12-drafter-pipeline-design.md`, "Operations" and "Testing").
+`docs/plans/2026-10-13-drafter-p2-money-plan.md` (P2) and
+`docs/plans/2026-10-13-drafter-p5-pipeline-plan.md` (P5), against the completion design
+(`docs/specs/2026-10-13-drafter-completion-design.md`) and the pipeline spec
+(`docs/specs/2026-10-12-drafter-pipeline-design.md`, "Operations" and "Testing").
 
 Probes run: the SDK source at `~/go/pkg/mod/github.com/anthropics/anthropic-sdk-go@v1.80.0`, the
 chain script at `~/.claude/workflows/docs-page-chain.js`, cairn-cms's main checkout, the P1 and P4

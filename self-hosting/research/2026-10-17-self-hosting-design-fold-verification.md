@@ -110,7 +110,7 @@ The fold record's unverified list matches the spec's "Not checked" table, except
 ### M5. dubplate sends 907.life mail through Fastmail SMTP, and the T+30 removal breaks it
 
 - **Severity:** major. **Tag:** `correctness`. **Location:** spec:259-269, spec:353, spec:408, spec:612.
-- **Defect:** dubplate's identity design rules "The estate uses Fastmail on port 587 with STARTTLS" for its magic links (`dubplate/docs/superpowers/specs/2026-09-08-rung-5-identity-auth.md`, Fork 2 ruling). The age store holds `DUBPLATE_SMTP_PASSWORD`.
+- **Defect:** dubplate's identity design rules "The estate uses Fastmail on port 587 with STARTTLS" for its magic links (`dubplate/docs/specs/2026-09-08-rung-5-identity-auth.md`, Fork 2 ruling). The age store holds `DUBPLATE_SMTP_PASSWORD`.
   - "Senders of 907.life" leaves dubplate out.
   - Cutover step 7 repoints Immich but not dubplate.
   - The Fastmail packet's evidence row (612) doesn't check for any SMTP client still on Fastmail.

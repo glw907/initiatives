@@ -4,9 +4,9 @@ package, `drafter config`, and drafter's eight open issues.
 Load `pass-core` and `go-conventions` before writing any Go. Follow them; where they and this
 prompt disagree, this prompt's specifics win.
 
-Plan, the source of every task: `~/.dotfiles/docs/superpowers/plans/2026-10-13-drafter-p1-foundations-plan.md`.
+Plan, the source of every task: `~/.dotfiles/docs/plans/2026-10-13-drafter-p1-foundations-plan.md`.
 Read it whole first. The spec sections it builds are named in its header, at absolute paths under
-`~/.dotfiles/docs/superpowers/`.
+`~/.dotfiles/docs/`.
 
 How to work:
 - Your first act is `EnterWorktree` with the name `p1-foundations`, from the drafter main checkout

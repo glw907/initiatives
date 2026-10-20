@@ -1,7 +1,7 @@
 # Mechanics and feasibility review: review desk plan at 0fd53f5 (plan-reviewer agent, saved by the planning session)
 
-Paths are relative to the worktree root; plan = `docs/superpowers/plans/2026-10-11-review-desk.md`,
-prompt = `docs/superpowers/plans/2026-10-11-review-desk-prompt.txt`. Each claim was checked against
+Paths are relative to the worktree root; plan = `docs/plans/2026-10-11-review-desk.md`,
+prompt = `docs/plans/2026-10-11-review-desk-prompt.txt`. Each claim was checked against
 the unpacked kit 3.0.1 and adapter-node 6.0.0 source, the Claude Code docs, the repo's scripts, or a
 probe.
 

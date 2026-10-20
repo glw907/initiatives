@@ -5,8 +5,8 @@ at `d64a88b`, per `spec-plan-review` "The verification read". Targets: the pass 
 and executor prompts. Read against the fold record, the four P2 and P5 reviews, the completion
 design's rulings 1 to 8, the pipeline spec, and the pass 1, 3, and 4 plans' Interfaces.
 
-Citations `P2:N` and `P5:N` are lines of `docs/superpowers/plans/2026-10-13-drafter-p2-money-plan.md`
-and `docs/superpowers/plans/2026-10-13-drafter-p5-pipeline-plan.md`.
+Citations `P2:N` and `P5:N` are lines of `docs/plans/2026-10-13-drafter-p2-money-plan.md`
+and `docs/plans/2026-10-13-drafter-p5-pipeline-plan.md`.
 
 ## Probes run
 

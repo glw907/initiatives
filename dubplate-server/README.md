@@ -23,4 +23,4 @@ The group's system is not live until the server launches. Geoff's 2026-09-02 rul
 
 ## Records
 
-- The dubplate Go rewrite, uploader, and music VPS docs move into `dubplate`'s own `docs/superpowers/` under the migration map.
+- The dubplate Go rewrite, uploader, and music VPS docs move into `dubplate`'s own `docs/` under the migration map.

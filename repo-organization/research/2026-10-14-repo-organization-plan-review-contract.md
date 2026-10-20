@@ -166,7 +166,7 @@ These are bare names, not `~/Projects/<repo>/` paths, so `refs` won't match them
 edits cover only `live-tie` hits.
 Fold: give W8 (or W7) the removal of every manifest line the approved dry run lists. Acceptance:
 `git grep -nw` for each retired name over `bluefin/`, `bash/`, `bin/`, `scripts/`, and `claude/`
-returns only history-file hits (`docs/superpowers/`, `HISTORY.md`). Each surviving hit gets a
+returns only history-file hits (`docs/`, `HISTORY.md`). Each surviving hit gets a
 recorded reason in the PR body.
 
 **M12. correctness. Plan 380-398, 249; design "Migration of past work".** The plan names only
@@ -304,7 +304,7 @@ rows passes, and then `refs` rewrites no reference to `docs-page-chain.js`, `cai
 Fold: pin the code rows to the design's two lists, the drafter pieces and the approval-queue pieces
 (including the `review-desk` historical names, as non-rewritten history rows), and check them by
 exact path. Compute the 173 independently of the classifier, with
-`ls docs/superpowers/{specs,plans,research} | wc -l` at the pinned commit.
+`ls docs/{specs,plans,research} | wc -l` at the pinned commit.
 
 **M24. correctness. Plan 390, 386, 314.** The S and W5 "applied count equals the decision's row
 count" has no measurement. "now + defer applied + drop = rows" is a partition of the decision, true

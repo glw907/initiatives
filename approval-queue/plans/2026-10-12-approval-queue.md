@@ -1,6 +1,6 @@
 # Approval queue pass plan
 
-Design: `docs/superpowers/specs/2026-10-12-approval-queue-design.md` (approved in the queue 2026-10-12, with Geoff's chat rulings recorded in it, and the B3 design fold of 2026-10-12). Mock-ups, settled decisions, and the audit ledgers: `docs/superpowers/specs/2026-10-12-approval-queue-mockups/`. The mock-up pages (`pr-clean.html`, `pr-problem.html`, `triage.html`, and their `dark-*.html` variants) are self-contained and open straight from the repo. The reference screenshots are `refs/<page>-<light|dark>-<390|1024|1440>.png`, 18 images. Review: `docs/superpowers/research/2026-10-12-approval-queue-review-mechanics.md`; fold record: `docs/superpowers/research/2026-10-12-approval-queue-fold.md`. Class: `runner`. Adapter: `dotfiles-pass`. Design estimate: 420 path minutes; standing approval to 1260.
+Design: `docs/specs/2026-10-12-approval-queue-design.md` (approved in the queue 2026-10-12, with Geoff's chat rulings recorded in it, and the B3 design fold of 2026-10-12). Mock-ups, settled decisions, and the audit ledgers: `docs/specs/2026-10-12-approval-queue-mockups/`. The mock-up pages (`pr-clean.html`, `pr-problem.html`, `triage.html`, and their `dark-*.html` variants) are self-contained and open straight from the repo. The reference screenshots are `refs/<page>-<light|dark>-<390|1024|1440>.png`, 18 images. Review: `docs/research/2026-10-12-approval-queue-review-mechanics.md`; fold record: `docs/research/2026-10-12-approval-queue-fold.md`. Class: `runner`. Adapter: `dotfiles-pass`. Design estimate: 420 path minutes; standing approval to 1260.
 
 Every task's acceptance includes the adapter gate, `bash scripts/gate.sh`, green at the task's commit.
 
@@ -21,12 +21,12 @@ Every rendered read and the end-to-end check run against a private server, never
 
 **Outcome.** No live file names `review-desk`, `REVIEW_DESK_STATE`, "review desk", or `claude-desk-reminder`. A new gate leg keeps it that way.
 
-**Files.** Every file the leg's pattern matches today. On 2026-10-12, `git grep -l -I -i -E 'review[-_ ]?desk|claude-desk-[r]eminder' -- . ':!docs/superpowers/' ':!docs/HISTORY.md'` lists 21:
+**Files.** Every file the leg's pattern matches today. On 2026-10-12, `git grep -l -I -i -E 'review[-_ ]?desk|claude-desk-[r]eminder' -- . ':!docs/' ':!docs/HISTORY.md'` lists 21:
 - `review-desk/` moves to `approval-queue/` by `git mv`. Inside it: `package.json` and `package-lock.json` (`name`, lines 2 and 8); `src/env.ts` and every reader of `REVIEW_DESK_STATE`, which becomes `APPROVAL_QUEUE_STATE`; the `mkdtemp` prefixes in `items.test.ts:17`, `routes/page.server.test.ts:23`, and `item/[id=id]/page.server.test.ts:41`; and the page titles in `+page.svelte:80` and `item/[id=id]/+page.svelte:11`. Visible UI strings that say "Review desk" become "Design & PR Approvals".
 - `bin/.local/bin/review-desk` becomes `approval-queue`. Its state root becomes `${XDG_STATE_HOME:-$HOME/.local/state}/approval-queue`, its usage and error strings use the new name, and its `pkill` hint becomes `approval-queue/[b]uild`.
 - `bin/.local/bin/claude-desk-reminder` becomes `claude-approval-queue-reminder`. Its context text calls the tool by the new name and the app "Design & PR Approvals", and never says "desk".
 - Edit in place: `claude/.claude/settings.json` (the hook command), `scripts/check.sh` (the leg names, `check_review_desk`, and the app path), `tests/review-desk.test.sh` and `tests/claude-desk-reminder.test.sh` (renamed to match), `claude/.claude/skills/pass-core/SKILL.md` (every `review-desk` and "desk" use), `docs/STATUS.md`, and `ROADMAP.md`.
-- New gate leg in `scripts/check.sh`: `git grep -n -I -i -E 'review[-_ ]?desk|claude-desk-[r]eminder' -- . ':!docs/superpowers/' ':!docs/HISTORY.md'`. It fails the gate when `git grep` exits 0 (a match) and passes when it exits 1. The bracket in `[r]eminder` and the `[-_ ]?` class keep the leg from matching its own line (probed 2026-10-12: the pattern matches `REVIEW_DESK_STATE`, `reviewdesk`, "Review desk", and `claude-desk-reminder`, and not the line that holds it).
+- New gate leg in `scripts/check.sh`: `git grep -n -I -i -E 'review[-_ ]?desk|claude-desk-[r]eminder' -- . ':!docs/' ':!docs/HISTORY.md'`. It fails the gate when `git grep` exits 0 (a match) and passes when it exits 1. The bracket in `[r]eminder` and the `[-_ ]?` class keep the leg from matching its own line (probed 2026-10-12: the pattern matches `REVIEW_DESK_STATE`, `reviewdesk`, "Review desk", and `claude-desk-reminder`, and not the line that holds it).
 
 **Acceptance.**
 - The new leg passes on the renamed tree.
@@ -94,7 +94,7 @@ Every rendered read and the end-to-end check run against a private server, never
 - New: `claude/.claude/docs/voice/approval-brief.md`.
   - The standards: the inverted pyramid; the Federal Plain Language Guidelines (<https://www.plainlanguage.gov/guidelines/>); and Nielsen Norman Group on writing for the web and on progressive disclosure, each cited by URL.
   - The exact contract and state table from T2.
-  - Exemplars. Each passing exemplar sits in a fenced block whose info string is `brief` (Markdown) or `brief-triage` (JSON), so T4's test can extract it: the PR #40 brief, the drafter Pass 0 triage brief, and the "after" half of a before-and-after pair from one real PR body in `docs/superpowers/plans/`. The "before" half is a counter-example in a plain `markdown` fence. Exemplar copy follows T2's verbatim-copy rule and its mappings.
+  - Exemplars. Each passing exemplar sits in a fenced block whose info string is `brief` (Markdown) or `brief-triage` (JSON), so T4's test can extract it: the PR #40 brief, the drafter Pass 0 triage brief, and the "after" half of a before-and-after pair from one real PR body in `docs/plans/`. The "before" half is a counter-example in a plain `markdown` fence. Exemplar copy follows T2's verbatim-copy rule and its mappings.
   - The naming rule: "Design & PR Approvals" or "approval", never "the desk".
 - Edit:
   - The `claude/.claude/skills/writing-voice/SKILL.md` router table gains an "Approval-queue brief" row.
@@ -164,7 +164,7 @@ Every rendered read and the end-to-end check run against a private server, never
 **Outcome.** The design's end-to-end check passes against the built app, through the harness.
 
 **Acceptance.**
-- `node approval-queue/src/check-brief.ts design docs/superpowers/specs/2026-10-12-approval-queue-design.md` exits 0. Seeded as a design item, the design renders with its brief on top.
+- `node approval-queue/src/check-brief.ts design docs/specs/2026-10-12-approval-queue-design.md` exits 0. Seeded as a design item, the design renders with its brief on top.
 - A copy with `## Brief` removed exits 2 from the same check.
 - The drafter triage in the new shape passes the check and, seeded, renders as the mock-up does.
 - `visual-verifier` grades each page against its `refs/` screenshots and finds no STRUCTURAL difference.

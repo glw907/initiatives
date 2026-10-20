@@ -5,9 +5,9 @@ one real cairn page run through drafter on Geoff's API key.
 Load `pass-core`, the `cairn-pass` adapter (for the cairn-cms PR), and `go-conventions` before
 writing any Go. Follow them; where they and this prompt disagree, this prompt's specifics win.
 
-Plan, the source of every task: `~/.dotfiles/docs/superpowers/plans/2026-10-13-drafter-p5-pipeline-plan.md`.
+Plan, the source of every task: `~/.dotfiles/docs/plans/2026-10-13-drafter-p5-pipeline-plan.md`.
 Read it whole first. The design and spec it builds are named in its header, at absolute paths under
-`~/.dotfiles/docs/superpowers/`. Every offline task (P5.1 to P5.6) runs before the live ones (P5.7,
+`~/.dotfiles/docs/`. Every offline task (P5.1 to P5.6) runs before the live ones (P5.7,
 P5.8).
 
 How to work:

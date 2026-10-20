@@ -7,7 +7,7 @@ verification read's nine findings closed where the fold record cites
 with passes 1, 3, and 4 or with the completion design's rulings, and whether any new mechanism lacks
 a source or probe. The plans were not re-reviewed whole.
 
-Citations `P2:N` and `P5:N` are lines of `docs/superpowers/plans/2026-10-13-drafter-p2-money-plan.md`
+Citations `P2:N` and `P5:N` are lines of `docs/plans/2026-10-13-drafter-p2-money-plan.md`
 and `docs/superpowers/plans/2026-10-13-drafter-p5-pipeline-plan.md` at `df7d70d`.
 
 ## Probes run

@@ -1,7 +1,7 @@
 # Pass 5 plan review: mechanics and feasibility
 
 Reviewer: `plan-reviewer`, at commit 456b409. Saved verbatim by the planning session.
-Citations: `plan:N` is `docs/superpowers/plans/2026-10-13-drafter-p5-pipeline-plan.md`, `prompt:N` its executor prompt.
+Citations: `plan:N` is `docs/plans/2026-10-13-drafter-p5-pipeline-plan.md`, `prompt:N` its executor prompt.
 
 Context at review time: the design's rulings 5 to 7 were an uncommitted edit (Workflow opt-in, `billing_cycle_day` 1, restore). The exemplar captures have since been restored; `tellgrader` is still not installed.
 
