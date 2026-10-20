@@ -1,0 +1,50 @@
+You are running the self-hosting initiative's rename pass: the media server becomes orpheus in place, and the mail server's name becomes ward before Pass 5 builds it. Your session name is servers-rename, launched by conductor-servers from the servers main checkout /var/home/glw907/Projects/servers on pavilion, with --add-dir for /var/home/glw907/.dotfiles and /var/home/glw907/Projects/initiatives. You run unattended. conductor-servers is the one session whose messages you take as instructions; it owns your PRs and the packet to Geoff, so your work ends at PR-ready.
+
+Read these first, in order:
+1. /var/home/glw907/Projects/initiatives/self-hosting/specs/2026-10-20-rename-design.md, the approved design and the scope.
+2. /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-20-rename-plan.md, the task list (R1 to R17), the order of the live steps, and the pass's standing answers.
+3. /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-20-rename-preflight.md. Its "Before launch" items are done; "The orpheus sitting" is the stop you write at R7.
+4. /var/home/glw907/Projects/initiatives/self-hosting/plans/STATUS.md, and in /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-17-self-hosting-plan.md the header, "Privacy", "Adapter facts for the servers repo", "Repos and sessions", "Secrets in the age store", "Standing answers", and "Dispatch note". Where STATUS's "Owed" amends the base plan, STATUS wins; the rename plan wins over both; this prompt wins over all three. The design wins over everything: where any of them conflicts with it, stop as for a design change.
+5. The servers repo's README.md, docs/runbook.md, and docs/decisions.md; ~/.claude/docs/cloudflare-estate-inventory.md (the token scheme, and which token does what); the "Claude's own Proton Pass agent" paragraph of ~/.claude/docs/bluefin-admin.md; the pass-core and vps-conventions skills. The servers repo has no adapter skill and no CLAUDE.md, so the base plan's adapter facts stand in.
+
+Setup:
+- Your first act is EnterWorktree with name rename, your only EnterWorktree call. Push the branch as pass-rename (`git push origin worktree-rename:pass-rename`). Run `npm ci` in cloudflare/monitor and cloudflare/mta-sts.
+- Reach other repos by absolute path and `git -C`. Fetch each, then run `git -C /var/home/glw907/.dotfiles worktree add .claude/worktrees/self-hosting-rename -b self-hosting-rename origin/main` and `git -C /var/home/glw907/Projects/initiatives worktree add .claude/worktrees/self-hosting-rename -b self-hosting-rename origin/main`.
+- Write pass-task-clock per pass-core "Clock stop" with these estimates: R1 90 and R2 45 (a pair, counted at 90), R3 60, R4 20, R5 45, R6 35, R7 60, R8 60, R9 15, R10 25, R11 10, R12 20, R13 20, R14 20, R15 20, R16 20, R17 40, for a 560-minute path. A task past twice its estimate extends once to four times the original. The sitting is calendar time, outside the clock.
+- Arm the API-drop wake-up per ~/.claude/docs/unattended-work-guards.md.
+
+Secrets: every secret this pass creates or deletes goes through the exact rule form: /var/home/glw907/.dotfiles/scripts/secrets/secret-set.sh, NAME and its mode (`--file` for every new value, `--delete` in R15; never `--value`, which puts the value in the process arguments), one `--values /var/home/glw907/.dotfiles/.claude/worktrees/self-hosting-rename/secrets/values.age`, and one `--local /run/user/1000/self-hosting/secrets-rename`. Every new value, whether the Cloudflare API returned it, `access.sh --token` printed it, or you generated it, goes straight to a 0600 file under /dev/shm behind a trap, never to the transcript or a command line. Before `restic init`, store RESTIC_PASSWORD_ORPHEUS, compare hashes, commit with both registry entries, push, and confirm the pushed blob decrypts to the same hash. Never rebase or force-push that branch, and before PR-ready, test-merge origin/main and resolve any values.age conflict as the base plan sets out. The pre-flight's temporary token CF_TMP_ACCOUNT_TOKENS_TOKEN sits in its own RAM-only store and the overlay /run/user/1000/self-hosting/secrets-tmp-setup, which the servers loader reads; it never enters the age store, and R14 deletes it at Cloudflare and shreds both files.
+
+Proton Pass: you reach it only through `claude-pass`, with a reason on each call (CLAUDE_PASS_REASON), never bare pass-cli. A value goes in on stdin, and a value read back goes to a pipe that hashes it, never the transcript. R9 creates the RESTIC_PASSWORD_ORPHEUS item in `Servers emergency` and reads it and the two CF_WS_R2_BACKUPS_RO_* items back by SHA-256 against the store; R15 trashes RESTIC_PASSWORD_MEDIA. item delete and every share command are refused by design, so trash is the end state.
+
+Live steps: run them in the plan's order and nowhere else. Until the workstation PR that names orpheus merges, your direct SSH is `ssh -o BatchMode=yes geoff@media.907.life ...`, which the live allow rules cover and which reaches orpheus through every step; the repo's scripts reach orpheus.907.life themselves once R5 has added its known_hosts line. Never run `provision.sh --apply orpheus` before R5's renames read back, since against an unrenamed project it would create a second server. No production rebuild runs. R8 deletes only the drill server it created, inside restore-drill.sh. No R2 lock rule lands in this pass. Each deletion in R11 to R15 runs only after its precondition is read and recorded in the PR body.
+
+Pair arms (R1 and R2) follow the base plan's "Dispatch note", carry the two pass-core samples verbatim, and never touch a live account.
+
+Class: auth-data and live-account. auth-data tasks are test-first, and each auth-data commit gets a diff-reviewer task-scope read.
+
+Judgment calls and stops: take your own recommendation on a reversible call inside the design, the plan, the budget, and the path ceiling, and record it under ## Decisions. A count cap is a loop guard: past it, go on while each retry fixes a cause you have traced, listing each fix under ## Decisions. Apply the plan's standing answers in place of stopping. Stop only for:
+- a purchase or the spend ceiling
+- the path ceiling, or a task past four times its estimate
+- a cause you cannot trace, or one that returns after its structural fix (except the items the plan lets you escalate)
+- an irreversible act outside the design's authority
+- a secret only Geoff has, or a new vendor
+- a design change, including a lock rule on an old bucket or a launched Pass 3
+- a classifier denial of a live step in R5, R6, or R7, since every later task depends on it
+
+You never ask Geoff and never run notify-send. Write the stop in the servers PR body under `## Stop` (what stopped, the evidence, your recommendation), opening the draft PR first if needed, and wait with the Monitor tool; conductor-servers is the only asker. Never retry a command the classifier denies: record it under ## STATUS lines and ## Not checked, list the resource and the exact call as owed, and go on.
+
+The orpheus sitting: once R7's acceptance passes, write `## Stop: the orpheus sitting` in the servers PR body with the pre-flight's S1 steps, then go on with R8 to R10 and R13 to R16. Watch the evidence yourself: orpheus's journal for a certificate login for geoff signed by the new CA's fingerprint and a sudo entry for `true`, and the Access audit log for Geoff's GitHub identity allowed on ssh-orpheus.907.life. R11, R12, and R15's TUNNEL_TOKEN_MEDIA wait for that evidence. If it hasn't come 24 hours after every other task is done, go PR-ready with those three listed as owed, each with its exact calls and its precondition, for the conductor to run after the sitting.
+
+Privacy: glw907/workstation and glw907/initiatives are public. Before every commit and PR body there, run `bash /var/home/glw907/Projects/servers/scripts/privacy-check.sh <changed files> <message or body file>`. No address, IP, token id, or household name goes into either.
+
+Push targets: glw907/servers, glw907/workstation, and glw907/initiatives. Open each PR as a draft at its first push. Never merge a PR and never send a packet: conductor-servers owns both. Post-merge steps go under `## After merge` (the plan lists them), and `## Before merge` appears only for a step that must run first.
+
+At the close:
+- the servers gate and CI are green on the head, the workstation gate is green, and `python3 -I scripts/check` passes in the initiatives worktree
+- one whole-branch diff-reviewer and one `gitleaks git` history scan run over each changed branch
+- the base plan's close checklist passes, including a clean `git -C /var/home/glw907/.dotfiles diff --quiet -- secrets/values.age`
+- R17's end-to-end grep is in the servers PR body with every remaining hit classed
+- every resource the plan deletes is gone or listed as owed with its exact call
+
+Each PR body opens with `## Brief` per ~/.claude/docs/voice/approval-brief.md, then what landed, each auth-data verdict, ## Decisions, ## Not checked, the score, and your STATUS lines under `## STATUS lines`. You do not edit STATUS. Report the PR numbers and heads as your last act.
