@@ -142,6 +142,7 @@ cairn-cms	docs/superpowers/research/2026-10-10-pass-clock-time-review-fable.md	p
 cairn-cms	docs/superpowers/research/2026-10-10-pass-clock-time-review-integrity.md	pin: an old path sits beside a commit id; only those lines keep it
 cairn-cms	docs/superpowers/research/2026-10-11-draft-docs-2b-part1-record.md	pin: an old path sits beside a commit id; only those lines keep it
 drafter	tests/fixtures/docs-page-chain/default-run.with-outline-round2.json	follow: a snapshot whose hex ids are placeholders
+drafter	tests/fixtures/drafter/handoff-renders.golden.json	follow: a snapshot whose hex ids are placeholders
 dubplate	docs/HISTORY.md	pin: an old path sits beside a commit id; only those lines keep it
 dubplate	docs/superpowers/plans/2026-09-25-rung-5c-iii-pages-fonts-rendered-gates.md	pin: an old path sits beside a commit id; only those lines keep it
 dubplate	docs/superpowers/plans/2026-09-25-rung-5d-boundary-deployment-close.md	pin: an old path sits beside a commit id; only those lines keep it
