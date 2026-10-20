@@ -1,0 +1,11 @@
+Use the brainstorming skill first, then pass-core's "Lifecycle" step 1. This is a design session with Geoff for docs-system's next pass: how a new docs page first gets a polished, fully dependable blueprint, gated before drafter spends anything drafting it (Geoff's ruling, 2026-10-20). Initiative: docs-system.
+
+Read first, whole:
+- ~/Projects/initiatives/docs-system/research/2026-10-20-docs-system-failure-history.md, the failure and progress history across all eighteen passes. It qualifies the premise: blueprint and facts defects decided what was true on the page in every missed pass, but across the two drafting pilots the acceptance machinery and the drafting seats ended most pages. The design has to answer both.
+- The acceptance pass's record: glw907/drafter#56 and glw907/cairn-cms#133 (the seven-page table, `## Decisions`, `## Planning misses`), and the docs-system README's 2026-10-20 Status line.
+- ~/Projects/initiatives/docs-system/research/2026-10-19-drafter-b3c-draft-review.md (the fact-check of B3c's drafts) and ~/Projects/initiatives/docs-system/research/2026-10-19-drafter-edit-quality-analysis.md.
+- The `BACKLOG.md` items tagged `#initiative:docs-system` in drafter and cairn-cms, cairn-cms #21 (the two fact conflicts) among them.
+
+Settle with Geoff, one question at a time with a recommendation: what "dependable" means as a checkable gate (fact consistency across the store, claim coverage against the blueprint's inventory, the read accept, and anything the history adds), which of those run deterministically and which need a seat, and how the gate is proven before any drafting spend. Blueprint polish runs on session tokens, not API credit; drafter's seats stay on the API. Batch latency and the acceptance machinery are in the history as open causes; the design says which it takes on and which it leaves.
+
+The design names its initiative (docs-system) and goes to Geoff as a design part in a packet, per approval-packet.
