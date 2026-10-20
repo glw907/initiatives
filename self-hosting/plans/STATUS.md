@@ -16,9 +16,21 @@ Rulings during Pass 0 (Geoff, 2026-10-18):
 - Step 0.9 waits for the migration: the OAuth app, the Spamhaus key, and the test accounts go into Proton Pass, not 1Password. Geoff's Proton account was re-created the same day after he lost its password, and his 1Password import may need running again. The Proton Pass extension is set up in his Chromium profile.
 - Chromium is Geoff's daily browser (workstation#93, merged). Pass W's W3 takes that as given: no browser-wide extension policy, and no 1Password extension anywhere.
 
+Rulings 2026-10-19 and 2026-10-20 (Geoff):
+- Proton: Geoff moved his own plan from Mail Plus to Pass Family (one subscription per account; Mail Plus holders cannot join a Pass Family; Proton Family rejected on cost). Bridge needs a paid Mail plan, so the Proton Mail reader and its Bridge setup are removed (workstation#108). Step 0.6's purchase is done.
+- Claude works in Proton Pass as it did in 1Password, creating and editing items, through its own agent: `claude-pass` (workstation#114), `pavilion-claude` with editor on `Servers emergency` and `Workstation` only, token in GNOME Keyring, expiring about 2027-01-20. Bare `pass-cli` stays blocked. thinkpad-x1 needs its own `thinkpad-claude` agent.
+- An executor takes its named conductor's messages as instructions; a conductor message never stands in for a packet's approval (workstation#113).
+- Server names, Venture Bros. theme: media is **orpheus**, mail is **ward**, everywhere, with fresh backup buckets. `media`, `mail`, and `music` stay as service CNAMEs; MX, PTR, and HELO use `ward.907.life`.
+- Geoff's GitHub identity for Access is `geoff@907.life`, signing in as the `geoff` account.
+- Pass 2 closed early; the rename's full restore drill became a key-and-repository check from pavilion (Pass 2's seventh drill proved the procedure).
+
 ## Next action
 
-Pass 1 closed 2026-10-19: workstation#95 (`577ddc5`), servers#4 (`e2ad09d`), and initiatives#25 (`387df14`) merged on Geoff's packet approval. The monitor Worker is deployed and emails Geoff's recovery address; the test alert and the first weekly note both arrived. Running path: 715 minutes (Pass 0 435, Pass 1 about 240 with the alert rebuild, one hand-over 40) against the 3,515 line. Pass 1's step 2 ran on pavilion 2026-10-19: `~/.dotfiles` pulled, `sync.sh --local` (68 secrets), `monitor-subscribe.service` enabled and active, the `secrets-foundation` overlay shredded. Still owed from Pass 1: the Workers Logs `Authorization` header check and thinkpad-x1's F6b and F6c. Pass 2 (`servers-media`): prompt `2026-10-19-pass2-prompt.txt` and pre-flight `2026-10-19-pass2-preflight.md`, waiting on Geoff's packet approval and the pre-flight sitting (the GitHub identity provider, the `Servers emergency` vault check, and booking a household phone). Proton Mail reader (Geoff, 2026-10-19): `workstation-proton-mail-read` runs from `2026-10-19-mail-read-prompt.txt`, launched by the conductor from the workstation main checkout. Geoff approved Bridge on pavilion, a Sieve filter filing service senders into `Services` with an account-access subject exclusion, and a read-only reader limited to that folder. Its time is reported, not summed.
+Pass 2 (the media server) and the rename pass closed 2026-10-20 on Geoff's two packet approvals. Merged: servers#5 (`9a0fe11`) and #6 (`a8c1b1c`); workstation#108, #109, #110, #113, #114 (`6cf4816`) and #115 (`566ca2d`); initiatives#70 (`25d8d94`) and #71 (`10404f3`). The media server is now **orpheus**: Debian 13 on a CX33, Immich rehearsal on `photos-new.907.life`, nightly restic to `servers-backup-orpheus`, the browser terminal at `ssh-orpheus.907.life`, and the monitor's heartbeat and snapshot checks on `orpheus`. `media.907.life` and `music.907.life` are CNAMEs to it. The mail server will be built as **ward**, and initiatives#71 amended the plan so Passes 3, 5, and 6 use the new names and buckets. After-merge steps ran on pavilion (pull, restow, `sync.sh --local`, `claude-tooling-sync apply`, overlays removed; SSH to `geoff@orpheus.907.life` works).
+
+Running path: about 1,490 minutes against the 3,515 line (Pass 0 435, Pass 1 240, Pass 2 about 660, the rename about 80 against 560 planned after Geoff cut its drill, hand-overs 75).
+
+Next: Pass 3, the photos and music cutover (I1 locks `servers-backup-orpheus` first). It needs its launch prompt and pre-flight written from the amended plan; no prompt waits today. First owed item: the M8 stale-snapshot probe on `servers-scratch-stale` after about 2026-10-21 11:18 UTC, then delete that bucket.
 
 ## Pass 0 rows
 
@@ -60,6 +72,13 @@ Pass 1 closed 2026-10-19: workstation#95 (`577ddc5`), servers#4 (`e2ad09d`), and
 - Members A and B's Fastmail credentials (deferred 2026-10-18): the migration rehearsals for their mailboxes, and their 0.12 dry-run rows, wait until Geoff asks them.
 - Estate-wide follow-up, outside this initiative: the `ci-deploy` token for the five site repos and Workers Builds, and retiring `CF_ZT_TOKEN`, per the scheme's table.
 
+- From Pass 2 and the rename (2026-10-20): the M8 stale-snapshot probe on `servers-scratch-stale` after about 2026-10-21 11:18 UTC, then delete the bucket; the Immich admin login into `Servers emergency` (Geoff); the second operator's GitHub identity, Unix account, patterns lines, Hetzner invite, repo access, first sign-in on `ssh-orpheus.907.life`, and console password; no full rebuild drill yet on orpheus's new repository. Servers repo follow-ups are in its new `BACKLOG.md` (#1 to #6, `a5fae46`), led by #1: `promote.sh` must set the box's hostname before any production rebuild. Dubplate's local snapshot command is dubplate BACKLOG #103.
+- thinkpad-x1 at its next pull: `stow -R systemd bin`, `sync.sh --local`, `claude-tooling-sync apply`, a `known_hosts` line for `orpheus.907.life` (compare with its `media.907.life` entry), and a `thinkpad-claude` agent (steps in `bluefin/THINKPAD-PROTON.md`).
+- The Cloudflare Access sign-in page still carries the sailing club's logo and wording for every app, and Geoff asked for it cleaned up (2026-10-20): one identity provider per app with the chooser skipped, and a neutral shared page.
+- `dry-run.sh access-github-idp` fails because `ws-servers` cannot list identity providers, though the provider exists and works: a dry-run defect.
+- Later (Geoff, 2026-10-20): WebDAV on orpheus for Chromium bookmark sync with floccus; its design question is how floccus authenticates past Access.
+- Planning misses, 2026-10-19 and 2026-10-20: the mail-reader design bought Mail Plus without checking it against 0.6's Pass Family purchase; the pre-flight took "pass count is done" without the vault existing, listed the Immich admin login as stageable, and never compared the Access identity with the app policy (S1 failed on it); two dialogs needed a second try (a value of the wrong shape, then a missing scratch store). Lesson: the conductor dry-runs each sitting step's identity, policy, and store before Geoff is asked.
+
 ## Open decisions
 
 - Pass W scope (asked 2026-10-18): whether Proton Drive, VPN, or the Mail and Calendar desktop apps join Pass W as one install task. Recommended: none unless Geoff names them; Pass W stays as planned.
@@ -72,3 +91,5 @@ Pass 1 closed 2026-10-19: workstation#95 (`577ddc5`), servers#4 (`e2ad09d`), and
 - Pass W: `workstation-self-hosting-proton`, session `c27d5d8f`, launched by the conductor 2026-10-18 after the Pass 0 session relayed Geoff's word that the cutover off 1Password comes next.
 - Pass 1: `servers-foundation`, session `e8e7f4d7`, launched by the conductor 2026-10-18; rebuilt as `84f6f49d` and finished live as `1080a943` (2026-10-19), all stopped. A first launch (`5c10c3ea`) got no prompt: `--add-dir` takes a variadic list and swallowed the prompt, so it was stopped and removed, and the conductor prompt's line now puts `--add-dir` before the named flags.
 - Planner: session `26c03024` on pavilion ended after the plan merged.
+- Pass 2: `servers-media`, session `69d74faf`, 2026-10-19 to 2026-10-20, removed after the merge.
+- Rename: planner `servers-rename-plan` (`13f52a98`) and executor `servers-rename` (`34fe22d1`), 2026-10-20, both removed after the merge. The conductor ended at this hand-over.
