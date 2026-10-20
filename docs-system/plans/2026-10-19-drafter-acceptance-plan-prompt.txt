@@ -1,0 +1,16 @@
+You are the planning session for the drafter acceptance pass. Use pass-core's "Lifecycle" steps 2 to 4 and hand the pass to conductor-drafter per "Execute"; never run the pass yourself. Initiative: docs-system.
+
+Read first, whole:
+- ~/Projects/initiatives/docs-system/specs/2026-10-19-drafter-acceptance-design.md (approved 2026-10-19, glw907/initiatives#59).
+- ~/Projects/initiatives/docs-system/research/2026-10-19-drafter-b3c-draft-review.md (the evidence; its "The findings, page by page" section is the fact and blueprint edit list, each with a draft line, a code line, and the fix).
+- glw907/drafter#55 and glw907/cairn-cms#132 (B3c's record: the eight-page table, `## Decisions`, `## Planning misses`), and B3c's plan at plans/2026-10-19-drafter-b3c-cairn-pilot-plan.md for the run's shape (the worktrees, the local config copy, the meter, the per-page loop).
+- drafter's BACKLOG.md items #23, #25, #26 and cairn-cms's BACKLOG.md items #14, #15, #16, #20.
+- internal/pipeline/steps.go (`afterCoverage`) and internal/pipeline/handle.go in drafter, where the escalation rule lives, and stock/prompts.js and claude/.claude/workflows/docs-page-chain.js, which must label findings by kind.
+
+Geoff's rulings in the packet (2026-10-19): the bar is five of seven accepted at a $50 ceiling with the existing $10 page cap; all thirty fact-check findings are fixed at their source before the rerun. The design's "Standing answers" apply in place of stopping.
+
+The plan carries, in order: cairn's gate fixes and the thirty fact and blueprint edits (agents under the `blueprint` skill, in cairn, no API spend); a `drafter read --since <pre-fix commit>` per edited blueprint; drafter's escalation rule, the snippet inputs, and #23, #25, #26; the rerun of the seven with `drafter page --whole`, smallest first, on cairn's chain module; the cairn PR for Geoff's read. Two repos, two PRs: drafter first, then cairn with a merge commit. Risk class runner and live-account. money.go and fingerprint.go untouched; resume.go test-first with a task-scope diff-reviewer read per commit, per B3's ruling.
+
+Pre-launch, for the conductor: glw907/drafter#54 and glw907/cairn-cms#131 (the docs-layout sweep) must be merged before any launch into either repo, and the executor copies ~/.config/drafter/cairn-cms.local.toml into the cairn worktree as drafter.local.toml and runs `drafter config` there. Nothing is for Geoff. The executor is drafter-acceptance, launched from drafter's main checkout on pavilion; write every repeated live command out with its flags (a B3c planning miss).
+
+Estimate 400 path minutes; a plan over 800 goes back to Geoff. Write the plan to plans/2026-10-19-drafter-acceptance-plan.md, the executor and conductor prompts beside it, take spec-plan-review's depth for the reviews, fold without Geoff except a finding that changes the design, then hand to conductor-drafter and close. Update the docs-system README status line as the hand-over.
