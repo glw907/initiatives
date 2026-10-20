@@ -439,6 +439,18 @@ From the design, with the plan's specifics, applied in place of stopping:
    bar's wording (it counted "omits" bullets the design's verdicts cannot flag) goes in its
    `## Planning misses`. The rest of standing answer 3 still holds for the false-block count at
    `main` and the controls.
+2. The pass ends after R3 (Geoff, 2026-10-20, in conductor-drafter's session). He is weighing
+   whether drafter is worth continuing, and R2 and R3 are the steps that still teach something: R2
+   measures the seat's false blocks on true facts, and R3 shows whether it bites on seeded errors.
+   R2 (both halves) and R3 run as the plan sets them, and their tables go in STATUS. A missed bar in
+   either is recorded with its counts and gets no tuning round; this ruling replaces standing
+   answer 3's reruns and its stop. After R3's table, the run takes no further live call and starts
+   no further task: no M2, E, B, S, RB, K, or Close. Commit and push the work already on each
+   branch, open no PR, write a final STATUS section with the replay, R2, and R3 results and the
+   spend against the baseline, remove the replay and controls worktrees, and end with one message
+   carrying those results. The conductor logs the misses in
+   `docs-system/research/2026-10-20-docs-system-failure-history.md`, and Geoff brainstorms the next
+   step from there.
 
 ### The meter
 
