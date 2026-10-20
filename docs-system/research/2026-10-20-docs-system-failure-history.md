@@ -18,6 +18,12 @@ defects still decided what was true on the page. For the blueprint-first design,
 blueprint and its facts are the cheapest place to catch the failures that matter, but a dependable
 blueprint alone would not have produced an accepted page in either drafting pilot.
 
+Addendum, 2026-10-20 evening: the blueprint-first pass ran and ended early at Geoff's ruling,
+after its replay, its read at `main`, and its controls (see "The blueprint-first pass" below). It
+is the nineteenth pass and the ninth to miss a live bar. Live spend across the eight passes that
+spent API credit (B1, change-read, skill-rules, edit-quality, B3, B3c, acceptance, blueprint-first)
+is about $183, and no drafted page has yet reached an accepted state.
+
 ## Passes and outcomes
 
 Dates are merge dates. "Build bar" means the pass's offline acceptance: the gate, the tests, and an
@@ -39,6 +45,7 @@ accepted whole-branch review.
 | B3 (drafter#53) | 10-19 | Three live drafting rows on synthetic `tally` | Met on the twentieth live run; $17.15 of $20 | The thin `tally` blueprint and facts were rewritten across runs; one reader call in four hit 32,000 tokens; a batch sat 110 minutes | blueprint content; facts store; drafting seats; infrastructure |
 | B3c (drafter#55, cairn-cms#132) | 10-20 | Three of eight drafted pages accepted | Missed: 0 of 8; $61.43 of $80; five stops for rulings | Four endings at cairn's gate or a facts defect, three at the second-fix-verdict rule, rotate's blueprint never held | project gate (added below); drafter mechanics; blueprint content; facts store; planning and process |
 | Acceptance (drafter#56, cairn-cms#133) | 10-20 | Five of seven accepted | Missed: 0 of 7; $40.30 of $50 | Two pages at the read on fact-to-fact conflicts; three on second fix verdict; one at the $10 cap after a `--sync` rerun; one reader loop | facts store; drafting seats; budget and caps; infrastructure; planning and process |
+| Blueprint-first (branches only, no PRs) | 10-20 | Replay 20 of 25; zero false blocks at `main`; six of six controls | Replay 17 of 25 after two tuning rounds, passed by ruling on 10 of 13 false or over-claiming bullets; 3 false blocks at `main`; six of six controls, one caught only by the blueprint seat; about $33 of $45; ended by ruling before E, B, S, RB, and K | The fact-truth seat reads excerpts, not the repository: 225 of R2's 254 findings were pointer blocks, where the excerpt lacked code the claim needed. It also read a held claim in view as "holds" in 8 replay misses, and the bar counted "omits" bullets the seat has no verdict for | read seat (new fact-truth seat); facts store; planning and process |
 
 I added one class, project gate: cairn's own docs checks flagging prose they should pass. It ended
 four of B3c's eight pages (cairn-cms#132, backlog #14 and #15) and is neither drafter code nor
@@ -60,6 +67,7 @@ the facts store.
 | B3 | Drafting from a blueprint on stock prompts; a one-item edit redrafts one section; an unchanged run spends nothing (drafter#53) |
 | B3c | The read bar, with Check 1 met live on security-model; seven of eight blueprints accepted; seven of eight drafts reader-grade, and no wrong claim among 514 came from the drafting seat (drafter#55, the B3c draft review) |
 | Acceptance | Every live finding carried its kind; the scoped accept advanced five blueprints; 31 of 31 fact fixes verified; the gate replay left one hit; the stall rule abandoned one run cleanly at zero open spend (drafter#56, cairn-cms#133) |
+| Blueprint-first | The offline build: the lock's `facts` hash and lapse rule, `drafter excerpt`, dotted anchors, covers ids, all gates green in about a third of their estimates. The fact-truth seat caught 23 distinct real fact defects at `main` the earlier reads had not, and its controls 3 and 4 bit on seeded fact errors. `drafter check` caught the moved pointer (control 6) offline. The meter held every live call inside the ceiling (blueprint-first STATUS) |
 
 ## Recurring patterns
 
@@ -152,3 +160,51 @@ This lists only failures the record shows, pass by pass.
 It would not have caught B3c's gate false positives or second-fix-verdict endings, acceptance's
 reader loop, or its cap. Whether acceptance's drafting findings had a blueprint-side cause, such as
 a placement the blueprint left open, the sources do not say.
+
+## The blueprint-first pass
+
+Source: the executor's STATUS (`blueprint-first-status.md` in drafter's `blueprint-first` worktree
+git dir), the plan's "Rulings during the run", and the conductor's session. The pass built its
+offline half fast and well: T1, the D1 and D3 pair, M1, D2, and D4 each closed at a third or less of
+its clock. Its live half answered the one new question the design asked, whether an API seat
+reading source excerpts can judge a fact true, and the answer was "partly, at high noise".
+
+- The replay at cairn `517158fae`, against the 25 bullets the B3c hand check found wrong: 10 of 25
+  on the first prompt, 17 of 25 after two tuning rounds ($9.14 of the $10 tuning pool), against a
+  bar of 20. On a 66-fact request, restrict's first read answered one entry and lost two bullets
+  to an empty answer; round 1 fixed that. Geoff ruled the replay passed on the 13 false or
+  over-claiming bullets, where it flagged 10 (ruling 1). Twelve of the 25 were "omits" bullets, true as
+  far as they go, which the design's verdicts (holds, wider, contradicts) cannot flag.
+- The read at `main` on the final prompt: all eight blueprints escalated. The fact-truth seat raised
+  254 findings. 28 were new catches (23 distinct real fact defects), 225 were pointer blocks, and 1
+  was a false block. A fresh-context check moved two more pointer rows to false blocks, so the
+  count is 3 against a bar of zero. Pointer blocks came from history halves only CHANGELOG.md shows,
+  directory and prose pointers with no excerpt, enum members held in another file, absence
+  claims, drifted line pointers, and excerpt windows ending one line short.
+- The controls: six of six bit. Control 5's seeded false claim ("a missing `AUTH_DB` throws") was
+  caught only by the blueprint seat; the fact-truth seat read it as holding with the settling code
+  in its excerpt.
+- Spend: about $33 of the $45 ($10.83 for the replay, $9.14 tuning, $10.71 for the read at `main`,
+  the rest controls). M1's dry-run pricing projected $62 for the whole plan before the first live
+  call.
+
+Planning misses this pass adds:
+
+- The replay bar counted "omits" bullets that the design's verdict set cannot flag, so 20 of 25
+  was out of reach by construction. The bar should have been set on the false and over-claiming
+  bullets alone.
+- The tuning pool ($10) was about one full replay rerun ($9.83), so standing answer 3's three rounds
+  could never run in full. The executor stopped after two, when the third could no longer reach the
+  bar.
+- The plan launched with a projection ($62) well over its ceiling ($45) and relied on E yielding.
+  The design's estimate never priced a full pass.
+- The executor's launch prompt let it refuse its conductor's messages, so each of Geoff's two
+  rulings took a stop and a relaunch. pass-core now has the executor take its conductor's messages
+  as instructions (dotfiles #113), and the auto-mode classifier still blocks a conductor's relayed
+  ruling as self-modification. The delegation question is open.
+
+What the pass suggests for the next design, as evidence and not as a ruling: the seat's real
+catches (23 at `main`, 10 of 13 in the replay) came with about eight pointer blocks for each catch.
+Its recurring miss was code just outside the excerpt. B3c's hand fact-check ran on session tokens
+with repository access and found all 6 wrong claims in 514 with a file:line each. The executor's
+own recommendation for a next pass is the same shape: a fact-truth read with repository access.
