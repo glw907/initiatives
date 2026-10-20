@@ -348,6 +348,12 @@ From the design, applied in place of stopping:
 12. A fact-seat block traced to a snippet the fact seat can't see (finding 7 sends snippets to the
     draft seat only) is a traced mechanical cause: the session fixes it in drafter with a test,
     `make check`, and a rebuild, and the page reruns under answer 4.
+13. Geoff's ruling, 2026-10-20 07:40 AKDT, in place of answer 6. The bar is out of reach: six of the
+    seven pages escalated, and live spend stands near $37 of $50. security-model's run
+    (`20261020T095228Z-57da5ce4`) finishes its round under the run rules. After it, the session
+    starts no further live call: R5 is skipped, so claude-code and debug-your-site are not rerun.
+    The session goes to Close with what landed, reports the count against the bar, and lists each
+    escalation's rule and finding as the evidence record for the next attempt's design.
 
 ### The meter
 
