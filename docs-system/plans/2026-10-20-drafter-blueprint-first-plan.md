@@ -426,6 +426,20 @@ From the design, with the plan's specifics, applied in place of stopping:
     cannot trace, a clock stop on any task but B, or a finding that changes the design stops and asks:
     STATUS carries one question, and the executor waits for the conductor.
 
+### Rulings during the run
+
+1. The replay bar (Geoff, 2026-10-20, asked by conductor-drafter at the 14:27 stop). After two
+   tuning rounds the replay flagged 17 of 25 on the latest read of each placing blueprint, and the
+   $0.86 left in the tuning pool could reach 18 at most. Geoff took the executor's option 1: the
+   replay is judged on the 13 false or over-claiming bullets, where it flags 10 of 13 against a
+   proportional bar of 10.4 (20 of 25 is 80%), and passes. The record reports 17 of 25 beside it,
+   with the prompt version behind each verdict. No third tuning round runs. R2 and every later read
+   run on p2 (`f61c0cf`). A seat with repository access (the agentic read) is filed in drafter's
+   backlog as next-pass machinery. The departure goes in the drafter PR's `## Decisions`, and the
+   bar's wording (it counted "omits" bullets the design's verdicts cannot flag) goes in its
+   `## Planning misses`. The rest of standing answer 3 still holds for the false-block count at
+   `main` and the controls.
+
 ### The meter
 
 At T0 the session records `/var/home/glw907/.local/bin/drafter spend --since 2026-10-20 --json`
