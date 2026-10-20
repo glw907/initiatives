@@ -212,8 +212,11 @@ calls a reviewer may want to argue.
     `accepted` isn't the blueprint at the scope's base, it would certify changes no read judged
     (`skipRead` then trusts it, `draftscope.go:111-114`). So a scoped accept writes `accepted` only
     when the entry holds no `blocked` and its prior `accepted` equals the blueprint's blob at the
-    commit the scoped read diffed from; otherwise the entry stays and the stderr line says why. In
-    this pass the condition holds for all seven (A0 step 6 checks it), so the outcome doesn't change.
+    commit the scoped read diffed from; otherwise the entry stays and the stderr line says why. Each
+    blueprint's reads before its first accept meet the condition, since A0 step 6 checks that every
+    entry holds `BASE`'s blob. A later reread passes `--since` the commit whose blob the entry's
+    `accepted` records (STATUS keeps that commit per page as each accept is committed), so the
+    condition still holds, and the read sees every blueprint and fact change since that accept.
 16. Shared facts tie the seven's reads together. The seven share facts (factsheet-cairn section 6:
     `f:qlgggh` and `f:hwffph` in six, `f:7cv105` in all seven, `f:cvv6to`, `f:nls26c`, `f:qca0t0`
     across pages), and `skipRead` compares only the blueprint blob (`draftscope.go:93,111-114`). A
@@ -326,8 +329,8 @@ From the design, applied in place of stopping:
    cairn worktree for each fact it changes and records the citers among the seven in STATUS. When a
    citer's read has accepted or its page has drafted, the session prefers a fix in the blocked
    blueprint instead. Otherwise the fact is edited, every citer among the seven whose page hasn't
-   drafted joins the next read call (R1's reread command, `--since <BASE>`, which sees the fact
-   change), and a citer whose page already accepted reruns inside the budget under R5 or is
+   drafted joins the next read call (R1's reread command, `--since <S>` as R1 defines it, which sees
+   the fact change), and a citer whose page already accepted reruns inside the budget under R5 or is
    reported as stale in `## Decisions`. Each such edit is listed in `## Decisions` with its citers.
 9. Before the reruns, a tree-mode docs-gate red (cairn's fast lane on a facts or `blueprints/` diff,
    which runs the whole-tree `check:provenance` and `check:docs-gate`) confined to the seven pages'
@@ -385,7 +388,7 @@ B3c's draft costs per page are in cairn-cms#132's table.
    `pgrep -af '[w]orktrees/acceptance(-pages|-gate)?([ /]|$)'` prints nothing (the bracket keeps
    the pattern from matching its own shell; the planning worktree `acceptance-plan` doesn't
    match); `claude agents --json` shows no session working in drafter or cairn-cms other than the
-   conductor; `git -C ~/Projects/cairn-cms worktree list` shows no `acceptance` worktree. Both main
+   conductor, the planning session `drafter-acceptance-plan`, and this session; `git -C ~/Projects/cairn-cms worktree list` shows no `acceptance` worktree. Both main
    checkouts print nothing for `git status --porcelain`, sit on `main`, and print 0 for
    `git rev-list --count HEAD..origin/main` after `git fetch origin`.
 2. `EnterWorktree` named `acceptance` in drafter. Arm the API-drop wake-up and the guards
@@ -516,6 +519,8 @@ Outcome: findings 2 to 7 and 9.
 Outcome: #25 (finding 15), #26, and the docs for every drafter change in this pass.
 
 - Files: `cmd/drafter/{bar.go,read.go,pagebp.go}` and their tests, `e2e/readbar_test.go`,
+  `internal/pipeline/pipeline.go` (the `PageResult` field only; A1's list doesn't name it, so the
+  pair stays disjoint),
   `internal/config/{stock.toml,stock_test.go}`, `docs/blueprint-format.md`, `docs/configuration.md`.
 - Risk class `runner`.
 - Build:
@@ -526,6 +531,12 @@ Outcome: #25 (finding 15), #26, and the docs for every drafter change in this pa
     "accepted on a scoped read; drafted.lock keeps its earlier entry" stays for the refused case,
     reworded to give the reason (a bar, or a prior accept that isn't the blueprint at the scope's
     base). `read --help` (`read.go:51-57`) says what the accept writes and when.
+  - The condition's base. `PageResult` gains a `Since` string field (JSON key `since`, omitempty), set from
+    `p.w.Since` where `Summary` builds each result (`pipeline.go:268`), so a resumed read carries
+    its base. `drafter read` compares the prior `accepted` with `git rev-parse
+    <r.Since>:<blueprint>`. In `drafter page`, the read's base is the entry's own `blueprint`
+    (`draftscope.go:136`), so the condition there is a prior `accepted` equal to the prior
+    `blueprint`.
   - #26: `[seat.draft] max_tokens = 128000` in `stock.toml`, and `docs/configuration.md:292` and
     `:417` follow.
   - Docs: `docs/blueprint-format.md` ("What `drafter page` does with a blueprint" and `:557`) states
@@ -542,6 +553,9 @@ Outcome: #25 (finding 15), #26, and the docs for every drafter change in this pa
     subtest at `:577-597`, and `e2e/readbar_test.go:81,105` follow.
   - `drafter page` with a scoped accept at s1: the lock entry's `accepted` equals the blueprint's
     blob at the run's start commit.
+  - A read stopped after a scoped accept and resumed with its paths advances `accepted` when the
+    condition holds (the `read_test.go` resume subtest at `:720-748` gains a committed prior
+    entry), and keeps the entry when it doesn't.
   - A bar accept and an unscoped accept behave as today (regression).
   - `stock_test.go:33` reads 128000.
 - Acceptance: `make check` green in the pair worktree; each row by test name shows `PASS` at A3.
@@ -752,18 +766,23 @@ and a lock `accepted` equal to its current blob, or is escalated and out of the 
   every citer standing answer 8 adds, after a fresh meter reading:
 
   ```
-  DRAFTER_PAGE_CAP=<min(10, left/N)> /var/home/glw907/Projects/drafter/.claude/worktrees/acceptance/drafter read --since <BASE> --sync --json <each blueprint path to read, written out>
+  DRAFTER_PAGE_CAP=<min(10, left/N)> /var/home/glw907/Projects/drafter/.claude/worktrees/acceptance/drafter read --since <S> --sync --json <each blueprint path to read, written out>
   ```
 
-  with N the number of paths. Every new read in this pass passes `--since <BASE>`; a read without
-  it reads the whole blueprint (B3c's stop 3). A resume can't take `--since` (`read.go:72-74`), so
-  a stopped read resumes on the run's recorded scope with:
+  with N the number of paths. Every new read passes `--since <S>`, where `S` is `BASE` for an
+  entry still at `BASE`'s blob, and otherwise the commit STATUS records for that entry's last
+  accept; a call mixing the two runs as two calls. A read without `--since` reads the whole
+  blueprint (B3c's stop 3). A resume can't take `--since` (`read.go:72-74`), so a stopped read
+  resumes on the run's recorded scope with:
 
   ```
-  DRAFTER_PAGE_CAP=<min(10, left/N)> /var/home/glw907/Projects/drafter/.claude/worktrees/acceptance/drafter read --resume <id> --sync --json
+  DRAFTER_PAGE_CAP=<min(10, left/N)> /var/home/glw907/Projects/drafter/.claude/worktrees/acceptance/drafter read --resume <id> --sync --json <the run's blueprint paths, written out as the call that started the run gave them>
   ```
 
-  with N the run's unfinished blueprints.
+  with N the run's unfinished blueprints. A resume takes the run's own paths, copied from the
+  STATUS row of the call that started it. They match the resume line drafter prints. `read`
+  refuses a resume with no blueprint, and `page` with no path reads its arguments as handoff
+  files.
 - Three reads per blueprint is the loop guard (standing answer 4). A read that escalates on a
   consistency conflict between two facts is a traced cause when C2's edit made the conflict, and is
   fixed in the fact; otherwise the page escalates.
@@ -851,7 +870,7 @@ the budget.
   - `cap`: once, alone, as a fresh batch run at the cap the meter allows;
   - a mechanical cause fixed with a test in drafter (standing answer 12 included), or a blueprint or
     fact cause fixed in cairn and read again with R1's reread command (its own path, plus every
-    citer standing answer 8 adds, `--since <BASE>`), or an inbound link retargeted after "tree red
+    citer standing answer 8 adds, `--since <S>`), or an inbound link retargeted after "tree red
     outside drafter's pages": once more, under standing answer 4;
   - a verdict escalation whose finding is the draft's own writing and traces to no blueprint, fact,
     or drafter cause: not rerun; the page is out.
@@ -883,7 +902,7 @@ the budget.
   another mode. A stopped batch page run resumes with:
 
   ```
-  DRAFTER_PAGE_CAP=<min(10, left/N)> /var/home/glw907/Projects/drafter/.claude/worktrees/acceptance/drafter page --resume <id> --json
+  DRAFTER_PAGE_CAP=<min(10, left/N)> /var/home/glw907/Projects/drafter/.claude/worktrees/acceptance/drafter page --resume <id> --json <the run's page paths, written out as the call that started the run gave them>
   ```
 
   and a stopped read with R1's resume command, N the run's unfinished pages or blueprints. Before a
@@ -901,7 +920,7 @@ the budget.
   on resume today; a drafter backlog item is filed (Close).
 - While any run in STATUS is stopped and not abandoned, nothing is committed in the cairn worktree
   but that run's own outputs, since a resume loads facts from the working tree
-  (`resume.go:59-63`) and accepts any descendant HEAD (`resume.go:104-108`).
+  (`plan.LoadFacts`, `resume.go:73-77`) and accepts any descendant HEAD (`resume.go:104-108`).
 - A run that stops as `tree red` (`pipeline.go:452-453`) writes no lock (`pagebp.go:186-188`) and
   restores nothing. The session traces the red. When it lies outside the run's pages (an inbound
   link in another doc), the session fixes that file, resumes the run with the page resume command
@@ -994,8 +1013,9 @@ Each row maps to the design's "Check".
      (factsheet-cairn section 10: today a blueprint edit selects every static check and the
      component suite).
 9. Remove C1's worktree and branch: `git -C ~/Projects/cairn-cms worktree remove
-   .claude/worktrees/acceptance-gate` and `git -C ~/Projects/cairn-cms branch -d acceptance-gate`
-   (merged, so `-d` succeeds).
+   .claude/worktrees/acceptance-gate`, then `git -C
+   /var/home/glw907/Projects/cairn-cms/.claude/worktrees/acceptance-pages branch -d acceptance-gate`
+   (that worktree's HEAD holds the merge, so `-d` succeeds).
 10. Stop at PR-ready for both PRs. The executor never runs `approval-queue`; `conductor-drafter`
     hands the packet to Geoff.
 
