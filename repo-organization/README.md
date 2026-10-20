@@ -37,6 +37,7 @@ Work that spans repos had no home, so its specs and plans piled up in `workstati
 - Plan: [plans/2026-10-14-repo-organization-plan.md](plans/2026-10-14-repo-organization-plan.md)
 - Fold records: [research/2026-10-14-repo-organization-fold.md](research/2026-10-14-repo-organization-fold.md) and [research/2026-10-14-repo-organization-plan-fold.md](research/2026-10-14-repo-organization-plan-fold.md)
 - Migration map: [research/migration-map.tsv](research/migration-map.tsv)
-- Docs layout design: [specs/2026-10-19-docs-layout-design.md](specs/2026-10-19-docs-layout-design.md), launched from [plans/2026-10-19-docs-layout-prompt.txt](plans/2026-10-19-docs-layout-prompt.txt)
+- Docs layout design: [specs/2026-10-19-docs-layout-design.md](specs/2026-10-19-docs-layout-design.md), launched from [plans/2026-10-19-docs-layout-prompt.txt](plans/2026-10-19-docs-layout-prompt.txt); plan: [plans/2026-10-19-docs-layout-plan.md](plans/2026-10-19-docs-layout-plan.md)
 - Status
   - 2026-10-14: active. The initiatives repo and its tools are built, and the pass is in review.
+  - 2026-10-19: the docs-layout pass landed in all thirteen repos and here; its [STATUS](plans/STATUS.md) lists what thinkpad-x1 and drafter still owe.
