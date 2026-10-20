@@ -417,6 +417,12 @@ A read that returned nothing, didn't parse, or failed its schema never counts as
 There is no third round. An escalated page keeps its whole record, and its record names the stop
 rule and the seat and finding numbers that triggered it.
 
+Erratum (2026-10-20): the `second fix verdict` rows no longer escalate a page whose last blockers
+are all small (link, handoff, heading, or citation). Such a page gets one narrow fix instead, after
+which the gate and the coverage check run again. The acceptance pass added this small-finding rule
+(glw907/drafter#56; `plans/2026-10-19-drafter-acceptance-plan.md`, finding 2), and drafter's
+`docs/blueprint-format.md` "Small findings" documents it.
+
 ### Input assembly
 
 Each seat receives its prompt, its agent definition as the system prompt, the files and command
