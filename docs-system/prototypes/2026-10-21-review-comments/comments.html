@@ -485,7 +485,7 @@ kbd { opacity: 1; }
         <details class="bg bg-first"><summary><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg><span><span class="lead">What you're deciding.</span> Whether this blueprint describes the page its reader needs, in the order they need it.</span></summary>
           <div class="body"><p>Approving lets drafter write the page from this file. The draft comes back to you on the page review screen.</p><p>You aren’t checking facts against the code. A fresh agent checked each claim, and the author fixed or disputed every finding. The notes mark where a finding changed the blueprint.</p></div></details>
         <details class="bg"><summary><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg><span><span class="lead">How to change it.</span> The editor below shows the blueprint file. Type anywhere, and the file saves each time you pause.</span></summary>
-          <div class="body"><p>Each <code>##</code> heading is a section, and the italic line under it says what the section does for the reader. Each bullet is a point the page makes. A <code>:::row</code> block is one troubleshooting row. The <code>:fact[…]</code> tag ties a line to the fact behind it, so leave it on the line it came with.</p><p>To ask the author for a change instead of making it, select the text and choose <b>Comment</b>. Your comments go to the author with your decision.</p><p>Each save is a commit in the session’s worktree. Ctrl+Z undoes, F8 moves to the next call for you, and Ctrl+Enter approves.</p></div></details>
+          <div class="body"><p>Each <code>##</code> heading is a section, and the italic line under it says what the section does for the reader. Each bullet is a point the page makes. A <code>:::row</code> block is one troubleshooting row. The <code>:fact[…]</code> tag ties a line to the fact behind it, so leave it on the line it came with.</p><p>To ask the author for a change instead of making it, select the text, and a comment box opens beside it. To edit the selected text instead, press Escape. Your comments go to the author with your decision.</p><p>Each save is a commit in the session’s worktree. Ctrl+Z undoes, F8 moves to the next call for you, and Ctrl+Enter approves.</p></div></details>
 
         <div class="place" id="place">
           <span class="where" id="where"><b>Debug your site</b></span>
@@ -726,7 +726,7 @@ function anchorTop(id) { const [a] = rangeOf(id); return view.lineBlockAt(a).top
 function renderMargin() {
   const box = $('#mcards');
   const items = [...NOTES.map(n => ['n', n]), ...THREADS.map(t => ['t', t]), ...COMMENTS.map(c => ['c', c])].filter(([, o]) => rangeOf(o.id)).sort((p, q) => rangeOf(p[1].id)[0] - rangeOf(q[1].id)[0]);
-  box.innerHTML = (items.length ? items.map(([k, o]) => `<div class="mcard${o.id === curCmt ? ' cur' : ''}" data-mc="${o.id}">${k === 'c' ? cmtHTML(o) : k === 't' ? threadHTML(o) : noteHTML(o)}</div>`).join('') : '<p class="mempty">Select text in the blueprint, then choose Comment. Your comments appear here, beside the text they’re about.</p>') + '<button class="btn sm madd" id="madd" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H10l-4 4v-4H5z"/><path d="M12 7.5v5M9.5 10h5"/></svg>Comment</button>';
+  box.innerHTML = (items.length ? items.map(([k, o]) => `<div class="mcard${o.id === curCmt ? ' cur' : ''}" data-mc="${o.id}">${k === 'c' ? cmtHTML(o) : k === 't' ? threadHTML(o) : noteHTML(o)}</div>`).join('') : '<p class="mempty">Select text in the blueprint to comment on it. Your comments appear here, beside the text they’re about.</p>') + '<button class="btn sm madd" id="madd" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H10l-4 4v-4H5z"/><path d="M12 7.5v5M9.5 10h5"/></svg>Comment</button>';
   layoutMargin();
 }
 function layoutMargin() {
@@ -757,11 +757,11 @@ function placeAdd() {
 function scrollMargin() {}
 function redraw() { view.dispatch({ effects: refresh.of(null) }); status(); toc(); renderMargin(); }
 function focusTA(id) { if (MARGIN.matches && tab !== 'c') setTab('c'); requestAnimationFrame(() => { const ta = document.getElementById('ta-' + id); if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); } }); }
-function addComment() {
+function addComment(auto) {
   const s = view.state.selection.main; if (s.empty) return false;
-  const open = COMMENTS.find(c => c.draft || c.editing); if (open) { scrollToPos(view.state.field(cranges)[open.id][0]); focusTA(open.id); toast('Save or cancel the comment you have open first'); return true; }
+  const open = COMMENTS.find(c => c.draft || c.editing); if (open && auto) return false; if (open) { scrollToPos(view.state.field(cranges)[open.id][0]); focusTA(open.id); toast('Save or cancel the comment you have open first'); return true; }
   const id = 'C' + (++cseq), q = view.state.sliceDoc(s.from, s.to).replace(/\s+/g, ' ').trim();
-  COMMENTS.push({ id, text: '', quote: q.length > 160 ? q.slice(0, 157) + '…' : q, draft: true, editing: false });
+  COMMENTS.push({ id, text: '', quote: q.length > 160 ? q.slice(0, 157) + '…' : q, draft: true, editing: false, sel: auto ? [s.anchor, s.head] : null });
   curCmt = id;
   view.dispatch({ selection: { anchor: s.to }, effects: setC.of({ id, range: [s.from, s.to] }) });
   setTab('c'); if (!MARGIN.matches) toggleToc(true);
@@ -778,9 +778,24 @@ function cancelCmt(id) {
   const c = COMMENTS.find(x => x.id === id);
   delete c.buf;
   if (c.editing) { c.editing = false; c.text = c.prev; delete c.prev; }
-  else { COMMENTS.splice(COMMENTS.indexOf(c), 1); view.dispatch({ effects: dropC.of(id) }); }
+  else { COMMENTS.splice(COMMENTS.indexOf(c), 1); view.dispatch({ effects: dropC.of(id), ...(c.sel && { selection: { anchor: c.sel[0], head: c.sel[1] } }) }); }
   curCmt = null; redraw(); view.focus();
 }
+// Selecting text with the mouse opens a comment box on it, as the margin's Comment button does.
+// The box closes without a trace if it is left empty: press Escape to keep the selection and edit
+// it instead, or click back into the text. Keyboard selections still use Ctrl+Alt+M or a button.
+let mouseSel = false;
+document.addEventListener('pointerdown', e => {
+  mouseSel = !!e.target.closest('.cm-content') && e.button === 0;
+  if (!e.target.closest('.cm-content')) return;
+  const d = COMMENTS.find(c => c.draft && c.sel);
+  if (d && !(document.getElementById('ta-' + d.id)?.value.trim())) { d.sel = null; cancelCmt(d.id); }
+}, true);
+document.addEventListener('pointerup', () => {
+  if (!mouseSel) return; mouseSel = false;
+  if (!MARGIN.matches) return;
+  setTimeout(() => { if (!view.state.selection.main.empty) addComment(true); }, 0);
+});
 function delCmt(id) {
   const i = COMMENTS.findIndex(x => x.id === id), c = COMMENTS[i], range = view.state.field(cranges)[id];
   COMMENTS.splice(i, 1); view.dispatch({ effects: dropC.of(id) }); curCmt = null; redraw();
@@ -1043,7 +1058,7 @@ $('#addc').addEventListener('pointerdown', e => { e.preventDefault(); if (!addCo
 $('#addc').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (!addComment()) toast('Select the text you want to comment on first'); } });
 $('#proto').innerHTML = ROUND === 2
   ? 'Prototype, comments round 4, screen 2 of 2: the same blueprint queued again after a send-back. Sample data: four comments you might have left, the author’s replies, and the edits those replies describe. <a href="comments.html">Back to the first review</a>.'
-  : 'Prototype, comments round 4, screen 1 of 2: blueprint review with comments. Real data: cairn’s admin troubleshooting blueprint at <code>5c35c06</code>, with two of the six fact-check fixes shown as notes. Select any text and choose <b>Comment</b>, or press <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd>. <a href="comments.html?round=2">See the round after a send-back</a>.';
+  : 'Prototype, comments round 4, screen 1 of 2: blueprint review with comments. Real data: cairn’s admin troubleshooting blueprint at <code>5c35c06</code>, with two of the six fact-check fixes shown as notes. Select any text with the mouse to comment on it, or select it with the keyboard and press <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd>. <a href="comments.html?round=2">See the round after a send-back</a>.';
 $('#lede').textContent = ROUND === 2
   ? 'This blueprint describes a symptom-row page on the admin track. You sent it back with four comments. The author made two changes, answered one comment, and explained why one passage stays. No calls are open.'
   : 'This blueprint describes a symptom-row page on the admin track. The author fixed all six findings from the fact check. No calls are open.';

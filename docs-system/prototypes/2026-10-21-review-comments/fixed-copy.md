@@ -58,7 +58,12 @@ Screen 1 lede: "This blueprint describes a symptom-row page on the admin track. 
 Screen 2 lede: "This blueprint describes a symptom-row page on the admin track. You sent it back with four comments. The author made two changes, answered one comment, and explained why one passage stays. No calls are open."
 Rail item title: "Blueprint for “Troubleshoot your site”" (was "Approve the plan for Troubleshoot your site")
 Rail outline: aria-label "Contents"; one numbered link per section, as in the round-8 Contents list
-Empty margin: "Select text in the blueprint, then choose Comment. Your comments appear here, beside the text they’re about."
+Empty margin: "Select text in the blueprint to comment on it. Your comments appear here, beside the text they’re about."
 Gone anchor: "The text you commented on is gone from the blueprint."
 Send-back toast: "Sent back with <n> comments. The author will answer them and queue the blueprint again." (singular: "one comment", "answer it")
 Review folds: took the toast, screen-2 lede, and quoted rail title rewrites. Kept "choose Comment" over "click", for consistency with the earlier rounds and with touch screens.
+
+## Round 5 additions (a selection opens the comment box)
+
+"How to change it" fold, comment paragraph: "To ask the author for a change instead of making it, select the text, and a comment box opens beside it. To edit the selected text instead, press Escape. Your comments go to the author with your decision."
+Empty margin: "Select text in the blueprint to comment on it. Your comments appear here, beside the text they’re about."

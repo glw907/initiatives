@@ -13,7 +13,7 @@ The design as of round 3, after Geoff's rulings ("We're following the Google Doc
 
 - The plan is a page, and its comment margin sits directly beside it. The page and margin are centered together as one unit between the queue rail and the window edge, the way a Docs page and its comment column are. The round-8 right pane is gone.
 - Every annotation is a card in that margin, level with its text: the fact-check notes, any calls, your comments, and the author's replies. The text carries only highlights. Selecting highlighted text brings its card forward, and selecting a card darkens its text.
-- A selection shows a **Comment** button in the margin, level with the selection. The editor bar has one too, and Ctrl+Alt+M works.
+- Selecting text with the mouse opens a comment box in the margin, its top level with the selection's first line, as Docs aligns a comment to its text. Escape closes an empty box and keeps the selection for editing, and clicking back into the text drops it. A keyboard selection uses Ctrl+Alt+M, the editor bar's **Comment** button, or the margin's. Below 1260px, where the margin is a drawer, a selection shows a **Comment** button instead of opening the drawer.
 - One sticky place bar spans the unit. It shows the current section, the next call, and **Contents**, the outline menu. One decision bar spans the unit, because the comments go with the decision.
 - Below 1260px the margin becomes a drawer that lists the same cards, opened from the place bar's **Comments** button or by tapping a highlight.
 - Comments use the primary hue, the color the changed-lines marker already uses for your own marks. Amber stays reserved for calls and teal for the fact check's corrections.
