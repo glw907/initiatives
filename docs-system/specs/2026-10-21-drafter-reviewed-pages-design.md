@@ -86,6 +86,11 @@ API agentic read (closed, superseded); a drafter-side approval gate.
 
 ## Calls the session made
 
+- The blueprint becomes a markdown file with YAML front matter, using cairn's remark directive syntax:
+  `:fact[id]` ties a line to its fact and `:::row` holds a troubleshooting row. You edit the file
+  itself in the review, so nothing translates your edits back. `drafter check` and `refs` gain a
+  markdown reader, the existing cairn blueprints are converted, and the `blueprint` skill changes.
+  This is contestable: YAML validates more strictly, which the front matter keeps for settings.
 - drafter stays unaware of approvals. The workflow enforces "draft only after approval", which
   gives up a mechanical refusal in exchange for a narrow tool.
 - A developer outside this workstation installs drafter and reviews pages however their team
