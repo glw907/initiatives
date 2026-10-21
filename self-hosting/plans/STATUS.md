@@ -35,6 +35,8 @@ Pass 3's cutover phase merged 2026-10-21 on Geoff's packet approval (servers#7, 
 
 Pass 5 (ward) was approved 2026-10-21 (initiatives#80, `f6de85b`), with Geoff's answer to its ask: members A's and B's Fastmail mail is deleted unarchived at T+30. Ward waits for CX33 stock, checked monthly (Geoff, 2026-10-21). Its plan path is 3,785 against the 3,515 line, under the 5,273 ceiling; the standing answer keeps launching. The conductor brief is `plans/2026-10-21-pass5-conductor-prompt.txt`.
 
+Conductor hand-over (2026-10-21): conductor `52c36958` stopped so the sitting runs in a short session. The fresh `conductor-servers` launches from the servers main checkout with `plans/2026-10-21-conductor-handover-prompt.txt`, owns Pass 3's week phase and Pass 5, and re-arms the day-seven reminder.
+
 Next:
 1. The Pass 5 pre-flight sitting with Geoff (`plans/2026-10-21-pass5-preflight.md` items 1 to 8: the rules, the Spamhaus key, the Gmail and Outlook.com test accounts, the credentials PR on branch `self-hosting-fastmail-members`, the Hetzner console labels, the second operator's apps, members A's and B's mask counts and A's revoked entries), then the pre-launch checks and the launch of `servers-mail`.
 2. Day seven of the photos week is **2026-10-28**. A household member uploads one large clip from the Immich app on mobile data before then. On that day the conductor reruns the Execute checks and relaunches the week phase from the servers main checkout:
@@ -102,4 +104,4 @@ Next:
 - Planner: session `26c03024` on pavilion ended after the plan merged.
 - Pass 2: `servers-media`, session `69d74faf`, 2026-10-19 to 2026-10-20, removed after the merge.
 - Rename: planner `servers-rename-plan` (`13f52a98`) and executor `servers-rename` (`34fe22d1`), 2026-10-20, both removed after the merge. The conductor ended at this hand-over.
-- Pass 3: conductor `conductor-servers` (`52c36958`) on pavilion from 2026-10-20; planner `servers-photos-plan` (`77fa03e4`) stopped after its plan merged; executor `servers-photos` (`dd88849d`), cutover phase, 2026-10-21, ended at PR-ready; Pass 5 planner `servers-mail-plan` (`4bb5da31`), 2026-10-21, stopped after its hand-off.
+- Pass 3: conductor `conductor-servers` (`52c36958`) on pavilion from 2026-10-20; planner `servers-photos-plan` (`77fa03e4`) stopped after its plan merged; executor `servers-photos` (`dd88849d`), cutover phase, 2026-10-21, ended at PR-ready; Pass 5 planner `servers-mail-plan` (`4bb5da31`), 2026-10-21, stopped after its hand-off. Conductor `52c36958` handed over 2026-10-21 and stopped.
