@@ -399,7 +399,7 @@ kbd { opacity: 1; }
 .mtitle span:first-child { font-weight: 600; color: var(--ink); font-size: .9rem; }
 .review.margin .mcards { position: relative; }
 @media (min-width: 1260px) {
-  .shell, .shell.shell { grid-template-columns: 18rem minmax(0, 1fr); }
+  .shell, .shell.shell { grid-template-columns: var(--rail-w) minmax(0, 1fr); }
   .sheet, .sheet.sheet { max-width: calc(46rem + var(--margin-gap) + var(--margin-w)); }
   .unit { display: grid; grid-template-columns: minmax(0, 1fr) var(--margin-w); column-gap: var(--margin-gap); align-items: stretch; }
   .work .place, .work .place.place { display: flex; }
@@ -490,7 +490,10 @@ kbd { opacity: 1; }
 /* Shortcuts inside controls are plain text, as desk-kbd draws them; the shortcut sheet keeps keycaps. */
 :is(.btn, .linkbtn, .hint, .place) kbd { border-color: transparent; padding-inline: 1px; opacity: .7; font-size: .7rem; }
 /* Rail: a right gutter that matches the left, held open for the scrollbar. */
-.rail { padding-inline: 12px 16px; scrollbar-gutter: stable; grid-template-columns: minmax(0, 1fr); }
+.rail { padding-inline: 20px 12px; scrollbar-gutter: stable; grid-template-columns: minmax(0, 1fr); }
+/* Round 8: the rail widens with the window, from 18rem at 1260px to 23rem at about 2300px. The right
+   padding plus the reserved scrollbar gutter matches the 20px left. */
+:root { --rail-w: clamp(18rem, 12rem + 8vw, 23rem); }
 .rail .dq span:first-child { white-space: normal; overflow: visible; }
 .rail .dq { align-items: baseline; }
 .rail a.q[hidden] { display: none; }
@@ -1120,8 +1123,8 @@ document.addEventListener('click', e => {
 $('#addc').addEventListener('pointerdown', e => { e.preventDefault(); if (!addComment()) toast('Select the text you want to comment on first'); });
 $('#addc').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (!addComment()) toast('Select the text you want to comment on first'); } });
 $('#proto').innerHTML = ROUND === 2
-  ? 'Prototype, comments round 7, screen 2 of 2: the same blueprint queued again after a send-back. Sample data: four comments you might have left, the author’s replies, and the edits those replies describe. <a href="comments.html">Back to the first review</a>. Approving or sending back opens the next item, which in this prototype is the other screen. Undo is available for five seconds.'
-  : 'Prototype, comments round 7, screen 1 of 2: blueprint review with comments. Real data: cairn’s admin troubleshooting blueprint at <code>5c35c06</code>, with two of the six fact-check fixes shown as notes. Select any text with the mouse to comment on it, or select it with the keyboard and press <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd>. <a href="comments.html?round=2">See the round after a send-back</a>. Approving or sending back opens the next item, which in this prototype is the other screen. Undo is available for five seconds.';
+  ? 'Prototype, comments round 8, screen 2 of 2: the same blueprint queued again after a send-back. Sample data: four comments you might have left, the author’s replies, and the edits those replies describe. <a href="comments.html">Back to the first review</a>. Approving or sending back opens the next item, which in this prototype is the other screen. Undo is available for five seconds.'
+  : 'Prototype, comments round 8, screen 1 of 2: blueprint review with comments. Real data: cairn’s admin troubleshooting blueprint at <code>5c35c06</code>, with two of the six fact-check fixes shown as notes. Select any text with the mouse to comment on it, or select it with the keyboard and press <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd>. <a href="comments.html?round=2">See the round after a send-back</a>. Approving or sending back opens the next item, which in this prototype is the other screen. Undo is available for five seconds.';
 $('#lede').textContent = ROUND === 2
   ? 'This blueprint describes a symptom-row page on the admin track. You sent it back with four comments. The author made two changes, answered one comment, and explained why one passage stays. No calls are open.'
   : 'This blueprint describes a symptom-row page on the admin track. The author fixed all six findings from the fact check. No calls are open.';
