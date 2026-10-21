@@ -4,6 +4,19 @@ Every step in Pass 5 that only Geoff or the second operator can take, and the co
 
 What needs no step from Geoff: the second operator's Fastmail credentials are already stored (workstation branch `self-hosting-fastmail-members`, 2026-10-20), the pass generates every Stalwart, restic, and tunnel secret itself, it writes ward's emergency values into `Servers emergency` through `claude-pass`, and the executor reads every rehearsal check from the API, DNS, IMAP, JMAP, or the journal. A person's word is the evidence in three places only, where Claude can't sign in or can't see the device: Geoff's for landing at Outlook.com (R1) and for Hylki's discovery (R4), and the second operator's for the device side of the Clients and Android rows (R3).
 
+## The sitting's record (2026-10-21)
+
+Geoff's rulings in the pre-flight sitting supersede the items and sitting-day steps below wherever they differ.
+
+- Item 1 is done (workstation#117, plus #119's deny on a bare `scripts/dry-run.sh`, which the proof showed `Bash(scripts/dry-run.sh *)` also allowed). The `dontAsk` proof passed on every form after both merges.
+- Item 2 is done: `SPAMHAUS_DQS_KEY` passes its row (`127.0.0.4`). A new key took several minutes to answer.
+- Item 3 is replaced. Google's sign-up demanded a smartphone scan, so a Yahoo Mail account is the test receiver (`TEST_YAHOO_ADDRESS`, `TEST_YAHOO_PASSWORD`). Yahoo withholds app passwords from new accounts, so the executor sends and reads there through webmail in Claude's Chromium profile, and the two Gmail `curl` rules were never added.
+- Item 4 is deferred outside the pass and gates nothing: Geoff confirms Microsoft delivery later from an Office 365 account. R1 becomes Geoff's one Yahoo sign-in in Claude's Chromium profile, since two-step verification texts his phone.
+- Item 5 is done (workstation#118); `sync.sh --local` ran and the overlay is removed.
+- Item 6 is done. Protection is the padlock icon at the top right of the server page, left of the console button and Actions; it opens a "Disable protection" dialog (Cancel, Disable protection) and one switch covers delete and rebuild. Holding Shift skips the dialog. The Rebuild tab, between Rescale and Delete, holds an "Image" dropdown and a "Rebuild" button, both disabled while protection is on. The console project is `self-hosting`.
+- Item 7 is done. The second operator uses Hylki on Linux and no mail, contacts, or calendar sync on his phone, so R3 is Hylki on his Linux machine and the Android row is dropped. He agreed to the session in principle.
+- Item 8 is closed under the 2026-10-20 mail scope ruling: only Geoff's and the second operator's mailboxes are in the migration, so no mask counts are needed and L8's message carries no mask line.
+
 ## Checked tonight (2026-10-21, read-only)
 
 | Check | Result |
