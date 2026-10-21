@@ -30,12 +30,19 @@ page, merged.
   keep the queue's current look so every screen in it stays coherent, and 907.life later adopts
   that look as separate work (your ruling in the prototype sitting, 2026-10-20). Every review type
   in the queue (packets, PRs, designs, triage lists, blueprints, pages, and change reviews) shares
-  one design language, so the whole queue is consistent and coherent: the work at reading width,
-  notes inline under the line they concern, an index pane on the right (open calls,
-  corrections, contents), the decision in the persistent bottom bar, and the same keys. It follows
-  the layout GitHub and Gerrit use for review. A blueprint reaches you only after the author has fixed or
-  disputed every fact-check finding, and it shows as an editable document of what the page will
-  tell its reader, with a margin note wherever a dispute or correction needs you.
+  one design language, so the whole queue is consistent and coherent. Every screen uses one
+  three-pane frame, the layout Linear, Figma, Mail, and GitHub's review views use. The queue rail
+  is pinned left. The work sits centered at reading width, with notes inline under the line they
+  concern. A review pane pinned right holds the calls for you, the parts or corrections, and an
+  outline. Every screen opens with the same Survey header (crumb, benchmark triangle, headline,
+  lede, contour texture), takes its decision in the same bottom bar ("Send back with note" and
+  "Approve ..."), and answers to the same keys. Below 1260px the review pane becomes a drawer, and
+  below 1024px the rail does too. The existing packet, PR, design, and triage screens move onto
+  this frame in the build pass, and the packet screen is prototyped on it already. The packet
+  screen's "Reject with note" becomes "Send back with note" to match. A blueprint reaches you only
+  after the author has fixed or disputed every fact-check finding, and it shows as an editable
+  document of what the page will tell its reader, with a note under any line where a dispute or
+  correction needs you.
 - A fact-check agent joins the workstation's Claude infrastructure: fresh-context and read-only, it
   checks each fact or claim against the code and returns claim, verdict, file:line, and proposed
   fix. It never fixes anything and never runs in the session that wrote the blueprint.
