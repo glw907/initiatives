@@ -26,9 +26,9 @@ page, merged.
   blueprint is drafter's input. drafter knows nothing of approvals.
 - approval-queue gains blueprint and page item kinds and a change review for code PRs. Each shows
   findings on the passage they concern, edits the markdown in a CodeMirror editor modeled on
-  cairn's, commits each save to the worktree, and prints your decision as JSON. The whole queue
-  moves to 907.life's look, its existing board, packet, and PR screens included (your ruling in the
-  prototype sitting, 2026-10-20). A blueprint reaches you only after the author has fixed or
+  cairn's, commits each save to the worktree, and prints your decision as JSON. The new screens
+  keep the queue's current look so every screen in it stays coherent, and 907.life later adopts
+  that look as separate work (your ruling in the prototype sitting, 2026-10-20). A blueprint reaches you only after the author has fixed or
   disputed every fact-check finding, and it shows as an editable document of what the page will
   tell its reader, with a margin note wherever a dispute or correction needs you.
 - A fact-check agent joins the workstation's Claude infrastructure: fresh-context and read-only, it
@@ -43,7 +43,7 @@ page, merged.
 ### If you approve
 
 1. In an attended sitting, the session builds clickable prototypes of the three screens with real
-   data, one screen at a time, in 907.life's look. You review each in rounds until it
+   data, one screen at a time, in approval-queue's house look. You review each in rounds until it
    is right and approve the set. Nothing is built before that approval.
 2. The build runs as one pass across approval-queue, drafter, and the workstation, matched to the
    prototypes and checked against them with `visual-fidelity`.
