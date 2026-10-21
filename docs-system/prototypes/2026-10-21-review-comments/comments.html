@@ -381,7 +381,9 @@ kbd { opacity: 1; }
 .rail-toc a.cur { background: var(--b3); font-weight: 600; }
 .rail-toc .n { min-width: 1.5rem; }
 .rail-toc a.l3 { padding-left: 22px; }
-.rail { overflow-y: auto; }
+.rail { overflow: hidden auto; }
+.rail-toc, .rail-toc li { min-width: 0; }
+.rail-toc a .t { white-space: normal; overflow: visible; }
 .madd[hidden] { display: none; }
 @media (min-width: 1024px) { #tocBtn, #toc { display: none !important; } }
 /* Round 3: designed for comments. The page and its margin are one unit, centered between the rail
@@ -1057,8 +1059,8 @@ document.addEventListener('click', e => {
 $('#addc').addEventListener('pointerdown', e => { e.preventDefault(); if (!addComment()) toast('Select the text you want to comment on first'); });
 $('#addc').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (!addComment()) toast('Select the text you want to comment on first'); } });
 $('#proto').innerHTML = ROUND === 2
-  ? 'Prototype, comments round 4, screen 2 of 2: the same blueprint queued again after a send-back. Sample data: four comments you might have left, the author’s replies, and the edits those replies describe. <a href="comments.html">Back to the first review</a>.'
-  : 'Prototype, comments round 4, screen 1 of 2: blueprint review with comments. Real data: cairn’s admin troubleshooting blueprint at <code>5c35c06</code>, with two of the six fact-check fixes shown as notes. Select any text with the mouse to comment on it, or select it with the keyboard and press <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd>. <a href="comments.html?round=2">See the round after a send-back</a>.';
+  ? 'Prototype, comments round 5, screen 2 of 2: the same blueprint queued again after a send-back. Sample data: four comments you might have left, the author’s replies, and the edits those replies describe. <a href="comments.html">Back to the first review</a>.'
+  : 'Prototype, comments round 5, screen 1 of 2: blueprint review with comments. Real data: cairn’s admin troubleshooting blueprint at <code>5c35c06</code>, with two of the six fact-check fixes shown as notes. Select any text with the mouse to comment on it, or select it with the keyboard and press <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd>. <a href="comments.html?round=2">See the round after a send-back</a>.';
 $('#lede').textContent = ROUND === 2
   ? 'This blueprint describes a symptom-row page on the admin track. You sent it back with four comments. The author made two changes, answered one comment, and explained why one passage stays. No calls are open.'
   : 'This blueprint describes a symptom-row page on the admin track. The author fixed all six findings from the fact check. No calls are open.';
