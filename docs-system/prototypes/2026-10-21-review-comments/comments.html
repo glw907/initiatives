@@ -1,0 +1,919 @@
+<meta charset="utf-8">
+<title>Blueprint Review Prototype</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Round 2 of the blueprint review. approval-queue's frame (queue rail, crumb, hero, layer rows,
+   sticky decision bar) with the vendored Survey theme's tokens. The plan reads as one document:
+   the reader, then each section in page order, every block editable in place, and notes beside
+   the text they concern. */
+:root {
+  --b1: #f7f7f3; --b2: #eeede6; --b3: #d9d6c9; --ink: #22262b; --muted: #5d5f58;
+  --primary: #1c5a8c; --primary-c: #f1f7fc; --secondary: #8a5f36; --neutral: #33383f; --neutral-c: #eef0f2;
+  --info: #1b7f86; --success: #4c7538; --warning: #c9952e; --error: #b3261e;
+  --info-ink: #155f64; --success-ink: #3b5c2b; --warning-ink: #7a5510; --error-ink: #9a2019;
+  --field-bg: #ffffff; --field-border: #7d8187;
+  --rule: color-mix(in oklab, var(--secondary) 55%, transparent);
+  --r-field: 3px; --r-box: 4px;
+  --bar-shadow: 0 8px 28px -6px rgb(0 0 0 / .22), 0 2px 6px -2px rgb(0 0 0 / .1);
+  --display: 'Spectral', Georgia, serif;
+  --body: 'Karla', system-ui, sans-serif;
+  --mono: 'Monaspace Neon', ui-monospace, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --b1: #11171e; --b2: #18212a; --b3: #2a3542; --ink: #e6e8ea; --muted: #a2a9b1;
+  --primary: #7fb5e4; --primary-c: #0b2236; --secondary: #c79a6a; --neutral: #262e38; --neutral-c: #e6e8ea;
+  --info: #5cc3c9; --success: #9ac884; --warning: #e3b65a; --error: #f08a80;
+  --info-ink: #7fd3d8; --success-ink: #a9d394; --warning-ink: #ebc678; --error-ink: #f4a199;
+  --field-bg: #0d1318; --field-border: #66717e; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --b1: #11171e; --b2: #18212a; --b3: #2a3542; --ink: #e6e8ea; --muted: #a2a9b1;
+  --primary: #7fb5e4; --primary-c: #0b2236; --secondary: #c79a6a; --neutral: #262e38; --neutral-c: #e6e8ea;
+  --info: #5cc3c9; --success: #9ac884; --warning: #e3b65a; --error: #f08a80;
+  --info-ink: #7fd3d8; --success-ink: #a9d394; --warning-ink: #ebc678; --error-ink: #f4a199;
+  --field-bg: #0d1318; --field-border: #66717e; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+html { font-synthesis-weight: none; scroll-padding-top: 64px; scroll-padding-bottom: 9rem; }
+body { margin: 0; background: var(--b1); color: var(--ink); font: 1rem/1.5 var(--body); }
+p, li { text-wrap: pretty; }
+code { font-family: var(--mono); font-size: .86em; }
+a { color: var(--primary); }
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.muted { color: var(--muted); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* frame: the queue's rail and main column */
+.shell { display: grid; grid-template-columns: 18rem minmax(0, 1fr); min-height: 100vh; }
+.rail { background: var(--b2); border-right: 1px solid var(--b3); padding: 16px 12px; display: grid; align-content: start; gap: 4px; position: sticky; top: 0; height: 100vh; }
+.rail .title { font-weight: 600; font-size: 1rem; padding: 2px 4px 0; }
+.rail .sub { font-size: .9rem; color: var(--muted); padding: 0 4px 10px; }
+.rail .group { font-weight: 600; font-size: .9rem; padding: 10px 4px 2px; }
+.rail .q { display: grid; gap: 2px; padding: 7px 8px; border-radius: var(--r-box); font-size: .85rem; line-height: 1.35; border-left: 1px solid var(--b3); margin-left: 6px; }
+.rail .q.on { background: var(--b3); }
+.rail .q .meta { font-size: .75rem; color: var(--muted); display: flex; justify-content: space-between; }
+@media (max-width: 1023.98px) { .shell { grid-template-columns: minmax(0, 1fr); } .rail { display: none; } }
+main { padding: 0 max(20px, env(safe-area-inset-right, 0px)) 0 max(20px, env(safe-area-inset-left, 0px)); min-width: 0; }
+@media (min-width: 1024px) { main { padding-left: 40px; padding-right: 40px; } }
+:root { --text: 42rem; --note: 15rem; --pad: 24px; --gap: 28px; }
+.col { max-width: calc(var(--text) + 2 * var(--pad) + 2px); margin-inline: auto; }
+.crumb { font-size: .75rem; color: var(--muted); display: flex; gap: 8px; padding: 14px 0 10px; }
+.crumb a { color: inherit; }
+
+/* the place bar: where you are, what's open, contents, save state */
+.place { position: sticky; top: 0; z-index: 12; background: var(--b1); border-bottom: 1px solid var(--b3); display: flex; align-items: center; gap: 8px 14px; padding: 8px 0; font-size: .875rem; margin-bottom: 4px; }
+.place .where { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+.place .where b { color: var(--ink); font-weight: 600; }
+.place .open { margin-left: auto; white-space: nowrap; }
+.place .saved { color: var(--muted); white-space: nowrap; min-width: 4.5rem; text-align: right; }
+.linkbtn { font: inherit; color: var(--primary); background: none; border: 0; padding: 2px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+.toc { position: absolute; top: calc(100% + 4px); right: 0; width: min(26rem, 92vw); max-height: 70vh; overflow: auto; background: var(--b1); border: 1px solid var(--b3); border-radius: var(--r-box); padding: 8px; box-shadow: var(--bar-shadow); }
+.toc a { display: flex; gap: 8px; align-items: baseline; padding: 5px 8px; border-radius: var(--r-field); color: var(--ink); text-decoration: none; font-size: .9rem; line-height: 1.35; }
+.toc a:hover, .toc a.cur { background: var(--b2); }
+.toc a.l3 { padding-left: 24px; }
+.toc .n { color: var(--muted); font-variant-numeric: tabular-nums; min-width: 1.6rem; }
+.toc .mk { margin-left: auto; font-size: .78rem; font-weight: 600; white-space: nowrap; }
+
+/* hero and layer rows, as on the packet screen */
+.hero { background: var(--b2); border-radius: var(--r-box); padding: 20px 20px 18px; margin-top: 8px; }
+.hero h1 { font-family: var(--display); font-weight: 500; font-size: clamp(1.7rem, 1.25rem + 1.1vw, 2.2rem); line-height: 1.15; margin: 0; text-wrap: balance; }
+.hero .lede { max-width: 58ch; margin: 12px 0 0; font-size: 1.1rem; line-height: 1.55; }
+details > summary { list-style: none; cursor: pointer; }
+details > summary::-webkit-details-marker { display: none; }
+.chev { width: 16px; height: 16px; flex: none; margin-top: .2rem; transition: transform .15s; stroke: currentColor; fill: none; stroke-width: 2; }
+details[open] > summary .chev { transform: rotate(90deg); }
+.bg { max-width: 58ch; }
+.bg > summary { display: flex; gap: 6px; padding: 6px 0; font-size: .95rem; line-height: 1.45; color: var(--muted); }
+.bg > summary:hover, .bg[open] > summary { color: var(--ink); }
+.bg .body { padding: 0 0 8px 22px; font-size: .95rem; line-height: 1.55; color: var(--muted); }
+.bg .body p { margin: 0 0 6px; }
+.bg-first { margin-top: 12px; }
+.lead { font-weight: 600; }
+h2.sec { font-family: var(--display); font-weight: 500; font-size: 1.45rem; line-height: 1.2; margin: 36px 0 4px; }
+.sec-sub { margin: 0 0 14px; color: var(--muted); font-size: .95rem; max-width: 58ch; }
+
+/* notes: the Survey alert, a 4px status rule on a base-200 field */
+.note { position: relative; background: var(--b2); border-radius: var(--r-box); padding: 10px 12px 10px 14px; font-size: .9rem; line-height: 1.5; }
+.note::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; border-radius: var(--r-box) 0 0 var(--r-box); background: var(--b3); }
+.note.decide::before { background: var(--warning); }
+.note.info::before { background: var(--info); }
+.note.done::before { background: var(--success); }
+.note .nh { font-weight: 600; margin-bottom: 4px; }
+.note .nh .kind { margin-right: 4px; }
+.note.decide .nh .kind { color: var(--warning-ink); }
+.note.info .nh .kind { color: var(--info-ink); }
+.note.done .nh .kind { color: var(--success-ink); }
+.note p { margin: 0 0 6px; }
+.note .side { border-left: 2px solid var(--b3); padding-left: 8px; margin: 6px 0; }
+.note .side b { font-weight: 600; }
+.note .choices { display: grid; gap: 6px; margin-top: 8px; }
+.note details summary { color: var(--primary); font-size: .85rem; padding: 2px 0; }
+.note details .was { display: block; margin-top: 4px; font-size: .85rem; }
+.note.done.collapsed > :not(.nh) { display: none; }
+.note.done.collapsed { padding-block: 6px; }
+.note.done .nh .linkbtn { margin-left: 8px; font-weight: 400; font-size: .82rem; }
+
+/* buttons, as the queue's */
+.btn { font: 600 .875rem var(--body); line-height: 1.2; border-radius: var(--r-field); border: 1px solid var(--b3); background: var(--b1); color: var(--ink); padding: 8px 14px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; text-align: left; }
+.btn:hover { background: var(--b2); }
+.btn.sm { font-size: .82rem; padding: 6px 10px; }
+.btn.block { width: 100%; }
+.btn.primary { background: var(--primary); border-color: var(--primary); color: var(--primary-c); }
+.btn.outline { background: transparent; border-color: var(--ink); }
+.btn[aria-disabled="true"] { background: var(--b2); border-color: var(--field-border); color: var(--muted); cursor: not-allowed; }
+.join { display: inline-flex; } .join .btn { border-radius: 0; } .join .btn:first-child { border-radius: var(--r-field) 0 0 var(--r-field); } .join .btn:last-child { border-radius: 0 var(--r-field) var(--r-field) 0; } .join .btn + .btn { border-left: 0; }
+.join .btn[aria-pressed="true"] { background: var(--neutral); color: var(--neutral-c); border-color: var(--neutral); }
+kbd { font: .7rem var(--body); border: 1px solid color-mix(in srgb, currentColor 25%, transparent); border-radius: 3px; padding: 0 4px; opacity: .85; }
+.viewbar { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin: 0 0 6px; font-size: .875rem; }
+.viewbar .muted { margin-right: auto; }
+
+/* decision bar */
+.barwrap { position: sticky; bottom: 0; z-index: 10; background: linear-gradient(to top, var(--b1) 60%, transparent); padding: 32px 0 16px; padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); margin-top: 28px; }
+.bar { max-width: none; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; border: 1px solid var(--b3); border-radius: var(--r-box); background: var(--b1); padding: 14px 20px; box-shadow: var(--bar-shadow); }
+.bar .state { margin-left: auto; text-align: right; min-width: 0; }
+.bar .state p { margin: 0; } .bar .s1 { font-weight: 600; line-height: 1.2; } .bar .s2 { font-size: .875rem; color: var(--muted); margin-top: 2px; }
+.sendback { max-width: none; border: 1px solid var(--b3); border-radius: var(--r-box); background: var(--b1); padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--bar-shadow); }
+.sendback textarea { width: 100%; min-height: 7rem; font: inherit; color: var(--ink); background: var(--field-bg); border: 1px solid var(--field-border); border-radius: var(--r-field); padding: 7px 9px; }
+.sendback .acts { display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px; }
+@media (max-width: 639.98px) { .bar { display: grid; grid-template-columns: 1fr 1fr; } .bar .state { grid-column: 1 / -1; order: -1; text-align: left; margin: 0; } .bar .btn { justify-content: center; } .bar kbd, .bar .s2 { display: none; } .place .where { display: none; } }
+.proto { margin: 14px 0 0; font-size: .82rem; color: var(--muted); border: 1px dashed var(--b3); border-radius: var(--r-box); padding: 6px 10px; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(100px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--b1); padding: 8px 10px 8px 14px; border-radius: var(--r-box); font-size: .9rem; z-index: 30; display: flex; gap: 12px; align-items: center; }
+.toast button { font: 600 .85rem var(--body); background: none; border: 0; color: var(--b1); text-decoration: underline; cursor: pointer; }
+.help { position: fixed; inset: 0; z-index: 40; background: rgb(0 0 0 / .35); display: grid; place-items: center; padding: 16px; }
+.help > div { background: var(--b1); border-radius: var(--r-box); padding: 18px 20px; max-width: 26rem; width: 100%; }
+.help h2 { font-family: var(--display); font-weight: 500; font-size: 1.2rem; margin: 0 0 10px; }
+.help dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; font-size: .9rem; }
+.help dt { text-align: right; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<style>
+/* Round 3: the plan is one markdown file, edited in a CodeMirror editor modeled on cairn's admin
+   editor (styled source, remark directive syntax). Notes ride in the margin as block widgets on
+   their anchor line; below 1260px they sit in the text flow. */
+.edwrap { max-width: none; position: relative; margin-top: 10px; background: var(--field-bg); border: 1px solid var(--field-border); border-radius: var(--r-box); }
+.edwrap:focus-within { outline: 2px solid var(--primary); outline-offset: 1px; }
+.mhead { position: absolute; top: 7px; left: calc(100% + var(--gap)); width: var(--note); font-size: .8rem; color: var(--muted); }
+.mhead b { color: var(--ink); font-weight: 600; }
+@media (max-width: 1319.98px) { .mhead { display: none; } }
+.edbar { display: flex; gap: 10px; align-items: baseline; padding: 7px var(--pad) 7px; border-bottom: 1px solid var(--b3); background: var(--b2); border-radius: var(--r-box) var(--r-box) 0 0; font-size: .8rem; color: var(--muted); }
+.edbar .fname { font-family: var(--mono); color: var(--ink); }
+.edbar .esaved { margin-left: auto; }
+#cm { padding: 18px var(--pad) 28px; cursor: text; }
+.cm-editor { background: transparent; }
+.cm-editor.cm-focused { outline: none; }
+.cm-editor .cm-scroller { overflow: visible !important; font-family: var(--body) !important; line-height: 1.7; }
+.cm-content { padding: 0; font-size: 1.0625rem; line-height: 1.7; caret-color: var(--primary); }
+.cm-line { padding: 0 6px; margin: 0 -6px; border-radius: var(--r-field); }
+.cm-gutters { display: none; }
+.cm-cursor { border-left-color: var(--primary) !important; border-left-width: 2px !important; }
+.cm-selectionBackground, .cm-focused .cm-selectionBackground { background: color-mix(in oklab, var(--primary) 22%, transparent) !important; }
+.cm-h { font-family: var(--display); font-weight: 500; }
+.cm-h1 { font-size: 1.7em; line-height: 1.2; }
+.cm-h2 { font-size: 1.32em; line-height: 1.3; }
+.cm-h3 { font-size: 1.12em; line-height: 1.35; }
+.cm-l-h1 { padding-top: 4px; }
+.cm-l-h2 { padding-top: 26px !important; border-top: 1px dashed var(--rule); margin-top: 10px; border-radius: 0; }
+.cm-l-h3 { padding-top: 14px !important; }
+.cm-mark { color: var(--muted); font-weight: 400; font-family: var(--body); font-size: .8em; }
+.cm-purpose { color: var(--muted); }
+.cm-fact { font-family: var(--mono); font-size: .72em; color: var(--muted); opacity: .75; white-space: nowrap; }
+.cm-fence { font-size: .85rem; color: var(--muted); }
+.cm-in-block { border-left: 2px solid var(--b3); padding-left: 12px !important; margin-left: 0 !important; border-radius: 0; }
+.cm-front { font-family: var(--mono); font-size: .78rem; color: var(--muted); line-height: 1.6; }
+.cm-anchor { background: color-mix(in oklab, var(--warning) 18%, transparent); border-radius: 2px; }
+.cm-anchor.info { background: color-mix(in oklab, var(--info) 12%, transparent); }
+.cm-edited { box-shadow: inset 3px 0 0 var(--primary); }
+.cm-link { color: var(--primary); }
+.cm-url { color: var(--muted); font-size: .9em; }
+.cm-code { font-family: var(--mono); font-size: .86em; background: color-mix(in oklab, var(--b3) 55%, transparent); border-radius: 3px; padding: 0 .2em; }
+/* A note sits in the flow under its line, as a PR review comment does. */
+.notewidget { padding: 6px 0 10px; }
+.notewidget > .note { font-family: var(--body); line-height: 1.5; white-space: normal; cursor: default; }
+.editor-tools { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: .875rem; margin: 30px 0 0; }
+.editor-tools .muted { margin-right: auto; }
+.loading { color: var(--muted); padding: 20px 0; }
+
+/* Round 4 layout: the review sheet. Header across the top; the work (the edit window) at reading
+   width; a sticky review pane on the right holding the decision, the open calls, the
+   corrections, and the contents. Below 1360px the pane folds into the bottom decision bar. */
+.sheet { --pane: 20rem; --edw: 46rem; display: grid; grid-template-columns: minmax(0, var(--edw)) var(--pane); column-gap: 40px; max-width: calc(var(--edw) + 40px + var(--pane)); margin-inline: auto; padding-bottom: 40px; }
+.sheet > .proto, .sheet > .sheethead { grid-column: 1 / -1; }
+.sheethead { position: relative; isolation: isolate; padding: 4px 0 26px; margin-bottom: 8px; border-bottom: 1px solid var(--b3); }
+.sheethead .contour { position: absolute; inset: auto 0 0; width: 100%; height: 100%; max-height: 160px; z-index: -1; fill: none; stroke: var(--secondary); stroke-width: 1; opacity: .25; pointer-events: none; }
+.sheethead h1 { font-family: var(--display); font-weight: 500; font-size: clamp(1.7rem, 1.2rem + 1vw, 2.15rem); line-height: 1.15; margin: 6px 0 0; text-wrap: balance; max-width: 42ch; }
+.sheethead .lede { max-width: 62ch; margin: 10px 0 0; font-size: 1.05rem; line-height: 1.55; color: var(--ink); }
+.bm { display: inline-block; width: 0; height: 0; border-inline: 6px solid transparent; border-bottom: 11px solid var(--secondary); margin-right: 10px; transform: translateY(-4px); opacity: .85; }
+.work { min-width: 0; }
+.work .place { margin-top: 18px; }
+.review { min-width: 0; }
+.review { padding-top: 12px; }
+.rv-sticky { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; display: grid; gap: 18px; padding: 2px 2px 12px; }
+.rv-h { font-size: .9rem; font-weight: 600; margin: 0 0 6px; }
+.rv-decide { border: 1px solid var(--b3); border-radius: var(--r-box); background: var(--b2); padding: 14px; }
+.rv-state { margin: 0; font-weight: 600; line-height: 1.3; }
+.rv-sub { margin: 2px 0 12px; font-size: .85rem; color: var(--muted); }
+.rv-acts { display: grid; gap: 8px; }
+.rv-acts .btn { justify-content: center; }
+.review .sendback { margin: 12px 0 0; padding: 0; border: 0; box-shadow: none; background: transparent; }
+.review .sendback textarea { min-height: 6rem; }
+.rv-list ul, .rv-list ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.rv-list a { display: flex; gap: 8px; align-items: baseline; padding: 5px 8px; margin: 0 -8px; border-radius: var(--r-field); color: var(--ink); text-decoration: none; font-size: .88rem; line-height: 1.35; }
+.rv-list a:hover { background: var(--b2); }
+.rv-list .dot { flex: none; width: 8px; height: 8px; border-radius: 50%; transform: translateY(-1px); }
+.rv-list .dot.call { background: var(--warning); }
+.rv-list .dot.fix { background: var(--info); }
+.rv-list .dot.done { background: var(--success); }
+.rv-list .what { color: var(--muted); font-size: .8rem; display: block; }
+.rv-contents a { padding-block: 3px; font-size: .84rem; }
+.rv-contents a.l3 { padding-left: 22px; }
+.rv-contents a.cur { background: var(--b2); font-weight: 600; }
+.rv-contents .n { color: var(--muted); min-width: 1.7rem; font-variant-numeric: tabular-nums; }
+.rv-contents .mk { margin-left: auto; width: 7px; height: 7px; border-radius: 50%; flex: none; align-self: center; }
+.rv-toggle { font-size: .85rem; color: var(--muted); display: flex; gap: 8px; align-items: center; }
+.rv-toggle input { accent-color: var(--primary); }
+.work .place { display: none; }
+.work .bar { flex-wrap: nowrap; }
+.work .bar .btn { white-space: nowrap; flex: none; }
+.work .bar .state { flex: 1; }
+@media (max-width: 1439.98px) { .work .bar kbd { display: none; } .work .bar { padding: 12px 16px; gap: 12px; } }
+@media (max-width: 639.98px) { .work .bar { flex-wrap: wrap; } .work .bar .btn { white-space: normal; justify-content: center; text-align: center; } .work .bar { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+/* The decision bar stacks above the place bar where the two meet. */
+.work .barwrap { z-index: 14; }
+@media (max-width: 1259.98px) {
+  .sheet { grid-template-columns: minmax(0, 1fr); max-width: var(--edw); }
+  .review { display: none; }
+  .work .place { display: flex; }
+}
+
+/* Round 5 frame: the three-pane app layout. The queue rail is pinned left and the review pane
+   pinned right, each full height on the paper shade; the work is centered between them at reading
+   width. Type scales gently with the window so the line stays near 80 characters as the column grows. */
+html { font-size: clamp(16px, 13.4px + 0.18vw, 18.5px); }
+.shell { grid-template-columns: 18rem minmax(0, 1fr) 20rem; }
+.sheet { grid-template-columns: minmax(0, 1fr); max-width: 46rem; }
+.review { background: var(--b2); border-left: 1px solid var(--b3); padding: 0; }
+.rv-sticky { top: 0; height: 100vh; max-height: none; padding: 18px 16px 24px; align-content: start; }
+.review .rv-list a:hover { background: var(--b3); }
+.review .rv-contents a.cur { background: var(--b3); }
+
+/* Side panels a step larger: labels near 15px, secondary lines near 13.5px. */
+.rail .title { font-size: 1.1rem; }
+.rail .sub { font-size: .95rem; }
+.rail .group { font-size: .98rem; }
+.rail .q { font-size: .95rem; }
+.rail .q .meta { font-size: .84rem; }
+.rv-h { font-size: 1rem; margin-bottom: 8px; }
+.rv-list a { font-size: .95rem; }
+.rv-list .what { font-size: .85rem; }
+.rv-contents a { font-size: .92rem; }
+.rv-toggle { font-size: .92rem; }
+.shell { grid-template-columns: 18rem minmax(0, 1fr) 21.5rem; }
+@media (max-width: 1259.98px) { .shell { grid-template-columns: 18rem minmax(0, 1fr); } }
+@media (max-width: 1023.98px) { .shell { grid-template-columns: minmax(0, 1fr); } }
+
+/* Round 6: drawers. Below 1260px the review pane slides in from the right; below 1024px the queue
+   rail slides in from the left behind an app bar. Same content, same order, at every width. */
+.appbar, .drawer-x, #toc { display: none; }
+.scrim { position: fixed; inset: 0; z-index: 39; background: rgb(17 23 30 / .32); }
+.drawer-x { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border: 0; border-radius: var(--r-field); background: transparent; color: var(--muted); cursor: pointer; place-items: center; }
+.drawer-x:hover { background: var(--b3); color: var(--ink); }
+.drawer-x svg, .appbtn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+@media (max-width: 1259.98px) {
+  .review { display: block; position: fixed; inset: 0 0 0 auto; width: min(22rem, 88vw); z-index: 40; transform: translateX(100%); visibility: hidden; transition: transform .2s ease, visibility 0s linear .2s; }
+  .review.open { transform: none; visibility: visible; transition: transform .2s ease; }
+  .review .drawer-x { display: grid; }
+  .review .rv-sticky { padding-top: 54px; }
+}
+@media (max-width: 1023.98px) {
+  .rail { display: grid; position: fixed; inset: 0 auto 0 0; width: min(19rem, 86vw); z-index: 40; padding-top: 54px; transform: translateX(-100%); visibility: hidden; transition: transform .2s ease, visibility 0s linear .2s; }
+  .rail.open { transform: none; visibility: visible; transition: transform .2s ease; }
+  .rail .drawer-x { display: grid; }
+  .appbar { display: flex; align-items: center; gap: 12px; margin: 0 -20px; padding: 8px 12px; border-bottom: 1px solid var(--b3); background: var(--b2); }
+  .appbtn { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 10px; border: 1px solid var(--b3); border-radius: var(--r-field); background: var(--b1); color: var(--ink); font: inherit; font-size: .95rem; cursor: pointer; }
+  .appbtn .count { min-width: 1.4rem; padding: 0 6px; border-radius: 999px; background: var(--b3); font-size: .8rem; text-align: center; }
+  .appname { font-weight: 600; font-size: .95rem; color: var(--muted); }
+  .place kbd { display: none; }
+}
+@media (max-width: 479.98px) { .appname { display: none; } }
+
+/* The shared rail: waiting items link to their screens; decided items are a quiet log. */
+a.q { color: var(--ink); text-decoration: none; }
+a.q:hover { background: var(--b3); }
+.rail .dq { display: flex; justify-content: space-between; gap: 8px; padding: 4px 8px 4px 14px; font-size: .88rem; color: var(--muted); }
+.rail .dq span:last-child { color: var(--success-ink); }
+.rail .dq span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rail-keys { margin-top: 18px; justify-self: start; font: inherit; font-size: .88rem; color: var(--muted); background: none; border: 0; padding: 4px; cursor: pointer; }
+.rail-keys:hover { color: var(--ink); }
+/* Outline entries stay on one line; the full name is the title. */
+.rv-contents a .t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* The contour sits to the right, clear of the lede. */
+.sheethead .contour { -webkit-mask-image: linear-gradient(to right, transparent 30%, #000 75%); mask-image: linear-gradient(to right, transparent 30%, #000 75%); }
+
+/* Round 8: the felt-refinement pass (three audit lenses, adjudicated). */
+a { text-underline-offset: 2px; }
+::selection { background: color-mix(in oklab, var(--primary) 22%, transparent); }
+kbd { opacity: 1; }
+.edbar { border-radius: calc(var(--r-box) - 1px) calc(var(--r-box) - 1px) 0 0; }
+.btn.outline:hover { background: var(--b2); }
+.btn.primary:hover { background: color-mix(in oklab, var(--primary) 88%, var(--ink)); }
+.rail .q.on .meta { color: color-mix(in oklab, var(--muted) 70%, var(--ink)); }
+.rail .q .meta { font-size: .85rem; }
+.rail .dq, .rv-contents a, .rv-none { font-size: .9rem; }
+.rail .group { font-size: 1rem; }
+.rv-sticky { grid-template-columns: minmax(0, 1fr); }
+.rv-list, .rv-list a { min-width: 0; }
+.rv-list ul, .rv-list ol { grid-template-columns: minmax(0, 1fr); }
+.work { display: contents; }
+/* Markdown markers: one rule, body size and muted; the content carries its own size. */
+.cm-l-h1 .cm-mark, .cm-l-h2 .cm-mark, .cm-l-h3 .cm-mark, .cm-fence .cm-mark { font-size: 1em; }
+.cm-fact { opacity: .9; }
+.notewidget .note p, .notewidget .note .side { max-width: 64ch; }
+@media (max-width: 639.98px) {
+  .cm-editor .cm-scroller, .cm-content { line-height: 1.55; }
+  .linkbtn { padding-block: 10px; }
+}
+</style>
+<style>
+/* 2026-10-21 round 1: editor comments. A comment is the reviewer's own mark, so it takes the
+   primary hue the changed-lines marker already uses: amber stays the call for you, teal the
+   author's correction, green the settled state. The card is a note: same field, same status rule,
+   same place under its line. */
+.cm-cmt { background: color-mix(in oklab, var(--primary) 14%, transparent); border-bottom: 2px solid color-mix(in oklab, var(--primary) 55%, transparent); border-radius: 2px 2px 0 0; }
+.cm-cmt.cur { background: color-mix(in oklab, var(--primary) 26%, transparent); }
+.note.cmt::before { background: var(--primary); }
+.note.cmt .nh .kind { color: var(--primary); }
+.note.cmt.cur { box-shadow: 0 0 0 2px color-mix(in oklab, var(--primary) 45%, transparent); }
+.note .quote { margin: 0 0 6px; padding-left: 8px; border-left: 2px solid color-mix(in oklab, var(--primary) 45%, transparent); color: var(--muted); font-size: .85rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.note .ctext { white-space: pre-wrap; margin: 0 0 4px; max-width: 64ch; }
+.note .cacts { display: flex; gap: 14px; font-size: .85rem; }
+.note .cacts .linkbtn { font-size: .85rem; }
+.note textarea { display: block; width: 100%; min-height: 4.5rem; font: inherit; font-size: .95rem; line-height: 1.5; color: var(--ink); background: var(--field-bg); border: 1px solid var(--field-border); border-radius: var(--r-field); padding: 6px 8px; resize: vertical; }
+.note .dacts { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+.note .dacts .hint { margin-left: auto; font-size: .8rem; color: var(--muted); }
+/* The floating action at a selection: one button, beside the end of the selected text. */
+.cm-tooltip.cm-cbtn { border: 0; background: transparent; }
+.cm-cbtn .btn { box-shadow: var(--bar-shadow); padding: 6px 10px; font-size: .82rem; }
+.cm-cbtn .btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.edbar .addc { margin-left: 12px; font-size: .8rem; }
+.edbar .addc[aria-disabled="true"] { color: var(--muted); text-decoration: none; cursor: default; }
+.rv-list .dot.cmt { background: var(--primary); }
+.rv-none { color: var(--muted); margin: 0; line-height: 1.45; }
+.note .dacts .btn, .note .choices .btn { white-space: nowrap; }
+@media (max-width: 1023.98px) { .edbar .addc kbd, .note .dacts .hint { display: none; } }
+@media (max-width: 479.98px) { .edbar { flex-wrap: wrap; } .edbar .esaved { flex-basis: 100%; margin-left: 0; } }
+</style>
+
+<div class="shell">
+  <nav class="rail" id="rail" aria-label="Queue">
+    <button class="drawer-x" data-close type="button" aria-label="Close the queue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="title">Design &amp; PR Approvals</div>
+    <div class="sub">3 waiting</div>
+    <div class="group">Docs system</div>
+    <a class="q" data-round="1" href="comments.html"><span>Approve the plan for Troubleshoot your site</span><span class="meta"><span>Blueprint</span><span>now</span></span></a>
+    <a class="q" data-round="2" href="comments.html?round=2"><span>Approve the plan for Troubleshoot your site</span><span class="meta"><span>Blueprint, round 2</span><span>sample</span></span></a>
+    <div class="q"><span>Approve the page for Restrict admin access</span><span class="meta"><span>Page, example</span><span>1h</span></span></div>
+    <div class="group">Decided this session</div>
+    <div class="dq"><span>Approval packets design</span><span>Approved</span></div>
+    <div class="dq"><span>Servers foundation, pass 2</span><span>Approved</span></div>
+    <div class="dq"><span>cairn-cms acceptance</span><span>Approved</span></div>
+    <button class="rail-keys" type="button" data-help>Keyboard shortcuts <kbd>?</kbd></button>
+  </nav>
+  <main>
+    <div class="appbar"><button class="appbtn" id="railBtn" type="button" aria-controls="rail" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span>Queue</span><span class="count">3</span></button><span class="appname">Design &amp; PR Approvals</span></div>
+    <div class="sheet">
+      <p class="proto" id="proto"></p>
+
+      <header class="sheethead">
+        <svg class="contour" viewBox="0 0 1200 160" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120 C 180 90, 320 150, 520 112 S 860 70, 1200 104"/><path d="M0 138 C 200 112, 340 166, 540 130 S 880 92, 1200 122"/><path d="M0 154 C 220 132, 360 178, 560 148 S 900 114, 1200 140"/><path d="M640 160 C 700 120, 820 118, 900 140 S 1060 150, 1200 128"/></svg>
+        <p class="crumb"><a href="#" onclick="return false">Board</a><span>/</span><span>Blueprint</span><span>/</span><span>cairn-cms</span></p>
+        <h1><span class="bm" aria-hidden="true"></span><span id="headline"></span></h1>
+        <p class="lede" id="lede"></p>
+      </header>
+
+      <div class="work">
+        <details class="bg bg-first"><summary><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg><span><span class="lead">What you're deciding.</span> Whether this plan makes the right page: the right reader, the right order, and the right things said.</span></summary>
+          <div class="body"><p>Approving lets drafter write the page from this file. You'll read the draft next, on the page review screen.</p><p>You aren't checking facts against the code. A fresh agent did that, and the author fixed what it found or disputed it. The notes show where that changed the plan.</p></div></details>
+        <details class="bg"><summary><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg><span><span class="lead">How to change it.</span> It's the blueprint file itself. Type anywhere, and each pause saves it.</span></summary>
+          <div class="body"><p>Each <code>##</code> heading is a section, and the italic line under it says what the section does for the reader. Each bullet is a point the page will make. A <code>:::row</code> block is one troubleshooting row. The small <code>:fact[…]</code> tag ties a line to the fact behind it, so leave it on the line it came with.</p><p>To ask the author for a change instead of making it, select the text and choose <b>Comment</b>. Your comments go to the author with your decision.</p><p>Ctrl+Z undoes, F8 moves to the next call for you, and <kbd>?</kbd> lists every shortcut.</p></div></details>
+
+        <div class="place" id="place">
+          <span class="where" id="where"><b>Debug your site</b></span>
+          <span class="open" id="openct"></span>
+          <span style="position:relative"><button class="linkbtn" id="tocBtn" aria-expanded="false" aria-controls="review">Outline and calls</button><div class="toc" id="toc" hidden></div></span>
+        </div>
+        <div class="edwrap"><div class="edbar"><span class="fname">troubleshooting.blueprint.md</span><button class="linkbtn addc" id="addc" type="button" aria-disabled="true" title="Select text to comment on it">Comment <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd></button><span class="esaved" id="esaved" role="status" aria-live="polite">No edits</span></div><div id="cm"><p class="loading">Loading the editor…</p></div></div>
+
+        <div class="barwrap">
+          <div class="sendback" id="sendback" hidden>
+            <label for="sbnote" class="lead">What should the author change?</label>
+            <p class="muted" style="margin:2px 0 8px;font-size:.875rem" id="sbsub">Your edits, decisions, and comments go with this note.</p>
+            <textarea id="sbnote"></textarea>
+            <div class="acts"><button class="btn" id="sbCancel" type="button">Cancel</button><button class="btn primary" id="sbSend" type="button">Send back</button></div>
+          </div>
+          <form class="bar" onsubmit="return false">
+            <button class="btn outline" data-act="hold" type="button">Send back with note</button>
+            <div class="state" role="status"><p class="s1" data-s1></p><p class="s2" data-s2></p></div>
+            <button class="btn primary" data-act="approve" type="button">Approve the plan <kbd>Ctrl</kbd><kbd>Enter</kbd></button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="review" id="review" aria-label="Outline and calls">
+        <div class="rv-sticky">
+          <button class="drawer-x" data-close type="button" aria-label="Close the outline"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+          <section class="rv-list"><h2 class="rv-h">Calls for you</h2><ul id="rvCalls"></ul></section>
+          <section class="rv-list"><h2 class="rv-h">Replies to your comments</h2><ul id="rvThreads"></ul></section>
+          <section class="rv-list"><h2 class="rv-h" id="rvCmtH">Your comments</h2><ul id="rvCmts"></ul></section>
+          <section class="rv-list"><h2 class="rv-h">Corrected by the fact check</h2><ul id="rvFixes"></ul></section>
+          <section class="rv-list rv-contents"><h2 class="rv-h">Contents</h2><ol id="rvToc"></ol></section>
+          <label class="rv-toggle"><input type="checkbox" id="vChanges"> Mark the lines I changed</label>
+        </div>
+  </aside>
+</div>
+
+<script type="importmap">{
+ "imports": {
+  "https://cdn.jsdelivr.net/npm/@codemirror/autocomplete@6.20.1/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/autocomplete@6.20.3/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/language@6.10.4/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/language@6.12.4/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/language@6.12.2/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/language@6.12.4/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/language@6.12.3/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/language@6.12.4/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/state@6.4.1/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/state@6.7.5/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/state@6.5.4/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/state@6.7.5/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/state@6.6.0/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/state@6.7.5/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/state@6.7.0/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/state@6.7.5/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/state@6.7.1/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/state@6.7.5/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/state@6.7.4/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/state@6.7.5/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/view@6.35.0/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/view@6.43.13/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/view@6.39.15/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/view@6.43.13/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/view@6.39.16/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/view@6.43.13/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/view@6.40.0/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/view@6.43.13/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/view@6.43.0/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/view@6.43.13/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/view@6.43.12/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/view@6.43.13/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/view@6.43.2/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/view@6.43.13/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/view@6.43.7/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/view@6.43.13/+esm",
+  "https://cdn.jsdelivr.net/npm/@codemirror/view@6.43.8/+esm": "https://cdn.jsdelivr.net/npm/@codemirror/view@6.43.13/+esm",
+  "https://cdn.jsdelivr.net/npm/@lezer/common@1.2.1/+esm": "https://cdn.jsdelivr.net/npm/@lezer/common@1.5.2/+esm",
+  "https://cdn.jsdelivr.net/npm/@lezer/common@1.2.3/+esm": "https://cdn.jsdelivr.net/npm/@lezer/common@1.5.2/+esm",
+  "https://cdn.jsdelivr.net/npm/@lezer/common@1.3.0/+esm": "https://cdn.jsdelivr.net/npm/@lezer/common@1.5.2/+esm",
+  "https://cdn.jsdelivr.net/npm/@lezer/common@1.4.0/+esm": "https://cdn.jsdelivr.net/npm/@lezer/common@1.5.2/+esm",
+  "https://cdn.jsdelivr.net/npm/@lezer/common@1.5.0/+esm": "https://cdn.jsdelivr.net/npm/@lezer/common@1.5.2/+esm",
+  "https://cdn.jsdelivr.net/npm/@lezer/common@1.5.1/+esm": "https://cdn.jsdelivr.net/npm/@lezer/common@1.5.2/+esm",
+  "https://cdn.jsdelivr.net/npm/@lezer/highlight@1.2.1/+esm": "https://cdn.jsdelivr.net/npm/@lezer/highlight@1.2.3/+esm",
+  "https://cdn.jsdelivr.net/npm/@lezer/lr@1.4.2/+esm": "https://cdn.jsdelivr.net/npm/@lezer/lr@1.4.5/+esm",
+  "https://cdn.jsdelivr.net/npm/@marijn/find-cluster-break@1.0.2/+esm": "https://cdn.jsdelivr.net/npm/@marijn/find-cluster-break@1.0.4/+esm",
+  "https://cdn.jsdelivr.net/npm/@marijn/find-cluster-break@1.0.3/+esm": "https://cdn.jsdelivr.net/npm/@marijn/find-cluster-break@1.0.4/+esm",
+  "https://cdn.jsdelivr.net/npm/crelt@1.0.6/+esm": "https://cdn.jsdelivr.net/npm/crelt@1.0.7/+esm",
+  "https://cdn.jsdelivr.net/npm/style-mod@4.1.2/+esm": "https://cdn.jsdelivr.net/npm/style-mod@4.1.4/+esm",
+  "https://cdn.jsdelivr.net/npm/style-mod@4.1.3/+esm": "https://cdn.jsdelivr.net/npm/style-mod@4.1.4/+esm",
+  "@codemirror/view": "https://cdn.jsdelivr.net/npm/@codemirror/view@6.43.13/+esm",
+  "@codemirror/state": "https://cdn.jsdelivr.net/npm/@codemirror/state@6.7.5/+esm",
+  "@codemirror/commands": "https://cdn.jsdelivr.net/npm/@codemirror/commands@6.11.1/+esm",
+  "@codemirror/lang-markdown": "https://cdn.jsdelivr.net/npm/@codemirror/lang-markdown@6.5.2/+esm",
+  "@codemirror/language": "https://cdn.jsdelivr.net/npm/@codemirror/language@6.12.4/+esm",
+  "@lezer/highlight": "https://cdn.jsdelivr.net/npm/@lezer/highlight@1.2.3/+esm"
+ }
+}</script>
+<script id="mdData" type="application/json">"---\npage: Troubleshoot your site\ntype: symptom row\ntrack: admin\nexemplar: operators/github-pages-troubleshoot-domains\n---\n\n# Troubleshoot your site\n\n:::reader\n**Who reads it.** A technical non-developer who runs a cairn site, either one they set up with `create-cairn-site` or one they inherited. They work in a terminal, the Cloudflare dashboard, and the admin, they have the `cairn` command installed, and they write no code. :fact[kk03ic]\n\n**Why they arrive:**\n- An editor reports that signing in, saving, publishing, or adding an image went wrong.\n- The admin shows an error page in place of a screen.\n- `cairn health` reported a failing check, such as its `errors` check. :fact[wbnj9p]\n- A known failing check keeps paging them, and they want to hold it.\n\n**What the page does for them.** It shows where to look first, then matches each symptom to its cause and to one next step, classed as wait, act, or ask a developer. Each row names the log record that confirms it.\n\n**What it leaves to other pages:**\n- Symptoms whose fix is a change to the site's code, which belong to Debug your site.\n- The full table of log events with every field, which lives in the log events reference.\n- Setting up a site for the first time, which belongs to the admin track's setup pages (not yet published).\n:::\n\n## Where to look first\n\n*Get the reader to the site's records and its health check before the rows. Every row names a record to find. Say what an empty result means.*\n\n- Cloudflare Workers is where your site runs, and the site's log records appear in Workers Logs, in the Cloudflare dashboard. :fact[gzs6b8]\n- See [Workers Logs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/).\n- To watch records arrive while you reproduce a problem, run `npx wrangler tail`. :fact[gzs6b8]\n- See [`wrangler tail`](https://developers.cloudflare.com/workers/wrangler/commands/#tail).\n- From your terminal, `cairn logs <site>` reads the same records for one site. `--event` narrows them to one event name, and `--since` sets how far back to look, 24 hours unless you name another window. :fact[efxu16] :fact[q9ylqa]\n- `cairn health` runs nine checks against one site, or against every site it knows when you name none. :fact[wbnj9p]\n- Its `errors` check counts only cairn's own error records, never every error line the site logs, and when the query reaches its limit the count reads \"at least\" a number. :fact[1x1hpl]\n- The `errors` check passes at up to 5 such records over the last 24 hours and fails above that; `--error-threshold` and `--since` change those two numbers. :fact[vg5zt8]\n- When the `errors` check fails, read that window's records with `cairn logs` and find each record's event in the rows below. :fact[vg5zt8] :fact[efxu16]\n- Each row names the event that confirms it, and the log events reference lists every event with its fields.\n- See [Log events](../reference/log-events.md).\n\n:::row\n**Symptom.** `cairn logs` shows no records, Workers Logs is empty, and the `errors` check passes, while the site misbehaves.\n**Cause.** The site's Cloudflare settings file, `wrangler.jsonc`, does not set `observability.enabled` to `true`. With the setting off, the site's records go nowhere, and the log query answers with zero records rather than an error. An empty log and a passing `errors` check therefore prove nothing about it. A site created with `create-cairn-site` has the setting on unless someone removed it. When it is off, `cairn doctor` flags it in its `config.observability` check as \"Workers Logs has no sink\", and its `--json` report names the condition `config.observability-off`. :fact[txgoyy] :fact[q9ylqa] :fact[pb4md7] :fact[l3cxgc]\n**Fix.** Ask a developer: they set `observability.enabled` to `true` in `wrangler.jsonc` and deploy the site again, which puts the new version live on Cloudflare. Then reproduce the problem and read the records again. :fact[txgoyy]\n:::\n\n- See [Debug your site: find the records](../extend/debug-your-site.md#find-the-records).\n\n## Sign-in problems\n\n*Match what an editor sees on the sign-in pages to its cause. Tell a browser mix-up apart from a missing roster entry and from a retry that came too soon.*\n\n- An editor signs in with a link that cairn emails to them. The link lasts ten minutes and works only in the browser that asked for it. :fact[fhshue] :fact[71luk5]\n- Each request logs `auth.link.requested`, and a link issued to an address on the roster logs `auth.token.minted`. :fact[4tmw56]\n\n:::row\n**Symptom.** The editor opens the link and sees \"This browser has no pending sign-in.\" with the advice to request a new link and open it in this browser. The log holds `auth.link.refused` with `reason: no_pending_cookie`.\n**Cause.** The link was opened in a different browser from the one that requested it, or this browser's cookies were cleared since the request. Either way, this browser holds no pending sign-in.\n**Fix.** Act: request a new link in the browser the editor will use, and open the link in that same browser. :fact[71luk5] :fact[4tmw56]\n:::\n\n:::row\n**Symptom.** The editor taps the link inside a mail app and sees \"This browser has no pending sign-in.\"\n**Cause.** The mail app opened the link in its own built-in browser, which keeps its cookies apart from the browser that requested the link. Apple's in-app Safari view is one such browser.\n**Fix.** Act: request a new link, then open it in the browser that requested it rather than inside the mail app. :fact[ivpv77] :fact[71luk5]\n:::\n\n:::row\n**Symptom.** The page says \"Check your email\", but no link arrives, even in the spam folder. The log holds `auth.link.requested` for the address, with no `auth.token.minted` after it.\n**Cause.** The address is not on the site's roster of editors, or it differs from the one the owner added. For an address that is not on the roster, the page answers \"Check your email\" exactly as it does for a sent link, so that message never reveals who is on the roster. cairn sends no link to an address that is not on it.\n**Fix.** Act: an owner checks the roster on the **Editors** screen, at `/admin/editors`, and adds the address the editor uses, or the editor requests a link with the address already listed. :fact[9cznzz] :fact[vympj2] :fact[4tmw56] :fact[852srf]\n:::\n\n:::row\n**Symptom.** The page says \"You requested a link recently. Check your inbox, or wait a minute and try again.\"\n**Cause.** The editor asked again within one minute of the last link. No new email is sent, and the link already in the inbox now opens in the browser that just asked. This message appears only for an address on the roster, so the address is right.\n**Fix.** Wait: open the link already in the inbox in this browser, or wait a minute and request a new one. :fact[9cznzz] :fact[fhshue] :fact[vympj2]\n:::\n\n## Save and publish problems\n\n*Match each refusal an editor meets while saving or publishing, and a missing **Publish site** button, to a next step.*\n\n- A save stores an entry's edits on GitHub without changing the live site, and publishing puts them live. :fact[hi9nim]\n\n:::row\n**Symptom.** A save answers \"This file changed since you opened it. Re-read the draft and save again.\" The log holds `commit.failed` with `reason: conflict`.\n**Cause.** Another change reached GitHub while the save was being written. cairn treats this as an expected outcome, not a fault, and the editor's text stays on the screen.\n**Fix.** Act: re-read the draft, then save again. :fact[y4nzgp] :fact[bijnzl]\n:::\n\n:::row\n**Symptom.** Publishing an entry answers \"Your edits are saved. Publish again.\", or the **Publish site** button answers \"The site changed while publishing. Reload and try again.\" The log holds `publish.failed` with `reason: conflict`, one record for each entry in a site-wide publish.\n**Cause.** Another change reached GitHub while the publish was being written. The saved edits are kept, so nothing is lost.\n**Fix.** Act: publish again, reloading the page first after a site-wide publish. :fact[y4nzgp] :fact[lmh555]\n:::\n\n:::row\n**Symptom.** The top bar has no **Publish site** button.\n**Cause.** The button appears, with a count, only while at least one entry has saved edits that are not yet published, and it counts only the entries the editor's role can reach.\n**Fix.** No fix is needed: the button returns, with its count, once an entry the editor can reach has unpublished edits. :fact[hi9nim]\n:::\n\n:::row\n**Symptom.** The **Publish site** button is missing while an entry is open for editing.\n**Cause.** An open entry's own controls take over the top bar, and the site-wide button steps aside.\n**Fix.** Act: go to any other admin screen, such as the entry's list, and the button shows again while edits wait to publish. :fact[iqlr1w] :fact[hi9nim]\n:::\n\n:::row\n**Symptom.** The **Publish site** button is missing although entries have unpublished edits, and the log holds `github.unreachable` with `scope: shell`.\n**Cause.** The admin could not read GitHub to list what is waiting, so it hides the button rather than show a wrong count. The admin logs this record for any failure to list what is waiting, a passing network failure included. A failure that lasts is the condition `github.app-unreachable`: the site's GitHub App key does not parse, the App cannot authenticate or get its installation token, or your repository refuses a read, and saves and publishes then cannot commit either.\n**Fix.** Act: reload the admin. If the button is still missing and the record repeats, ask a developer: they check the site's GitHub App key secret and its App and installation ids against the App's settings, and confirm the App is installed on your repository, which is where your content lives on GitHub. :fact[hi9nim] :fact[lg0umh]\n:::\n\n## Image upload problems\n\n*Match each upload message to its reason. Separate the messages the editor can act on from the ones that need a developer.*\n\n- A failed upload shows a message on the image's card, and an upload the site's upload route refused logs `media.upload_failed` with a `reason` that names the refusal. :fact[szcxsx] :fact[1wimos]\n\n:::row\n**Symptom.** The card reads \"This image is too large to add, even after shrinking it.\"\n**Cause.** The image is larger than the site accepts. When the upload reached the site, the log holds `media.upload_failed` with `reason: too_large`.\n**Fix.** Act: save a smaller copy of the image, at a lower resolution, and upload that copy. :fact[szcxsx] :fact[zhpap6]\n:::\n\n:::row\n**Symptom.** The card reads \"This image format is not supported. Try a JPEG, PNG, WebP, or GIF.\"\n**Cause.** The file is a type the browser cannot decode or the site does not store. When the upload reached the site, the log holds `media.upload_failed` with `reason: unsupported_type`.\n**Fix.** Act: save the image in one of the formats the message names, and upload it again. :fact[szcxsx] :fact[zhpap6]\n:::\n\n:::row\n**Symptom.** The card says the session has expired and asks the editor to sign in again.\n**Cause.** The editor's sign-in session ended before the upload.\n**Fix.** Act: sign in again, then repeat the upload. :fact[szcxsx] :fact[zhpap6]\n:::\n\n:::row\n**Symptom.** The card reads \"The upload could not be completed. Please try again.\", and the log holds `media.upload_failed` with `reason: media_disabled` or `reason: binding_missing`.\n**Cause.** For `media_disabled`, the site has media turned off. For `binding_missing`, the site has no storage bucket under the name it is set up to use.\n**Fix.** Ask a developer: the site's media setup needs a change. :fact[szcxsx] :fact[zhpap6] :fact[qpzlft]\n:::\n\n:::row\n**Symptom.** The card reads \"The upload could not be completed. Please try again.\", and the log holds `media.upload_failed` with `reason: access_denied`, beside `auth.access.refused` with `target: media`.\n**Cause.** The site's access rules do not admit the editor's role to the media library.\n**Fix.** Ask a developer to admit the role to the media library, or to confirm that the role should not reach it. :fact[szcxsx] :fact[zhpap6] :fact[qpzlft]\n:::\n\n:::row\n**Symptom.** The card reads \"The upload could not be completed. Please try again.\", and the log holds `media.upload_failed` with `reason` set to `csrf`, `length_required`, or `hash_collision`.\n**Cause.** These refusals carry nothing the editor can change.\n**Fix.** Act: try the upload once more, as the message says. If the same reason returns, ask a developer and pass on the log record. :fact[szcxsx] :fact[zhpap6] :fact[1wimos]\n:::\n\n## Admin error pages\n\n*Match each page the site shows in place of an admin screen to its cause. Tell a browser problem apart from a setup fault.*\n\n- cairn refuses some admin requests before they reach a screen, and each refusal logs `guard.refused` with a `reason` that names the check: `dev_backend_in_prod`, `https`, `bindings`, `csrf`, or `identity`. :fact[05q9zk]\n\n:::row\n**Symptom.** Every admin page, the sign-in page included, shows \"Site setup required\" with the heading \"Wrangler bindings are missing\". The log holds `guard.refused` at error level with `reason: bindings`.\n**Cause.** The site is running without its sign-in database, `AUTH_DB` in `wrangler.jsonc`. Without it, no one can sign in.\n**Fix.** Ask a developer: they declare the sign-in bindings, `EMAIL` and `AUTH_DB`, in `wrangler.jsonc` and deploy the site again. `cairn doctor` checks for both. :fact[ck1any] :fact[kpczhs]\n:::\n\n:::row\n**Symptom.** An admin page shows \"This admin needs a secure connection\" with an **Open over HTTPS** button. The log holds `guard.refused` with `reason: https`.\n**Cause.** The admin was opened over plain http, and sign-in works only over https. Cloudflare's Always Use HTTPS setting is off for your domain's zone, the container in your Cloudflare account that holds the domain's settings.\n**Fix.** Act: select **Open over HTTPS** to continue. Then, in the Cloudflare dashboard, turn on Always Use HTTPS for the zone under **SSL/TLS** > **Edge Certificates**, and keep HSTS on. `cairn health` reports this setting in its `https-forced` check. :fact[78tm6n] :fact[ow237a] :fact[2fkoo3]\n:::\n\n:::row\n**Symptom.** After a sign-in or another admin form, the page shows \"Let's try that again\" and says the sign-in form could not be verified. The log holds `guard.refused` with `reason: csrf`.\n**Cause.** The form's security token was missing or stale, usually because the page stayed open across a browser restart or cookies are blocked for the site.\n**Fix.** Act: allow cookies for the site, open the sign-in page fresh, and request a new link. :fact[krfdmb] :fact[ot3zkq]\n:::\n\n:::row\n**Symptom.** The admin answers with the plain text \"cairn: the dev backend flag is set in a deployed environment. Unset CAIRN_DEV_BACKEND.\" The log holds `guard.refused` at error level with `reason: dev_backend_in_prod`.\n**Cause.** A development setting, `CAIRN_DEV_BACKEND`, is set on the deployed site.\n**Fix.** Ask a developer to unset `CAIRN_DEV_BACKEND` on the deployed site, as the message says. :fact[1i3v4p]\n:::\n\n:::row\n**Symptom.** On a site that signs editors in through an organization's own sign-in gate, the admin shows \"This admin needs\" followed by the gate's name. The log holds `guard.refused` with `reason: identity`.\n**Cause.** The gate refused the request, or failed while confirming who the editor is, so cairn could not start a session. A site that signs in with emailed links never shows this page.\n**Fix.** Act: sign in through the gate again. If it still fails, ask a developer to check the gate's configuration. :fact[yl9c68] :fact[6xsj29]\n:::\n\n## Role and owner access problems\n\n*Match an editor who signs in to nothing, and an owner who cannot sign in at all, to an owner's or a developer's next step.*\n\n:::row\n**Symptom.** An editor signs in, but each content screen answers \"Editor access required\". The log holds `auth.role.unknown` with the editor's email and role.\n**Cause.** The editor's role is one the site no longer declares, because the site's list of roles was pruned or the roster entry was edited by hand. Such a role still signs in, with no access, and no access rule can admit it.\n**Fix.** Act: an owner opens the **Editors** screen and sets the editor to a role the site declares. To keep the old role instead, ask a developer to add it back to the roles the site declares. :fact[4bazhe] :fact[vdcqgx] :fact[zefmyj] :fact[852srf]\n:::\n\n:::row\n**Symptom.** The site's only owner cannot sign in, because no sign-in link reaches them, and no other owner exists to help.\n**Cause.** The **Editors** screen refuses to remove or demote the last owner, and the roster always keeps one. That owner still needs a sign-in link to get in.\n**Fix.** Act: on the computer that set up the site, run `npx create-cairn-site --dir <folder> --sign-in`, naming the site's folder. It writes a fresh sign-in link into the site's database, with no email, and opens the sign-in page with it. The link lasts ten minutes, and running the command again writes a new one. Add `--owner-email <address>` to use a different address that is already on the roster. :fact[xrw24b] :fact[852srf]\n:::\n\n:::row\n**Symptom.** The site's only owner cannot sign in, and the computer that set up the site, with its saved setup record, is not available.\n**Cause.** The `--sign-in` recovery reads the setup record saved on the computer that ran setup, so it cannot run anywhere else.\n**Fix.** Ask a developer: they can write a one-time sign-in row into the site's database by hand, which any browser can confirm until it expires. :fact[xrw24b] :fact[o2i3cu]\n:::\n\n## Health check holds\n\n*Show the reader how to stop a known failing check from paging them. Warn that a hold covers that check on every site.*\n\n- `cairn health --ack <check-id>=<YYYY-MM-DD>` holds a known failing check until that date. :fact[wj1i7e]\n- A held failure reads `held` and still counts as WARNING, never OK, and once the date passes the check returns to its own severity. :fact[wj1i7e]\n- Holds can also live in a file: `acknowledgements.json` in the registry directory by default, or a file you name with `--ack-file`. :fact[q4skmn]\n\n:::row\n**Symptom.** A real failure on one site does not page, and its check reads `held`.\n**Cause.** A hold matches on the check's id alone, so it covers that check on every site in a sweep. Holding `email` for one site silences email failures on all of them.\n**Fix.** Act: hold a check only while its known failure lasts, and remove the hold as soon as that failure is fixed. :fact[xlgk4i]\n:::\n\n## See also\n\n*Point the reader to the pages behind these rows and to the pages that cover what this one leaves out.*\n\n- See [Debug your site](../extend/debug-your-site.md).\n- See [Log events](../reference/log-events.md).\n- See [The `cairn doctor` command](../reference/cli-cairn-doctor.md).\n- See [The `cairn` CLI's exit codes](../reference/cli-cairn-exit-codes.md).\n"</script>
+<script id="round2Data" type="application/json">{"edits": [["Cloudflare Workers is where your site runs, and the site's log records appear in Workers Logs, in the Cloudflare dashboard.", "Cloudflare Workers is where your site runs. To see the site's log records in Workers Logs, open the Cloudflare dashboard, go to **Workers & Pages**, select the site's Worker, and open its **Logs** tab."], ["**Fix.** Act: hold a check only while its known failure lasts, and remove the hold as soon as that failure is fixed. :fact[xlgk4i]", "**Fix.** Act: hold a check only while its known failure lasts, and remove the hold as soon as that failure is fixed. No hold covers a single site. :fact[xlgk4i]"], ["- Each row names the event that confirms it, and the log events reference lists every event with its fields.\n", ""]], "threads": [{"id": "T1", "quote": "the site's log records appear in Workers Logs, in the Cloudflare dashboard", "comment": "This reader may never have opened the Cloudflare dashboard. Say where Workers Logs is in it.", "reply": {"status": "done", "text": "The line now walks from the dashboard to the Worker's Logs tab."}, "was": "Cloudflare Workers is where your site runs, and the site's log records appear in Workers Logs, in the Cloudflare dashboard.", "now": "Cloudflare Workers is where your site runs. To see the site's log records in Workers Logs, open the Cloudflare dashboard, go to **Workers & Pages**, select the site's Worker, and open its **Logs** tab.", "find": "Cloudflare Workers is where your site runs. To see the site's log records in Workers Logs, open the Cloudflare dashboard, go to **Workers & Pages**, select the site's Worker, and open its **Logs** tab."}, {"id": "T2", "quote": "Each row names the event that confirms it, and the log events reference lists every event with its fields.", "comment": "The reader block already says each row names its record. Cut this line.", "reply": {"status": "done", "text": "I cut the line and kept the link to Log events under it."}, "was": "Each row names the event that confirms it, and the log events reference lists every event with its fields.", "now": null, "find": null, "at": "- See [Log events](../reference/log-events.md).\n\n:::row"}, {"id": "T3", "quote": "The top bar has no **Publish site** button.", "comment": "This row and the next one are the same symptom. Merge them?", "reply": {"status": "kept", "text": "I kept them as two rows. They share a symptom but not a fix: the first needs nothing, and the second needs the editor to leave the entry. A merged row would need two fixes, and the outline standard gives each row one."}, "was": null, "now": null, "find": "The top bar has no **Publish site** button."}, {"id": "T4", "quote": "Holding `email` for one site silences email failures on all of them.", "comment": "Can an operator hold a check for one site only? If not, say so.", "reply": {"status": "answered", "text": "No. A hold matches on the check's id alone, so no hold covers a single site. I added that to the fix."}, "was": "**Fix.** Act: hold a check only while its known failure lasts, and remove the hold as soon as that failure is fixed. :fact[xlgk4i]", "now": "**Fix.** Act: hold a check only while its known failure lasts, and remove the hold as soon as that failure is fixed. No hold covers a single site. :fact[xlgk4i]", "find": "Holding `email` for one site silences email failures on all of them."}]}</script>
+<script id="notesData" type="application/json">[{"id": "B1", "kind": "info", "anchor": "sign-in-problems.p2.cause", "title": "Why this browser has no pending sign-in", "body": ["The fact check found this cause too narrow. The code also refuses a link when the browser's cookies were cleared after the request. The author added that case."], "was": "The link was opened in a different browser from the one that requested it, so this browser holds no pending sign-in.", "now": "The link was opened in a different browser from the one that requested it, or this browser's cookies were cleared since the request. Either way, this browser holds no pending sign-in.", "range": [4713, 4896]}, {"id": "B2", "kind": "info", "anchor": "save-and-publish-problems.p5.cause", "title": "When github.unreachable logs", "body": ["The fact check found this line claimed more than the code. The admin logs this record for any failure to list what is waiting, a passing network failure included, so the record alone doesn't mean the App is broken. The author rewrote the cause and added a reload to the fix."], "was": "The admin could not read GitHub to list what is waiting, so it hides the button rather than show a wrong count. This record goes with the condition `github.app-unreachable`: the site's GitHub App key does not parse, the App cannot authenticate or get its installation token, or your repository refuses a read, and saves and publishes then cannot commit either.", "now": "The admin could not read GitHub to list what is waiting, so it hides the button rather than show a wrong count. The admin logs this record for any failure to list what is waiting, a passing network failure included. A failure that lasts is the condition `github.app-unreachable`: the site's GitHub App key does not parse, the App cannot authenticate or get its installation token, or your repository refuses a read, and saves and publishes then cannot commit either.", "range": [8905, 9371]}]</script>
+<script type="module">
+import { EditorView, keymap, Decoration, ViewPlugin, WidgetType, showTooltip } from '@codemirror/view';
+import { StateField, StateEffect, RangeSetBuilder } from '@codemirror/state';
+import { history, defaultKeymap, historyKeymap, undo as cmUndo } from '@codemirror/commands';
+import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
+import { syntaxHighlighting, HighlightStyle } from '@codemirror/language';
+import { tags as t } from '@lezer/highlight';
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const md = s => esc(s).replace(/`([^`]+)`/g, '<code>$1</code>');
+const ROUND = new URLSearchParams(location.search).get('round') === '2' ? 2 : 1;
+const FIRST = JSON.parse($('#mdData').textContent);
+const R2 = JSON.parse($('#round2Data').textContent);
+// Round 2 is the plan the author queued again: their edits applied, the fact check's notes settled.
+const ORIG = ROUND === 2 ? R2.edits.reduce((d, [a, b]) => { if (!d.includes(a)) throw new Error('edit not found: ' + a); return d.replace(a, b); }, FIRST) : FIRST;
+const NOTES = ROUND === 2 ? [] : JSON.parse($('#notesData').textContent);
+const origLines = new Set(ORIG.split('\n'));
+const decided = {};
+let markChanges = false;
+
+function wordDiff(a, b) {
+  const A = a.split(/(\s+)/), B = b.split(/(\s+)/), n = A.length, m = B.length;
+  const L = Array.from({ length: n + 1 }, () => new Int32Array(m + 1));
+  for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) L[i][j] = A[i] === B[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+  let i = 0, j = 0, o = '';
+  while (i < n && j < m) { if (A[i] === B[j]) { o += md(A[i]); i++; j++; } else if (L[i + 1][j] >= L[i][j + 1]) o += `<del>${md(A[i++])}</del>`; else o += `<ins>${md(B[j++])}</ins>`; }
+  while (i < n) o += `<del>${md(A[i++])}</del>`; while (j < m) o += `<ins>${md(B[j++])}</ins>`;
+  return o;
+}
+
+/* anchors: one mapped range per note, so a note follows its line through edits */
+const setAnchor = StateEffect.define();
+const refresh = StateEffect.define();
+const anchors = StateField.define({
+  create: () => Object.fromEntries(NOTES.map(n => [n.id, n.range.slice()])),
+  update(v, tr) {
+    let out = v;
+    if (tr.docChanged) { out = {}; for (const [k, [a, b]] of Object.entries(v)) out[k] = [tr.changes.mapPos(a, 1), tr.changes.mapPos(b, -1)]; }
+    for (const e of tr.effects) if (e.is(setAnchor)) out = { ...out, [e.value.id]: e.value.range };
+    return out;
+  }
+});
+
+class NoteWidget extends WidgetType {
+  constructor(n, key) { super(); this.n = n; this.key = key; }
+  eq(o) { return o.key === this.key; }
+  toDOM() { const w = document.createElement('div'); w.className = 'notewidget'; w.innerHTML = noteHTML(this.n); return w; }
+  ignoreEvent() { return true; }
+}
+function noteHTML(n) {
+  if (n.id in decided) {
+    const c = n.choices?.[decided[n.id]];
+    return `<div role="group" class="note done collapsed"><div class="nh"><span class="kind">Decided.</span><span style="font-weight:400">${esc(c ? c.done : 'Settled')}</span><button class="linkbtn" data-reopen="${n.id}">Reopen</button></div></div>`;
+  }
+  const head = n.kind === 'info' ? 'Corrected.' : 'Your call.';
+  return `<div role="group" class="note ${n.kind === 'info' ? 'info' : 'decide'}" id="note-${n.id}" aria-label="${head} ${esc(n.title)}">
+    <div class="nh"><span class="kind">${head}</span><span>${esc(n.title)}</span></div>
+    ${n.body.map(p => `<p>${md(p)}</p>`).join('')}
+    ${(n.sides || []).map(s => `<div class="side"><b>${esc(s.who)}:</b> ${md(s.text)}</div>`).join('')}
+    ${n.was ? `<details><summary>What changed</summary><span class="was">${wordDiff(n.was, n.now)}</span></details>` : ''}
+    ${n.choices ? `<div class="choices">${n.choices.map((c, i) => `<button class="btn sm block" data-choose="${n.id}" data-i="${i}">${esc(c.label)}</button>`).join('')}</div>` : ''}
+  </div>`;
+}
+const noteDecos = StateField.define({
+  create: s => buildNotes(s),
+  update(v, tr) { return tr.docChanged || tr.effects.some(e => e.is(refresh) || e.is(setAnchor)) ? buildNotes(tr.state) : v; },
+  provide: f => EditorView.decorations.from(f)
+});
+function buildNotes(state) {
+  const a = state.field(anchors), ranges = [];
+  for (const n of NOTES) {
+    const [from, to] = a[n.id]; if (from > state.doc.length) continue;
+    const line = state.doc.lineAt(from);
+    const endLine = state.doc.lineAt(to);
+    ranges.push(Decoration.widget({ widget: new NoteWidget(n, n.id + ':' + (n.id in decided ? decided[n.id] : 'open')), block: true, side: 1 }).range(endLine.to));
+    if (!(n.id in decided) && to > from) ranges.push(Decoration.mark({ class: 'cm-anchor' + (n.kind === 'info' ? ' info' : '') }).range(from, to));
+  }
+  return Decoration.set(ranges, true);
+}
+
+/* comments: the reviewer's own, anchored to the text they selected. Each keeps a mapped range, as a
+   note does, so it follows its text through edits; a range whose text is all deleted collapses. */
+const COMMENTS = [];   // { id, text, quote, draft, editing, prev } in creation order
+let cseq = 0, curCmt = null;
+const THREADS = ROUND === 2 ? R2.threads.map(t => ({ ...t, state: 'open', mine: null, replying: false })) : [];
+function findRange(s) { const i = ORIG.indexOf(s); return i < 0 ? null : [i, i + s.length]; }
+const setC = StateEffect.define(), dropC = StateEffect.define();
+const cranges = StateField.define({
+  create: () => Object.fromEntries(THREADS.map(t => { const r = findRange(t.find ?? t.at); return [t.id, t.find ? r : [r[0], r[0]]]; })),
+  update(v, tr) {
+    let out = v;
+    if (tr.docChanged) { out = {}; for (const [k, [a, b]] of Object.entries(v)) out[k] = [tr.changes.mapPos(a, 1), Math.max(tr.changes.mapPos(a, 1), tr.changes.mapPos(b, -1))]; }
+    for (const e of tr.effects) {
+      if (e.is(setC)) out = { ...out, [e.value.id]: e.value.range };
+      if (e.is(dropC)) { out = { ...out }; delete out[e.value]; }
+    }
+    return out;
+  }
+});
+const cmtKey = c => [c.id, c.draft, c.editing, c.text, c.gone, c.id === curCmt].join('|');
+const thKey = t => [t.id, t.state, t.replying, t.mine, t.id === curCmt].join('|');
+class CmtWidget extends WidgetType {
+  constructor(kind, obj, key) { super(); this.kind = kind; this.obj = obj; this.key = key; }
+  eq(o) { return o.key === this.key; }
+  toDOM() { const w = document.createElement('div'); w.className = 'notewidget'; w.innerHTML = this.kind === 'c' ? cmtHTML(this.obj) : threadHTML(this.obj); return w; }
+  ignoreEvent() { return true; }
+}
+const removedNote = '<p class="muted" style="font-size:.85rem">The text you commented on is gone from the plan.</p>';
+function cmtHTML(c) {
+  const gone = c.gone;
+  // The highlight above already shows the text; the quote returns only once that text is gone.
+  const quote = gone ? `<p class="quote" style="text-decoration:line-through">${md(c.quote)}</p>` : '';
+  if (c.draft || c.editing) return `<div role="comment" class="note cmt" id="cmt-${c.id}" aria-label="Your comment">
+    <div class="nh"><span class="kind">Your comment.</span></div>${quote}
+    <label class="sr" for="ta-${c.id}">Comment on the selected text</label><textarea id="ta-${c.id}" data-ta="${c.id}" placeholder="Ask the author for a change, or ask a question">${esc(c.buf ?? c.text)}</textarea>
+    <div class="dacts"><button class="btn sm primary" type="button" data-csave="${c.id}">Save</button><button class="btn sm" type="button" data-ccancel="${c.id}">Cancel</button><span class="hint"><kbd>Ctrl</kbd><kbd>Enter</kbd> saves</span></div></div>`;
+  return `<div role="comment" class="note cmt${c.id === curCmt ? ' cur' : ''}" id="cmt-${c.id}" aria-label="Your comment">
+    <div class="nh"><span class="kind">Your comment.</span><span style="font-weight:400" class="muted">Goes to the author with your decision</span></div>${quote}${gone ? removedNote : ''}
+    <p class="ctext">${esc(c.text)}</p>
+    <div class="cacts"><button class="linkbtn" type="button" data-cedit="${c.id}">Edit</button><button class="linkbtn" type="button" data-cdel="${c.id}">Delete</button></div></div>`;
+}
+const STATUS = { done: ['Done.', 'The author made the change.', 'success-ink'], kept: ['Kept.', 'The author left it as it was and gave a reason.', 'ink'], answered: ['Answered.', 'The author answered your question.', 'info-ink'] };
+function threadHTML(t) {
+  const [k, line, ink] = STATUS[t.reply.status];
+  if (t.state === 'resolved') return `<div role="comment" class="note done collapsed" id="cmt-${t.id}" aria-label="Resolved comment"><div class="nh"><span class="kind">Resolved.</span><span style="font-weight:400">${esc(t.comment)}</span><button class="linkbtn" type="button" data-reopenc="${t.id}">Reopen</button></div></div>`;
+  const quote = t.find === t.quote ? '' : `<p class="quote"${t.find ? '' : ' style="text-decoration:line-through"'}>${t.find ? 'You commented on: ' : ''}${md(t.quote)}</p>`;
+  const mine = t.mine && !t.replying ? `<div class="side"><b>You:</b> ${esc(t.mine)} <span class="muted" style="font-size:.85rem">(goes to the author with your decision)</span><div class="cacts" style="margin-top:2px"><button class="linkbtn" type="button" data-treply="${t.id}">Edit</button><button class="linkbtn" type="button" data-tdel="${t.id}">Delete</button></div></div>` : '';
+  const replying = t.replying ? `<label class="sr" for="ta-${t.id}">Reply to the author</label><textarea id="ta-${t.id}" data-ta="${t.id}" placeholder="Reply to the author">${esc(t.buf ?? t.mine ?? '')}</textarea>
+    <div class="dacts"><button class="btn sm primary" type="button" data-tsave="${t.id}">Reply</button><button class="btn sm" type="button" data-tcancel="${t.id}">Cancel</button><span class="hint"><kbd>Ctrl</kbd><kbd>Enter</kbd> saves</span></div>` : '';
+  const acts = t.replying ? '' : `<div class="choices" style="grid-template-columns:repeat(2,max-content)">${t.mine ? '' : `<button class="btn sm" type="button" data-resolve="${t.id}">Resolve</button><button class="btn sm" type="button" data-treply="${t.id}">Reply</button>`}</div>`;
+  return `<div role="comment" class="note cmt${t.id === curCmt ? ' cur' : ''}" id="cmt-${t.id}" aria-label="${k} ${esc(line)}">
+    <div class="nh"><span class="kind" style="color:var(--${ink})">${k}</span><span style="font-weight:400">${line}</span></div>${quote}
+    <div class="side"><b>You:</b> ${esc(t.comment)}</div>
+    <div class="side"><b>The author:</b> ${md(t.reply.text)}</div>
+    ${t.now ? `<details><summary>What changed</summary><span class="was">${wordDiff(t.was, t.now)}</span></details>` : ''}
+    ${mine}${replying}${acts}</div>`;
+}
+const cmtDecos = StateField.define({
+  create: s => buildCmts(s),
+  update(v, tr) { return buildCmts(tr.state); },
+  provide: f => EditorView.decorations.from(f)
+});
+function buildCmts(state) {
+  const r = state.field(cranges), out = [];
+  const place = (id, w) => { const [a, b] = r[id]; if (a > state.doc.length) return; out.push(Decoration.widget({ widget: w, block: true, side: 2 }).range(state.doc.lineAt(b).to)); if (b > a) out.push(Decoration.mark({ class: 'cm-cmt' + (id === curCmt ? ' cur' : ''), attributes: { 'aria-details': 'cmt-' + id } }).range(a, b)); };
+  for (const t of THREADS) if (r[t.id]) place(t.id, new CmtWidget('t', t, thKey(t)));
+  for (const c of COMMENTS) if (r[c.id]) { c.gone = r[c.id][0] === r[c.id][1]; place(c.id, new CmtWidget('c', c, cmtKey(c))); }
+  return Decoration.set(out, true);
+}
+function redraw() { view.dispatch({ effects: refresh.of(null) }); status(); toc(); }
+function focusTA(id) { requestAnimationFrame(() => { const ta = document.getElementById('ta-' + id); if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); } }); }
+function addComment() {
+  const s = view.state.selection.main; if (s.empty) return false;
+  const open = COMMENTS.find(c => c.draft || c.editing); if (open) { scrollToPos(view.state.field(cranges)[open.id][0]); focusTA(open.id); toast('Save or cancel the comment you have open first'); return true; }
+  const id = 'C' + (++cseq), q = view.state.sliceDoc(s.from, s.to).replace(/\s+/g, ' ').trim();
+  COMMENTS.push({ id, text: '', quote: q.length > 160 ? q.slice(0, 157) + '…' : q, draft: true, editing: false });
+  curCmt = id;
+  view.dispatch({ selection: { anchor: s.to }, effects: setC.of({ id, range: [s.from, s.to] }) });
+  status(); focusTA(id); return true;
+}
+function saveCmt(id) {
+  const c = COMMENTS.find(x => x.id === id), v = document.getElementById('ta-' + id).value.trim();
+  if (!v) { cancelCmt(id); return; }
+  c.text = v; c.draft = c.editing = false; delete c.prev; delete c.buf; redraw(); view.focus();
+}
+function cancelCmt(id) {
+  const c = COMMENTS.find(x => x.id === id);
+  delete c.buf;
+  if (c.editing) { c.editing = false; c.text = c.prev; delete c.prev; }
+  else { COMMENTS.splice(COMMENTS.indexOf(c), 1); view.dispatch({ effects: dropC.of(id) }); }
+  curCmt = null; redraw(); view.focus();
+}
+function delCmt(id) {
+  const i = COMMENTS.findIndex(x => x.id === id), c = COMMENTS[i], range = view.state.field(cranges)[id];
+  COMMENTS.splice(i, 1); view.dispatch({ effects: dropC.of(id) }); curCmt = null; redraw();
+  toast('Comment deleted', () => { COMMENTS.splice(i, 0, c); view.dispatch({ effects: setC.of({ id, range }) }); redraw(); });
+}
+const cbtn = StateField.define({
+  create: () => null,
+  update(v, tr) { if (!tr.docChanged && !tr.selection) return v; const s = tr.state.selection.main; return s.empty ? null : { pos: s.head, above: s.head < s.anchor, strictSide: true, arrow: false, create: () => { const d = document.createElement('div'); d.className = 'cm-cbtn'; d.innerHTML = '<button class="btn sm" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H10l-4 4v-4H5z"/></svg>Comment</button>'; d.querySelector('button').addEventListener('pointerdown', e => { e.preventDefault(); addComment(); }); return { dom: d }; } }; },
+  provide: f => showTooltip.from(f)
+});
+function curFromSel(state) { const h = state.selection.main.head, r = state.field(cranges); return Object.keys(r).find(id => r[id][1] > r[id][0] && h >= r[id][0] && h <= r[id][1]) ?? null; }
+
+/* the cairn-style source decorations: headings, purpose lines, directive fences and blocks, fact tags */
+const lineDeco = c => Decoration.line({ class: c });
+const markDeco = c => Decoration.mark({ class: c });
+const source = ViewPlugin.fromClass(class {
+  constructor(v) { this.decorations = this.build(v); }
+  update(u) { if (u.docChanged || u.viewportChanged || u.transactions.some(tr => tr.effects.some(e => e.is(refresh)))) this.decorations = this.build(u.view); }
+  build(v) {
+    const b = new RangeSetBuilder(), doc = v.state.doc;
+    let inBlock = false, front = false;
+    for (let i = 1; i <= doc.lines; i++) {
+      const l = doc.line(i), tx = l.text, marks = [];
+      const cls = [];
+      if (i === 1 && tx === '---') front = true;
+      if (front) { cls.push('cm-front'); if (i > 1 && tx === '---') front = false; }
+      else if (/^:::\w/.test(tx)) { cls.push('cm-fence'); inBlock = true; marks.push([l.from, l.to, 'cm-mark']); }
+      else if (tx === ':::') { cls.push('cm-fence'); inBlock = false; marks.push([l.from, l.to, 'cm-mark']); }
+      else {
+        if (inBlock) cls.push('cm-in-block');
+        const h = /^(#{1,3}) /.exec(tx);
+        if (h) { cls.push('cm-l-h' + h[1].length); marks.push([l.from, l.from + h[0].length, 'cm-mark']); marks.push([l.from + h[0].length, l.to, 'cm-h cm-h' + h[1].length]); }
+        else if (/^\*[^*].*\*$/.test(tx)) marks.push([l.from, l.to, 'cm-purpose']);
+        for (const m of tx.matchAll(/ ?:fact\[[^\]]*\]/g)) marks.push([l.from + m.index, l.from + m.index + m[0].length, 'cm-fact']);
+        for (const m of tx.matchAll(/`[^`]+`/g)) marks.push([l.from + m.index, l.from + m.index + m[0].length, 'cm-code']);
+        for (const m of tx.matchAll(/\[([^\]]+)\]\(([^)]+)\)/g)) { const s = l.from + m.index; marks.push([s + 1, s + 1 + m[1].length, 'cm-link']); marks.push([s + m[1].length + 3, s + m[1].length + 3 + m[2].length, 'cm-url']); }
+      }
+      if (markChanges && !origLines.has(tx) && tx.trim()) cls.push('cm-edited');
+      if (cls.length) b.add(l.from, l.from, lineDeco(cls.join(' ')));
+      marks.sort((x, y) => x[0] - y[0] || x[1] - y[1]);
+      for (const [f, to, c] of marks) if (to > f) b.add(f, to, markDeco(c));
+    }
+    return b.finish();
+  }
+}, { decorations: v => v.decorations });
+
+const hl = HighlightStyle.define([
+  { tag: t.strong, fontWeight: '600' }, { tag: t.emphasis, fontStyle: 'italic' },
+  { tag: t.processingInstruction, color: 'var(--muted)', fontWeight: '400' }
+]);
+
+let saveT = null;
+const view = new EditorView({
+  doc: ORIG, parent: (() => { const el = $('#cm'); el.innerHTML = ''; return el; })(),
+  extensions: [
+    anchors, noteDecos, cranges, cmtDecos, cbtn, history(),
+    keymap.of([
+      { key: 'F8', run: () => { nextOpen(); return true; } },
+      { key: 'Mod-Enter', run: () => { approve(); return true; } },
+      { key: 'Mod-Alt-m', run: addComment },
+      { key: 'Mod-Alt-n', run: () => nextCmt(1) },
+      { key: 'Mod-Alt-p', run: () => nextCmt(-1) },
+      { key: 'Mod-s', run: () => { flash('Saved'); return true; } },
+      ...defaultKeymap, ...historyKeymap
+    ]),
+    markdown({ base: markdownLanguage }), syntaxHighlighting(hl), source, EditorView.lineWrapping,
+    EditorView.scrollMargins.of(() => ({ top: 56, bottom: 140 })),
+    EditorView.contentAttributes.of({ 'aria-label': 'Blueprint, markdown' }),
+    EditorView.updateListener.of(u => {
+      if (u.selectionSet || u.focusChanged) { $('#addc').setAttribute('aria-disabled', String(u.state.selection.main.empty)); const c = curFromSel(u.state); if (c !== curCmt && !COMMENTS.some(x => x.draft || x.editing)) { curCmt = c; queueMicrotask(() => view.dispatch({ effects: refresh.of(null) })); } }
+      if (!u.docChanged) return;
+      $('#esaved').textContent = 'Saving…'; clearTimeout(saveT); saveT = setTimeout(() => flash('All changes saved'), 700);
+      status(); toc();
+    })
+  ]
+});
+window.__view = view; window.__nd = noteDecos;
+
+function flash(m) { $('#esaved').textContent = m; }
+function openNotes() { return NOTES.filter(n => n.kind !== 'info' && !(n.id in decided)); }
+function changedLines() { return view.state.doc.toString().split('\n').filter(l => l.trim() && !origLines.has(l)).length; }
+const words = n => ['no', 'one', 'two', 'three', 'four', 'five'][n] ?? String(n);
+function status() {
+  const o = openNotes().length, ne = changedLines(), nd = Object.keys(decided).length;
+  const nc = COMMENTS.filter(c => !c.draft).length, nr = THREADS.filter(t => t.mine).length, nres = THREADS.filter(t => t.state === 'resolved').length;
+  $('#headline').textContent = ROUND === 2 ? `The author answered your ${words(THREADS.length)} comments on the plan for Troubleshoot your site.` : `The plan for Troubleshoot your site is ready to read, with ${words(o) === 'no' ? 'nothing left' : words(o) + ' call' + (o > 1 ? 's' : '')} for you along the way.`;
+  $('#openct').innerHTML = o ? `<button class="linkbtn" id="nextOpen" style="color:var(--warning-ink)">Next call for you <kbd>F8</kbd></button>` : '<span style="color:var(--success-ink)">Nothing open</span>';
+  $('#nextOpen') && ($('#nextOpen').onclick = nextOpen);
+  const s1 = o ? `Make ${words(o)} call${o > 1 ? 's' : ''} to approve` : 'Ready to approve';
+  const plural = (n, w) => `${words(n)} ${w}${n === 1 ? '' : 's'}`;
+  const s2 = [nd ? `${words(nd)} decided` : '', ROUND === 2 ? (THREADS.length - nres - nr ? `${words(THREADS.length - nres - nr)} repl${THREADS.length - nres - nr === 1 ? 'y' : 'ies'} to read` : 'every reply read') : '', nr ? `${words(nr)} repl${nr === 1 ? 'y' : 'ies'} from you` : '', nc ? plural(nc, 'comment') : '', ne ? `${ne} line${ne === 1 ? '' : 's'} changed` : 'no edits yet'].filter(Boolean).join(', ');
+  document.querySelectorAll('[data-s1]').forEach(e => e.textContent = s1);
+  document.querySelectorAll('[data-s2]').forEach(e => e.textContent = s2.charAt(0).toUpperCase() + s2.slice(1));
+  document.querySelectorAll('[data-act="approve"]').forEach(e => e.setAttribute('aria-disabled', String(o > 0)));
+  side();
+}
+function side() {
+  const a = view.state.field(anchors);
+  const item = (n, cls, what) => `<li><a href="#" data-pos="${a[n.id][0]}"><span class="dot ${cls}"></span><span>${esc(n.title)}<span class="what">${what}</span></span></a></li>`;
+  $('#rvCalls').innerHTML = NOTES.filter(n => n.kind !== 'info').map(n => n.id in decided ? item(n, 'done', esc(n.choices[decided[n.id]].done)) : item(n, 'call', n.kind === 'question' ? 'A question from the author' : 'A dispute between the author and the fact check')).join('');
+  $('#rvFixes').innerHTML = NOTES.filter(n => n.kind === 'info').map(n => item(n, 'fix', 'Already fixed by the author')).join('');
+  $('#rvCalls').closest('section').hidden = !NOTES.some(n => n.kind !== 'info');
+  $('#rvFixes').closest('section').hidden = !NOTES.some(n => n.kind === 'info');
+  const r = view.state.field(cranges), clip = s => s.length > 70 ? s.slice(0, 68) + '…' : s;
+  const citem = (id, cls, title, what) => `<li><a href="#" data-pos="${r[id][0]}"><span class="dot ${cls}"></span><span>${md(clip(title))}<span class="what">${what}</span></span></a></li>`;
+  $('#rvThreads').innerHTML = THREADS.map(t => citem(t.id, t.state === 'resolved' ? 'done' : 'cmt', t.comment, t.state === 'resolved' ? 'Resolved' : t.mine ? 'You replied' : STATUS[t.reply.status][0].replace('.', ''))).join('');
+  $('#rvThreads').closest('section').hidden = ROUND !== 2;
+  const mine = COMMENTS.filter(c => !c.draft);
+  $('#rvCmts').innerHTML = mine.length ? mine.map(c => citem(c.id, 'cmt', c.text, `On “${esc(clip(c.quote))}”`)).join('') : `<li class="rv-none">Select text in the plan, then choose Comment.</li>`;
+}
+function headings() {
+  const out = [], doc = view.state.doc;
+  for (let i = 1; i <= doc.lines; i++) { const l = doc.line(i), h = /^(#{2,3}) (.*)/.exec(l.text); if (h) out.push({ pos: l.from, lv: h[1].length, text: h[2] }); }
+  return out;
+}
+function toc() {
+  const hs = headings(), a = view.state.field(anchors); let x = 0, y = 0;
+  const html = hs.map(h => {
+    if (h.lv === 2) { x++; y = 0; } else y++;
+    const end = hs.find(k => k.pos > h.pos)?.pos ?? Infinity;
+    const ns = NOTES.filter(n => !(n.id in decided) && a[n.id][0] >= h.pos && a[n.id][0] < end);
+    const mk = ns.some(n => n.kind !== 'info') ? '<span class="mk" style="background:var(--warning)" title="A call for you"></span>' : ns.length ? '<span class="mk" style="background:var(--info)" title="Corrected"></span>' : '';
+    return `<li><a href="#" class="l${h.lv}" data-pos="${h.pos}" title="${esc(h.text.replace(/`/g, ''))}"><span class="n">${h.lv === 2 ? x : x + '.' + y}</span><span class="t">${md(h.text)}</span>${mk}</a></li>`;
+  }).join('');
+  $('#rvToc').innerHTML = html; $('#toc').innerHTML = html.replace(/<\/?li>/g, '');
+}
+function scrollToPos(pos, focusNote) {
+  const top = view.lineBlockAt(pos).top + view.documentTop + window.scrollY - window.scrollY;
+  window.scrollTo({ top: view.documentTop + window.scrollY + view.lineBlockAt(pos).top - 140, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  view.dispatch({ selection: { anchor: pos } });
+}
+function nextOpen() {
+  const o = openNotes(); if (!o.length) return true;
+  const a = view.state.field(anchors), head = view.state.selection.main.head;
+  const sorted = o.map(n => [n, a[n.id][0]]).sort((p, q) => p[1] - q[1]);
+  const nx = sorted.find(([, p]) => p > head + 1) || sorted[0];
+  scrollToPos(nx[1]); view.focus(); return true;
+}
+document.addEventListener('click', e => { const l = e.target.closest('#toc a[data-pos], .review a[data-pos]'); if (!l) return; e.preventDefault(); toggleToc(false); scrollToPos(+l.dataset.pos); view.focus(); });
+let opener = null;
+function drawer(el, btn, open) {
+  if (open === el.classList.contains('open')) return;
+  el.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open));
+  const any = document.querySelector('.rail.open, .review.open');
+  $('#scrim').hidden = !any;
+  for (const p of [document.querySelector('main'), $('#rail'), $('#review')]) p.inert = !!any && !p.classList.contains('open');
+  if (open) { el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); } else { el.removeAttribute('role'); el.removeAttribute('aria-modal'); }
+  if (open) { opener = btn; el.querySelector('a, button').focus(); } else if (opener === btn) { btn.focus(); opener = null; }
+}
+const toggleToc = open => drawer($('#review'), $('#tocBtn'), open);
+const toggleRail = open => drawer($('#rail'), $('#railBtn'), open);
+$('#tocBtn').onclick = () => toggleToc(true);
+$('#railBtn').onclick = () => toggleRail(true);
+document.querySelector('[data-help]').onclick = () => help();
+$('#scrim').onclick = () => { toggleToc(false); toggleRail(false); };
+document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => { toggleToc(false); toggleRail(false); });
+matchMedia('(min-width: 1260px)').addEventListener('change', () => { toggleToc(false); toggleRail(false); });
+document.addEventListener('click', e => {
+  const ch = e.target.closest('[data-choose]');
+  if (ch) {
+    const n = NOTES.find(x => x.id === ch.dataset.choose), c = n.choices[+ch.dataset.i], [from, to] = view.state.field(anchors)[n.id];
+    decided[n.id] = +ch.dataset.i;
+    if (c.text) view.dispatch({ changes: { from, to, insert: c.text }, effects: [setAnchor.of({ id: n.id, range: [from, from + c.text.length] })] });
+    else view.dispatch({ effects: refresh.of(null) });
+    if (c.edit) { view.dispatch({ selection: { anchor: from, head: to } }); view.focus(); }
+    else { view.dispatch({ selection: { anchor: from } }); view.focus(); }
+    status(); toc(); return;
+  }
+  const ro = e.target.closest('[data-reopen]');
+  if (ro) { delete decided[ro.dataset.reopen]; view.dispatch({ effects: refresh.of(null) }); status(); toc(); }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.querySelector('.rail.open, .review.open')) { toggleToc(false); toggleRail(false); return; }
+  if (e.target.closest('.cm-editor, textarea, input')) return;
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); approve(); }
+  else if (e.key === 'F8') { e.preventDefault(); nextOpen(); }
+  else if (e.key === '?') help();
+  else if (e.key === 'Escape') { toggleToc(false); document.querySelector('.help')?.remove(); }
+});
+function help() {
+  if (document.querySelector('.help')) return;
+  const prev = document.activeElement;
+  const h = document.createElement('div'); h.className = 'help';
+  h.innerHTML = `<div role="dialog" aria-label="Keyboard shortcuts"><h2>Keyboard shortcuts</h2><dl>
+    <dt><kbd>F8</kbd></dt><dd>Next call for you</dd><dt><kbd>Ctrl</kbd><kbd>Z</kbd></dt><dd>Undo</dd>
+    <dt><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>Z</kbd></dt><dd>Redo</dd><dt><kbd>Ctrl</kbd><kbd>S</kbd></dt><dd>Save now (it also saves as you pause)</dd>
+    <dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd></dt><dd>Comment on the selected text</dd><dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>N</kbd> / <kbd>P</kbd></dt><dd>Next or previous comment</dd><dt><kbd>Ctrl</kbd><kbd>Enter</kbd></dt><dd>Save the comment you're writing, or approve the plan</dd><dt><kbd>?</kbd></dt><dd>This list, outside the editor</dd></dl>
+    <p style="margin:12px 0 0;text-align:right"><button class="btn sm" type="button">Close</button></p></div>`;
+  h.onclick = e => { if (e.target === h || e.target.closest('button')) { h.remove(); prev?.focus(); } };
+  document.body.append(h); h.querySelector('button').focus();
+}
+window.addEventListener('scroll', () => {
+  let cur = null; const lim = 130;
+  for (const h of headings()) { if (view.documentTop + view.lineBlockAt(h.pos).top < lim) cur = h; else break; }
+  $('#where').innerHTML = cur ? `<b>${md(cur.text)}</b>` : '<b>Debug your site</b>';
+  document.querySelectorAll('#rvToc a').forEach(l => { const on = !!cur && +l.dataset.pos === cur.pos; l.classList.toggle('cur', on); on ? l.setAttribute('aria-current', 'location') : l.removeAttribute('aria-current'); });
+}, { passive: true });
+$('#vChanges').onchange = () => { markChanges = $('#vChanges').checked; view.dispatch({ effects: refresh.of(null) }); };
+function toast(m, undo) { document.querySelector('.toast')?.remove(); const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = m; if (undo) { const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Undo'; b.onclick = () => { t.remove(); undo(); }; t.append(b); } document.body.append(t); setTimeout(() => t.remove(), undo ? 6000 : 3200); }
+function nextCmt(dir) {
+  const r = view.state.field(cranges), head = view.state.selection.main.head;
+  const ps = Object.values(r).map(x => x[0]).sort((a, b) => a - b); if (!ps.length) return true;
+  const nx = dir > 0 ? (ps.find(p => p > head) ?? ps[0]) : ([...ps].reverse().find(p => p < head) ?? ps[ps.length - 1]);
+  scrollToPos(nx); view.focus(); return true;
+}
+function openDraft() { const c = COMMENTS.find(x => x.draft || x.editing) || THREADS.find(x => x.replying); if (c) { scrollToPos(view.state.field(cranges)[c.id][0]); focusTA(c.id); toast('Save or cancel the comment you have open first'); } return !!c; }
+function approve() {
+  if (openNotes().length) { nextOpen(); toast('Make the open calls first'); return; }
+  if (openDraft()) return;
+  const nc = COMMENTS.length + THREADS.filter(t => t.mine).length;
+  toast(nc ? `Approved. The author applies your ${words(nc)} comment${nc > 1 ? 's' : ''}, and then the page is drafted. The replies appear on the page review.` : 'Approved. drafter can now write this page.');
+}
+function hold() {
+  if (openDraft()) return;
+  const sb = $('#sendback'); sb.hidden = false;
+  const o = openNotes().map(n => `- Still open: ${n.title}`), ne = changedLines();
+  const nc = COMMENTS.length + THREADS.filter(t => t.mine).length;
+  $('#sbsub').textContent = nc ? `This note goes back with your ${words(nc)} comment${nc > 1 ? 's' : ''} and your edits and decisions. A note is optional when you\u2019ve commented.` : 'Your edits and decisions go with this note.';
+  if (!$('#sbnote').value) $('#sbnote').value = [...o, ne ? `- ${ne} line${ne > 1 ? 's' : ''} changed in the plan` : ''].filter(Boolean).join('\n') + (o.length || ne ? '\n\n' : '');
+  $('#sbnote').focus();
+}
+document.querySelectorAll('[data-act="approve"]').forEach(b => b.onclick = approve);
+document.querySelectorAll('[data-act="hold"]').forEach(b => b.onclick = hold);
+$('#sbCancel').onclick = () => { $('#sendback').hidden = true; };
+$('#sbSend').onclick = () => { const nc = COMMENTS.length + THREADS.filter(t => t.mine).length; if (!nc && !$('#sbnote').value.trim()) { $('#sbnote').focus(); return; } $('#sendback').hidden = true; toast(nc ? `Sent back. The author answers your ${words(nc)} comment${nc > 1 ? 's' : ''} and queues the plan again.` : 'Sent back. The author gets your note, edits, and calls.'); };
+/* comment and thread actions, and the keys inside a comment box */
+document.addEventListener('input', e => { const id = e.target.dataset?.ta; if (!id) return; const o = COMMENTS.find(x => x.id === id) || THREADS.find(x => x.id === id); o.buf = e.target.value; });
+document.addEventListener('keydown', e => {
+  const id = e.target.dataset?.ta; if (!id) return;
+  const isT = THREADS.some(x => x.id === id);
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); isT ? saveReply(id) : saveCmt(id); }
+  else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); isT ? cancelReply(id) : cancelCmt(id); }
+}, true);
+function saveReply(id) { const t = THREADS.find(x => x.id === id), v = document.getElementById('ta-' + id).value.trim(); t.mine = v || null; t.replying = false; delete t.buf; redraw(); view.focus(); }
+function cancelReply(id) { const t = THREADS.find(x => x.id === id); t.replying = false; delete t.buf; redraw(); view.focus(); }
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-csave],[data-ccancel],[data-cedit],[data-cdel],[data-resolve],[data-reopenc],[data-treply],[data-tsave],[data-tcancel],[data-tdel]'); if (!b) return;
+  const d = b.dataset;
+  if (d.csave) saveCmt(d.csave);
+  else if (d.ccancel) cancelCmt(d.ccancel);
+  else if (d.cedit) { if (openDraft()) return; const c = COMMENTS.find(x => x.id === d.cedit); c.prev = c.text; c.editing = true; curCmt = c.id; redraw(); focusTA(c.id); }
+  else if (d.cdel) delCmt(d.cdel);
+  else if (d.resolve) { THREADS.find(x => x.id === d.resolve).state = 'resolved'; redraw(); }
+  else if (d.reopenc) { THREADS.find(x => x.id === d.reopenc).state = 'open'; redraw(); }
+  else if (d.treply) { if (openDraft()) return; const t = THREADS.find(x => x.id === d.treply); t.replying = true; redraw(); focusTA(t.id); }
+  else if (d.tsave) saveReply(d.tsave);
+  else if (d.tcancel) cancelReply(d.tcancel);
+  else if (d.tdel) { THREADS.find(x => x.id === d.tdel).mine = null; redraw(); }
+});
+$('#addc').addEventListener('pointerdown', e => { e.preventDefault(); if (!addComment()) toast('Select the text you want to comment on first'); });
+$('#addc').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (!addComment()) toast('Select the text you want to comment on first'); } });
+$('#proto').innerHTML = ROUND === 2
+  ? 'Prototype, comments round 1, screen 2 of 2: the same plan queued again after a send-back. Sample data: four comments you might have left, the author’s replies, and the edits those replies describe. <a href="comments.html">Back to the first review</a>.'
+  : 'Prototype, comments round 1, screen 1 of 2: blueprint review with comments. Real data: cairn’s admin troubleshooting blueprint at <code>5c35c06</code>, with two of the six fact-check fixes shown as notes. Select any text and choose <b>Comment</b>, or press <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd>. <a href="comments.html?round=2">See the round after a send-back</a>.';
+$('#lede').textContent = ROUND === 2
+  ? 'You sent this plan back with four comments. The author made two changes, answered your question, and kept one passage, with a reason. Resolve each reply you accept, and reply to any you don\u2019t. Your replies go back with your decision.'
+  : 'A troubleshooting page for people who run a cairn site and write no code. The fact check read its 46 facts against the code, and the author fixed the six lines it found too broad. Nothing needs your call.';
+document.querySelectorAll('.rail a.q').forEach(a => { const on = +a.dataset.round === ROUND; a.classList.toggle('on', on); on ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'); });
+status(); toc();
+window.__ready = true;
+</script>
+<script>document.getElementById('cm').addEventListener('mousedown', e => { if (e.target.id === 'cm') { e.preventDefault(); window.__view?.focus(); } });</script>
