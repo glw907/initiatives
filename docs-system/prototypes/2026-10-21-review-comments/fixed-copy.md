@@ -30,3 +30,11 @@ Sample author replies (sample data, voice of a Claude author session):
 Taken: the approve toast drops "drafter writes" for "the page is drafted" and moves to present tense; the draft's save button reads "Save"; the hint reads "Ctrl Enter saves"; the screen 2 lede splits into "Resolve each reply you accept, and reply to any you don't. Your replies go back with your decision."; "Kept. The author left it as it was and gave a reason."; the send-back sub-line reads "This note goes back with your two comments and your edits and decisions."; the status segment reads "one reply from you"; both open-draft toasts read "Save or cancel the comment you have open first".
 
 Declined: plus signs between keys, since the approved round-8 frame renders each key as its own `kbd` with no plus; quotation marks around the page title in the headline, since the approved round-8 headline runs the title in unmarked. "Six lines" is the real count from cairn commit `804180084`.
+
+## Round 2 additions (the Docs and Word margin)
+
+Review pane tabs: "Comments <count>" ; "Outline and notes"
+Margin empty state: "Select text in the plan, then choose Comment. Your comments appear here, beside the text they’re about."
+Saved comment card head: unchanged from round 1 ("Goes to the author with your decision")
+
+Review fold: "Sends with your decision" reverted to the round-1 subline, which names the author and matches the reply label; "show here" became "appear here"; the "Outline and notes" tab carries an amber count when calls are open. The curly apostrophe stays, per the round-8 ledger.

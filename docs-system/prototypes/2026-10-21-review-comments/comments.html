@@ -362,6 +362,31 @@ kbd { opacity: 1; }
 .rv-list .dot.cmt { background: var(--primary); }
 .rv-none { color: var(--muted); margin: 0; line-height: 1.45; }
 .note .dacts .btn, .note .choices .btn { white-space: nowrap; }
+/* Round 2: the Docs and Word model. Above 1260px the review pane's Comments tab is a margin: each
+   card sits level with its text and scrolls with the document; overlapping cards stack, and the
+   active one moves to its text. The outline and calls move to the pane's second tab. */
+.rv-tabs { display: none; }
+@media (min-width: 1260px) {
+  .rv-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--b3); margin: -4px -16px 0; padding: 0 12px; position: relative; z-index: 2; background: var(--b2); }
+  .rv-tab { font: 600 .95rem var(--body); color: var(--muted); background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; padding: 8px 8px 9px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+  .rv-tab:hover { color: var(--ink); }
+  .rv-tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--primary); }
+  .rv-tab .count { font-size: .8rem; font-weight: 600; min-width: 1.3rem; padding: 0 5px; border-radius: 999px; background: var(--b3); text-align: center; font-variant-numeric: tabular-nums; }
+  .review.cmode .rv-sticky { overflow: hidden; }
+  .review.cmode .rv-pane-outline { display: none; }
+  .review:not(.cmode) .mlayer { display: none; }
+}
+.rv-pane-outline { display: grid; gap: 18px; min-width: 0; }
+.mlayer { position: absolute; left: 0; right: 0; bottom: 0; overflow: hidden; }
+.mcards { position: absolute; left: 0; right: 0; top: 0; will-change: transform; }
+.mcard { position: absolute; left: 14px; right: 16px; transition: top .18s ease, left .18s ease, right .18s ease; }
+.mcard.cur { left: 6px; right: 24px; }
+.mcard > .note { box-shadow: 0 1px 2px rgb(0 0 0 / .08); background: var(--b1); }
+.mcard > .note.cur { box-shadow: var(--bar-shadow), 0 0 0 2px color-mix(in oklab, var(--primary) 45%, transparent); }
+.mcard > .note.done { background: var(--b1); }
+.mcard .note .side, .mcard .note p { max-width: none; }
+.mempty { position: absolute; left: 16px; right: 16px; top: 16px; color: var(--muted); font-size: .92rem; line-height: 1.45; }
+@media (prefers-reduced-motion: reduce) { .mcard { transition: none; } }
 @media (max-width: 1023.98px) { .edbar .addc kbd, .note .dacts .hint { display: none; } }
 @media (max-width: 479.98px) { .edbar { flex-wrap: wrap; } .edbar .esaved { flex-basis: 100%; margin-left: 0; } }
 </style>
@@ -427,12 +452,16 @@ kbd { opacity: 1; }
   <aside class="review" id="review" aria-label="Outline and calls">
         <div class="rv-sticky">
           <button class="drawer-x" data-close type="button" aria-label="Close the outline"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+          <div class="rv-tabs" role="tablist" aria-label="Review pane"><button class="rv-tab" role="tab" id="tabC" aria-controls="mlayer" aria-selected="false" type="button">Comments <span class="count" id="tabCn">0</span></button><button class="rv-tab" role="tab" id="tabO" aria-controls="rvOutline" aria-selected="true" type="button">Outline and notes <span class="count" id="tabOn" hidden style="background:var(--warning);color:#2b1d00"></span></button></div>
+          <div class="mlayer" id="mlayer" role="tabpanel" aria-labelledby="tabC"><div class="mcards" id="mcards"></div></div>
+          <div class="rv-pane-outline" id="rvOutline" role="tabpanel" aria-labelledby="tabO">
           <section class="rv-list"><h2 class="rv-h">Calls for you</h2><ul id="rvCalls"></ul></section>
           <section class="rv-list"><h2 class="rv-h">Replies to your comments</h2><ul id="rvThreads"></ul></section>
           <section class="rv-list"><h2 class="rv-h" id="rvCmtH">Your comments</h2><ul id="rvCmts"></ul></section>
           <section class="rv-list"><h2 class="rv-h">Corrected by the fact check</h2><ul id="rvFixes"></ul></section>
           <section class="rv-list rv-contents"><h2 class="rv-h">Contents</h2><ol id="rvToc"></ol></section>
           <label class="rv-toggle"><input type="checkbox" id="vChanges"> Mark the lines I changed</label>
+          </div>
         </div>
   </aside>
 </div>
@@ -627,13 +656,45 @@ const cmtDecos = StateField.define({
 });
 function buildCmts(state) {
   const r = state.field(cranges), out = [];
-  const place = (id, w) => { const [a, b] = r[id]; if (a > state.doc.length) return; out.push(Decoration.widget({ widget: w, block: true, side: 2 }).range(state.doc.lineAt(b).to)); if (b > a) out.push(Decoration.mark({ class: 'cm-cmt' + (id === curCmt ? ' cur' : ''), attributes: { 'aria-details': 'cmt-' + id } }).range(a, b)); };
+  const place = (id, w) => { const [a, b] = r[id]; if (a > state.doc.length) return; if (!MARGIN.matches || b === a) out.push(Decoration.widget({ widget: MARGIN.matches ? new GoneWidget(id) : w, block: true, side: 2 }).range(state.doc.lineAt(b).to)); if (b > a) out.push(Decoration.mark({ class: 'cm-cmt' + (id === curCmt ? ' cur' : ''), attributes: { 'aria-details': 'cmt-' + id } }).range(a, b)); };
   for (const t of THREADS) if (r[t.id]) place(t.id, new CmtWidget('t', t, thKey(t)));
   for (const c of COMMENTS) if (r[c.id]) { c.gone = r[c.id][0] === r[c.id][1]; place(c.id, new CmtWidget('c', c, cmtKey(c))); }
   return Decoration.set(out, true);
 }
-function redraw() { view.dispatch({ effects: refresh.of(null) }); status(); toc(); }
-function focusTA(id) { requestAnimationFrame(() => { const ta = document.getElementById('ta-' + id); if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); } }); }
+const MARGIN = matchMedia('(min-width: 1260px)');
+// In the margin a comment whose text is gone keeps a small marker where the text was.
+class GoneWidget extends WidgetType { constructor(id) { super(); this.id = id; } eq(o) { return o.id === this.id; } toDOM() { const s = document.createElement('div'); s.className = 'cm-gone'; s.setAttribute('aria-hidden', 'true'); return s; } }
+let tab = null;
+function setTab(t) {
+  tab = t; const c = t === 'c', tb = $('.rv-tabs');
+  $('#mlayer').style.top = (tb.offsetTop + tb.offsetHeight) + 'px';
+  $('#review').classList.toggle('cmode', c && MARGIN.matches);
+  $('#tabC').setAttribute('aria-selected', String(c)); $('#tabO').setAttribute('aria-selected', String(!c));
+  layoutMargin();
+}
+function anchorTop(id) { const [a] = view.state.field(cranges)[id]; return view.lineBlockAt(a).top + (view.coordsAtPos(a) ? view.coordsAtPos(a).top - view.documentTop - view.lineBlockAt(a).top : 0); }
+function renderMargin() {
+  const box = $('#mcards'); if (!MARGIN.matches) { box.innerHTML = ''; return; }
+  const items = [...THREADS.map(t => ['t', t]), ...COMMENTS.map(c => ['c', c])].filter(([, o]) => view.state.field(cranges)[o.id]);
+  box.innerHTML = items.length ? items.map(([k, o]) => `<div class="mcard${o.id === curCmt ? ' cur' : ''}" data-mc="${o.id}">${k === 'c' ? cmtHTML(o) : threadHTML(o)}</div>`).join('') : '<p class="mempty">Select text in the plan, then choose Comment. Your comments appear here, beside the text they’re about.</p>';
+  layoutMargin();
+}
+function layoutMargin() {
+  if (!MARGIN.matches || tab !== 'c') return;
+  const cards = [...document.querySelectorAll('#mcards .mcard')];
+  const it = cards.map(el => ({ el, id: el.dataset.mc, y: anchorTop(el.dataset.mc) - 6, h: el.offsetHeight })).sort((p, q) => p.y - q.y);
+  const gap = 8, a = Math.max(0, it.findIndex(x => x.id === curCmt));
+  if (it.length) {
+    it[a].top = it[a].y;
+    for (let i = a + 1; i < it.length; i++) it[i].top = Math.max(it[i].y, it[i - 1].top + it[i - 1].h + gap);
+    for (let i = a - 1; i >= 0; i--) it[i].top = Math.min(it[i].y, it[i + 1].top - it[i].h - gap);
+  }
+  for (const x of it) x.el.style.top = x.top + 'px';
+  scrollMargin();
+}
+function scrollMargin() { if (!MARGIN.matches || tab !== 'c') return; $('#mcards').style.transform = `translateY(${view.documentTop - $('#mlayer').getBoundingClientRect().top}px)`; }
+function redraw() { view.dispatch({ effects: refresh.of(null) }); status(); toc(); renderMargin(); }
+function focusTA(id) { if (MARGIN.matches && tab !== 'c') setTab('c'); requestAnimationFrame(() => { const ta = document.getElementById('ta-' + id); if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); } }); }
 function addComment() {
   const s = view.state.selection.main; if (s.empty) return false;
   const open = COMMENTS.find(c => c.draft || c.editing); if (open) { scrollToPos(view.state.field(cranges)[open.id][0]); focusTA(open.id); toast('Save or cancel the comment you have open first'); return true; }
@@ -641,7 +702,8 @@ function addComment() {
   COMMENTS.push({ id, text: '', quote: q.length > 160 ? q.slice(0, 157) + '…' : q, draft: true, editing: false });
   curCmt = id;
   view.dispatch({ selection: { anchor: s.to }, effects: setC.of({ id, range: [s.from, s.to] }) });
-  status(); focusTA(id); return true;
+  if (MARGIN.matches) setTab('c');
+  status(); renderMargin(); focusTA(id); return true;
 }
 function saveCmt(id) {
   const c = COMMENTS.find(x => x.id === id), v = document.getElementById('ta-' + id).value.trim();
@@ -724,7 +786,8 @@ const view = new EditorView({
     EditorView.scrollMargins.of(() => ({ top: 56, bottom: 140 })),
     EditorView.contentAttributes.of({ 'aria-label': 'Blueprint, markdown' }),
     EditorView.updateListener.of(u => {
-      if (u.selectionSet || u.focusChanged) { $('#addc').setAttribute('aria-disabled', String(u.state.selection.main.empty)); const c = curFromSel(u.state); if (c !== curCmt && !COMMENTS.some(x => x.draft || x.editing)) { curCmt = c; queueMicrotask(() => view.dispatch({ effects: refresh.of(null) })); } }
+      if (u.selectionSet || u.focusChanged) { $('#addc').setAttribute('aria-disabled', String(u.state.selection.main.empty)); const c = curFromSel(u.state); if (c && c !== curCmt && !COMMENTS.some(x => x.draft || x.editing)) { curCmt = c; queueMicrotask(() => { view.dispatch({ effects: refresh.of(null) }); renderMargin(); }); } }
+      if (u.geometryChanged || u.heightChanged || u.viewportChanged) requestAnimationFrame(layoutMargin);
       if (!u.docChanged) return;
       $('#esaved').textContent = 'Saving…'; clearTimeout(saveT); saveT = setTimeout(() => flash('All changes saved'), 700);
       status(); toc();
@@ -740,6 +803,8 @@ const words = n => ['no', 'one', 'two', 'three', 'four', 'five'][n] ?? String(n)
 function status() {
   const o = openNotes().length, ne = changedLines(), nd = Object.keys(decided).length;
   const nc = COMMENTS.filter(c => !c.draft).length, nr = THREADS.filter(t => t.mine).length, nres = THREADS.filter(t => t.state === 'resolved').length;
+  $('#tabOn').hidden = !o; $('#tabOn').textContent = o; $('#tabOn').title = o ? `${o} call${o > 1 ? 's' : ''} for you` : '';
+  $('#tabCn').textContent = THREADS.filter(t => t.state !== 'resolved').length + nc;
   $('#headline').textContent = ROUND === 2 ? `The author answered your ${words(THREADS.length)} comments on the plan for Troubleshoot your site.` : `The plan for Troubleshoot your site is ready to read, with ${words(o) === 'no' ? 'nothing left' : words(o) + ' call' + (o > 1 ? 's' : '')} for you along the way.`;
   $('#openct').innerHTML = o ? `<button class="linkbtn" id="nextOpen" style="color:var(--warning-ink)">Next call for you <kbd>F8</kbd></button>` : '<span style="color:var(--success-ink)">Nothing open</span>';
   $('#nextOpen') && ($('#nextOpen').onclick = nextOpen);
@@ -912,6 +977,12 @@ $('#proto').innerHTML = ROUND === 2
 $('#lede').textContent = ROUND === 2
   ? 'You sent this plan back with four comments. The author made two changes, answered your question, and kept one passage, with a reason. Resolve each reply you accept, and reply to any you don\u2019t. Your replies go back with your decision.'
   : 'A troubleshooting page for people who run a cairn site and write no code. The fact check read its 46 facts against the code, and the author fixed the six lines it found too broad. Nothing needs your call.';
+$('#tabC').onclick = () => setTab('c'); $('#tabO').onclick = () => setTab('o');
+document.addEventListener('click', e => { const m = e.target.closest('.mcard'); if (!m || e.target.closest('button, a, textarea, summary')) return; if (curCmt !== m.dataset.mc) { curCmt = m.dataset.mc; view.dispatch({ effects: refresh.of(null) }); renderMargin(); } });
+window.addEventListener('scroll', scrollMargin, { passive: true });
+window.addEventListener('resize', () => requestAnimationFrame(layoutMargin));
+MARGIN.addEventListener('change', () => { setTab(tab); redraw(); });
+setTab(THREADS.length ? 'c' : 'o'); renderMargin();
 document.querySelectorAll('.rail a.q').forEach(a => { const on = +a.dataset.round === ROUND; a.classList.toggle('on', on); on ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'); });
 status(); toc();
 window.__ready = true;
