@@ -365,7 +365,59 @@ kbd { opacity: 1; }
 /* Round 2: the Docs and Word model. Above 1260px the review pane's Comments tab is a margin: each
    card sits level with its text and scrolls with the document; overlapping cards stack, and the
    active one moves to its text. The outline and calls move to the pane's second tab. */
-.rv-tabs { display: none; }
+.rv-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--b3); margin: 0 0 8px; }
+.rv-tab { font: 600 .95rem var(--body); color: var(--muted); background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; padding: 8px 8px 9px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.rv-tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--primary); }
+.rv-tab .count { font-size: .8rem; font-weight: 600; min-width: 1.3rem; padding: 0 5px; border-radius: 999px; background: var(--b3); text-align: center; font-variant-numeric: tabular-nums; }
+.review.cmode .rv-pane-outline { display: none; }
+.review:not(.cmode) .mlayer { display: none; }
+@media (max-width: 1259.98px) { .review .mlayer, .review .mcards { position: static; transform: none !important; } .review .mcard { position: static; margin-bottom: 10px; } .review .mempty { position: static; } }
+.cm-tooltip.cm-tooltip { z-index: 20; }
+/* Round 3: designed for comments. The page and its margin are one unit, centered between the rail
+   and the window edge, as a Docs page and its comment column are. The place bar and the decision bar
+   span the unit; the outline lives in the place bar's Contents menu; the old right pane is gone. */
+:root { --margin-w: 20rem; --margin-gap: 28px; }
+.unit { display: block; position: relative; }
+.ncount { display: inline-block; min-width: 1.3rem; padding: 0 5px; border-radius: 999px; background: var(--b3); color: var(--ink); font-size: .8rem; font-weight: 600; text-align: center; font-variant-numeric: tabular-nums; text-decoration: none; }
+.edbar .marks { display: inline-flex; gap: 6px; align-items: center; margin-left: auto; cursor: pointer; }
+.edbar .marks input { accent-color: var(--primary); margin: 0; }
+.edbar .esaved { margin-left: 14px; }
+.mtitle { display: flex; gap: 8px; align-items: center; font-size: .8rem; color: var(--muted); padding: 7px 0; }
+.mtitle span:first-child { font-weight: 600; color: var(--ink); font-size: .9rem; }
+.review.margin .mcards { position: relative; }
+@media (min-width: 1260px) {
+  .shell, .shell.shell { grid-template-columns: 18rem minmax(0, 1fr); }
+  .sheet, .sheet.sheet { max-width: calc(46rem + var(--margin-gap) + var(--margin-w)); }
+  .unit { display: grid; grid-template-columns: minmax(0, 1fr) var(--margin-w); column-gap: var(--margin-gap); align-items: stretch; }
+  .work .place, .work .place.place { display: flex; }
+  #cmtBtn { display: none; }
+  .review.margin { position: relative; inset: auto; width: auto; transform: none; visibility: visible; background: none; border: 0; padding: 0; z-index: auto; display: flex; flex-direction: column; min-width: 0; }
+  .review.margin .drawer-x { display: none; }
+  .review.margin .mtitle { border-bottom: 1px solid var(--b3); height: calc(1.2rem + 15px); }
+  .review.margin .mcards { flex: 1; }
+  .review.margin .mcard { position: absolute; left: 0; right: 0; }
+  .review.margin .mcard.cur { left: -10px; right: 6px; }
+  .review.margin .mempty { position: static; padding-top: 10px; }
+  .review.margin .madd { left: 0; }
+  .sheethead h1 { max-width: 30ch; }
+}
+@media (min-width: 1260px) and (max-width: 1439.98px) { :root { --margin-w: 17rem; --margin-gap: 22px; } }
+@media (max-width: 1259.98px) {
+  .review.margin { display: block; padding: 54px 16px 24px; overflow: auto; background: var(--b2); border-left: 1px solid var(--b3); }
+  .review.margin .mtitle { padding-top: 0; }
+  .review.margin .madd { display: none; }
+}
+.madd { position: absolute; left: 14px; z-index: 3; box-shadow: var(--bar-shadow); }
+.madd svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+.cm-anchor.cur { background: color-mix(in oklab, var(--warning) 34%, transparent); }
+.cm-anchor.info.cur { background: color-mix(in oklab, var(--info) 26%, transparent); }
+.cm-gone { height: 0; border-top: 2px dotted color-mix(in oklab, var(--primary) 55%, transparent); margin: 2px 0; }
+/* With the Comments tab open, the plan moves to the pane's edge, so text and comments read as one
+   unit, as a Docs page and its comment column do; the rail keeps the left. */
+@media (min-width: 1260px) {
+  .shell:has(.review.cmode) .sheet { margin-inline: auto 0; }
+  .rv-sticky { padding-top: 12px; }
+}
 @media (min-width: 1260px) {
   .rv-tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--b3); margin: -4px -16px 0; padding: 0 12px; position: relative; z-index: 2; background: var(--b2); }
   .rv-tab { font: 600 .95rem var(--body); color: var(--muted); background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; padding: 8px 8px 9px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
@@ -397,8 +449,8 @@ kbd { opacity: 1; }
     <div class="title">Design &amp; PR Approvals</div>
     <div class="sub">3 waiting</div>
     <div class="group">Docs system</div>
-    <a class="q" data-round="1" href="comments.html"><span>Approve the plan for Troubleshoot your site</span><span class="meta"><span>Blueprint</span><span>now</span></span></a>
-    <a class="q" data-round="2" href="comments.html?round=2"><span>Approve the plan for Troubleshoot your site</span><span class="meta"><span>Blueprint, round 2</span><span>sample</span></span></a>
+    <a class="q" data-round="1" href="comments.html"><span>Approve the plan for Troubleshoot your site</span><span class="meta"><span data-rmeta="1">Blueprint</span><span>now</span></span></a>
+    <a class="q" data-round="2" href="comments.html?round=2"><span>Approve the plan for Troubleshoot your site</span><span class="meta"><span data-rmeta="2">Blueprint, four replies</span><span>sample</span></span></a>
     <div class="q"><span>Approve the page for Restrict admin access</span><span class="meta"><span>Page, example</span><span>1h</span></span></div>
     <div class="group">Decided this session</div>
     <div class="dq"><span>Approval packets design</span><span>Approved</span></div>
@@ -427,9 +479,17 @@ kbd { opacity: 1; }
         <div class="place" id="place">
           <span class="where" id="where"><b>Debug your site</b></span>
           <span class="open" id="openct"></span>
-          <span style="position:relative"><button class="linkbtn" id="tocBtn" aria-expanded="false" aria-controls="review">Outline and calls</button><div class="toc" id="toc" hidden></div></span>
+          <span style="position:relative"><button class="linkbtn" id="tocBtn" aria-expanded="false" aria-controls="toc">Contents</button><div class="toc" id="toc" hidden></div></span>
+          <button class="linkbtn" id="cmtBtn" type="button" aria-expanded="false" aria-controls="review">Comments <span class="ncount" id="cmtBtnN"></span></button>
         </div>
-        <div class="edwrap"><div class="edbar"><span class="fname">troubleshooting.blueprint.md</span><button class="linkbtn addc" id="addc" type="button" aria-disabled="true" title="Select text to comment on it">Comment <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd></button><span class="esaved" id="esaved" role="status" aria-live="polite">No edits</span></div><div id="cm"><p class="loading">Loading the editor…</p></div></div>
+        <div class="unit">
+        <div class="edwrap"><div class="edbar"><span class="fname">troubleshooting.blueprint.md</span><button class="linkbtn addc" id="addc" type="button" aria-disabled="true" title="Select text to comment on it">Comment <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd></button><label class="marks"><input type="checkbox" id="vChanges"> Mark my edits</label><span class="esaved" id="esaved" role="status" aria-live="polite">No edits</span></div><div id="cm"><p class="loading">Loading the editor…</p></div></div>
+        <aside class="review margin" id="review" aria-label="Comments">
+          <button class="drawer-x" data-close type="button" aria-label="Close comments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+          <div class="mtitle"><span>Comments</span><span class="ncount" id="tabCn">0</span></div>
+          <div class="mcards" id="mcards"></div>
+        </aside>
+        </div>
 
         <div class="barwrap">
           <div class="sendback" id="sendback" hidden>
@@ -449,21 +509,6 @@ kbd { opacity: 1; }
     </div>
   </main>
   <div class="scrim" id="scrim" hidden></div>
-  <aside class="review" id="review" aria-label="Outline and calls">
-        <div class="rv-sticky">
-          <button class="drawer-x" data-close type="button" aria-label="Close the outline"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-          <div class="rv-tabs" role="tablist" aria-label="Review pane"><button class="rv-tab" role="tab" id="tabC" aria-controls="mlayer" aria-selected="false" type="button">Comments <span class="count" id="tabCn">0</span></button><button class="rv-tab" role="tab" id="tabO" aria-controls="rvOutline" aria-selected="true" type="button">Outline and notes <span class="count" id="tabOn" hidden style="background:var(--warning);color:#2b1d00"></span></button></div>
-          <div class="mlayer" id="mlayer" role="tabpanel" aria-labelledby="tabC"><div class="mcards" id="mcards"></div></div>
-          <div class="rv-pane-outline" id="rvOutline" role="tabpanel" aria-labelledby="tabO">
-          <section class="rv-list"><h2 class="rv-h">Calls for you</h2><ul id="rvCalls"></ul></section>
-          <section class="rv-list"><h2 class="rv-h">Replies to your comments</h2><ul id="rvThreads"></ul></section>
-          <section class="rv-list"><h2 class="rv-h" id="rvCmtH">Your comments</h2><ul id="rvCmts"></ul></section>
-          <section class="rv-list"><h2 class="rv-h">Corrected by the fact check</h2><ul id="rvFixes"></ul></section>
-          <section class="rv-list rv-contents"><h2 class="rv-h">Contents</h2><ol id="rvToc"></ol></section>
-          <label class="rv-toggle"><input type="checkbox" id="vChanges"> Mark the lines I changed</label>
-          </div>
-        </div>
-  </aside>
 </div>
 
 <script type="importmap">{
@@ -564,15 +609,15 @@ class NoteWidget extends WidgetType {
 function noteHTML(n) {
   if (n.id in decided) {
     const c = n.choices?.[decided[n.id]];
-    return `<div role="group" class="note done collapsed"><div class="nh"><span class="kind">Decided.</span><span style="font-weight:400">${esc(c ? c.done : 'Settled')}</span><button class="linkbtn" data-reopen="${n.id}">Reopen</button></div></div>`;
+    return `<div role="comment" class="note done collapsed" id="note-${n.id}"><div class="nh"><span class="kind">${c ? 'Decided.' : 'Resolved.'}</span><span style="font-weight:400">${esc(c ? c.done : n.title)}</span><button class="linkbtn" data-reopen="${n.id}">Reopen</button></div></div>`;
   }
   const head = n.kind === 'info' ? 'Corrected.' : 'Your call.';
-  return `<div role="group" class="note ${n.kind === 'info' ? 'info' : 'decide'}" id="note-${n.id}" aria-label="${head} ${esc(n.title)}">
+  return `<div role="comment" class="note ${n.kind === 'info' ? 'info' : 'decide'}${n.id === curCmt ? ' cur' : ''}" id="note-${n.id}" aria-label="${head} ${esc(n.title)}">
     <div class="nh"><span class="kind">${head}</span><span>${esc(n.title)}</span></div>
     ${n.body.map(p => `<p>${md(p)}</p>`).join('')}
     ${(n.sides || []).map(s => `<div class="side"><b>${esc(s.who)}:</b> ${md(s.text)}</div>`).join('')}
     ${n.was ? `<details><summary>What changed</summary><span class="was">${wordDiff(n.was, n.now)}</span></details>` : ''}
-    ${n.choices ? `<div class="choices">${n.choices.map((c, i) => `<button class="btn sm block" data-choose="${n.id}" data-i="${i}">${esc(c.label)}</button>`).join('')}</div>` : ''}
+    ${n.choices ? `<div class="choices">${n.choices.map((c, i) => `<button class="btn sm block" data-choose="${n.id}" data-i="${i}">${esc(c.label)}</button>`).join('')}</div>` : `<div class="choices" style="grid-template-columns:max-content"><button class="btn sm" type="button" data-nresolve="${n.id}">Resolve</button></div>`}
   </div>`;
 }
 const noteDecos = StateField.define({
@@ -586,8 +631,7 @@ function buildNotes(state) {
     const [from, to] = a[n.id]; if (from > state.doc.length) continue;
     const line = state.doc.lineAt(from);
     const endLine = state.doc.lineAt(to);
-    ranges.push(Decoration.widget({ widget: new NoteWidget(n, n.id + ':' + (n.id in decided ? decided[n.id] : 'open')), block: true, side: 1 }).range(endLine.to));
-    if (!(n.id in decided) && to > from) ranges.push(Decoration.mark({ class: 'cm-anchor' + (n.kind === 'info' ? ' info' : '') }).range(from, to));
+    if (!(n.id in decided) && to > from) ranges.push(Decoration.mark({ class: 'cm-anchor' + (n.kind === 'info' ? ' info' : '') + (n.id === curCmt ? ' cur' : ''), attributes: { 'aria-details': 'note-' + n.id } }).range(from, to));
   }
   return Decoration.set(ranges, true);
 }
@@ -656,7 +700,7 @@ const cmtDecos = StateField.define({
 });
 function buildCmts(state) {
   const r = state.field(cranges), out = [];
-  const place = (id, w) => { const [a, b] = r[id]; if (a > state.doc.length) return; if (!MARGIN.matches || b === a) out.push(Decoration.widget({ widget: MARGIN.matches ? new GoneWidget(id) : w, block: true, side: 2 }).range(state.doc.lineAt(b).to)); if (b > a) out.push(Decoration.mark({ class: 'cm-cmt' + (id === curCmt ? ' cur' : ''), attributes: { 'aria-details': 'cmt-' + id } }).range(a, b)); };
+  const place = (id, w) => { const [a, b] = r[id]; if (a > state.doc.length) return; if (b === a) out.push(Decoration.widget({ widget: new GoneWidget(id), block: true, side: 2 }).range(state.doc.lineAt(b).to)); if (b > a) out.push(Decoration.mark({ class: 'cm-cmt' + (id === curCmt ? ' cur' : ''), attributes: { 'aria-details': 'cmt-' + id } }).range(a, b)); };
   for (const t of THREADS) if (r[t.id]) place(t.id, new CmtWidget('t', t, thKey(t)));
   for (const c of COMMENTS) if (r[c.id]) { c.gone = r[c.id][0] === r[c.id][1]; place(c.id, new CmtWidget('c', c, cmtKey(c))); }
   return Decoration.set(out, true);
@@ -665,34 +709,41 @@ const MARGIN = matchMedia('(min-width: 1260px)');
 // In the margin a comment whose text is gone keeps a small marker where the text was.
 class GoneWidget extends WidgetType { constructor(id) { super(); this.id = id; } eq(o) { return o.id === this.id; } toDOM() { const s = document.createElement('div'); s.className = 'cm-gone'; s.setAttribute('aria-hidden', 'true'); return s; } }
 let tab = null;
-function setTab(t) {
-  tab = t; const c = t === 'c', tb = $('.rv-tabs');
-  $('#mlayer').style.top = (tb.offsetTop + tb.offsetHeight) + 'px';
-  $('#review').classList.toggle('cmode', c && MARGIN.matches);
-  $('#tabC').setAttribute('aria-selected', String(c)); $('#tabO').setAttribute('aria-selected', String(!c));
-  layoutMargin();
-}
-function anchorTop(id) { const [a] = view.state.field(cranges)[id]; return view.lineBlockAt(a).top + (view.coordsAtPos(a) ? view.coordsAtPos(a).top - view.documentTop - view.lineBlockAt(a).top : 0); }
+function setTab() { tab = 'c'; layoutMargin(); }
+function rangeOf(id) { return view.state.field(cranges)[id] ?? view.state.field(anchors)[id]; }
+function anchorTop(id) { const [a] = rangeOf(id); return view.lineBlockAt(a).top + (view.coordsAtPos(a) ? view.coordsAtPos(a).top - view.documentTop - view.lineBlockAt(a).top : 0); }
 function renderMargin() {
-  const box = $('#mcards'); if (!MARGIN.matches) { box.innerHTML = ''; return; }
-  const items = [...THREADS.map(t => ['t', t]), ...COMMENTS.map(c => ['c', c])].filter(([, o]) => view.state.field(cranges)[o.id]);
-  box.innerHTML = items.length ? items.map(([k, o]) => `<div class="mcard${o.id === curCmt ? ' cur' : ''}" data-mc="${o.id}">${k === 'c' ? cmtHTML(o) : threadHTML(o)}</div>`).join('') : '<p class="mempty">Select text in the plan, then choose Comment. Your comments appear here, beside the text they’re about.</p>';
+  const box = $('#mcards');
+  const items = [...NOTES.map(n => ['n', n]), ...THREADS.map(t => ['t', t]), ...COMMENTS.map(c => ['c', c])].filter(([, o]) => rangeOf(o.id)).sort((p, q) => rangeOf(p[1].id)[0] - rangeOf(q[1].id)[0]);
+  box.innerHTML = (items.length ? items.map(([k, o]) => `<div class="mcard${o.id === curCmt ? ' cur' : ''}" data-mc="${o.id}">${k === 'c' ? cmtHTML(o) : k === 't' ? threadHTML(o) : noteHTML(o)}</div>`).join('') : '<p class="mempty">Select text in the plan, then choose Comment. Your comments appear here, beside the text they’re about.</p>') + '<button class="btn sm madd" id="madd" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H10l-4 4v-4H5z"/><path d="M12 7.5v5M9.5 10h5"/></svg>Comment</button>';
   layoutMargin();
 }
 function layoutMargin() {
   if (!MARGIN.matches || tab !== 'c') return;
   const cards = [...document.querySelectorAll('#mcards .mcard')];
-  const it = cards.map(el => ({ el, id: el.dataset.mc, y: anchorTop(el.dataset.mc) - 6, h: el.offsetHeight })).sort((p, q) => p.y - q.y);
+  // Card tops in the margin's own coordinates: the page and the margin share a row, so a line's
+  // offset in the editor is its offset in the margin.
+  const off = view.documentTop - $('#mcards').getBoundingClientRect().top, floor = 0;
+  const it = cards.map(el => ({ el, id: el.dataset.mc, y: off + anchorTop(el.dataset.mc) - 6, h: el.offsetHeight })).sort((p, q) => p.y - q.y);
   const gap = 8, a = Math.max(0, it.findIndex(x => x.id === curCmt));
   if (it.length) {
-    it[a].top = it[a].y;
+    it[a].top = Math.max(floor, it[a].y);
     for (let i = a + 1; i < it.length; i++) it[i].top = Math.max(it[i].y, it[i - 1].top + it[i - 1].h + gap);
     for (let i = a - 1; i >= 0; i--) it[i].top = Math.min(it[i].y, it[i + 1].top - it[i].h - gap);
+    // Stacking upward can run past the margin's top; push the stack back down from there.
+    for (let i = 0; i < it.length; i++) it[i].top = Math.max(it[i].top, i ? it[i - 1].top + it[i - 1].h + gap : floor);
   }
   for (const x of it) x.el.style.top = x.top + 'px';
-  scrollMargin();
+  placeAdd(); scrollMargin();
 }
-function scrollMargin() { if (!MARGIN.matches || tab !== 'c') return; $('#mcards').style.transform = `translateY(${view.documentTop - $('#mlayer').getBoundingClientRect().top}px)`; }
+// The Docs add-comment button: in the margin, level with the selection, while no box is open.
+function placeAdd() {
+  const b = document.getElementById('madd'); if (!b) return;
+  const s = view.state.selection.main, busy = COMMENTS.some(c => c.draft || c.editing) || THREADS.some(t => t.replying);
+  b.hidden = !MARGIN.matches || tab !== 'c' || s.empty || busy;
+  if (!b.hidden) b.style.top = (view.documentTop - $('#mcards').getBoundingClientRect().top + view.lineBlockAt(s.head).top) + 'px';
+}
+function scrollMargin() {}
 function redraw() { view.dispatch({ effects: refresh.of(null) }); status(); toc(); renderMargin(); }
 function focusTA(id) { if (MARGIN.matches && tab !== 'c') setTab('c'); requestAnimationFrame(() => { const ta = document.getElementById('ta-' + id); if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); } }); }
 function addComment() {
@@ -702,13 +753,15 @@ function addComment() {
   COMMENTS.push({ id, text: '', quote: q.length > 160 ? q.slice(0, 157) + '…' : q, draft: true, editing: false });
   curCmt = id;
   view.dispatch({ selection: { anchor: s.to }, effects: setC.of({ id, range: [s.from, s.to] }) });
-  if (MARGIN.matches) setTab('c');
+  setTab('c'); if (!MARGIN.matches) toggleToc(true);
   status(); renderMargin(); focusTA(id); return true;
 }
 function saveCmt(id) {
   const c = COMMENTS.find(x => x.id === id), v = document.getElementById('ta-' + id).value.trim();
   if (!v) { cancelCmt(id); return; }
-  c.text = v; c.draft = c.editing = false; delete c.prev; delete c.buf; redraw(); view.focus();
+  c.text = v; c.draft = c.editing = false; delete c.prev; delete c.buf; redraw();
+  // In the drawer the editor sits behind the scrim, so focus stays on the saved card.
+  if (MARGIN.matches) view.focus(); else document.querySelector(`[data-cedit="${id}"]`)?.focus();
 }
 function cancelCmt(id) {
   const c = COMMENTS.find(x => x.id === id);
@@ -724,10 +777,13 @@ function delCmt(id) {
 }
 const cbtn = StateField.define({
   create: () => null,
-  update(v, tr) { if (!tr.docChanged && !tr.selection) return v; const s = tr.state.selection.main; return s.empty ? null : { pos: s.head, above: s.head < s.anchor, strictSide: true, arrow: false, create: () => { const d = document.createElement('div'); d.className = 'cm-cbtn'; d.innerHTML = '<button class="btn sm" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H10l-4 4v-4H5z"/></svg>Comment</button>'; d.querySelector('button').addEventListener('pointerdown', e => { e.preventDefault(); addComment(); }); return { dom: d }; } }; },
+  update(v, tr) { if (!tr.docChanged && !tr.selection) return v; const s = tr.state.selection.main; return s.empty || MARGIN.matches ? null : { pos: s.head, above: s.head < s.anchor, strictSide: true, arrow: false, create: () => { const d = document.createElement('div'); d.className = 'cm-cbtn'; d.innerHTML = '<button class="btn sm" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H10l-4 4v-4H5z"/></svg>Comment</button>'; d.querySelector('button').addEventListener('pointerdown', e => { e.preventDefault(); addComment(); }); return { dom: d }; } }; },
   provide: f => showTooltip.from(f)
 });
-function curFromSel(state) { const h = state.selection.main.head, r = state.field(cranges); return Object.keys(r).find(id => r[id][1] > r[id][0] && h >= r[id][0] && h <= r[id][1]) ?? null; }
+function curFromSel(state) {
+  const h = state.selection.main.head, r = { ...Object.fromEntries(Object.entries(state.field(anchors)).filter(([id]) => !(id in decided))), ...state.field(cranges) };
+  return Object.keys(r).find(id => r[id][1] > r[id][0] && h >= r[id][0] && h <= r[id][1]) ?? null;
+}
 
 /* the cairn-style source decorations: headings, purpose lines, directive fences and blocks, fact tags */
 const lineDeco = c => Decoration.line({ class: c });
@@ -788,8 +844,9 @@ const view = new EditorView({
     EditorView.updateListener.of(u => {
       if (u.selectionSet || u.focusChanged) { $('#addc').setAttribute('aria-disabled', String(u.state.selection.main.empty)); const c = curFromSel(u.state); if (c && c !== curCmt && !COMMENTS.some(x => x.draft || x.editing)) { curCmt = c; queueMicrotask(() => { view.dispatch({ effects: refresh.of(null) }); renderMargin(); }); } }
       if (u.geometryChanged || u.heightChanged || u.viewportChanged) requestAnimationFrame(layoutMargin);
+      if (u.selectionSet) requestAnimationFrame(placeAdd);
       if (!u.docChanged) return;
-      $('#esaved').textContent = 'Saving…'; clearTimeout(saveT); saveT = setTimeout(() => flash('All changes saved'), 700);
+      $('#esaved').textContent = 'Saving…'; clearTimeout(saveT); saveT = setTimeout(() => flash('All edits saved'), 700);
       status(); toc();
     })
   ]
@@ -803,10 +860,13 @@ const words = n => ['no', 'one', 'two', 'three', 'four', 'five'][n] ?? String(n)
 function status() {
   const o = openNotes().length, ne = changedLines(), nd = Object.keys(decided).length;
   const nc = COMMENTS.filter(c => !c.draft).length, nr = THREADS.filter(t => t.mine).length, nres = THREADS.filter(t => t.state === 'resolved').length;
-  $('#tabOn').hidden = !o; $('#tabOn').textContent = o; $('#tabOn').title = o ? `${o} call${o > 1 ? 's' : ''} for you` : '';
-  $('#tabCn').textContent = THREADS.filter(t => t.state !== 'resolved').length + nc;
+  // The rail and the narrow-screen pane button carry the same counts as the Comments tab.
+  const rm = document.querySelector(`[data-rmeta="${ROUND}"]`), left = THREADS.filter(t => t.state !== 'resolved' && !t.mine).length;
+  rm.textContent = ROUND === 2 ? (left ? `Blueprint, ${words(left)} repl${left === 1 ? 'y' : 'ies'}` : 'Blueprint, every reply read') : nc ? `Blueprint, ${words(nc)} comment${nc === 1 ? '' : 's'}` : 'Blueprint';
+  $('#cmtBtnN').textContent = NOTES.filter(n => !(n.id in decided)).length + THREADS.filter(t => t.state !== 'resolved').length + nc;
+  $('#tabCn').textContent = NOTES.filter(n => !(n.id in decided)).length + THREADS.filter(t => t.state !== 'resolved').length + nc;
   $('#headline').textContent = ROUND === 2 ? `The author answered your ${words(THREADS.length)} comments on the plan for Troubleshoot your site.` : `The plan for Troubleshoot your site is ready to read, with ${words(o) === 'no' ? 'nothing left' : words(o) + ' call' + (o > 1 ? 's' : '')} for you along the way.`;
-  $('#openct').innerHTML = o ? `<button class="linkbtn" id="nextOpen" style="color:var(--warning-ink)">Next call for you <kbd>F8</kbd></button>` : '<span style="color:var(--success-ink)">Nothing open</span>';
+  $('#openct').innerHTML = o ? `<button class="linkbtn" id="nextOpen" style="color:var(--warning-ink)">Next call for you <kbd>F8</kbd></button>` : NOTES.some(n => n.kind !== 'info') ? '<span style="color:var(--success-ink)">Every call made</span>' : '';
   $('#nextOpen') && ($('#nextOpen').onclick = nextOpen);
   const s1 = o ? `Make ${words(o)} call${o > 1 ? 's' : ''} to approve` : 'Ready to approve';
   const plural = (n, w) => `${words(n)} ${w}${n === 1 ? '' : 's'}`;
@@ -816,20 +876,7 @@ function status() {
   document.querySelectorAll('[data-act="approve"]').forEach(e => e.setAttribute('aria-disabled', String(o > 0)));
   side();
 }
-function side() {
-  const a = view.state.field(anchors);
-  const item = (n, cls, what) => `<li><a href="#" data-pos="${a[n.id][0]}"><span class="dot ${cls}"></span><span>${esc(n.title)}<span class="what">${what}</span></span></a></li>`;
-  $('#rvCalls').innerHTML = NOTES.filter(n => n.kind !== 'info').map(n => n.id in decided ? item(n, 'done', esc(n.choices[decided[n.id]].done)) : item(n, 'call', n.kind === 'question' ? 'A question from the author' : 'A dispute between the author and the fact check')).join('');
-  $('#rvFixes').innerHTML = NOTES.filter(n => n.kind === 'info').map(n => item(n, 'fix', 'Already fixed by the author')).join('');
-  $('#rvCalls').closest('section').hidden = !NOTES.some(n => n.kind !== 'info');
-  $('#rvFixes').closest('section').hidden = !NOTES.some(n => n.kind === 'info');
-  const r = view.state.field(cranges), clip = s => s.length > 70 ? s.slice(0, 68) + '…' : s;
-  const citem = (id, cls, title, what) => `<li><a href="#" data-pos="${r[id][0]}"><span class="dot ${cls}"></span><span>${md(clip(title))}<span class="what">${what}</span></span></a></li>`;
-  $('#rvThreads').innerHTML = THREADS.map(t => citem(t.id, t.state === 'resolved' ? 'done' : 'cmt', t.comment, t.state === 'resolved' ? 'Resolved' : t.mine ? 'You replied' : STATUS[t.reply.status][0].replace('.', ''))).join('');
-  $('#rvThreads').closest('section').hidden = ROUND !== 2;
-  const mine = COMMENTS.filter(c => !c.draft);
-  $('#rvCmts').innerHTML = mine.length ? mine.map(c => citem(c.id, 'cmt', c.text, `On “${esc(clip(c.quote))}”`)).join('') : `<li class="rv-none">Select text in the plan, then choose Comment.</li>`;
-}
+function side() {}
 function headings() {
   const out = [], doc = view.state.doc;
   for (let i = 1; i <= doc.lines; i++) { const l = doc.line(i), h = /^(#{2,3}) (.*)/.exec(l.text); if (h) out.push({ pos: l.from, lv: h[1].length, text: h[2] }); }
@@ -844,7 +891,7 @@ function toc() {
     const mk = ns.some(n => n.kind !== 'info') ? '<span class="mk" style="background:var(--warning)" title="A call for you"></span>' : ns.length ? '<span class="mk" style="background:var(--info)" title="Corrected"></span>' : '';
     return `<li><a href="#" class="l${h.lv}" data-pos="${h.pos}" title="${esc(h.text.replace(/`/g, ''))}"><span class="n">${h.lv === 2 ? x : x + '.' + y}</span><span class="t">${md(h.text)}</span>${mk}</a></li>`;
   }).join('');
-  $('#rvToc').innerHTML = html; $('#toc').innerHTML = html.replace(/<\/?li>/g, '');
+  $('#toc').innerHTML = html.replace(/<\/?li>/g, '');
 }
 function scrollToPos(pos, focusNote) {
   const top = view.lineBlockAt(pos).top + view.documentTop + window.scrollY - window.scrollY;
@@ -856,6 +903,7 @@ function nextOpen() {
   const a = view.state.field(anchors), head = view.state.selection.main.head;
   const sorted = o.map(n => [n, a[n.id][0]]).sort((p, q) => p[1] - q[1]);
   const nx = sorted.find(([, p]) => p > head + 1) || sorted[0];
+  curCmt = nx[0].id; view.dispatch({ effects: refresh.of(null) }); renderMargin();
   scrollToPos(nx[1]); view.focus(); return true;
 }
 document.addEventListener('click', e => { const l = e.target.closest('#toc a[data-pos], .review a[data-pos]'); if (!l) return; e.preventDefault(); toggleToc(false); scrollToPos(+l.dataset.pos); view.focus(); });
@@ -865,13 +913,18 @@ function drawer(el, btn, open) {
   el.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open));
   const any = document.querySelector('.rail.open, .review.open');
   $('#scrim').hidden = !any;
-  for (const p of [document.querySelector('main'), $('#rail'), $('#review')]) p.inert = !!any && !p.classList.contains('open');
+  const back = $('#review').classList.contains('open') ? [$('#rail'), ...document.querySelectorAll('.appbar, .sheet > :not(.work), .work > :not(.unit), .unit > :not(#review)')] : [document.querySelector('main'), $('#rail')];
+  for (const p of [document.querySelector('main'), $('#rail'), ...document.querySelectorAll('.appbar, .sheet > *, .work > *, .unit > *')]) p.inert = false;
+  if (any) for (const p of back) p.inert = !p.classList.contains('open');
   if (open) { el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); } else { el.removeAttribute('role'); el.removeAttribute('aria-modal'); }
   if (open) { opener = btn; el.querySelector('a, button').focus(); } else if (opener === btn) { btn.focus(); opener = null; }
 }
-const toggleToc = open => drawer($('#review'), $('#tocBtn'), open);
+const toggleToc = open => { if (!open) closeContents(); if (open && MARGIN.matches) return; drawer($('#review'), $('#cmtBtn'), open); };
+function closeContents() { $('#toc').hidden = true; $('#tocBtn').setAttribute('aria-expanded', 'false'); }
 const toggleRail = open => drawer($('#rail'), $('#railBtn'), open);
-$('#tocBtn').onclick = () => toggleToc(true);
+$('#tocBtn').onclick = e => { e.stopPropagation(); const open = $('#toc').hidden; $('#toc').hidden = !open; $('#tocBtn').setAttribute('aria-expanded', String(open)); if (open) $('#toc a')?.focus(); };
+$('#cmtBtn').onclick = () => toggleToc(true);
+document.addEventListener('click', e => { if (!e.target.closest('#toc, #tocBtn')) closeContents(); });
 $('#railBtn').onclick = () => toggleRail(true);
 document.querySelector('[data-help]').onclick = () => help();
 $('#scrim').onclick = () => { toggleToc(false); toggleRail(false); };
@@ -886,10 +939,12 @@ document.addEventListener('click', e => {
     else view.dispatch({ effects: refresh.of(null) });
     if (c.edit) { view.dispatch({ selection: { anchor: from, head: to } }); view.focus(); }
     else { view.dispatch({ selection: { anchor: from } }); view.focus(); }
-    status(); toc(); return;
+    status(); toc(); renderMargin(); return;
   }
+  const nr = e.target.closest('[data-nresolve]');
+  if (nr) { decided[nr.dataset.nresolve] = -1; if (curCmt === nr.dataset.nresolve) curCmt = null; view.dispatch({ effects: refresh.of(null) }); status(); toc(); renderMargin(); return; }
   const ro = e.target.closest('[data-reopen]');
-  if (ro) { delete decided[ro.dataset.reopen]; view.dispatch({ effects: refresh.of(null) }); status(); toc(); }
+  if (ro) { delete decided[ro.dataset.reopen]; view.dispatch({ effects: refresh.of(null) }); status(); toc(); renderMargin(); }
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && document.querySelector('.rail.open, .review.open')) { toggleToc(false); toggleRail(false); return; }
@@ -915,7 +970,7 @@ window.addEventListener('scroll', () => {
   let cur = null; const lim = 130;
   for (const h of headings()) { if (view.documentTop + view.lineBlockAt(h.pos).top < lim) cur = h; else break; }
   $('#where').innerHTML = cur ? `<b>${md(cur.text)}</b>` : '<b>Debug your site</b>';
-  document.querySelectorAll('#rvToc a').forEach(l => { const on = !!cur && +l.dataset.pos === cur.pos; l.classList.toggle('cur', on); on ? l.setAttribute('aria-current', 'location') : l.removeAttribute('aria-current'); });
+  document.querySelectorAll('#toc a').forEach(l => { const on = !!cur && +l.dataset.pos === cur.pos; l.classList.toggle('cur', on); on ? l.setAttribute('aria-current', 'location') : l.removeAttribute('aria-current'); });
 }, { passive: true });
 $('#vChanges').onchange = () => { markChanges = $('#vChanges').checked; view.dispatch({ effects: refresh.of(null) }); };
 function toast(m, undo) { document.querySelector('.toast')?.remove(); const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = m; if (undo) { const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Undo'; b.onclick = () => { t.remove(); undo(); }; t.append(b); } document.body.append(t); setTimeout(() => t.remove(), undo ? 6000 : 3200); }
@@ -977,12 +1032,18 @@ $('#proto').innerHTML = ROUND === 2
 $('#lede').textContent = ROUND === 2
   ? 'You sent this plan back with four comments. The author made two changes, answered your question, and kept one passage, with a reason. Resolve each reply you accept, and reply to any you don\u2019t. Your replies go back with your decision.'
   : 'A troubleshooting page for people who run a cairn site and write no code. The fact check read its 46 facts against the code, and the author fixed the six lines it found too broad. Nothing needs your call.';
-$('#tabC').onclick = () => setTab('c'); $('#tabO').onclick = () => setTab('o');
+document.addEventListener('pointerdown', e => { if (e.target.closest('#madd')) { e.preventDefault(); addComment(); } });
+document.addEventListener('click', e => {
+  const m = e.target.closest('.cm-cmt, .cm-anchor'); if (!m || MARGIN.matches) return;
+  const id = m.getAttribute('aria-details')?.replace(/^(cmt|note)-/, ''); if (!id) return;
+  curCmt = id; setTab('c'); renderMargin(); toggleToc(true);
+  requestAnimationFrame(() => document.querySelector(`[data-mc="${id}"]`)?.scrollIntoView({ block: 'center' }));
+});
 document.addEventListener('click', e => { const m = e.target.closest('.mcard'); if (!m || e.target.closest('button, a, textarea, summary')) return; if (curCmt !== m.dataset.mc) { curCmt = m.dataset.mc; view.dispatch({ effects: refresh.of(null) }); renderMargin(); } });
 window.addEventListener('scroll', scrollMargin, { passive: true });
 window.addEventListener('resize', () => requestAnimationFrame(layoutMargin));
 MARGIN.addEventListener('change', () => { setTab(tab); redraw(); });
-setTab(THREADS.length ? 'c' : 'o'); renderMargin();
+setTab('c'); renderMargin();
 document.querySelectorAll('.rail a.q').forEach(a => { const on = +a.dataset.round === ROUND; a.classList.toggle('on', on); on ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'); });
 status(); toc();
 window.__ready = true;

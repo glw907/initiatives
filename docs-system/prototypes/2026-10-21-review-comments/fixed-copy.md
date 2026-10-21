@@ -33,8 +33,18 @@ Declined: plus signs between keys, since the approved round-8 frame renders each
 
 ## Round 2 additions (the Docs and Word margin)
 
-Review pane tabs: "Comments <count>" ; "Outline and notes"
+Review pane tabs: "Comments <count>" ; "Outline and notes" (retired in round 3: the outline is the place bar's "Contents" menu)
 Margin empty state: "Select text in the plan, then choose Comment. Your comments appear here, beside the text they’re about."
 Saved comment card head: unchanged from round 1 ("Goes to the author with your decision")
 
 Review fold: "Sends with your decision" reverted to the round-1 subline, which names the author and matches the reply label; "show here" became "appear here"; the "Outline and notes" tab carries an amber count when calls are open. The curly apostrophe stays, per the round-8 ledger.
+
+## Round 3 additions (designed for comments)
+
+Place bar: "Contents" (opens the outline menu) ; on narrow screens "Comments <count>" (opens the comment drawer) ; call state "Next call for you F8" or "Every call made" (shown only when the plan has calls)
+Editor bar: "Comment Ctrl Alt M" ; checkbox "Mark my edits" ; save state "No edits" / "All edits saved"
+Margin header: "Comments <count>"
+Margin add button, level with a selection: "Comment"
+Fact-check note card ("Corrected." head) gains a "Resolve" button; resolved note collapses to "Resolved. <note title>" with "Reopen"
+Drawer close button label: "Close comments"
+Rail item meta: "Blueprint, two comments" (screen 1, live) ; "Blueprint, four replies" / "Blueprint, every reply read" (screen 2)
