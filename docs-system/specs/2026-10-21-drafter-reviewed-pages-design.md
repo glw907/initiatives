@@ -28,7 +28,9 @@ page, merged.
   findings on the passage they concern, edits the markdown in a CodeMirror editor modeled on
   cairn's, commits each save to the worktree, and prints your decision as JSON. The new screens
   keep the queue's current look so every screen in it stays coherent, and 907.life later adopts
-  that look as separate work (your ruling in the prototype sitting, 2026-10-20). A blueprint reaches you only after the author has fixed or
+  that look as separate work (your ruling in the prototype sitting, 2026-10-20). The existing PR
+  review and packet screens take the new screens' design language as it settles: the document and
+  margin unit centered as one, the place bar, margin notes tied to their lines, and the same keys. A blueprint reaches you only after the author has fixed or
   disputed every fact-check finding, and it shows as an editable document of what the page will
   tell its reader, with a margin note wherever a dispute or correction needs you.
 - A fact-check agent joins the workstation's Claude infrastructure: fresh-context and read-only, it
