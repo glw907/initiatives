@@ -30,7 +30,11 @@ Pass 2 (the media server) and the rename pass closed 2026-10-20 on Geoff's two p
 
 Running path: about 1,490 minutes against the 3,515 line (Pass 0 435, Pass 1 240, Pass 2 about 660, the rename about 80 against 560 planned after Geoff cut its drill, hand-overs 75).
 
-Next: Pass 3, the photos and music cutover (I1 locks `servers-backup-orpheus` first). It needs its launch prompt and pre-flight written from the amended plan; no prompt waits today. First owed item: the M8 stale-snapshot probe on `servers-scratch-stale` after about 2026-10-21 11:18 UTC, then delete that bucket.
+Pass 3 (photos only; music moves with dubplate's own pass, Geoff 2026-10-20) is running. Geoff approved the plan packet 2026-10-20 (initiatives#76, `92dde56`) and kept the switch if the phone can't make the window, so I1 step 9's CLI path stands. The conductor launched `servers-photos` (`dd88849d`) at about 01:25 UTC on 2026-10-21 after every pre-flight check passed: the restic password on `origin/main` matches orpheus's by hash, the dry run passes all seven credentials, the pod key holds `all`, the pod's newest dump is v3.3.3 (both servers run v3.3.3), `music-library` reads, orpheus's bucket has no lock rules, the scratch bucket holds its one object, and `/alerts` is empty. Geoff's PikaPods sign-in works and the pod's address matches the live `photos` CNAME.
+
+The photos window (upload freeze): 2026-10-21 04:30 to 06:30 UTC, which is 2026-10-20 20:30 to 22:30 in Anchorage. A household member is booked with a phone for the last 30 minutes. The stale-snapshot probe and the scratch bucket's deletion ride Pass 3's I1 after 2026-10-21 11:18 UTC.
+
+Next: the conductor relays the sitting's steps (S1 to S4, R1) in the window, then sends the cutover PR (branch `pass3-photos`) as a packet. On day seven it relaunches `servers-photos` with the line in the conductor prompt (`plans/2026-10-20-pass3-conductor-prompt.txt`) for the week phase. No launch prompt waits after Pass 3: Pass 5 (ward) needs its prompt and pre-flight written from the plan.
 
 ## Pass 0 rows
 
@@ -93,3 +97,4 @@ Next: Pass 3, the photos and music cutover (I1 locks `servers-backup-orpheus` fi
 - Planner: session `26c03024` on pavilion ended after the plan merged.
 - Pass 2: `servers-media`, session `69d74faf`, 2026-10-19 to 2026-10-20, removed after the merge.
 - Rename: planner `servers-rename-plan` (`13f52a98`) and executor `servers-rename` (`34fe22d1`), 2026-10-20, both removed after the merge. The conductor ended at this hand-over.
+- Pass 3: conductor `conductor-servers` (`52c36958`) on pavilion from 2026-10-20; planner `servers-photos-plan` (`77fa03e4`) stopped after its plan merged; executor `servers-photos` (`dd88849d`), cutover phase, launched 2026-10-21 about 01:25 UTC.
