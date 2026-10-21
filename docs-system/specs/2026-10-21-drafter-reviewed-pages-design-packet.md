@@ -1,6 +1,6 @@
-# This packet approves the reviewed-pages design, and approving starts the prototype sitting for drafter's review screens, then a pass that takes cairn's admin troubleshooting page to a merge.
+# This packet approves the reviewed-pages design, and approving starts the prototype sitting for approval-queue's new review screens, then a pass that takes cairn's admin troubleshooting page to a merge.
 
-Nineteen passes and about $183 of credit produced no accepted page, and every miss came from machine judging. This design keeps drafter's checks and its drafting seat. A fresh agent fact-checks against the code, and you approve each blueprint and page in a local review tool.
+Nineteen passes and about $183 of credit produced no accepted page, and every miss came from machine judging. This design narrows drafter to drafting a copy-edited page from a blueprint on credit. approval-queue takes the review side: a fresh agent fact-checks against the code, and you approve each blueprint and page there.
 
 ## Background
 The docs-system initiative builds drafter, which drafts a docs page from its blueprint. In chat on 2026-10-20 you weighed going on against stopping, and ruled that API credit pays for drafting only. A blueprint is the page's plan: its outline, each section's job, and the facts it may state. The prototype sitting is where you shape the three review screens before anything is built.
@@ -11,7 +11,7 @@ The docs-system initiative builds drafter, which drafts a docs page from its blu
 3. [session] Plan the pass under pass-core and hand it to conductor-drafter.
 4. [session] File the blueprint-first pass's 23 real fact catches as one cairn backlog item, then delete cairn's `blueprint-first-pages` branch.
 5. [session] Close drafter backlog #33, the API agentic read, as superseded.
-6. [you: approve the blueprint and the page] Approve the troubleshooting page's blueprint, then its page, in `drafter review`.
+6. [you: approve the blueprint and the page] Approve the troubleshooting page's blueprint, then its page, in approval-queue.
 
 ## Not checked
 How many fact-check findings the new page's blueprint draws, and how many prototype rounds each screen takes, are what the pass measures.
@@ -19,7 +19,7 @@ How many fact-check findings the new page's blueprint draws, and how many protot
 ## Routine
 | Part | Verdict | Fact | Why |
 |---|---|---|---|
-| glw907/initiatives:docs-system/specs/2026-10-21-drafter-reviewed-pages-design.md | approve | It retires machine acceptance from the flow, adds the fact-check agent and `drafter review`, and records approvals in the lock. | Every owner call was settled in chat on 2026-10-20, and the session's own calls are listed in the design. |
+| glw907/initiatives:docs-system/specs/2026-10-21-drafter-reviewed-pages-design.md | approve | It narrows drafter to drafting with a final edit pass, adds blueprint and page review to approval-queue, and adds a fact-check agent to the workstation. | Every owner call was settled in chat on 2026-10-20, and the session's own calls are listed in the design. |
 | glw907/initiatives#79 | approve | The PR files the design, this packet, and the read records. | It changes no behavior. |
 | step:1 | session | A merge can be reverted. | The design is a record. |
 | step:2 | you | Nothing is built before you approve the prototypes. | You asked for the screens to be prototyped carefully. |
