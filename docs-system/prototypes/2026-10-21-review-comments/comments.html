@@ -83,7 +83,7 @@ main { padding: 0 max(20px, env(safe-area-inset-right, 0px)) 0 max(20px, env(saf
 .hero .lede { max-width: 58ch; margin: 12px 0 0; font-size: 1.1rem; line-height: 1.55; }
 details > summary { list-style: none; cursor: pointer; }
 details > summary::-webkit-details-marker { display: none; }
-.chev { width: 16px; height: 16px; flex: none; margin-top: .2rem; transition: transform .15s; stroke: currentColor; fill: none; stroke-width: 2; }
+.chev { width: 16px; height: 16px; flex: none; margin-top: .2rem; transition: transform var(--motion-quick) var(--motion-ease); stroke: currentColor; fill: none; stroke-width: 2; }
 details[open] > summary .chev { transform: rotate(90deg); }
 .bg { max-width: 58ch; }
 .bg > summary { display: flex; gap: 6px; padding: 6px 0; font-size: .95rem; line-height: 1.45; color: var(--muted); }
@@ -147,7 +147,7 @@ kbd { font: .7rem var(--body); border: 1px solid color-mix(in srgb, currentColor
 .help h2 { font-family: var(--display); font-weight: 500; font-size: 1.2rem; margin: 0 0 10px; }
 .help dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; font-size: .9rem; }
 .help dt { text-align: right; }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
 </style>
 <style>
 /* Round 3: the plan is one markdown file, edited in a CodeMirror editor modeled on cairn's admin
@@ -283,14 +283,14 @@ html { font-size: clamp(16px, 13.4px + 0.18vw, 18.5px); }
 .drawer-x:hover { background: var(--b3); color: var(--ink); }
 .drawer-x svg, .appbtn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
 @media (max-width: 1259.98px) {
-  .review { display: block; position: fixed; inset: 0 0 0 auto; width: min(22rem, 88vw); z-index: 40; transform: translateX(100%); visibility: hidden; transition: transform .2s ease, visibility 0s linear .2s; }
-  .review.open { transform: none; visibility: visible; transition: transform .2s ease; }
+  .review { display: block; position: fixed; inset: 0 0 0 auto; width: min(22rem, 88vw); z-index: 40; transform: translateX(100%); visibility: hidden; transition: transform var(--motion-base) var(--motion-ease), visibility 0s linear var(--motion-base); }
+  .review.open { transform: none; visibility: visible; transition: transform var(--motion-base) var(--motion-ease); }
   .review .drawer-x { display: grid; }
   .review .rv-sticky { padding-top: 54px; }
 }
 @media (max-width: 1023.98px) {
-  .rail { display: grid; position: fixed; inset: 0 auto 0 0; width: min(19rem, 86vw); z-index: 40; padding-top: 54px; transform: translateX(-100%); visibility: hidden; transition: transform .2s ease, visibility 0s linear .2s; }
-  .rail.open { transform: none; visibility: visible; transition: transform .2s ease; }
+  .rail { display: grid; position: fixed; inset: 0 auto 0 0; width: min(19rem, 86vw); z-index: 40; padding-top: 54px; transform: translateX(-100%); visibility: hidden; transition: transform var(--motion-base) var(--motion-ease), visibility 0s linear var(--motion-base); }
+  .rail.open { transform: none; visibility: visible; transition: transform var(--motion-base) var(--motion-ease); }
   .rail .drawer-x { display: grid; }
   .appbar { display: flex; align-items: center; gap: 12px; margin: 0 -20px; padding: 8px 12px; border-bottom: 1px solid var(--b3); background: var(--b2); }
   .appbtn { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 10px; border: 1px solid var(--b3); border-radius: var(--r-field); background: var(--b1); color: var(--ink); font: inherit; font-size: .95rem; cursor: pointer; }
@@ -444,7 +444,7 @@ kbd { opacity: 1; }
 .rv-pane-outline { display: grid; gap: 18px; min-width: 0; }
 .mlayer { position: absolute; left: 0; right: 0; bottom: 0; overflow: hidden; }
 .mcards { position: absolute; left: 0; right: 0; top: 0; will-change: transform; }
-.mcard { position: absolute; left: 14px; right: 16px; transition: top .18s ease, left .18s ease, right .18s ease; }
+.mcard { position: absolute; left: 14px; right: 16px; transition: top var(--motion-base) var(--motion-ease), left var(--motion-base) var(--motion-ease), right var(--motion-base) var(--motion-ease); }
 .mcard.cur { left: 6px; right: 24px; }
 .mcard > .note { box-shadow: 0 1px 2px rgb(0 0 0 / .08); background: var(--b1); }
 .mcard > .note.cur { box-shadow: var(--bar-shadow), 0 0 0 2px color-mix(in oklab, var(--primary) 45%, transparent); }
@@ -454,6 +454,55 @@ kbd { opacity: 1; }
 @media (prefers-reduced-motion: reduce) { .mcard { transition: none; } }
 @media (max-width: 1023.98px) { .edbar .addc kbd, .note .dacts .hint { display: none; } }
 @media (max-width: 479.98px) { .edbar { flex-wrap: wrap; } .edbar .esaved { flex-basis: 100%; margin-left: 0; } }
+/* Round 6 (round-6-spec.md): one weight per framed thing, on Survey's flat theme, and a motion
+   grammar that answers what you do. Motion tokens: 907.life's 150ms fades and Carbon's productive
+   motion. */
+:root {
+  --motion-quick: 150ms; --motion-base: 240ms;
+  --motion-ease: cubic-bezier(.2, 0, .38, .9); --motion-ease-enter: cubic-bezier(0, 0, .38, .9);
+  --tint: color-mix(in oklab, var(--b3) 42%, transparent);
+  scrollbar-color: color-mix(in oklab, var(--muted) 35%, transparent) transparent;
+}
+* { scrollbar-width: thin; }
+@keyframes rise { from { opacity: 0; transform: translateY(4px); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes toast-rise { from { opacity: 0; transform: translate(-50%, 4px); } }
+
+/* Level 0 and 2: margin cards are ground until current, then a tint. */
+.mcard > .note, .mcard > .note.done { background: transparent; box-shadow: none; padding: 8px 10px 8px 14px; transition: background-color var(--motion-quick) var(--motion-ease); }
+.mcard > .note::before { width: 2px; border-radius: 1px; opacity: .5; transition: opacity var(--motion-quick) var(--motion-ease); }
+.mcard > .note.cur, .mcard > .note.cmt.cur, .mcard.cur > .note { background: var(--tint); box-shadow: none; }
+.mcard > .note.cur::before, .mcard.cur > .note::before { opacity: 1; }
+.mcard .note .side { border-left: 0; padding-left: 0; margin: 6px 0 0; }
+.mcard .note .quote { margin-bottom: 4px; }
+.review.margin .mcard { margin-bottom: 0; }
+@media (max-width: 1259.98px) { .review .mcard { margin-bottom: 12px; } }
+/* Quiet actions (btn-ghost btn-sm in the build); a call's choices and an open box's Save stay buttons. */
+.mcard .note :is([data-resolve], [data-treply], [data-nresolve], [data-ccancel], [data-tcancel]) { background: transparent; border-color: transparent; color: var(--muted); padding: 4px 8px; margin-left: -8px; font-weight: 600; }
+.mcard .note :is([data-resolve], [data-treply], [data-nresolve], [data-ccancel], [data-tcancel]):hover { background: var(--tint); color: var(--ink); }
+.mcard .note .dacts [data-ccancel], .mcard .note .dacts [data-tcancel] { margin-left: 0; }
+.mcard .note .choices { gap: 4px 8px; }
+/* Highlights are fills, deepening when current. */
+.cm-cmt { border-bottom: 0; border-radius: 2px; }
+.cm-cmt, .cm-anchor { transition: background-color var(--motion-quick) var(--motion-ease); }
+/* One rule per edge: the margin heading sits level with the editor bar, with no rule of its own. */
+.review.margin .mtitle, .review.margin .mtitle.mtitle { border-bottom: 0; }
+/* Shortcuts inside controls are plain text, as desk-kbd draws them; the shortcut sheet keeps keycaps. */
+:is(.btn, .linkbtn, .hint, .place) kbd { border-color: transparent; padding-inline: 1px; opacity: .7; font-size: .7rem; }
+/* Rail: a right gutter that matches the left, held open for the scrollbar. */
+.rail { padding-inline: 12px 16px; scrollbar-gutter: stable; }
+.rail .q.on, .rail-toc a.cur, .rail-toc a:hover, .toc a:hover, .toc a.cur { background: color-mix(in oklab, var(--b3) 62%, transparent); }
+
+/* Motion 1: state changes cross-fade. */
+:is(.btn, .linkbtn, .rail .q, .rail-toc a, .toc a, .rail-keys, summary, .madd) { transition: color var(--motion-quick) var(--motion-ease), background-color var(--motion-quick) var(--motion-ease), border-color var(--motion-quick) var(--motion-ease); }
+/* Motion 2: opened surfaces enter. */
+#toc:not([hidden]), .sendback:not([hidden]), .help > div, .mcard.enter > .note { animation: rise var(--motion-base) var(--motion-ease-enter) both; }
+.toast { animation: toast-rise var(--motion-base) var(--motion-ease-enter) both; }
+.scrim:not([hidden]), .help, .madd:not([hidden]), details[open] > :not(summary) { animation: fade var(--motion-base) var(--motion-ease-enter) both; }
+/* Motion 4: leaving is instant, except the toast, which leaves on a timer. */
+.toast.leave { opacity: 0; transition: opacity var(--motion-quick) var(--motion-ease); }
+/* Motion 7: reduced motion turns all of it off. */
+@media (prefers-reduced-motion: reduce) { *, *::before { transition: none !important; animation: none !important; } }
 </style>
 
 <div class="shell">
@@ -725,10 +774,16 @@ let tab = null;
 function setTab() { tab = 'c'; layoutMargin(); }
 function rangeOf(id) { return view.state.field(cranges)[id] ?? view.state.field(anchors)[id]; }
 function anchorTop(id) { const [a] = rangeOf(id); return view.lineBlockAt(a).top + (view.coordsAtPos(a) ? view.coordsAtPos(a).top - view.documentTop - view.lineBlockAt(a).top : 0); }
+// Round 6 motion: a card that is new since the last render enters, and every card that was already
+// shown glides from its last position. The first render, at page load, does neither.
+let shownCards = null; const lastTop = {};
 function renderMargin() {
   const box = $('#mcards');
   const items = [...NOTES.map(n => ['n', n]), ...THREADS.map(t => ['t', t]), ...COMMENTS.map(c => ['c', c])].filter(([, o]) => rangeOf(o.id)).sort((p, q) => rangeOf(p[1].id)[0] - rangeOf(q[1].id)[0]);
   box.innerHTML = (items.length ? items.map(([k, o]) => `<div class="mcard${o.id === curCmt ? ' cur' : ''}" data-mc="${o.id}">${k === 'c' ? cmtHTML(o) : k === 't' ? threadHTML(o) : noteHTML(o)}</div>`).join('') : '<p class="mempty">Select text in the blueprint to comment on it. Your comments appear here, beside the text they’re about.</p>') + '<button class="btn sm madd" id="madd" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H10l-4 4v-4H5z"/><path d="M12 7.5v5M9.5 10h5"/></svg>Comment</button>';
+  const ids = items.map(([, o]) => o.id);
+  if (shownCards) for (const el of box.querySelectorAll('.mcard')) if (!shownCards.has(el.dataset.mc)) el.classList.add('enter');
+  shownCards = new Set(ids);
   layoutMargin();
 }
 function layoutMargin() {
@@ -746,7 +801,10 @@ function layoutMargin() {
     // Stacking upward can run past the margin's top; push the stack back down from there.
     for (let i = 0; i < it.length; i++) it[i].top = Math.max(it[i].top, i ? it[i - 1].top + it[i - 1].h + gap : floor);
   }
-  for (const x of it) x.el.style.top = x.top + 'px';
+  let moved = false;
+  for (const x of it) if (!x.el.style.top && lastTop[x.id] != null && lastTop[x.id] !== x.top) { x.el.style.top = lastTop[x.id] + 'px'; moved = true; }
+  if (moved) void $('#mcards').offsetHeight;
+  for (const x of it) { x.el.style.top = x.top + 'px'; lastTop[x.id] = x.top; }
   placeAdd(); scrollMargin();
 }
 // The Docs add-comment button: in the margin, level with the selection, while no box is open.
@@ -1005,7 +1063,7 @@ window.addEventListener('scroll', () => {
   document.querySelectorAll('#toc a, #railToc a').forEach(l => { const on = !!cur && +l.dataset.pos === cur.pos; l.classList.toggle('cur', on); on ? l.setAttribute('aria-current', 'location') : l.removeAttribute('aria-current'); });
 }, { passive: true });
 $('#vChanges').onchange = () => { markChanges = $('#vChanges').checked; view.dispatch({ effects: refresh.of(null) }); };
-function toast(m, undo) { document.querySelector('.toast')?.remove(); const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = m; if (undo) { const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Undo'; b.onclick = () => { t.remove(); undo(); }; t.append(b); } document.body.append(t); setTimeout(() => t.remove(), undo ? 6000 : 3200); }
+function toast(m, undo) { document.querySelector('.toast')?.remove(); const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = m; if (undo) { const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Undo'; b.onclick = () => { t.remove(); undo(); }; t.append(b); } document.body.append(t); setTimeout(() => { t.classList.add('leave'); setTimeout(() => t.remove(), 150); }, undo ? 6000 : 3200); }
 function nextCmt(dir) {
   const r = view.state.field(cranges), head = view.state.selection.main.head;
   const ps = Object.values(r).map(x => x[0]).sort((a, b) => a - b); if (!ps.length) return true;
@@ -1059,8 +1117,8 @@ document.addEventListener('click', e => {
 $('#addc').addEventListener('pointerdown', e => { e.preventDefault(); if (!addComment()) toast('Select the text you want to comment on first'); });
 $('#addc').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (!addComment()) toast('Select the text you want to comment on first'); } });
 $('#proto').innerHTML = ROUND === 2
-  ? 'Prototype, comments round 5, screen 2 of 2: the same blueprint queued again after a send-back. Sample data: four comments you might have left, the author’s replies, and the edits those replies describe. <a href="comments.html">Back to the first review</a>.'
-  : 'Prototype, comments round 5, screen 1 of 2: blueprint review with comments. Real data: cairn’s admin troubleshooting blueprint at <code>5c35c06</code>, with two of the six fact-check fixes shown as notes. Select any text with the mouse to comment on it, or select it with the keyboard and press <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd>. <a href="comments.html?round=2">See the round after a send-back</a>.';
+  ? 'Prototype, comments round 6, screen 2 of 2: the same blueprint queued again after a send-back. Sample data: four comments you might have left, the author’s replies, and the edits those replies describe. <a href="comments.html">Back to the first review</a>.'
+  : 'Prototype, comments round 6, screen 1 of 2: blueprint review with comments. Real data: cairn’s admin troubleshooting blueprint at <code>5c35c06</code>, with two of the six fact-check fixes shown as notes. Select any text with the mouse to comment on it, or select it with the keyboard and press <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd>. <a href="comments.html?round=2">See the round after a send-back</a>.';
 $('#lede').textContent = ROUND === 2
   ? 'This blueprint describes a symptom-row page on the admin track. You sent it back with four comments. The author made two changes, answered one comment, and explained why one passage stays. No calls are open.'
   : 'This blueprint describes a symptom-row page on the admin track. The author fixed all six findings from the fact check. No calls are open.';
