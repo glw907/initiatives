@@ -30,8 +30,10 @@ page, merged.
   keep the queue's current look so every screen in it stays coherent, and 907.life later adopts
   that look as separate work (your ruling in the prototype sitting, 2026-10-20). Every review type
   in the queue (packets, PRs, designs, triage lists, blueprints, pages, and change reviews) shares
-  one design language, so the whole queue is consistent and coherent: the document and margin unit
-  centered as one, the place bar, margin notes tied to their lines, and the same keys. A blueprint reaches you only after the author has fixed or
+  one design language, so the whole queue is consistent and coherent: the work at reading width,
+  notes inline under the line they concern, an index pane on the right (open calls,
+  corrections, contents), the decision in the persistent bottom bar, and the same keys. It follows
+  the layout GitHub and Gerrit use for review. A blueprint reaches you only after the author has fixed or
   disputed every fact-check finding, and it shows as an editable document of what the page will
   tell its reader, with a margin note wherever a dispute or correction needs you.
 - A fact-check agent joins the workstation's Claude infrastructure: fresh-context and read-only, it
@@ -94,7 +96,7 @@ API agentic read (closed, superseded); a drafter-side approval gate.
   `:fact[id]` ties a line to its fact and `:::row` holds a troubleshooting row. You edit the file
   itself in the review, so nothing translates your edits back. `drafter check` and `refs` gain a
   markdown reader, the existing cairn blueprints are converted, and the `blueprint` skill changes.
-  This is contestable: YAML validates more strictly, which the front matter keeps for settings.
+  You approved the format in the prototype sitting (2026-10-20).
 - drafter stays unaware of approvals. The workflow enforces "draft only after approval", which
   gives up a mechanical refusal in exchange for a narrow tool.
 - A developer outside this workstation installs drafter and reviews pages however their team
