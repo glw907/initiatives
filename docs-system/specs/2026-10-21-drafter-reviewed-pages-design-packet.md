@@ -6,7 +6,7 @@ Nineteen passes and about $183 of credit produced no accepted page, and every mi
 The docs-system initiative builds drafter, which drafts a docs page from its blueprint. In chat on 2026-10-20 you weighed going on against stopping, and ruled that API credit pays for drafting only. A blueprint is the page's plan: its outline, each section's job, and the facts it may state. The prototype sitting is where you shape the three review screens before anything is built.
 
 ## If you approve
-1. [session] Merge the initiatives PR that files this design, this packet, and the blueprint-first read records.
+1. [session] Merge glw907/initiatives#79, which files this design, this packet, and the blueprint-first read records.
 2. [you: prototype sitting] Review clickable prototypes of blueprint review, page review, and change review, one screen at a time, in rounds, and approve the set.
 3. [session] Plan the pass under pass-core and hand it to conductor-drafter.
 4. [session] File the blueprint-first pass's 23 real fact catches as one cairn backlog item, then delete cairn's `blueprint-first-pages` branch.
@@ -20,6 +20,7 @@ How many fact-check findings the new page's blueprint draws, and how many protot
 | Part | Verdict | Fact | Why |
 |---|---|---|---|
 | glw907/initiatives:docs-system/specs/2026-10-21-drafter-reviewed-pages-design.md | approve | It retires machine acceptance from the flow, adds the fact-check agent and `drafter review`, and records approvals in the lock. | Every owner call was settled in chat on 2026-10-20, and the session's own calls are listed in the design. |
+| glw907/initiatives#79 | approve | The PR files the design, this packet, and the read records. | It changes no behavior. |
 | step:1 | session | A merge can be reverted. | The design is a record. |
 | step:2 | you | Nothing is built before you approve the prototypes. | You asked for the screens to be prototyped carefully. |
 | step:3 | session | Planning runs without you under the standing answers. | The design's `### Standing answers` lists what the run decides alone. |
