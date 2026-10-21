@@ -48,3 +48,17 @@ Margin add button, level with a selection: "Comment"
 Fact-check note card ("Corrected." head) gains a "Resolve" button; resolved note collapses to "Resolved. <note title>" with "Reopen"
 Drawer close button label: "Close comments"
 Rail item meta: "Blueprint, two comments" (screen 1, live) ; "Blueprint, four replies" / "Blueprint, every reply read" (screen 2)
+
+## Round 4 additions (PR #4's copy, the outline in the rail)
+
+The headline, ledes, folds, approve button, and "Mark the lines you changed" now follow PR #4 at `3ade397` (commit `b41de75`, already graded by four voice reviews). New in this round:
+
+Headline (both screens): "Approving this blueprint lets drafter write “Troubleshoot your site” from it."
+Screen 1 lede: "This blueprint describes a symptom-row page on the admin track. The author fixed all six findings from the fact check. No calls are open."
+Screen 2 lede: "This blueprint describes a symptom-row page on the admin track. You sent it back with four comments. The author made two changes, answered one comment, and explained why one passage stays. No calls are open."
+Rail item title: "Blueprint for “Troubleshoot your site”" (was "Approve the plan for Troubleshoot your site")
+Rail outline: aria-label "Contents"; one numbered link per section, as in the round-8 Contents list
+Empty margin: "Select text in the blueprint, then choose Comment. Your comments appear here, beside the text they’re about."
+Gone anchor: "The text you commented on is gone from the blueprint."
+Send-back toast: "Sent back with <n> comments. The author will answer them and queue the blueprint again." (singular: "one comment", "answer it")
+Review folds: took the toast, screen-2 lede, and quoted rail title rewrites. Kept "choose Comment" over "click", for consistency with the earlier rounds and with touch screens.

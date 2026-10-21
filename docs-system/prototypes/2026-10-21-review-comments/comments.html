@@ -276,7 +276,8 @@ html { font-size: clamp(16px, 13.4px + 0.18vw, 18.5px); }
 
 /* Round 6: drawers. Below 1260px the review pane slides in from the right; below 1024px the queue
    rail slides in from the left behind an app bar. Same content, same order, at every width. */
-.appbar, .drawer-x, #toc { display: none; }
+.appbar, .drawer-x { display: none; }
+#toc[hidden] { display: none; }
 .scrim { position: fixed; inset: 0; z-index: 39; background: rgb(17 23 30 / .32); }
 .drawer-x { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border: 0; border-radius: var(--r-field); background: transparent; color: var(--muted); cursor: pointer; place-items: center; }
 .drawer-x:hover { background: var(--b3); color: var(--ink); }
@@ -373,6 +374,16 @@ kbd { opacity: 1; }
 .review:not(.cmode) .mlayer { display: none; }
 @media (max-width: 1259.98px) { .review .mlayer, .review .mcards { position: static; transform: none !important; } .review .mcard { position: static; margin-bottom: 10px; } .review .mempty { position: static; } }
 .cm-tooltip.cm-tooltip { z-index: 20; }
+/* Round 4: the outline lives in the rail, under the item it belongs to, on the item's own rule. */
+.rail-toc { list-style: none; margin: 2px 0 8px 6px; padding: 4px 0 4px 6px; border-left: 1px solid var(--b3); display: grid; gap: 1px; }
+.rail-toc a { display: flex; gap: 6px; align-items: baseline; padding: 3px 8px; border-radius: var(--r-field); color: var(--ink); text-decoration: none; line-height: 1.35; }
+.rail-toc a:hover { background: var(--b3); }
+.rail-toc a.cur { background: var(--b3); font-weight: 600; }
+.rail-toc .n { min-width: 1.5rem; }
+.rail-toc a.l3 { padding-left: 22px; }
+.rail { overflow-y: auto; }
+.madd[hidden] { display: none; }
+@media (min-width: 1024px) { #tocBtn, #toc { display: none !important; } }
 /* Round 3: designed for comments. The page and its margin are one unit, centered between the rail
    and the window edge, as a Docs page and its comment column are. The place bar and the decision bar
    span the unit; the outline lives in the place bar's Contents menu; the old right pane is gone. */
@@ -449,8 +460,8 @@ kbd { opacity: 1; }
     <div class="title">Design &amp; PR Approvals</div>
     <div class="sub">3 waiting</div>
     <div class="group">Docs system</div>
-    <a class="q" data-round="1" href="comments.html"><span>Approve the plan for Troubleshoot your site</span><span class="meta"><span data-rmeta="1">Blueprint</span><span>now</span></span></a>
-    <a class="q" data-round="2" href="comments.html?round=2"><span>Approve the plan for Troubleshoot your site</span><span class="meta"><span data-rmeta="2">Blueprint, four replies</span><span>sample</span></span></a>
+    <a class="q" data-round="1" href="comments.html"><span>Blueprint for “Troubleshoot your site”</span><span class="meta"><span data-rmeta="1">Blueprint</span><span>now</span></span></a>
+    <a class="q" data-round="2" href="comments.html?round=2"><span>Blueprint for “Troubleshoot your site”</span><span class="meta"><span data-rmeta="2">Blueprint, four replies</span><span>sample</span></span></a>
     <div class="q"><span>Approve the page for Restrict admin access</span><span class="meta"><span>Page, example</span><span>1h</span></span></div>
     <div class="group">Decided this session</div>
     <div class="dq"><span>Approval packets design</span><span>Approved</span></div>
@@ -471,10 +482,10 @@ kbd { opacity: 1; }
       </header>
 
       <div class="work">
-        <details class="bg bg-first"><summary><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg><span><span class="lead">What you're deciding.</span> Whether this plan makes the right page: the right reader, the right order, and the right things said.</span></summary>
-          <div class="body"><p>Approving lets drafter write the page from this file. You'll read the draft next, on the page review screen.</p><p>You aren't checking facts against the code. A fresh agent did that, and the author fixed what it found or disputed it. The notes show where that changed the plan.</p></div></details>
-        <details class="bg"><summary><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg><span><span class="lead">How to change it.</span> It's the blueprint file itself. Type anywhere, and each pause saves it.</span></summary>
-          <div class="body"><p>Each <code>##</code> heading is a section, and the italic line under it says what the section does for the reader. Each bullet is a point the page will make. A <code>:::row</code> block is one troubleshooting row. The small <code>:fact[…]</code> tag ties a line to the fact behind it, so leave it on the line it came with.</p><p>To ask the author for a change instead of making it, select the text and choose <b>Comment</b>. Your comments go to the author with your decision.</p><p>Ctrl+Z undoes, F8 moves to the next call for you, and <kbd>?</kbd> lists every shortcut.</p></div></details>
+        <details class="bg bg-first"><summary><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg><span><span class="lead">What you're deciding.</span> Whether this blueprint describes the page its reader needs, in the order they need it.</span></summary>
+          <div class="body"><p>Approving lets drafter write the page from this file. The draft comes back to you on the page review screen.</p><p>You aren’t checking facts against the code. A fresh agent checked each claim, and the author fixed or disputed every finding. The notes mark where a finding changed the blueprint.</p></div></details>
+        <details class="bg"><summary><svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg><span><span class="lead">How to change it.</span> The editor below shows the blueprint file. Type anywhere, and the file saves each time you pause.</span></summary>
+          <div class="body"><p>Each <code>##</code> heading is a section, and the italic line under it says what the section does for the reader. Each bullet is a point the page makes. A <code>:::row</code> block is one troubleshooting row. The <code>:fact[…]</code> tag ties a line to the fact behind it, so leave it on the line it came with.</p><p>To ask the author for a change instead of making it, select the text and choose <b>Comment</b>. Your comments go to the author with your decision.</p><p>Each save is a commit in the session’s worktree. Ctrl+Z undoes, F8 moves to the next call for you, and Ctrl+Enter approves.</p></div></details>
 
         <div class="place" id="place">
           <span class="where" id="where"><b>Debug your site</b></span>
@@ -483,7 +494,7 @@ kbd { opacity: 1; }
           <button class="linkbtn" id="cmtBtn" type="button" aria-expanded="false" aria-controls="review">Comments <span class="ncount" id="cmtBtnN"></span></button>
         </div>
         <div class="unit">
-        <div class="edwrap"><div class="edbar"><span class="fname">troubleshooting.blueprint.md</span><button class="linkbtn addc" id="addc" type="button" aria-disabled="true" title="Select text to comment on it">Comment <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd></button><label class="marks"><input type="checkbox" id="vChanges"> Mark my edits</label><span class="esaved" id="esaved" role="status" aria-live="polite">No edits</span></div><div id="cm"><p class="loading">Loading the editor…</p></div></div>
+        <div class="edwrap"><div class="edbar"><span class="fname">troubleshooting.blueprint.md</span><button class="linkbtn addc" id="addc" type="button" aria-disabled="true" title="Select text to comment on it">Comment <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd></button><label class="marks"><input type="checkbox" id="vChanges"> Mark the lines you changed</label><span class="esaved" id="esaved" role="status" aria-live="polite">No edits</span></div><div id="cm"><p class="loading">Loading the editor…</p></div></div>
         <aside class="review margin" id="review" aria-label="Comments">
           <button class="drawer-x" data-close type="button" aria-label="Close comments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
           <div class="mtitle"><span>Comments</span><span class="ncount" id="tabCn">0</span></div>
@@ -501,7 +512,7 @@ kbd { opacity: 1; }
           <form class="bar" onsubmit="return false">
             <button class="btn outline" data-act="hold" type="button">Send back with note</button>
             <div class="state" role="status"><p class="s1" data-s1></p><p class="s2" data-s2></p></div>
-            <button class="btn primary" data-act="approve" type="button">Approve the plan <kbd>Ctrl</kbd><kbd>Enter</kbd></button>
+            <button class="btn primary" data-act="approve" type="button">Approve the blueprint <kbd>Ctrl</kbd><kbd>Enter</kbd></button>
           </form>
         </div>
       </div>
@@ -663,7 +674,7 @@ class CmtWidget extends WidgetType {
   toDOM() { const w = document.createElement('div'); w.className = 'notewidget'; w.innerHTML = this.kind === 'c' ? cmtHTML(this.obj) : threadHTML(this.obj); return w; }
   ignoreEvent() { return true; }
 }
-const removedNote = '<p class="muted" style="font-size:.85rem">The text you commented on is gone from the plan.</p>';
+const removedNote = '<p class="muted" style="font-size:.85rem">The text you commented on is gone from the blueprint.</p>';
 function cmtHTML(c) {
   const gone = c.gone;
   // The highlight above already shows the text; the quote returns only once that text is gone.
@@ -715,7 +726,7 @@ function anchorTop(id) { const [a] = rangeOf(id); return view.lineBlockAt(a).top
 function renderMargin() {
   const box = $('#mcards');
   const items = [...NOTES.map(n => ['n', n]), ...THREADS.map(t => ['t', t]), ...COMMENTS.map(c => ['c', c])].filter(([, o]) => rangeOf(o.id)).sort((p, q) => rangeOf(p[1].id)[0] - rangeOf(q[1].id)[0]);
-  box.innerHTML = (items.length ? items.map(([k, o]) => `<div class="mcard${o.id === curCmt ? ' cur' : ''}" data-mc="${o.id}">${k === 'c' ? cmtHTML(o) : k === 't' ? threadHTML(o) : noteHTML(o)}</div>`).join('') : '<p class="mempty">Select text in the plan, then choose Comment. Your comments appear here, beside the text they’re about.</p>') + '<button class="btn sm madd" id="madd" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H10l-4 4v-4H5z"/><path d="M12 7.5v5M9.5 10h5"/></svg>Comment</button>';
+  box.innerHTML = (items.length ? items.map(([k, o]) => `<div class="mcard${o.id === curCmt ? ' cur' : ''}" data-mc="${o.id}">${k === 'c' ? cmtHTML(o) : k === 't' ? threadHTML(o) : noteHTML(o)}</div>`).join('') : '<p class="mempty">Select text in the blueprint, then choose Comment. Your comments appear here, beside the text they’re about.</p>') + '<button class="btn sm madd" id="madd" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v10H10l-4 4v-4H5z"/><path d="M12 7.5v5M9.5 10h5"/></svg>Comment</button>';
   layoutMargin();
 }
 function layoutMargin() {
@@ -741,7 +752,7 @@ function placeAdd() {
   const b = document.getElementById('madd'); if (!b) return;
   const s = view.state.selection.main, busy = COMMENTS.some(c => c.draft || c.editing) || THREADS.some(t => t.replying);
   b.hidden = !MARGIN.matches || tab !== 'c' || s.empty || busy;
-  if (!b.hidden) b.style.top = (view.documentTop - $('#mcards').getBoundingClientRect().top + view.lineBlockAt(s.head).top) + 'px';
+  if (!b.hidden) b.style.top = (view.documentTop - $('#mcards').getBoundingClientRect().top + view.lineBlockAt(s.from).top) + 'px';
 }
 function scrollMargin() {}
 function redraw() { view.dispatch({ effects: refresh.of(null) }); status(); toc(); renderMargin(); }
@@ -865,7 +876,7 @@ function status() {
   rm.textContent = ROUND === 2 ? (left ? `Blueprint, ${words(left)} repl${left === 1 ? 'y' : 'ies'}` : 'Blueprint, every reply read') : nc ? `Blueprint, ${words(nc)} comment${nc === 1 ? '' : 's'}` : 'Blueprint';
   $('#cmtBtnN').textContent = NOTES.filter(n => !(n.id in decided)).length + THREADS.filter(t => t.state !== 'resolved').length + nc;
   $('#tabCn').textContent = NOTES.filter(n => !(n.id in decided)).length + THREADS.filter(t => t.state !== 'resolved').length + nc;
-  $('#headline').textContent = ROUND === 2 ? `The author answered your ${words(THREADS.length)} comments on the plan for Troubleshoot your site.` : `The plan for Troubleshoot your site is ready to read, with ${words(o) === 'no' ? 'nothing left' : words(o) + ' call' + (o > 1 ? 's' : '')} for you along the way.`;
+  $('#headline').textContent = 'Approving this blueprint lets drafter write “Troubleshoot your site” from it.';
   $('#openct').innerHTML = o ? `<button class="linkbtn" id="nextOpen" style="color:var(--warning-ink)">Next call for you <kbd>F8</kbd></button>` : NOTES.some(n => n.kind !== 'info') ? '<span style="color:var(--success-ink)">Every call made</span>' : '';
   $('#nextOpen') && ($('#nextOpen').onclick = nextOpen);
   const s1 = o ? `Make ${words(o)} call${o > 1 ? 's' : ''} to approve` : 'Ready to approve';
@@ -882,6 +893,10 @@ function headings() {
   for (let i = 1; i <= doc.lines; i++) { const l = doc.line(i), h = /^(#{2,3}) (.*)/.exec(l.text); if (h) out.push({ pos: l.from, lv: h[1].length, text: h[2] }); }
   return out;
 }
+// The open item's outline sits under it in the rail; the place bar's Contents menu carries the same
+// list while the rail is a drawer.
+const railToc = document.createElement('ol'); railToc.className = 'rail-toc rv-contents'; railToc.id = 'railToc'; railToc.setAttribute('aria-label', 'Contents');
+document.querySelector(`.rail a.q[data-round="${ROUND}"]`).after(railToc);
 function toc() {
   const hs = headings(), a = view.state.field(anchors); let x = 0, y = 0;
   const html = hs.map(h => {
@@ -891,7 +906,7 @@ function toc() {
     const mk = ns.some(n => n.kind !== 'info') ? '<span class="mk" style="background:var(--warning)" title="A call for you"></span>' : ns.length ? '<span class="mk" style="background:var(--info)" title="Corrected"></span>' : '';
     return `<li><a href="#" class="l${h.lv}" data-pos="${h.pos}" title="${esc(h.text.replace(/`/g, ''))}"><span class="n">${h.lv === 2 ? x : x + '.' + y}</span><span class="t">${md(h.text)}</span>${mk}</a></li>`;
   }).join('');
-  $('#toc').innerHTML = html.replace(/<\/?li>/g, '');
+  $('#toc').innerHTML = html.replace(/<\/?li>/g, ''); railToc.innerHTML = html;
 }
 function scrollToPos(pos, focusNote) {
   const top = view.lineBlockAt(pos).top + view.documentTop + window.scrollY - window.scrollY;
@@ -906,7 +921,7 @@ function nextOpen() {
   curCmt = nx[0].id; view.dispatch({ effects: refresh.of(null) }); renderMargin();
   scrollToPos(nx[1]); view.focus(); return true;
 }
-document.addEventListener('click', e => { const l = e.target.closest('#toc a[data-pos], .review a[data-pos]'); if (!l) return; e.preventDefault(); toggleToc(false); scrollToPos(+l.dataset.pos); view.focus(); });
+document.addEventListener('click', e => { const l = e.target.closest('#toc a[data-pos], #railToc a[data-pos]'); if (!l) return; e.preventDefault(); toggleToc(false); toggleRail(false); scrollToPos(+l.dataset.pos); view.focus(); });
 let opener = null;
 function drawer(el, btn, open) {
   if (open === el.classList.contains('open')) return;
@@ -961,7 +976,7 @@ function help() {
   h.innerHTML = `<div role="dialog" aria-label="Keyboard shortcuts"><h2>Keyboard shortcuts</h2><dl>
     <dt><kbd>F8</kbd></dt><dd>Next call for you</dd><dt><kbd>Ctrl</kbd><kbd>Z</kbd></dt><dd>Undo</dd>
     <dt><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>Z</kbd></dt><dd>Redo</dd><dt><kbd>Ctrl</kbd><kbd>S</kbd></dt><dd>Save now (it also saves as you pause)</dd>
-    <dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd></dt><dd>Comment on the selected text</dd><dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>N</kbd> / <kbd>P</kbd></dt><dd>Next or previous comment</dd><dt><kbd>Ctrl</kbd><kbd>Enter</kbd></dt><dd>Save the comment you're writing, or approve the plan</dd><dt><kbd>?</kbd></dt><dd>This list, outside the editor</dd></dl>
+    <dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd></dt><dd>Comment on the selected text</dd><dt><kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>N</kbd> / <kbd>P</kbd></dt><dd>Next or previous comment</dd><dt><kbd>Ctrl</kbd><kbd>Enter</kbd></dt><dd>Save the comment you're writing, or approve the blueprint</dd><dt><kbd>?</kbd></dt><dd>This list, outside the editor</dd></dl>
     <p style="margin:12px 0 0;text-align:right"><button class="btn sm" type="button">Close</button></p></div>`;
   h.onclick = e => { if (e.target === h || e.target.closest('button')) { h.remove(); prev?.focus(); } };
   document.body.append(h); h.querySelector('button').focus();
@@ -970,7 +985,7 @@ window.addEventListener('scroll', () => {
   let cur = null; const lim = 130;
   for (const h of headings()) { if (view.documentTop + view.lineBlockAt(h.pos).top < lim) cur = h; else break; }
   $('#where').innerHTML = cur ? `<b>${md(cur.text)}</b>` : '<b>Debug your site</b>';
-  document.querySelectorAll('#toc a').forEach(l => { const on = !!cur && +l.dataset.pos === cur.pos; l.classList.toggle('cur', on); on ? l.setAttribute('aria-current', 'location') : l.removeAttribute('aria-current'); });
+  document.querySelectorAll('#toc a, #railToc a').forEach(l => { const on = !!cur && +l.dataset.pos === cur.pos; l.classList.toggle('cur', on); on ? l.setAttribute('aria-current', 'location') : l.removeAttribute('aria-current'); });
 }, { passive: true });
 $('#vChanges').onchange = () => { markChanges = $('#vChanges').checked; view.dispatch({ effects: refresh.of(null) }); };
 function toast(m, undo) { document.querySelector('.toast')?.remove(); const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = m; if (undo) { const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Undo'; b.onclick = () => { t.remove(); undo(); }; t.append(b); } document.body.append(t); setTimeout(() => t.remove(), undo ? 6000 : 3200); }
@@ -993,13 +1008,13 @@ function hold() {
   const o = openNotes().map(n => `- Still open: ${n.title}`), ne = changedLines();
   const nc = COMMENTS.length + THREADS.filter(t => t.mine).length;
   $('#sbsub').textContent = nc ? `This note goes back with your ${words(nc)} comment${nc > 1 ? 's' : ''} and your edits and decisions. A note is optional when you\u2019ve commented.` : 'Your edits and decisions go with this note.';
-  if (!$('#sbnote').value) $('#sbnote').value = [...o, ne ? `- ${ne} line${ne > 1 ? 's' : ''} changed in the plan` : ''].filter(Boolean).join('\n') + (o.length || ne ? '\n\n' : '');
+  if (!$('#sbnote').value) $('#sbnote').value = [...o, ne ? `- ${ne} line${ne > 1 ? 's' : ''} changed in the blueprint` : ''].filter(Boolean).join('\n') + (o.length || ne ? '\n\n' : '');
   $('#sbnote').focus();
 }
 document.querySelectorAll('[data-act="approve"]').forEach(b => b.onclick = approve);
 document.querySelectorAll('[data-act="hold"]').forEach(b => b.onclick = hold);
 $('#sbCancel').onclick = () => { $('#sendback').hidden = true; };
-$('#sbSend').onclick = () => { const nc = COMMENTS.length + THREADS.filter(t => t.mine).length; if (!nc && !$('#sbnote').value.trim()) { $('#sbnote').focus(); return; } $('#sendback').hidden = true; toast(nc ? `Sent back. The author answers your ${words(nc)} comment${nc > 1 ? 's' : ''} and queues the plan again.` : 'Sent back. The author gets your note, edits, and calls.'); };
+$('#sbSend').onclick = () => { const nc = COMMENTS.length + THREADS.filter(t => t.mine).length; if (!nc && !$('#sbnote').value.trim()) { $('#sbnote').focus(); return; } $('#sendback').hidden = true; toast(nc ? `Sent back with ${words(nc)} comment${nc > 1 ? 's' : ''}. The author will answer ${nc > 1 ? 'them' : 'it'} and queue the blueprint again.` : 'Sent back. The author gets your note, edits, and calls.'); };
 /* comment and thread actions, and the keys inside a comment box */
 document.addEventListener('input', e => { const id = e.target.dataset?.ta; if (!id) return; const o = COMMENTS.find(x => x.id === id) || THREADS.find(x => x.id === id); o.buf = e.target.value; });
 document.addEventListener('keydown', e => {
@@ -1027,11 +1042,11 @@ document.addEventListener('click', e => {
 $('#addc').addEventListener('pointerdown', e => { e.preventDefault(); if (!addComment()) toast('Select the text you want to comment on first'); });
 $('#addc').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (!addComment()) toast('Select the text you want to comment on first'); } });
 $('#proto').innerHTML = ROUND === 2
-  ? 'Prototype, comments round 1, screen 2 of 2: the same plan queued again after a send-back. Sample data: four comments you might have left, the author’s replies, and the edits those replies describe. <a href="comments.html">Back to the first review</a>.'
-  : 'Prototype, comments round 1, screen 1 of 2: blueprint review with comments. Real data: cairn’s admin troubleshooting blueprint at <code>5c35c06</code>, with two of the six fact-check fixes shown as notes. Select any text and choose <b>Comment</b>, or press <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd>. <a href="comments.html?round=2">See the round after a send-back</a>.';
+  ? 'Prototype, comments round 4, screen 2 of 2: the same blueprint queued again after a send-back. Sample data: four comments you might have left, the author’s replies, and the edits those replies describe. <a href="comments.html">Back to the first review</a>.'
+  : 'Prototype, comments round 4, screen 1 of 2: blueprint review with comments. Real data: cairn’s admin troubleshooting blueprint at <code>5c35c06</code>, with two of the six fact-check fixes shown as notes. Select any text and choose <b>Comment</b>, or press <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd>. <a href="comments.html?round=2">See the round after a send-back</a>.';
 $('#lede').textContent = ROUND === 2
-  ? 'You sent this plan back with four comments. The author made two changes, answered your question, and kept one passage, with a reason. Resolve each reply you accept, and reply to any you don\u2019t. Your replies go back with your decision.'
-  : 'A troubleshooting page for people who run a cairn site and write no code. The fact check read its 46 facts against the code, and the author fixed the six lines it found too broad. Nothing needs your call.';
+  ? 'This blueprint describes a symptom-row page on the admin track. You sent it back with four comments. The author made two changes, answered one comment, and explained why one passage stays. No calls are open.'
+  : 'This blueprint describes a symptom-row page on the admin track. The author fixed all six findings from the fact check. No calls are open.';
 document.addEventListener('pointerdown', e => { if (e.target.closest('#madd')) { e.preventDefault(); addComment(); } });
 document.addEventListener('click', e => {
   const m = e.target.closest('.cm-cmt, .cm-anchor'); if (!m || MARGIN.matches) return;
