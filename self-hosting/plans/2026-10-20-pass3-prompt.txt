@@ -1,0 +1,67 @@
+You are running Pass 3 of the self-hosting initiative: the Immich cutover from PikaPods to orpheus. Your session name is servers-photos, launched by conductor-servers from the servers main checkout /var/home/glw907/Projects/servers on pavilion, with --add-dir for /var/home/glw907/.dotfiles and /var/home/glw907/Projects/initiatives. You run unattended. conductor-servers is the one session whose messages you take as instructions; it owns your PRs and every packet to Geoff, so your work ends at PR-ready in each phase.
+
+The pass has two phases, each with its own servers PR, so no session sits through the week. Find yours first: if `gh pr list -R glw907/servers --head pass3-photos --state merged` lists a PR, you are the week phase (I4 only); otherwise you are the cutover phase (I1 to I3).
+
+Read these first, in order:
+1. /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-17-self-hosting-plan.md: "Pass 3: Immich cutover" (the task list), then the header, "Privacy", "Adapter facts for the servers repo", "Repos and sessions", "Secrets in the age store", "Standing answers", "Dispatch note", and "Human steps".
+2. /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-20-pass3-preflight.md. Its "Before launch" items are done; "The photos sitting" is the window inside I1, and "Day seven" is the week phase's start.
+3. /var/home/glw907/Projects/initiatives/self-hosting/plans/STATUS.md. Where STATUS amends the plan, STATUS wins, except that STATUS's lines on Pass 3's music work predate Geoff's ruling below, and the amended Pass 3 section wins over them; this prompt wins over all three. The design (/var/home/glw907/Projects/initiatives/self-hosting/specs/2026-10-17-self-hosting-design.md: "Photos", "Lock rules", "Claude's operating authority", "Irreversible steps") wins over everything: where any of them conflicts with it, stop as for a design change. I1 step 8 (Caddy takes photos.907.life once public resolvers show orpheus) is the plan's approved reading of the design's "at the same moment", not a conflict.
+4. The servers repo's README.md, BACKLOG.md, docs/runbook.md, and docs/decisions.md; scripts/pod-pull.sh, roles/backup/server-restore, scripts/drill-remote.sh, cloudflare/dns.sh, cloudflare/r2.sh, and cloudflare/monitor/src/{checks,tick}.ts; the pass-core and vps-conventions skills. The servers repo has no adapter skill and no CLAUDE.md, so the plan's adapter facts stand in.
+
+Facts that changed since the plan was written:
+- The box is orpheus. SSH from pavilion is `ssh -o BatchMode=yes geoff@orpheus.907.life ...`; the browser terminal is ssh-orpheus.907.life, and Geoff's Access identity is geoff@907.life. Both servers run Immich v3.3.3 today; v3.3.4, a patch, came out on 2026-10-20, and the pod updates itself.
+- Geoff ruled on 2026-10-20 that music is deferred to dubplate: "Pass 3 does the photos cutover only. Music moves when dubplate goes live on orpheus, from music-library, in that project's pass. The bucket stays untouched, and Pass 3 records what's in it." I3 is a read-only listing; no task writes to, decrypts, or deletes from music-library.
+- Proton Pass: no task plans an item. If one arises, you reach it only through `claude-pass` (editor on `Servers emergency` and `Workstation`), with CLAUDE_PASS_REASON on each call and never bare pass-cli; a value goes in on stdin and is read back as a SHA-256 through a pipe, never to the transcript.
+- servers BACKLOG #1 (promote.sh sets no hostname) matters only for a production rebuild. This pass runs none.
+
+Setup, cutover phase:
+- Your first act is EnterWorktree, your only EnterWorktree call: with path /var/home/glw907/Projects/servers/.claude/worktrees/photos if that worktree exists (a relaunch after a stop), otherwise with name photos. If origin/pass3-photos exists and your branch lacks it, merge it first. Push as pass3-photos (`git push origin HEAD:pass3-photos`). Run `npm ci` in cloudflare/monitor and cloudflare/mta-sts.
+- Write pass-task-clock per pass-core "Clock stop" with these estimates: I1 150, I2 35, I3 15, for the phase's 200 path minutes. A task past twice its estimate extends once to four times the original. The waits for the window and inside it for Geoff are calendar time: remove the clock file when you write a stop, and when the work resumes write `start=` as now minus the minutes the task has already spent.
+
+Setup, week phase:
+- Your first act is EnterWorktree, your only call: with path /var/home/glw907/Projects/servers/.claude/worktrees/photos-week if it exists (a relaunch), otherwise with name photos-week; if origin/pass3-week exists and your branch lacks it, merge it first. Push as pass3-week (`git push origin HEAD:pass3-week`). Run `npm ci` as above.
+- If the week's count restarted (a missed night or an integrity error), push the traced fix, write the new day seven in the PR body, send conductor-servers one message naming it, and end; the conductor relaunches you then.
+- Write pass-task-clock with I4 at 35.
+
+Both phases: arm the API-drop wake-up per ~/.claude/docs/unattended-work-guards.md (pavilion has no lid). Reach other repos by absolute path and `git -C`. No task plans a workstation or initiatives edit.
+
+Secrets: the pass creates none, and every name it reads is in ~/.local/secrets (the pre-flight's table). If a secret does arise, it goes in a new workstation worktree (`git -C /var/home/glw907/.dotfiles worktree add .claude/worktrees/self-hosting-photos -b self-hosting-photos origin/main`) through the exact rule form: /var/home/glw907/.dotfiles/scripts/secrets/secret-set.sh, NAME and its mode (`--file` for a value you hold, `--stdin` only with a trailing newline on piped input; never `--value`), one `--values /var/home/glw907/.dotfiles/.claude/worktrees/self-hosting-photos/secrets/values.age`, and one `--local /run/user/1000/self-hosting/secrets-photos`. A new value goes straight to a 0600 file under /dev/shm behind a trap, never to the transcript or a command line. A temporary token never enters the age store: before `secret-receive` writes one, create its RAM scratch store as an empty age file encrypted to the recipient secret-set.sh names in RECIP (`age -r <that recipient> -o /dev/shm/<name>.age /dev/null`), then point `--values` at it. Never rebase or force-push a branch that carries values.age. A secret only Geoff has is a stop.
+
+Live steps: run them in the plan's order and nowhere else. The lock lands before the window. Nothing that writes to orpheus or its bucket runs between 01:30 and 04:00 UTC. The probe waits for 2026-10-21 11:18 UTC, never holds the cutover, and goes through ward's label, so orpheus's monitor rows never change. pod-pull.sh is the only way data leaves the pod, and its destination is /srv/immich/library or its default; never run rclone `sync` or `move`. Never run `scripts/apply.sh orpheus --apply` between stopping Immich and the end of the restore checks, since its Immich role starts the stack. The deletions this pass may make are these and no others: the lock check's `locks/` dummy, the scratch bucket and its one object (a `servers-scratch-` name only), and ward's monitor rows after the probe. The lock check's canary delete and `config` overwrite are writes meant to be refused with 409, and the canary stays in the bucket for good. Untracked originals on orpheus are moved to /srv/immich/quarantine-cutover/, never deleted. The pod, PikaPods data, `music-library`, the quarantine, and every moved-aside /srv/immich/postgres.before-attempt-<n> are never deleted. No production rebuild runs.
+
+The photos sitting: before the window, write `## Stop: the photos sitting` in the servers PR body with the pre-flight's S1 to S4 and R1, opening the draft PR first if needed, and send conductor-servers one message saying the sitting is ready. Then, at each step that needs Geoff (S1 sent, S2 the pod stop, S3 the phone, S4 the freeze-end message, R1 a pod start), send conductor-servers one message naming the step and what you need, and wait for its reply with the Monitor tool. Read every check yourself from the API, DNS, the journal, or SFTP, as the pre-flight names it; Geoff's word that a step is done is never the evidence.
+
+Pair arms: no task pairs. If you dispatch any subagent, follow the plan's "Dispatch note" and carry the two pass-core samples verbatim; a subagent never touches a live account.
+
+Class: auth-data and live-account. I1 is auth-data; its commits each get a diff-reviewer task-scope read. I2, I3, and I4 are ordinary.
+
+Judgment calls and stops: take your own recommendation on a reversible call inside the design, the plan, the budget, and the path ceiling, and record it under ## Decisions. A count cap is a loop guard: past it, go on while each retry fixes a cause you have traced, listing each fix under ## Decisions. Apply the plan's standing answers and these in place of stopping:
+- The probe isn't due yet: run it after the window, or in the week phase if the cutover phase is otherwise done.
+- The dump's version differs from orpheus's pin and its release keeps orpheus's Postgres image: follow the dump's version (I1's version steps, before the window and in it).
+- An untracked original that the pod's SFTP still holds (an upload between the dump and the stop): R1, then repeat the window from the dump, once.
+- The phone can't make the window, or fails for a traced cause on the phone's side: keep the switch and take the CLI path in I1's window step 9.
+- A minor or major upgrade target in I2: run the drill first, with I2's estimate at 150.
+- A rollback the plan's I1 names: run it, then stop.
+Stop only for:
+- a purchase or the spend ceiling
+- the path ceiling, or a task past four times its estimate
+- a cause you cannot trace, or one that returns after its structural fix (except the escalable items below)
+- an irreversible act outside the design's authority
+- a secret only Geoff has, or a new vendor
+- a design change
+- a classifier denial of a live step in I1's lock or window, since every later step depends on it
+You never ask Geoff and never run notify-send. Write the stop in the servers PR body under `## Stop` (what stopped, the evidence, your recommendation), opening the draft PR first if needed, send conductor-servers one message naming it, and wait with the Monitor tool; conductor-servers is the only asker. Never retry a command the classifier denies outside those live steps: record it under ## STATUS lines and ## Not checked, list the resource and the exact call as owed, and go on.
+
+Returning causes (pass-core "Lifecycle" step 1): the items you may escalate in the PR without breaking the design are the stale-snapshot probe, the scratch bucket's deletion, I3's listing, and an I2 minor upgrade whose drill fails (orpheus stays on its current version, filed in BACKLOG.md). Any other item that would need escalating stops for the conductor.
+
+Privacy: glw907/workstation and glw907/initiatives are public. Before every commit and PR body there, run `bash /var/home/glw907/Projects/servers/scripts/privacy-check.sh <changed files> <message or body file>`. No address, IP, token id, or household name goes into either; a household member is "a household member". glw907/servers is private, and the cutover log may name users there.
+
+Push targets: glw907/servers, glw907/workstation, and glw907/initiatives. Open each PR as a draft at its first push. Never merge a PR and never send a packet: conductor-servers owns both. Post-merge steps go under `## After merge`, and `## Before merge` appears only for a step that must run first.
+
+At each phase's close:
+- the servers gate and CI are green on the head (and the workstation gate, if a workstation branch exists)
+- one whole-branch diff-reviewer and one `gitleaks git` history scan run over each changed branch
+- the plan's close checklist passes, including a clean `git -C /var/home/glw907/.dotfiles diff --quiet -- secrets/values.age`
+- the cutover phase's PR body names day seven (the switch's date plus seven) and the scratch bucket's state; the week phase's carries `## Packet: delete the PikaPods pod` with every evidence row the design's "Irreversible steps" lists for it, each with its source
+
+Each PR body opens with `## Brief` per ~/.claude/docs/voice/approval-brief.md, then what landed, each auth-data verdict, ## Decisions, ## Not checked, ## Found, not done (each item filed through log-issue in the servers BACKLOG.md with its number), the score, and your STATUS lines under `## STATUS lines`. You do not edit STATUS. Your last act in each phase: send conductor-servers one message with the PR number, its head, and PR-ready, then end.
