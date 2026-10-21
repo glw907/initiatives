@@ -28,9 +28,10 @@ page, merged.
   findings on the passage they concern, edits the markdown in a CodeMirror editor modeled on
   cairn's, commits each save to the worktree, and prints your decision as JSON. The new screens
   keep the queue's current look so every screen in it stays coherent, and 907.life later adopts
-  that look as separate work (your ruling in the prototype sitting, 2026-10-20). The existing PR
-  review and packet screens take the new screens' design language as it settles: the document and
-  margin unit centered as one, the place bar, margin notes tied to their lines, and the same keys. A blueprint reaches you only after the author has fixed or
+  that look as separate work (your ruling in the prototype sitting, 2026-10-20). Every review type
+  in the queue (packets, PRs, designs, triage lists, blueprints, pages, and change reviews) shares
+  one design language, so the whole queue is consistent and coherent: the document and margin unit
+  centered as one, the place bar, margin notes tied to their lines, and the same keys. A blueprint reaches you only after the author has fixed or
   disputed every fact-check finding, and it shows as an editable document of what the page will
   tell its reader, with a margin note wherever a dispute or correction needs you.
 - A fact-check agent joins the workstation's Claude infrastructure: fresh-context and read-only, it
@@ -44,9 +45,10 @@ page, merged.
 
 ### If you approve
 
-1. In an attended sitting, the session builds clickable prototypes of the three screens with real
-   data, one screen at a time, in approval-queue's house look. You review each in rounds until it
-   is right and approve the set. Nothing is built before that approval.
+1. In an attended sitting, the session builds clickable prototypes of the three new screens with
+   real data, one screen at a time, in approval-queue's house look, then the existing packet, PR,
+   design, and triage screens restyled to match. You review each in rounds until it is right and
+   approve the set. Nothing is built before that approval.
 2. The build runs as one pass across approval-queue, drafter, and the workstation, matched to the
    prototypes and checked against them with `visual-fidelity`.
 3. The troubleshooting page goes through the flow, and the cairn PR merges after your two
