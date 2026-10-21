@@ -74,7 +74,7 @@ From the design, applied in place of stopping:
 
 | Situation | Answer |
 |---|---|
-| No EU location stocks a CX33 | Retry daily for seven days, then report a stall to Geoff (design, "Locations and types"). In Pass 5 the server-free tasks run first, and the conductor holds the daily check (the Pass 5 conductor prompt). Pass 5's plan packet asks Geoff ahead, in a Decide block, what follows a seven-day stall: keep waiting (recommended), or take a CPX22 for ward. A CX43 is no option, since no CX type was in stock in any EU location on 2026-10-21. The conductor records his pick in STATUS, and L2 reads the type from `WARD_SERVER_TYPE`. |
+| No EU location stocks a CX33 | Wait for a CX33, checked once a month (Geoff, 2026-10-21, in chat: "We can just check monthly for Hetzner."). This replaces the design's daily retry and seven-day stall report ("Locations and types"): no stall report and no other server type. In Pass 5 the server-free tasks run first, and the conductor holds the monthly check (the Pass 5 conductor prompt). L2 reads the type from `WARD_SERVER_TYPE`, which stays `cx33`. |
 | A Primary IP is on a blocklist | Allocate a new one before attaching (design, "IPs"). The listed one is renamed with a `-listed` suffix first, so a rerun skips it, and the third listed allocation in a pass stops. Each fresh IP sits inside the $40 ceiling. |
 | A rehearsal row fails twice on the same defect | Move that data type to its fallback and record it in `decisions.md` (design, "Rehearsal"). |
 | Port 25 refused, or 14 days without an answer | Pause passes 5 and 6 and send an options packet (ruling at approval). |
