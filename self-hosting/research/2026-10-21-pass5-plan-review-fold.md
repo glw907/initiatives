@@ -139,3 +139,13 @@ Not folded: data finding 1 (L4's SPF declaration makes `dns.sh` own the whole ap
 ## Data 1, folded by the planner after the fold agent
 
 The dispositions above missed data finding 1, and the fold agent reported it unfolded. The planner read the live zone, read-only, on 2026-10-21 about 07:10 UTC: the apex held one TXT record (the SPF), and the zone's dynamic-redirect phase held no rules. So nothing would have been lost tonight, but either set can grow before L4 runs. L4 now lists the live apex TXT set first, declares each record verbatim, and changes only the SPF value. Its redirect code adds rules through the entrypoint's rules endpoint, with a test that a pre-existing rule survives. Its acceptance checks that the apex TXT set differs only in the SPF value. L4 keeps its 60 minutes.
+
+## Verification read
+
+A fresh Opus read of 0f0fb6d found every disposition present and the arithmetic sound (Pass 5 985, Pass 6 335, path 3,785, projection 3,500, task sum 4,255 or 4,615 with hand-overs). The planner folded what it raised:
+- The rules file drops `Bash(scripts/dry-run.sh)`: the bare call runs every row, `r2-archive-rw` included, which leaves an object the lock keeps. The bare call joins the proof's refused list, with bare `imapsync` and `vandelay export x --prune`; the proof notes that `dontAsk` can't tell a deny from a missing allow, so the deny half is checked with `jq`.
+- The conductor prompt relaunches the executor after recording a CPX22 answer.
+- L5's reconciliation test seeds the test account by JMAP `Email/import` first, and the prompt writes the partial run as `timeout 60 scripts/vandelay-run.sh export ...`.
+- The prompt's send window reads "only once R2 has passed, and on R2's day only after it", and `## Waiting` carries the date of L2's first refusal.
+- The direct-SMTP Receiving check accepts the Inbox or Junk.
+- Three email addresses older than this branch left the public plan.
