@@ -67,3 +67,11 @@ Review folds: took the toast, screen-2 lede, and quoted rail title rewrites. Kep
 
 "How to change it" fold, comment paragraph: "To ask the author for a change instead of making it, select the text, and a comment box opens beside it. To edit the selected text instead, press Escape. Your comments go to the author with your decision."
 Empty margin: "Select text in the blueprint to comment on it. Your comments appear here, beside the text they’re about."
+
+## Round 7 additions (the background Undo)
+
+The approve and send-back toasts keep their reviewed text and now show on the next item, with an "Undo" button for five seconds.
+Toast after Undo, on the restored item: "Decision undone. Nothing was sent."
+Rail, under "Decided this session", while held and after: "Blueprint for “Troubleshoot your site”" with "Approved" or "Sent back"
+Prototype caption, both screens: "Approving or sending back opens the next item, which in this prototype is the other screen. Undo is available for five seconds."
+Review folds: took "Decision undone. Nothing was sent." and split the caption, keeping that the next item is the other screen.

@@ -490,7 +490,10 @@ kbd { opacity: 1; }
 /* Shortcuts inside controls are plain text, as desk-kbd draws them; the shortcut sheet keeps keycaps. */
 :is(.btn, .linkbtn, .hint, .place) kbd { border-color: transparent; padding-inline: 1px; opacity: .7; font-size: .7rem; }
 /* Rail: a right gutter that matches the left, held open for the scrollbar. */
-.rail { padding-inline: 12px 16px; scrollbar-gutter: stable; }
+.rail { padding-inline: 12px 16px; scrollbar-gutter: stable; grid-template-columns: minmax(0, 1fr); }
+.rail .dq span:first-child { white-space: normal; overflow: visible; }
+.rail .dq { align-items: baseline; }
+.rail a.q[hidden] { display: none; }
 .rail .q.on, .rail-toc a.cur, .rail-toc a:hover, .toc a:hover, .toc a.cur { background: color-mix(in oklab, var(--b3) 62%, transparent); }
 
 /* Motion 1: state changes cross-fade. */
@@ -1063,7 +1066,7 @@ window.addEventListener('scroll', () => {
   document.querySelectorAll('#toc a, #railToc a').forEach(l => { const on = !!cur && +l.dataset.pos === cur.pos; l.classList.toggle('cur', on); on ? l.setAttribute('aria-current', 'location') : l.removeAttribute('aria-current'); });
 }, { passive: true });
 $('#vChanges').onchange = () => { markChanges = $('#vChanges').checked; view.dispatch({ effects: refresh.of(null) }); };
-function toast(m, undo) { document.querySelector('.toast')?.remove(); const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = m; if (undo) { const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Undo'; b.onclick = () => { t.remove(); undo(); }; t.append(b); } document.body.append(t); setTimeout(() => { t.classList.add('leave'); setTimeout(() => t.remove(), 150); }, undo ? 6000 : 3200); }
+function toast(m, undo, ms) { document.querySelector('.toast')?.remove(); const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = m; if (undo) { const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Undo'; b.onclick = () => { t.remove(); undo(); }; t.append(b); } document.body.append(t); setTimeout(() => { t.classList.add('leave'); setTimeout(() => t.remove(), 150); }, ms ?? (undo ? 6000 : 3200)); }
 function nextCmt(dir) {
   const r = view.state.field(cranges), head = view.state.selection.main.head;
   const ps = Object.values(r).map(x => x[0]).sort((a, b) => a - b); if (!ps.length) return true;
@@ -1075,7 +1078,7 @@ function approve() {
   if (openNotes().length) { nextOpen(); toast('Make the open calls first'); return; }
   if (openDraft()) return;
   const nc = COMMENTS.length + THREADS.filter(t => t.mine).length;
-  toast(nc ? `Approved. The author applies your ${words(nc)} comment${nc > 1 ? 's' : ''}, and then the page is drafted. The replies appear on the page review.` : 'Approved. drafter can now write this page.');
+  decide('Approved', nc ? `Approved. The author applies your ${words(nc)} comment${nc > 1 ? 's' : ''}, and then the page is drafted. The replies appear on the page review.` : 'Approved. drafter can now write this page.');
 }
 function hold() {
   if (openDraft()) return;
@@ -1089,7 +1092,7 @@ function hold() {
 document.querySelectorAll('[data-act="approve"]').forEach(b => b.onclick = approve);
 document.querySelectorAll('[data-act="hold"]').forEach(b => b.onclick = hold);
 $('#sbCancel').onclick = () => { $('#sendback').hidden = true; };
-$('#sbSend').onclick = () => { const nc = COMMENTS.length + THREADS.filter(t => t.mine).length; if (!nc && !$('#sbnote').value.trim()) { $('#sbnote').focus(); return; } $('#sendback').hidden = true; toast(nc ? `Sent back with ${words(nc)} comment${nc > 1 ? 's' : ''}. The author will answer ${nc > 1 ? 'them' : 'it'} and queue the blueprint again.` : 'Sent back. The author gets your note, edits, and calls.'); };
+$('#sbSend').onclick = () => { const nc = COMMENTS.length + THREADS.filter(t => t.mine).length; if (!nc && !$('#sbnote').value.trim()) { $('#sbnote').focus(); return; } $('#sendback').hidden = true; decide('Sent back', nc ? `Sent back with ${words(nc)} comment${nc > 1 ? 's' : ''}. The author will answer ${nc > 1 ? 'them' : 'it'} and queue the blueprint again.` : 'Sent back. The author gets your note, edits, and calls.'); };
 /* comment and thread actions, and the keys inside a comment box */
 document.addEventListener('input', e => { const id = e.target.dataset?.ta; if (!id) return; const o = COMMENTS.find(x => x.id === id) || THREADS.find(x => x.id === id); o.buf = e.target.value; });
 document.addEventListener('keydown', e => {
@@ -1117,8 +1120,8 @@ document.addEventListener('click', e => {
 $('#addc').addEventListener('pointerdown', e => { e.preventDefault(); if (!addComment()) toast('Select the text you want to comment on first'); });
 $('#addc').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (!addComment()) toast('Select the text you want to comment on first'); } });
 $('#proto').innerHTML = ROUND === 2
-  ? 'Prototype, comments round 6, screen 2 of 2: the same blueprint queued again after a send-back. Sample data: four comments you might have left, the author’s replies, and the edits those replies describe. <a href="comments.html">Back to the first review</a>.'
-  : 'Prototype, comments round 6, screen 1 of 2: blueprint review with comments. Real data: cairn’s admin troubleshooting blueprint at <code>5c35c06</code>, with two of the six fact-check fixes shown as notes. Select any text with the mouse to comment on it, or select it with the keyboard and press <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd>. <a href="comments.html?round=2">See the round after a send-back</a>.';
+  ? 'Prototype, comments round 7, screen 2 of 2: the same blueprint queued again after a send-back. Sample data: four comments you might have left, the author’s replies, and the edits those replies describe. <a href="comments.html">Back to the first review</a>. Approving or sending back opens the next item, which in this prototype is the other screen. Undo is available for five seconds.'
+  : 'Prototype, comments round 7, screen 1 of 2: blueprint review with comments. Real data: cairn’s admin troubleshooting blueprint at <code>5c35c06</code>, with two of the six fact-check fixes shown as notes. Select any text with the mouse to comment on it, or select it with the keyboard and press <kbd>Ctrl</kbd><kbd>Alt</kbd><kbd>M</kbd>. <a href="comments.html?round=2">See the round after a send-back</a>. Approving or sending back opens the next item, which in this prototype is the other screen. Undo is available for five seconds.';
 $('#lede').textContent = ROUND === 2
   ? 'This blueprint describes a symptom-row page on the admin track. You sent it back with four comments. The author made two changes, answered one comment, and explained why one passage stays. No calls are open.'
   : 'This blueprint describes a symptom-row page on the admin track. The author fixed all six findings from the fact check. No calls are open.';
@@ -1136,6 +1139,46 @@ MARGIN.addEventListener('change', () => { setTab(tab); redraw(); });
 setTab('c'); renderMargin();
 document.querySelectorAll('.rail a.q').forEach(a => { const on = +a.dataset.round === ROUND; a.classList.toggle('on', on); on ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'); });
 status(); toc();
+/* Round 7: the background Undo. A decision opens the next item at once and posts after five
+   seconds unless you press Undo, which reopens the item as you left it. The prototype carries the
+   held decision across the page load in sessionStorage; here the next item is the other screen. */
+const HOLD_MS = 5000, TITLE = 'Blueprint for “Troubleshoot your site”';
+const store = { get: k => { try { return JSON.parse(sessionStorage.getItem(k)); } catch { return null; } }, set: (k, v) => { try { v == null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+function decide(label, msg) {
+  const held = store.get('aq-held');
+  if (held) store.set('aq-held', null); // A decision still held posts at once when you decide the next one.
+  store.set('aq-held', { round: ROUND, label, msg, at: Date.now(), doc: view.state.doc.toString(), ranges: view.state.field(cranges), comments: COMMENTS, threads: THREADS, decided, note: $('#sbnote').value });
+  store.set('aq-decided', [{ round: ROUND, label }, ...(store.get('aq-decided') || []).filter(d => d.round !== ROUND)]);
+  location.href = ROUND === 2 ? 'comments.html' : 'comments.html?round=2';
+}
+function railDecided() {
+  const list = store.get('aq-decided') || [], grp = [...document.querySelectorAll('.rail .group')].find(g => g.textContent === 'Decided this session');
+  document.querySelectorAll('.dq.mine').forEach(e => e.remove());
+  for (const d of [...list].reverse()) grp.insertAdjacentHTML('afterend', `<div class="dq mine"><span>${esc(TITLE)}</span><span>${d.label}</span></div>`);
+  document.querySelectorAll('.rail a.q').forEach(a => { a.hidden = list.some(d => d.round === +a.dataset.round) && +a.dataset.round !== ROUND; });
+  document.querySelector('.rail .sub').textContent = `${3 - list.filter(d => d.round !== ROUND).length} waiting`;
+}
+(() => {
+  const back = store.get('aq-restore');
+  if (back && back.round === ROUND) {
+    store.set('aq-restore', null);
+    view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: back.doc } });
+    COMMENTS.splice(0, COMMENTS.length, ...back.comments); THREADS.splice(0, THREADS.length, ...back.threads); Object.assign(decided, back.decided);
+    cseq = COMMENTS.reduce((m, c) => Math.max(m, +c.id.slice(1)), 0);
+    view.dispatch({ effects: COMMENTS.filter(c => back.ranges[c.id]).map(c => setC.of({ id: c.id, range: back.ranges[c.id] })) });
+    $('#sbnote').value = back.note; redraw();
+    toast('Decision undone. Nothing was sent.');
+  }
+  railDecided();
+  const held = store.get('aq-held'); if (!held || held.round === ROUND) return;
+  const left = HOLD_MS - (Date.now() - held.at); if (left <= 0) { store.set('aq-held', null); return; }
+  toast(held.msg, () => {
+    store.set('aq-held', null); store.set('aq-restore', held);
+    store.set('aq-decided', (store.get('aq-decided') || []).filter(d => d.round !== held.round));
+    location.href = held.round === 2 ? 'comments.html?round=2' : 'comments.html';
+  }, left);
+  setTimeout(() => { if (store.get('aq-held')?.at === held.at) store.set('aq-held', null); }, left);
+})();
 window.__ready = true;
 </script>
 <script>document.getElementById('cm').addEventListener('mousedown', e => { if (e.target.id === 'cm') { e.preventDefault(); window.__view?.focus(); } });</script>
