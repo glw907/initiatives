@@ -6,6 +6,7 @@ Editor-style comments on approval-queue's document reviews, built on the approve
 - `troubleshooting.blueprint.md`: real data, cairn's admin troubleshooting blueprint at `5c35c0686`. Screen 1's two fact-check notes come from that blueprint's real fact-check fixes (`804180084`). Screen 2's four comments, replies, and edits are sample data.
 - `prior-art.md`: the patterns and pitfalls the design takes from Google Docs, Word, GitHub review, Gerrit, Phabricator, Hypothesis, and the W3C Web Annotation model.
 - `fixed-copy.md`: the screen's fixed copy, as read by `prose-voice-reviewer` against the developer-docs register before each round.
+- `round-6-spec.md`: the weight levels and motion rules from round 6, which the build follows.
 
 Serve the folder and open it in Chromium: `python3 -m http.server 7931 --bind 127.0.0.1` from `prototypes/`, then `http://127.0.0.1:7931/2026-10-21-review-comments/comments.html`.
 
@@ -18,3 +19,4 @@ The design as of round 3, after Geoff's rulings ("We're following the Google Doc
 - Below 1260px the margin becomes a drawer that lists the same cards, opened from the place bar's **Comments** button or by tapping a highlight.
 - Comments use the primary hue, the color the changed-lines marker already uses for your own marks. Amber stays reserved for calls and teal for the fact check's corrections.
 - A comment is a pending draft until the decision, the way a GitHub review batches its comments. The author answers each one with Done, Kept, or Answered, and only you resolve a thread.
+- Rounds 6 to 8 (`round-6-spec.md`): one weight level per framed thing on Survey's flat theme, a motion grammar from 907.life's 150ms fades and Carbon's productive motion, a background Undo (a decision opens the next item at once and posts after five seconds unless you undo it), and a rail that widens with the window. Geoff approved the set on 2026-10-21 ("Design complete").
