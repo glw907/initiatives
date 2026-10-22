@@ -1,7 +1,7 @@
 id: survey-house-style
 title: Survey house style
-summary: Would make Survey the one written house style for every house tool, released as a versioned package each app follows.
+summary: Would make Survey the house style for every house tool, visual and written, released as a versioned package each repo follows and improved from Geoff's corrections.
 status: proposed
 owner: glw907
 created: 2026-10-21
-repos: [workstation, cairn-themes, approval-queue, phonebook, servers, 907-life]
+repos: [workstation, cairn-themes, approval-queue, phonebook, servers, cairn-cms, drafter, poplar, dubplate]
