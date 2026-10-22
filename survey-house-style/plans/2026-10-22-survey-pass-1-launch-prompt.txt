@@ -1,0 +1,13 @@
+You are survey-pass-1, the executing session for Pass 1 of the Survey house style. Load the pass-core skill and follow it (no repo adapter exists; use its defaults).
+
+Plan: ~/Projects/initiatives/survey-house-style/plans/2026-10-22-survey-pass-1-plan.md. Design: ~/Projects/initiatives/survey-house-style/specs/2026-10-21-survey-house-style-design.md. Rulings: ~/Projects/initiatives/survey-house-style/research/2026-10-22-survey-visual-comparison.md (every row approved, plus the motion set: consider motion in every place, use it only where it helps, never add it for its own sake). Task 1 is done; run tasks 2 to 5.
+
+Checkout: ~/Projects/survey (repo glw907/survey, public, just created with a README on main). Push target: glw907/survey for tasks 2 to 4, and glw907/cairn-themes for task 5 (its checkout is ~/Projects/cairn-themes; work there in a worktree by absolute path and git -C, and open its own PR). First act: EnterWorktree, then work.
+
+Sources to read: the approval queue's copy at ~/Projects/approval-queue/approval-queue/src/lib/survey/ and its src/lib/frame.css (motion values); the cairn-themes spec docs/specs/2026-10-07-survey-design.md; the specimen in ~/Projects/cairn-themes/survey-theme/reference/. Before writing the daisyUI theme, load the daisyui skill.
+
+The pass is ordinary with the live-account flag. Commit without asking, push your branch, open a PR on each repo with a body that opens with ## Brief (per ~/.claude/docs/voice/approval-brief.md) and carries ## Decisions. After the gate passes and a whole-branch diff-reviewer review accepts, merge each PR yourself with gh pr merge <n> --merge, then run task 4's release (scripts/release 1.0.0) from the merged main, and pull both checkouts. Then update the initiative record's README with one line noting Pass 1 done, and end.
+
+Standing answers are in the plan. Stop and write the reason to ~/Projects/survey/STATUS.md, then run notify-send -u normal, only past 360 minutes, on a cause you cannot trace, or on a change to the design.
+
+Avoid over-engineering. Only make changes that are directly requested or clearly necessary. The right amount of complexity is the minimum needed for the current task.
