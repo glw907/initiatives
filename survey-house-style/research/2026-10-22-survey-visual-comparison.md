@@ -51,3 +51,7 @@ No source sets motion values. The spec says only "no decorative motion". The app
 - Signature details: contour texture, benchmark triangle, dashed contour rules, margin collar, index rail. The dashed rule is the contour color at 55% strength (1.88:1 light, 2.99:1 dark) and the texture is fainter still; both are decorative, so no floor applies.
 - The ochre warning alert's side bar is 2.29:1 on its ground in every source. It passes only because the alert's bold dark heading (5.71:1) carries the meaning; the bar is never the only signal.
 - Prose details (link underline, italic blockquote with a brown rule, inline code chip, current-page underline in the nav) appear in the specimen and the spec but not in the queue's copy, by design: they belong to the cairn site recipe and move there unchanged.
+
+## Rulings (Geoff, 2026-10-22)
+
+Geoff approved every recommendation in this file: the nine rows settled by contrast or by the written spec, and the four calls. Those are the index rail as the queue has it (letters with entries dark and bold), no outline on the ghost button, the specimen's 14px alert inset, and no shadows in Survey (the queue's two shadows are decided in its own adoption pass). He also approved the motion set (150ms, 240ms, the queue's two easings, and motion off under `prefers-reduced-motion: reduce`). He directed that the set be considered and implemented across the whole system: every Survey output carries it, every transition in Survey's shared CSS uses it, and each app's adoption pass replaces its literal durations and easings with it.
