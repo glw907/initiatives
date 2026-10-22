@@ -143,3 +143,10 @@ pages, the reader block should be framed from the outline's job, never from the 
     blueprints start from the prose plan by hand.
 28. Facts contradicted their own sources: `f:pmmtdv` against the code comment beside it, and
     `f:39sn8c` calling an observed band "ratified."
+29. `check:facts` reads a bullet's section heading as its source for the owner tier. `f:gknz29`
+    was re-pointed from the charter to the `check:surface` gate's code but stayed under the
+    owner-brief heading, so the gate still asked for a charter key phrase. The fix was moving the
+    bullet. An explicit code `Source:` could override the heading.
+30. Confirms 10: correcting `f:39sn8c` broke the published custom admin page's sentence brief
+    (`check:provenance`, a `--size-field` clause the fact no longer carried). Only the full static
+    leg caught it, after the merge; `drafter refs` showed the blueprint lines alone.
