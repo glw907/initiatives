@@ -62,7 +62,7 @@ Next:
    `claude --bg --add-dir /var/home/glw907/.dotfiles --add-dir /var/home/glw907/Projects/initiatives --model sonnet --effort medium --name servers-bookmarks "$(cat /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-21-bookmarks-prompt.txt)"`
 2. Day seven of the photos week is **2026-10-28**. A household member uploads one large clip from the Immich app on mobile data before then. On that day the conductor reruns the Execute checks and relaunches the week phase from the servers main checkout:
    `claude --bg --add-dir /var/home/glw907/.dotfiles --add-dir /var/home/glw907/Projects/initiatives --model sonnet --effort medium --name servers-photos "$(cat /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-20-pass3-prompt.txt)"`
-   Its PR comes with the PikaPods deletion ask.
+   Its PR now closes the week record only. Geoff deleted the PikaPods pod on 2026-10-22, day two, on his own confidence in orpheus. That day `scripts/dry-run.sh pikapods-sftp` failed as expected, and orpheus's library read 3,724 photos and 119 videos, with its nightly backup (snapshot `4105a545`) saved. The `immich-api` row still passes because `photos.907.life` now serves orpheus, which accepts the migrated key. The week PR carries no deletion ask; its packet asks only whether anyone hit a sign-in loop.
 
 ## Pass 0 rows
 
