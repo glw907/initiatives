@@ -32,37 +32,9 @@ Survey's visual style now exists in three places that have drifted apart: the ap
 9. Pass H fills the twelve packs with examples and house flavor, weakest first. Each is a minor release that must beat its baseline.
 10. The phonebook, Bulwark, and 907.life's rebuild each take Survey in a pass of their own.
 
-### Decide: How often the monthly review re-grades the fixed tasks
-
-A full grade of the fixed tasks drafts 135 pieces and makes about 270 judge calls. In a month when the workstation's Survey version, the drafting model, and the judge are all unchanged, a re-grade measures only noise. Real writing and your six blind pieces are graded every month under either option.
-
-Source: contract review finding 21, mechanics review o4, integrity review finding 20
-
-- Re-grade only in a month when the Survey version, the drafting model, or the judge changed, and carry the last grade forward otherwise (recommended)
-- Re-grade every month
-
-### Decide: How the workstation takes new Survey releases
-
-Repos take a Survey minor in their dependency sweeps. The workstation's output style, router, and packs follow a vendored tag instead, and nothing moves that tag after Pass F, so improvements would stop short of the writing you read most. Your standing rule sends every bump through `dependency-upgrade`, takes minors and patches by default, and asks you before a major. The first option keeps the asking and is a recorded exception to that route; the second follows the rule as written. Every option keeps `git revert` of the tag commit as the rollback.
-
-Source: integrity review finding 9, mechanics review M3, the verification read's major 3
-
-- The monthly review moves the tag to the newest minor or patch before it grades, as a gated `~/.dotfiles` commit with no packet, and a major goes to you in that month's packet (recommended)
-- `dependency-upgrade` moves the tag in a workstation sweep, as it moves any repo's pin
-- Each tag move comes to you in a packet
-
-### Decide: Whether drafter stops a run when a Survey section is missing
-
-drafter can read Survey's packs today, because each repo commits its pinned copy and drafter inlines any tracked file. A section token whose heading has gone yields only a "no heading" note, and the run goes on. A Survey release that renamed a section would then draft with part of its context missing and look normal.
-
-Source: drafter's `internal/assemble/section.go` and `files.go` at `568c262`
-
-- A short drafter pass, about 40 minutes, makes a missing file or heading under a Survey path fail the run (recommended)
-- No drafter change: each repo's gate checks that every section its prompts module names exists in its pinned copy
-
 ### Worth knowing
 
-The work is seven passes and 4,245 minutes of estimates, plus 40 for drafter if you take that option. Review raised the figure from 3,200: Pass H's twelve packs each carry their own eval run, the baseline gains a knockout arm, a reply surface, and two cairn surfaces, and Pass E now also carries the workstation's visual tooling and cairn's register move. Pass G now runs before Pass E, so cairn's docs have a ruled register to move onto. The passes run one after another, so the path equals the sum. One ask recurs: a blind sample of six pieces each month, read on a page in Chromium. An occasional second one is an `npm deprecate` line in a packet, since only your login can deprecate a version. cairn-themes keeps its theme ports and gives up `survey-theme/`, its Survey spec, and its backlog items #1 and #2 to the new repo.
+The work is eight passes and 4,285 minutes of estimates, counting the 40-minute drafter pass. Review raised the figure from 3,200: Pass H's twelve packs each carry their own eval run, the baseline gains a knockout arm, a reply surface, and two cairn surfaces, and Pass E now also carries the workstation's visual tooling and cairn's register move. Pass G now runs before Pass E, so cairn's docs have a ruled register to move onto. The passes run one after another, so the path equals the sum. One ask recurs: a blind sample of six pieces each month, read on a page in Chromium. An occasional second one is an `npm deprecate` line in a packet, since only your login can deprecate a version. cairn-themes keeps its theme ports and gives up `survey-theme/`, its Survey spec, and its backlog items #1 and #2 to the new repo.
 
 ### Rulings
 
@@ -83,6 +55,8 @@ Geoff then ruled seven points on the writing part (2026-10-22):
 7. **Grade the writing periodically.** Each context is graded on its fixed eval tasks and on a sample of real writing shipped since the last run, scored with the rubric, `tellgrader`, and Vale, plus a small blind sample Geoff reads. Results go to a dated scorecard with a trend per context. A context that drops opens a backlog item, and the distill step works on the lowest-scoring contexts first. The design reuses the workstation's monthly reviews and stays the minimum that gives a trend Geoff can trust.
 
 Four more rulings followed on 2026-10-22. First, Survey's design is as simple and clean as possible, so it is easy to maintain, use, and improve. Of two ways to close a gap, the simpler one wins; the smallest standard mechanism is preferred; detail the builder can settle is left out; and each thing is said once. Second, Survey does not ship as a Claude Code plugin. Its one audience is Geoff, and the workstation's manifests and `claude-tooling-sync` already install skills, hooks, and output styles on both hosts; a Survey plugin is a later item for the shared-standards initiative. Third, 907.life gets its full rebuild once cairn's docs are complete, so nothing here waits on it. The cairn-site recipe stays pending until that rebuild, 907.life adopts Survey in it, and its existing posts may still serve as site-content examples, read from the repo as it is. Fourth, cairn's docs move to the Survey register in Pass E as designed, during the ongoing cairn docs effort. The small risk to partly drafted pages is acceptable, and the move stays behind the baseline match.
+
+Geoff took the three remaining recommendations on 2026-10-22. The monthly review re-grades the fixed tasks only in a month when the Survey version, the drafting model, or the judge changed; corrections and the real-writing sample are graded every month. The monthly review moves the workstation to the newest Survey minor or patch before it grades, as a gated `~/.dotfiles` commit with no packet, and a major goes to Geoff in that month's packet. A short drafter pass, about 40 minutes and `ordinary`, runs before Pass G so that a missing Survey file or heading fails the run.
 
 ### Intent and goals
 
@@ -493,7 +467,7 @@ Pass A is `ordinary` and merges its own PR in the initiatives repo. Every other 
 | F | 485 | route and trigger set 70, helper and tests 140, `content-draft` and `check-drift` 30, review prompt 90, step 9 5, dry run 90, release and hosts 60 |
 | H | 1,080 | twelve packs at 80 (50 writing, 30 evals and release), end-user's extra surfaces 20, core's all-surface run 60, close 40 |
 
-The estimates sum to 4,245 minutes, and with the passes in sequence the path is the same. If Geoff takes the drafter option, a 40-minute drafter pass runs before Pass G. It is `ordinary` under `pass-core`'s defaults and merges its own PR.
+The estimates sum to 4,285 minutes with the 40-minute drafter pass, and with the passes in sequence the path is the same. The drafter pass runs before Pass G. It is `ordinary` under `pass-core`'s defaults and merges its own PR.
 
 ### Pre-flight and sittings
 
