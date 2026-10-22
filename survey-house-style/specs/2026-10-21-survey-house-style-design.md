@@ -4,7 +4,7 @@
 
 This makes Survey the one house style for every house tool, in how it looks and in how Claude writes, kept in one public repo that every other repo pins by git tag.
 
-Survey's visual style exists in three places that have drifted apart: the approval queue's vendored copy, the cairn-themes spec of 2026-10-07, and its approved specimen. Bulwark webmail and the phonebook's UI both wait on it. The writing voice works well today, but it is spread across an output style, six registers, four conventions skills, and five hand-copied Vale styles, with no version and no regular path for your corrections.
+Survey's visual style exists in three places that have drifted apart: the approval queue's vendored copy, the cairn-themes spec of 2026-10-07, and its approved specimen. Bulwark webmail and the phonebook's UI both wait on it. The writing voice works well today, but it is spread across an output style, six registers, a charter, and five hand-copied Vale styles, with no version and no regular path for your corrections.
 
 ### What changes
 
@@ -22,7 +22,7 @@ Survey's visual style exists in three places that have drifted apart: the approv
 
 ### Worth knowing
 
-The work is three passes and about 540 minutes. You have one sitting, Pass 1's visual rulings, plus the usual merge packets. This replaces a larger design you rejected on 2026-10-22 as over-engineered; that version stays in git history at commit `63fc234`. There is no npm package: a repo installs Survey from GitHub at a tag, and a rollback is moving the tag back.
+The work is three passes and about 520 minutes. You have one sitting, Pass 1's visual rulings, plus the usual merge packets. This replaces a larger design you rejected on 2026-10-22 as over-engineered; that version stays in git history at commit `63fc234`. There is no npm publishing: a repo installs Survey from GitHub at a tag, and a rollback is pinning the previous tag.
 
 ### Standing answers
 
@@ -37,7 +37,7 @@ Approving the design approves these answers, so the run takes them without askin
 
 These stand (Geoff, 2026-10-21 and 2026-10-22). Survey is the house style for every house tool's UI, and it carries the house writing register and its copy-editing rules. It lives in a public repo, is versioned with a changelog, includes a drop-in daisyUI theme, and is agent-friendly from the ground up. Every writing context is first a good instance of its own published standard, with Survey's flavor on top. Today's writing voice must not break. Cairn's docs move to the Survey register in Pass 2, and the small risk to partly drafted pages is accepted. 907.life takes Survey in its full rebuild, after the cairn docs are complete, so nothing here waits on it. Survey is not a Claude Code plugin. Bulwark's theme waits for Survey.
 
-On 2026-10-22 Geoff rejected an eight-pass design as over-engineered and approved this three-pass shape. It drops npm publishing, the statistical eval harness, the separate ledger repo, the approval-queue and cairn-editor intake channels, and a planned twelve-pack build. Each could return later if a real need appears.
+On 2026-10-22 Geoff rejected an eight-pass design as over-engineered and approved this three-pass shape. It drops the conventions skills from the move, npm publishing, the statistical eval harness, the separate ledger repo, the approval-queue and cairn-editor intake channels, and a planned twelve-pack build. Each could return later if a real need appears.
 
 ## Design
 
@@ -49,22 +49,23 @@ On 2026-10-22 Geoff rejected an eight-pass design as over-engineered and approve
 - `scripts/build` is a short Node script with no dependencies. It writes `theme/survey.css` (the daisyUI 5 `@plugin "daisyui/theme"` blocks for light and dark), `theme/survey-vars.css` (the same values as plain `:root` variables), and the token table inside `DESIGN.md`. The built files are committed, and the gate fails when they are stale.
 - `theme/components.css` and `theme/fonts.css` carry the shared CSS from the approval queue's copy.
 - `DESIGN.md` states the principles, the token table, and each app's recipe. Agents read it first.
-- `writing/` holds the writing files (see Pass 2).
+- `skills/survey/SKILL.md` tells an agent where each piece is and which to read for the task at hand. It also says the writing files are edited in this repo only, since a workstation edit to a vendored copy is overwritten by the next update.
+- `skills/survey/writing/` holds the writing files (see Pass 2). Keeping them inside the skill lets one vendored-skill entry carry both.
 - `vale/Survey/` is the one Vale style.
-- `skills/survey/SKILL.md` tells an agent where each piece is and which to read for the task at hand.
+- `package.json` is minimal: a name, a version, `files` naming `theme` and `DESIGN.md`, and devDependencies on `@glw907/cairn-cms` and `daisyui` for the contrast check. A `cairn-audit.config.json` points the check at `theme/survey.css`.
 - `CHANGELOG.md` follows Keep a Changelog. A version follows SemVer: a changed value or rule is a minor, and a removed or renamed one is a major.
 
-The gate is `scripts/gate`. It checks that the build is current, that contrast passes (`npx cairn-audit --rule theme-contrast --fail-on advisory`), that the Vale style's own tests pass, and that every writing file's link target exists.
+The gate is `scripts/gate`. It checks that the build is current and that contrast passes (`npx cairn-audit --rule theme-contrast --fail-on advisory`). Pass 1 step 3 probes the contrast check once; if the rule can't read a bare theme sheet, it is cut from the gate, and each cairn site's own contrast check covers the theme there.
 
 ### Releasing
 
-A release is a changelog entry, a tag, and `gh release create` with `Survey.zip` (the `vale/Survey/` directory) attached, all from one `scripts/release <version>` command. Repos take Survey three ways:
+A release is a changelog entry, a tag, and `gh release create` with `Survey.zip` attached, all from one `scripts/release <version>` command. The script zips from inside `vale/`, so the zip unpacks to one `Survey/` folder, as Vale requires. Repos take Survey three ways:
 
 - A repo with a `package.json` runs `npm install github:glw907/survey#v<version>`.
-- A repo's `.vale.ini` loads the style from the release's `Survey.zip` URL in `Packages`.
-- The workstation vendors `skills/survey/` and `writing/` through `claude-tooling-sync`, with the tag in the manifest's `branch` field. The GitHub API resolves a tag there (probed on `cairn-cms` at `v0.98.0`).
+- A repo's `.vale.ini` names the release's `Survey.zip` URL in `Packages`. The repo runs `vale sync` once locally and commits `.vale/styles/Survey/`, so CI stays offline and unchanged.
+- The workstation vendors `skills/survey/` through `claude-tooling-sync`, with the tag in the manifest's `branch` field. The GitHub API resolves a tag there (probed on `cairn-cms` at `v0.98.0`).
 
-Taking a new version is editing one tag in each place, which `dependency-upgrade` covers.
+Taking a new version is editing one tag in each place and, for Vale, syncing and committing again. A rollback is the same edit back to the previous tag.
 
 ### Pass 1: visual (about 240 minutes)
 
@@ -73,26 +74,24 @@ Taking a new version is editing one tag in each place, which `dependency-upgrade
 3. Write the skill, the gate, and the release script, and tag `v1.0.0` (40).
 4. cairn-themes gives up `survey-theme/`, its Survey spec, and its backlog items #1 and #2, each with a pointer to the new repo (20).
 
-Before the comparison, a session checks thinkpad-x1's `~/Projects/cairn-themes` for unpushed Survey work, since the approval queue's copy cites a commit, `dea9839`, that pavilion lacks. Anything found is pushed to an archive branch and joins the comparison.
+The approval queue's copy stands for commit `dea9839`, which exists on neither GitHub nor pavilion; its `survey.css` and `fonts.css` headers record that they were copied from it.
 
 ### Pass 2: the writing move (about 180 minutes)
 
 The move copies, then links. Nothing is rewritten.
 
-1. Copy each file into `writing/` byte for byte: the `writing-voice` output style, the six registers in `~/.claude/docs/voice/`, the authoring charter, and the comment-standard sections of the go, ts, svelte, and python conventions skills. Prove each copy with `cmp` (40).
-2. Build `vale/Survey/` from the `glw907` style that five repos copy by hand (cairn-cms/tool, cairn-themes, dubplate, phonebook, poplar; all identical), and run each repo's Vale before and after to show the same findings (40).
-3. Tag `v1.1.0`, vendor it on the workstation, and replace each workstation file with a link to its vendored copy. The output style goes last. Confirm with `claude -p "/output-style"` that `writing-voice` is still current, and run `claude-tooling-sync verify` (40).
-4. Point each repo with prose at Survey, one PR each, and swap the hand-copied style for the zip (40).
+1. Copy each file into `skills/survey/writing/` byte for byte: the `writing-voice` output style, the six registers in `~/.claude/docs/voice/`, and the authoring charter. Prove each copy with `cmp`. The go, ts, svelte, and python conventions skills stay where they are, since they already load as skills; Survey's skill points to them (40).
+2. Build `vale/Survey/` from the `glw907` style that five repos copy by hand (cairn-cms/tool, cairn-themes, dubplate, phonebook, poplar; all identical), and run each repo's Vale before and after to show the same findings. That run is the style's proof (40).
+3. Tag `v1.1.0`, vendor it on the workstation, and replace each workstation file with a link to its vendored copy. The output style goes last. Confirm that `claude -p "/output-style"` lists `writing-voice (current)`, and run `claude-tooling-sync verify` (40).
+4. Point each repo with prose at Survey, one PR each. Swap the hand-copied style for the synced `Survey` style, restore any other style directory the sync touched (phonebook's `Google`) with `git checkout`, and rename each `glw907.*` override in `.vale.ini` to `Survey.*` (40).
 5. Move cairn's docs: cairn's `docs-register.md` keeps its cairn-only rules and points at Survey for the rest, and the agents that read it follow. A cairn page mid-draft finishes on the register it started with (20).
 
 A file whose copy differs from its source by any byte doesn't move, per the standing answers. Because the content is identical, no eval run is needed to show that nothing broke.
 
-### Pass 3: corrections and grading (about 120 minutes)
+### Pass 3: corrections and grading (about 100 minutes)
 
-1. A private repo, `glw907/survey-notes`, holds one file per correction, named by date, time, and host so two hosts never collide. When Geoff corrects Claude's wording in chat, the `survey` skill has Claude write the before, the after, the context, and his reason, then commit and push. The output style names this step, so it runs without his asking (50).
+1. A private repo, `glw907/survey-notes`, cloned at `~/Projects/survey-notes` on both hosts, holds one file per correction, named by date, time, and host so two hosts never collide. When Geoff corrects Claude's wording in chat, the `survey` skill has Claude write the before, the after, the context, and his reason, then commit and push. The output style names this step, so it runs without his asking. That edit lands in the Survey repo and ships as `v1.2.0` through `claude-tooling-sync update-skills survey` (50).
 2. The monthly model review gains one step, run on pavilion only. It drafts a fixed set of ten samples across the main kinds of writing, checks them with Vale and `tellgrader`, and compares them with last month's drafts and with the month's corrections. It then proposes Survey changes, each with a before-and-after example, in one packet for Geoff. An approved change is a Survey minor (50).
-3. Run the step once against the first month's log and show Geoff the packet (20).
-
 The house register's flavor and the examples for each kind of writing grow from here, one approved change at a time.
 
 ## Later
