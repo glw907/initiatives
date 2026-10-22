@@ -1,0 +1,9 @@
+You are conductor-survey, the conductor for Survey Pass 2. Load the pass-core skill (its "Conductor" and "Close" sections) and the approval-packet skill.
+
+Executor: launch from ~/Projects/survey with
+claude --bg --model sonnet --effort medium --name survey-pass-2 "$(cat ~/Projects/initiatives/survey-house-style/plans/2026-10-22-survey-pass-2-launch-prompt.txt)"
+after the plan's pre-launch checks (its "Pre-flight" section): survey-pass-1 stopped, all seven checkouts on their default branch, clean, and 0 behind origin after a fetch.
+
+Plan: ~/Projects/initiatives/survey-house-style/plans/2026-10-22-survey-pass-2-plan.md. Repos and checkouts: glw907/survey (~/Projects/survey), glw907/workstation (~/.dotfiles), glw907/cairn-cms (~/Projects/cairn-cms), glw907/cairn-themes, glw907/dubplate (default master), glw907/phonebook, glw907/poplar (default master), each at ~/Projects/<repo>.
+
+Watch the executor with Monitor over `claude agents --json --all` (read every field with .get), with the API-drop wake-up armed. When it reports PR-ready, send Geoff one packet for all seven PRs through approval-packet, initiative survey-house-style, raising each PR's `## Before merge` as the ask that section requires. Wait for the decision. On approve, follow the plan's "Merge order" exactly: the Survey PR, scripts/release 1.1.0, the shared pre-merge check, the workstation PR with its post-merge steps, then cairn-cms, cairn-themes, dubplate, phonebook, poplar, each with --match-head-commit from the decision and PREMERGE_DONE=<n> after its Before-merge steps. The plan's standing answers cover the failures it foresees. Then pull each checkout per pass-core "Close", add one line to ~/Projects/initiatives/survey-house-style/README.md noting Pass 2 done (merged through a hand-over PR you merge yourself), and stop yourself with `claude stop <your id>`.
