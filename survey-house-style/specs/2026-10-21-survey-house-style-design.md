@@ -2,9 +2,9 @@
 
 ## Brief
 
-This makes Survey the one written house style for every house tool, published as a versioned npm package that each app follows through ordinary dependency updates.
+This makes Survey the one house style for every house tool, in how it looks and in how Claude writes, published as a versioned package that each repo pins and follows through ordinary dependency updates.
 
-Survey now exists in three places that have drifted apart: the approval queue's vendored copy, the 2026-10-07 spec, and its approved specimen. Bulwark webmail and the phonebook's UI both wait on it, and 907.life will take it in its rebuild.
+Survey's visual style now exists in three places that have drifted apart: the approval queue's vendored copy, the 2026-10-07 spec, and its approved specimen. Bulwark webmail and the phonebook's UI both wait on it, and 907.life will take it in its rebuild. The writing voice works well today, but it lives in a dozen workstation files with no version, no regular grade, and no easy path for your corrections.
 
 ### What changes
 
@@ -12,47 +12,38 @@ Survey now exists in three places that have drifted apart: the approval queue's 
 - One token source builds a drop-in daisyUI theme, a plain CSS-variable sheet, and a DESIGN.md that agents read first.
 - A conformance check ships in the package and names the token to use in place of any stray value.
 - A skill, an advisory hook, and four agent-definition lines point every agent at the Survey version its repo installed.
-- Survey also carries the house writing register: one fixed voice with a tone for each surface, an overlay brief on Google or Microsoft, house examples, and the copy-editing rules as a Vale style. cairn moves to that register once this work is done.
-- Each app moves to the package later, in its own pass.
+- Survey also becomes the writing reference: one context pack for each kind of writing, from Go comments to blog posts, each built on its published standard first.
+- The writing move is measured. Each context gets fixed eval tasks, today's system sets the baseline, and nothing switches until it matches.
+- Every repo with prose pins one Survey version, through npm or a release zip, so a rollback is one line.
+- Your corrections in chat, in the approval queue, and in the cairn editor reach a private ledger with no extra step from you.
+- A monthly review grades each context and turns your corrections into examples and rules.
+- Each app moves to the visual package later, in its own pass.
 
 ### If you approve
 
 1. You do two pre-flight steps: check thinkpad-x1 for unpushed Survey work, and reserve the npm name with a placeholder.
-2. Pass A compares the three versions and brings you the differences and proposed additions in one sitting.
+2. Pass A compares the three visual versions and brings you the differences and proposed additions in one sitting.
 3. Pass B builds the repo from your rulings. At its close you read the built specimen, link the trusted publisher on npmjs.com, and approve the merge. The release workflow then publishes.
 4. Pass C adds the skill, the hook, and the agent lines to the workstation, and you approve its merge.
-5. The approval queue takes `1.0.0-rc.1` in its own pass, and that pass's close promotes 1.0.0.
-6. Pass D builds the writing register from cairn's register and the other house sources, and brings you its voice, tone table, and departures in one sitting. After 1.0.0 is out it releases 1.1.0, and a workstation PR follows.
-7. The phonebook, Bulwark, 907.life, and cairn's docs each take the package in a pass of their own.
+5. Pass D writes eval tasks for each writing context and runs them through today's system. You read a short blind sample, so your eye sets the bar.
+6. The approval queue takes `1.0.0-rc.1` in its own pass, and that pass's close promotes 1.0.0.
+7. Pass E copies today's writing files into Survey word for word and releases 1.1.0 once each context matches its baseline. Pass F points the workstation at it, with the always-on output style last.
+8. Pass G pins Survey in every repo with prose. Pass H starts the correction ledger and the monthly writing review.
+9. Passes I and J fill each context's pack with examples and house flavor, weakest context first. Each improvement is a minor release that must beat its baseline.
+10. The phonebook, Bulwark, 907.life, and cairn's docs each take the visual package in a pass of their own.
 
-### Decide: How drafter reads the installed briefs
+### Decide: Whether drafter stops a run when a Survey section is missing
 
-drafter can't reach a brief under `node_modules` today. Its `inline_files` setting admits only files outside the repository and drops a relative path without a word. A section it can't resolve yields nothing, so a drafting run would go on with no register and look normal. All three Pass D reviews found this.
+drafter can read Survey's packs today, because each repo commits its pinned copy and drafter inlines any tracked file. A section token whose heading has gone yields only a "no heading" note, though, and the run goes on. A Survey release that renamed a section would then draft with part of its context missing and look normal.
 
-Source: drafter's `internal/assemble/files.go` and `section.go` at `568c262`, read by the Pass D reviews
+Source: drafter's `internal/assemble/section.go` and `files.go` at `568c262`
 
-- A short drafter pass first, about 60 minutes, lets a project setting admit one ignored directory inside the repo, fails the run on a missing section, and feeds `register.<track>` into the request (recommended)
-- No drafter change: each project names a seat `inputs` command that prints the section from `node_modules`, which works today, though a missing package shows only as a note and the run goes on
-
-### Decide: Whether Survey's Vale style takes over the glw907 tells
-
-Five repos lint with a hand-copied `glw907` style. Three Go repos apply it to code comments, and phonebook and cairn-themes apply it to their docs. None of the five has a `package.json`, so none can install Survey. The charter gives the audience-invariant tells to the output style, and this design leaves code comments out of scope.
-
-Source: The three Pass D reviews, which split on the answer
-
-- Keep `glw907` outside Survey as the workstation's tells linter, copied as now, so Survey's style holds only the register's departures and copy-editing rules and a repo that installs Survey lists both (recommended)
-- Survey absorbs `glw907`: each release attaches a `Survey.zip` that the Go repos fetch by URL, the code-comment non-goal gains an exception, and the five repos rename their rule overrides in a later pass
-
-### Decide: Which repos the Survey register governs
-
-The workstation registers route developer docs and end-user copy in every repo today. Survey's register follows the version a repo installs, and drafter, poplar, and dubplate install nothing from npm.
-
-- Only repos whose `package.json` lists `@glw907/survey`, while the workstation registers keep the rest and gain a pointer line (recommended)
-- Every repo you own, with `editor.md` and `technical-doc-web.md` reduced to pointers and a second channel for repos without npm, such as the release zip from the Vale decision
+- A short drafter pass, about 40 minutes, makes a missing file or heading under a Survey path fail the run (recommended)
+- No drafter change: each repo's gate checks that every section its prompts module names exists in its pinned copy
 
 ### Worth knowing
 
-The work grows from two passes and 600 path minutes to four passes and 1,230, plus 60 for drafter if you take that option. The reviews found that the release, the conformance check, and the workstation tooling each needed their own acceptance, and the writing part adds Pass D. Pass D's release waits for 1.0.0, so the approval queue's pass now comes before it. The phonebook has no UI yet and adopts Survey fresh. cairn-themes keeps its theme ports and gives up `survey-theme/`, its Survey spec, and its backlog items #1 and #2 to the new repo.
+The work grows from four passes and 1,230 path minutes to ten passes and 3,250, plus 40 for drafter if you take that option. Seven of the ten are writing passes, because your rulings ask for a measured move before any improvement, adoption in every repo, and a standing loop for corrections and grading. One ask recurs: a blind sample of six pieces each month, read on a page in Chromium. The phonebook has no UI yet and adopts Survey fresh. cairn-themes keeps its theme ports and gives up `survey-theme/`, its Survey spec, and its backlog items #1 and #2 to the new repo.
 
 ### Rulings
 
@@ -62,20 +53,34 @@ Geoff took all four review recommendations on 2026-10-22. Pass B publishes `1.0.
 
 On the same day Geoff added the house writing register and its copy-editing rules to Survey. The register may sit over Google's or Microsoft's voice, and its corpus follows drafter's established shape. When this work is done, cairn uses the Survey register.
 
+Geoff then ruled seven points on the writing part (2026-10-22):
+
+1. **Base standard first, Survey flavor second.** Every writing context is first a good instance of its own published standard, and Survey adds house flavor only where the base leaves room. The contexts are Go, TypeScript, Svelte, and Python comments; commits and PR bodies; approval briefs; agent-facing files; developer docs; end-user docs, help dialogs, and interface text; and site content, blog posts included, with each site's content guide as its overlay. This replaces the non-goals that excluded code comments, commits, agent-facing files, and website content. The charter's "website content is the one personal voice" becomes: site content is a Survey context whose overlay is the site's own guide.
+2. **Enough context for each context.** Each one gets a pack: the base standard as positive rules with reasons and links, canonical examples from the base's own corpus (license-checked), three to five tagged house examples per surface, Survey's flavor and any departure with its ruling, before-and-after tells with the after first, the checks, and a small eval set graded against the rubric. Geoff's approved writing is the richest source of house examples.
+3. **Other projects use Survey as their writing reference.** Adoption is its own pass and covers every repo with prose, the Go repos without npm, the workstation, the phonebook, cairn, and its sites included. Repos without npm get a second channel: a versioned zip release asset that Vale loads by URL, plus the vendored-skills channel for the skill. The `glw907` tells move into Survey's packs. The Pass D fold's recommendations to keep `glw907` outside Survey and to govern only npm repos are superseded.
+4. **Do not break what works.** The migration preserves behavior first: build each context's eval set and run it through today's system for a baseline, with a small sample shown to Geoff; move content into Survey verbatim and turn today's files into thin pointers; re-run the evals, and a context passes only if it matches its baseline, with no repo switching until its contexts pass; keep the old files until the new path has run cleanly, and pin Survey in each repo so rollback is one line. Improvements come after, each as its own minor that must beat its context's baseline without hurting any other.
+5. **Corrections must be easy to take.** Three channels feed one ledger: chat (a `survey` skill route records before, after, context, and reason when Geoff corrects wording), the approval queue (a harvester reads his prose edits and comments), and notes he attaches to items. The ledger is private and never lands in the public repo; only distilled, sanitized results are published. A recurring distill step groups corrections by context and proposes examples, sharper rules, or Vale rules, each of which must beat its context's baseline. A generalization goes to Geoff as one packet, and an example taken directly from his correction ships without asking.
+6. **A fourth channel: the cairn editor.** Geoff may have Claude draft a blog post, then correct it in the cairn editor. The intake asks nothing extra of him. Those corrections feed the site-content pack, and the private-ledger rule holds.
+7. **Grade the writing periodically.** Each context is graded on its fixed eval tasks and on a sample of real writing shipped since the last run, scored with the rubric, `tellgrader`, and Vale, plus a small blind sample Geoff reads. Results go to a dated scorecard with a trend per context. A context that drops opens a backlog item, and the distill step works on the lowest-scoring contexts first. The design reuses the workstation's monthly reviews and stays the minimum that gives a trend Geoff can trust.
+
 ### Intent
 
 Every house tool should read as one family. Where we hold every lever (the approval queue, the phonebook, 907.life's cairn layer), the tool should also carry Survey's felt craft. Where an app exposes only a few levers, such as Bulwark, it should still be recognizably Survey. An agent working in any of these contexts should apply Survey correctly without being briefed. Each app should be able to follow Survey as it improves, through a version bump and a changelog that says what to do.
 
-None of the three existing versions is the reference. Each looks good, and each may change a little to match the principles this work writes down (Geoff, 2026-10-21).
+The same holds for writing. Claude's writing in any repo should be a good instance of its published standard with one recognizable house flavor, and it should get better each month from Geoff's corrections without his doing anything extra.
+
+None of the three existing visual versions is the reference. Each looks good, and each may change a little to match the principles this work writes down (Geoff, 2026-10-21).
 
 ### Goals
 
-The work has five goals.
+The work has seven goals.
 
 - One written house style: principles, tokens in light and dark, and per-context recipes.
-- One house writing register and one set of copy-editing rules, read by agents and drafter from the installed package and by Vale from a copy the gate checks against it.
+- One context pack per kind of writing, each a good instance of its base standard first.
 - A ladder of levers ranked by how much resemblance each carries, so a partial adopter knows what to take first.
 - Releases under Semantic Versioning, each with a changelog entry that names the consumer's action.
+- One pinned Survey version in every repo with prose, read by agents, drafter, and Vale alike.
+- A grade per writing context with a trend Geoff can trust, and corrections that reach the packs with no extra step from him.
 - Agent-friendly from the ground up: version-matched docs, role-named tokens, a conformance check with fix-naming messages, and upgrade steps an agent can carry out.
 
 ### Non-goals
@@ -85,17 +90,18 @@ Six things stay out of scope.
 - Restyling the cairn admin. It keeps its own design system.
 - Packaging Survey as a selectable cairn theme (cairn-themes S3, cairn's work).
 - The terrain hero from elevation data.
-- Building any app's convergence inside Passes A to D. That includes cairn's move to the Survey register and any tidy feature's move to the copy-editing rules.
-- Website content. It keeps each site's own voice, as the authoring charter says.
-- Code comments, commit messages, and agent-facing files. They keep their own published standards.
+- Building any app's visual convergence inside these passes, and cairn's move of its own docs register onto Survey's packs. Each is the app's own pass.
+- Grading writing that people wrote. The system grades Claude's drafts, since the charter is "not a quality gate for human-written content".
+- Replacing a base standard's own linter (gofmt and go vet, ESLint, ruff, commitlint, the brief check) or `tellgrader`. Survey's Vale rules sit beside them.
 
 ### Anti-goals
 
-Three outcomes would mean the work failed.
+Four outcomes would mean the work failed.
 
 - A style that only works where every lever exists, which leaves Bulwark-class apps generic.
 - Copies that drift, where an app can't tell which Survey it has or what changed since.
 - Rules an agent has to infer from CSS, or values it is free to invent.
+- A migration that changes writing that works before anyone has measured it.
 
 ### The lever ladder
 
@@ -147,21 +153,134 @@ Survey follows Semantic Versioning 2.0.0, with Adobe Spectrum's token policy and
 - **First publish.** npm cannot bind a trusted publisher to a package that does not exist. cairn's first publish was by hand for that reason (`cairn-cms/.github/workflows/publish.yml:92`). So Geoff publishes a `0.0.0` placeholder at pre-flight and deprecates it at once. A release candidate goes to `next`, so `latest` stays on the placeholder until the first stable version, and the deprecation warns anyone who installs it bare. A new trusted-publisher link "must complete its first successful publish within 2 days". He makes the link in Pass B's close sitting, and the release runs the same day.
 - **Rollback.** A bad version is deprecated and superseded by a patch, never unpublished. `AGENTS.md` says so in its release section.
 
-### The writing register and copy-editing rules
+### Writing contexts
 
-Survey holds the house writing register and everything needed to write to it: descriptions, examples, the corpus, the custom linters, and the skill (Geoff, 2026-10-22). It follows the authoring charter's overlay rule. Each audience starts from a published base, Google for developer-facing prose and Microsoft for end-user and interface text. The register records each departure from that base with its provenance and Geoff's ruling. Its main source is cairn's `docs/internal/docs-register.md`. That is the most developed overlay on the workstation. It already holds a drafting brief over each base guide and a ledger of departures.
+Every kind of writing Claude does here is a context, and each starts from its published standard (ruling 1). A context has one pack. A surface is a kind of output inside it that gets its own examples and eval tasks, so `end-user` has three surfaces and most packs have one. Pass E moves each pack from the workstation file named here, word for word.
 
-- **Voice and tone.** The voice stays fixed while the tone moves with the surface, as Mailchimp, Atlassian, and Shopify Polaris each set out. `writing/voice.md` states the voice as three to five traits in Mailchimp's "X but not Y" form ("smart but not snobbish"). It also holds a tone table that places each surface (interface text, errors, empty states, docs pages, release notes) on Nielsen Norman Group's four tone dimensions: funny or serious, formal or casual, respectful or irreverent, enthusiastic or matter-of-fact. Both briefs name `voice.md` as their first read, so the traits have one home.
-- **Briefs.** `writing/` carries one brief per base guide in drafter's stock shape: a description of the standard and its reader, the tells it rules out, a rubric linked to the guide's pages, and a corpus. Anthropic's prompting guide says to "tell Claude what to do instead of what not to do" and to give the reason behind an instruction. So each rule says what to do and why, and each tell is a before-and-after pair with the after first. The Google brief holds the house deltas only and cites drafter's `drafter:google-*.md` stock files for the base. drafter has no Microsoft stock (`internal/blueprint/tracks.go:21` lists only `google`). The Microsoft brief is therefore written whole, and a project reaches it through its own prompts module, as cairn's editors track does. Interface text (buttons, headings, empty states, errors, confirmations) is a section of the Microsoft brief, generalized from the Voice section of cairn's admin design system.
-- **Examples.** The same guide calls examples "one of the most reliable ways to steer Claude's output format, tone, and structure". It asks for examples that are relevant, diverse, and wrapped in `<example>` tags, and says "Include 3–5 examples for best results". Each surface in the tone table gets a file under `writing/examples/` with three to five house exemplars in `<example>` tags, each naming its source. They are read on demand, the way the Claude Code skills docs place example collections in supporting files.
-- **Departures.** The departures file admits a row by cairn's own test (`docs-register.md:1083-1095`, Geoff, 2026-09-28). An override of the base guide needs a row with its source and ruling, and a tightening does not. Each ruling id carries its source as a prefix (`cairn-2026-09-28-r3`, `survey-d-r1`), and a carried cairn ruling cites a GitHub permalink at the harvest commit. Once cairn converges, a cairn rule that departs from Survey's register is a row in cairn's own register with Geoff's ruling. cairn's test then keeps a defined base.
-- **Corpus licensing.** Google's pages are CC BY 4.0, as drafter's corpus records. Microsoft's live pages read "All rights reserved", but the guide's public source repository, `MicrosoftDocs/microsoft-style-guide`, is CC BY 4.0 by its `LICENSE` and `ThirdPartyNotices` files. That repository is archived at `c6945c3` (2024-11-13). Microsoft excerpts are quoted only from it at that commit, each with its file permalink, the live page's URL, the license, and the retrieval date. Live text that differs from the archive is linked and paraphrased, never quoted. The package's `license` field becomes an SPDX expression that names CC-BY-4.0 for the corpora. `writing/LICENSES.md` ships in `files` with the attribution and change notes CC BY 4.0 requires, and each corpus file carries drafter's "not endorsed by" line. A lint fails on an excerpt without its URL, license, or date.
-- **Copy-editing rules.** A style sheet, the editor's established tool for a house's mechanical choices, lists each rule with its source. Examples are the serial comma, sentence-case headings, and how dates, times, and numbers are written. Each row has a `vale:` field naming its Vale rule, or the reason none fits: the rule needs parsing beyond a token or pattern, or a scope Vale can't see. The sheet is Markdown for people and agents, not a public API. A later code reader, such as cairn's tidy feature, names the format it needs in its own pass.
-- **Custom linters.** The package ships a Vale style directory named `Survey`, with a rule for each departure and copy-editing rule Vale can express. A consuming repo commits a copy under its `StylesPath`, as house repos already commit Google and Microsoft with Vale pinned in CI, and never runs `vale sync` for it. Its gate fails when `diff -r node_modules/@glw907/survey/vale/Survey <StylesPath>/Survey` finds a difference, so a bump that changes the style fails until the copy is refreshed. The committed copy also keeps `vale-hook` working in a fresh worktree before `npm ci`. The fold probe ran this under Vale 3.24.0: the copied rule raised `Survey.SerialComma`, `diff -r` exited 1 after a rule changed, and a missing style made Vale exit 2. Fixtures live in `tests/vale/`, outside the style directory, since Vale reads every `.yml` there as a rule. Whether this style also takes over `glw907` is the brief's Vale decision.
-- **Judgment layer.** Vale is the deterministic net. The existing agents stay the judgment layer: `prose-voice-reviewer` reads a house-tool draft against the installed brief, and `cairn-register-editor` reads cairn's drafts against it once cairn converges.
-- **Drafter.** drafter reads a brief section by `<path>#<slug>`, but nothing under `node_modules` reaches it today. `inline_files` admits only files outside the repository, a relative entry is dropped, and an unresolved token returns no block (`internal/assemble/files.go`, `section.go`). `register.<track>` is only recorded. The brief's drafter decision settles the mechanism.
-- **Skill.** A `survey-writing` skill, under the 500 lines the Claude Code skills docs set, routes an audience to `voice.md`, its brief, its example file, and the Vale style in the repo's installed `node_modules/@glw907/survey/`. It carries no rule text, so its own version never matters. In a fresh worktree it runs `npm ci` first. In a repo without the package it fails closed, per the charter's "No audience, no system", and hands back to `writing-voice`. Its source lives in the `survey` repo under `skills/survey-writing/`. The workstation installs it as a vendored skill through `vendored-skills.json`, whose `update-skills` command pins the commit it fetched.
-- **Versioning.** The writing part follows Survey's versions under the `writing` rung. A changed tell, rubric line, or exemplar is minor, and removing or renaming a brief's section slug is major. A new Vale rule, or a changed pattern, that can report new findings at `error` is major under the ESLint policy above, or ships first as a `suggestion` in a minor. Raising a rule's level is major at `error` and minor below it, and each rule's failing fixture pins its level. A `suggestion` still reaches agents, since every house config sets `MinAlertLevel = suggestion` and `vale-hook` returns suggestions.
+| Pack | Base standard | Base linter | Moved from | Surfaces |
+|---|---|---|---|---|
+| `go-comments` | Go Doc Comments, Effective Go | gofmt, go vet | `go-conventions`, its "Comments" section | Go comments |
+| `ts-comments` | TSDoc | ESLint with jsdoc and tsdoc | `ts-conventions` | TypeScript comments |
+| `svelte-comments` | TSDoc and the Svelte `@component` convention | ESLint with jsdoc and tsdoc | `svelte-conventions` | Svelte comments |
+| `python-comments` | PEP 257, PEP 8 | ruff `D` | `python-conventions` | Python docstrings and comments |
+| `commits-and-prs` | Conventional Commits and the git-commit canon | commitlint, optional | `voice/commit-and-pr.md` | commit messages, PR bodies |
+| `approval-briefs` | inverted pyramid, Federal Plain Language Guidelines, NN/g | `check-brief.ts`, `packet --check` | `voice/approval-brief.md` | packets and briefs |
+| `agent-facing` | Anthropic's Claude Code and prompting guidance | none | `voice/agent-facing.md` | skills, agents, CLAUDE.md |
+| `dev-docs-go` | Google developer documentation style guide | Vale `Google` | `voice/technical-doc-go.md` | docs in Go repos |
+| `dev-docs-web` | Google developer documentation style guide | Vale `Google` | `voice/technical-doc-web.md` | docs and changelogs in web repos |
+| `end-user` | Microsoft Writing Style Guide | Vale `Microsoft` | `voice/editor.md` | end-user docs, help dialogs, interface text |
+| `site-content` | the shared web-content method, under each site's content guide | the site's Vale config | `docs/web-content-method.md` | blog posts, pages, form copy |
+| `core` | the audience-invariant tells | `tellgrader`, Vale `Survey` | the `writing-voice` output style and the `glw907` Vale style | every context, and replies |
+
+That makes eleven packs, `core`, and fourteen surfaces. The `voice/` paths are under `~/.claude/docs/`. Today's site-content base is the shared method, which cites no external standard. Pass E moves it as it is, and naming a published base for it is an improvement for Pass J that must beat its baseline. cairn's docs voice stays cairn's overlay above `dev-docs-web` and `end-user`, as the charter has it.
+
+### Context packs
+
+A context pack holds what a session needs to write well in one context (ruling 2). Pass E fills each pack with one file, `pack.md`, which is today's text byte for byte. Passes I and J then give it the full shape, one improvement at a time:
+
+- `standard.md` holds the base standard as positive rules, each with its reason and a link. Anthropic's prompting guide says to "tell Claude what to do instead of what not to do" and to give the reason behind an instruction.
+- `examples/base.md` holds canonical excerpts from the base's own corpus, each with its URL, license, and retrieval date.
+- `examples/house.md` holds three to five house examples per surface in `<example>` tags, each naming its source. The same guide calls examples "one of the most reliable ways to steer Claude's output format, tone, and structure" and says "Include 3–5 examples for best results".
+- `flavor.md` holds Survey's flavor where the base leaves room, and each departure with its ruling id.
+- `tells.md` holds the before-and-after pairs, after first. The `glw907` comment tells land in the comment packs here (ruling 3).
+- `checks.md` names the base linter's command and the Survey Vale rules that apply.
+
+House examples come from Geoff's approved writing: merged docs, PR bodies and packets he approved (the approve verdicts in `decisions.jsonl`), his posts, and his corrections. Each pack's eval set lives beside it in the survey repo at `evals/<pack>/` and never ships, since no consumer runs it. The router names each pack file directly, following Anthropic's skill guidance to "keep references one level deep from SKILL.md".
+
+### Channels and pins
+
+A repo pins exactly one Survey version, and every reader in it uses that version (ruling 4). The packs have one source, `skills/survey/packs/` in the survey repo. That path matters because the vendored-skills channel copies only the files under a skill's path (`fetch_skill`, `~/.local/bin/claude-tooling-sync:397-421`). The build assembles a Vale style directory, `vale/Survey/`, from the Vale rules plus `packs/` and a `SHA256SUMS` file. The npm package and the release zip both carry that one directory.
+
+- **Repos with npm.** The repo lists `@glw907/survey` in `package.json`, commits a copy of `vale/Survey/` under its `StylesPath`, and its gate fails when `diff -r` finds the copy differs from the installed package. The Pass D fold probed this under Vale 3.24.0.
+- **Repos without npm.** `.vale.ini` names the release asset in `Packages`, as `https://github.com/glw907/survey/releases/download/v<version>/Survey.zip`, and the repo commits what `vale sync` installs. Its gate downloads that zip and diffs it against the committed copy. Probes: `vale sync` installed a version-pinned GitHub release zip (`errata-ai/Google` at `v0.7.1`); a local zip kept a `packs/` folder inside the style directory, which Vale ignored while it raised the style's rule; the diff check exited 0 in sync and 1 after a local edit. A `.vale.ini` that names the zip but applies no style raised nothing and exited 0, so a pin alone adds no lint findings.
+- **The workstation.** `vendored-skills.json` names the `survey` skill with its `branch` set to a release tag. `fetch_skill` makes three GitHub API calls with that field, and each accepted a tag in the probe. The dotfiles gate runs `sha256sum -c` over the vendored packs, so an edit made in place fails before it spreads.
+- **Where a session reads a pack.** The `writing-voice` router reads the repo's committed `<StylesPath>/Survey/packs/` when the repo pins Survey, and `~/.claude/skills/survey/packs/` otherwise.
+- **drafter.** drafter inlines any file git tracks inside the repo (`resolve` in `internal/assemble/files.go`), so it reads the committed copy with no change. The brief's drafter decision covers a missing section.
+- **Rollback.** Change the one pin, then run `npm i`, `vale sync`, or `claude-tooling-sync update-skills survey`.
+
+The vendored notes on `vale-ci` and `vale-fix` say not to run `vale sync` against a committed styles directory, and npm repos never do. A repo on the zip channel runs `vale sync` only when it moves its pin. It pins any other package on its `Packages` line by URL as well, so a sync never moves a style it didn't mean to.
+
+### Evals and the baseline
+
+The move follows two published practices. Characterization testing records what a system does before a refactor: "The purpose of characterization testing is to document your system's actual behavior", so "We can run our tests and find out immediately whether we've changed behavior" (Michael Feathers). Anthropic's skill guidance calls the same loop evaluation-driven development: "Create evaluations BEFORE writing extensive documentation", "Establish baseline", then "Run evaluations, compare against baseline, and refine." Its skill-creator plugin sets the baseline for an existing skill as "the old version", snapshotted before any edit.
+
+- **Tasks.** Each surface gets three fixed tasks, the number Anthropic's guide asks for ("Build three scenarios"), for 42 in all. The twelve tasks in `writing-voice/evals/evals.json` carry over where they fit. Each task names its facts, three or four assertions, and a 1 to 5 rubric on register fidelity, clarity, structure, and factual fidelity, the dimensions the September benchmark used.
+- **Arms.** Each run is a fresh headless `claude -p` session in a scratch project. Output styles don't reach subagents ("Other subagents run their own system prompt, so styles don't change how they respond"), so a subagent harness can't measure the always-on part. Each arm loads its own style with `--settings '{"outputStyle":"<name>"}'` from the project's `.claude/output-styles/`. It runs with `--disable-slash-commands`, which removed the Skill tool in the probe while the style still applied. The prompt then names the exact files the arm reads. The baseline arm reads a snapshot of today's files at a recorded `~/.dotfiles` commit, and the candidate arm reads the pack files and pointer texts the new path would load.
+- **Runs and graders.** Three runs per task, aggregated with skill-creator's `aggregate_benchmark` into a mean and standard deviation. Each draft is scored by `tellgrader` with its register profile, by Vale with the context's config, and by a fresh-context judge on the rubric and assertions. The judge also picks between the two arms blind, as the September benchmark's third layer did. The judge runs on one fixed model other than the drafting model, per Anthropic's note that it is "Generally best practice to use a different model to evaluate than the model used to generate the evaluated output".
+- **Match.** A surface matches its baseline when its rubric mean and assertion pass rate sit no lower than the baseline mean minus one standard deviation, its tells per 1,000 words and Vale errors sit no higher than the baseline mean plus one, and the blind judge prefers the baseline in no more than 60% of pairs.
+- **Beat.** An improvement beats its baseline when the rubric mean rises above the baseline mean plus one standard deviation, or the blind judge prefers it in at least 60% of pairs, with every other measure still matching. Every surface that reads a changed file must also match. A change inside one pack runs that pack's surfaces, and a change to `core` or a shared Vale rule runs all fourteen.
+- **A fixed yardstick.** The judge model and the rubric stay fixed. Changing either re-runs the baseline, and the scorecard marks the break. An accepted improvement becomes its surface's new baseline, as skill-creator's iterations do.
+- **Geoff's bar.** Pass D shows him one baseline draft per surface, blind, in skill-creator's review viewer, whose server mode saves "to feedback.json in the workspace". He marks each ship, edit, or reject. The record sets the bar and the judge's starting agreement with him. A surface he marks weak goes first in Passes I and J, and the move still only has to match.
+
+### Corrections
+
+Every correction lands in one private ledger with no extra step from Geoff (rulings 5 and 6).
+
+- **The ledger.** A private repo, `glw907/survey-ledger`, cloned at `~/Projects/survey-ledger` on both hosts. Corrections arrive on either host and from GitHub, and the distill needs them in one place. The workstation already keeps private material in private GitHub repos (the phonebook, servers). The approval queue's per-host state directory was the other candidate. Its monthly review accepts a split by host because each host's queue stands alone ("Queue state lives per host"), but corrections need to come together. Each correction is one JSON file named by its channel and source key. A second harvest, or the other host, writes the same file, and two sessions never touch one file. A record holds the channel, pack and surface, repo and its visibility, before, after, reason (Geoff's words, or none), source ref, time, and host.
+- **Chat.** The `survey` skill's corrections route triggers when Geoff rewrites or corrects wording Claude wrote. The session applies his fix, writes the record, and commits and pushes the ledger. It asks him nothing, and records a reason only if he gave one.
+- **The approval queue.** `survey-harvest queue`, a stdlib Python helper in `~/.dotfiles/bin`, finds decided items in `decisions.jsonl` whose line counts `comments`, or whose kind is a blueprint, a page, a change, or a send-back. It reads each item's `items/<id>/decision.json` for comments with their anchored quote, send-back notes, and triage row notes. Direct prose edits come from git: the blueprint and page screens commit each edit as `Edit <file> in review` (`approval-queue/src/lib/server/blueprint.ts:90`), so the parent blob is the before and the commit's blob the after. A script fits this step, since Anthropic's skill guide says to "Prefer scripts for deterministic operations". The script emits candidates, and the session keeps only those about wording and names each one's surface.
+- **The cairn editor.** A cairn save commits with the editor as author and leaves the committer to the App: "the committer is omitted, so GitHub attributes the commit to the App" (`cairn-cms/src/lib/github/repo.ts`). On 907.life such a commit reads author `Geoff Wright <geoff-login@907.life>`, committer `cairn-cms[bot]`, subject `Publish posts: <id>`. The draft side has no reliable mark. Claude's co-author trailer is on 239 of 256 commits on 907.life's `main` and on code commits as much as content, so it can't say who drafted a page. The minimal marker is one trailer that `content-draft` adds to the draft commit, `Survey-Draft: site-content`, in the same final block as the co-author line. In the probe, a trailer in a paragraph of its own was not parsed. The harvester finds the draft with `git log --format='%H %(trailers:key=Survey-Draft,valueonly)' -- <path>`, then Geoff's later saves with `--committer='cairn-cms\[bot\]' --author=<his address> <draft>..<default>`, and diffs the two blobs. The probe returned his save and skipped a volunteer's. The draft must be reachable from the default branch, because publishing commits the entry there and deletes its `cairn/<concept>/<id>` pending branch (`src/lib/content/pending.ts`, `content-routes-entry-write.ts`). Geoff's addresses are seeded in the ledger from his own commit authorship. These corrections feed the `site-content` pack.
+- **What gets published.** The ledger never lands in a public repo. An example ships only from a correction whose source repo is public. A correction from a private source stays in the ledger and informs generalizations, which reach Geoff in a packet anyway.
+
+### The monthly writing review
+
+The review grades every surface and then distills the month's corrections (rulings 5 and 7). It reuses the monthly model review's cadence and home: the `model-review.timer` (`OnCalendar=monthly`) and its unattended `claude -p` launcher, which already chains the servers review as its step 8 ("if ... prompt.txt exists, read it and follow it"). A step 9 chains this review the same way. Its prompt is `docs/writing-review/prompt.txt` in the survey repo. Like the decision review's log, `docs/writing-review/log.md` takes one line per month, quiet months included. `model-review-notify --dry-run` gives a safe trial run.
+
+1. Harvest this host into the ledger: the approval queue, the cairn editor, and any blind-review `feedback.json` in `~/Downloads` that names one of the ledger's sample ids. Push.
+2. If the ledger's origin already holds `scorecards/<YYYY-MM>.md`, stop. The other host ran this month.
+3. Grade the fixed tasks for all fourteen surfaces at the workstation's pinned Survey version, three runs each, with the baseline's graders and judge.
+4. Grade real writing: up to five Claude-written pieces per surface that shipped since the last run, from the repos that pin Survey. A Claude piece is one whose commit carries the co-author trailer. Sources are commit messages, merged PR bodies, comments added in merged diffs, changed docs and posts, and this host's packets. Score each with the rubric judge, `tellgrader`, and Vale.
+5. Write the scorecard to the ledger: per surface, this month beside the three before it, with the fixed-task rubric mean and spread, assertion pass rate, tells per 1,000 words, Vale errors, the real-sample rubric mean, and the judge's agreement with Geoff.
+6. Open a backlog item in the survey repo through `log-issue` for any surface whose fixed-task mean fell below last month's mean minus one standard deviation, or whose real-sample mean fell two months running. The item carries numbers, never quoted text.
+7. Build the blind sample: six pieces, three from the fixed tasks and three real, with their sources hidden, as a static skill-creator viewer page in the ledger clone. Notify at normal urgency. Geoff marks each ship, edit, or reject, with an optional note, and the viewer downloads his `feedback.json`. The next run files it, and each note joins the ledger as a correction.
+8. Distill. Group the month's new corrections by surface and take the lowest-scoring surfaces first. Propose examples taken straight from corrections, sharper rules, and Vale rules, and run each against its baseline. An example that beats it goes into a survey PR that the session merges and releases as a minor, with no packet (ruling 5). Generalizations that beat it go to Geoff as one packet through `approval-packet`, each one an ask.
+9. Add the log line, commit, and hand over.
+
+Each run drafts about 126 fixed-task pieces and grades up to 70 real ones. The fixed tasks, judge, and rubric keep the months comparable, and Geoff's six verdicts each month show whether the judge still agrees with him.
+
+### The Claude-infra map
+
+The writing work touches most of the workstation's writing tooling, and each piece keeps one home under the `claude-infra` rules. Anthropic's features overview sets the order of strength: "If a rule must hold every time, make it a hook rather than a prompt instruction", and "Put it in a skill if it's reference material Claude needs sometimes". CLAUDE.md carries only a fact that every turn needs. Every change here preserves behavior first (ruling 4), lands through a `~/.dotfiles` PR under `dotfiles-pass` at `runner` class, and reaches both hosts.
+
+| Piece | Home | Change | Pass | Follows |
+|---|---|---|---|---|
+| `survey` skill | skill, vendored from the survey repo at a release tag | moves from `~/.dotfiles` to `skills/survey/`, gains `packs/` and the corrections route | E, F, H | Claude Code skills |
+| `writing-voice` skill | skill, authored | each router row names its pack path; name and description stay, so its triggers and `prose-voice-reviewer`'s `skills:` preload hold | F | Claude Code skills |
+| `go`, `ts`, `svelte`, and `python-conventions` | skills | comment sections move word for word to the comment packs, and each skill names its pack; Go's code rules stay | F | Claude Code skills |
+| the six registers in `~/.claude/docs/voice/` | docs | each becomes a relative symlink into the vendored pack, byte-identical by `cmp` | F | none |
+| `~/.claude/docs/web-content-method.md` | docs | becomes a symlink into the `site-content` pack | F | none |
+| the authoring charter | docs | the site-content line per ruling 1, the overlay paragraph, the table's rows, and the adoption steps name Survey | F | none |
+| `claude-tooling.md`, `vendored-skills.json` | docs, manifest | the `survey` entry pinned by tag, with its rule of use: edit packs in the survey repo, never in place | F | Claude Code skills |
+| dotfiles `scripts/check.sh` | gate | `sha256sum -c` over the vendored packs, and every symlink resolves | F | none |
+| `prose-voice-reviewer` | agent | one line: in a repo that pins Survey, read its pinned packs | F | Claude Code subagents |
+| `content-draft` | skill | one line: add the `Survey-Draft` trailer to the draft commit | H | Claude Code skills |
+| `survey-harvest` | `~/.dotfiles/bin` | new helper for the queue and cairn channels | H | Claude Code best practices |
+| `docs/model-review/prompt.txt` | the monthly runner's prompt | step 9 chains the writing review | H | none |
+| global CLAUDE.md, "Writing voice" | CLAUDE.md | one sentence names Survey as the house writing reference | F, second to last | Claude Code memory |
+| `writing-voice` output style | output style | becomes a relative symlink into `packs/core/` | F, last | Claude Code output styles |
+
+Some pieces change nothing. `vale-hook` and `tellgrader --hook` run each repo's own config, which names Survey once the repo adopts it. `content-review`, `approval-packet`, and `pass-core` read the method and the brief register at paths that stay put. `cairn-register-editor`, `register-check`, and `cairn-docs-drafter` keep cairn's register until cairn's own convergence pass.
+
+The approval-brief register needs its path. The approval queue's gate reads its exemplars from `~/.claude/docs/voice/approval-brief.md` (`tests/approval-queue.test.sh:209`), and the brief check prints that path in each refusal (`approval-queue/src/lib/brief.ts:8`). A symlink keeps both working. A contract change now lands in Survey first, and an approval-queue PR can test against a survey checkout through the `REGISTER` variable the gate already reads.
+
+The symlinks rest on two probes. A headless session loaded an output style through a relative symlink, and `stow` linked a package file that is itself a relative symlink, which resolved to its target. Claude Code "reads style files when it starts", so the style change reaches each session at its next start.
+
+Three skills cover the work. The visual guidance and the corrections route share the one `survey` skill, as ruling 5 names it. Anthropic's skill guide notes that Claude reads each description "to choose the right Skill from potentially 100+ available Skills". One fewer description is one fewer chance of a collision. A correction is a different moment from drafting. That keeps the route clear of `writing-voice`, and Pass H's trigger checks test it. `writing-voice` stays the writing router under its own name. Renaming it would change what triggers it and break the agent preload. Neither the distill step nor the grading needs a skill. Each runs from a committed prompt, as both monthly reviews already do.
+
+Pass F lands its changes in this order, each commit revertable alone: the vendored `survey` entry and its gate check, the register symlinks one per commit, the router and conventions pointers for surfaces that matched, the reviewer line, the charter and tooling docs, the CLAUDE.md line, and the output style last.
+
+### The house register
+
+Passes I and J fill the packs, and Pass J also builds the house flavor the earlier rulings asked for: the register over Google and Microsoft, its departures, and the copy-editing rules (Geoff, 2026-10-22). Its main source is cairn's `docs/internal/docs-register.md`, the most developed overlay on the workstation.
+
+- **Voice and tone.** The voice stays fixed while the tone moves with the surface, as Mailchimp, Atlassian, and Shopify Polaris each set out. `packs/core/voice.md` states the voice as three to five traits in Mailchimp's "X but not Y" form ("smart but not snobbish"). It also holds a tone table that places each surface on Nielsen Norman Group's four tone dimensions: funny or serious, formal or casual, respectful or irreverent, enthusiastic or matter-of-fact. Every pack's `flavor.md` names `voice.md` as its first read, so the traits have one home.
+- **Building on drafter's stock.** The Google packs hold the house deltas and cite drafter's `drafter:google-*.md` stock files for the base (`const drafterPrefix = "drafter:"`, `internal/assemble/section.go:13`). drafter has no Microsoft stock (`internal/blueprint/tracks.go:21` lists only `google`), so the `end-user` pack is written whole. Its interface-text surface generalizes the Voice section of cairn's admin design system.
+- **Departures.** A row is admitted by cairn's own test (`docs-register.md:1083-1095`, Geoff, 2026-09-28). An override of the base guide needs a row with its source and ruling, and a tightening does not. Each ruling id carries its source as a prefix (`cairn-2026-09-28-r3`, `survey-j-r1`), and a carried cairn ruling cites a GitHub permalink at the harvest commit. Once cairn converges, a cairn rule that departs from Survey is a row in cairn's own register with Geoff's ruling.
+- **Corpus licensing.** Google's pages are CC BY 4.0, as drafter's corpus records. Microsoft's live pages read "All rights reserved", but the guide's public source repository, `MicrosoftDocs/microsoft-style-guide`, is CC BY 4.0 by its `LICENSE` and `ThirdPartyNotices` files, archived at `c6945c3` (2024-11-13). Microsoft excerpts are quoted only from that commit, each with its file permalink, the live page's URL, the license, and the retrieval date. Live text that differs is linked and paraphrased. Every other base corpus (the Go and Python standard libraries, the TSDoc and Svelte projects, Conventional Commits, Anthropic's docs) has its license read and recorded before Pass I quotes it. The package's `license` field becomes an SPDX expression that names CC-BY-4.0 for the corpora. `LICENSES.md` ships with the attribution and change notes CC BY 4.0 requires, and a lint fails on an excerpt without its URL, license, or date.
+- **Copy-editing rules.** A style sheet, the editor's established tool for a house's mechanical choices, lists each rule with its source, such as the serial comma, sentence-case headings, and how dates, times, and numbers are written. Each row has a `vale:` field naming its Vale rule, or the reason none fits.
+- **Survey's Vale rules.** The `Survey` style starts in Pass E as the seven `glw907` rules, unchanged. Pass J adds a rule for each departure and copy-editing rule Vale can express. Fixtures live in `tests/vale/`, outside the style directory, since Vale reads every `.yml` there as a rule.
+- **Judgment layer.** Vale is the deterministic net. `prose-voice-reviewer` reads a house-tool draft against its pack, and `cairn-register-editor` reads cairn's drafts once cairn converges.
+- **Versioning.** The writing part follows Survey's versions under the `writing` rung. A changed tell, rule, or example is minor. Removing or renaming a pack, a surface, or a section slug is major. A new Vale rule, or a changed pattern, that can report new findings at `error` is major under the ESLint policy above, or ships first as a `suggestion` in a minor. Raising a rule's level is major at `error` and minor below it, and each rule's failing fixture pins its level. A `suggestion` still reaches agents, since every house config sets `MinAlertLevel = suggestion` and `vale-hook` returns suggestions.
 
 ### Pass A: harvest and rulings
 
@@ -193,19 +312,75 @@ Pass C lands Survey in the workstation's Claude tooling, in `~/.dotfiles` under 
 - **Acceptance.** Hook tests on the `tests/test_vale_hook.py` pattern against a scratch app that installs the packed package: an off-token edit returns context naming the token, a non-dependent repo and a `.md` edit return nothing, a checker crash still exits 0, and the run stays inside the timeout. Three should-trigger prompts and two should-not prompts in fresh headless sessions check the skill's description, the skill-creator trigger method. One headless `site-implementer` dispatch in the scratch app must read the installed DESIGN.md before its first CSS edit. `claude-tooling-sync verify` exits 0.
 - **Hosts.** After the merge, pavilion runs `git pull`, `stow -R claude bin`, `claude-tooling-sync apply`, and `claude-tooling-sync verify`. On thinkpad-x1, `check-drift` reports the clone behind origin and runs `verify`, and the session there runs the same four commands.
 
-### Pass D: the writing register
+### Pass D: writing evals and the baseline
 
-Pass D builds the writing part in the `survey` repo and releases it as 1.1.0. It may start once Pass C closes, and it merges only after the approval queue's pass has promoted 1.0.0. The rulings define 1.0.0 as the release candidate that pass converged on, so the writing part can't join it.
+Pass D records how today's writing system behaves, before anything moves (ruling 4). It works in the survey repo and may start once Pass B merges. Nothing it adds ships: `evals/` sits outside the package's `files`, and the pack check shows no `evals/` path in the tarball.
 
-- **Sources.** The ledger records each source at a commit: cairn's `docs-register.md` (both briefs, the departure tables, and the rulings behind them), the Voice section of cairn's `admin-design-system.md`, cairn's `docs/internal/design/2026-06-20-editor-copyedit-conventions-research.md`, poplar's retired tidy rules (`041eb329^:internal/tidytext/` and `docs/archive/specs/2026-05-08-claude-tidy-design.md`), drafter's `stock/` files, the workstation registers `editor.md` and `technical-doc-web.md`, and the `glw907` Vale style.
-- **Ledger.** `initiatives/survey-house-style/research/<date>-writing-ledger.md` holds one row per countable unit. The units are each `##` or `###` tell heading in both of cairn's Tells sections, each row under "Deviations from the base guides", each `##` in drafter's `stock/google-tells.md`, each `glw907` rule file (seven), each rule heading in the admin Voice section, and each numbered convention in the copy-edit research. The mapped count must equal their sum. Each row is house-wide, cairn-only, or owned elsewhere, and says why. An owned-elsewhere row names its owner's path (the output style, `tellgrader`, or drafter's stock) and does not ship. A cairn-only row names the cairn noun it depends on: a track, a cairn name, a page anatomy, or cairn tooling. A row with no such noun is house-wide by default. The PR body reports the count in each class.
-- **The sitting.** Geoff rules the voice traits, the tone table, and every override in one sitting, each override with the base guide's text beside the proposed rule. A cairn override marked house-wide comes with cairn's ruling as evidence. Tightenings widened from cairn sit in one table with a default of "widen", and rows whose mark was unclear join it with a default of "cairn-only". Geoff can pull any row into discussion, as with Pass A's small differences. Afterwards every departure row carries a ruling id or a carried cairn ruling with its date. Each id maps to a brief section, a departures row, a style-sheet row, or a Vale rule, and a check counts both sides.
-- **Build.** `writing/` (the voice file, both briefs, the examples, the departures file, and `LICENSES.md`), the style sheet, the `Survey` Vale style, and the skill source. The fixture runner asserts that each failing fixture raises exactly `Survey.<Rule>` in `vale --output=JSON`, and that each passing fixture raises no `Survey.*` alert. A gate check fails unless the number of rule files equals the number of fixture pairs.
-- **Scratch app.** From a clean clone, a scratch app installs the packed tarball, commits its style copy, and runs its gate. Vale raises a planted tell that only a `Survey` rule catches, by that check's name, and the diff check fails once a rule in the copy is edited. The run repeats with the `.vale.ini` in a subdirectory. If the brief's drafter decision takes the first option, a drafter run in the app shows a known sentence from a brief in the assembled request, and the same run fails with the package absent.
-- **Workstation.** One `~/.dotfiles` PR under `dotfiles-pass`, opened after the publish and citing the published version. It adds the vendored `survey-writing` entry and the `writing-voice` rows for the repos the brief's reach decision names. It adds a boundary line: a site's pages, posts, and form copy stay with its content guide even where the repo installs Survey. `editor.md`, `technical-doc-web.md`, and `technical-doc-go.md` each gain a pointer line, or become pointers under the reach decision's second option. The authoring charter's overlay paragraph names Survey's register as the house overlay with cairn's on top of it, and both sentences that close its website paragraph ("keeps no house lexicon" and the output style's tells) are rewritten to match. The global CLAUDE.md "Writing voice" line names the Survey register beside cairn's. The vendored Vale skill notes stay as they are, since no repo runs `vale sync` for Survey.
-- **Acceptance.** The skill takes Pass C's trigger method in fresh headless sessions. The three should-trigger prompts are a house tool's empty state, a README in a repo that installs Survey, and an error message. The three should-not prompts are a commit message, a 907.life page, and a published cairn docs page before cairn converges. `claude-tooling-sync verify` exits 0.
-- **Hosts.** After the workstation PR merges, pavilion runs `git pull`, `stow -R claude bin`, `claude-tooling-sync apply`, and `claude-tooling-sync verify`. On thinkpad-x1, `check-drift` reports the clone behind origin, and the session there runs the same four commands.
-- **Order.** The `survey` PR goes to Geoff in a packet first. On approval the session merges it, creates the 1.1.0 release, and runs the post-publish check. The workstation PR then goes in a second packet.
+- **Snapshot.** Copy today's files at a recorded `~/.dotfiles` commit into `evals/baseline/<commit>/`: the output style, the `writing-voice` skill, the six registers, the four conventions skills, the web-content method, and the `glw907` Vale style.
+- **Tasks.** Three fixed tasks per surface, 42 in all, each with its facts, assertions, and rubric, as "Evals and the baseline" sets out.
+- **Harness.** `evals/README.md` and one runner script: launch both arms headless with the flags above, run `tellgrader` and Vale, dispatch the judge, and aggregate.
+- **Baseline.** Three runs per task. The results land in `evals/results/<date>/` as `benchmark.json` and `benchmark.md`, the layout the September benchmark used.
+- **Sitting.** Geoff reads fourteen baseline drafts, one per surface, blind, in skill-creator's viewer in Chromium.
+- **Acceptance.** Every surface has three tasks and a baseline mean and spread. A planted draft full of known tells scores outside every band it should, which shows the graders can tell good from bad. skill-creator's analyst warns about "assertions that always pass regardless of skill".
+
+### Pass E: the verbatim move
+
+Pass E moves today's writing files into Survey word for word and releases 1.1.0 (ruling 4). It starts after Pass D and merges only after the approval queue's pass has promoted 1.0.0. The rulings define 1.0.0 as the release candidate that pass converged on, so the writing part can't join it.
+
+- **Packs.** Each pack's `pack.md` is its source file from the Pass D snapshot, checked byte for byte with `cmp`. Go's pack takes only the "Comments" section of `go-conventions`. `packs/core/` takes the output style file whole, frontmatter included.
+- **Vale.** The seven `glw907` rule files become `vale/Survey/` with their content and levels unchanged. The fixture runner asserts that each failing fixture raises exactly `Survey.<Rule>` in `vale --output=JSON` and each passing fixture raises no `Survey.*` alert. The gate fails unless the number of rule files equals the number of fixture pairs.
+- **Skill.** Pass C's `survey` SKILL.md moves to `skills/survey/SKILL.md` unchanged, beside `packs/`.
+- **Build.** The build assembles `vale/Survey/` with `packs/` and `SHA256SUMS`, `files` adds it, and `publish.yml` uploads `Survey.zip` to the GitHub release.
+- **Pointer texts.** The text each workstation file will hold after Pass F (the router rows and the conventions pointers) is written into `evals/candidate/`. These are the exact bytes Pass F lands.
+- **Candidate run.** Every surface runs against its baseline, and Pass F switches only the surfaces that match.
+- **Scratch repos.** From a clean clone, an npm scratch app installs the packed tarball, commits its copy, and runs its gate. A scratch repo without npm syncs a locally served `Survey.zip` and runs the zip diff check. Each check fails after one edit to the copy.
+- **Order.** The `survey` PR goes to Geoff in a packet. On approval the session merges it, creates the 1.1.0 release, and runs the post-publish check, which syncs the real release URL.
+
+### Pass F: workstation cutover
+
+Pass F points the workstation at Survey 1.1.0 in one `~/.dotfiles` PR under `dotfiles-pass`, in the order "The Claude-infra map" sets, with the output style last. It deletes nothing. Every register path keeps its bytes, the baseline snapshot keeps every old file, and each switch is one commit that reverts alone.
+
+- **Acceptance.** `cmp` shows every symlinked path byte-identical to the Pass D snapshot, and each pointer text byte-identical to its file in `evals/candidate/`. `sha256sum -c` passes over the vendored packs. `claude -p "/output-style"` in a fresh session lists `writing-voice` as current; the output-styles page says the command lists the styles "and marks the current one" and works in non-interactive mode. The approval queue's gate passes while it reads the symlinked brief register. The `writing-voice` description is unchanged, so its three should-trigger and two should-not prompts from Pass C's method run once as a check. `claude-tooling-sync verify` exits 0.
+- **Hosts.** After the merge, pavilion runs `git pull`, `stow -R claude bin`, `claude-tooling-sync apply`, and `claude-tooling-sync verify`, then restarts its Claude Code sessions. On thinkpad-x1, `check-drift` reports the clone behind origin, and the session there runs the same steps.
+
+### Pass G: adoption
+
+Pass G pins Survey in every repo with prose (ruling 3). It runs after Pass F, one repo at a time, each PR under that repo's adapter, and all of them go to Geoff in one packet. A repo switches only when every surface it writes matched in Pass E.
+
+- **npm channel.** cairn-cms with its `tool/` directory, 907-life, ecxc-ski, aksailingclub-org, xcathletes-org, cairn-pub, and approval-queue, whose `package.json` sits in its `approval-queue/` app.
+- **Zip channel.** poplar, dubplate, drafter, phonebook, cairn-themes, servers, and initiatives. fishwright joins if it holds prose.
+- **Out.** aksailingclub-legacy, which the `asc-cutover` initiative archives. Any repo found to hold no prose is listed in the PR with its reason.
+- **Each repo.** Add the pin, commit the copy, and add the diff check to the gate. A repo that applied `glw907` renames `BasedOnStyles = glw907` to `Survey` and each `glw907.<Rule>` override to `Survey.<Rule>`, then deletes its `glw907` copy. A repo with no Vale today gets a pin-only `.vale.ini` that applies no style. The project CLAUDE.md names its Survey pin beside its charter line.
+- **Acceptance.** In each repo, Vale's findings on the full tree before and after match except for the rule-name prefix. The diff check passes clean and fails after a planted edit to the copy.
+
+### Pass H: the correction ledger and the monthly review
+
+Pass H builds the four correction channels and the monthly writing review (rulings 5, 6, and 7), and releases 1.2.0 for the skill's new route. It runs after Pass F, and it may run beside Pass G, since the two touch no common repo.
+
+- **Ledger.** The session creates the private `glw907/survey-ledger` repo with its layout (`corrections/`, `scorecards/`, `reviews/`, and the address list) and clones it on pavilion.
+- **Corrections route.** The `survey` skill gains the route in the survey repo, released as 1.2.0, and Pass H bumps the vendored tag.
+- **Harvester.** `survey-harvest` in `~/.dotfiles/bin`, with tests against a fixture queue state directory and a scratch site repo built the way the probe built one.
+- **Workstation lines.** The `content-draft` trailer line and the model review's step 9.
+- **Review.** `docs/writing-review/prompt.txt` and `log.md` in the survey repo.
+- **Acceptance.** The corrections route takes Pass C's trigger method. The should-trigger prompts are "No, say 'sign in' there", a sentence of Claude's pasted back rewritten, and "too formal, cut the second clause". The should-not prompts ask for a new draft and correct a line of code. A chat correction writes one record, and a second harvest writes nothing new. The harvester finds a planted comment, a planted note, and a planted in-review edit in the fixture, and the draft-and-save pair in the scratch repo. `model-review-notify --dry-run` against a scratch ledger writes a scorecard, a viewer page, and a log line, and commits locally only. A second run with that scorecard present harvests and stops.
+- **Hosts.** Both hosts clone the ledger and the survey repo, then run Pass F's four commands for the workstation PR.
+
+### Pass I: the code and workflow packs
+
+Pass I gives eight surfaces their full packs: the four comment surfaces, commit messages, PR bodies, approval briefs, and agent-facing files (ruling 2). It takes them in order of the latest scorecard, lowest first, and Geoff's Pass D verdicts break ties. Each pack is its own minor release that must beat its surface's baseline without hurting any other (ruling 4). Repos take each minor through `dependency-upgrade`, whose standing rule takes every minor and patch without asking.
+
+- **Each pack.** Write `standard.md`, `examples/base.md` after its corpus license check, `examples/house.md` from Geoff's approved writing and the ledger's public corrections, `flavor.md`, `tells.md` (the `glw907` comment tells land here), and `checks.md`. Then run the pack's evals and release.
+- **A pack that can't beat its baseline.** It ships nothing that round, and the pass reports it at close.
+
+### Pass J: the prose packs and the house register
+
+Pass J gives the six prose surfaces their full packs (developer docs in Go and web repos, end-user docs, help dialogs, interface text, and site content) and builds the house register in "The house register". It carries the earlier Pass D's harvest and sitting. Each pack, and each change to `core`, is a minor that must beat its baseline, and a `core` change runs all fourteen surfaces.
+
+- **Sources.** The ledger records each source at a commit: cairn's `docs-register.md` (both briefs, the departure tables, and the rulings behind them), the Voice section of cairn's `admin-design-system.md`, cairn's `docs/internal/design/2026-06-20-editor-copyedit-conventions-research.md`, poplar's retired tidy rules (`041eb329^:internal/tidytext/` and `docs/archive/specs/2026-05-08-claude-tidy-design.md`), drafter's `stock/` files, and the Pass E packs.
+- **Ledger.** `initiatives/survey-house-style/research/<date>-writing-ledger.md` holds one row per countable unit: each `##` or `###` tell heading in both of cairn's Tells sections, each row under "Deviations from the base guides", each `##` in drafter's `stock/google-tells.md`, each rule heading in the admin Voice section, and each numbered convention in the copy-edit research. The mapped count must equal their sum. Each row is house-wide, cairn-only, or owned elsewhere, and says why. An owned-elsewhere row names its owner's path (`tellgrader` or drafter's stock) and does not ship. A cairn-only row names the cairn noun it depends on: a track, a cairn name, a page anatomy, or cairn tooling. A row with no such noun is house-wide by default. The PR body reports the count in each class.
+- **The sitting.** Geoff rules the voice traits, the tone table, and every override in one sitting, each override with the base guide's text beside the proposed rule. A cairn override marked house-wide comes with cairn's ruling as evidence. Tightenings widened from cairn sit in one table with a default of "widen", and rows whose mark was unclear join it with a default of "cairn-only". Geoff can pull any row into discussion. Afterwards every departure row carries a ruling id or a carried cairn ruling with its date. Each id maps to a pack section, a departures row, a style-sheet row, or a Vale rule, and a check counts both sides.
+- **Build.** `packs/core/voice.md`, the six prose packs, the departures file, the style sheet, `LICENSES.md`, and the new Vale rules with their fixtures.
+- **drafter.** If the brief's drafter decision takes the first option, a drafter run in a scratch repo shows a known sentence from a pinned pack in the assembled request, and the same run fails once that heading is renamed.
 
 ### What each app's pass inherits
 
@@ -214,8 +389,7 @@ These constraints go into each app's own plan. None of them is built here.
 - **Bulwark.** The servers repo holds a `package.json` and lockfile that pin `@glw907/survey` exactly, and a build step copies the sheet into the theme bundle. `dependency-upgrade` measures every directory with a `package.json` (its step 1), and the pin then shows up in a sweep. Checking the live theme against the repo after a deploy or a restore is that pass's design.
 - **Approval queue.** It builds and render-checks in a worktree, since the main checkout serves from `build/`. It swaps `main`'s build only when no item is pending, and keeps the old build until the new one serves. Each promoted rule leaves `app.css` in the commit that takes the package.
 - **907.life.** Its rebuild's `engine-consult` settles how the chassis takes the package. The cairn-site recipe ships in 1.0.0 marked pending, and that pass fills it in a minor.
-- **cairn's docs.** cairn's `docs-register.md` stays the authority for cairn until cairn's convergence pass merges, and no cairn surface reads Survey's register before then. That pass first diffs cairn's register from Pass D's harvest commit to its head, and carries each new row into Survey or keeps it cairn-only. It then shrinks the file to its cairn-only parts and points at the installed register. Every reader moves with it, across three repos. In drafter, `docs-page-chain.js` takes one `registerPath`, selects sections by exact heading, and pastes two scope rulings verbatim; it gains Survey's brief path as a second source. In `~/.dotfiles`, the `register-check` skill and the `cairn-register-editor`, `cairn-docs-drafter`, `prose-voice-reviewer`, `figure-verifier`, `cairn-implementer`, and `site-implementer` agents move. In cairn-cms, the `.tellgrader.json` profile and the `Cairn` Vale messages that cite "'Names' in docs/internal/docs-register.md" move. Every reader fails loudly when the package is absent and never falls back to cairn's old text.
-- **The `glw907` repos.** Only if the brief's Vale decision takes its second option: dubplate, poplar, phonebook, cairn-themes, and cairn-cms `tool/` each move from their copied `glw907` style to the release zip in a pass of their own, renaming their rule overrides.
+- **cairn's docs.** cairn's `docs-register.md` stays the authority for cairn until cairn's convergence pass merges, and no cairn surface reads Survey's packs in its place before then. That pass first diffs cairn's register from Pass J's harvest commit to its head, and carries each new row into Survey or keeps it cairn-only. It then shrinks the file to its cairn-only parts and points at cairn-cms's pinned packs. Every reader moves with it, across three repos. In drafter, `docs-page-chain.js` takes one `registerPath`, selects sections by exact heading, and pastes two scope rulings verbatim; it gains the pinned pack path as a second source. In `~/.dotfiles`, the `register-check` skill and the `cairn-register-editor`, `cairn-docs-drafter`, `prose-voice-reviewer`, `figure-verifier`, `cairn-implementer`, and `site-implementer` agents move. In cairn-cms, the `.tellgrader.json` profile and the `Cairn` Vale messages that cite "'Names' in docs/internal/docs-register.md" move. Every reader fails loudly when the pinned copy is absent and never falls back to cairn's old text.
 
 ### End-to-end check
 
@@ -227,7 +401,10 @@ A packed tarball, not the repo checkout, has to pass every leg.
 - `fixtures/token-only.html` loads only the CSS-variable sheet. The sheet holds zero `url(` and zero `@import`. A computed-style probe in both schemes matches rungs one to three, and the font family resolves to the system stack with the web fonts absent.
 - The specimen, built from package outputs only (`survey-check` passes on its source), is screenshotted at 320, 390, 768, 1440, and 2560px in both schemes. A fresh-context `visual-verifier` grades it against the amended specimen at `reference/<date>-amended-specimen.html` with no STRUCTURAL finding.
 - After the publish, in a scratch directory, `npm i @glw907/survey@<version>` installs, the installed DESIGN.md reads, `npx survey-check` fails on a positive fixture, and `npm view @glw907/survey@<version> dist.attestations` shows provenance.
-- From Pass D on, the pack list also holds `writing/voice.md`, both briefs, each file under `writing/examples/`, the departures file, `writing/LICENSES.md`, the style sheet, and every `vale/Survey/*.yml`, and no `tests/` file. After 1.1.0 publishes, the scratch install also reads one brief section from the installed path, and a copy of the installed `vale/Survey` raises its `Survey.<Rule>` on a planted tell.
+- From Pass E on, the pack list also holds `vale/Survey/` with every rule file, `packs/`, and `SHA256SUMS`, and no `evals/` or `tests/` file. The 1.1.0 release carries `Survey.zip`, and `diff -r` finds its `Survey/styles/Survey/` equal to the package's `vale/Survey/`.
+- After 1.1.0 publishes, a scratch repo without npm pins the release URL, `vale sync` installs the style, a planted tell raises its `Survey.<Rule>` by name, and the zip diff check passes. A scratch npm app installs the package, and its diff check passes. The vendored skill fetched at the tag passes `sha256sum -c`.
+- Before Pass F switches a surface, its candidate run matches its baseline. After Pass F, every symlinked path is byte-identical to the Pass D snapshot, and a fresh headless session lists `writing-voice` as its current style.
+- After Pass H, a planted chat correction, approval-queue comment, and cairn draft-and-save pair each reach the ledger once, and a dry-run review writes a scorecard with a row for each of the fourteen surfaces.
 
 ### Stops and standing answers
 
@@ -245,20 +422,49 @@ Each stop the run can foresee has an answer here. The run asks Geoff only where 
 - **The 2-day link window lapses.** The session writes STATUS and waits, and Geoff recreates the link at his next sitting.
 - **PR #131 is still open at Pass C.** Pass C's branch stacks on #131's.
 - **Over the estimate.** A task clock stop with a traced cause resumes once at twice its estimate. Each pass runs to 1.5 times its path estimate, and stops past that.
-- **What may escalate.** The nearest-token wording, a COSMETIC specimen finding, a trigger miss after one rewording, the `site-implementer` dispatch after one rewording, and Pass D's drafter leg. The contrast bar, the pack and fixture checks, provenance, the hook's exit 0, the Vale fixtures and style diff, and the corpus license fields never escalate.
-- **A cairn rule's house-wide or cairn-only mark is unclear.** It joins the sitting's table with a default of cairn-only, and a later minor can widen it.
+- **1.0.0 is not out when Pass E's PR is ready.** The session writes STATUS and waits. It never cuts a writing release candidate.
+- **A surface misses its baseline in Pass E.** It keeps today's route, and Pass F leaves it unswitched. The run traces the cause, makes one structural fix, and runs again. A surface that still misses is escalated in the PR while the rest go on.
+- **A live file changed after the Pass D snapshot.** Carry the change into its pack, re-run that surface's baseline at the new commit, run its candidate again, and list it in `## Decisions`.
+- **The graders don't discriminate.** If the planted bad draft lands inside a band, rewrite that surface's assertions once and re-run. Then escalate.
+- **A surface's spread is too wide to compare.** When one standard deviation exceeds one rubric point, add up to two runs per task. If it is still wide, the surface's verdict is marked low-confidence in the PR or scorecard.
+- **A `cmp` check fails in Pass F.** Fix the pack, never the workstation file, and cut a patch.
+- **The output-style check fails in Pass F.** Revert that commit, keep the old file in place, and escalate. Everything earlier in Pass F stands.
+- **A repo in Pass G holds no prose.** Leave it out and list it with the reason.
+- **A repo's Vale findings differ by more than the rule names.** Trace the cause. If it isn't the rename, that repo doesn't switch, and the PR escalates it.
+- **A ledger push conflicts.** Pull with rebase and push again. Records never share a file.
+- **A correction comes from a private source.** It stays in the ledger and informs only generalizations.
+- **The other host already wrote this month's scorecard.** Harvest, push, and stop.
+- **The monthly run hits a usage limit.** Finish the harvest, grade each fixed task once instead of three times, and mark the scorecard partial.
+- **A distill proposal doesn't beat its baseline.** Drop it, and keep its corrections for the next run.
+- **A pack in Pass I or J can't beat its baseline.** Ship nothing for it that round and report it at close.
+- **A surface has fewer than three house examples.** Claude drafts the rest, marks each one drafted, runs it past `prose-voice-reviewer`, and shows it in Pass J's sitting or Pass I's packet.
+- **A source's license can't be confirmed.** Quote nothing from it, link and paraphrase instead, and list it in `## Decisions`.
+- **A cairn rule's house-wide or cairn-only mark is unclear.** It joins Pass J's table with a default of cairn-only, and a later minor can widen it.
 - **Geoff rejects a house-wide row.** The row stays cairn-only, and the ledger records his ruling.
 - **The sitting leaves most rows cairn-only.** Ship what is ruled house-wide, however little, and report the counts at close.
-- **A copy-editing rule Vale can't express.** Its `vale:` field names the reason, it stays in the style sheet for the skill, and the PR lists it.
-- **A surface has fewer than three house exemplars.** Claude drafts the rest, marks each one drafted, runs it past `prose-voice-reviewer`, and shows it in the sitting.
-- **A source's license can't be confirmed.** Quote nothing from it, link and paraphrase instead, and list it in `## Decisions`.
-- **1.0.0 is not out when Pass D's PR is ready.** The session writes STATUS and waits. It never cuts a writing release candidate.
-- **Pass D's drafter leg fails.** The rest of Pass D runs, the close reports the leg unmet, and the drafter fix becomes a pass of its own.
+- **A copy-editing rule Vale can't express.** Its `vale:` field names the reason, it stays in the style sheet, and the PR lists it.
+- **Pass J's drafter leg fails.** The rest of Pass J runs, the close reports the leg unmet, and the drafter fix becomes a pass of its own.
+- **What may escalate.** The nearest-token wording, a COSMETIC specimen finding, a trigger miss after one rewording, the `site-implementer` dispatch after one rewording, a surface that misses its baseline after one structural fix, a repo whose findings differ, the output-style switch, and Pass J's drafter leg. The contrast bar, the pack and fixture checks, provenance, the hook's exit 0, the Vale fixtures and style diff, the `cmp` checks, the private-ledger rule, and the corpus license fields never escalate.
 - **Unrelated drift at close.** Note it in the PR and leave it.
 
 ### Risk and estimate
 
-Pass A is `ordinary` and merges its own PR in the initiatives repo. Pass B is `runner`, for its workflow and gate scripts, and `live-account`, since it creates a public repo and publishes to npm. With no Survey adapter yet, Pass B uses `pass-core`'s default classes, and its plan names the gate, the fast lane, and CI on PRs as the full-suite home. As a `live-account` plan it takes the three-lens review and a verification read. Pass C is `runner` under `dotfiles-pass`. Pass D is `runner`, for its Vale gate checks, its skill, and the workstation routing, and carries the `live-account` flag for its release, so its plan takes the three-lens review and a verification read. Its `survey` half uses `pass-core`'s default classes as Pass B does, and its workstation PR runs under `dotfiles-pass`. Passes B, C, and D each close through a conductor and a packet. The estimates are 210 path minutes for Pass A, 460 for Pass B, 160 for Pass C, and 400 for Pass D. Pass D's figure breaks down as harvest 75, sitting preparation 40, voice, briefs, examples, and style sheet 120, Vale style and fixtures 50, skill 30, scratch checks 25, workstation PR 40, and release 20. If Geoff takes the first drafter option, a 60-minute drafter pass runs before Pass D. It is `ordinary` under `pass-core`'s defaults and merges its own PR. No recent score covers theme work. The planner checks these figures against each plan.
+Pass A is `ordinary` and merges its own PR in the initiatives repo. Pass B is `runner`, for its workflow and gate scripts, and `live-account`, since it creates a public repo and publishes to npm. With no Survey adapter yet, Passes B, D, E, H, I, and J use `pass-core`'s default classes in the survey repo, and each plan names the gate, the fast lane, and CI on PRs as the full-suite home. Pass C and Pass F are `runner` under `dotfiles-pass`. Pass D is `runner`, since its eval runner becomes the check every writing minor must pass. Pass E is `runner` and `live-account` for its workflow change and release. Pass G is `runner`, for the gate check it adds to each repo, and runs each repo under its own adapter. Pass H is `runner` and `live-account`, for the harvester script, the skill route, the private repo it creates, and its release. Passes I and J are `runner` and `live-account`, for pack content agents follow and their releases. Every `live-account` plan takes the three-lens review and a verification read. Every pass except A closes through a conductor and a packet.
+
+| Pass | Path minutes | Breakdown |
+|---|---|---|
+| A | 210 | as folded on 2026-10-21 |
+| B | 460 | as folded on 2026-10-21 |
+| C | 160 | as folded on 2026-10-21 |
+| D | 320 | snapshot 20, tasks and rubrics 120, harness 60, baseline runs 70, sitting 20, close 30 |
+| E | 300 | packs 40, Vale rules 30, skill 15, build and zip 50, candidate runs 80, scratch repos 40, release 45 |
+| F | 200 | vendored entry and check 30, symlinks 30, pointers and reviewer 45, docs 30, CLAUDE.md and style 15, acceptance 30, hosts 20 |
+| G | 280 | inventory 20, seven npm repos 105, seven zip repos 105, findings checks 30, packet 20 |
+| H | 380 | ledger 20, route and trigger checks 50, harvester and tests 90, trailer line 10, review prompt 70, step 9 10, dry run 60, release and hosts 70 |
+| I | 420 | eight packs at 45, releases 30, close 30 |
+| J | 520 | sources ledger 75, sitting 40, voice and Microsoft pack 100, six packs at 35, Vale rules 50, licensing 20, releases 25 |
+
+That sums to 3,250 path minutes. If Geoff takes the drafter option, a 40-minute drafter pass runs before Pass J. It is `ordinary` under `pass-core`'s defaults and merges its own PR. No recent score covers theme or writing-system work, so the planner checks each figure against its plan.
 
 ### Pre-flight
 
@@ -267,11 +473,11 @@ Geoff does two steps in the sitting where he approves this design, since neither
 - [you: on thinkpad-x1, in `~/Projects/cairn-themes`, run `git status --short`, `git stash list`, `git log origin/main..main --oneline`, and `git branch -a --contains dea9839`. An error from the last command means the commit is absent. Survey work is any path under `survey-theme/`, or any commit or stash that touches one. If there is any, commit it to a new `archive/thinkpad-x1-survey` branch and push it, then `git switch main && git reset --hard origin/main`. Check: `git ls-remote origin archive/thinkpad-x1-survey` prints a line, or nothing was found.]
 - [you: run `npm login` with 2FA. In the placeholder directory the session that sends this design stages (its `package.json` carries `"publishConfig": {"access": "public"}`, and its README says it is a placeholder), run `npm publish --access public`, then `npm deprecate @glw907/survey@0.0.0 "Placeholder; install 1.0.0 or later"`. Set "Require two-factor authentication and disallow tokens" on the package. Check: from a logged-out shell, `npm view @glw907/survey version` prints `0.0.0`, and `npm access get status @glw907/survey` reads `public`.]
 
-Three more sittings follow: Pass A's rulings, Pass B's close (the specimen read, the trusted-publisher link, and the merge approval), and Pass D's voice and departure rulings. Pass C closes on a merge packet. Pass D closes on two, the `survey` PR and then the workstation PR after the publish. If thinkpad-x1 shows nothing, the vendored copy is the S1 core verbatim and Pass A runs on three sources without asking.
+Four more sittings follow: Pass A's rulings, Pass B's close (the specimen read, the trusted-publisher link, and the merge approval), Pass D's blind read of the baseline, and Pass J's voice and departure rulings. Passes C, D, E, F, G, H, and I close on a merge packet each, and Pass H's monthly review adds one packet a month when it has generalizations to propose. The blind sample page arrives each month at normal urgency and asks for six verdicts. If thinkpad-x1 shows nothing, the vendored copy is the S1 core verbatim and Pass A runs on three sources without asking. Pass H's host steps on thinkpad-x1 (cloning the ledger and the survey repo) are a session's, not Geoff's.
 
 ### Left to the builder
 
-The token names, Style Dictionary's configuration, the specimen's harness, the skill's wording, and the CSS-variable sheet's prefix are all left to the builder. So is how the recipes split between the skill and DESIGN.md.
+The token names, Style Dictionary's configuration, the specimen's harness, the skill's wording, and the CSS-variable sheet's prefix are all left to the builder. So is how the recipes split between the skill and DESIGN.md. On the writing side, the builder words the eval tasks and the router rows, picks the judge model once and records it, and sets the ledger record's exact field names and the scorecard's layout.
 
 ### Sources
 
@@ -296,9 +502,15 @@ The design follows these published sources.
 - Shopify Polaris, voice and tone: <https://polaris.shopify.com/content/voice-and-tone>
 - Nielsen Norman Group, the four dimensions of tone of voice: <https://www.nngroup.com/articles/tone-of-voice-dimensions/>
 - Anthropic, Claude prompting best practices: <https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices>
+- Anthropic, skill authoring best practices (evaluation-driven development): <https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices>
+- Anthropic, define success criteria and build evaluations: <https://platform.claude.com/docs/en/test-and-evaluate/develop-tests>
+- Anthropic's skill-creator plugin (snapshot baselines, `aggregate_benchmark`, the review viewer): `claude-plugins-official/plugins/skill-creator/skills/skill-creator/SKILL.md`
+- Michael Feathers, characterization testing: <https://michaelfeathers.silvrback.com/characterization-testing>
+- Git trailers: <https://git-scm.com/docs/git-interpret-trailers>
 - The authoring charter: `~/.claude/docs/authoring-charter.md`
 - drafter's prompts module and register settings: `drafter/docs/prompts-module.md`, `drafter/docs/configuration.md`
 - Claude Code features overview: <https://code.claude.com/docs/en/features-overview>
 - Claude Code skills: <https://code.claude.com/docs/en/skills>
+- Claude Code output styles: <https://code.claude.com/docs/en/output-styles>
 - Claude Code hooks: <https://code.claude.com/docs/en/hooks>
 - Chrome DevTools MCP design principles (self-healing errors): <https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/docs/design-principles.md>
