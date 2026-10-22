@@ -26,15 +26,30 @@ Survey's visual style now exists in three places that have drifted apart: the ap
 3. Pass B builds the repo and the `survey` skill from your rulings and publishes `1.0.0-rc.1`. At its close you read the built specimen, link the trusted publisher on npmjs.com, and approve the merge.
 4. Pass D records how today's writing system performs, cairn's docs included, moves the writing files into Survey word for word, opens the private ledger, and releases 1.1.0 once 1.0.0 is out. Its packet carries fifteen baseline drafts for a blind read.
 5. The approval queue takes `1.0.0-rc.1` in its own pass, and that pass's close promotes 1.0.0.
-6. Pass G builds the house register and releases 1.2.0. You rule the voice traits and every departure in one sitting.
-7. Pass E lands Survey on the workstation in one PR, with the output style last, then pins it in every other repo with prose except 907.life. cairn's docs move onto the Survey register in the same pass. One packet carries every PR.
-8. Pass F starts the four correction channels and the monthly writing review, and releases 1.3.0.
-9. Pass H fills the twelve packs with examples and house flavor, weakest first. Each is a minor release that must beat its baseline.
-10. The phonebook, Bulwark, and 907.life's rebuild each take Survey in a pass of their own.
+6. A short drafter pass makes a missing Survey file or heading fail a drafter run.
+7. Pass G builds the house register and releases 1.2.0. You rule the voice traits and every departure in one sitting.
+8. Pass E lands Survey on the workstation in one PR, with the output style last, then pins it in every other repo with prose except 907.life. cairn's docs move onto the Survey register in the same pass. One packet carries every PR.
+9. Pass F starts the four correction channels and the monthly writing review, and releases 1.3.0.
+10. Pass H fills the twelve packs with examples and house flavor, weakest first. Each is a minor release that must beat its baseline.
+11. The phonebook, Bulwark, and 907.life's rebuild each take Survey in a pass of their own.
 
 ### Worth knowing
 
 The work is eight passes and 4,285 minutes of estimates, counting the 40-minute drafter pass. Review raised the figure from 3,200: Pass H's twelve packs each carry their own eval run, the baseline gains a knockout arm, a reply surface, and two cairn surfaces, and Pass E now also carries the workstation's visual tooling and cairn's register move. Pass G now runs before Pass E, so cairn's docs have a ruled register to move onto. The passes run one after another, so the path equals the sum. One ask recurs: a blind sample of six pieces each month, read on a page in Chromium. An occasional second one is an `npm deprecate` line in a packet, since only your login can deprecate a version. cairn-themes keeps its theme ports and gives up `survey-theme/`, its Survey spec, and its backlog items #1 and #2 to the new repo.
+
+### Standing answers
+
+Approving the design approves these answers, so the run takes them without asking you. The full list, by pass, is under "Stops and standing answers" below.
+
+- A task or pass that runs long resumes once on a traced cause, and each pass stops at 1.5 times its estimate.
+- A failed publish is fixed and re-run at the same version. A bad version gets a patch without asking, and its `npm deprecate` line comes to you in the next packet.
+- An eval surface that misses reruns once. A repeat miss keeps that surface on today's route, gets one traced fix, and is escalated if it still misses, while the rest go on.
+- A file that changed after the baseline snapshot is carried into Survey first and re-measured. A workstation file is never edited to match a pack.
+- A cairn surface that misses keeps cairn on its register, and a cairn page mid-draft finishes on the register it started with.
+- A failed output-style switch is reverted and escalated, and the rest of the workstation PR stands.
+- A monthly run that hits a usage limit grades once per task and marks the scorecard partial. A distill proposal that doesn't beat its baseline is dropped.
+- A house register row that is unclear or that you reject stays cairn-only. A rule Vale can't express stays in the style sheet.
+- A pack that can't beat its baseline ships nothing that round. A source whose license can't be confirmed is linked and paraphrased, never quoted.
 
 ### Rulings
 
