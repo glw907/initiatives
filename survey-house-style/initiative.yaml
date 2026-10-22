@@ -1,0 +1,7 @@
+id: survey-house-style
+title: Survey house style
+summary: Would make Survey the house style for every house tool, visual and written, kept in one public repo every repo pins by tag and improved from Geoff's corrections.
+status: active
+owner: glw907
+created: 2026-10-21
+repos: [workstation, cairn-themes, approval-queue, phonebook, servers, cairn-cms, drafter, poplar, dubplate]
