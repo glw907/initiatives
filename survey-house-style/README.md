@@ -37,3 +37,4 @@ Geoff ruled on 2026-10-21 that Survey is the house style for every house tool, a
 - 2026-10-21: proposed.
 - 2026-10-22: an eight-pass design rejected as over-engineered; a three-pass design approved in shape.
 - 2026-10-22: the three-pass design approved; active.
+- 2026-10-22: Pass 1 done. `glw907/survey` v1.0.0 released (PR survey#1, cairn-themes#3 merged); Pass 2 is next.
