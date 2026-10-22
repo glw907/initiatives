@@ -36,3 +36,4 @@ Geoff ruled on 2026-10-21 that Survey is the house style for every house tool, a
 - Reviews and folds: `research/`.
 - 2026-10-21: proposed.
 - 2026-10-22: an eight-pass design rejected as over-engineered; a three-pass design approved in shape.
+- 2026-10-22: the three-pass design approved; active.
