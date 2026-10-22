@@ -18,7 +18,7 @@ Survey's visual style exists in three places that have drifted apart: the approv
 1. Pass 1 compares the three visual versions and brings you the differences in one sitting, then builds the repo and tags `v1.0.0`.
 2. Pass 2 moves the writing into Survey, points the workstation and every repo with prose at it, and tags `v1.1.0`.
 3. Pass 3 starts the corrections log and adds the writing step to the monthly model review.
-4. The approval queue, the phonebook, Bulwark, and 907.life's later rebuild each take the visual theme in a pass of their own. Each one replaces its literal animation durations and easings with Survey's motion tokens (Geoff, 2026-10-22).
+4. The approval queue, the phonebook, Bulwark, and 907.life's later rebuild each take the visual theme in a pass of their own. Each one considers motion in every place, keeps it only where it helps, and uses Survey's motion tokens where it does (Geoff, 2026-10-22).
 
 ### Worth knowing
 
