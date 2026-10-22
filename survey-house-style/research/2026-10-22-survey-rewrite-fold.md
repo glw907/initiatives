@@ -370,3 +370,102 @@ Each new mechanism names a source that runs it and the defect it answers.
   cairn's own pass) and not a convergence inside Pass E.
 - **PR #131** (`glw907/dotfiles`, open, global CLAUDE.md line). Pass E's workstation PR stacks on
   it if it is still open.
+
+## Verification fold
+
+Input: `2026-10-22-survey-rewrite-fold-verification.md` (1 blocker, 4 majors, 8 `correctness`
+minors, 4 `optional` minors), applied to the spec at `a4b30e5` under the same fold rules and the
+simplicity ruling, with the coordinator's direction to take the blocker's reorder fold. After the
+fold, the brief check exits 0, the spec holds no em dash, and `tellgrader` reports no finding.
+
+**Blocker 1. Folded** (the brief's steps and Worth knowing, the non-goals, the pass table and order
+paragraph, Writing contexts, The house register, the Claude-infra map, Pass D, Pass E, the stops,
+Risk and estimate). It also answers the owed coordinator check above: the convergence happens in
+Pass E.
+
+- **Order.** A, B, D, the approval queue's pass, G, E, F, H. The Pass G section now sits before
+  Pass E.
+- **Versions.** Pass G releases 1.2.0. Pass E lands the newest release, 1.2.0 or later. Pass F
+  releases 1.3.0.
+- **Pass D.** It gains two cairn surfaces (three `dev-docs-web` and three `end-user` docs tasks)
+  in a cairn-cms arm at a recorded commit, with a knockout. They leave the monthly review.
+- **Pass E.** Its new "cairn's docs" bullet carries the former inherited paragraph. cairn switches
+  only when both cairn surfaces match.
+- **Readers.** The `~/.dotfiles` reader moves are one Claude-infra map row, landing before the
+  CLAUDE.md line.
+- **Stops.** Two new Pass E stops: a cairn repeat miss, and a page that is mid-draft at the switch.
+- **Deferrals removed.** The non-goal clause, brief step 10's "cairn's docs", "until cairn's own
+  convergence pass", the two "once cairn converges" lines (now "in Pass E"), the "change nothing"
+  sentence about cairn's three readers, and the inherited bullet are gone.
+- **Estimates.** Pass D +30 (720), Pass E +150 (870), total and path 4,245.
+- **Not taken.** The verification's smaller split alternative, since the reorder is one step where
+  the split is two.
+
+**Major 1. Folded** (Evals, "Arms"). The runner copies each arm's files into its project and
+rewrites the `~/.claude/` prefix to the project's `.claude/`. The pack-read measure matches that
+path, and no Read may land outside the project. Verified that the router names absolute paths
+(`writing-voice/SKILL.md:23-32`, per the read). The probe that `--setting-sources project` loads no
+user skill is the verification's.
+
+**Major 2. Folded** (Context packs). An example is either sourced (public permalink, checked) or
+marked `drafted`. A drafted example passes the gate only with no ledger id.
+
+**Major 3. Folded** (Decide 2; stops, "Pass F and the monthly run").
+- Option 1 now moves the tag only to a minor or patch, and a major goes in that month's packet.
+- The block names Geoff's standing `dependency-upgrade` rule, says option 1 is a recorded
+  exception to its route, and says option 2 follows it as written.
+- New stop: a tag move that fails the dotfiles gate leaves the tag, grades at the old pin, and logs
+  the failure in the review record.
+
+**Major 4. Folded** (pass table, Pass E intro and "The workstation", the stop, Risk and estimate).
+- Pass E carries `live-account`.
+- A file that differs at `HEAD` goes into a Survey minor through Pass D's stop answer (re-baseline,
+  candidate run), then the release and the tag move, then the link.
+- Every repo pins the newest release at its PR.
+
+**Correctness minors:**
+
+1. **Folded** (Channels and pins, "The workstation"). A temporary directory on the same
+   filesystem, outside the stow package, with overlays applied there, swapped in by
+   `mv -T --exchange`, then the old copy removed. Probed: see "Verification fold probe" below.
+2. **Folded** (Versioning, "Release gate"). The gate compares with the newest published version
+   that ships token JSON, and is skipped for prereleases and for 1.0.0.
+3. **Folded** (Channels and pins; Pass D, "Skill directory"). `skills/survey/` carries a `VERSION`
+   file that `SHA256SUMS` lists. The checksum check compares it with the zip URL's version or the
+   workstation's tag, and the survey gate compares it with `package.json`. A `VERSION` file was
+   chosen over a frontmatter field: Vale ignores it as it ignores `SHA256SUMS` (P1), and it keeps
+   `SKILL.md` free of non-standard fields.
+4. **Folded** (Evals, "The decision"; Pass G stop). The repeat test uses the fresh pairs alone
+   (six of six at six pairs). A Pass G repeat miss with no traced cause is reported, and the
+   release proceeds.
+5. **Folded** (Writing contexts table). The `site-content` row reads "one surface: blog posts,
+   pages, and form copy".
+6. **Folded** (Evals, "Knockout"). A non-discriminating surface still switches, since the move is
+   verbatim, and the PR names it. This is the simpler of the two readings, and pack reads and
+   `cmp` still check that surface's move.
+7. **Folded** (Pass E, "Each repo" and "Repo acceptance"). The copy is excluded from the repo's
+   other markdown checks, and every gate's findings must match before and after.
+8. **Folded** (Claude-infra map, `check-drift`; new stop). `check-drift` reports a ledger with no
+   review record for last month. This reverses the part of integrity 10 refused above: the
+   verification shows a case the next run can't answer, a pavilion that is down for a month.
+
+**Optional minors:**
+
+9. **Dropped** (`optional`).
+10. **Folded** at the coordinator's direction. The hook bullet keeps what the hook does, and its
+    timeout, output cap, extension pre-filter, and per-repo carve-out move to "Left to the builder".
+11. **Dropped** (`optional`).
+12. **Dropped** (`optional`). Its content is answered under blocker 1.
+
+**Verification fold probe.** In
+`/tmp/claude-1000/-var-home-glw907--dotfiles/cd716614-5551-4ef9-a8d1-4ccc7fe74ceb/scratchpad/fold3/mvx2`,
+and on the home btrfs, coreutils 9.10's `mv -T --exchange` swapped two non-empty directories and
+exited 0: the live path held the new file, and the old copy with its stale file sat at the
+temporary path. Without `-T` it failed ("cannot exchange ... Unknown error -1"), so the spec names
+`-T`.
+
+**Owed now:**
+
+- The coordinator check is answered (blocker 1).
+- The README and yaml were committed by the coordinator.
+- PR #131 still stands as owed.
