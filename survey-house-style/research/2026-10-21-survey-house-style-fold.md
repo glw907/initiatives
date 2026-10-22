@@ -114,3 +114,19 @@ Left as dated records: `phonebook/docs/plans/2026-10-07-phonebook-phases-0-2.md`
 - The session that sends this design stages the `0.0.0` placeholder package (a `package.json` with name, version, `repository.url` set to `glw907/survey`, and a README saying it is a placeholder) before the packet, so Geoff can publish it in the approval sitting.
 - The estimates (210, 460, and 160 path minutes) have no theme-work score behind them. The planner checks them against each plan.
 - On an `auth-data` or `live-account` pass, `spec-plan-review` calls for a verification read of this fold. Pass B is `live-account`.
+
+## Verification fold
+
+These dispositions answer `-fold-verification.md` (spec at `df4c436`): 1 major, 7 `correctness` minors, and 4 `optional` minors. The result is 8 folded and 4 dropped.
+
+- **M1** folded: "Pre-flight", npm item. The staged `package.json` carries `"publishConfig": {"access": "public"}`, the step runs `npm publish --access public`, and the checks are `npm view @glw907/survey version` from a logged-out shell and `npm access get status @glw907/survey` reading `public`. The finding's premise is weaker than stated. The local npm 11.19.0 `npm help publish` says access defaults to "'public' for new packages", so a current CLI would not create a private package. The flag and `publishConfig` still pin the access whatever the CLI version, and the done-check is what `pass-core` step 4 requires. That `npm access get status` exists was confirmed from the `npm access --help` usage.
+- **Minor 1** folded: "Versioning and release", first publish, and "Pre-flight". Geoff deprecates `0.0.0` straight after publishing it. The spec states that a candidate goes to `next`, so `latest` stays on the placeholder until the first stable version. The tag rule is cairn's `publish.yml`, whose prerelease versions go to `next`. This closes integrity 1's dropped part.
+- **Minor 2** folded: "Pre-flight", closing paragraph. It now names Pass A's sitting, Pass B's close sitting, and Pass C's merge packet.
+- **Minor 3** folded: the trusted-publisher Decide block's staged option now names `npm stage publish` and the post-publish check waiting on Geoff's approval.
+- **Minor 4** folded: "Pass C", hook. The Bulwark sentence now says the hook checks only hand-written CSS in the servers repo, and that the copied sheet is a build output nobody edits. That also removes the circular reason this record gave at contract F13. Detection stays on `package.json`, and `.survey-version` is still not needed, since the servers repo has a real manifest.
+- **Minor 5** folded: "The conformance check", names. An unknown `--site-*` name is an error too, with the set read from the shipped shared CSS. Checked: the approval queue's `app.css` and `frame.css` define no `--site-*` property of their own, and the vendored core defines six. The rule does not misfire there. On a cairn site, `engine-consult` decides whether `survey-check` runs at all.
+- **Minor 6** folded: "Pre-flight", thinkpad-x1 item. It adds `git stash list`, reads an error from the `--contains` command as "absent", defines Survey work as any path under `survey-theme/` or any commit or stash touching one, and names the check `git ls-remote origin archive/thinkpad-x1-survey`.
+- **Minor 7** folded: "Stops and standing answers". Four answers are added: a failed post-publish check (deprecate, then patch, without asking), the `site-implementer` dispatch (reword once, then escalate), a trigger miss of either kind (reword once, then escalate), and an unlisted cairn-themes pointer (rewrite it if live, leave it if dated, list both in `## Decisions`). "What may escalate" names the two reworded checks.
+- **Minors 8, 9, 10, 11** dropped: `optional`.
+
+After the edits, the brief parser exits 0 and the spec has no em dash.

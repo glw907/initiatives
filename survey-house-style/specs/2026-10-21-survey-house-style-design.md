@@ -38,7 +38,7 @@ Since 2026-09-03, npm sets a new trusted publisher to staged publishing by defau
 Source: mechanics review 14; npm trusted publishers docs
 
 - Direct publish: a GitHub release publishes hands-off, the way cairn's does, as your ruling names. (recommended)
-- Staged only: the workflow stages each version, and each release waits for your 2FA approval on npmjs.com or the CLI.
+- Staged only: `publish.yml` runs `npm stage publish` in place of cairn's `npm publish`. Each release, the first included, waits for your 2FA approval on npmjs.com or the CLI, and its post-publish check runs only after you approve.
 
 ### Decide: whether a visible Survey update needs a render read
 
@@ -125,7 +125,7 @@ The package ships `survey-check` for an app's gate to run. Its messages name the
 
 - **Surfaces.** `.css` files, Svelte `<style>` blocks, inline `style=""`, Tailwind arbitrary values such as `bg-[#fff]`, and the stock utilities that set a shadow or a duration.
 - **Literals.** It flags every color, radius, shadow, and duration literal outside the package's own sheets, including one equal to a token's value. The message gives `file:line`, the literal, and the matching token. When none matches, it names the nearest token of the same type (ΔE2000 for color, absolute difference otherwise), or says "no token fits" and names the DESIGN.md section.
-- **Names.** A deprecated Survey token is a warning that names its replacement, read from `$deprecated` in the shipped token source. An unknown name under Survey's token prefix is an error.
+- **Names.** A deprecated Survey token is a warning that names its replacement, read from `$deprecated` in the shipped token source. An unknown name under Survey's token prefix or `--site-*` is an error. The `--site-*` set is read from the shipped shared CSS.
 - **Exemptions.** `transparent`, `currentColor`, `inherit`, `0`, `none`, and declarations inside a `prefers-reduced-motion` block pass. A `survey-check-ignore -- <reason>` comment on the line before covers the rest, modelled on stylelint's disable comments and their reason after two hyphens. The approval queue's `frame.css` mask gradient (line 295) and bar shadow (line 9) are the cases that need it.
 - **Fixtures.** The package's tests hold one flagged literal per category on each surface, a literal equal to a token value, a deprecated alias, an unknown name, an ignore comment, and a clean file. Each flagged fixture exits non-zero with the message shape above, and the clean file exits 0.
 - **On a cairn site.** cairn-audit's literal rules stay the gate of record. 907.life's `engine-consult` decides whether `survey-check` also runs there.
@@ -147,7 +147,7 @@ Survey follows Semantic Versioning 2.0.0, with Adobe Spectrum's token policy and
 
 - **Changelog.** A hand-kept `CHANGELOG.md` in Keep a Changelog 1.1.0, with a `## [Unreleased]` section. Each entry names its rung (palette, shape, type, motion, signature, or tooling) and the consumer's action, or "none". Changesets is not used: version 3.0.3 hard-codes headings that are not Keep a Changelog's, and its version PR adds a manual step per release.
 - **Workflow.** `publish.yml` is copied from cairn's. It runs on a published GitHub release or a manual dispatch, never on a push. No merge can publish. It pins npm 11 (npm 12.0.0 shipped without sigstore), passes `--provenance`, derives the dist-tag from the version (`next` for a prerelease), and skips a version already published. `repository.url` matches the repo exactly, and the job runs Node 22.14 or later, as trusted publishing requires.
-- **First publish.** npm cannot bind a trusted publisher to a package that does not exist. cairn's first publish was by hand for that reason (`cairn-cms/.github/workflows/publish.yml:92`). So Geoff publishes a `0.0.0` placeholder at pre-flight. A new trusted-publisher link "must complete its first successful publish within 2 days". He makes the link in Pass B's close sitting, and the release runs the same day.
+- **First publish.** npm cannot bind a trusted publisher to a package that does not exist. cairn's first publish was by hand for that reason (`cairn-cms/.github/workflows/publish.yml:92`). So Geoff publishes a `0.0.0` placeholder at pre-flight and deprecates it at once. A release candidate goes to `next`, so `latest` stays on the placeholder until the first stable version, and the deprecation warns anyone who installs it bare. A new trusted-publisher link "must complete its first successful publish within 2 days". He makes the link in Pass B's close sitting, and the release runs the same day.
 - **Rollback.** A bad version is deprecated and superseded by a patch, never unpublished. `AGENTS.md` says so in its release section.
 
 ### Pass A: harvest and rulings
@@ -175,7 +175,7 @@ Pass C lands Survey in the workstation's Claude tooling, in `~/.dotfiles` under 
 
 - **Skill.** A user-scope `survey` skill routes by context (a cairn site, a SvelteKit and daisyUI tool, or a token-only app) to the installed DESIGN.md and the one recipe that applies. It forbids a value the tokens don't hold. The CLAUDE.md line from PR #131 names the skill. A skill reaches only sessions that hold the Skill tool, and the agents below do not.
 - **Agent lines.** `site-implementer`, `cairn-implementer`, `visual-verifier`, and `daisyui-a11y-reviewer` list no Skill tool. Each gains one line: in a repo whose nearest `package.json` lists `@glw907/survey`, run `npm ci` if needed, read the installed DESIGN.md, and follow its rules. For the two reviewers the rule grade adds to the image grade, and a rule failure is STRUCTURAL.
-- **Hook.** A stdlib Python PostToolUse hook, beside `vale-hook`, fires after an edit to a `.css`, `.svelte`, or `.html` file and filters by extension before Node starts. It finds the nearest `package.json` that lists `@glw907/survey` and runs only that repo's `node_modules/.bin/survey-check`, inside a 10-second timeout. When the package is listed but not installed, it emits one line: run `npm ci` to enable Survey checks. A missing or malformed manifest exits 0 silently. Findings cover only the changed lines and go back through `additionalContext` under `vale-hook`'s 9000-character cap. It always exits 0. It does not cover Bulwark, whose sheet is a build output.
+- **Hook.** A stdlib Python PostToolUse hook, beside `vale-hook`, fires after an edit to a `.css`, `.svelte`, or `.html` file and filters by extension before Node starts. It finds the nearest `package.json` that lists `@glw907/survey` and runs only that repo's `node_modules/.bin/survey-check`, inside a 10-second timeout. When the package is listed but not installed, it emits one line: run `npm ci` to enable Survey checks. A missing or malformed manifest exits 0 silently. Findings cover only the changed lines and go back through `additionalContext` under `vale-hook`'s 9000-character cap. It always exits 0. In the servers repo it checks only hand-written CSS, since the copied sheet is written by the build step and never edited.
 - **Render line.** If the brief's render decision takes the first option, `dependency-upgrade` gains its one line.
 - **Acceptance.** Hook tests on the `tests/test_vale_hook.py` pattern against a scratch app that installs the packed package: an off-token edit returns context naming the token, a non-dependent repo and a `.md` edit return nothing, a checker crash still exits 0, and the run stays inside the timeout. Three should-trigger prompts and two should-not prompts in fresh headless sessions check the skill's description, the skill-creator trigger method. One headless `site-implementer` dispatch in the scratch app must read the installed DESIGN.md before its first CSS edit. `claude-tooling-sync verify` exits 0.
 - **Hosts.** After the merge, pavilion runs `git pull`, `stow -R claude bin`, `claude-tooling-sync apply`, and `claude-tooling-sync verify`. On thinkpad-x1, `check-drift` reports the clone behind origin and runs `verify`, and the session there runs the same four commands.
@@ -208,10 +208,14 @@ Each stop the run can foresee has an answer here. The run asks Geoff only where 
 - **Repeated STRUCTURAL findings.** Each round proceeds on a traced cause, per `pass-core`'s loop guard. A cause that returns after its structural fix is escalated in the PR.
 - **Geoff's specimen read sends changes back.** A change inside the ruled scope is fixed in Pass B before the cut. One outside it is a design change and stops.
 - **The publish fails.** Fix the workflow or the link and re-run the same release; the already-published guard allows it. Never bump the version to retry.
+- **The post-publish check fails after a good publish.** Deprecate that version and cut a patch through the same workflow, without asking.
+- **The `site-implementer` dispatch skips DESIGN.md.** Reword the agent line once and re-run. If it still skips, escalate in the PR.
+- **A trigger prompt misses.** A should-trigger miss and a should-not miss get the same answer: reword the description once, re-run, then escalate.
+- **The cairn-themes grep finds a pointer the fold record does not list.** Rewrite a live pointer, leave a dated record as written, and list both in `## Decisions`.
 - **The 2-day link window lapses.** The session writes STATUS and waits, and Geoff recreates the link at his next sitting.
 - **PR #131 is still open at Pass C.** Pass C's branch stacks on #131's.
 - **Over the estimate.** A task clock stop with a traced cause resumes once at twice its estimate. Each pass runs to 1.5 times its path estimate, and stops past that.
-- **What may escalate.** The nearest-token wording, a COSMETIC specimen finding, and a should-not trigger miss after one rewording. The contrast bar, the pack and fixture checks, provenance, and the hook's exit 0 never escalate.
+- **What may escalate.** The nearest-token wording, a COSMETIC specimen finding, a trigger miss after one rewording, and the `site-implementer` dispatch after one rewording. The contrast bar, the pack and fixture checks, provenance, and the hook's exit 0 never escalate.
 - **Unrelated drift at close.** Note it in the PR and leave it.
 
 ### Risk and estimate
@@ -222,10 +226,10 @@ Pass A is `ordinary` and merges its own PR in the initiatives repo. Pass B is `r
 
 Geoff does two steps in the sitting where he approves this design, since neither needs a pass's output.
 
-- [you: on thinkpad-x1, in `~/Projects/cairn-themes`, run `git status --short`, `git log origin/main..main --oneline`, and `git branch -a --contains dea9839`. If any shows Survey work, commit it to a new `archive/thinkpad-x1-survey` branch and push it, then `git switch main && git reset --hard origin/main`.]
-- [you: run `npm login` with 2FA, publish the `0.0.0` placeholder the session that sends this design stages (its README says it is a placeholder), then set "Require two-factor authentication and disallow tokens" on the package.]
+- [you: on thinkpad-x1, in `~/Projects/cairn-themes`, run `git status --short`, `git stash list`, `git log origin/main..main --oneline`, and `git branch -a --contains dea9839`. An error from the last command means the commit is absent. Survey work is any path under `survey-theme/`, or any commit or stash that touches one. If there is any, commit it to a new `archive/thinkpad-x1-survey` branch and push it, then `git switch main && git reset --hard origin/main`. Check: `git ls-remote origin archive/thinkpad-x1-survey` prints a line, or nothing was found.]
+- [you: run `npm login` with 2FA. In the placeholder directory the session that sends this design stages (its `package.json` carries `"publishConfig": {"access": "public"}`, and its README says it is a placeholder), run `npm publish --access public`, then `npm deprecate @glw907/survey@0.0.0 "Placeholder; install 1.0.0 or later"`. Set "Require two-factor authentication and disallow tokens" on the package. Check: from a logged-out shell, `npm view @glw907/survey version` prints `0.0.0`, and `npm access get status @glw907/survey` reads `public`.]
 
-One named sitting remains, at Pass B's close: the specimen read, the trusted-publisher link, and the merge approval. If thinkpad-x1 shows nothing, the vendored copy is the S1 core verbatim and Pass A runs on three sources without asking.
+Two more sittings follow: Pass A's rulings, and Pass B's close (the specimen read, the trusted-publisher link, and the merge approval). Pass C closes on a merge packet. If thinkpad-x1 shows nothing, the vendored copy is the S1 core verbatim and Pass A runs on three sources without asking.
 
 ### Left to the builder
 
