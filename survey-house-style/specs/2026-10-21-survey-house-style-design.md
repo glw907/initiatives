@@ -12,6 +12,7 @@ Survey now exists in three places that have drifted apart: the approval queue's 
 - One token source builds a drop-in daisyUI theme, a plain CSS-variable sheet, and a DESIGN.md that agents read first.
 - A conformance check ships in the package and names the token to use in place of any stray value.
 - A skill, an advisory hook, and four agent-definition lines point every agent at the Survey version its repo installed.
+- Survey also carries the house writing register, an overlay on Google or Microsoft by audience, and the house copy-editing rules as a Vale style. cairn moves to that register once this work is done.
 - Each app moves to the package later, in its own pass.
 
 ### If you approve
@@ -20,53 +21,20 @@ Survey now exists in three places that have drifted apart: the approval queue's 
 2. Pass A compares the three versions and brings you the differences and proposed additions in one sitting.
 3. Pass B builds the repo from your rulings. At its close you read the built specimen, link the trusted publisher on npmjs.com, and approve the merge. The release workflow then publishes.
 4. Pass C adds the skill, the hook, and the agent lines to the workstation, and you approve its merge.
-5. The approval queue, the phonebook, Bulwark, and 907.life each take the package in a pass of their own.
-
-### Decide: release 1.0.0 directly, or a release candidate first
-
-1.0.0 fixes the token names, and renaming one later costs a major release in every app. No app will have used the names before the cut. A candidate lets the approval queue try them first. Bulwark then waits one more pass.
-
-Source: contract review F24, mechanics review 13, integrity review 2
-
-- A candidate first: Pass B publishes `1.0.0-rc.1` under the `next` tag, the approval queue converges on that exact version, and a short release step at that pass's close promotes 1.0.0 with any names it changed. The other apps start from 1.0.0. (recommended)
-- 1.0.0 directly: Pass B publishes 1.0.0 and every app can start then. A naming flaw the approval queue finds costs a major.
-
-### Decide: what the trusted publisher may do
-
-Since 2026-09-03, npm sets a new trusted publisher to staged publishing by default. CI uploads a version, and it goes live only when you approve it with 2FA. cairn's older link allows a direct publish.
-
-Source: mechanics review 14; npm trusted publishers docs
-
-- Direct publish: a GitHub release publishes hands-off, the way cairn's does, as your ruling names. (recommended)
-- Staged only: `publish.yml` runs `npm stage publish` in place of cairn's `npm publish`. Each release, the first included, waits for your 2FA approval on npmjs.com or the CLI, and its post-publish check runs only after you approve.
-
-### Decide: whether a visible Survey update needs a render read
-
-A value change is a minor release, and the dependency sweep takes minors without asking. With no visual baselines in the approval queue, a palette change could reach it unseen. 907.life already needs a render read before any production deploy.
-
-Source: integrity review 4
-
-- Every minor or major bump of Survey in an app needs a full-page render in both schemes, read in the main loop, before merge. Pass C adds that line to `dependency-upgrade`. (recommended)
-- Any visible value change is a major, and you approve each one. Majors stop meaning a breaking change.
-- No added read. Apps follow minors unseen, except where a repo rule already requires one.
-
-### Decide: how many renders Pass A's sitting carries
-
-The three versions may differ on dozens of values, many too small to see. Each render costs build time and your attention.
-
-Source: contract review F15, mechanics review 23
-
-- Render what you can see: a difference at or above ΔE2000 2 for color, 2px for length, or 50ms for duration gets a side-by-side render. The rest sit in one table with a default, and you can pull any row into a render. Every proposed promotion is rendered. Pass A is estimated on this option. (recommended)
-- Render every difference. Pass A's estimate then grows with a count nobody knows yet.
-- One composite per rung: five renders, quickest to read, though small differences hide inside them.
+5. Pass D builds the writing register and copy-editing rules from cairn's register and the tidy rules, brings you every new departure from Google or Microsoft in one sitting, and releases them in a minor.
+6. The approval queue, the phonebook, Bulwark, 907.life, and cairn's docs each take the package in a pass of their own.
 
 ### Worth knowing
 
-The work grows from two passes and 600 path minutes to three passes and 830. The reviews found that the release, the conformance check, and the workstation tooling each needed their own acceptance. The phonebook has no UI yet and adopts Survey fresh. cairn-themes keeps its theme ports and gives up `survey-theme/`, its Survey spec, and its backlog items #1 and #2 to the new repo.
+The work grows from two passes and 600 path minutes to four passes and 1,150. The reviews found that the release, the conformance check, and the workstation tooling each needed their own acceptance, and the writing part adds Pass D. The phonebook has no UI yet and adopts Survey fresh. cairn-themes keeps its theme ports and gives up `survey-theme/`, its Survey spec, and its backlog items #1 and #2 to the new repo.
 
 ### Rulings
 
 These rulings stand and are not reopened. Survey is published from a public repo to npm as `@glw907/survey`, with trusted publishing, the way cairn is. Bulwark's theme waits until this work is complete. Survey is agent-friendly from the ground up, joins the workstation's Claude tooling, is versioned with a changelog, follows established practice, and includes a drop-in daisyUI theme (Geoff, 2026-10-21).
+
+Geoff took all four review recommendations on 2026-10-22. Pass B publishes `1.0.0-rc.1` under `next`. The approval queue converges on that exact version, and a short release step at that pass's close promotes 1.0.0 with any names it changed. The other apps and Bulwark start from 1.0.0. The trusted publisher allows a direct publish, as cairn's does. Every minor or major Survey bump in an app needs a full-page render in both schemes, read in the main loop before merge, and Pass C adds that line to `dependency-upgrade`. Pass A renders a difference at or above ΔE2000 2 for color, 2px for length, or 50ms for duration. The rest sit in one table with a default that Geoff can pull into a render, and every proposed promotion is rendered.
+
+On the same day Geoff added the house writing register and its copy-editing rules to Survey. The register may sit over Google's or Microsoft's voice, and its corpus follows drafter's established shape. When this work is done, cairn uses the Survey register.
 
 ### Intent
 
@@ -76,21 +44,24 @@ None of the three existing versions is the reference. Each looks good, and each 
 
 ### Goals
 
-The work has four goals.
+The work has five goals.
 
 - One written house style: principles, tokens in light and dark, and per-context recipes.
+- One house writing register and one set of copy-editing rules, read by agents, drafter, and Vale from the installed package.
 - A ladder of levers ranked by how much resemblance each carries, so a partial adopter knows what to take first.
 - Releases under Semantic Versioning, each with a changelog entry that names the consumer's action.
 - Agent-friendly from the ground up: version-matched docs, role-named tokens, a conformance check with fix-naming messages, and upgrade steps an agent can carry out.
 
 ### Non-goals
 
-Four things stay out of scope.
+Six things stay out of scope.
 
 - Restyling the cairn admin. It keeps its own design system.
 - Packaging Survey as a selectable cairn theme (cairn-themes S3, cairn's work).
 - The terrain hero from elevation data.
-- Building any app's convergence inside Passes A to C.
+- Building any app's convergence inside Passes A to D. That includes cairn's move to the Survey register and the tidy features' move to the copy-editing rules.
+- Website content. It keeps each site's own voice, as the authoring charter says.
+- Code comments, commit messages, and agent-facing files. They keep their own published standards.
 
 ### Anti-goals
 
@@ -150,6 +121,17 @@ Survey follows Semantic Versioning 2.0.0, with Adobe Spectrum's token policy and
 - **First publish.** npm cannot bind a trusted publisher to a package that does not exist. cairn's first publish was by hand for that reason (`cairn-cms/.github/workflows/publish.yml:92`). So Geoff publishes a `0.0.0` placeholder at pre-flight and deprecates it at once. A release candidate goes to `next`, so `latest` stays on the placeholder until the first stable version, and the deprecation warns anyone who installs it bare. A new trusted-publisher link "must complete its first successful publish within 2 days". He makes the link in Pass B's close sitting, and the release runs the same day.
 - **Rollback.** A bad version is deprecated and superseded by a patch, never unpublished. `AGENTS.md` says so in its release section.
 
+### The writing register and copy-editing rules
+
+Survey holds the house writing register and everything needed to write to it: descriptions, examples, the corpus, the custom linters, and the skill (Geoff, 2026-10-22). It follows the authoring charter's overlay rule. Each audience starts from a published base, Google for developer-facing prose and Microsoft for end-user and interface text. The register records each departure from that base with its provenance and Geoff's ruling. Its source is cairn's `docs/internal/docs-register.md`. That is the most developed overlay on the workstation. It already holds a drafting brief over each base guide and a ledger of departures.
+
+- **Shape.** The package's `writing/` directory carries one brief per base guide in drafter's stock shape: a description of the standard and its reader, the tells it rules out with before-and-after pairs, a rubric linked to the guide's pages, and a corpus of short excerpts, each with its URL, license, and retrieval date. House exemplars sit beside the corpus. A departures file lists each change from the base with its source and ruling. Interface text (buttons, headings, empty states, errors, confirmations) is a section of the Microsoft brief, generalized from the Voice section of cairn's admin design system.
+- **Copy-editing rules.** A style sheet, the editor's established tool for a house's mechanical choices, lists each rule with its source. Examples are the serial comma, sentence-case headings, and how dates, times, and numbers are written. The tidy features in poplar and cairn read the same sheet when they adopt it.
+- **Custom linters.** The package ships a Vale style directory named `Survey`. It takes over the house `glw907` overlay that five repos now copy by hand from poplar (dubplate, phonebook, cairn-themes, poplar, and cairn-cms's `tool/`), and it adds a rule for each copy-editing rule Vale can check. Vale's `Packages` key accepts "a path to a directory laid out like an unpacked archive". So an app lists `Microsoft, node_modules/@glw907/survey/vale/Survey` or the Google pair and runs `vale sync` from its root, and the style moves with the npm version. Each Vale rule has a passing and a failing fixture.
+- **Drafter.** drafter reads the briefs by `<path>#<slug>`. Files under `node_modules` are untracked, so a project allows the installed `writing/` directory through drafter's `inline_files` setting, in its user or local layer, and names the sections in `register.<track>`.
+- **Skill.** The package ships the source of a `survey-writing` skill that routes an audience to its brief, its exemplars, and its Vale pair. The workstation installs it from the installed package through its manifest, so the skill follows the version. The `writing-voice` skill's routing table points house tools' interface text and house docs at it.
+- **Versioning.** The writing part follows Survey's versions. A new rule that may report new findings is major under the ESLint policy above, or ships as a Vale `suggestion` in a minor first.
+
 ### Pass A: harvest and rulings
 
 Pass A turns the three versions into one ledger of rulings and an amended specimen. It reads, at commits it records, the approval queue's four `src/lib/survey/` files, `src/app.css`, and `src/lib/components/frame/frame.css`, plus the 2026-10-07 spec and the approved specimen. If the thinkpad-x1 pre-flight step found Survey work, its archive branch joins as a fourth source. Pass A only reads the approval queue.
@@ -180,6 +162,15 @@ Pass C lands Survey in the workstation's Claude tooling, in `~/.dotfiles` under 
 - **Acceptance.** Hook tests on the `tests/test_vale_hook.py` pattern against a scratch app that installs the packed package: an off-token edit returns context naming the token, a non-dependent repo and a `.md` edit return nothing, a checker crash still exits 0, and the run stays inside the timeout. Three should-trigger prompts and two should-not prompts in fresh headless sessions check the skill's description, the skill-creator trigger method. One headless `site-implementer` dispatch in the scratch app must read the installed DESIGN.md before its first CSS edit. `claude-tooling-sync verify` exits 0.
 - **Hosts.** After the merge, pavilion runs `git pull`, `stow -R claude bin`, `claude-tooling-sync apply`, and `claude-tooling-sync verify`. On thinkpad-x1, `check-drift` reports the clone behind origin and runs `verify`, and the session there runs the same four commands.
 
+### Pass D: the writing register
+
+Pass D builds the writing part in the `survey` repo and releases it as a minor, after Passes B and C.
+
+- **Harvest.** One ledger row per rule, departure, or exemplar, from cairn's `docs-register.md` (both briefs, its departures, and the rulings behind them), the Voice section of cairn's admin design system, cairn's 2026-06-20 copy-edit research, poplar's tidy rules, drafter's stock files, the workstation registers `editor.md` and `technical-doc-web.md`, and the `glw907` Vale style. The ledger marks each row house-wide or cairn-only. Cairn-only rows (its tracks, its names, its page anatomies) stay in cairn.
+- **Rulings.** A departure cairn's register already records keeps its provenance and Geoff's ruling. Each new or widened departure reaches Geoff in one sitting, with the base guide's text beside the proposed rule.
+- **Build.** `writing/`, the style sheet, the `Survey` Vale style and its fixtures, and the skill source. A scratch app installs the packed tarball, lists the Vale pair, runs `vale sync`, and fails on a planted tell. A drafter dry run in that app, with `inline_files` set, inlines a brief section by slug.
+- **Workstation.** The authoring charter's line that the workstation keeps no house voice is amended to name Survey's register as the house overlay. The `writing-voice` routing rows, the skill's manifest entry, and `claude-tooling-sync verify` land in the same workstation PR.
+
 ### What each app's pass inherits
 
 These constraints go into each app's own plan. None of them is built here.
@@ -187,6 +178,7 @@ These constraints go into each app's own plan. None of them is built here.
 - **Bulwark.** The servers repo holds a `package.json` and lockfile that pin `@glw907/survey` exactly, and a build step copies the sheet into the theme bundle. `dependency-upgrade` measures every directory with a `package.json` (its step 1), and the pin then shows up in a sweep. Checking the live theme against the repo after a deploy or a restore is that pass's design.
 - **Approval queue.** It builds and render-checks in a worktree, since the main checkout serves from `build/`. It swaps `main`'s build only when no item is pending, and keeps the old build until the new one serves. Each promoted rule leaves `app.css` in the commit that takes the package.
 - **907.life.** Its rebuild's `engine-consult` settles how the chassis takes the package. The cairn-site recipe ships in 1.0.0 marked pending, and that pass fills it in a minor.
+- **cairn's docs.** cairn's `docs-register.md` shrinks to its cairn-only parts and points at the installed Survey register. The `register-check` skill, the `cairn-register-editor` agent, and the docs page chain read Survey's briefs from the package. The four other repos drop their copied `glw907` style for the Vale pair.
 
 ### End-to-end check
 
@@ -216,11 +208,13 @@ Each stop the run can foresee has an answer here. The run asks Geoff only where 
 - **PR #131 is still open at Pass C.** Pass C's branch stacks on #131's.
 - **Over the estimate.** A task clock stop with a traced cause resumes once at twice its estimate. Each pass runs to 1.5 times its path estimate, and stops past that.
 - **What may escalate.** The nearest-token wording, a COSMETIC specimen finding, a trigger miss after one rewording, and the `site-implementer` dispatch after one rewording. The contrast bar, the pack and fixture checks, provenance, and the hook's exit 0 never escalate.
+- **A cairn rule's house-wide or cairn-only mark is unclear.** Mark it cairn-only, leave it in cairn, and list it in `## Decisions`. A later minor can widen it.
+- **A copy-editing rule Vale can't express.** It stays in the style sheet for the skill and the tidy features, and the PR lists it.
 - **Unrelated drift at close.** Note it in the PR and leave it.
 
 ### Risk and estimate
 
-Pass A is `ordinary` and merges its own PR in the initiatives repo. Pass B is `runner`, for its workflow and gate scripts, and `live-account`, since it creates a public repo and publishes to npm. With no Survey adapter yet, Pass B uses `pass-core`'s default classes, and its plan names the gate, the fast lane, and CI on PRs as the full-suite home. As a `live-account` plan it takes the three-lens review and a verification read. Pass C is `runner` under `dotfiles-pass`. Passes B and C each close through a conductor and a packet. The estimates are 210 path minutes for Pass A, 460 for Pass B, and 160 for Pass C. No recent score covers theme work. The planner checks these figures against each plan.
+Pass A is `ordinary` and merges its own PR in the initiatives repo. Pass B is `runner`, for its workflow and gate scripts, and `live-account`, since it creates a public repo and publishes to npm. With no Survey adapter yet, Pass B uses `pass-core`'s default classes, and its plan names the gate, the fast lane, and CI on PRs as the full-suite home. As a `live-account` plan it takes the three-lens review and a verification read. Pass C is `runner` under `dotfiles-pass`. Pass D is `runner`, for its skill and charter edits, and `live-account`, for its release. Passes B, C, and D each close through a conductor and a packet. The estimates are 210 path minutes for Pass A, 460 for Pass B, 160 for Pass C, and 320 for Pass D. No recent score covers theme work. The planner checks these figures against each plan.
 
 ### Pre-flight
 
@@ -229,7 +223,7 @@ Geoff does two steps in the sitting where he approves this design, since neither
 - [you: on thinkpad-x1, in `~/Projects/cairn-themes`, run `git status --short`, `git stash list`, `git log origin/main..main --oneline`, and `git branch -a --contains dea9839`. An error from the last command means the commit is absent. Survey work is any path under `survey-theme/`, or any commit or stash that touches one. If there is any, commit it to a new `archive/thinkpad-x1-survey` branch and push it, then `git switch main && git reset --hard origin/main`. Check: `git ls-remote origin archive/thinkpad-x1-survey` prints a line, or nothing was found.]
 - [you: run `npm login` with 2FA. In the placeholder directory the session that sends this design stages (its `package.json` carries `"publishConfig": {"access": "public"}`, and its README says it is a placeholder), run `npm publish --access public`, then `npm deprecate @glw907/survey@0.0.0 "Placeholder; install 1.0.0 or later"`. Set "Require two-factor authentication and disallow tokens" on the package. Check: from a logged-out shell, `npm view @glw907/survey version` prints `0.0.0`, and `npm access get status @glw907/survey` reads `public`.]
 
-Two more sittings follow: Pass A's rulings, and Pass B's close (the specimen read, the trusted-publisher link, and the merge approval). Pass C closes on a merge packet. If thinkpad-x1 shows nothing, the vendored copy is the S1 core verbatim and Pass A runs on three sources without asking.
+Three more sittings follow: Pass A's rulings, Pass B's close (the specimen read, the trusted-publisher link, and the merge approval), and Pass D's departure rulings. Passes C and D close on merge packets. If thinkpad-x1 shows nothing, the vendored copy is the S1 core verbatim and Pass A runs on three sources without asking.
 
 ### Left to the builder
 
@@ -250,6 +244,11 @@ The design follows these published sources.
 - Semantic Versioning 2.0.0: <https://semver.org/>
 - Keep a Changelog 1.1.0: <https://keepachangelog.com/en/1.1.0/>
 - AGENTS.md: <https://agents.md/>
+- Vale `Packages` key: <https://docs.vale.sh/keys/packages>
+- Google developer documentation style guide: <https://developers.google.com/style>
+- Microsoft Writing Style Guide: <https://learn.microsoft.com/style-guide/welcome/>
+- The authoring charter: `~/.claude/docs/authoring-charter.md`
+- drafter's prompts module and register settings: `drafter/docs/prompts-module.md`, `drafter/docs/configuration.md`
 - Claude Code features overview: <https://code.claude.com/docs/en/features-overview>
 - Claude Code skills: <https://code.claude.com/docs/en/skills>
 - Claude Code hooks: <https://code.claude.com/docs/en/hooks>
