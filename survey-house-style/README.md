@@ -39,3 +39,4 @@ Geoff ruled on 2026-10-21 that Survey is the house style for every house tool, a
 - 2026-10-22: the three-pass design approved; active.
 - 2026-10-22: Pass 1 done. `glw907/survey` v1.0.0 released (PR survey#1, cairn-themes#3 merged); Pass 2 is next.
 - 2026-10-22: Pass 2 done. `glw907/survey` v1.1.0 released with `Survey.zip` (PRs survey#2, workstation#135, cairn-cms#135, cairn-themes#4, dubplate#10, phonebook#3, poplar#5 merged); `claude-tooling-sync verify` is red only on live `settings.json` `autoMode` drift, which predates the pass; Pass 3 is next.
+- 2026-10-22: Pass 3 done. `glw907/survey` v1.2.0 released with `Survey.zip` (PRs survey#3 and workstation#138 merged); `glw907/survey-notes` created, private, holding the 2026-10 baseline; the corrections smoke test passed on pavilion; `claude-tooling-sync verify` is green. The initiative is done.
