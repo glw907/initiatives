@@ -1,0 +1,102 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "content-model.heading",
+  "title": "Writing pass after your send-back",
+  "body": [
+   "You asked for the AI writing tics out of this and the other blueprints. A fresh register editor read the whole file against the developer-docs register and the house tells, and its 33 rewrites are applied. Every changed line was then fact-checked against its old wording, so no claim moved.",
+   "\"own\" is gone except one place, which quotes the engine error \"Model it as the parent's own concept\" verbatim. The register already bans the intensifier \"own\"; Survey backlog #1 adds a deterministic check so it is caught in all house writing."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "info",
+  "anchor": "address-collisions.p3",
+  "title": "A second entry at one address fails the build; backlog #31 tracks it",
+  "body": [
+   "The edit page's advisory says \"Publish this one and it replaces the other at that address\" (`content-routes-entry-read.ts:412`). The 2026-06-23 advisory design meant last-write-wins.",
+   "The code disagrees. Once both entries are on `main` and neither is a draft, `createSiteResolver` throws on the duplicate permalink (`site-resolver.ts:86`), so the next build fails. The page states both behaviors as the code has them. cairn-cms backlog #31 reconciles the advisory with the resolver."
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "info",
+  "anchor": "routing.p0",
+  "title": "inFeeds has never been read; backlog #32 tracks it",
+  "body": [
+   "`RoutingRule.inFeeds` came in with the first content model on 2026-05-28, and nothing in `src/lib` has read it since. Its doc comment says it decides feed and sitemap membership, which no code does.",
+   "The page says feed membership is the site's choice and leaves the flag out. cairn-cms backlog #32 removes the flag or wires it."
+  ]
+ },
+ {
+  "id": "N3",
+  "kind": "info",
+  "anchor": "concepts.p5",
+  "title": "Renaming posts empties the scaffold's feed",
+  "body": [
+   "The scaffold's feed reads `posts` by its id, so a site that renames the concept gets an empty feed with no error. The page gives this as a caveat telling the reader to update that code too. It isn't an engine fix."
+  ]
+ },
+ {
+  "id": "N4",
+  "kind": "info",
+  "anchor": "routing.p0",
+  "title": "The routing table is written as bullets",
+  "body": [
+   "The plan wanted a table of the three routing values. The markdown blueprint format has no table form, so the rows are bullets under a lead-in that names them a table. The draft is expected to set them as a table."
+  ]
+ },
+ {
+  "id": "N5",
+  "kind": "info",
+  "anchor": "frontmatter-keys-the-engine-reads.p4",
+  "title": "Fact check fix: where updated shows up",
+  "was": "`updated` is the sitemap's `lastmod` and the feed's modified date.",
+  "now": "`updated` is the sitemap's `lastmod` and the entry page's SEO modified time. Only the JSON Feed carries a modified date, as `date_modified`, and only when the site's feed route passes it; the RSS feed carries none.",
+  "body": [
+   "The fact `f:69j91g` said the same thing and is corrected with pointers to `public-routes.ts:174` and `feeds.ts:119`. The second fact check narrowed the feed half to the JSON Feed."
+  ]
+ },
+ {
+  "id": "N6",
+  "kind": "info",
+  "anchor": "entry-identity.p8",
+  "title": "Fact check fix: the two dates agree to the prefix's granularity",
+  "was": "An entry created in the admin starts with the two dates equal.",
+  "now": "The filename prefix is the picked date cut to the concept's `datePrefix`, so the two agree to that granularity.",
+  "body": [
+   "A concept with a year or month prefix doesn't carry the full date in its filename."
+  ]
+ },
+ {
+  "id": "N7",
+  "kind": "info",
+  "anchor": "the-content-manifest.p5",
+  "title": "Fact check fix: the manifest row's optional fields",
+  "was": "Its reference-field edges, tags, and included fragments, when it has them.",
+  "now": "Adds media refs and the first-publish stamp.",
+  "body": [
+   "The line had left out two of `ManifestEntry`'s optional fields."
+  ]
+ },
+ {
+  "id": "N8",
+  "kind": "info",
+  "anchor": "field-options.heading",
+  "title": "The HTML pattern comparison rests on MDN",
+  "body": [
+   "The line contrasting `pattern` with the HTML attribute cites `f:n26z3j`, an external fact from MDN. The fact-checker marked it unsupported only because no code in the repository can settle a browser behavior. MDN states that the attribute must match the whole value."
+  ]
+ },
+ {
+  "id": "N9",
+  "kind": "info",
+  "anchor": "content-model.heading",
+  "title": "What the author corrected and dropped",
+  "body": [
+   "The author corrected seven shared facts against the code. Among them, `content` takes a plain `ConceptConfig` (`defineConcept` is optional), a build verifies the manifest but doesn't regenerate it, and a rename rewrites only the links that `main`'s manifest records.",
+   "Under your D1 ruling, the charter's \"no open-ended collection model\" is dropped. The plan's \"a rename or delete can warn\" is also gone, because the code refuses instead of warning."
+  ]
+ }
+]

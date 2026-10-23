@@ -1,0 +1,81 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "arrange-the-admin-sidebar.heading",
+  "title": "Writing pass after your send-back",
+  "body": [
+   "You asked for the AI writing tics out of this and the other blueprints. A fresh register editor read the whole file against the developer-docs register and the house tells, and its 41 rewrites are applied. Every changed line was then fact-checked against its old wording, so no claim moved.",
+   "\"own\" is gone everywhere. The register already bans the intensifier \"own\"; Survey backlog #1 adds a deterministic check so it is caught in all house writing."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "info",
+  "anchor": "declare-the-layout.p19",
+  "title": "The figure keeps the fixture as is (your call)",
+  "body": [
+   "You chose to keep `fixtureNavLayout` unchanged. Media shows its default label, Library, and the settings entry carries the relabel example (Site settings)."
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "info",
+  "anchor": "resolve-a-sidebar-error.p11",
+  "title": "This row covers navFilter as well as attention",
+  "body": [
+   "The plan covered only a throwing `attention` function. The code shows the shell load runs `navFilter` the same way, with no catch (`content-routes-shell.ts:198`), so a throwing filter also fails every admin page. The row names both functions."
+  ]
+ },
+ {
+  "id": "N3",
+  "kind": "info",
+  "anchor": "filter-the-sidebar-per-request.p7",
+  "title": "The link goes to createCairnAdmin, not ContentRoutesConfig",
+  "body": [
+   "The plan linked `#contentroutesconfig`, but `docs/reference/sveltekit.md` has no heading for `ContentRoutesConfig`. The link points at `createCairnAdmin`, which forwards `navFilter` unchanged."
+  ]
+ },
+ {
+  "id": "N4",
+  "kind": "info",
+  "anchor": "declare-the-layout.p6",
+  "title": "When the layout is checked",
+  "was": "The tree validates once at runtime composition and fails the build.",
+  "now": "The tree is checked when `createCairnAdmin` or `createContentRoutes` builds the admin. An adapter with no `navLayout` skips the check.",
+  "body": [
+   "The shared facts `f:ld6xam` and `f:bc27j9` said a bad layout fails the build. `composeRuntime` passes `navLayout` through unchecked, and nothing fails at build time. Both facts are corrected, and every line on this page that cites them says server start."
+  ]
+ },
+ {
+  "id": "N5",
+  "kind": "info",
+  "anchor": "arrange-the-admin-sidebar.p6",
+  "title": "Fact check fix: the menu editor is the nav screen",
+  "was": "The public site's menu and the menu editor `editor.nav` turns on, which share the word nav with the `nav` screen.",
+  "now": "Build the public routes covers the public site's menu and the menu editor that `editor.nav` turns on as the `nav` screen at `/admin/nav`.",
+  "body": [
+   "The old line read as if the menu editor and the `nav` screen were two things. They are one screen."
+  ]
+ },
+ {
+  "id": "N6",
+  "kind": "info",
+  "anchor": "declare-the-layout.p3",
+  "title": "Fact check fix: the nav screen's default label",
+  "was": "A concept's own label, or Library, Tags, Settings, Editors, and Help for the fixed screens.",
+  "now": "Splits the defaults into sentences and adds that `nav` takes the label the adapter's `editor.nav` declares.",
+  "body": [
+   "The line left out `nav`, whose default label comes from the adapter."
+  ]
+ },
+ {
+  "id": "N7",
+  "kind": "info",
+  "anchor": "before-you-begin.p0",
+  "title": "Module paths are the scaffold's only",
+  "body": [
+   "The plan also gave the paths from the Add cairn to a SvelteKit app tutorial. Their only source is that page, so under your D1 ruling the page names both modules by what they do and gives the scaffold's paths alone."
+  ]
+ }
+]
