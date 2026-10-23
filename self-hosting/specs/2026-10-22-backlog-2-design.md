@@ -8,6 +8,8 @@ Geoff chose the scope in chat on 2026-10-22: STATUS next action 1b (#2, #4, #7, 
 
 Initiative: self-hosting
 
+Amended 2026-10-22 (Geoff, in chat): the nightly backup on orpheus also takes a fresh Immich dump before it counts and copies, reusing the rebuild's dump step (`POST /api/jobs` with `{"name":"backup-database"}`, then a wait for a dump newer than the call that passes `gunzip -t`). With that, the drill fails on any original (`library/` or `upload/`) with no database row; only the regenerated derived folders may hold orphans, reported as counts.
+
 ### Standing answers
 
 | Situation | Answer |
