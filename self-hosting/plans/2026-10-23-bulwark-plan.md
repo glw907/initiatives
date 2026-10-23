@@ -28,7 +28,7 @@ The advisory watch the design names (Pass 6's C6) is not built yet. This plan am
 - The plan is approved, with both rulings given.
 - No other executor works the worktree `.claude/worktrees/bulwark` or the branch `bulwark` (`pgrep -f`, `git status`, `claude agents --json`). `servers-backlog-2`'s executor may be live; this pass never touches its worktree or its branch.
 - The servers main checkout is on `main`, clean, and level with `origin/main`. `git -C ~/.dotfiles diff --quiet -- secrets/values.age` passes.
-- `ssh -o BatchMode=yes geoff@orpheus.907.life getent passwd 1001` prints nothing or a `bulwark` row. Another account at uid 1001 means the conductor does not launch and reports it.
+- `ssh -o BatchMode=yes geoff@orpheus.907.life getent passwd 1001` prints nothing or a `bulwark` row. Another account at uid 1001 means the conductor does not launch and reports it. Amended 2026-10-23: the check found `geoff-login` at uid 1001, an account the cloudflared role's operator setup made on 2026-10-19 before Geoff's terminal moved to the `geoff` account (servers `3334c26`). Its home holds only the default dotfiles, and it has no sudo, no processes, and no files elsewhere. Before launch the conductor runs `sudo userdel -r geoff-login` on orpheus and rechecks that `getent passwd 1001` prints nothing.
 
 Phase A makes no live write: no `apply.sh --apply`, no `dns.sh --apply`, no drill, no monitor deploy, and no ssh write. `apply.sh --check` and read-only ssh are allowed.
 
