@@ -7,7 +7,7 @@ Approving it plans a pass that puts Bulwark on orpheus at `webmail.907.life`, si
 The pass launches after `servers-backlog-2` merges, since both edit the Caddyfile and the runbook. It needs nothing from you before launch, and its PR comes back to you as a packet.
 
 ## If you approve
-1. [session] Merge the initiatives PR that files this design and packet.
+1. [session] Merge glw907/initiatives#114, which files this design and packet.
 2. [session] Plan the pass once `servers-backlog-2` merges, review the plan, and hand it to `conductor-servers`.
 3. [you: read the pass's packet] Read and decide the pass's PR when its packet arrives.
 
@@ -18,6 +18,7 @@ Whether Stalwart needs a CORS origin for `webmail.907.life`, and whether Bulwark
 | Part | Verdict | Fact | Why |
 |---|---|---|---|
 | glw907/initiatives:self-hosting/specs/2026-10-21-bulwark-design.md | approve | Bulwark 1.17.1's sanitizer removes every `url()` from theme and skin CSS (`lib/plugin-types.ts`), so the Survey faces cannot load. | Survey's theme-limited recipe is followed for everything a theme can reach, and the font gap is a standing answer. |
+| glw907/initiatives#114 | approve | It files the design and this packet, and the gate passed. | It changes no behavior. |
 | step:1 | session | The PR changes no behavior. | The design is a record. |
 | step:2 | session | No 907.life logo file exists, so the marks are Survey's benchmark triangle and the name is "907.life Mail". | Your note on this packet can change either before the plan is written. |
 | step:3 | you | The pass is `auth-data` and `live-account`. | Nothing merges unread. |
