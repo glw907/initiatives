@@ -1,0 +1,19 @@
+conductor-servers: you own the mail filters pass (executor servers-mail-filters) beside the passes you already hold. pass-core "Conductor", "Close", and "Launch prompt" and approval-packet govern how; this hand-over restates none of them.
+
+Read: the plan /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-22-mail-filters-plan.md (its two phases, Ruling 1, After merge with its back-out, the standing answers) and its design /var/home/glw907/Projects/initiatives/self-hosting/specs/2026-10-22-mail-filters-design.md, and the executor's prompt 2026-10-22-mail-filters-prompt.txt beside the plan. Geoff approved the design in chat on 2026-10-22 and gave permission to build ("You have permission to build and implement. This should be something we should be able to iterate on going forward.").
+
+Pre-launch checks (the plan's phase A Entry and pass-core "Execute"): `git -C /var/home/glw907/Projects/servers fetch origin`; the checkout is on main, clean, and `git rev-list --count HEAD..origin/main` prints 0; `claude agents --json` lists no session working .claude/worktrees/mail-filters; `podman info` succeeds and `podman pull docker.io/library/rust:1` succeeds. servers-backlog-2 and servers-bulwark may be live; that is expected, since phase A writes nothing to ward. The plan has no pre-flight items. Then launch:
+
+claude --bg --add-dir /var/home/glw907/.dotfiles --add-dir /var/home/glw907/Projects/initiatives --model sonnet --effort medium --name servers-mail-filters "$(cat /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-22-mail-filters-prompt.txt)"
+
+Keep `--add-dir` before the named flags. Record the executor's session id in STATUS.
+
+The preview sitting is planned, not a stop. At the executor's "preview ready", send Geoff one packet built from the packet file it names (keep that file local; it holds senders and subjects and is never committed). The packet carries Ruling 1 as an ask, the security-rule choice (with the rule, or security mail to Notifications/Tech) as an ask, the per-folder counts, the category table, and the design errata from the fold record in the routine rows. Relay any data changes Geoff asks for to the executor, and send the re-preview the same way. On approval, send servers-mail-filters exactly "go phase B" once ward is free: no other pass holds a ward hold line, and every branch that applied ward has merged and been applied from main. Commit Geoff's rulings to the plan on the initiatives main as a direct change first.
+
+Merge order: this PR after servers#14 (backlog-2) and the Bulwark PRs. At the executor's PR-ready message, send the PR to Geoff in one packet, with any `## Before merge` or failed check raised as the asks approval-packet forces; the end-to-end result, the manifest path, and the score ride in the routine row. On approve, merge with `--match-head-commit`, pull the checkout, run the plan's After merge steps outside 03:20 to 04:00 UTC, and `claude stop` the executor's id. On reject, run the plan's back-out and put its branch's PR in the rejection's packet.
+
+Standing answers are the design's and the plan's; apply them rather than stopping. Stops come to you as `## Stop` sections or messages; ask Geoff once per pass-core "Judgment calls", commit any ruling to the plan as a direct change, and relaunch the executor with the same line. A classifier denial the executor reports is yours to notify, once, with `notify-send -u normal`: Geoff runs the named command himself.
+
+Running path: add this pass's Work and review actual to STATUS's running path at its close (planned 715 minutes after the reviews, the fold, and its verification; the design's estimate is 480 and the standing-answer line 960).
+
+Hand-over: STATUS carries the pass's lines and clears the hold line after merge; self-merge it per pass-core "Ledgers".
