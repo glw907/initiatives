@@ -178,6 +178,10 @@ The conductor runs these after Geoff approves, outside 02:30 to 04:00 UTC:
 6. Run `scripts/dry-run.sh immich-orpheus`.
 7. The morning after the first nightly run (03:00 UTC), `SELECT id FROM conditions` on the same database lists no `media_down` row and no `heartbeat_problem` row for orpheus. `ssh -o BatchMode=yes geoff@orpheus.907.life journalctl -u servers-backup.service --since today` shows the dump step and `ok`.
 
+## Ruling during T9 (Geoff, 2026-10-23)
+
+The orpheus drill failed three times on the forced regeneration of derived files, each exposing a new gap. Geoff gave the pass latitude to redesign the drill's check rather than keep patching it. The bar stays the design's: every original (`library/` or `upload/`) restores with its database row, and the counts match the manifest. How the drill treats regenerated derived folders may change. A redesign goes in the PR's `## Decisions` with the failing runs' evidence, and it does not raise the class or the 800-minute ceiling.
+
 ## Standing answers
 
 The design's table applies, plus these.
