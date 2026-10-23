@@ -1,0 +1,19 @@
+conductor-servers: you own the Bulwark webmail pass (executor servers-bulwark) beside the servers backlog's second batch. pass-core "Conductor", "Close", and "Launch prompt" and approval-packet govern how; this hand-over restates none of them.
+
+Read: the plan /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-23-bulwark-plan.md (its two phases, the rulings as Geoff gave them, After merge with its back-out, the standing answers) and its design /var/home/glw907/Projects/initiatives/self-hosting/specs/2026-10-21-bulwark-design.md, and the executor's prompt 2026-10-23-bulwark-prompt.txt beside the plan.
+
+Pre-launch checks (the plan's phase A Entry and pass-core "Execute"): `git -C /var/home/glw907/Projects/servers fetch origin`; the checkout is on main, clean, and `git rev-list --count HEAD..origin/main` prints 0; `claude agents --json` lists no session working .claude/worktrees/bulwark; `git -C /var/home/glw907/.dotfiles diff --quiet -- secrets/values.age`; `ssh -o BatchMode=yes geoff@orpheus.907.life getent passwd 1001` prints nothing or a bulwark row. servers-backlog-2 may be live; that is expected. The plan has no pre-flight items. Then launch:
+
+claude --bg --add-dir /var/home/glw907/.dotfiles --add-dir /var/home/glw907/Projects/initiatives --model sonnet --effort medium --name servers-bulwark "$(cat /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-23-bulwark-prompt.txt)"
+
+Keep `--add-dir` before the named flags. Record the executor's session id in STATUS.
+
+The phase B signal is yours: after servers-backlog-2's PR (servers#14) merges and your after-merge applies of orpheus and ward have run, send servers-bulwark exactly "applies done", once. From then until the Bulwark PRs merge or are backed out, apply orpheus and ward only from a tree that contains branch bulwark; the executor sends you the hold line for STATUS before its first live write.
+
+Merge order: servers#14 (backlog-2) first, then the Bulwark workstation PR, then the Bulwark servers PR. The Bulwark PRs go to Geoff in one packet at the executor's PR-ready message, with any `## Before merge` or failed check raised as the asks approval-packet forces; the end-to-end and visual results and the score ride in the routine row. On approve, merge with `--match-head-commit`, pull both checkouts, run the plan's After merge steps outside 02:30 to 04:00 UTC, and `claude stop` the executor's id. On reject, run the plan's back-out and put its branch's PR in the rejection's packet.
+
+Standing answers are the design's and the plan's; apply them rather than stopping. Stops come to you as `## Stop` sections or messages; ask Geoff once per pass-core "Judgment calls", commit any ruling to the plan on main as a direct change, and relaunch the executor with the same line. A classifier denial the executor reports is yours to notify, once, with `notify-send -u normal`.
+
+Running path: add this pass's Work and review actual to STATUS's running path at its close (planned 525 minutes after the reviews, the fold, and its verification read; the design's line is 600).
+
+Hand-over: STATUS carries the pass's lines and clears the hold line after merge; self-merge it per pass-core "Ledgers".
