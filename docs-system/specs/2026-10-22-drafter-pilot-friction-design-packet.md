@@ -24,9 +24,9 @@ Summary: Both fixes improve the converters that start a blueprint from a YAML pl
 Background: `convert plan` turns a YAML plan into a YAML blueprint, and `convert markdown` turns that into the markdown format. The pilot's three pages started that way. The rest of the round starts from a prose plan, which an author agent turns into a blueprint by hand.
 
 Facts: Every cairn page with a YAML plan already has a blueprint.
-- The fifteen pages left have a `.plan.md` and no `.plan.yaml` (`docs/internal/briefs/extend/` in cairn-cms at `0e01d37e3`)
-- All eleven YAML plans in cairn have a blueprint (`blueprints/docs/` in cairn-cms at `0e01d37e3`)
-- Eight YAML blueprints remain that `convert markdown` could later move to markdown (`blueprints/docs/` in cairn-cms)
+- The fifteen pages left have a `.plan.md` and no `.plan.yaml` (`cairn-cms@0e01d37e3:docs/internal/briefs/extend/`)
+- All eleven YAML plans in cairn have a blueprint (`cairn-cms@0e01d37e3:blueprints/docs/`)
+- Eight YAML blueprints remain that `convert markdown` could later move to markdown (`cairn-cms@0e01d37e3:blueprints/docs/`)
 
 Choices:
 - Defer both: they stay in the backlog at Medium, and the pass runs about 420 minutes
