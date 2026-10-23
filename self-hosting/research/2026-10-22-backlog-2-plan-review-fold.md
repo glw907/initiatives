@@ -1,6 +1,6 @@
 # Backlog 2 plan review: the fold
 
-Path after the fold: **455 minutes**. That is above the design's 330-minute estimate and under its 660-minute extension point and its 800-minute ceiling. The growth comes from the forced drill regeneration and the real integrity jobs (T5 and T9), the nightly fresh dump (T2, from Geoff's 2026-10-22 ruling), and the tests that keep each check from passing vacuously.
+Path after the fold: **455 minutes**, and **470** after the verification read's fixes (see "Verification read" below). That is above the design's 330-minute estimate and under its 660-minute extension point and its 800-minute ceiling. The growth comes from the forced drill regeneration and the real integrity jobs (T5 and T9), the nightly fresh dump (T2, from Geoff's 2026-10-22 ruling), and the tests that keep each check from passing vacuously.
 
 Targets revised in place: the plan `self-hosting/plans/2026-10-22-backlog-2-plan.md`, the executor prompt `2026-10-22-backlog-2-prompt.txt`, the conductor prompt `2026-10-22-backlog-2-conductor-prompt.txt`, and the design `self-hosting/specs/2026-10-22-backlog-2-design.md`, which gains only the dated amendment line under its Brief. The fold read the reviews at initiatives `005efe2` and the code at servers `e036a70`.
 
@@ -127,7 +127,7 @@ None of these is edited into the design, which carries only the amendment line f
 - **E1.** Design Outcome 1 names `PUT /api/queues/backupDatabase` with "listed by v3.3.4". In v3.3.4 that call only pauses or resumes a queue. The working call is `POST /api/jobs` with `{"name":"backup-database"}`, which the amendment line and the plan use.
 - **E2.** Design Outcome 5 tolerates "the 208 orphan thumbnails ruled harmless (#10)". That count was 204 person thumbnails the cutover's comparison did not query, plus 4 true orphans. The amendment line replaces the tolerance itself.
 - **E3.** The design's "Files" list lacks `roles/health/systemd/servers-health.service`, `tests/orpheus-golden.test.sh`, `tests/fakes/sshpass` (deleted), `tests/harness/lib.sh`, `secrets/registry.md`, `roles/immich/install.sh`, `docs/restore-drill-log.md`, and possibly one line of `.gitleaksignore`.
-- **E4.** The design's "About 330 path minutes" is now 455 in the plan. The 660 and 800 limits are unchanged.
+- **E4.** The design's "About 330 path minutes" is now 470 in the plan (455 at the fold, 470 after the verification read). The 660 and 800 limits are unchanged.
 
 The base plan carries no erratum. Mechanics M5's conflict was in this plan, which now follows the base plan's denial row.
 
@@ -135,6 +135,34 @@ The base plan carries no erratum. Mechanics M5's conflict was in this plan, whic
 
 None. Every OWNER FORK in the three reviews was settled before the fold, and no new product or priority question came up.
 
+## Verification read
+
+The read is `2026-10-22-backlog-2-fold-verification.md`, against initiatives `cf01972`, with 1 major and 12 minor. 8 folded, 1 left as owed errata, and 4 `optional` dropped or folded at one line each. The path moves from 455 to 470 minutes: T2 is 110, T5 is 130, and T3 is 55.
+
+New mechanisms, probed:
+- **restic mtimes.** `restic restore` keeps file mtimes. A local probe backed up and restored a file dated `2026-10-20 02:00:05 UTC`, and the restored copy kept that time.
+- **Upload mtimes.** Immich sets an uploaded original's mtime to the client's `fileModifiedAt` (`asset-media.service.ts:181`, v3.3.4). A file's own date therefore cannot place an upload in the window, and the window test uses counts and `deletedAt` instead.
+- **Statistics scope.** The server statistics leave out trashed and hidden assets (`user.repository.ts` `getUserStats`: `asset.deletedAt is null`, `visibility != hidden`).
+- **Type=simple start.** systemd.service(5): Type=simple counts a unit as started "immediately after fork(), and before ... execve()". The webdav unit has `RestartSec=5` (`roles/webdav/systemd/webdav@.service`).
+- **ssh keepalive.** ssh_config(5) `ServerAliveInterval`: after the interval, "if no data has been received from the server", ssh sends a message requesting a response. `ServerAliveCountMax` defaults to 3.
+- **Already running.** `queue.service.ts:192-195` throws `BadRequestException("Job is already running")` when the queue is active.
+
+| Id | Disposition | Where |
+|---|---|---|
+| V1 | Folded | A new standing-answer row covers T9's pre-merge window, which is not an incomplete backup and not a stop. The row needs orphan originals only when the manifest counts more photos or videos than the restored database, and missing originals only on rows with `deletedAt` set or up to the number the manifest counts fewer. It ends in `## Bar unmet: orpheus drill (pre-merge window)`, and T10 files a post-merge drill. T5's verdict sentence now reads "after the merge, none is expected". A new T5 bullet, "Window evidence", keeps `verify` running past an asset-count mismatch so one run prints all the evidence, and adds a test case. The report's proposed dating by file mtime is replaced, because Immich resets upload mtimes (probe above); the dump's mtime still marks the window's start. T9 notes that the window row may apply. |
+| V2 | Folded | The executor prompt allows the probe once, twice at most under the probe row, and allows the one dump Immich's retention removes. T2's probe bullet says the same. |
+| V3 | Folded | T1 reads only the health, status, `df`, and `du` commands live, and marks the restart, prune, and vacuum commands `not run`. |
+| V4 | Folded | `--keep-stopped` refuses only on a state other than `inactive` or `failed`. A test case with a `failed` unit proceeds. |
+| V5 | Folded | T3 waits 2 seconds, then requires three `active` reads 1 second apart, with `SERVERS_TEST` overrides. A unit that fails sits in `activating` for `RestartSec=5`, which the reads catch. |
+| V6 | Folded | T2 moves `check_dump`'s five cases to the `--keep-stopped` path, asserts `check_dump`'s own log lines, and renames the dump at `:148`. The fold also requires a fresh dump to be a file that was not there before the call, so a stale future-dated file cannot pass the wait. |
+| V7 | Folded | T6 adds `-o ServerAliveInterval=30 -o ServerAliveCountMax=6` to `restore-drill.sh`'s `ssh_opts`. T9 and the executor prompt run each drill with `run_in_background` and wait with Monitor. |
+| V8 | Left as owed errata E1 and E2 | The design keeps only its amendment line, per the coordinator's instruction. E1 and E2 above stand. |
+| V9 | Folded | `verify_ward` prints a RESULT line naming `--stdin`, the ward test asserts it, and T9's log takes the credential path from that line. |
+| V10 | Dropped (`optional`) | Cleared conditions leave no row, and the morning read is a backstop. The subscriber's own notice covers an alert that opened and cleared overnight. |
+| V11 | Folded (one line) | T7: the temporary file lives in the state directory, because `PrivateTmp=yes` puts `/tmp` on another filesystem. |
+| V12 | Folded in part (one line) | A 400 "Job is already running" counts as a started regeneration. Dropped: the line nit (`:431` against `:432`, which "follow the function" covers), the faceless-person exclusion (rare, and its count prints), and naming the library-root override, which is the executor's to choose. |
+| V13 | Dropped (`optional`) | Settled fact 5 stands, and three 5-minute `dav_ping` failures need more than 10 minutes. |
+
 ## Next
 
-This pass is `auth-data` and `live-account`, so `spec-plan-review` sends this fold to a verification read before the plan goes to Geoff.
+The verification read ran and its findings are folded above. No further read is due unless a fold finding is a blocker, and none was.

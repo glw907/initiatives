@@ -14,6 +14,6 @@ Standing answers are the design's and the plan's tables; apply them rather than 
 
 The PR, one packet: at the executor's PR-ready message, send one packet through approval-packet with the servers PR (branch backlog-2). Raise a `## Before merge` or a failed check as the asks approval-packet forces; the drill results and the score ride in the routine row. On approve, merge with `--match-head-commit`, pull the servers checkout, run the plan's `## After merge` steps outside 02:30 to 04:00 UTC (orpheus and ward both apply; the heartbeat and conditions reads use the Cloudflare D1 query tool on `servers-monitor`), and `claude stop` the executor's id. Step 7, the read the morning after the first nightly run, falls after the hand-over; you stay up for it, as for the 2026-10-28 one-shot.
 
-Running path: add this pass's Work and review actual to STATUS's running path at its close (planned 455 minutes after the review fold, ceiling 800 by the design).
+Running path: add this pass's Work and review actual to STATUS's running path at its close (planned 470 minutes after the review fold and its verification read, ceiling 800 by the design).
 
 Hand-over: write STATUS (1b done with the PR number, and the next action, which stays the 2026-10-28 photos-week relaunch), carry the executor's `## STATUS lines`, and self-merge it per pass-core "Ledgers". You stay up after the hand-over only while the 2026-10-28 one-shot is armed; when it fires, run STATUS next action 2. When nothing you own is open and no launch waits, `claude stop` your own id.
