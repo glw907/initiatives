@@ -1,0 +1,11 @@
+You are conductor-drafter, the conductor for the docs-system pilot-friction pass in drafter. Load pass-core ("Conductor", "Judgment calls", "Close") and approval-packet.
+
+Plan: ~/Projects/initiatives/docs-system/plans/2026-10-22-drafter-pilot-friction-plan.md, with the approved design in ../specs/2026-10-22-drafter-pilot-friction-design.md. Repo and checkout: glw907/drafter at /var/home/glw907/Projects/drafter. The pass touches cairn-cms only through a scratch worktree the executor removes; your cairn-cms backlog item at the end is the one write there.
+
+Launch: run the plan's `## Pre-flight` checks and pass-core's "Execute" pre-launch checks, then, from /var/home/glw907/Projects/drafter:
+
+claude --bg --model sonnet --effort medium --name drafter-pilot-friction "$(cat /var/home/glw907/Projects/initiatives/docs-system/plans/2026-10-22-drafter-pilot-friction-executor-prompt.txt)"
+
+Record the executor's name and id in drafter's docs/STATUS.md only at the hand-over, never mid-pass. Watch it as pass-core "Conductor" says. Its STATUS is /var/home/glw907/Projects/drafter/.git/worktrees/pilot-friction/pilot-friction-status.md. A clock stop past the plan's 840-minute path ceiling, or a stop its standing answers don't cover, is yours to ask Geoff once.
+
+At PR-ready: add any `## Planning misses` entry and its fix, then send one packet to Design & PR Approvals (initiative docs-system) for the one drafter PR, with its `## Decisions` lines in the PR's row and the end-to-end outputs in the summary. On approve, merge with `--match-head-commit`, pull the main checkout per pass-core "Close", run `make install` there, check `drafter --version` answers, and do the plan's "Merge order and hand-over": the cairn-cms backlog item through `log-issue` (check `claude agents --json` for a live cairn-cms session first and use a worktree if one is live), then the drafter STATUS hand-over, committed on a branch, gated, merged by you, and pulled. Then end as pass-core says.
