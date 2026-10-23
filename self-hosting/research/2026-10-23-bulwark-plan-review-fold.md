@@ -139,3 +139,53 @@ Counts: 70 findings (mech 31, con 24, risk 15). 63 folded (seven of them in part
 
 - **The driver's language.** The workstation default for a tool that needs a package is Go. T5 instead uses Python with Playwright through `uv run --with`, for three reasons. Playwright is the browser driver the house already names (`visual-verifier`'s rendering recipe). The `uv` form leaves no manifest or lockfile in the servers repo. It was probed on this workstation with the layered Chromium. This is the one contestable point.
 - **The path.** The theme's installed form, the driver, and the live checks raise the path from 365 to 440 minutes, under the 600-minute line. Pairing T9 with T8 keeps the runbook's 70 minutes off the path.
+
+## Verification round
+
+The fold of `2026-10-23-bulwark-plan-fold-verification.md` (cited as `ver`, 8 major and 13 minor) into the plan at `b399ae8`, together with the two-phase schedule Geoff asked for on 2026-10-23. Each finding was checked against the same sources. Counts: 21 findings. 20 folded, 1 refused, none owed, no new fork. Both rulings keep their questions and recommendations. Ruling 1's figures and its "No" list changed (ver 5 and 13).
+
+Source reads run in this round:
+
+- `stores/theme-store.ts:140-170, 382-414, 480-498`. `initializeTheme` sets `activeThemeId` to the policy default before checking that the theme is installed. A first sync installs the theme without applying it. The forced branch applies only when `activeThemeId` differs from the forced id.
+- `app/api/plugins/route.ts:16-19` and `lib/auth/instance-details.ts:22-23`: 401 without a session.
+- `app/api/favicon/route.ts:478-479`, `stores/settings-store.ts:913`, and `components/ui/avatar.tsx:235-245`.
+- `stores/auth-store.ts:178-196`, `app/api/auth/verify/route.ts:83-87`, and `lib/auth/verify-budget.ts:16-23, 48-51`: the budget is an in-memory `Map`.
+- `lib/admin/types.ts:234, 237`.
+- `cloudflare/dns.sh:227`.
+- `roles/stalwart/stalwart-admin:3` and `roles/stalwart/stalwart-apply:23, 27, 50-53, 80-84`.
+- `lib/admin/plugin-registry.ts:133-135`.
+
+| Id | Disposition |
+| --- | --- |
+| ver 1 | Folded, with the verifier's option (b). Fact 6 records the first-visit behavior, and T5 gains the theme probe. T5 captures after a sign-in and a reload, and captures the sign-in page after a sign-out. T7 step 7 reloads before it reads the variable. T8 names the sign-in page as a gap if the probe shows it stock. The standing answers and T10's upstream issue gain a row for it. Refused: option (a), `forceEnabled`. `initializeTheme` can preset `activeThemeId` to the policy default before the theme exists, and the forced branch at `theme-store.ts:493` then skips the apply, so (a) is not certain to work. It would also take the theme choice away from members. |
+| ver 2 | Folded. `/api/plugins` is dropped from T7 step 6. The public CSS and skin routes stay, and step 7's computed variable proves the theme loads. |
+| ver 3 | Folded, and decided rather than ruled, on the same reasoning as translate. T2 adds a `/api/favicon*` 404, and fact 8 now lists three defaults. T2's test and T7 step 6 check the route. |
+| ver 4 | Folded. T5's budget probe names `POST /api/auth/session` with its JSON body and headers, sent through Playwright's request context. T7 step 9 cites the route's 401-then-429 order. |
+| ver 5 | Folded. Ruling 1's "No" lists every change, and the Rulings preamble no longer says one edit. |
+| ver 6 | Folded. T2's test asserts the five URLs by name, and T3's test asserts the three marks exist. The main loop cross-checks them after the pair merges, before T5 is dispatched. |
+| ver 7 | Folded. Before T7's first live write, the executor sends `conductor-servers` the hold line. Under the new schedule STATUS is the conductor's, so the executor sends the line rather than writing it. A standing answer covers a stop after the first live write: keep the state, report it, and back out only on a rejection. |
+| ver 8 | Folded. T10 re-applies a host, or redeploys, when a fix touches a file that host installs, and reruns the covering T7 steps. After merge step 2 answers a hash mismatch. |
+| ver 9 | Folded. T5's hold action and T7 steps 8 and 11. No storage state is written to disk. |
+| ver 10 | Folded. The budget probe (step 9) runs before the restart (step 11), and the restart clears the in-memory budget before T8 signs in. |
+| ver 11 | Folded. The memory stop joins the stop list. T7 step 1 runs the phase B entry, which reruns the host hash comparison. |
+| ver 12 | Folded. T7 step 4 reads back with `stalwart-cli get Http` and `query AllowedIp`, in the `cli_as` form, with the password read as data. T7 step 9 reads the ban list with `stalwart-admin query BlockedIp`. |
+| ver 13 | Folded. Fact 3 and ruling 1 now say 5 failures on the pre-check and 5 on the sign-in routes per address per 15 minutes, with a 30-failure ceiling across clients on the pre-check only. |
+| ver 14 | Folded, optional but free. The back-out removes the unit and the image and keeps the `bulwark` user. |
+| ver 15 | Refused, optional. Bulwark's defaults for `LOGIN_COMPANY_NAME` and `LOGIN_WEBSITE_URL` are empty (`lib/admin/types.ts:234, 237`). The values in `.env.example` are examples, and the role does not copy them. |
+| ver 16 | Folded, free. `registry.json` is `{"themes": [<entry>]}`. |
+| ver 17 | Folded, free. The role carries no `config.json` (Bulwark reads a missing one as empty, `config-manager.ts:35`), and T2's test asserts it is absent. |
+| ver 18 | Folded, free, since the old wording could have caused a false stop. T7 step 2 quotes the line as a pattern. |
+| ver 19 | Folded, free. T7 step 6 also checks the escaped spellings of both closed routes. |
+| ver 20 | Folded, free. T9's `decisions.md` entry and the PR's `## Decisions` record the three end-to-end departures. |
+| ver 21 | Folded. T3 quotes `DESIGN.md:31` as written and rests the choice on the measured ratios. |
+
+### The two-phase schedule
+
+The plan now carries `conductor-servers`' conditions:
+
+- Phase A is T1 to T6 and T9 and makes no live write. T1's store goes into the workstation age store, not a server. T4's schema read and the uid read are read-only ssh. T6's deploy moves to T7 step 12.
+- Phase B is T7, T8, and T10. It starts only on the "applies done" message, opens with the merge of `origin/main` and the six shared files (inside T7, 25 minutes), and then runs the live steps.
+- The Entry is rewritten for both phases. Standing answers cover a signal that is late or never comes (wait, or hand over with a STATUS line, and never self-start), a merge conflict outside the shared files, and a stop after the first live write.
+- T9 moves to phase A, alone, because its pair, T8, is live. Its files are among the shared ones, and phase B's merge resolves them.
+
+Path: phase A is 50 + 120 + 50 + 70 = 290, and phase B is 125 + 60 + 50 = 235, for 525 minutes, under 600. The wait between the phases is not counted.
