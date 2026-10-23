@@ -2,9 +2,9 @@
 
 Target: `plans/2026-10-22-survey-pass-3-plan.md`, reviewed at initiatives `cdc5d99`, reviews at `02bbd1c`. Folded in place, uncommitted. Reviews: `research/2026-10-22-survey-pass-3-review-contract.md` (C), `-review-integrity.md` (I), `-review-mechanics.md` (M).
 
-Path after the fold: 35 + 10 + 55 + 30 = 130 minutes, under the 150 stop. The design's 100 grows by the vendor fetch (already counted at 110), the separate launcher script and its systemd test (+10 on task 3), the release and correction acceptance checks (+5 on task 1), and the close's `gitleaks git` scan (+5 on task 4).
+Path after the fold and the verification: 40 + 10 + 55 + 30 = 135 minutes, under the 150 stop. The design's 100 grows by the vendor fetch (already counted at 110), the separate launcher script and its systemd test (+10 on task 3), the release and correction acceptance checks (+5 on task 1), the close's `gitleaks git` scan (+5 on task 4), and the release section's clone and worktree steps from the verification (+5 on task 1).
 
-Counts: 42 folded (convergent findings counted under each review, fixed once at the root), 4 refused, 2 owner forks, 16 `optional` findings dropped.
+Counts (reviews): 44 folded (convergent findings counted under each review, fixed once at the root), 2 refused, 2 owner forks (both ruled by Geoff, 2026-10-22), 16 `optional` findings dropped. C-M4 and I-10 moved from refused to folded after the verification's B1. The verification's own 12 findings are under "Verification".
 
 ## Probes run for the fold
 
@@ -28,7 +28,7 @@ Counts: 42 folded (convergent findings counted under each review, fixed once at 
 - **C-M1** (report criteria vacuous): folded in task 3, prompt step 3 (the report's shape) and the end-to-end accept (`grep -c '^## '` prints 13). Its fork was taken as (a), below.
 - **C-M2** (month window): folded, the root of C-M2, I-4, and M-5. The folder and session keep the run month; the corrections read are every file no earlier `report.md` lists, so a failed month never drops one and no date arithmetic is needed.
 - **C-M3** (release section incomplete): folded in task 1's "Releasing a change" and its `grep -c -E` accept.
-- **C-M4** (main checkout): refused. A `--bg` session moves itself into a worktree before editing (probe above), so `-w` adds nothing; its writes to survey-notes and the dotfiles worktree are outside the working directory and stay where written.
+- **C-M4** (main checkout): folded after the verification (V-B1, V-M2). The release runs from a fresh clone and the vendoring from its own dotfiles worktree, both named in "Releasing a change". The `-w` flag itself stays out, for the reason first given here: a `--bg` session moves itself into a worktree before editing (probe above), so `-w` adds nothing; its writes to survey-notes and the dotfiles worktree are outside the working directory and stay where written.
 - **C-M5** (no correction test): folded as merge-order step 3 and the smoke-test standing answer.
 - **C-M6** (tellgrader can't fail): folded in task 1's accept as a count against the pre-edit baseline, since the files already carry findings (probe above); zero would fail on day one.
 - **C-m1**: folded (`grep -c 'Corrections'` prints 1).
@@ -59,7 +59,7 @@ Counts: 42 folded (convergent findings counted under each review, fixed once at 
 - **I-7** (unpushed and diverged corrections): folded in part. The launcher runs `pull --rebase && push` on survey-notes and prints any refusal, and task 1 says a failed pull or push leaves the commit local and goes on. The `check-drift` ahead-of-origin line was refused as new machinery; the launcher's push on pavilion and the next correction's push on either host carry a stranded commit.
 - **I-8**: folded (prompt step 4 commits and pushes the folder before any proposal work).
 - **I-9**: folded at C-m5.
-- **I-10** (primary checkout): refused, as C-M4; its side note folded as `report.md` naming the Survey commit Vale ran against.
+- **I-10** (primary checkout): folded with C-M4 after the verification; its side note folded as `report.md` naming the Survey commit Vale ran against.
 - **I-11**: folded (vendor fetch step 3 removes the directory; step 5 is `diff -r`); the `fetch_skill` prune goes to "Later".
 - **I-12**: folded as the tag-without-release standing answer.
 - **I-13**: dropped, `optional`.
@@ -96,11 +96,37 @@ Counts: 42 folded (convergent findings counted under each review, fixed once at 
 
 ## Rulings
 
-1. **Should a correction file's Context be trimmed to the surrounding sentence, and never hold a secret, a token, mail content, or a third party's personal data?** (I-5.) Recommendation: yes. The files sit in a private GitHub repo, a third-party store outside the "audience: Geoff only" list in `autoMode.environment`, and Before, After, and Reason stay verbatim, which is what the monthly review grades. Yes builds one rule line in task 1's `## Corrections` section and a criterion that greps for it; no keeps the plan as written, Context verbatim. The review's third option, skipping corrections made in private repos, was not recommended: it drops a large share of the corrections the review exists to read. No settings rule is involved.
-2. **Should this pass add an `autoMode` allow line letting the monthly writing session run `scripts/release` in `glw907/survey` after an `approval-queue packet` approve naming the Survey PR?** (M-7.) Recommendation: no. No block is measured: the conductors released v1.0.0 and v1.1.0 under the classifier, the merge after an approve is already cleared by the tracked line from `42420d7`, and the blocked-release standing answer turns a real block into a notified, recorded stop that becomes the evidence. Yes is a new settings rule, so Geoff must ask for it in the planning session; the planner then drafts the line, commits it on `survey-pass-3` beside the push rules, and adds a task 1 sentence naming it. No builds nothing beyond the standing answer already folded.
+1. **Should a correction file's Context be trimmed to the surrounding sentence, and never hold a secret, a token, mail content, or a third party's personal data?** (I-5.) **Ruled yes (Geoff, 2026-10-22).** Before, After, and Reason stay verbatim, which is what the monthly review grades; the files sit in a private GitHub repo, a third-party store outside the "audience: Geoff only" list in `autoMode.environment`. Built: one rule line in task 1's `## Corrections` section and a `grep -c 'surrounding sentence'` criterion. The review's third option, skipping corrections made in private repos, was not offered: it drops a large share of the corrections the review exists to read. No settings rule is involved.
+2. **Should this pass add an `autoMode` allow line letting the monthly writing session run `scripts/release` in `glw907/survey` after an `approval-queue packet` approve naming the Survey PR?** (M-7.) **Ruled no (Geoff, 2026-10-22).** The release path had two obstacles, and the verification (V-M3) noted the ruling was first framed on one. Worktree isolation, the one the session would certainly hit, is fixed without a rule: the release runs from a fresh clone (V-B1). The classifier's public-surface consent has no measured block, and the widened standing answer turns a real block, from either cause, into a notified, recorded stop that becomes the evidence. Built: nothing beyond that standing answer.
 
 ## Forks taken
 
 - **C-M1's coverage fork: (a).** The comparison and corrections legs stay unexercised until 2026-11-01, with the report's shape asserted now. A fixture session (b) or a fixture-only run (c) is scope beyond the approved 100-minute design, and the legs are prompt text the November report shows.
 - **C-m5's coupling fork: (a), run the writing review regardless.** The two reviews share only the timer, and the integrity and mechanics reviews flagged the same defect as correctness.
 - **`claude-tooling-sync apply` rewriting the live `autoMode`.** It is the adapter's documented close step, and the only differing line is older than the tracked text Geoff committed in `42420d7`, so it isn't a new settings rule.
+
+## Verification
+
+Read: `research/2026-10-22-survey-pass-3-fold-verification.md` (1 blocker, 3 major, 8 minor: 5 correctness, 3 optional). Probes for this round:
+
+- **A fresh clone satisfies `scripts/release`.** `gh repo clone glw907/survey` into the scratchpad gave branch `main`, an empty `git status --porcelain`, and `HEAD` equal to `origin/main` after a fetch, the checks at `scripts/release:10-13`. `npm ci` and `scripts/gate` then ran (`gate: ok`), and the tree stayed clean (`node_modules` is ignored). The probe stopped before tagging. The clone was removed afterwards.
+- **Isolation doesn't reach the clone.** The worktrees doc, "How Claude Code enforces isolation": "The checks apply to the repository you launched Claude Code from. They also cover the main checkout a linked worktree is linked from." A fresh clone in a temporary directory is neither, and its path is verifiably outside the main checkout. `~/.dotfiles` is a different repository, so `git -C ~/.dotfiles worktree add` is outside the checks too.
+- **A Monitor can't hold a packet wait.** The Monitor tool: "Every monitor expires after `timeout_ms` (default 5 minutes, at most 30 minutes): it is killed." A days-long `approval-queue packet` under a Monitor would be killed at expiry. The Pass 2 conductor's transcript shows its packet sent at 01:25 UTC and the release at 01:26, so it gives no evidence that a long background-Bash wait survives the idle stop either.
+
+Dispositions:
+
+- **V-B1** (isolation blocks the release from the main checkout): folded. "Releasing a change" and merge-order step 1 release from a fresh clone (`R=$(mktemp -d); gh repo clone glw907/survey "$R/survey"`, then `npm ci` and `scripts/release` there), and the `## Before merge` diff runs in `$R/survey`. The blocked-release standing answer now covers worktree isolation as well as the classifier. Chosen over `ExitWorktree` because it is probed, needs no claim about a background session's worktree state after exit, and leaves the main checkout untouched; the conductor still pulls `~/Projects/survey` after the release.
+- **V-M1** (no PATH in the launcher): folded. The script exports `model-review-notify:10`'s PATH first; task 3's accept greps for it.
+- **V-M2** (no dotfiles worktree for the monthly vendoring PR): folded. "Releasing a change" opens the workstation step with `git -C /var/home/glw907/.dotfiles fetch -q origin && git -C /var/home/glw907/.dotfiles worktree add .claude/worktrees/survey-<version> -b survey-<version> origin/main` and removes the worktree after the merge.
+- **V-M3** (Ruling 2's premise): folded. Geoff has ruled no; Ruling 2 now names both obstacles, and the standing answer stays as the fallback.
+- **V-m1** (prompt pushes not written out): folded in prompt steps 4 and 6.
+- **V-m2** (`add <file>` against `corrections/<file>`): folded (`add corrections/<file>`).
+- **V-m3** (heading count): folded. The report opens with a `# ` title and a plain `Survey commit:` line, and only the 13 sections use `## `.
+- **V-m4** (idle stop during the packet wait): folded in part. The Monitor fix was refused: a monitor is killed at its expiry, which would end the wait it was meant to protect (probe above). The death standing answer now names the idle stop, and the workstation PR's `## Decisions` records it as untested until the first month with a proposal. Next month's step 1 still surfaces the open PRs.
+- **V-m5**: dropped, `optional`.
+- **V-m6** (audit failure and the review): folded. An audit failure skips the review, a review failure doesn't stop anything else, and the writing block runs in both cases.
+- **V-m7**: dropped, `optional`.
+- **V-m8**: dropped, `optional`.
+
+Path: task 1 goes from 35 to 40 for the longer release section, so the path is 135.
+
