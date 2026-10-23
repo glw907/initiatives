@@ -36,6 +36,8 @@ Geoff approved the preview packet for servers#17 at head `1520963` with each rec
 
 End state (Geoff, 2026-10-23, after the preview approval): the effort leaves only the new folder structure. When phase B and the prune finish, the mailbox holds the Stalwart role folders, the Inbox, Archive, and the folders the script files to, and nothing else. Every other user folder counts as legacy for the re-sort, whether or not `legacy-folders.txt` names it. A message the re-sort would leave in such a folder (an `error` or Junk verdict, or a verdict that never moves mail) goes to Archive, except that Junk verdicts go to Junk Mail. Flagged mail in the Inbox still stays. This changes the move plan, so the executor re-runs the preview, diffs it against the approved plan, and the conductor sends Geoff the re-preview before "go phase B". After the prune, `folders geoff` must list only the end-state folders; any other folder is a finding the pass explains and fixes before close.
 
+Geoff approved the end-state re-preview on 2026-10-23 at head `bc1b2e3`: 9,974 of 30,582 messages move, 0 retargeted and 0 dropped against the approved plan, and eleven leftover folders empty with nothing left behind.
+
 ## Entry
 
 Phase A, at launch:
