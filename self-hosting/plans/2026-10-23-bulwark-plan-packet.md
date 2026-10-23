@@ -16,7 +16,7 @@ Whether the theme survives Bulwark's own settings screen on a member's first sig
 
 ## Ask: Keep the orpheus allowlist on ward?
 Rule: owner-call
-Part: glw907/initiatives:self-hosting/plans/2026-10-23-bulwark-plan.md
+Part: glw907/initiatives#115
 Recommended: 1
 Reason: Without it, wrong passwords from anyone can ban orpheus for a day and take webmail from both of you; the mailbox passwords are generated, so the guessing it allows is impractical.
 Summary: Bulwark checks every password from orpheus, so Stalwart's auto-ban would count every webmail typo against orpheus. Allowlisting orpheus prevents that, but lifts Stalwart's sign-in limits for everything on orpheus.
@@ -34,7 +34,7 @@ Choices:
 
 ## Ask: Accept the ban risk the CORS switch opens?
 Rule: owner-call
-Part: glw907/initiatives:self-hosting/plans/2026-10-23-bulwark-plan.md
+Part: none
 Recommended: 1
 Reason: It takes a page aimed at this household and costs a day it can recover with the unban step on the emergency screens; a shorter ban weakens it for attackers too.
 Summary: Bulwark's browser calls Stalwart directly, which needs Stalwart's one CORS switch. With it on, any web page a household member opens could send wrong passwords from their browser and get their home address banned for a day.
@@ -42,17 +42,16 @@ Summary: Bulwark's browser calls Stalwart directly, which needs Stalwart's one C
 Background: CORS is the browser rule that decides which sites may call a server. Stalwart can only allow every site or none. Another site still can't read mail without a password it already has.
 
 Facts: The switch sends a wildcard origin with no credentials, and ward sends no CORS header today.
-- The headers (`crates/common/src/config/network.rs:404-427`), probed 2026-10-23
+- The switch's headers, and ward's preflight probed 2026-10-23 (`crates/common/src/config/network.rs:404-427`)
 - The ban length is 24 hours (`roles/stalwart/plan.ndjson:6`)
 
 Choices:
-- Accept it: record the risk, and name the cause in the runbook's unban step [approve]
-- Shorten bans to one hour: the same risk costs an hour, and every attacker's ban is an hour too [approve]
+- Accept it: record the risk, and name the cause in the runbook's unban step
+- Shorten bans to one hour: the same risk costs an hour, and every attacker's ban is an hour too
 
 ## Routine
 | Part | Verdict | Fact | Why |
 |---|---|---|---|
-| glw907/initiatives#115 | approve | It files the plan, three reviews, the fold, the verification read, both prompts, and this packet, and adds Bulwark to C6's watch list. | It changes no behavior. |
 | step:1 | session | Each ruling's other answer is written out in the plan. | The plan builds whichever you pick. |
 | step:2 | session | The conductor agreed to the phase split and its conditions. | Phase A makes no live write. |
 | step:3 | you | The pass is `auth-data` and `live-account`. | Nothing merges unread. |
