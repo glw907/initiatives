@@ -30,6 +30,10 @@ A yes-or-no question for the plan's packet. The tasks build the recommended answ
 
 1. **In a re-sort, move unread automated mail out of the Inbox like the rest, holding back only flagged mail?** Recommended: yes. The Inbox holds 623 messages, and Geoff may keep some there as a to-do. A flag is the explicit mark of that; unread state is not, since most automated mail in the Inbox was never opened. The packet lists every message leaving the Inbox by sender and subject, so a misread one is caught before anything moves, and it gives the unread and flagged counts of the automated mail that would leave, so Geoff may revise this answer at the preview sitting. Yes builds T4's mapping rule that leaves any `$flagged` Inbox message where it is, and moves unread automated mail by its verdict. No adds one condition to that rule: an Inbox message without `$seen` also stays, and the packet counts the unread messages held back.
 
+## Preview rulings (Geoff, 2026-10-23)
+
+Geoff approved the preview packet for servers#17 at head `1520963` with each recommended answer. The account-security rule ships, filing to INBOX rather than the Notifications/Tech fallback. Ruling 1 stands as yes: unread automated mail leaves the Inbox and flagged mail stays. Remind mail moves to Deleted Items. Phase B starts at the conductor's "go phase B", once ward is free.
+
 ## Entry
 
 Phase A, at launch:
