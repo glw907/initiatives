@@ -34,6 +34,8 @@ A yes-or-no question for the plan's packet. The tasks build the recommended answ
 
 Geoff approved the preview packet for servers#17 at head `1520963` with each recommended answer. The account-security rule ships, filing to INBOX rather than the Notifications/Tech fallback. Ruling 1 stands as yes: unread automated mail leaves the Inbox and flagged mail stays. Remind mail moves to Deleted Items. Phase B starts at the conductor's "go phase B", once ward is free.
 
+End state (Geoff, 2026-10-23, after the preview approval): the effort leaves only the new folder structure. When phase B and the prune finish, the mailbox holds the Stalwart role folders, the Inbox, Archive, and the folders the script files to, and nothing else. Every other user folder counts as legacy for the re-sort, whether or not `legacy-folders.txt` names it. A message the re-sort would leave in such a folder (an `error` or Junk verdict, or a verdict that never moves mail) goes to Archive, except that Junk verdicts go to Junk Mail. Flagged mail in the Inbox still stays. This changes the move plan, so the executor re-runs the preview, diffs it against the approved plan, and the conductor sends Geoff the re-preview before "go phase B". After the prune, `folders geoff` must list only the end-state folders; any other folder is a finding the pass explains and fixes before close.
+
 ## Entry
 
 Phase A, at launch:
