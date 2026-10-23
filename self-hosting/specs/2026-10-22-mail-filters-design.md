@@ -1,6 +1,8 @@
 # Mail filters and folder reorganization: design
 
-Status: drafted 2026-10-22 from a brainstorm with Geoff; waits on his approval.
+Status: approved by Geoff in chat, 2026-10-22 ("Continue", then "You have permission to build and implement. This should be something we should be able to iterate on going forward.").
+
+Initiative: self-hosting. Risk class: `auth-data` (it writes to Geoff's live mailbox with his credential). Estimate: 480 path minutes, set from the bulwark plan's 525 for a pass of similar breadth. End-to-end check: a message sent from the probe account to `geoff@907.life` lands in the Inbox, and a crafted list message lands in its `Lists/` folder, both after the script is active.
 
 This is the self-hosting initiative's deferred goal: "Mail filters can be managed through Stalwart's API." Mail moved to ward on 2026-10-22. Fastmail's filters were not migrated, so ward runs no Sieve script, and new mail lands unsorted. This design covers new filters for Geoff's mailbox and a one-time re-filing of the mail already in it.
 
@@ -14,7 +16,7 @@ In scope:
 
 - Geoff's mailbox only, `geoff@907.life` (Geoff, 2026-10-22). The second operator's mailbox is untouched.
 - One user Sieve script on ward, managed through Stalwart's JMAP Sieve interface (RFC 9661) and kept in the servers repo.
-- A one-time re-filing of the mail already in the mailbox, the Inbox and Archive included.
+- A re-sort of the mail already in the mailbox, the Inbox and Archive included, run first now and again after any rule change.
 - Deleting every Remind message (Geoff: "you can just delete all the old Remind messages"). The Anchorage School District replaced Remind with sportsYou, so no rule handles Remind going forward.
 - Deleting folders that end up empty.
 
@@ -23,13 +25,17 @@ Out of scope:
 - The second operator's mailbox, and any server-wide (system) Sieve script.
 - Auto-expiry or retention rules. Deleting old mail is a separate decision.
 - Spam-filter tuning beyond keeping today's junk filing working.
-- Any tool or UI for Geoff to edit filters himself. Claude edits the script on request.
+- Any tool or UI for Geoff to edit filters himself. Claude edits the data files on request.
 
 Anti-goals, which would make this a failure even if it ran:
 
 - Personal mail lost, or filed somewhere Geoff won't see it. A rule that guesses wrong must fail toward the Inbox for the security case, and toward a browsable folder for everything else, never toward deletion.
 - A sign-in code or password reset hidden in a folder while Geoff waits for it.
 - Machinery out of scale with the job. One script and one re-filing tool, with no generator, database, or daemon unless the builder shows it's needed.
+
+## Iterating
+
+Geoff will keep adjusting this (2026-10-22), so every rule is data and every change runs through one loop. The category domain table, the security senders and words, the always-Inbox and never-Inbox lists, and any list-folder renames are plain files in the servers repo. A preview command renders the script, runs it over a header-only copy of the mailbox, and reports what would change. Applying the repo installs the script. A re-sort command, which is the same tool as the first re-filing, moves existing mail to match, writes a manifest, and can be undone. So "move Alaska Air to its own folder" is a one-line data edit, a preview, an apply, and a re-sort.
 
 ## The folder structure
 
@@ -85,7 +91,7 @@ Geoff's contacts are on ward. Hylki and GNOME Contacts have used ward's address 
 
 ## Re-filing existing mail
 
-A one-time run over JMAP applies the same classification to every message already in the mailbox: the Inbox (623), Archive (29,407), and every user folder. Sent Items, Drafts, Deleted Items, and Junk Mail are left as they are. The re-filing must classify with the same rules as the Sieve script, so the two can't drift. Stalwart can't run a script over stored mail, so the re-filing tool runs the real script offline with sieve-rs, the Sieve library Stalwart uses, pinned to the exact version ward runs (0.7.3 on v0.16.27). It reads each message's recipient from its stored `Delivered-To` header. That tool is Rust, outside the workstation's usual tool languages, because no other runtime gives the same interpreter (Claude's call, contestable). Pigeonhole's `sieve-filter`, which does this on Dovecot, sets the pattern: it simulates unless told to run, and a message the script keeps stays where it is. The same offline runner drives the reliability gate.
+A re-sort over JMAP applies the same classification to every message already in the mailbox: the Inbox (623), Archive (29,407), and every user folder. Sent Items, Drafts, Deleted Items, and Junk Mail are left as they are. The re-filing must classify with the same rules as the Sieve script, so the two can't drift. Stalwart can't run a script over stored mail, so the re-filing tool runs the real script offline with sieve-rs, the Sieve library Stalwart uses, pinned to the exact version ward runs (0.7.3 on v0.16.27). It reads each message's recipient from its stored `Delivered-To` header. That tool is Rust, outside the workstation's usual tool languages, because no other runtime gives the same interpreter (Claude's call, contestable). Pigeonhole's `sieve-filter`, which does this on Dovecot, sets the pattern: it simulates unless told to run, and a message the script keeps stays where it is. The same offline runner drives the reliability gate.
 
 Old mail needs one difference from new mail: the re-filing never moves anything into the Inbox, and it never moves mail that looks personal out of Archive (Claude's call). Concretely, for each existing message:
 
