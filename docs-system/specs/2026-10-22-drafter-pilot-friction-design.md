@@ -1,6 +1,6 @@
 # Pilot friction: markdown forms and the authoring fixes
 
-Status: designed by the planning session on 2026-10-22, awaiting Geoff's approval. Initiative:
+Status: approved by Geoff on 2026-10-22, with #42 and #43 deferred to Medium. Initiative:
 `docs-system`. Input: the extend blueprints pilot's friction record
 (`research/2026-10-22-extend-blueprints-pilot-friction.md`) and drafter's `BACKLOG.md` #36 to #47.
 Risk class: `runner`, because the `blueprint` skill's files change. No `live-account` flag.
