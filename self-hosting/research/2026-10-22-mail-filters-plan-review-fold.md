@@ -154,10 +154,13 @@ The design is unedited. These are changes of meaning the revised plan carries, f
 
 - **E1** (design:90, "Every change is ... tested on the `probe` account first, and activated only after a probe delivery succeeds"). The plan keeps probe-first for template and helper changes. A data edit is proven by the sieve leg and the preview over the real corpus, and installs through the same path the timer runs daily; the timer's correspondent refresh has no probe delivery.
 - **E2** (design:99-100, "In any other user folder, it moves to Archive"). Only folders in `legacy-folders.txt` send personal and step-9 mail to Archive; a later re-sort never moves mail out of a script destination for that reason (planning fork 2).
-- **E3** (design silent). The managed script is authoritative and the timer re-installs it over any other edit, and filtering pauses while a vacation reply is on (planning fork 3).
+- **E3** (design silent). The managed script is authoritative and the timer re-installs it over any other edit, and filtering pauses while a vacation reply is on (planning fork 3) Turning a vacation reply off leaves no script active, so mail lands unfiltered in the Inbox until the next 05:15 run or a hand-run `install geoff` (verification 13).
 - **E4** (design:127, "read through `claude-pass`"). The workstation reads `STALWART_PASSWORD_GEOFF` with `secrets_load` (planning fork 6).
 - **E5** (design:123, "it doesn't ship, and security mail falls back"). Geoff picks between the two previews; the fallback is his call, not a rule (planning fork 1).
 - **E6** (design:94-98, every message is re-filed), conditional on ruling 1: flagged Inbox mail stays under either answer, and with a no, unread Inbox mail stays too.
+- **E7** (design:74, the always-Inbox list "adds senders by hand" to the known correspondents, who reach the Inbox only when the message "isn't automated"). An always-Inbox sender reaches the Inbox even with bulk markers, which is what the list's name promises (verification 12).
+- **E8** (design:77, step 8's bulk markers). Step 8 tests the same automated markers as step 5, email-provider stamps included, so a stamped receipt from an unknown domain reaches Other at step 8 and a re-sort moves it, rather than leaving it at step 9 (verification 22).
+- **Moot: deactivating other operators' scripts** (verification 2, design:17). The verification fold names the managed script `mail-filters` and deactivates only that script, so operator2's mailbox and any vacation reply are untouched and no erratum is owed.
 
 ## Not verified
 
@@ -165,3 +168,37 @@ The design is unedited. These are changes of meaning the revised plan carries, f
 - The Trash expiry period on ward; T5 reads it.
 - That ward's JMAP session advertises `maxObjectsInSet`; the default is read from source, and `move` takes the session's value.
 - How Proton Pass rewrites `m.907.life` headers; T5 reads it from the corpus.
+
+## Verification fold
+
+The fold of `2026-10-22-mail-filters-fold-verification.md`: 23 findings, no blockers. Each was checked in source before it was taken.
+
+Probes: `crates/email/src/mailbox/manage.rs:94-110` trims and lowercases each path component; `crates/jmap/src/mailbox/set.rs:589-601` refuses a case-insensitive sibling with `alreadyExists`; sieve-rs `src/runtime/context.rs:122-130` counts one per executed instruction; `crates/email/src/message/delivery.rs:46-48` sets spam at 50; Stalwart `Cargo.lock:4724-4725` pins `mail-parser` 0.11.9; `crates/smtp/src/inbound/data.rs:763-772` adds `Return-Path`; servers `roles/stalwart/stalwart-status:3-5` prints counts without Trash and Junk.
+
+Counts: 22 folded, 0 refused, 1 optional folded because it is free. Path: T2 120 to 125, T3 170 to 180, T7 130 to 135; the planned path is 715 minutes.
+
+| # | Finding | Disposition |
+|---|---|---|
+| 1 | Rerun rows loop on the backup check | Folded: both rows say "rerun T7 steps 4 and 5, then the move"; T7 step 4 counts ids the manifest already moved as done. |
+| 2 | `install.sh` deactivates operator2's scripts | Folded: the managed script is named `mail-filters`, `deactivate` clears only that, and a T3 test covers an unlisted account with `vacation` or another script. Its erratum is moot. |
+| 3 | `render` refuses probe's empty list | Folded: the empty-list refusal is dropped and `render` fails only on a JMAP error, with a T3 test for each case. Data 8's realistic cause, a JMAP hiccup, is still caught; a per-account minimum would be new data that answers no measured defect. |
+| 4 | Cross-host render hash drift | Folded: the helper runs with `LC_ALL=C` and `jq -c`; a T3 test compares two locales; T7 step 3 also compares the workstation's render. |
+| 5 | Exact-path matching vs Stalwart's | Folded: `move` and `undo` match as `fileinto :create` does (Brief fact 3), and a T3 test resolves `Lists/Foo` and `Lists/foo` to one folder. T1 keeps the List-Id's case, since lowercasing every list name reads badly and the matching already merges variants. |
+| 6 | CPU standing answer trims contacts | Folded: the row is split; a CPU error means restructuring the template. Brief fact 7 states the per-instruction count. |
+| 7 | Plan and packet in tmpfs over the wait | Folded as a standing-answer row: re-preview and compare counts with the packet. Moving them to `~/.local/state` was not taken, since planning fork 4 placed the packet under `$XDG_RUNTIME_DIR`. |
+| 8 | Fact 9's key | Folded: the key is `step`. |
+| 9 | `body` grep hits `nobody@` | Folded: the leg matches a `body` test or a `"body"` requirement as a token. |
+| 10 | Unknown correspondent count | Folded: a fixed 4,000-address fixture. |
+| 11 | mail-parser unpinned | Folded: `mail-parser = "=0.11.9"`, cited. |
+| 12 | Always-Inbox overrides automated | Folded as erratum E7; the fixture stays. |
+| 13 | Gap after a vacation ends | Folded: E3 and T6 say so. |
+| 14 | Probe undo can't match "before" | Folded: the probe move targets the notification case's existing folder, and the comparison is by path and count. |
+| 15 | Keyword check vs Geoff reading mail | Folded: `move` records keywords from its per-batch read, and T7 step 7 compares with those. |
+| 16 | Loop lacks the backup; probe-first pauses Geoff | Folded: T6's loop adds the backup and one sentence on the pause. |
+| 17 | Crafted list posts' To | Folded: T2's note and T7 steps 2 and 3 put the list address on To and the recipient on RCPT only. |
+| 18 | Unquoted mechanisms | Folded: T5 records the `Delivered-To` values on migrated mail; the threshold, `spam_status`, and `Return-Path` are cited; T7 step 5 reads `stalwart-status counts`. |
+| 19 | A role failure aborts later roles | Folded: `install.sh` fails only on its own files and starts `mail-filters-refresh.service`, whose failure never fails the apply. |
+| 20 | Ruling 1's premise unquantified | Folded: ruling 1 and T5's packet carry the unread and flagged counts of the automated mail leaving the Inbox. |
+| 21 | `undo` ignores the band | Folded: `undo` joins the refusing verbs and the band row. |
+| 22 | Step 8 narrower than step 5 | Folded: step 8 uses step 5's markers, a T2 fixture covers a stamped receipt, and erratum E8 records it. |
+| 23 | Layout gaps (optional) | Folded, free: `roles/mail-filters/accounts` is named; only the run is network-less. |

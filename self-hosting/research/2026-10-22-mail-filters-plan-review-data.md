@@ -143,7 +143,7 @@ Verdict: not ready to approve as written. Two blockers: the undo stops working o
 
 - Severity: minor. Tag: correctness.
 - Location: plan:92, plan:93, plan:123; `roles/mail-backup/server-restore:163`; runbook:100.
-- Defect: T7 step 4 records a snapshot id and time. The backup's own `manifest.json` already carries Geoff's message count, and the plan doesn't compare it. The standing answer says "a snapshot newer than the preview", but step 5 runs a fresh preview after the backup, so read literally the executor should stop. A restore also replaces the whole store, Oliver's mail and all post-snapshot mail included, so it isn't the rollback for a bad re-sort. The manifest undo is.
+- Defect: T7 step 4 records a snapshot id and time. The backup's own `manifest.json` already carries Geoff's message count, and the plan doesn't compare it. The standing answer says "a snapshot newer than the preview", but step 5 runs a fresh preview after the backup, so read literally the executor should stop. A restore also replaces the whole store, operator2's mail and all post-snapshot mail included, so it isn't the rollback for a bad re-sort. The manifest undo is.
 - Fold: step 4 compares the snapshot manifest's `counts["geoff@907.life"]` with the live count (within 10, as `server-restore` does). Reword plan:123 as "a snapshot taken after the approved preview and before the first move". The T6 runbook says undo is the rollback and a restore is for disaster only.
 
 ### 16. The parity of the role-address and envelope tests is never checked live
