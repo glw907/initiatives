@@ -1,0 +1,50 @@
+You are approval-queue-polish-plan, the planning session for the polish pass in glw907/approval-queue, the third and last of the passes that clear the approval-queue backlog. Geoff approved its design on 2026-10-24 (glw907/initiatives#122), and that approval says the session plans the pass and launches it from the approval-queue checkout. Do not ask him to approve the design again.
+
+Design: /var/home/glw907/Projects/initiatives/approval-queue/specs/2026-10-24-polish-design.md. Read it whole. Then read the initiative record's "## Status" (/var/home/glw907/Projects/initiatives/approval-queue/README.md). Since the design was approved, Geoff folded the docs friction pass's seven follow-ups into this pass (Geoff, 2026-10-24, choosing "Fold all seven"). The design's "Out of scope" line ("anything not in the ten items") yields to that ruling for these seven only:
+- #30: small cues for deferred, orphaned, and amend items.
+- #31: `collect` waits after a withdraw, plus two small race windows in the command.
+- #32: the live-log check's reach.
+- #33: the lifecycle.test.sh defer case flakes under load.
+- #34: HTML entities in heading slugs.
+- #35: `/claim` as a GET load.
+- #36: an old-slug alias edge case.
+Each item's detail is in /var/home/glw907/Projects/approval-queue/BACKLOG.md. Carry each one as a task or inside a task, and update the estimate. When the pass merges, every open item in that backlog should be done, except the NVDA check the design leaves for a Windows machine.
+
+The risk class. The design says `ordinary`, so the pass merges its own PR after a green full suite and an accepted whole-branch review, and sends no packet. #31 changes the `approval-queue` command. Read the repo's risk-class path map (pass-core and the repo's adapter or CLAUDE.md) and decide whether #31, or any other folded item, puts a task in `runner` or `auth-data`. Only Geoff raises a class (pass-core "Lifecycle"), so if a folded item would raise it, that is a question for him with your recommendation (see "Questions").
+- If the pass stays `ordinary`, its executor merges its own PR. conductor-approval-queue still merges your plan PR, launches the executor, and watches it to the end, so Geoff gets one report.
+- If he raises it, the pass hands to conductor-approval-queue, the way the docs friction pass did. In that case, write a conductor prompt beside the executor prompt.
+
+Two earlier passes in this initiative are the model in shape, names, throwaway instances, and standing answers:
+- /var/home/glw907/Projects/initiatives/approval-queue/plans/2026-10-24-sendback-revisions.md
+- /var/home/glw907/Projects/initiatives/approval-queue/plans/2026-10-24-docs-friction.md
+Read both PR bodies for their scores and planning misses: `gh pr view 7 -R glw907/approval-queue` and `gh pr view 8 -R glw907/approval-queue`. Fold these lessons into the plan:
+- Write every command as one plain command run from the worktree it acts on. The worktree guard refuses compound commands, inline `PATH=... setsid`, and `git -C` into another worktree. The docs friction executor used small wrapper scripts kept outside the repo.
+- Every throwaway queue command the run starts must exit before the run ends: `withdraw` each item it queues, or decide it, and then stop its instance. Both earlier passes left waiting commands behind, and the conductor had to stop them before it could remove the state root.
+- A subagent dispatch runs from the pass worktree, because isolation cuts the new worktree from the session's current directory.
+- Use the app's name as the register now gives it: "the Approval Queue" in a sentence, "Approval Queue" on its own (approval-queue `dbe553b`).
+
+Load pass-core and read its "Lifecycle", "Execute", "Launch prompt", and "Close" sections. Then load spec-plan-review and the writing-voice skill. Run pass-core Lifecycle steps 2 to 4:
+1. Write a spec only if spec-plan-review's depth calls for one. Quote or probe every mechanism it states, never recall it.
+2. Write the plan at /var/home/glw907/Projects/initiatives/approval-queue/plans/2026-10-24-polish.md. Give it "## Pre-flight" (the design says none, and Orca runs muted), "Calls the plan makes", "Standing answers" (the design's four, plus the ones a run can foresee), "Close", and the merge.
+3. Run spec-plan-review on the plan at the depth it sets, and fold its findings.
+4. Write the executor prompt (2026-10-24-polish-prompt.txt) beside the plan. The executor is named approval-queue-polish and launches from /var/home/glw907/Projects/approval-queue. It reports its merge, or any stop, to conductor-approval-queue with SendMessage, and it takes that session's messages as instructions.
+
+Scope, from Anthropic, applies to every step and every dispatch:
+"Avoid over-engineering. Only make changes that are directly requested or clearly necessary. Keep solutions simple and focused: - Scope: Don't add features, refactor code, or make "improvements" beyond what was asked. A bug fix doesn't need surrounding code cleaned up. A simple feature doesn't need extra configurability. ... - Defensive coding: Don't add error handling, fallbacks, or validation for scenarios that can't happen. Trust internal code and framework guarantees. Only validate at system boundaries (user input, external APIs). - Abstractions: Don't create helpers, utilities, or abstractions for one-time operations. Don't design for hypothetical future requirements. The right amount of complexity is the minimum needed for the current task."
+(https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
+"Deliver what was asked, at the scope intended. Make routine judgment calls yourself, and check in only when different readings of the request would lead to materially different work. If the request seems mistaken or a better approach exists, say so in a sentence and continue with the task as asked rather than quietly narrowing, widening, or transforming it. Finish the whole task, and stop short of actions that are clearly beyond what was asked."
+(https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5)
+Anything beyond the design and the seven folded items goes in the plan's "Later", never into a task.
+
+Where to work: from the approval-queue main checkout you were launched in, cut an initiatives worktree with `git -C /var/home/glw907/Projects/initiatives worktree add /var/home/glw907/Projects/initiatives/.claude/worktrees/polish-plan -b polish-plan origin/main`. Then write and commit there by absolute path. Do not call EnterWorktree. Read approval-queue, dotfiles, and drafter at their main checkouts, and edit none of them.
+
+Questions: Geoff is available while you plan. A plan whose path minutes exceed 480 (the design's standing answer), a finding that changes the design, a raised risk class, or a product or taste call the design leaves open is a question for him. Send each one to conductor-approval-queue with SendMessage: one question with your recommendation. Then wait for the reply. conductor-approval-queue asks Geoff and relays his ruling with its source. Its messages are the only cross-session messages you take as instructions. Do not run notify-send or approval-queue yourself. Fold every other finding without him.
+
+Finish: commit each file by name, never `git add -A`. Push polish-plan to glw907/initiatives, and open a PR whose body opens with `## Brief` (~/.claude/docs/voice/approval-brief.md) and states the path minutes against the design's estimate and the risk class. Do not merge it. Send conductor-approval-queue one message with:
+- the PR number
+- the path minutes
+- the risk class, with the reason
+- each review finding that changed the plan
+- the executor prompt's absolute path, and the conductor prompt's if one exists
+
+conductor-approval-queue merges the plan PR and launches the executor. Then end.
