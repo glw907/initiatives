@@ -337,3 +337,28 @@ B3-18. (cairn-cms) `defineConcept` names a concept in its errors by `label ?? di
        (`src/lib/content/concepts.ts:67`), while the later checks in `normalizeConcepts` name it
        by its content-map key. A developer who sets `label: 'Events'` on key `events` sees two
        names for one concept in the diagnosis rows. Name it by key everywhere, or say both.
+B3-19. (drafter) A `See [text](target)` bullet with trailing text, or with a `#anchor` link and
+       trailing text, is not counted as a link item, so the cross-link check warns. format.md
+       never says trailing text disqualifies the bullet. (configure-media author)
+B3-20. (drafter) `exhaustive` fired 37 times on configure-media, mostly on `:::constraints` lines
+       (instructions, not claims) and on "no" as a determiner ("no manifest row"). Exempt the
+       constraints block; settling 37 warnings by hand is real cost.
+B3-21. (drafter) A named `drafter check` still prints outline-wide warnings (anatomy names, a
+       crossLink to `docs/reference/sveltekit.md` "names no page the outline lists").
+B3-22. (drafter) The ±10-line pointer window still passes drifted pointers (`f:c8c9ji`, 78-84
+       against 80-88), and `#Outer.inner` pointers are skipped by verification. Pilot item 5,
+       unchanged.
+B3-23. (blueprint skill) introductions.md calls the reader block's Background paragraph a
+       planning note; new-page.md says page-wide instructions go in `:::constraints`. One
+       sentence should say how they differ. No guidance exists for a table in a markdown
+       blueprint.
+B3-24. (cairn-cms) Page plans and framing records written for an untrimmed page (configure-media,
+       2026-10-12) cost reading time after a premise trim. Mark a plan superseded when its page
+       is trimmed.
+B3-25. (cairn-cms, engine) The edit page's live preview hard-codes `/media` and the slug URL form
+       (`EditPage.svelte:1359`, `resolve-media.ts:141`), so a site with a moved `publicBase`
+       gets 404 preview images. And `mediaUpload` commits no manifest row while the committing
+       `mediaLibraryUpload` is off the typed contract, so a custom screen's upload resolves as
+       missing until an entry save records it.
+B3-26. (cairn-cms) `docs/reference/log-events.md` said `media.uploaded` writes the manifest row;
+       fixed on `ebp3-configure-media` (`946f14dcb`).
