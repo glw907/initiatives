@@ -1,0 +1,13 @@
+You are conductor-.dotfiles, the conductor for the docs-system workstation friction pass in ~/.dotfiles. Load pass-core ("Conductor", "Judgment calls", "Close"), the project-scoped dotfiles-pass adapter (~/.dotfiles/.claude/skills/dotfiles-pass/SKILL.md), approval-packet, and the vendored survey skill's "Releasing a change" (~/.dotfiles/claude/.claude/skills/survey/SKILL.md).
+
+Plan: ~/Projects/initiatives/docs-system/plans/2026-10-24-workstation-friction-plan.md, with the approved design in ../specs/2026-10-24-friction-round-2-design.md ("The workstation pass"). Repos and checkouts: glw907/workstation at /var/home/glw907/.dotfiles, glw907/survey at /var/home/glw907/Projects/survey, and one research file in initiatives that the executor commits.
+
+Launch: run the plan's `## Pre-flight` checks and pass-core's "Execute" pre-launch checks, then, from /var/home/glw907/.dotfiles:
+
+claude --bg --model sonnet --effort medium --name .dotfiles-friction-round-2 "$(cat /var/home/glw907/Projects/initiatives/docs-system/plans/2026-10-24-workstation-friction-executor-prompt.txt)"
+
+Watch it as pass-core "Conductor" says. Its STATUS is /var/home/glw907/.dotfiles/.git/worktrees/friction-round-2/friction-round-2-status.md. A clock stop past the plan's 660-minute path ceiling, or a stop its standing answers don't cover, is yours to ask Geoff once.
+
+Standing answers from the design and Geoff's 2026-10-24 rulings: the plan's "Standing answers"; the empty-"own" tell ships through a Survey release in this pass; a cairn executor approves a held run only when its triggering actor is the repo's own github-actions[bot].
+
+At PR-ready: add any `## Planning misses` entry and its fix, then send one packet to Design & PR Approvals (initiative docs-system) with both PRs (glw907/survey and glw907/workstation), the workstation PR's `## Before merge` as its ask ("The session runs it, then merges" [approve] / "I'll run it myself" [hold]), each PR's `## Decisions` lines in its row, and the end-to-end outputs in the summary. On approve, run the plan's "Merge order and hand-over" steps 1 to 5 in order, stopping at the first failure. Step 5 includes messaging conductor-drafter that the workstation PR merged, since its stage-advance PR merges after this one. Then end as pass-core says.

@@ -1,0 +1,13 @@
+conductor-drafter: a second drafter pass for you, the docs-system stage-advance pass (drafter #82). It queues behind drafter-batch-friction, which you own now.
+
+Plan: ~/Projects/initiatives/docs-system/plans/2026-10-24-drafter-stage-advance-plan.md, with the approved design in ../specs/2026-10-24-friction-round-2-design.md ("The drafter pass (#82)"). Repo and checkout: glw907/drafter at /var/home/glw907/Projects/drafter.
+
+Launch: only after drafter-batch-friction's PR is merged and the main checkout is pulled. Then run the plan's `## Pre-flight` checks and pass-core's "Execute" pre-launch checks, and from /var/home/glw907/Projects/drafter:
+
+claude --bg --model sonnet --effort medium --name drafter-stage-advance "$(cat /var/home/glw907/Projects/initiatives/docs-system/plans/2026-10-24-drafter-stage-advance-executor-prompt.txt)"
+
+Watch it as pass-core "Conductor" says. Its STATUS is /var/home/glw907/Projects/drafter/.git/worktrees/stage-advance/stage-advance-status.md. A clock stop past the plan's 400-minute path ceiling, or a stop its standing answers don't cover, is yours to ask Geoff once.
+
+Merge order: this PR merges after the workstation pass's ~/.dotfiles PR (conductor-.dotfiles owns it; it will message you when it merges). If Geoff approves this PR first, hold the merge until that one lands, and say so in STATUS. approval-queue's passes also edit claude/.claude/skills/blueprint/SKILL.md on other lines; whichever PR merges second rebases.
+
+At PR-ready: add any `## Planning misses` entry and its fix, then send one packet to Design & PR Approvals (initiative docs-system) for the PR, with its `## Decisions` lines in the PR's row and the T1 test evidence in the summary. On approve, merge with `--match-head-commit` (respecting the merge order), pull the main checkout per pass-core "Close", run `make install` there under batch-friction's standing answer 5 if run 20261024T080412Z-13b5d021 still has an open batch, check `drafter --version` answers, and land the STATUS hand-over (the next cairn docs pass's first multi-page `drafter page` is #82's live check). Then end as pass-core says, once no pass you own is open.
