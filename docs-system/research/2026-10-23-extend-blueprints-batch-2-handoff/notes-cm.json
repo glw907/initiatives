@@ -1,26 +1,51 @@
 [
- {"id":"N0","kind":"info","anchor":"configure-media.heading","title":"Why this page, and what the premise check trimmed","body":[
-  "A scaffolded site already turns media on: it binds the bucket, declares the adapter's `media` block, builds the public resolver, and mounts the media route. The reference pages list each piece. A walkthrough that turns media on would repeat both.",
-  "The page now covers what a developer changes on a site that has media: the upload limits, the image URLs, responsive images, failing the build on a missing asset, which references the Library counts, and uploading from a custom admin screen. A hand-built site gets the three pieces named in Before you begin, each with its reference link. The outline entry's job and covers were rewritten to match."]},
- {"id":"N1","kind":"question","anchor":"change-the-image-urls.heading","title":"Document the preview workaround, or fix the engine first?","body":[
-  "The edit page's live preview builds `/media/<slug>.<hash>.<ext>` paths whatever `publicBase` says (`EditPage.svelte:1359`, `resolve-media.ts:141`). On a site that moves `publicBase`, preview images 404 unless the `/media` route stays mounted too.",
-  "The section tells the reader to keep the `/media` route beside the new one. That works, but it documents an engine bug as a step."],
-  "choices":[
-   {"label":"Keep the workaround","done":"The page ships with the extra route step, and the preview bug is filed for a later engine pass."},
-   {"label":"Fix the engine first","done":"The session files the preview fix as an engine pass to land before this page is drafted, and the step comes out then."}]},
- {"id":"N2","kind":"question","anchor":"upload-from-a-custom-admin-screen.heading","title":"Keep the custom-screen upload section as it is?","body":[
-  "The typed `mediaUpload` action stores the bytes and commits no manifest row, so a custom screen's upload resolves as missing until an entry save records it. `mediaLibraryUpload` commits the row itself, but the typed `CairnAdminRoutes` contract leaves it out, so typed code reaches it only through a spread or a cast.",
-  "The section documents both paths as the code stands. A typed committing path in the engine would make the section shorter and safer."],
-  "choices":[
-   {"label":"Keep the section","done":"The section ships as written, and the typed-path gap is filed for a later engine pass."},
-   {"label":"Fix the seam first","done":"The session files an engine pass to add `mediaLibraryUpload` to the typed contract before this page is drafted."}]},
- {"id":"N3","kind":"question","anchor":"set-the-upload-limits.heading","title":"Keep the Cloudflare request-size cap?","body":[
-  "Five lines rest on `f:9awije`: Cloudflare caps a Worker's request body by the account's plan and answers a larger request with a 413 before the Worker runs. The fact cites Cloudflare's Workers limits page. No code in this repo can confirm it, so the fact-check returned all five as unsupported.",
-  "It explains a real failure: raising `maxUploadBytes` past the plan's cap does nothing, and the upload fails with a 413 the engine never sees."],
-  "choices":[
-   {"label":"Keep the cap","done":"The five lines stay, sourced to Cloudflare's limits page."},
-   {"label":"Cut the cap","done":"The lines go, along with the failure row for a 413 the engine never sees."}]},
- {"id":"N4","kind":"info","anchor":"asset-references-the-library-counts.heading","title":"Facts and a reference page corrected while authoring","body":[
-  "`f:fxit31` said the Library counts only a top-level image field. The code counts nested image fields at any depth, so the fact and `extractMediaRefs`'s doc comment were corrected. The resolver claim for an uncounted reference was wrong and now says what the code shows: the resolver never sees it.",
-  "`docs/reference/log-events.md` said `media.uploaded` writes the manifest row. It doesn't, and that row is fixed on this branch under the fix rule."]}
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "configure-media.heading",
+  "title": "Why this page, and what the premise check trimmed",
+  "body": [
+   "A scaffolded site already turns media on: it binds the bucket, declares the adapter's `media` block, builds the public resolver, and mounts the media route. The reference pages list each piece. A walkthrough that turns media on would repeat both.",
+   "The page now covers what a developer changes on a site that has media: the upload limits, the image URLs, responsive images, failing the build on a missing asset, which references the Library counts, and uploading from a custom admin screen. A hand-built site gets the three pieces named in Before you begin, each with its reference link. The outline entry's job and covers were rewritten to match."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "info",
+  "anchor": "change-the-image-urls.heading",
+  "title": "The preview workaround stays, with the engine fix logged",
+  "body": [
+   "Your note on the send-back: document the workaround and log the engine issue, with a docs update in the entry. The section keeps the step that leaves the `/media` route mounted beside the moved one.",
+   "cairn-cms #48 now says that when the preview honors `publicBase`, the same pass removes this step and its failure row from the page and its blueprint."
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "info",
+  "anchor": "upload-from-a-custom-admin-screen.heading",
+  "title": "The custom-screen upload section stays, with the engine fix logged",
+  "body": [
+   "The same ruling applies here. The section documents both paths as the code stands: `mediaUpload`, which commits no manifest row, and `mediaLibraryUpload`, which commits one but is reached through a cast.",
+   "cairn-cms #49 now says that when `mediaLibraryUpload` joins the typed contract, the same pass updates this section and its blueprint."
+  ]
+ },
+ {
+  "id": "N3",
+  "kind": "info",
+  "anchor": "set-the-upload-limits.heading",
+  "title": "The Cloudflare request-size cap stays",
+  "body": [
+   "You chose to keep the cap. The five lines stay, sourced to Cloudflare's Workers limits page (`f:9awije`)."
+  ]
+ },
+ {
+  "id": "N4",
+  "kind": "info",
+  "anchor": "asset-references-the-library-counts.heading",
+  "title": "Facts and a reference page corrected while authoring",
+  "body": [
+   "`f:fxit31` said the Library counts only a top-level image field. The code counts nested image fields at any depth, so the fact and `extractMediaRefs`'s doc comment were corrected. The resolver claim for an uncounted reference was wrong and now says what the code shows: the resolver never sees it.",
+   "`docs/reference/log-events.md` said `media.uploaded` writes the manifest row. It doesn't, and that row is fixed on this branch under the fix rule."
+  ]
+ }
 ]

@@ -1,0 +1,1 @@
+{"decision":"approve","file":"blueprints/docs/extend/configure-rendering.blueprint.md","commit":"d1db67e9bd42c34d09932344f928b7a464f1a66c","blob":"14bd6aae72af764894f76bcd5815cf53b4b96cb7","calls":[{"id":"N1","choice":"Rename to Write a markdown component"},{"id":"N2","choice":"Keep the caution"}],"comments":[],"threads":[]}

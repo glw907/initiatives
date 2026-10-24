@@ -1,0 +1,1 @@
+{"decision":"approve","parts":[{"ref":"glw907/cairn-cms#138","kind":"pr","lane":"routine","verdict":"approve","head":"5f40248012bd49a4447737691670bd7f0a527881"},{"ref":"step:1","kind":"step","lane":"routine","verdict":"session"},{"ref":"step:2","kind":"step","lane":"routine","verdict":"session"}],"asks":[]}
