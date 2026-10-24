@@ -290,3 +290,46 @@ fold recommendation instead of authoring.
 - The sidebar's open items for Geoff (the figure fixture, including the `navFilter` throw in a row,
   and the `ContentRoutesConfig` anchor) and the content model's routing table as bullets: each was
   settled in its notes, and items 49 and 55 carry what remains.
+
+## Batch 3 (overnight 2026-10-24), appended as it runs
+
+B3-1. (drafter) configure-rendering's author hit the bracketed `:source[...]` path bug again (record 23):
+      a SvelteKit route path can't be a source.
+B3-2. (drafter) `exhaustive` warnings are noisy: 27 on configure-rendering, nearly all absence
+      wording ("no `registry`") or `:::constraints` lines, which instruct the drafter rather than
+      claim. Exempt constraints lines, and tell absence phrasing from an exhaustive claim.
+B3-3. (drafter) A named `drafter check` still prints the outline's unrelated `types` warnings.
+B3-4. (drafter) A YAML error in `outline.yaml` reports only "malformed", with no line or column.
+B3-5. (blueprint skill) `introductions.md` links drafter's GitHub `blueprint-format.md`, not the
+      local `format.md`; `format.md` doesn't say whether a `:fact` tag on a `Code:` bullet counts.
+B3-6. (blueprint skill) No recipe for a generated example (a render's HTML output): the author ran
+      `createRenderer` by hand, and a fact-checker has no `:source` to re-verify it from.
+B3-7. (cairn-cms) An `external` fact with no URL (`f:34wt4f`) passes `check:facts` silently.
+B3-8. (cairn-cms) After a page is narrowed, its 782-line plan and 254-line framing record are mostly
+      out of scope; reading them cost more than they returned.
+B3-9. (prompt) Narrowing a page's `covers` leaves neighbors' `outOfScope` lines routing to it
+      (outline.yaml 105, 127, 393); the brief should say whether to reword them.
+B3-10. (session) The premise check folded 1 of 3 candidates (link-content-with-references, backlog
+       #46) and trimmed the other 2. It cost one agent read and saved an authored page.
+B3-11. (cairn-cms CI) The baseline-regen run pushes as `github-actions[bot]`, and every workflow on
+       that head then sits in `action_required`; `ci-green` reports it as red. Approving each run
+       with `gh api -X POST repos/glw907/cairn-cms/actions/runs/<id>/approve` releases them. Have
+       `ci-green` name `action_required` as held, not red, and print the approve command.
+B3-12. (drafter) define-an-adapter's author found six facts whose `path:N-M` pointers had drifted off
+       their lines and still passed `drafter check --fact` (f:aj5c4z, f:sz71ur, f:7ak73t, f:9ro4u5,
+       f:n07oiu, f:hkh101). Pilot item 5 still open; an anchorless line range should warn.
+B3-13. (drafter, cairn-cms) The two fact parsers disagree: a code span inside a `[verified: ...]` note
+       passed `drafter check --fact` but failed `check:facts` as an unresolved path. The grammar
+       should say whether a tag note's code spans count as pointers.
+B3-14. (drafter) A pointer into `node_modules` gives "no excerpt: untracked", so a vendor's thrown
+       string can't be shown to a reader of the fact.
+B3-15. (blueprint skill) `anatomies.md` links `../docs/blueprint-format.md`, which doesn't exist from
+       the skill directory. `format.md` has no table form, and a flat list can't tell a step's
+       explanation bullet from a sub-item.
+B3-16. (cairn-cms) Duplicate facts state one claim (f:pdgkex, f:4mz4tp, f:yef4lo; f:fe46lo and
+       f:97c6g1), and f:q07rd5 is `[verified]` from a docs page against ruling D1. The plan inputs
+       carried the wrong vocabulary storage path (`editor.nav.configPath`) into the outline.
+B3-17. (drafter) `drafter page` sends its seats through the Message Batches API. The sidebar's draft
+       batch, reserved 08:04Z, was still pending an hour later, and the run's state file and log
+       showed nothing in the meantime, so the session read a healthy wait as a stall. Print a
+       "waiting on batch <id> since <time>" line, and offer a non-batch mode for an attended run.
