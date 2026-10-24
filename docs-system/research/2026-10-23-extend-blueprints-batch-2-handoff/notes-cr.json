@@ -1,0 +1,61 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "configure-rendering.heading",
+  "title": "Why this page, and why it narrowed",
+  "body": [
+   "The premise check found one job no other page covers: writing a markdown component, from declaring it to seeing it in the editor's picker and on the public page. A scaffold already ships a working `createRenderer` call, and the reference page lists its options, so the rest of \"configure rendering\" had no reader.",
+   "The page now takes a developer through one `event` component: its attributes, slots, `build` function, picker entry, and registration. The outline's job and covers lines were rewritten to match."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "question",
+  "anchor": "configure-rendering.heading",
+  "title": "Rename the page to match its job?",
+  "body": [
+   "The page teaches one task, writing a markdown component, and keeps the outline's title, Configure rendering. A reader looking for how to add a component may not open a page with that title.",
+   "Renaming changes the page's slug, so the outline entry and every link to it change with it."
+  ],
+  "choices": [
+   {
+    "label": "Rename to Write a markdown component",
+    "done": "The session renames the page, its outline entry, and its slug, and updates the links before drafting."
+   },
+   {
+    "label": "Keep Configure rendering",
+    "done": "The title stays as the outline has it."
+   }
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "question",
+  "anchor": "write-the-build-function.heading",
+  "title": "Keep the DaisyUI class-name caution?",
+  "body": [
+   "One bullet warns that DaisyUI generates CSS for any of its class names (such as `card-body`) it finds in scanned source, so a component's inner classes need names that match none of them (`f:34wt4f`). It is a real trap for a scaffolded site, which ships DaisyUI.",
+   "It is a claim about DaisyUI's behavior, so no code in this repo confirms it, and the fact-check returned it as unsupported."
+  ],
+  "choices": [
+   {
+    "label": "Keep the caution",
+    "done": "The bullet stays, sourced to its fact."
+   },
+   {
+    "label": "Cut the caution",
+    "done": "The bullet goes, and the section says nothing about class names."
+   }
+  ]
+ },
+ {
+  "id": "N3",
+  "kind": "info",
+  "anchor": "component-authoring-grammar.heading",
+  "title": "Heading left as it is",
+  "body": [
+   "The register review suggested renaming this heading to Component markdown, as a soft finding. The session kept it, since the published Configure rendering page already uses this heading and other pages may link its anchor. Tell me in a note if you want the rename."
+  ]
+ }
+]

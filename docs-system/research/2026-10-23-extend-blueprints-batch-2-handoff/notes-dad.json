@@ -1,0 +1,41 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "define-an-adapter-and-schema.heading",
+  "title": "Why this page, and what the premise check trimmed",
+  "body": [
+   "The case for the page: a scaffolded site's adapter already declares posts, pages, and fragments, and adding a fourth concept touches three files (the adapter, the content module, and the Vite config) that no other page walks through together. The reference pages list each option. None of them shows the steps in order.",
+   "The trim kept that one job. The page adds a concept and sets the members a developer reaches for next, including permalink, tags, field checks, and summary fields. It leaves each option's full table to the reference page and links there."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "info",
+  "anchor": "verify-the-declaration.heading",
+  "title": "Verify no longer regenerates the manifest",
+  "body": [
+   "Add a concept's step 5 already regenerates and commits the manifest. Repeating it in Verify would have left a second regeneration that nobody commits, so Verify now runs check, build, the manifest row check, dev, and the two admin checks.",
+   "The row check stays because the build compares the manifest only against the plugin's own globs, so it can't catch a concept left out of the plugin's `content` option."
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "info",
+  "anchor": "resolve-a-failed-check.heading",
+  "title": "Nine failure rows",
+  "body": [
+   "The section has nine Symptom/Cause/Fix rows, more than the anatomy's usual handful. Each is a distinct message or log event this page's steps can produce, sourced to the code that throws or logs it."
+  ]
+ },
+ {
+  "id": "N3",
+  "kind": "info",
+  "anchor": "add-a-concept.heading",
+  "title": "Facts corrected while authoring",
+  "body": [
+   "`f:9ro4u5` said an undeclared summary field \"throws at composition\". It throws from `normalizeConcepts`, which both `composeRuntime` and `createSiteIndexes` call, and the page now names both.",
+   "`f:cg1eo5` now says the editor picks a dated entry's date in the create dialog (`ConceptList.svelte`). The shared `f:fh6kod` (what `npx cairn-manifest` reads) was also corrected, and four new facts were filed for the page."
+  ]
+ }
+]

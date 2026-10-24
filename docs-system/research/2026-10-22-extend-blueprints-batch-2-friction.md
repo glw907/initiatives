@@ -333,3 +333,7 @@ B3-17. (drafter) `drafter page` sends its seats through the Message Batches API.
        batch, reserved 08:04Z, was still pending an hour later, and the run's state file and log
        showed nothing in the meantime, so the session read a healthy wait as a stall. Print a
        "waiting on batch <id> since <time>" line, and offer a non-batch mode for an attended run.
+B3-18. (cairn-cms) `defineConcept` names a concept in its errors by `label ?? dir`
+       (`src/lib/content/concepts.ts:67`), while the later checks in `normalizeConcepts` name it
+       by its content-map key. A developer who sets `label: 'Events'` on key `events` sees two
+       names for one concept in the diagnosis rows. Name it by key everywhere, or say both.
