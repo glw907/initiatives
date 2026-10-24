@@ -84,33 +84,40 @@ The design's outcome, built across three repos:
 
 ### The end-to-end check
 
-The design's six steps, run in CT on a throwaway instance at port 7993 (call 17) with `gh` stubbed
-as `tests/packet.test.sh` stubs it. Every browser step that decides or defers waits for the post to
-land. The client holds a decision for `HOLD_MS = 5000` in `src/lib/held.svelte.ts`, and the hold
-pauses while the pointer or focus sits on the toast. So the script moves the pointer off the toast
-after the click, then polls the item directory for `decision.json` or `deferred.json` once a
-second, for up to 30 seconds.
+The design's six steps, run in CT on a throwaway instance at port 7993 (call 17). Every step
+queues a blueprint, which never calls `gh`, so CT needs no `gh` stub. Each step has its own file
+in a fixture repo, so no step's approve turns a later step's file into an amend review. The
+commands are under "CT commands", written out in full.
 
-1. Queue a blueprint, then `withdraw` it. The queuing command exits 143 within 5 seconds,
-   `withdraw` exits 0, and the item is gone from the board (`curl` of `/` shows no row for it).
-2. Queue a blueprint and defer it on the page. The command prints `{"decision":"defer","id":"<id>"}`
-   and exits 0. Approve it on the board, then run `collect <id>`: the approve prints, and one line
-   with `packet == <id>` lands in `decisions.jsonl`. A second `collect` prints the same line and
-   leaves the log's line count unchanged.
-3. Queue an item, `kill -KILL` its command, and load the board. The item's row shows "No session
-   is waiting for this."
+Every browser step that decides or defers waits for the post to land. The client holds a decision
+for `HOLD_MS = 5000` in `src/lib/held.svelte.ts`, and the hold pauses while the pointer or focus
+sits on the toast. So the script moves the pointer off the toast after the click, then polls the
+item directory for `decision.json` or `deferred.json` once a second, for up to 30 seconds.
+
+1. Queue `withdraw.blueprint.md` in the foreground variant, then `withdraw` its id. The queuing
+   command exits 143 within 5 seconds, `withdraw` exits 0, and the board (`curl` of `/`) shows no
+   row for it.
+2. Queue `defer.blueprint.md` in the foreground variant and defer it on the page. The command
+   prints `{"decision":"defer","id":"<id>"}` and exits 0. Approve it on the board, then run
+   `collect <id>`: the approve prints, and one line with `packet == <id>` lands in
+   `decisions.jsonl`. A second `collect` prints the same line and leaves the log's line count
+   unchanged.
+3. Queue `orphan.blueprint.md`, `kill -KILL` its command (the pid from its id), and load the
+   board. The item's row shows "No session is waiting for this."
 4. Open `/claim` in one browser context and keep it on the board; keep a second context, never
-   claimed, on the board too. Queue an item: the `xdg-open` stub log gains no line. Close the
+   claimed, on the board too. Queue `claim-a.blueprint.md`: `xdg-open.log` gains no line. Close the
    claimed context, wait 10 seconds, and note `tab.seen`'s mtime. Let the unclaimed context poll
-   for 10 more seconds: the mtime holds. Queue another item: the stub log gains one line.
-5. Queue a blueprint whose notes hold a quote anchor on a `:::reader` line and a `<slug>.p<n>`
-   anchor. Split a bullet above the second note, commit, and queue it again (after withdrawing the
-   first). The quote-anchored note's card sits on the same line text as before, read from the
-   page.
-6. Approve a blueprint, change one clause, commit, and queue it again. The page opens as an amend
-   review: the changed line is marked, the approved text of that line shows above it, and the
-   runs more than 3 lines from the change are collapsed. The approve prints `amends: <blob>`, the
-   blob the first approve logged.
+   for 10 more seconds: the mtime holds. Queue `claim-b.blueprint.md`: `xdg-open.log` gains one
+   line.
+5. Queue `anchors.blueprint.md` with `anchors-notes.json`, whose notes hold a quote anchor on a
+   `:::reader` line and a `<slug>.p<n>` anchor below it. Read both cards' line text from the page.
+   Withdraw it, split a bullet above the `p<n>` note, commit, and queue it again. The quote-anchored
+   card sits on the same line text as before, and the `p<n>` card has moved up one line, which
+   shows the split took effect.
+6. Queue `amend.blueprint.md` and approve it on the page. Change one clause, commit, and queue it
+   again. The page opens as an amend review: the changed line is marked, the approved text of
+   that line shows above it, and the runs more than 3 lines from the change are collapsed. Approve
+   it: the printed approve carries `amends`, the blob the first approve logged.
 
 ### Risk class and repos
 
@@ -170,22 +177,34 @@ found goes to "Later" or BACKLOG, never into a task.
 
 None changes the design's outcome or check. The contestable ones go in the PR's `## Decisions`.
 
-1. **The pid (#16).** Every `item.json` the command writes gains `pid: $$`: the packet, change,
-   blueprint and page, and pr, design, and triage writers. The id already ends in the same pid
-   (`id="$(date +%Y%m%dT%H%M%S)-$$"`), but the field is what the server and `withdraw` read. A pid
-   is running only when `/proc/<pid>/cmdline` exists and one of its NUL-separated arguments has
-   the basename `approval-queue`, so a pid the kernel reused after a crash or a reboot never reads
-   as a waiter and never receives `withdraw`'s TERM. An item with no `pid` (queued before the
-   pass) reads as unknown: no board mark, and `withdraw` refuses it (call 2).
+1. **The pid (#16).** Every `item.json` the command writes gains `pid: $$` and `pidStart`, the
+   process's start time in clock ticks since boot (field 22 of `/proc/$$/stat`): the packet,
+   change, blueprint and page, and pr, design, and triage writers. The id already ends in the same
+   pid (`id="$(date +%Y%m%dT%H%M%S)-$$"`), but the fields are what the server and `withdraw` read.
+   A pid is running only when `/proc/<pid>/stat` exists, its field 22 equals `pidStart`, and its
+   state (field 3) is not `Z`. Field 2 is the command name in parentheses and can hold spaces, so
+   both readers split the text after the last `)`; in bash, `read -r s </proc/$$/stat; s=${s##*) };
+   set -- $s; echo ${20}` prints field 22 (the reviewer probed it against `awk '{print $22}'`).
+   - The start time keeps a reused pid from reading as the waiter, even when the new process is
+     another queue command, so `withdraw` never sends TERM to another session's command.
+   - The state test covers a killed command its parent has not reaped yet: a zombie keeps its
+     `stat` and its start time.
+   - An item with no `pid` (queued before the pass) reads as unknown: no board mark, and
+     `withdraw` refuses it (call 2).
 2. **`approval-queue withdraw <id>` (#25).** Dispatched early, beside `approved`. It refuses with
-   exit 2: an id the `id` matcher (`^\d{8}T\d{6}-\d+$`, `src/params.ts`) refuses, an id with no
-   `item.json`, an item with a `decision.json` ("decided; collect it instead"), and an item with no
-   `pid` ("queued before withdraw existed; stop its command"). When the pid is running, it sends
-   TERM: the command's `trap 'exit 143' TERM HUP INT` runs its EXIT trap, which removes `item.json`
-   because no `decision.json` exists. `withdraw` then waits up to 5 seconds for `item.json` to go,
-   polling every 0.1 seconds, and exits 1 naming the item if it stays. When the pid is gone, it
-   removes `item.json` itself. A deferred item has no waiter, so it takes the second path. It
-   prints nothing on stdout and exits 0.
+   exit 2 an id that fails `[[ $id =~ ^[0-9]{8}T[0-9]{6}-[0-9]+$ ]]` (the shell spelling of
+   `src/params.ts`'s matcher, since bash `=~` has no `\d`), an id with no `item.json`, an item with
+   a `decision.json` ("decided; collect it instead"), and an item with no `pid` ("queued before
+   withdraw existed; stop its command"). Then, in order:
+   - A deferred item (`deferred.json` exists) has its `item.json` removed directly, since its
+     waiter may still be printing the defer line and its EXIT trap keeps `item.json`.
+   - When the pid is running, it sends TERM: the command's `trap 'exit 143' TERM HUP INT` runs its
+     EXIT trap, which removes `item.json` because no `decision.json` exists. `withdraw` waits up to
+     5 seconds for `item.json` to go, polling every 0.1 seconds. If it stays because a
+     `decision.json` landed meanwhile, `withdraw` exits 1 with "decided while withdrawing; run
+     collect"; otherwise it exits 1 naming the item.
+   - When the pid is gone, it removes `item.json` itself.
+   It prints nothing on stdout and exits 0.
 3. **Defer (#15).** The item route gains a `defer` action. It refuses a triage (400), a decided
    item (409, `ALREADY_DECIDED`), and an item already deferred (409, "Already deferred"), and
    writes `deferred.json` (`{"at": <ISO 8601 UTC>}`) through a temp file and `rename`, as
@@ -197,25 +216,34 @@ None changes the design's outcome or check. The contestable ones go in the PR's 
    withdrawn or decided. The skill says so (T4). When Geoff later approves or sends back a deferred
    item, the app writes `decision.json` as for any item, and it waits for `collect`. `nextItem` in
    `src/lib/queue.ts` skips deferred items, so a decision never opens one next.
-4. **`approval-queue collect <id>` (#16).** Dispatched early, beside `withdraw`. It refuses with
-   exit 2 an id the matcher refuses and an id with no `item.json`. It reads `item.json` into the
-   variables the decision step reads, sets `id` and `item` to the collected item's, waits for
-   `decision.json` with the same loop the queuing command runs, and runs the same `case "$kind"`
-   that ends the script. The variables are `kind`, `repo`, `file` (and `source` from it),
-   `worktree`, `pr` (with `pr_repo` and `number` parsed from it as the flag parse does), `prhead`
-   (from `prHead`), `number`, `head`, and `initiative`. Its EXIT trap never removes `item.json`, so
-   an interrupted `collect` withdraws nothing. A deferred item's `deferred.json` does not end
-   `collect`'s wait.
-   - Logging once: `append_log` checks, inside its `flock`, whether `decisions.jsonl` already holds
-     a line whose `packet` is this `id`, and appends nothing when it does. Every log line carries
-     `packet: $id` today (`partline`, `single_log`, `doc_decision`, `change_decision`), so the log
-     itself is the marker, and a queuing command and a `collect` racing on one decision log it
-     once. A second `collect` prints the decision again and logs nothing.
+4. **`approval-queue collect <id>` (#16).** The decision functions it runs (`append_log`,
+   `packet_decision`, `single_log`, `doc_decision`, `change_decision`) are defined after the queue
+   `case` and the server and tab block, so `collect` cannot dispatch early as `withdraw` does.
+   - The argument parse takes `collect <id>`, refuses with exit 2 an id that fails call 2's regex
+     and an id with no `item.json`, and sets `kind=collect` for the parse.
+   - It reads `item.json` into the variables the decision step reads and sets `id` and `item` to
+     the collected item's. The variables are `kind` (the item's), `repo`, `file` (and `source`
+     from it), `worktree`, `pr` (with `pr_repo` and `number` parsed from it as the flag parse
+     does), `prhead` (from `prHead`), `number`, `head`, and `initiative`. A change's `item.json`
+     has no `pr`, so for a change `collect` sets `pr="$repo#$number"` and `pr_repo=$repo`, which
+     `head_unmoved` reads.
+   - It skips the queue `case`, the server start, and the tab block, then sets its own EXIT trap,
+     which never removes `item.json`, so an interrupted `collect` withdraws nothing.
+   - It runs the same wait loop and the same final `case "$kind"` the queuing command runs. A
+     deferred item's `deferred.json` does not end `collect`'s wait.
+   - Logging once: `append_log` checks, inside its `flock`, whether `decisions.jsonl` holds a line
+     whose `packet` is this `id` (`jq -R -n -e 'any(inputs | fromjson? | objects; .packet == $id)'`,
+     probed at about 5 ms on the 435-line live log), and appends nothing when it does. An absent
+     `decisions.jsonl` means not logged. Every log line carries `packet: $id` today (`partline`,
+     `single_log`, `doc_decision`, `change_decision`), so the log itself is the marker, and a
+     queuing command and a `collect` racing on one decision log it once. A second `collect` prints
+     the decision again and logs nothing.
    - A blueprint send-back reads `git -C "$worktree" rev-parse HEAD` as today; a worktree removed
      since the queue makes it exit 1, nothing logged, as the queuing command would.
 5. **The board (#16, #15).** `listWaiting` adds two fields to each `ItemMeta` it returns:
    `deferred: boolean` (a `deferred.json` exists) and `orphaned: boolean` (a `pid` is recorded, it
-   is not running by call 1's test, and the item is not deferred). The layout's queue and the
+   is not running by call 1's test, and the item is not deferred). The server reads
+   `/proc/<pid>/stat` by the same rule as the command. The layout's queue and the
    board's rows carry both. The board shows deferred items in a "Deferred" group after "Single
    items", and an orphaned row shows "No session is waiting for this." A deferred row carries no
    orphan line, since a deferred item never has a waiter.
@@ -259,20 +287,26 @@ None changes the design's outcome or check. The contestable ones go in the PR's 
    and slugs each heading with one `GithubSlugger` per document from `github-slugger` 2.0.0, a
    new dependency: a repeat takes `-1`, `-2`, as on the page. It slugs the heading's text with
    its inline Markdown stripped, since rehype-slug reads the rendered text; `marked`, already a
-   dependency, can lex it. The executor settles the seed from source: drafter seeds a blueprint's
-   slugger with the front matter's `page` (`internal/blueprint/markdown.go:321`, `HeadingSlugs`),
-   and a page takes what cairn's `pipeline.ts` does with the title. Probed: `slug("Set a section's
-   starting state")` is `set-a-sections-starting-state`, where today's rule gives
-   `set-a-section-s-starting-state`.
-   - The old spelling stays accepted (the design's standing answer): where the old rule's key for
-     a heading differs from the new one and no key already holds it, `anchors()` maps it to the
-     same range. The README records the rule, the apostrophe example, and the alias.
+   dependency, can lex it. The reviewer's probe shows why: raw Markdown gives `use-foo_bar-_x_` and
+   `a-linkhttpx`. Probed: `slug("Set a section's starting state")` is
+   `set-a-sections-starting-state`, where today's rule gives `set-a-section-s-starting-state`.
+   - The seed: a blueprint's slugger slugs the front matter's `page` first, as drafter's
+     `HeadingSlugs` does (`internal/plan/slug.go:65`, called at
+     `internal/blueprint/markdown.go:321`), so a heading that repeats the title takes `-1` there
+     too. A page's slugger takes no seed, as cairn's `pipeline.ts` runs plain `rehypeSlug`.
+   - The old spelling stays accepted (the design's standing answer): where the old rule's section
+     slug differs from the new one, `anchors()` maps every key derived from the old slug
+     (`<old>.heading`, `<old>.p<n>`, and `<old>.p<n>.<part>`) to the same range as the new key,
+     unless a key already holds that name. The README records the rule, the apostrophe example,
+     and the alias.
    - `approval-queue anchors <file>` runs `node "$app/src/anchors.ts" <file>`, which prints one
      line per heading outside front matter, code, and directive containers:
-     `<slug>.heading<TAB><heading text>`. A file that is not readable exits 1. `check-brief.ts`
-     stays dependency-free ("It imports only `brief.ts` and `packet.ts`, so it runs under plain
-     `node` with no `node_modules`"), so `anchors.ts` is its own entry, and it needs the app's
-     `node_modules`; the README says so.
+     `<slug>.heading<TAB><heading text>`. A file ending in `.blueprint.md` takes the blueprint
+     seed; any other takes the page's. A file that is not readable exits 1. `check-brief.ts` stays
+     dependency-free ("It imports only `brief.ts` and `packet.ts`, so it runs under plain `node`
+     with no `node_modules`"), so `anchors.ts` is its own entry, and it needs the app's
+     `node_modules`; the README says so. R1 adds the dispatch to the command, since it needs both
+     T1's command and T2's entry.
 9. **The amend review (#22).** When `approval-queue blueprint` or `page` queues a file, the command
    reads `decisions.jsonl` for the latest line whose `kind` is the queue's kind, whose `verdict`
    is `approve`, and whose `ref` is `$repo:$source` (lines that don't parse skipped, the file
@@ -292,7 +326,11 @@ None changes the design's outcome or check. The contestable ones go in the PR's 
      "long stretches of unchanged text are collapsed", leaving 3 lines by default
      (`dist/index.d.ts`). The review opens with its caret on the first changed chunk.
    - Notes and comments work as on a full review. A "Next call for you" or card jump into a
-     collapsed stretch opens it first (`uncollapseUnchanged`, exported by the same package).
+     collapsed stretch opens it first with `uncollapseUnchanged`, exported by the same package. Its
+     effect names the collapsed range's exact start (`from != e.value`, merge `dist/index.js:1037`)
+     and the package exports no lookup of that range, so T3 finds the start from the view's
+     decorations (the block replace covering the target) or rebuilds it from `getChunks` with
+     margin 3 and minSize 4.
    - The header labels the item as an amend in the crumb, as "Revision N" is labeled, and the
      description (the author's account of what changed since the approval) sits under the title
      as today.
@@ -336,8 +374,9 @@ None changes the design's outcome or check. The contestable ones go in the PR's 
     none was set to send back. A packet sent back with a note and no part set to send back stays a
     revision with no since diff: the ruling names which parts count as revised, and Geoff's note
     still needs its answer. This reading goes in `## Decisions`.
-16. **#29.** `tests/packet.test.sh` and `tests/blueprint.test.sh` (the same check, line 233) drop
-    the size comparison of the live `decisions.jsonl`. Each asserts instead that no `packet` id
+16. **#29.** `tests/packet.test.sh`, `tests/blueprint.test.sh` (the same check, line 233), and
+    `tests/page-change.test.sh` (lines 25-26 and 330) drop the size comparison of the live
+    `decisions.jsonl`. Each asserts instead that no `packet` id
     in the test's own temp `decisions.jsonl` appears in the live log. A live log that grows with
     other sessions' lines passes; a test that wrote to the live log fails, naming the id.
 17. **Throwaway instances.** From the send-back plan's call 12, which kept the live queue whole:
@@ -360,10 +399,15 @@ None changes the design's outcome or check. The contestable ones go in the PR's 
       out of the repo, that loads playwright-core from the pre-flight path and launches the
       headless shell through `executablePath`. Each decide or defer waits as "The end-to-end
       check" says. The Playwright MCP tools are a second way in for the session only.
+    - A subagent's Bash calls do not keep a `cd` between calls, so a subagent writes every path
+      absolute and runs the gate as `bash <wt>/scripts/gate.sh`, which does its own `cd`. The
+      session can `cd` once into the dotfiles or drafter worktree and run plain commands there.
 18. **The long blueprint.** #9's check copies
     `/var/home/glw907/Projects/cairn-cms/blueprints/docs/extend/add-a-custom-admin-screen.blueprint.md`
     (585 lines) into a temp git repo under `/var/home/glw907/.local/state/aq-docs-friction/`, with a
-    notes file holding one `decide` call anchored in its last third. It is never committed to
+    notes file holding one `decide` call anchored in its last third. T2's worktree has neither the
+    quote shape check nor the new slug, so the anchor is a string `<slug>.p<n>` under a heading of
+    letters, digits, and spaces only, which both slug rules spell alike. It is never committed to
     approval-queue, which is public and keeps synthetic fixtures. A unit or component test that
     needs a long document generates one.
 19. **Load data, fixed so T1 and T3 build against one interface.**
@@ -391,11 +435,16 @@ Each line is written out in full where it runs, with `<wt>`, `<port>`, and `<tas
   `PATH=/var/home/glw907/.local/state/aq-docs-friction/bin:$PATH APPROVAL_QUEUE_PORT=<port> XDG_STATE_HOME=/var/home/glw907/.local/state/aq-docs-friction/<task> APPROVAL_QUEUE_PROJECTS=/var/home/glw907/.local/state/aq-docs-friction/<task>/projects setsid -f <wt>/bin/.local/bin/approval-queue <kind> <args> > <decision file> 2> <stderr file>`.
   The command takes its port from `APPROVAL_QUEUE_PORT` and defaults to 7907, so a line that drops
   it reaches the live server. A blueprint or page carries `--description <file>`. A packet names
-  initiative `none`. CT puts `/var/home/glw907/.local/state/aq-docs-friction/ct-bin` before the
-  `bin` directory on `PATH`, for its `gh` stub.
-- Withdraw, defer's collect, and anchors run the same way without `setsid -f`:
-  `PATH=/var/home/glw907/.local/state/aq-docs-friction/bin:$PATH APPROVAL_QUEUE_PORT=<port> XDG_STATE_HOME=/var/home/glw907/.local/state/aq-docs-friction/<task> <wt>/bin/.local/bin/approval-queue withdraw <id>`
-  (or `collect <id>`, or `anchors <file>`).
+  initiative `none`.
+- Queue in the foreground variant, when a step reads the queuing command's exit code: the same
+  line without `setsid -f`, run through the Bash tool with `run_in_background: true`, which
+  reports the exit code when the command ends. `setsid -f`'s parent exits 0 at once, so the
+  detached line never shows it.
+- `withdraw`, `collect`, and `anchors` run with the same environment and no `setsid -f`:
+  `PATH=/var/home/glw907/.local/state/aq-docs-friction/bin:$PATH APPROVAL_QUEUE_PORT=<port> XDG_STATE_HOME=/var/home/glw907/.local/state/aq-docs-friction/<task> APPROVAL_QUEUE_PROJECTS=/var/home/glw907/.local/state/aq-docs-friction/<task>/projects <wt>/bin/.local/bin/approval-queue withdraw <id>`
+  (or `collect <id>`, or `anchors <file>`). `APPROVAL_QUEUE_PROJECTS` matters to `collect`, since
+  `packet_decision` reads a design part's file there for its current hash. A `collect` that waits
+  runs through `run_in_background: true`.
 - Seed without queuing (T3): the existing `seed-packet.ts` and `seed-blueprint.ts` fixtures, run
   the way their current callers run them (`grep -rn seed- <wt>/approval-queue <wt>/tests`), then
   start the server with `HOST=127.0.0.1 PORT=<port> APPROVAL_QUEUE_STATE=/var/home/glw907/.local/state/aq-docs-friction/<task>/approval-queue setsid -f node <wt>/approval-queue/build`.
@@ -403,6 +452,39 @@ Each line is written out in full where it runs, with `<wt>`, `<port>`, and `<tas
   SvelteKit's CSRF check answers 403.
 - Stop: `pkill -f '^node <wt>/approval-queue/build'`, then check that
   `curl -sf http://127.0.0.1:<port>/` fails.
+
+### CT commands
+
+Written out for CT, task `ct`, port 7993, so no step drops a variable. `<file>` is the step's
+fixture name, `<n>` the step's label (`1`, `2`, `5b`, and so on), and `<id>` the id from that
+step's stderr line `approval-queue: queued <id> at http://127.0.0.1:7993/item/<id>`. Each is one
+command.
+
+- Build: `APPROVAL_QUEUE_PORT=7993 npm run build --prefix /var/home/glw907/Projects/approval-queue/.claude/worktrees/docs-friction/approval-queue`.
+- The fixture repo: a git repo at `/var/home/glw907/.local/state/aq-docs-friction/ct/repo` with
+  `blueprints/withdraw.blueprint.md`, `defer`, `orphan`, `claim-a`, `claim-b`, `anchors` (with a
+  `:::reader` block and a bulleted section), and `amend` (at least 12 lines, so a run collapses),
+  each committed, plus `/var/home/glw907/.local/state/aq-docs-friction/ct/description.md` (two
+  paragraphs) and `/var/home/glw907/.local/state/aq-docs-friction/ct/anchors-notes.json`. Each git
+  command runs from inside the repo.
+- Queue, detached:
+  `PATH=/var/home/glw907/.local/state/aq-docs-friction/bin:$PATH APPROVAL_QUEUE_PORT=7993 XDG_STATE_HOME=/var/home/glw907/.local/state/aq-docs-friction/ct APPROVAL_QUEUE_PROJECTS=/var/home/glw907/.local/state/aq-docs-friction/ct/projects setsid -f /var/home/glw907/Projects/approval-queue/.claude/worktrees/docs-friction/bin/.local/bin/approval-queue blueprint /var/home/glw907/.local/state/aq-docs-friction/ct/repo "Check step <n>" blueprints/<file> --description /var/home/glw907/.local/state/aq-docs-friction/ct/description.md > /var/home/glw907/.local/state/aq-docs-friction/ct/step-<n>.out 2> /var/home/glw907/.local/state/aq-docs-friction/ct/step-<n>.err`.
+  Step 5 adds `--notes /var/home/glw907/.local/state/aq-docs-friction/ct/anchors-notes.json`.
+- Queue, foreground (steps 1 and 2), through `run_in_background: true`:
+  `PATH=/var/home/glw907/.local/state/aq-docs-friction/bin:$PATH APPROVAL_QUEUE_PORT=7993 XDG_STATE_HOME=/var/home/glw907/.local/state/aq-docs-friction/ct APPROVAL_QUEUE_PROJECTS=/var/home/glw907/.local/state/aq-docs-friction/ct/projects /var/home/glw907/Projects/approval-queue/.claude/worktrees/docs-friction/bin/.local/bin/approval-queue blueprint /var/home/glw907/.local/state/aq-docs-friction/ct/repo "Check step <n>" blueprints/<file> --description /var/home/glw907/.local/state/aq-docs-friction/ct/description.md > /var/home/glw907/.local/state/aq-docs-friction/ct/step-<n>.out 2> /var/home/glw907/.local/state/aq-docs-friction/ct/step-<n>.err`.
+- Withdraw (steps 1 and 5):
+  `PATH=/var/home/glw907/.local/state/aq-docs-friction/bin:$PATH APPROVAL_QUEUE_PORT=7993 XDG_STATE_HOME=/var/home/glw907/.local/state/aq-docs-friction/ct APPROVAL_QUEUE_PROJECTS=/var/home/glw907/.local/state/aq-docs-friction/ct/projects /var/home/glw907/Projects/approval-queue/.claude/worktrees/docs-friction/bin/.local/bin/approval-queue withdraw <id>`.
+- Collect (step 2), through `run_in_background: true`:
+  `PATH=/var/home/glw907/.local/state/aq-docs-friction/bin:$PATH APPROVAL_QUEUE_PORT=7993 XDG_STATE_HOME=/var/home/glw907/.local/state/aq-docs-friction/ct APPROVAL_QUEUE_PROJECTS=/var/home/glw907/.local/state/aq-docs-friction/ct/projects /var/home/glw907/Projects/approval-queue/.claude/worktrees/docs-friction/bin/.local/bin/approval-queue collect <id> > /var/home/glw907/.local/state/aq-docs-friction/ct/collect-<k>.out`,
+  with `<k>` 1 and then 2.
+- The orphan (step 3): `kill -KILL <the pid after the id's last hyphen>`.
+- The log (step 2): `grep -c '"packet":"<id>"' /var/home/glw907/.local/state/aq-docs-friction/ct/approval-queue/decisions.jsonl`
+  prints 1 after each `collect`.
+- The tab log and mtime (step 4): `wc -l /var/home/glw907/.local/state/aq-docs-friction/bin/xdg-open.log`
+  and `stat -c %Y /var/home/glw907/.local/state/aq-docs-friction/ct/approval-queue/tab.seen`.
+- The board: `curl -sf http://127.0.0.1:7993/`.
+- Stop: `pkill -f '^node /var/home/glw907/Projects/approval-queue/.claude/worktrees/docs-friction/approval-queue/build'`,
+  then `curl -sf http://127.0.0.1:7993/` fails.
 
 ## Path
 
@@ -466,9 +548,6 @@ Written out literally in every command and subagent prompt, never as shell varia
   the signal lines `T5-WAIT`, `READY <prs>`, and `STOP <question>`.
 - **Ports:** T2 7963, T3 7973, CT 7993. State roots:
   `/var/home/glw907/.local/state/aq-docs-friction/t2`, `.../t3`, and `.../ct`.
-- **The CT `gh` stub:** `/var/home/glw907/.local/state/aq-docs-friction/ct-bin/gh`, written in CT
-  step 2 on the model of `tests/packet.test.sh`'s inline stub. It answers `pr view` and `pr diff`
-  from files beside it.
 - **The one-executor pattern:** `pgrep -af '[w]orktrees/docs-friction( |/|$)'`, anchored so it
   misses the planner's `docs-friction-plan` worktree.
 
@@ -523,8 +602,9 @@ From the design and its approval, applied in place of stopping:
    command (T1 owns it; T2 touches none of it). A conflict in a file one task owns is resolved by
    keeping both sides, the gate is run, and the resolution is named in `## Decisions`. A conflict
    that needs a choice between two behaviors stops (answer 8).
-10. **A gate leg that reads live state.** Three legs read state outside the worktree that other
-    sessions change mid-run. `tests/packet.test.sh` and `tests/blueprint.test.sh` read the live
+10. **A gate leg that reads live state.** Four legs read state outside the worktree that other
+    sessions change mid-run. `tests/packet.test.sh`, `tests/blueprint.test.sh`, and
+    `tests/page-change.test.sh` read the live
     `~/.local/state/approval-queue/decisions.jsonl`, which grows whenever any session logs a
     decision. `tests/approval-queue.test.sh` reads the live register at
     `~/.claude/docs/voice/approval-brief.md`, which changes when a dotfiles PR merges.
@@ -574,8 +654,10 @@ Risk: `runner`, no edit.
 Both subagents start from the session's HEAD after T0, each in its own agent worktree, run
 `npm ci --prefix <its worktree>/approval-queue` first, commit there, and never push. Each prompt
 carries the scope guard, "Commands in a worktree", calls 17 and 18 quoted, the task's own calls
-quoted whole, and its commands written out with literal paths once the subagent has read its own
-worktree path with `git rev-parse --show-toplevel`.
+quoted whole, standing answer 10's first bullet quoted (T2's worktree keeps the old live-log size
+checks, which T1 replaces), and its commands written out with literal paths once the subagent has
+read its own worktree path with `git rev-parse --show-toplevel`. Neither subagent edits a test the
+other owns to make its gate pass.
 
 File ownership. Neither edits the other's files, with one exception: T2 rewrites the README's two
 note-anchor paragraphs (the one under the blueprint kind beginning "A note's `anchor` names a
@@ -585,7 +667,8 @@ place", and the page kind's anchor sentence), and T1 owns the rest of the README
   `src/lib/server/packet-decision.ts` and its test, `src/lib/queue.ts` and its test,
   `src/routes/item/[id=id]/+page.server.ts` and its test, `src/routes/+layout.server.ts`,
   `src/routes/+page.server.ts` and `src/routes/page.server.test.ts`, the new `src/routes/claim/`,
-  `src/lib/board.ts` and its test, `tests/` except the new `anchors` case (R1's), and `README.md`.
+  `src/lib/board.ts` and its test, `tests/` (including `page-change.test.sh`'s live-log check)
+  except the new `anchors` case (R1's), and `README.md`.
 - **T2:** `src/lib/editor/notes.ts` and its test, the new `src/anchors.ts`,
   `src/lib/editor/setup.ts`, `src/lib/editor/review.svelte.ts` and its test,
   `src/lib/held.svelte.ts` and its test, `src/lib/components/ItemPanel.svelte`,
@@ -598,19 +681,21 @@ Risk: `runner`, decision path.
 Outcome: calls 1 to 6, call 7's shape check, call 9's command and load side, and calls 12, 13, 15,
 16, and 19 hold in code and tests.
 
-- **#29 first (call 16).** Commit it before anything else, so the gate's live-log leg stops reading
-  other sessions' decisions. The test asserts it fails when a test line is copied into a temp
-  stand-in for the live log (`HOME` pointed at a temp directory for that one case).
+- **#29 first (call 16).** Commit it before anything else, in all three shell tests, so the gate's
+  live-log legs stop reading other sessions' decisions.
 - **The pid, `withdraw`, and `collect` (calls 1, 2, 4).** `tests/approval-queue.test.sh` or a new
   `tests/lifecycle.test.sh` covers, in a temp state root with `curl` and `gh` stubbed as today:
-  - every kind's `item.json` carries `pid`;
+  - every kind's `item.json` carries `pid` and `pidStart`;
   - `withdraw` on a waiting item exits 0, the queuing command exits 143, and `item.json` is gone;
   - `withdraw` on a dead pid (a recorded pid of a process that has exited) removes `item.json`;
-  - `withdraw` on a pid whose `/proc/<pid>/cmdline` names no `approval-queue` (a `sleep` started
-    by the test) sends nothing and removes `item.json`, and the `sleep` is still running after;
+  - `withdraw` on a reused pid (an `item.json` edited to name a `sleep` the test started, with a
+    `pidStart` that is not the `sleep`'s) sends nothing and removes `item.json`, and the `sleep` is
+    still running after;
+  - `withdraw` on a deferred item whose waiter is still alive removes `item.json` and exits 0;
   - each refusal in call 2 exits 2;
   - `collect` on a decided, unlogged item logs once and prints the queuing command's line, for a
-    packet, a blueprint, a page, and a pr;
+    packet, a blueprint, a page, a change, and a pr;
+  - `collect` of the first decision in a state root with no `decisions.jsonl` logs it;
   - a second `collect`, and a `collect` racing the live queuing command, leave one line per part;
   - an interrupted `collect` (TERM) leaves `item.json` in place.
 - **Defer (call 3).** The route test covers each refusal and the written `deferred.json`. The shell
@@ -635,9 +720,11 @@ Outcome: calls 1 to 6, call 7's shape check, call 9's command and load side, and
   for an unparsable `packet.json`, and 400 for a non-form `reject` and `submit`.
   `packet-decision.test.ts` covers a fingerprint that changes when a lane, a rule, or a bound part
   changes. `tests/packet.test.sh` covers `sentBack` on each log line of a send-back with one part
-  set to send back and one to approve; the resend's `item.json` `revises.parts` names only the
-  first, and only it gets `since.patch`. A note-only send-back resend is a revision with empty
-  `parts`. A log written before the pass (no `sentBack`) reads as today.
+  set to send back and one to approve. On the resend the `gh` stub moves both parts' heads, so
+  `since_diff`'s early return on an unmoved head cannot pass the case alone: the resend's
+  `item.json` `revises.parts` names only the first, only it gets `since.patch`, and the
+  approve-marked part's recorded head differs from its new one. The rest of call 15's cases each
+  get one test, and a log written before the pass (no `sentBack`) reads as today.
 - **README:** `withdraw`, defer and its JSON, `collect`, the pid and the board mark, `/claim` and
   what it is for, the quote anchor's shape (beside T2's paragraphs), the amend review and
   `amends`, and the usage lines.
@@ -672,7 +759,9 @@ Outcome: calls 7 (placement), 8, 10, 11, and 14 hold in code and tests.
   before returning.
 - **#19 (call 10).** `held.svelte.test.ts` covers a refused second decision on a held item, and an
   Undo whose open is cancelled restoring once the box closes. The panel's part of the guard gets a
-  component test where the existing tests reach it, else the 7963 instance's browser check.
+  component test where the existing tests reach it, else the 7963 instance's browser check, which
+  presses Undo inside the 5-second hold with the pointer on the toast (the hold pauses there) and
+  then reads the toast and the restore.
 - **#27 (call 14).** A test in `review.svelte.test.ts` or the panel's test reproduces the restore,
   fails on `967be66`, then passes.
 - Acceptance: the gate is green in T2's worktree, and STATUS holds #9's offsets at 500 wide.
@@ -680,9 +769,12 @@ Outcome: calls 7 (placement), 8, 10, 11, and 14 hold in code and tests.
 ### R1: the pair merge, the `anchors` case, and T1's read (15 min), by the session
 
 The session merges T1's branch, then T2's, into `worktree-docs-friction` (standing answer 9 on a
-conflict), and removes both agent worktrees. It adds one case to `tests/blueprint.test.sh`:
-`approval-queue anchors` on a fixture heading "Set a section's starting state" prints
-`set-a-sections-starting-state.heading` and the heading text. It runs the gate, then the
+conflict), and removes both agent worktrees. It adds the `anchors` dispatch and usage line to
+`bin/.local/bin/approval-queue` (call 8: a branch placed after `app=` is set, since the `approved`
+branch above it runs before `app` exists, that runs `node "$app/src/anchors.ts" "$2"` and exits
+with its status), and one case to `tests/blueprint.test.sh`: `approval-queue anchors`
+on a fixture heading "Set a section's starting state" prints `set-a-sections-starting-state.heading`
+and the heading text. It runs the gate, then the
 task-scope `diff-reviewer` read of T1's commits against calls 1 to 7, 9, 12, 13, 15, 16, and 19,
 and fixes any `fix` finding (answer 5) before T3 starts. Acceptance: the gate is green and the
 read returns `accept`.
@@ -772,10 +864,9 @@ goes to CT for two PRs and comes back to T5 on a later "start T5".
 Risk: `runner`.
 
 1. Merge T3 into `worktree-docs-friction`, run the gate, and remove its worktree.
-2. Write the CT `gh` stub ("Names"). Run the end-to-end check from "Outcome" on an instance at
-   7993, built for 7993 first, through the worktree's own command with the "Commands" lines (task
-   `ct`, with `ct-bin` first on `PATH`). Record each printed JSON, each exit code, and each count in
-   STATUS. Answer 6 on a red step.
+2. Build the fixture repo and run the end-to-end check from "Outcome" on an instance at 7993,
+   built for 7993 first, with the "CT commands" lines exactly as written. Record each printed
+   JSON, each exit code, and each count in STATUS. Answer 6 on a red step.
 3. Run `diff-reviewer` at whole-branch scope on the approval-queue branch against the design and
    this plan, and one more `diff-reviewer` read over the dotfiles and drafter branches together,
    beside `svelte-reviewer` and `daisyui-a11y-reviewer` on the approval-queue branch. Run one
@@ -814,7 +905,8 @@ answer 3 held T5, the drafter PR following in a second packet).
     its own tab, as when no tab is live.
   - `[you: reload the queue tab]`: an open tab keeps the old client until it reloads.
   - `[you: other workstation]`: on the other host (`pavilion` or `thinkpad-x1`, whichever the
-    conductor is not on), before queuing there, run each as its own command:
+    conductor is not on), once no item waits in that host's queue (a command from before the pass
+    ignores a defer) and before queuing there, run each as its own command:
     `git -C ~/Projects/approval-queue pull --ff-only`,
     `npm ci --prefix ~/Projects/approval-queue/approval-queue`,
     `npm run build --prefix ~/Projects/approval-queue/approval-queue`, and
