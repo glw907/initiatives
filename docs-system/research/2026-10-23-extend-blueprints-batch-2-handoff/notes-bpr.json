@@ -1,0 +1,98 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "build-the-public-routes.heading",
+  "title": "Why this whole page is in your queue",
+  "body": [
+   "You rejected Share a draft preview with \"What is the case for this piece of documentation?\" and chose to fold it in. A scaffolded site already ships the preview migration, route, and banner, and deploy applies the migration, so the page only served a hand-built site and repeated the reference pages.",
+   "Build the public routes is a published page that had no blueprint. A blueprint is the only way to change a page, so this one describes the whole existing page plus one new section. Everything outside \"Mount the draft preview route\" restates the published page from the code, with the corrections in N3. You chose to review the whole blueprint in one pass."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "info",
+  "anchor": "mount-the-draft-preview-route.heading",
+  "title": "The fold: what this section holds, and where the rest went",
+  "body": [
+   "This section is the one new piece. It opens by saying a scaffolded site already has everything, then gives a hand-built site the four steps: copy the migration, apply it, add the route module, and render the banner. A short check of a minted link closes it.",
+   "The old page's other content moved. The point that a preview link is a credential went to the security model, as the line quoted in N2. Minting, revoking, and the reasons a link refuses to open stay on the sveltekit and admin reference pages, which already cover them. The two blueprints that linked the old page now link this section."
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "info",
+  "anchor": "mount-the-draft-preview-route.p0",
+  "title": "The line added to the security model",
+  "body": [
+   "The security model's blueprint (YAML, not queued separately) gains this sentence, `sc-preview`:",
+   "\"A draft preview link sits outside `/admin`, and the link is the credential. Anyone who holds it reads that one draft with no sign-in until the link stops working. It stops working when it expires, when an editor revokes it, when the entry is published, discarded, renamed, or deleted, or when the editor who minted it is removed from the site.\"",
+   "Its facts are `f:afkvsb`, `f:76m2vf`, and `f:pimnjy`, and it was fact-checked with this page."
+  ]
+ },
+ {
+  "id": "N3",
+  "kind": "info",
+  "anchor": "build-the-public-routes.p15",
+  "title": "Facts the published page had wrong, corrected from the code",
+  "body": [
+   "Authoring from the code found several facts the published page rests on that no longer hold, and the facts store now has them right:",
+   "`f:0elmiu`: the admin's sign-in and confirm pages carry a `noindex, nofollow` robots meta, so the old claim that skipping `disallow: ['/admin']` exposes the sign-in page to indexing was wrong.",
+   "`f:niuzzg` and `f:yef4lo`: the old facts said every route reads the shared origin and the typed index, and that the origin must be a literal. Neither holds: the media route reads neither, and `PublicRoutesConfig.origin` is a plain string, so the literal is the scaffold's choice.",
+   "The outline named a path member `editor.nav.configPath`, which doesn't exist. The menu file is the one `editor.siteConfigPath` names, and this line rules the wrong name out."
+  ],
+  "was": "The page's facts claimed every route reads both inputs, the origin must be a literal, and the sign-in page needs robots.txt to stay unindexed.",
+  "now": "Each claim matches the code, cited in the facts store."
+ },
+ {
+  "id": "N4",
+  "kind": "question",
+  "anchor": "serve-the-markdown-twin.p11",
+  "title": "Keep a caveat no repo code can confirm?",
+  "body": [
+   "This note says Cloudflare's adapter drops the twin's `Content-Type` header from the build, and the file still arrives as `text/markdown` because Cloudflare reads the `.md` extension. It rests on a 2026-09-29 read of the adapter's `index.js` and a local `wrangler dev` measurement (`f:gwpffe`). The adapter isn't installed in this repo, so every fact-check returned it as unsupported.",
+   "The note is useful to a developer whose twin arrives with the wrong type. It is also the one line on the page no gate can re-verify."
+  ],
+  "choices": [
+   {"label": "Keep the note", "done": "The note stays, sourced to the dated measurement."},
+   {"label": "Cut the note", "done": "The line goes, and the twin section says only what `markdownResponse` sets."}
+  ]
+ },
+ {
+  "id": "N5",
+  "kind": "info",
+  "anchor": "name-the-origin-once.p6",
+  "title": "The scaffold names its origin twice",
+  "body": [
+   "A scaffolded site carries the origin in two places: the literal `'https://showcase.test'` in `src/chassis/content.ts`, which the build writes into every canonical URL, and `PUBLIC_ORIGIN` in `wrangler.jsonc`, which setup writes and the Worker reads at runtime. Setup fills only the second, so a site that forgets the literal ships canonical URLs on `showcase.test`.",
+   "The page tells the reader to set both, steps 1 and 2. Whether setup should fill the literal too is an engine question, filed with this batch's friction."
+  ]
+ },
+ {
+  "id": "N6",
+  "kind": "info",
+  "anchor": "mount-the-draft-preview-route.p5",
+  "title": "Deploy migrates the remote database only",
+  "body": [
+   "The scaffold's deploy script applies the `AUTH_DB` migrations with `--remote`, so a local dev database never gets the preview table on its own. This step gives both flags. The gap is filed with this batch's friction."
+  ]
+ },
+ {
+  "id": "N7",
+  "kind": "info",
+  "anchor": "build-the-public-routes.heading",
+  "title": "Two links error in drafter check until this page is drafted",
+  "body": [
+   "The add-cairn tutorial and the Cloudflare Access page now link `build-the-public-routes.md#mount-the-draft-preview-route`. `drafter check` resolves a cross-page anchor against the published page, which has no such section yet, so both report a broken anchor until this page is redrafted from this blueprint. That check behavior is filed against drafter."
+  ]
+ },
+ {
+  "id": "N8",
+  "kind": "info",
+  "anchor": "verify-the-built-routes.p6",
+  "title": "Four fact-check rounds, settled",
+  "body": [
+   "The first fact-check read 269 claims, and 258 held. The rest were fixed in three narrowing rounds. Most were exhaustive words (\"each route\", \"every route\") that the media and preview routes broke. This verify step changed to fetch the twin's body instead of its headers, since the header claim is the one in N4."
+  ]
+ }
+]
