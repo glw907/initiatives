@@ -270,6 +270,15 @@ fold recommendation instead of authoring.
     deleted drafter worktree's prompts module. Load `~/.config/drafter/<repo>.local.toml` as the
     fallback layer, or name the template in the error.
 
+## workstation: the sweep method (cairn-cms PR #138)
+
+61. A slice agent's edit script emptied `scripts/checks/gate-tier.mjs` (929 lines) and committed
+    it. No slice check caught it, and the fast lane printed nothing and exited 0, because the
+    fast lane is that file. A word sweep keeps every line's count, so a whole-branch
+    `git diff --numstat` that lists files whose added and deleted counts differ finds this class
+    in one command. Add it to the sweep method before any gate runs, and have `gate-tier.mjs`
+    refuse to exit 0 when it prints no legs.
+
 ## Dropped
 
 - The sweep's scope measurement (about 900 hits in the published arms and blueprints, 700 of them

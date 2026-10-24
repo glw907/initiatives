@@ -75,4 +75,10 @@ The run was paused 2026-10-23 at 08:50 and resumes at 00:01 on 2026-10-24 as an 
 
 ## Done
 
-(The run updates this list as it goes.)
+- 00:10 Step 1 done: `0ab7af0f1` takes the fact checker's wording for line 24; Build the public routes queued, decision to `decision-bpr.json`.
+- 00:20 Step 2 started: `extend-blueprints-2` merged origin/main and both approved branches (pushed). Worktree `.claude/worktrees/extend-blueprints-2` needed `drafter.local.toml` copied from `~/.config/drafter/cairn-cms.local.toml` (record item 60). `drafter page` running on both pages.
+- 00:40 Step 3: record committed (`eb49670`); a filing agent is filing it into the five backlogs.
+- 00:55 Step 3 done: filed in drafter #51-#69 (+#48), survey #2 (+#1), approval-queue #24-#26 (+#21, #23), cairn-cms #35-#45 (+#28, #30, #34), dotfiles #31 extended. The blueprint skill lives in the drafter repo, so its items went there.
+- 01:00 Step 4 started: branch `own-sweep-2` off origin/main. Five slices, prompt `tools/sweep2-prompt.md`: tool-a (cmd, doctor, health, render) and scaffolder (packages/ minus template-repo) running; tool-b (rest of tool/ minus docs/design and adr), agent-sources (skills/, claude/, template-repo, emit:template, scripts/), and runtime (src/lib non-editor strings, showcase, tests, mirrored docs quotes) queued.
+- 01:00 Step 4: five slices merged into `own-sweep-2` (tool-a `f8769fdea`, tool-b `caeb71c01`, scaffolder `176d60cd6`/`f4b8c843f`, runtime `58a3b56b2`/`dc4df7c65`, sources `b3a7bd175`/`c82fc2be9`). The sources slice had emptied `scripts/checks/gate-tier.mjs`; restored in `587f0bf28` (record item 61). Fast lane green (leg one's lone failure is Firefox missing locally), close review accept. Draft PR glw907/cairn-cms#138; e2e baseline regen dispatched (run 40079322349), then CI, then the packet.
+- 01:00 Step 2: drafter is in the gate-fix exchange on Content model (first draft failed check:provenance and check:symbols); Arrange the admin sidebar is queued behind it in the same run.
