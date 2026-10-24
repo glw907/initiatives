@@ -24,7 +24,7 @@ Sessions ran unattended and stopped at decisions only Geoff can make. A single q
 Three passes clear the approval-queue backlog, in order. Each launches only after the one before it merges, since they edit the same files.
 
 1. Send-back revisions: merged 2026-10-24 (glw907/approval-queue#7 `86d142d`, glw907/workstation#148 `31db050`, glw907/drafter#64). A packet send-back now returns per-part verdicts and ask picks as `calls`. A resent packet shows its revision with `## What changed` and a since-send-back diff. Blueprints and pages need `--description`. The live queue on pavilion runs the new build. Thinkpad-x1 still needs its pulls and rebuild. Drafter's installed skill picks up the new lines at its next `make install`. Open follow-ups: approval-queue backlog #27, #28, #29.
-2. Docs friction: design approved (`specs/2026-10-24-docs-friction-design.md`, #120). **Next step:** plan it from that spec.
+2. Docs friction: design approved (`specs/2026-10-24-docs-friction-design.md`, #120). **Next step:** plan it from that spec. The plan also takes approval-queue backlog #27 (an Undo-restored note counts as typed) and #29 (`tests/packet.test.sh` fails when another session logs a decision mid-gate). Geoff, 2026-10-24: "Yes, fold #27 and #29 into the docs friction plan."
 3. Polish: design approved (`specs/2026-10-24-polish-design.md`, #122). Plan it once pass 2 merges; it is `ordinary` class and merges itself.
 
 ## Where the work lives
