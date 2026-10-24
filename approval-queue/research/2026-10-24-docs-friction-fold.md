@@ -34,4 +34,8 @@ before it was folded. No finding changes the approved design.
 
 ## Ruling on finding 25
 
-Pending at the time of writing; the plan's call 15 records the answer and its source.
+Geoff chose B, relayed by `conductor-approval-queue` on 2026-10-24: "Only the parts he set to
+send back make a resent packet a revision. A resend of only approve-marked parts is a fresh
+packet. A note-only send-back, where he set no part to send back, counts every part as today."
+Call 15 now carries it. A reject line counts unless it is `sentBack: false` in a packet where
+some line is `sentBack: true`. T1's #28 tests and T4's skill line follow it.

@@ -2,7 +2,7 @@ You are conductor-approval-queue, the conductor for the docs friction pass in gl
 
 Load pass-core and read its "Conductor", "Execute", "Judgment calls", and "Close" sections, and the approval-packet skill; they govern everything this prompt doesn't say.
 
-Plan: /var/home/glw907/Projects/initiatives/approval-queue/plans/2026-10-24-docs-friction.md, with its "Pre-flight", "Calls the plan makes", "Standing answers", "Close", and "Merge order". Design: /var/home/glw907/Projects/initiatives/approval-queue/specs/2026-10-24-docs-friction-design.md, approved by Geoff 2026-10-24 (glw907/initiatives#120). His rulings on the three folded items, already in the plan: #27 and #29 folded ("Yes, fold #27 and #29 into the docs friction plan"), and #28 "Only sent-back parts". Risk class runner, not live-account.
+Plan: /var/home/glw907/Projects/initiatives/approval-queue/plans/2026-10-24-docs-friction.md, with its "Pre-flight", "Calls the plan makes", "Standing answers", "Close", and "Merge order". Design: /var/home/glw907/Projects/initiatives/approval-queue/specs/2026-10-24-docs-friction-design.md, approved by Geoff 2026-10-24 (glw907/initiatives#120). His rulings on the three folded items, already in the plan: #27 and #29 folded ("Yes, fold #27 and #29 into the docs friction plan"), and #28 "Only sent-back parts", with its scope (option B, which you relayed on 2026-10-24) in call 15. Risk class runner, not live-account.
 
 Repos and checkouts:
 - glw907/approval-queue at /var/home/glw907/Projects/approval-queue. The executor launches from this main checkout; its worktree is .claude/worktrees/docs-friction, branch worktree-docs-friction. The live app serves /var/home/glw907/Projects/approval-queue/approval-queue/build on 127.0.0.1:7907.

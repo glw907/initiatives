@@ -13,7 +13,9 @@ record's "## Status" (`~/Projects/initiatives/approval-queue/README.md`):
   counts as text the reader typed (call 14).
 - **#28.** Geoff chose "Only sent-back parts": only the parts he set to send back count as
   revised, so a part he marked approve inside a rejected packet comes back as a plain row with no
-  since diff (call 15).
+  since diff. The plan review raised how far that reaches, and Geoff ruled through
+  `conductor-approval-queue` the same day: only those parts make a resend a revision, and a
+  note-only send-back counts every part (call 15).
 - **#29.** The live-log size check in `tests/packet.test.sh` fails when another session logs a
   decision mid-gate (call 16).
 
@@ -22,6 +24,17 @@ answer. Task sum: 505. The three folded items add about 20 path minutes; the res
 300 is the amend review's editor work and a longer close for six end-to-end steps. The arithmetic
 is under "Path". The send-back revisions pass ran its 315-minute path in about 95 minutes
 (glw907/approval-queue#7), so 600 is a guard more than a forecast.
+
+One `plan-reviewer` read (mechanics and feasibility) returned 9 majors, 12 minors, and one owner
+fork, and no blockers (`research/2026-10-24-docs-friction-review-mechanics.md`). Every finding is
+folded, and the fold record is `research/2026-10-24-docs-friction-fold.md`. The fork, how far #28
+reaches, went to Geoff as one question, and his answer is call 15. None changes the design. The
+folds cover:
+
+- a pid start time, so a reused pid never reads as the waiter, and how `collect` is wired
+- `collect` on a change, the slug alias for `p<n>` keys, and the `anchors` dispatch's owner
+- a third live-log check, the pair prompts' rerun rule, and a #28 test that cannot pass vacuously
+- the queuing command's exit code in CT, and every CT command written out in full
 
 The planning session read approval-queue at `967be66`, dotfiles (glw907/workstation, which the
 `glw907/dotfiles` name redirects to) at `31db050`, drafter at `f2ad05e`, and initiatives at
@@ -364,16 +377,24 @@ None changes the design's outcome or check. The contestable ones go in the PR's 
     restored note text when it equals `sendBackDraft(openCalls, review?.changedLines ?? 0, ...)`
     rebuilt at that moment, so `noteStart` treats an untouched restored draft as untouched. The
     test fails on `967be66` first; STATUS records the red run.
-15. **#28.** A packet send-back's log lines gain `sentBack: true` on each part whose call verdict
-    is `send-back` (a routine part's posted verdict or an ask-bound part's tag, as `calls` holds
-    it) and `sentBack: false` on every other part. In `revision_program`, a ref still counts as sent
-    back when its latest line is a reject, so the packet is a revision, needs `## What changed`,
-    and shows Geoff's note. But `revises.parts`, which drives the since diff, keeps only refs whose
-    latest line lacks `sentBack: false`. A line written before the pass has no field and keeps the
-    old reading. The refusal message names the sent-back parts, or the earlier item alone when
-    none was set to send back. A packet sent back with a note and no part set to send back stays a
-    revision with no since diff: the ruling names which parts count as revised, and Geoff's note
-    still needs its answer. This reading goes in `## Decisions`.
+15. **#28.** Geoff's ruling on the scope, relayed by `conductor-approval-queue` on 2026-10-24 from
+    his pick in its question, option B, "Only sent-back parts": "Only the parts he set to send back
+    make a resent packet a revision. A resend of only approve-marked parts is a fresh packet. A
+    note-only send-back, where he set no part to send back, counts every part as today."
+    - A packet send-back's log lines gain `sentBack: true` on each part whose call verdict is
+      `send-back` (a routine part's posted verdict or an ask-bound part's tag, as `calls` holds it)
+      and `sentBack: false` on every other part.
+    - In `revision_program`, a reject line counts when its `sentBack` is not `false`, or when no
+      line of its `packet` id has `sentBack: true` (a note-only send-back). A line written before
+      the pass has no field, so it counts, as today.
+    - A ref is sent back when its latest line is a reject that counts. The packet is a revision,
+      needs `## What changed`, and shows Geoff's note when one or more refs are sent back.
+      `revises.item` and `revises.parts` (which drive the note and the since diff) take only the
+      refs that are sent back, and the revision number counts only the reject lines that count.
+    - So a resend of only parts Geoff marked approve inside a rejected packet is a fresh packet:
+      the command refuses a `## What changed` section on it, and those parts show as plain rows.
+      A resend that mixes them with a sent-back part is a revision, and only the sent-back part
+      gets a since diff. The refusal message names the sent-back parts.
 16. **#29.** `tests/packet.test.sh`, `tests/blueprint.test.sh` (the same check, line 233), and
     `tests/page-change.test.sh` (lines 25-26 and 330) drop the size comparison of the live
     `decisions.jsonl`. Each asserts instead that no `packet` id
@@ -723,8 +744,11 @@ Outcome: calls 1 to 6, call 7's shape check, call 9's command and load side, and
   set to send back and one to approve. On the resend the `gh` stub moves both parts' heads, so
   `since_diff`'s early return on an unmoved head cannot pass the case alone: the resend's
   `item.json` `revises.parts` names only the first, only it gets `since.patch`, and the
-  approve-marked part's recorded head differs from its new one. The rest of call 15's cases each
-  get one test, and a log written before the pass (no `sentBack`) reads as today.
+  approve-marked part's recorded head differs from its new one. One case each: a resend of only
+  the approve-marked part is not a revision and is refused with `## What changed`; a note-only
+  send-back's resend is a revision whose `parts` names every part; the revision number skips a
+  round in which the ref was marked approve; and a log written before the pass (no `sentBack`)
+  reads as today.
 - **README:** `withdraw`, defer and its JSON, `collect`, the pid and the board mark, `/claim` and
   what it is for, the quote anchor's shape (beside T2's paragraphs), the amend review and
   `amends`, and the usage lines.
@@ -822,8 +846,9 @@ where they read them.
     the command.
   - `approval-queue collect <id>` is also how a session picks up a decision on an item whose
     waiting session died (the board's "No session is waiting for this.").
-  - Step 7's revision sentence names #28's reading: a packet he sent back is a revision, and only
-    the parts he set to send back get a since diff.
+  - Step 7's revision sentence names #28's ruling: only the parts he set to send back make a
+    resend a revision, and a part he marked approve comes back as a plain row; when he set no part
+    to send back, every part counts, so `## What changed` answers his note.
   - "Blueprints and pages": a blueprint or page queued again after Geoff approved it opens as an
     amend review, and its description says what changed since the approval.
   - One line: a session's browser never opens the queue's `/claim`, which marks Geoff's browser.
