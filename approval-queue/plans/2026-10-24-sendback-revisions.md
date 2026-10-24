@@ -10,10 +10,20 @@ Geoff's ruling on the design's one ask, settled: **"Hide the opener."** While th
 open, the bar's "Send back with note" opener hides, so the note's Cancel and Send back are the only
 controls (call 9).
 
-Path: 305 minutes against the design's 210 estimate (1.45x), inside the 420-minute standing
-answer. Task sum: 440. The arithmetic is under "Path". The last approval-queue pass ran its
+Path: 315 minutes against the design's 210 estimate (1.5x), inside the 420-minute standing
+answer. Task sum: 450. The arithmetic is under "Path". The last approval-queue pass ran its
 450-minute path in about 153 minutes (glw907/approval-queue#5), so 420 is a guard more than a
 forecast.
+
+One `plan-reviewer` read (mechanics and feasibility) returned 7 majors and 14 minors and no
+blockers, and none changes the design
+(`research/2026-10-24-sendback-revisions-review-mechanics.md`). Every correctness finding is
+folded, and the fold record is `research/2026-10-24-sendback-revisions-fold.md`. The folds cover:
+
+- a waiting packet across the live restart, and the throwaway instance's full command lines
+- the `calls` type in `ItemPanel.svelte`, and a pair merge conflict
+- the blueprint revision's lookup and its test, and a #24 test that fails first
+- a batch-friction PR that never merges, and drafter's gate script
 
 The planning session read approval-queue at `c8018fd`, dotfiles (glw907/workstation, which the
 `glw907/dotfiles` name redirects to) at `3bfdcd5`, drafter at `a1fc918`, and initiatives at
@@ -41,7 +51,10 @@ Nothing for Geoff. The conductor checks each item just before launch:
 - `~/.claude/docs/voice/approval-brief.md` resolves (the gate reads it).
 - `/var/home/glw907/Projects/cairn-cms/blueprints/docs/extend/add-a-custom-admin-screen.blueprint.md`
   exists (call 13's long blueprint, read only).
-- This plan and its two prompts are committed on initiatives `main`.
+- This plan and its two prompts are on initiatives `main` and in the main checkout:
+  `git -C /var/home/glw907/Projects/initiatives pull --ff-only`, then `test -f` on each of the
+  three files under `/var/home/glw907/Projects/initiatives/approval-queue/plans/`. The planning PR
+  is merged by the parent session that dispatched the planner, not by the conductor.
 
 The drafter gate is not a pre-flight item: it holds only T5, and the conductor checks it there
 (standing answer 2).
@@ -71,10 +84,10 @@ The design's outcome, built across three repos:
 The design's five steps, run in CT on a throwaway instance at port 7992 (call 12) with `gh`
 stubbed as `tests/packet.test.sh` stubs it, plus a stub branch for `gh api .../compare/...`:
 
-1. Queue a two-PR packet (parts A and B, both in routine rows), set B's routine verdict to `hold`
-   on the page, and send it back with a note. The printed JSON is `{decision: "reject", note,
-   calls}`, and `calls` holds both parts' verdicts as the screen held them (A's preselected
-   verdict, B's `hold`).
+1. Queue a two-PR packet (parts A and B, both in routine rows), set B's routine verdict to
+   `send-back` on the page (the design's "one routine row set to reject"), and send it back with a
+   note. The printed JSON is `{decision: "reject", note, calls}`, and `calls` holds both parts'
+   verdicts as the screen held them (A's preselected verdict, B's `send-back`).
 2. Move A's stubbed head to a commit the compare stub answers `ahead`, and resend the packet
    without `## What changed`. The command exits 2, and stderr names the earlier item's id.
 3. Resend with the section. The page shows "Revision 2" in the crumb, then the description, then
@@ -102,8 +115,11 @@ the pass pushes three branches and opens three PRs.
   full-suite home, local, so there is no CI watch.
 - **dotfiles**, glw907/workstation, checkout `/var/home/glw907/.dotfiles`. Gate:
   `bash scripts/gate.sh` from the dotfiles worktree (it wraps `cairn-run-gate` itself). No CI.
-- **drafter**, glw907/drafter, checkout `/var/home/glw907/Projects/drafter`. Gate: `make check`
-  from the drafter worktree. No CI on PRs.
+- **drafter**, glw907/drafter, checkout `/var/home/glw907/Projects/drafter`. Gate:
+  `DRAFTER_DIR=/var/home/glw907/Projects/drafter/.claude/worktrees/sendback-revisions bash
+  /var/home/glw907/Projects/drafter/.claude/worktrees/sendback-revisions/scripts/drafter-gate.sh`,
+  re-issued on exit 75. The script wraps `make -C <dir> check` in `cairn-run-gate --fresh` on the
+  light lane, because the isolation guard refuses `cairn-run-gate '<string>'`. No CI on PRs.
 
 The decision path is the command's jq programs, `packet-decision.ts`, `items.ts`, and the item
 route's actions. T1 carries it, and its commits get a task-scope `diff-reviewer` read before T3
@@ -150,9 +166,12 @@ None changes the design's outcome or check. The contestable ones go in the PR's 
 
    The server builds it from the packet it rebuilt (refs and questions are the server's), next to
    `buildApprove` in `packet-decision.ts`. A send-back is never refused for its fields, and the
-   fingerprint is not checked, since a send-back authorizes nothing. The `Decision` type gains the
-   field. The command's `decision_program` accepts a reject whose keys are `[decision, note]` or
-   `[calls, decision, note]`, checks the `calls` shape when present, and prints
+   fingerprint is not checked, since a send-back authorizes nothing. The `Decision` type's reject
+   `calls` widens to hold these entries beside the doc kinds' `{id, choice}`. That widening breaks
+   `answeredCalls` in `ItemPanel.svelte`, which reads `call.id` (probed by the reviewer with the
+   repo's tsc: TS2339), so T1 makes the one narrowing edit there for the doc kinds, though the file
+   is otherwise T2's (standing answer 9 covers the merge). The command's `decision_program`
+   accepts a reject whose keys are `[decision, note]` or `[calls, decision, note]`, checks the `calls` shape when present, and prints
    `{decision: "reject", note, calls}`, with `calls: []` when the stored decision has none. That
    keeps a decision from a server built before the pass readable during the restart window. The
    log lines don't change.
@@ -163,9 +182,13 @@ None changes the design's outcome or check. The contestable ones go in the PR's 
      ref whose latest line is an approve, a hold, or a `send-back` verdict inside an approve is not
      sent back. The design says "the latest reject line"; taking the latest line keeps a ref that
      was sent back, then approved, from reading as a revision forever.
+   - No `decisions.jsonl` (a fresh state root) means no ref is sent back. The read guards the
+     missing file as the `approved` subcommand does, since jq on a missing file exits 2, the
+     refusal code.
    - The packet revises when one or more refs are sent back. `revises` is the `packet` id of the
-     latest such line. `revision` is one more than the number of distinct `packet` ids among every
-     reject line naming any of the packet's refs, so the first resend is "Revision 2".
+     latest such line. `revision` is one more than the number of distinct `packet` ids among the
+     reject lines naming any of the packet's refs after that ref's latest approve line, so the
+     first resend is "Revision 2" and a ref's rounds before an earlier approve don't count.
    - `item.json` gains `revises: {item, revision, parts: [{ref, head} | {ref, sha256}]}`, the parts
      taken from that item's reject lines. The earlier item's `decision.json` supplies the note and
      calls at load time.
@@ -187,11 +210,19 @@ None changes the design's outcome or check. The contestable ones go in the PR's 
    Probed on 2026-10-24 against glw907/approval-queue: the answer's `status` is `ahead` when the
    old head is an ancestor of the new, `behind` the other way round, and an unknown commit answers
    HTTP 404. The same path with `-H 'Accept: application/vnd.github.diff'` prints a unified diff.
+   The status is read only when `gh` exits 0: on a 404, `gh api --jq` exits 1 and prints the
+   error JSON on stdout (reviewer's probe), so a failure is told apart by its stderr, as `gh_file`
+   matches `404`.
    - `status == "ahead"`: the diff goes to `parts/<k>/since.patch`.
    - Any other status, or a 404 or 422: `parts/<k>/since.json` holds `{"gone": true}`. The old
      head is no longer behind the new one (a force-push), and the part says so.
+   - A 406 (a diff too large to serve, as `gh pr diff` refuses past 300 files) writes neither
+     file, and the part shows its full list as today. A nice-to-have section never refuses a
+     packet.
    - Any other `gh` failure is a tool failure, exit 1, as `fetch_pr` treats one.
    - An unmoved head or a design part gets neither file.
+   - A branch that merged its default branch since the send-back carries those changes in its
+     since diff. The README says so.
 5. **The description (#3 of the design).** `blueprint` and `page` take a required
    `--description <file>`. The paragraph rule `parsePacket` applies today moves into one exported
    function in `packet.ts`, and the title rule (no closing punctuation, at most `TITLE_MAX`) into
@@ -199,7 +230,8 @@ None changes the design's outcome or check. The contestable ones go in the PR's 
    `node check-brief.ts description <file> <title>`, that runs both checks. It exits 0 printing
    the paragraphs as JSON, and exits 2 with the messages and the register path. The command runs
    it in `check_blueprint`, before any item directory exists, and copies the file to the item's
-   `description.md`. A missing `--description` exits 2 with a message that names the flag, the two
+   `description.md`. A `--description` path that is not a file exits 2 naming it, as `--notes`
+   does. A missing `--description` exits 2 with a message that names the flag, the two
    or three paragraphs it holds, and the README section, so a session still on the old skill text
    can correct itself. Sentence case stays the register's guidance, since no check reads it today.
 6. **The doc header.** `FrameHeader` renders the description and the status line together; today
@@ -227,16 +259,19 @@ None changes the design's outcome or check. The contestable ones go in the PR's 
 11. **#24.** T2 traces why an answered call comes back as "Still open". If `openCalls` counts it,
     the fix is in the count (`review.svelte.ts`), which also fixes the bar's "Make N calls" line.
     If the count is right and the cause is a note prefilled before the call was answered, the fix
-    is in `prefill()`'s timing: an untouched prefill is rebuilt when the note opens. Either way the
-    test pins the record's case: answer a call, then open the note, and no "Still open" line names
-    it.
+    is in `prefill()`'s timing: an untouched prefill is rebuilt when the note opens. `prefill()`
+    already maps only `openCalls`, so "answer, then open the note" likely passes on today's code;
+    the record points at an order where the note kept older text (`openNote` keeps a non-empty
+    `noteText`, and an Undo of a send-back reopens the note with its restored text). The test
+    reproduces the sequence T2 traced and fails on `c8018fd` before the fix; STATUS records the
+    red run.
 12. **Throwaway instances.** From PR #5's calls 11 and 12, which kept the live queue whole:
     - Each instance runs the worktree's own command by absolute path. The `approval-queue` on PATH
       is the live main checkout's.
     - Each puts `/var/home/glw907/.local/state/aq-sendback/bin` first on `PATH`. It holds an
       `xdg-open` that exits 0 (T0 writes it, mode 755), so no tab opens on Geoff's screen.
-    - Each builds its port first: `APPROVAL_QUEUE_PORT=<port> npm run build --prefix
-      <worktree>/approval-queue`. The port is baked in at build time.
+    - Each builds its port first, and every queue carries `APPROVAL_QUEUE_PORT` too (see
+      "Commands"). The port is baked in at build time.
     - Each uses its own state root through
       `XDG_STATE_HOME=/var/home/glw907/.local/state/aq-sendback/<task>`.
     - Each stops by its full worktree path, `pkill -f '^node <worktree>/approval-queue/build'`,
@@ -265,9 +300,34 @@ None changes the design's outcome or check. The contestable ones go in the PR's 
     - for a packet: `revision?: number`, `sentBack?: {note, calls}` from the earlier item's
       `decision.json`, `whatChanged?: string[]`, and on a PR part `since?: {groups} | {gone: true}`,
       where `groups` has the shape the part's file groups have today.
-    - for a blueprint or page: `description?: string[]` and `revision?: number`. The doc kinds use
-      call 2's lookup on their own log ref (`<repo>:<file>`, kind `blueprint` or `page`), with no
-      section rule; their replies already answer each comment.
+    - for a blueprint or page: `description?: string[]` and `revision?: number`. The command runs
+      call 2's lookup in its `blueprint | page` branch, on the item's own log ref (`<repo>:<file>`,
+      kind `blueprint` or `page`), and writes `revises: {item, revision}` into `item.json`, with
+      no section rule: their replies already answer each comment.
+    - An earlier item whose `decision.json` is missing leaves `sentBack` out, with no error.
+
+## Commands
+
+Each line is written out in full where it runs. `<wt>` is the task's worktree path and `<port>`
+and `<task>` the task's own ("Names"); a prompt never carries the placeholders.
+
+- Setup, in a fresh worktree: `npm ci --prefix <wt>/approval-queue`.
+- Build for a port: `APPROVAL_QUEUE_PORT=<port> npm run build --prefix <wt>/approval-queue`, before
+  every instance, since an earlier build in the same worktree serves another port.
+- Queue an item:
+  `PATH=/var/home/glw907/.local/state/aq-sendback/bin:$PATH APPROVAL_QUEUE_PORT=<port> XDG_STATE_HOME=/var/home/glw907/.local/state/aq-sendback/<task> APPROVAL_QUEUE_PROJECTS=/var/home/glw907/.local/state/aq-sendback/<task>/projects setsid -f <wt>/bin/.local/bin/approval-queue <kind> <args> > <decision file> 2> <stderr file>`.
+  The command takes its port from `APPROVAL_QUEUE_PORT` and defaults to 7907, so a line that drops
+  it reaches the live server. A packet queued here names initiative `none`, or the task seeds
+  `<projects>/initiatives/<id>/initiative.yaml` and each design part's file under that projects
+  root first, since `queue_packet` checks both there. CT puts `/var/home/glw907/.local/state/aq-sendback/ct-bin` before
+  the `bin` directory on `PATH`, for its `gh` stub.
+- Seed without queuing (T3): the existing `seed-packet.ts` and `seed-blueprint.ts` fixtures, run
+  the way their current callers run them (`grep -rn seed- <wt>/approval-queue <wt>/tests`), then
+  start the server with `HOST=127.0.0.1 PORT=<port> APPROVAL_QUEUE_STATE=/var/home/glw907/.local/state/aq-sendback/<task>/approval-queue setsid -f node <wt>/approval-queue/build`.
+- A form post with curl: `-H 'Origin: http://127.0.0.1:<port>' -H 'x-sveltekit-action: true'`, or
+  SvelteKit's CSRF check answers 403.
+- Stop: `pkill -f '^node <wt>/approval-queue/build'`, then check that
+  `curl -sf http://127.0.0.1:<port>/` fails.
 
 ## Path
 
@@ -275,17 +335,20 @@ The longest chain run in sequence, a pair counting once at its larger estimate:
 
 - T0, worktrees, baseline, stubs: 15.
 - The pair T1 (120) beside T2 (90): 120, ending at 135.
-- The pair T3 (90) beside T4 (45): 90, ending at 225.
-- T5, the drafter skill, once the conductor says go: 20, ending at 245.
-- CT, the end-to-end check, the close reviews, one fix chain, three PRs: 60, ending at 305.
+- R1, the pair merge and T1's task-scope `diff-reviewer` read with its fix: 10, ending at 145.
+- The pair T3 (90) beside T4 (45): 90, ending at 235.
+- T5, the drafter skill, once the conductor says go: 20, ending at 255.
+- CT, the end-to-end check, the close reviews, one fix chain, three PRs: 60, ending at 315.
 
-305 path minutes, under the 420-minute standing answer. The task sum is 440 (15 + 120 + 90 + 90 +
-45 + 20 + 60).
+315 path minutes, under the 420-minute standing answer. The task sum is 450 (15 + 120 + 90 + 10 +
+90 + 45 + 20 + 60).
 
 Clock: `pass-task-clock` in the pass worktree's git dir,
 `/var/home/glw907/Projects/approval-queue/.git/worktrees/sendback`, holds the session's own task
 (three lines: `task=<id>`, `start=<epoch seconds>`, `estimate=<minutes>`). When a pair subagent
-returns, the session checks its minutes against twice its estimate.
+returns, the session checks its minutes against twice its estimate. STATUS records T0's start
+epoch, and at each task start the session compares the minutes since then, less any time spent
+waiting on "start T5", against 420.
 
 ## Models
 
@@ -295,7 +358,7 @@ returns, the session checks its minutes against twice its estimate.
   "worktree"` and the `description` `sendback-revisions task <n>`. PR #5's planning miss: a
   worktree-isolated session's subagents cannot write in worktrees cut by hand, so each pair runs in
   an agent worktree branched from the session's HEAD (`worktree.baseRef: "head"`).
-- The session does T0, T4, T5, and CT itself, since dotfiles and drafter lie outside any agent
+- The session does T0, R1, T4, T5, and CT itself, since dotfiles and drafter lie outside any agent
   worktree.
 - Each code subagent loads `svelte-conventions`, `ts-conventions`, and the `daisyui` skill first,
   by absolute path (`/var/home/glw907/.claude/skills/<name>/SKILL.md`), since a headless agent
@@ -323,7 +386,13 @@ Written out literally in every command and subagent prompt, never as shell varia
   port, each PR and head, every overrun, and the signal lines `T5-WAIT`, `READY <prs>`, and
   `STOP <question>`.
 - **Ports:** T2 7962, T3 7972, CT 7992. State roots:
-  `/var/home/glw907/.local/state/aq-sendback/{t2,t3,ct}`.
+  `/var/home/glw907/.local/state/aq-sendback/t2`, `.../t3`, and `.../ct`.
+- **The CT `gh` stub:** `/var/home/glw907/.local/state/aq-sendback/ct-bin/gh`, written in CT step
+  2 on the model of `tests/packet.test.sh`'s inline stub. It answers `pr view`, `pr diff`, and
+  `api repos/<owner>/<repo>/compare/<old>...<new>` with and without the diff `Accept` header, from
+  files beside it.
+- **The one-executor pattern:** `pgrep -af '[w]orktrees/sendback( |/|$)'`, anchored so it misses
+  the planner's `sendback-plan` and the `sendback-revisions` worktrees.
 
 ## Standing answers
 
@@ -341,6 +410,11 @@ From the design and its approval, applied in place of stopping:
      PRs and reports them ready. Once the batch-friction PR merges, the conductor messages "start
      T5"; the executor then runs T5 and CT's steps for the drafter PR alone, and the drafter PR
      goes in a second packet.
+   - Never merged: on 2026-10-24 the branch had no PR yet (`--state all` printed `[]`). If the
+     batch-friction PR closes unmerged, or the `drafter-batch-friction` session has ended with no
+     PR open from that branch, the conductor asks `conductor-drafter` once whether the skill files
+     will still change. On "no" or no reply in 30 minutes, it messages "start T5": T5 cuts from
+     `origin/main` as it stands, and the drafter PR goes in the second packet.
 3. **A scroll cause inside CodeMirror.** The pass works around it in this repo, and the session
    files the upstream issue as a BACKLOG item through `log-issue` with the reproduction (the
    design).
@@ -365,6 +439,10 @@ From the design and its approval, applied in place of stopping:
 8. **A stop.** The session removes the clock file, writes `STOP <question>` into STATUS, and sends
    `conductor-approval-queue` one message naming it. It never runs `notify-send` and never asks
    Geoff. The conductor asks him.
+9. **A pair merge conflict.** pass-core says a merge conflict stops the line. Here the one
+   expected overlap is T1's `answeredCalls` edit in T2's `ItemPanel.svelte` (call 1). A conflict in
+   a file one task owns is resolved by keeping both sides, the gate is run, and the resolution is
+   named in `## Decisions`. A conflict that needs a choice between two behaviors stops (answer 8).
 
 ## Tasks
 
@@ -372,18 +450,19 @@ From the design and its approval, applied in place of stopping:
 
 Risk: `runner`, no edit.
 
-1. The one-executor checks: `pgrep -af '[w]orktrees/sendback'` prints nothing, and `claude agents
+1. The one-executor checks: `pgrep -af '[w]orktrees/sendback( |/|$)'` prints nothing, and `claude agents
    --json` shows no other busy session in approval-queue. Then `EnterWorktree` with the name
    `sendback` from `/var/home/glw907/Projects/approval-queue`. Write STATUS with the base commit,
    and arm the API-drop wake-up (`/loop` with no interval) per
    `~/.claude/docs/unattended-work-guards.md`.
 2. `npm ci --prefix /var/home/glw907/Projects/approval-queue/.claude/worktrees/sendback/approval-queue`,
    then the gate from the pass worktree. A red baseline stops (answer 8).
-3. Cut the dotfiles worktree ("Names") and run its gate once as a baseline.
+3. Cut the dotfiles worktree ("Names"). T4's gate is its first run there.
 4. Write `/var/home/glw907/.local/state/aq-sendback/bin/xdg-open` (`#!/bin/sh`, `exit 0`, mode
    755), and the long-blueprint repo (call 13).
 
-- Files: none committed. Acceptance: both baselines are green and STATUS is written.
+- Files: none committed. Acceptance: the baseline is green, the dotfiles worktree exists, and
+  STATUS is written with T0's start epoch.
 
 ### The pair: T1 beside T2
 
@@ -393,15 +472,18 @@ carries the scope guard, calls 12 and 13 quoted, the task's own calls quoted who
 commands written out with literal paths once the subagent has read its own worktree path with
 `git rev-parse --show-toplevel`.
 
-File ownership. Neither edits the other's files.
+File ownership. Neither edits the other's files, with one exception: T1 makes call 1's narrowing
+edit in `answeredCalls` in `ItemPanel.svelte` (standing answer 9 covers the merge).
 
 - **T1:** `bin/.local/bin/approval-queue`, `src/lib/packet.ts` and its test, `src/check-brief.ts`,
   `src/lib/server/items.ts` and its test, `src/lib/server/packet-decision.ts` and its test,
-  `src/routes/item/[id=id]/+page.server.ts` and its test, `src/lib/fixtures/`, `tests/`, and
+  `src/routes/item/[id=id]/+page.server.ts` and its test, `src/lib/fixtures/` (including
+  `seed-packet.ts` and `seed-blueprint.ts`, which T1 extends to seed a revising packet with one
+  moved and one force-pushed part and a blueprint with `description.md`, for T3), `tests/`, and
   `README.md`.
 - **T2:** `src/lib/components/ItemPanel.svelte`, `src/lib/editor/review.svelte.ts` and its test,
-  `src/lib/components/DocEditor.svelte`, `src/lib/components/frame/` (`DecisionBar.svelte`,
-  `frame.css`), and `src/app.css`.
+  `src/lib/components/DocEditor.svelte`, `src/lib/components/frame/` except `FrameHeader.svelte`
+  (the scroll container may be any file there), and `src/app.css`.
 
 #### T1: the command and the server (120 min), `sonnet` at `medium`
 
@@ -423,32 +505,36 @@ Outcome: calls 1 to 5, 14, and 15 hold in code and tests, and every kind prints 
   - a first packet with the section exits 2;
   - a resend with the section queues with `revises` in `item.json` and `revision` 2, and a third
     round reads 3;
-  - a ref sent back and then approved reads as no revision;
+  - a ref sent back and then approved reads as no revision, and its earlier rounds don't count
+    toward a later revision number;
+  - a state root with no `decisions.jsonl` reads as no revision;
   - `--check` applies the same rule and fetches no compare;
-  - a moved head writes `since.patch`, a `diverged` answer and a 404 write `since.json`, and an
-    unmoved head writes neither.
+  - a moved head writes `since.patch`, a `diverged` answer and a 404 write `since.json`, a 406
+    and an unmoved head write neither, and none of them refuses the packet;
+  - `tests/blueprint.test.sh`: a blueprint queued, sent back, and queued again carries `revises`
+    with `revision` 2 in `item.json` (call 15), and needs no section.
 - **The grammar (call 3).** `packet.test.ts` covers the section accepted in place, and each
   refusal: twice, empty, prose outside the list, and out of order.
 - **The description (call 5).** `packet.test.ts` covers the extracted rules with `parsePacket`'s
   messages unchanged. `tests/blueprint.test.sh` and `tests/page-change.test.sh` pass
   `--description` on every queue and cover a missing flag, a one-paragraph file, a four-paragraph
-  file, a title ending in a period, an 81-character title, and that a refusal leaves no item
-  directory.
+  file, a `--description` path that does not exist, a title ending in a period, an 81-character
+  title, and that a refusal leaves no item directory.
 - **#21.** After the `curl -sf "$base/item/$id"` check passes, every kind prints `approval-queue:
   queued <id> at <base>/item/<id>` to stderr. The shell tests assert the line on each kind and that
   stdout holds only the decision JSON. The tests' `curl` stub answers 0, so the line prints under
   it.
 - **Load (call 15).** The route test seeds a revising packet (earlier item with `decision.json`,
-  `since.patch` on one part, `since.json` on another) and a blueprint with `description.md`, and
-  asserts each field. An item without the new files loads with none of them.
+  `since.patch` on one part, `since.json` on another), a revising blueprint, and a blueprint with
+  `description.md`, and asserts each field. An item without the new files, and a revising packet
+  whose earlier `decision.json` is gone, load with the missing fields left out.
 - **The register test (call 14).** `tests/approval-queue.test.sh` passes against the live register
   and against a copy of it with a fourth, revision exemplar added in a temp file through
   `REGISTER=`.
 - **README:** the packet reject's `calls`, revisions and `## What changed`, the since diff,
   `--description` on the blueprint and page kinds (with the usage line), and the stderr line.
 - **BACKLOG** is the session's at CT, not T1's.
-- Acceptance: the gate is green. The session's task-scope `diff-reviewer` read of T1's commits
-  returns `accept` (answer 5 on `fix`).
+- Acceptance: the gate is green in T1's worktree. R1 carries the `diff-reviewer` read.
 
 #### T2: the send-back box (90 min), `sonnet` at `medium`
 
@@ -457,9 +543,9 @@ Risk: `runner`, no decision-path edit.
 Outcome: typing in `#note` leaves the scroll alone, the opener hides while the note is open
 (call 9), and #18 and #24 are fixed (calls 10 and 11).
 
-- **The scroll.** Seed the long blueprint (call 13) on an instance at 7962, built for 7962 first,
-  with state root `/var/home/glw907/.local/state/aq-sendback/t2` and the `xdg-open` stub first on
-  `PATH`. Reproduce at 1440 and 500: scroll to the middle, open the note, type twenty characters
+- **The scroll.** Queue the long blueprint (call 13) through T2's own worktree command on an
+  instance at 7962, built for 7962 first, with the "Commands" queue line (task `t2`).
+  `--description` doesn't exist yet in T2's base, so the line carries none. Reproduce at 1440 and 500: scroll to the middle, open the note, type twenty characters
   with real key events, and record which element's scroll offset moves and by how much. Trace the
   cause (the design names scroll anchoring and CodeMirror's height map as likely; probe with
   `overflow-anchor` and with CodeMirror's own measure) and fix it at the cause. A cause inside
@@ -474,10 +560,16 @@ Outcome: typing in `#note` leaves the scroll alone, the opener hides while the n
   unchanged at both widths after twenty characters, and no "Send back with note" button while the
   note is open, and Escape returns focus to it.
 
+### R1: the pair merge and T1's read (10 min), by the session
+
+The session merges T1's branch, then T2's, into `worktree-sendback` (standing answer 9 on a
+conflict), runs the gate, and removes both agent worktrees. It runs the task-scope `diff-reviewer`
+read of T1's commits against calls 1 to 5, 14, and 15, and fixes any `fix` finding (answer 5)
+before T3 starts. Acceptance: the gate is green and the read returns `accept`.
+
 ### The pair: T3 beside T4
 
-The session merges T1's branch, then T2's, into `worktree-sendback`, runs the gate, and removes
-both agent worktrees. Then it dispatches T3 in a new agent worktree and works T4 itself.
+The session dispatches T3 in a new agent worktree and works T4 itself.
 
 #### T3: the header, the revision, and the since diff on the page (90 min), `sonnet` at `medium`
 
@@ -489,11 +581,11 @@ Outcome: calls 6, 7, and 8 hold on screen.
   block), `src/lib/components/frame/FrameHeader.svelte`, `src/lib/components/PacketRoutine.svelte`,
   `src/lib/components/PacketAsks.svelte`, a new component for the What changed block if
   `ItemPanel.svelte` would otherwise grow by more than a screen, and their tests.
-- Acceptance: the gate is green. On an instance at 7972, built for 7972 first, with seeded items
+- Acceptance: the gate is green. On an instance at 7972, built for 7972 first, with T1's seeds
   (a revising packet with one moved and one force-pushed PR part, a blueprint with a description,
-  and a blueprint from before the pass), renders at 1440 and 390 in light and dark show each call's
-  layout, and the session reads them. `svelte-reviewer` and `daisyui-a11y-reviewer` run at CT on
-  the whole branch, not here.
+  and a blueprint from before the pass), one light render at 1440 of each shows each call's
+  layout, and T3 reads them. CT makes the full render set. `svelte-reviewer` and
+  `daisyui-a11y-reviewer` run at CT on the whole branch, not here.
 
 #### T4: the register and the approval-packet skill (45 min), by the session
 
@@ -533,19 +625,23 @@ it goes to CT for two PRs and comes back to T5 on a later "start T5".
   what came before, then one or two paragraphs on what this blueprint, or this draft, proposes. It
   names the title rule (sentence case, no closing punctuation, at most 80 characters), and that a
   queue prints its link on stderr. The edits build on the batch-friction text as merged.
-- Acceptance: `make check` is green in the drafter worktree, and `grep -n 'approval-queue
-  \(blueprint\|page\)'` over the two files shows `--description` on every queue line.
+- Acceptance: drafter's gate ("Risk class and repos") is green in the drafter worktree, and
+  `grep -n 'approval-queue \(blueprint\|page\)'` over the two files shows `--description` on every
+  queue line.
+- Unattended drafter passes have edited these two files before (`8ed0a39`, `37c879f`). If auto mode
+  still blocks an edit here, that is a stop (answer 8), and the conductor asks Geoff.
 
 ### CT: the end-to-end check, the close reviews, and the PRs (60 min), by the session
 
 Risk: `runner`.
 
 1. Merge T3 into `worktree-sendback`, run the gate, and remove its worktree.
-2. Run the end-to-end check from "Outcome" on an instance at 7992, built for 7992 first, through
-   the worktree's own command with the `xdg-open` stub and the `gh` stub first on `PATH` and
-   `XDG_STATE_HOME=/var/home/glw907/.local/state/aq-sendback/ct`. Record each printed JSON and
-   each offset in STATUS. Answer 6 on a red step.
-3. Run `diff-reviewer` at whole-branch scope on each branch against the design and this plan,
+2. Write the CT `gh` stub ("Names"). Run the end-to-end check from "Outcome" on an instance at
+   7992, built for 7992 first, through the worktree's own command with the "Commands" queue line
+   (task `ct`, with `ct-bin` first on `PATH`). Record each printed JSON and each offset in STATUS.
+   Answer 6 on a red step.
+3. Run `diff-reviewer` at whole-branch scope on the approval-queue branch against the design and
+   this plan, and one more `diff-reviewer` read over the dotfiles and drafter branches together,
    beside `svelte-reviewer` and `daisyui-a11y-reviewer` on the approval-queue branch. Run one
    batched fix chain that quotes each finding verbatim (location, finding, fix), then each gate
    again.
@@ -578,9 +674,12 @@ answer 2 held T5, the drafter PR following in a second packet).
 - **`## If you approve`** lists the merge order and the live restart from "Merge order" as
   `[session]` steps, then:
   - `[you: reload the queue tab]`: an open tab keeps the old client until it reloads.
-  - `[you: other workstation]`: on the other host, pull approval-queue and rebuild it
-    (`npm ci --prefix approval-queue && npm run build --prefix approval-queue`, then restart the
-    server), and pull `~/.dotfiles` and `~/Projects/drafter`, before queuing there.
+  - `[you: other workstation]`: on the other host (`pavilion` or `thinkpad-x1`, whichever the
+    conductor is not on), before queuing there: `git -C ~/Projects/approval-queue pull --ff-only`,
+    `npm ci --prefix ~/Projects/approval-queue/approval-queue && npm run build --prefix
+    ~/Projects/approval-queue/approval-queue`, and `pkill -f "^node $HOME/Projects/approval-queue/approval-queue/build"`
+    (the next `approval-queue` call starts the server). Then `git -C ~/.dotfiles pull --ff-only`
+    and `git -C ~/Projects/drafter pull --ff-only`. Skip any repo that host lacks.
 - **`## Not checked`**: how a revision reads on a real resend, which the next real send-back shows.
 
 ## Merge order
@@ -588,12 +687,16 @@ answer 2 held T5, the drafter PR following in a second packet).
 On the packet's approve, the conductor, from `/var/home/glw907/Projects/approval-queue`, each
 merge with `--match-head-commit <head>` from the decision:
 
-1. Check the live state root before restarting: restart once no `blueprint`, `page`, or `change`
-   item waits (an `item.json` with no `decision.json` under
-   `/var/home/glw907/.local/state/approval-queue/items/` whose `kind` is one of them), or once
-   `/var/home/glw907/.local/state/approval-queue/tab.seen` is more than 5 minutes old. Otherwise
-   re-check every 10 minutes for up to 60, then restart anyway (saves debounce at 800 ms), and
-   record the reason in the hand-over.
+1. Check the live state root before merging. A waiting command is a bash process that loaded the
+   old `decision_program`, which refuses a reject carrying `calls` (exit 1, nothing logged), and
+   the new server writes `calls` on every packet send-back. An open editor's pending save also
+   fails across a restart. So merge once no `packet`, `blueprint`, `page`, or `change` item waits
+   (an `item.json` with no `decision.json` under
+   `/var/home/glw907/.local/state/approval-queue/items/` whose `kind` is one of them), or, for the
+   doc kinds alone, once `/var/home/glw907/.local/state/approval-queue/tab.seen` is more than 5
+   minutes old. Otherwise re-check every 10 minutes for up to 60, then go on anyway. The hand-over
+   names each packet still waiting then, and says a send-back of it must be read from that item's
+   `decision.json` by hand.
 2. approval-queue first:
    1. `gh pr merge <n> -R glw907/approval-queue --merge --match-head-commit <head>`, then
       `git -C /var/home/glw907/Projects/approval-queue pull --ff-only`.
@@ -613,8 +716,9 @@ merge with `--match-head-commit <head>` from the decision:
 5. Message `conductor-drafter` one line: `approval-queue blueprint` and `page` now require
    `--description <file>` (two or three paragraphs), the title takes the packet title rule, and a
    queue prints its link on stderr. Send it after step 2 even when the drafter PR is held, since
-   its sessions queue blueprints.
-6. Remove `/var/home/glw907/.local/state/aq-sendback` once `pgrep -af '[w]orktrees/sendback'`
+   its sessions queue blueprints. Send the same line to any live session `claude agents --json`
+   shows running the extend-blueprints batch, whose handoff queues pages without the flag.
+6. Remove `/var/home/glw907/.local/state/aq-sendback` once `pgrep -af '[w]orktrees/sendback( |/|$)'`
    prints nothing.
 
 ## Later
