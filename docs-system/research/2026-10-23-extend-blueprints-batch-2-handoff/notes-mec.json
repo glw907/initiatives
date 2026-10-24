@@ -1,0 +1,22 @@
+[
+ {"id":"N0","kind":"info","anchor":"migrate-existing-content.heading","title":"Why this page, an extra past the batch of three","body":[
+  "Batch 3's three pages were done with time left, so the run took the next outline page. cairn ships no importer, and the Go tool has no import command, so moving an old site's markdown into cairn's concepts is a job no scaffold, tutorial, or reference page covers. The page passed the premise check with no trim.",
+  "The page's migration script was run against sample files: a Jekyll-dated post, a Hugo note shortcode, a Hugo TOML file, a `published: false` post, and a post with bad YAML. Every claim about what the script does now matches what it did on those runs."]},
+ {"id":"N1","kind":"question","anchor":"write-dates-as-yyyy-mm-dd.heading","title":"Which date should the script take by default?","body":[
+  "The script takes the UTC day of the old `date`, the same day the date field takes. An evening timestamp west of UTC, such as `2024-03-15 20:00:00 -08:00`, lands on the next day: the sample run wrote `2024-03-16`.",
+  "The section offers a one-line variant that prefers the date in the old filename. For a Jekyll site, whose filenames carry the intended day, that variant never shifts."],
+  "choices":[
+   {"label":"Keep the UTC day","done":"The script stays as written, matching the field, and the filename variant stays an option."},
+   {"label":"Prefer the filename","done":"The session makes the filename variant the script's default and the UTC day the fallback, then re-runs the samples."}]},
+ {"id":"N2","kind":"question","anchor":"mark-drafts-with-draft-true.heading","title":"Should the scaffold's posts concept declare a draft field?","body":[
+  "The scaffold's `posts` concept declares no `draft` field (`templates/waymark/src/theme/cairn.config.ts:74-116`). The first admin save deletes an undeclared key, so a migrated draft loses `draft: true` and reads as published.",
+  "The page tells the reader to declare the field before migrating. A scaffold that declared it would make that step unnecessary."],
+  "choices":[
+   {"label":"Keep the step","done":"The scaffold stays as it is, and the page keeps the step that adds the field."},
+   {"label":"Add it to the scaffold","done":"The session files an engine item to add a `draft` field to the scaffold's posts concept, and the step shrinks once it lands."}]},
+ {"id":"N3","kind":"info","anchor":"migrate-existing-content.heading","title":"The one external fact","body":[
+  "The page names Jekyll, Hugo, and Eleventy, and says a Hugo site may keep TOML front matter between `+++` lines. Both rest on `f:ht7tdd`, which quotes each generator's own docs. No repo code confirms them, so the fact-check returned both lines as unsupported. What `parseMarkdown` does with a `+++` block is code-sourced and was confirmed by a run."]},
+ {"id":"N4","kind":"info","anchor":"write-the-migration-script.heading","title":"Facts corrected while authoring","body":[
+  "`f:qd7iat` claimed `parseMarkdown` is the parser the save path uses. The save path writes with `serializeMarkdown` and never parses, so the fact now says only what `parseMarkdown` is. The no-importer claim moved to the new `f:7mq2xa`.",
+  "Four shared facts had line pointers that drifted up to 30 lines but still passed the store check, and they now point at the right lines. The published page's brief still cites the old wording; the redraft from this blueprint fixes it."]}
+]

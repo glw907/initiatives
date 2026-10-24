@@ -362,3 +362,19 @@ B3-25. (cairn-cms, engine) The edit page's live preview hard-codes `/media` and 
        missing until an entry save records it.
 B3-26. (cairn-cms) `docs/reference/log-events.md` said `media.uploaded` writes the manifest row;
        fixed on `ebp3-configure-media` (`946f14dcb`).
+B3-27. (drafter) `drafter refs <fact>` lists a page's brief citations only once the page has a
+       blueprint; before that it says "no blueprint places or cites it", so a fact correction
+       looks free while the published page's brief cites it 5+ times. It also labels ordinary
+       bullets `(example)`, a kind format.md never names. (migrate-existing-content author)
+B3-28. (drafter, cairn-cms) A `path:lines` pointer with no anchor span is never drift-checked:
+       f:ivhuyc, f:gh4ckg, f:2p519o, f:qd7iat had drifted 1 to 30 lines and passed. Require an
+       anchor on line pointers. Dependency-behavior facts (gray-matter, js-yaml) have no
+       excerptable source and rest on dated runs; a `run` or vendor tag would let a checker
+       know why.
+B3-29. (blueprint skill) format.md's "What `drafter check` checks" table is mostly YAML-era rows
+       (`why`, `use`, `framing`, `recovery`, `reader-state`); say which apply to markdown. The
+       fact-edit rule should allow an exact in-place substitution, never an append.
+B3-30. (cairn-cms) `f:q07rd5` bundles a code-sourced scaffold path with tutorial paths sourced
+       only from a docs page and an unrelated hooks note, so D1 blocks citing it for the
+       scaffold alone. Split it. Page plans state as constraints things the code now settles
+       (the build error's count prefix, `parseMarkdown` and TOML); see B3-24.
