@@ -101,3 +101,5 @@ The run was paused 2026-10-23 at 08:50 and resumes at 00:01 on 2026-10-24 as an 
 4. Geoff's friction-cleanup pass reads the batch 3 section of `2026-10-22-extend-blueprints-batch-2-friction.md` and the filed items.
 
 **Queue change (approval-queue#7, merged 86d142d, 2026-10-24):** `approval-queue blueprint` and `approval-queue page` now require `--description <file>`, two or three paragraphs. The title follows the packet title rule, and the queue prints its link on stderr. A command without the flag exits 2. Every page queued in step 1 or step 3 above needs it.
+
+**Drafter rebuilt mid-run (f2ad05e, 2026-10-24, drafter #60, #62, #64):** the running `drafter page` keeps the old code, and the new build reads its state. A `--resume`, and every `drafter check` or `drafter refs` from here on, runs the new rules: sentence-length and hinge checks on blueprint lines (#64), exhaustive-word matches reported per line (#62), and a stricter store check (#60). Expect new findings on the six approved blueprints before they draft. Settle them, and if a fix changes an approved line, it goes back through the blueprint rules before drafting.
