@@ -1,0 +1,15 @@
+conductor-servers: you own Part A of the ward address book's servers plan (executor servers-ward-probes) beside the passes you already hold, and later Part B. pass-core "Conductor", "Close", and "Launch prompt" and approval-packet govern how; this hand-over restates none of them.
+
+Read: the plan /var/home/glw907/Projects/initiatives/household-phonebook/plans/2026-10-24-ward-servers-plan.md (Entry, Part A, the Standing answers, the Close) and its design /var/home/glw907/Projects/initiatives/household-phonebook/specs/2026-10-24-ward-address-book-design.md, and the executor's prompt 2026-10-24-ward-probes-prompt.txt beside the plan. Geoff approved the design and this plan through the Approval Queue on 2026-10-24 (item 20261024T190609-431424; glw907/initiatives#135), with step 2: "Hand Part A of the servers plan to conductor-servers to launch from the servers checkout, with its results relayed back before phonebook Pass 2 starts."
+
+Pre-launch checks (the plan's Part A Entry and pass-core "Execute"): `git -C /var/home/glw907/Projects/servers fetch origin`; the checkout is on main, clean, and `git rev-list --count HEAD..origin/main` prints 0; `claude agents --json` lists no session working .claude/worktrees/ward-probes. The plan has no pre-flight items. Part A writes nothing to ward, so another pass's ward hold line does not block it. Then launch:
+
+claude --bg --add-dir /var/home/glw907/Projects/initiatives --model sonnet --effort medium --name servers-ward-probes "$(cat /var/home/glw907/Projects/initiatives/household-phonebook/plans/2026-10-24-ward-probes-prompt.txt)"
+
+Keep `--add-dir` before the named flags. Record the executor's session id in STATUS.
+
+The probe results: when the executor sends its T2 line, relay it to the phonebook side. If `claude agents --json` lists a live session whose cwd is /var/home/glw907/Projects/phonebook (conductor-phonebook or the Pass 1 session), send it the line. Either way, record it in the "## Status" section of /var/home/glw907/Projects/initiatives/household-phonebook/README.md on a branch and self-merge it per pass-core "Ledgers", since phonebook Pass 2's pre-step reads it there. A failed probe 1 or 2 has no standing answer: ask Geoff once per pass-core "Judgment calls", saying the design returns to him, and record the stop the same way.
+
+Part A's PR stays a draft and sends no packet of its own: the plan puts Parts A and B and the workstation PR in one packet after Part B. Part B starts only on its Entry (phonebook Pass 2 merged, conductor-phonebook says so); its prompt is written then. At Part A's PR-ready message, record the PR number and head in STATUS, `claude stop` the executor's id, and wait.
+
+Standing answers are the plan's; apply them rather than stopping. A classifier denial the executor reports is yours to notify, once, with `notify-send -u normal`: Geoff runs the named command himself.
