@@ -122,6 +122,7 @@ Next:
 
 ## Sessions
 
+- Ward address book, servers Part A (2026-10-24): executor `servers-ward-probes` `f3c448e8`, launched by conductor `072b33ef` from the servers main checkout at `103fa26`, under `household-phonebook/plans/2026-10-24-ward-probes-conductor-prompt.txt`. Its PR stays a draft until Part B's packet.
 - Servers backlog second batch (2026-10-22): conductor `conductor-servers` `072b33ef`; executor `servers-backlog-2` `80617061`, launched from the servers main checkout at `e036a70`. Planner `servers-d5` handed off. Merged as servers#14; the executor stopped.
 - Bulwark webmail (2026-10-23): planner `servers-eb` handed off; executor `servers-bulwark` `d2fe6b20`, conductor `072b33ef`. Merged; the executor stopped.
 - Mail filters (2026-10-23): planner `dotfiles-65` handed off; executor `servers-mail-filters` `412df39b`, conductor `072b33ef`. Merged; the executor stopped.
