@@ -59,6 +59,7 @@ and schema, Migrate existing content, and Write a markdown component.
 - Geoff approved Build the public routes (15:28, head `5ad0f4cc3`); N6: keep the measured note. Four pages still queued.
 - Geoff approved Configure media and Define an adapter and schema (head `5ad0f4cc3`). Migrate and component still queued.
 - Geoff approved Migrate existing content and Write a markdown component (N1: keep the share-link check). All five approved at head `5ad0f4cc3`. Waiting on CI (`test`, e2e) before `gh pr merge 141 --merge --match-head-commit 5ad0f4cc3f93c70c93a0cb9598a05ffe1de2e568`.
+- Runtime-bag fact-check at `43e6f872f`: 43/53; correction holds. 5 wrong (signups screen on restrict-admin-access 18/37/96/150, `migrations-app/` on scaffolded-site-files) now contradict the page's own new line 118, so they're fixed in this PR, not left for #70. Plus 5 imprecise and three stale blueprint lines. Sweep agent resumed.
 
 ## Next session starts here
 
