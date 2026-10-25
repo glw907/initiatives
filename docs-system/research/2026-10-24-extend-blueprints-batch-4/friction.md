@@ -287,3 +287,25 @@ turn-on-tidy KEEP with two fixes, run-cairn-audit-on-your-site TRIM. No fold thi
   draft time, 40 minutes into a batch run.
 - D4 (drafter): a blueprint's link-target change doesn't flag its already-drafted page as stale
   in `drafter check`, so the page kept the old anchor after the blueprint moved on.
+
+## page reviews
+
+- P6 (drafter): a page's provenance check rejects a brief sentence marked `no-claim` that
+  carries a numeral ("exits with code `1`") or a code name (`defineComponent`), even when the
+  number is the page's own snippet, so a page-local fact needs a store fact or a reword.
+- P7 (drafter): each page drifted from its approved blueprint in ways the blueprint never
+  showed Geoff. Act-on's snippet swapped an environment variable for a `const` and added a
+  step. Theme's drafter added an unsourced "design-neutral", plus sentences and steps. Island
+  turned `:::row` blocks into a numbered list and dropped `defineComponent` and a constraint.
+  The fact-checker's "departures from the blueprint" list was the only place that showed it. A
+  drafter check that diffs a page's steps and snippets against the blueprint would catch it.
+- P8 (cairn-cms): the register editor's act-on review asked for a failure-path section and a
+  heading rename, both from the stale page plan (`briefs/extend/<slug>.plan.md`), which the
+  approved blueprint overrides. Repeat of cairn-cms item 5 (superseded plans).
+- P9 (workstation): the register editor and fact-checker both raised `#lib` imports as
+  defects. They are SvelteKit 3's subpath-import convention, which the migration notes record.
+  The agents' briefs should name the framework version.
+- P10 (drafter): `drafter page` keeps the page's brief in sync, but any page edit after
+  acceptance means a hand-kept brief: each sentence's text must match the page exactly. Two
+  register edits took a scripted old-to-new sentence map. A `drafter brief --sync` that
+  re-splits the page and carries ids across unchanged sentences would remove that.

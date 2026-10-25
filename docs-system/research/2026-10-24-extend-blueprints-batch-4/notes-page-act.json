@@ -1,0 +1,17 @@
+[
+ {"id":"N0","kind":"info","anchor":"act-on-newly-published-entries.heading","title":"How this draft was checked",
+  "body":["drafter wrote the page from the blueprint you approved. A fresh fact-checker read 74 claims against the code: 70 held, three were imprecise, and one was unsupported. All four are fixed. Two rechecks of the changed lines held 11 of 11, then 32 of 33, and the one imprecise wording took the checker's fix.",
+   "The register editor's review is applied, apart from two findings that came from the stale page plan: a failure-path section, and renaming \"Start from a stored baseline\". Your approved blueprint has neither, so the page follows the blueprint."]},
+ {"id":"N1","kind":"info","anchor":{"quote":"Node 24 or later, which cairn's package declares."},"title":"Node 24, not Node 22.18",
+  "body":["The blueprint said Node 22.18, with a `tsx` fallback for older Node. cairn's `package.json` declares `\"engines\": { \"node\": \">=24\" }`, so no Node a cairn site runs needs a runner. The blueprint and `f:rh53a2` changed to match."],
+  "was":"Node 22.18 or later... An older Node needs a TypeScript runner such as `tsx`.","now":"Node 24 or later, which cairn's package declares."},
+ {"id":"N2","kind":"info","anchor":{"quote":"When the site deploys each commit to its default branch"},"title":"The deploy is the site's pipeline, not the engine",
+  "body":["The engine's publish commits and redirects (`content-routes-entry-write.ts:390`). Whether a commit starts a deploy depends on the site's pipeline, so the sentence now states it as a condition."],
+  "was":"That publish commit triggers the site's deploy","now":"When the site deploys each commit to its default branch, that publish commit starts a deploy"},
+ {"id":"N3","kind":"decide","anchor":{"quote":"replace the value of `kvNamespaceId`"},"title":"Namespace id: a constant in the file, or an environment variable?",
+  "body":["Your approved blueprint read the KV namespace id from `ANNOUNCE_KV_NAMESPACE_ID`, set in the pipeline with the account id and token. The drafter wrote it as a `const` in the job file instead, with its own step. Both work, and the fact check found nothing wrong with either. A namespace id isn't a secret, so keeping it in the file costs nothing. The blueprint now carries the page's form."],
+  "sides":[{"who":"Draft","text":"A `const kvNamespaceId` in the job file and a step to set it. Two pipeline variables instead of three."},{"who":"Approved blueprint","text":"`process.env.ANNOUNCE_KV_NAMESPACE_ID`, set in the pipeline with the other two variables."}],
+  "choices":[{"label":"Keep the constant","done":"The page stands as drafted."},{"label":"Restore the variable","done":"The session puts `ANNOUNCE_KV_NAMESPACE_ID` back in the snippet, the step, and the blueprint, and rechecks the lines."}]},
+ {"id":"N4","kind":"info","anchor":{"quote":"If you use R2 or another store"},"title":"Register edit: the job's steps",
+  "body":["The storage swap was a conditional action hidden in step 3, so it is now its own step. The pipeline variables now come after the step they configure. The link check after a publish is two numbered steps instead of a sentence. The blueprint's steps and job snippet match the page."]}
+]
