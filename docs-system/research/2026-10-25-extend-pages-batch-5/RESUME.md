@@ -22,7 +22,8 @@ and schema, Migrate existing content, and Write a markdown component.
 - #140 merged into `main` (`0f151cc1c`) after a provenance fix (batch 4 RESUME has the detail).
 - Drafting launched. The session restarted mid-run; the runner (`draft5.sh`, log `draft5.log`, both in the old session's scratchpad `/tmp/claude-1000/-var-home-glw907-Projects-cairn-cms/a467c128-3a21-4b6f-970c-8fccd6d668e4/scratchpad/`) kept going.
 - Build the public routes drafted and accepted (`f928869b8`, $3.96, twice batch 4's per-page cost). Fact-check and register edit dispatched in parallel on that commit.
-- Routes page reviews in: fact-check 160 claims (148 hold, 10 imprecise, 2 unsupported, 0 wrong; findings file under `.../docs__extend__build-the-public-routes.md/f928869b8...json`); register edit 30 findings, 2 blocking (`register-routes.md` here). One Opus agent is settling both in worktree `ebp5-routes-page` (branch off `f928869b8`, kept apart from the live drafting worktree). Merge it into `ebp5-base` after drafting ends, then recheck the changed lines.
+- Routes page reviews in: fact-check 160 claims (148 hold, 10 imprecise, 2 unsupported, 0 wrong; findings file under `.../docs__extend__build-the-public-routes.md/f928869b8...json`); register edit 30 findings, 2 blocking (`register-routes.md` here). One Opus agent is settling both in worktree `ebp5-routes-page` (branch off `f928869b8`, kept apart from the live drafting worktree). Merge it into `ebp5-base` after drafting ends, then recheck the changed lines.- Configure media drafted and accepted (`30e58dd56`, $1.03); fact-check and register edit dispatched.
+- Routes page settled in `441a2c181` on `ebp5-routes-page` (summary and Geoff's one question, on `f:n07oiu`, in `settle-routes.md`). Fresh recheck of the changed lines dispatched (findings `.../441a2c181...json`).
 ## Next session starts here
 
 Read `## Done`, then pick up the first page whose step is unfinished.
