@@ -37,7 +37,7 @@ orpheus. Bulwark is a long-running Node server, so Workers alone cannot host it;
 
 ## Out of scope
 
-Sign-in through Stalwart's OpenID Connect provider (BACKLOG #12's pass), settings sync, plugins, Bulwark Lite, accounts for household members A, B, and C, a custom image, and installing the Survey faces on the workstations.
+Sign-in through Stalwart's OpenID Connect provider (BACKLOG #12's pass), settings sync, plugins, Bulwark Lite, accounts for household member C, a custom image, and installing the Survey faces on the workstations.
 
 ## Later
 
