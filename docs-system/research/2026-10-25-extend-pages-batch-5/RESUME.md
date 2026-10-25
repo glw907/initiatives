@@ -58,6 +58,7 @@ and schema, Migrate existing content, and Write a markdown component.
 - Runtime-bag sweep done on `runtime-bag-docs`: `d568dbb4f`, `7afcd9024`, `43e6f872f` (gates green; tutorial, sign-in group, custom admin screen, restrict admin access, debug your site, scaffolded site files, Cloudflare Access, and the `access_map_not_attached` reference rows). Fresh fact-check dispatched (findings under `.../docs__extend__restrict-admin-access.md/<sha>.json`). Page-vs-blueprint drift the sweep found filed as BACKLOG #70 on that branch (`a231c5707`), not fixed here.
 - Geoff approved Build the public routes (15:28, head `5ad0f4cc3`); N6: keep the measured note. Four pages still queued.
 - Geoff approved Configure media and Define an adapter and schema (head `5ad0f4cc3`). Migrate and component still queued.
+- Geoff approved Migrate existing content and Write a markdown component (N1: keep the share-link check). All five approved at head `5ad0f4cc3`. Waiting on CI (`test`, e2e) before `gh pr merge 141 --merge --match-head-commit 5ad0f4cc3f93c70c93a0cb9598a05ffe1de2e568`.
 
 ## Next session starts here
 
