@@ -23,6 +23,10 @@ The household's phones each hold their own contacts. A single phonebook that the
 - `phonebook`: the Worker, the web app, and the provisioning endpoint. Its design is the 2026-10-07 phonebook spec.
 - `cairn-themes`: Survey. The phonebook's UI waits on Survey S1 in `cairn-themes`.
 
+## Status
+
+- Ward probes (servers plan Part A, T2, 2026-10-25): all four pass, run by `servers-ward-probes` (`fba7a225`) on ward's probe domain. A per-user read grant reaches the sharee: its home set lists "Ward probe", a multiget returns 2 of 2, and its session lists the owner's account with contacts. A read-only member gets 403 on create, update, and delete, with ETags unchanged. The account id `stalwart-cli` gives the sharee matches the id the share used. If-None-Match on create returns 201, then 412. The "Ward probe" book is `https://mail.907.life/dav/card/probe%40probe.907.life/j9bMA3QGoc/`, empty after teardown and kept for T6. Stalwart lists a shared book in the sharee's home as well as the owner's, and the owner's path works for the sharee.
+
 ## Records
 
 - Spec: `docs/specs/2026-10-07-phonebook-design.md` in `phonebook`.
