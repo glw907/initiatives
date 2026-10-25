@@ -2,7 +2,7 @@ Initiative: self-hosting
 
 # Operator runbook and succession: plan
 
-Design: `self-hosting/specs/2026-10-25-operator-runbook-design.md` (approved by Geoff in chat, 2026-10-25). Risk class: `auth-data`, flagged `live-account`. Design estimate: 600 path minutes. Plan: 905 path minutes, 1,435 task minutes (revised by the fold and its verification read, `self-hosting/research/2026-10-25-operator-runbook-plan-fold.md`; it was 720 and 1,165). Path ceiling: 1,200 (twice the design). Spend ceiling: none; the pass buys nothing, since a Cloudflare member, a Hetzner project member, and a GitHub successor cost nothing. Executor: `servers-operator-runbook`, under `conductor-servers`.
+Design: `self-hosting/specs/2026-10-25-operator-runbook-design.md` (approved by Geoff in chat, 2026-10-25). Risk class: `auth-data`, flagged `live-account`. Design estimate: 600 path minutes. Plan: 925 path minutes (905 before ruling 4's answer), 1,455 task minutes (revised by the fold and its verification read, `self-hosting/research/2026-10-25-operator-runbook-plan-fold.md`; it was 720 and 1,165). Path ceiling: 1,200 (twice the design). Spend ceiling: none; the pass buys nothing, since a Cloudflare member, a Hetzner project member, and a GitHub successor cost nothing. Executor: `servers-operator-runbook`, under `conductor-servers`.
 
 ## Brief
 
@@ -38,6 +38,8 @@ Extras go under "Later" and are never built.
 ## Rulings for Geoff
 
 Each is a yes-or-no question. The plan is written for the recommended answer; the other answer's build is named.
+
+**Answered by Geoff on 2026-10-25 (Approval Queue item 20261025T113157-1523801):** 1 yes, 2 yes (leave the history; the packet's ask), 3 yes, 4 **no** (the packet's ask, "Share new ones": new archives are encrypted to `recipients.txt`, old ones stay Geoff-only; T2 grows about 20 minutes, path 925), 5 yes, 6 yes. The plan builds ruling 4's "No" answer.
 
 1. **A ward he rebuilds has no `stalwart-geoff.env`. Should `stalwart-status counts` skip an account whose password file is absent, so the backup and heartbeat go on, `server-restore` compares the other mailboxes only, and the rebuild screen warns of one `mailbox_drop` alert for Geoff's mailbox?** Recommend yes. Without a fix either way, a restore on that ward fails after it has restored the mail and started Stalwart: `roles/mail-backup/server-restore:158-166` reads a missing count as -999 and dies with "counts differ from the manifest". Yes builds the skip with one warning line in `counts` and `server-restore` in T3b, and the warning on the rebuild screen. No builds the admin-route count now (the "Later" item for ward's helpers): about 60 more minutes in T3b, path 965.
 2. **The public initiatives history (commit `9552ef9` and earlier) holds `<his 907.life address>`. Leave that history and scrub forward?** Recommend yes, since rewriting it means a force-push to `main`, which CLAUDE.md bans. Yes builds the forward scrub: every new file and PR body passes `privacy-check.sh`, and T8 adds his Proton address and GitHub login to `privacy/patterns.txt`. No needs Geoff's own override of the force-push rule and a history rewrite outside this pass.
