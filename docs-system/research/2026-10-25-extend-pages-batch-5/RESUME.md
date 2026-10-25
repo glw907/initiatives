@@ -20,7 +20,8 @@ and schema, Migrate existing content, and Write a markdown component.
 ## Done
 
 - #140 merged into `main` (`0f151cc1c`) after a provenance fix (batch 4 RESUME has the detail).
-- Drafting launched.
+- Drafting launched. The session restarted mid-run; the runner (`draft5.sh`, log `draft5.log`, both in the old session's scratchpad `/tmp/claude-1000/-var-home-glw907-Projects-cairn-cms/a467c128-3a21-4b6f-970c-8fccd6d668e4/scratchpad/`) kept going.
+- Build the public routes drafted and accepted (`f928869b8`, $3.96, twice batch 4's per-page cost). Fact-check and register edit dispatched in parallel on that commit.
 
 ## Next session starts here
 
