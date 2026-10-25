@@ -56,6 +56,7 @@ and schema, Migrate existing content, and Write a markdown component.
 - Component: fifth check 10/11, the token sentence narrowed in `15b8e5eaf`. Merged into ebp5-base (`d7e6a4b4a`), then origin/main (`5ad0f4cc3`); docs gate, check, check:comments, and the five drafter checks green.
 - PR #141 open. All five pages queued 2026-10-25 15:23 (items `20261025T152311-2878425`, `-2878428`, `-2878431`, `-2878435`, `-2878440`; decisions to `decision-page-<slug>.json` here). Don't push to #141 while any is queued. One decide note: the component page's share-link verify route (N1); the routes page's wrangler dev measurement (N6).
 - Runtime-bag sweep done on `runtime-bag-docs`: `d568dbb4f`, `7afcd9024`, `43e6f872f` (gates green; tutorial, sign-in group, custom admin screen, restrict admin access, debug your site, scaffolded site files, Cloudflare Access, and the `access_map_not_attached` reference rows). Fresh fact-check dispatched (findings under `.../docs__extend__restrict-admin-access.md/<sha>.json`). Page-vs-blueprint drift the sweep found filed as BACKLOG #70 on that branch (`a231c5707`), not fixed here.
+- Geoff approved Build the public routes (15:28, head `5ad0f4cc3`); N6: keep the measured note. Four pages still queued.
 
 ## Next session starts here
 
