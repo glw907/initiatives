@@ -61,6 +61,7 @@ and schema, Migrate existing content, and Write a markdown component.
 - Geoff approved Migrate existing content and Write a markdown component (N1: keep the share-link check). All five approved at head `5ad0f4cc3`. Waiting on CI (`test`, e2e) before `gh pr merge 141 --merge --match-head-commit 5ad0f4cc3f93c70c93a0cb9598a05ffe1de2e568`.
 - Runtime-bag fact-check at `43e6f872f`: 43/53; correction holds. 5 wrong (signups screen on restrict-admin-access 18/37/96/150, `migrations-app/` on scaffolded-site-files) now contradict the page's own new line 118, so they're fixed in this PR, not left for #70. Plus 5 imprecise and three stale blueprint lines. Sweep agent resumed.
 - CI green (8 of 8); #141 merged as `ce4bee2f2` at the approved head. Batch 5 worktrees and branches removed (each confirmed an ancestor of `origin/main`). STATUS on `main` still says batch 5 is queued: update it in the runtime-bag PR once its agent finishes (don't edit that worktree while it works).
+- Sweep settled in `242f22edf`, `b08af0790`; recheck dispatched at `b08af0790`. Merged origin/main (`5715dbde1`), STATUS and #70 updated (`ea8ca520b`), gates green. PR body drafted (`pr-body-runtime.md`).
 
 ## Next session starts here
 
