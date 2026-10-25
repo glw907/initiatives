@@ -25,6 +25,7 @@ The household's phones each hold their own contacts. A single phonebook that the
 
 ## Status
 
+- Pass 2, the phase 1 backend, merged on 2026-10-25 (glw907/phonebook#9). The Worker is live at `phonebook.907.life`, empty, with the ward writer off until cutover. Pass 3, the web app and cutover, waits on the servers ward plan's Part B. Operator docs for the phonebook go in `servers` beside its runbook (Geoff, 2026-10-25).
 - Ward probes (servers plan Part A, T2, 2026-10-25): all four pass, run by `servers-ward-probes` (`fba7a225`) on ward's probe domain. A per-user read grant reaches the sharee: its home set lists "Ward probe", a multiget returns 2 of 2, and its session lists the owner's account with contacts. A read-only member gets 403 on create, update, and delete, with ETags unchanged. The account id `stalwart-cli` gives the sharee matches the id the share used. If-None-Match on create returns 201, then 412. The "Ward probe" book is `https://mail.907.life/dav/card/probe%40probe.907.life/j9bMA3QGoc/`, empty after teardown and kept for T6. Stalwart lists a shared book in the sharee's home as well as the owner's, and the owner's path works for the sharee.
 
 ## Records
