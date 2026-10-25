@@ -49,6 +49,7 @@ and schema, Migrate existing content, and Write a markdown component.
 - Migrate rechecks: 59/63 settled in `77f99a7dd`; 20/21, the select clause fixed in `563b4b639` (gates green). Migrate done; notes and description written.
 - Component fact-check: 81/84 hold (3 imprecise). Register: 21 findings, 4 blocking (`register-component.md`). Settler dispatched in worktree `ebp5-component-page`.
 - Integration on ebp5-base: routes, media, adapter, migrate merged clean (`c02eddd73`); docs gate green. `spellcheck.dialect` rule added to the `parseSiteConfig` entry (`5d2264f11`). Two hand-offs to the component page narrowed: security-model's "renderer's options" and the adapter page's "rendering group" (`bf039ec0d`). Component branch merges after its settlement and recheck.
+- Component settled in `f7f9a680d`; recheck 72/81 (9 imprecise, 5 in the verify procedure). Settler resumed for a structural rewrite of the verify steps (prefer a share-a-draft check on the dev server over publishing a test component; report the route and evidence) plus the other four. On ebp5-base: `groupDefs` comment fixed (`5b3e3e3e9`), STATUS updated (`04eac9872`), PR body drafted (`pr-body.md`).
 
 ## Next session starts here
 
