@@ -53,6 +53,8 @@ and schema, Migrate existing content, and Write a markdown component.
 - Component recheck settled in `45d3147cc`: verify procedure rewritten once to a local share-link check on the dev server (no publish, no deploy); departs from the approved blueprint's publish step (info note for Geoff). `f:cefzv5` pointer dispute settled for the settler (line 13 is right). Fourth check dispatched on the rewritten procedure.
 - Component fourth check at `45d3147cc`: 41/46, verify procedure holds end to end; settler resumed for the last 5.
 - Found by that check: engine pass B (`37797ff35`, 2026-10-08) made `{ runtime }` required on `createAuthGuard`, `devBackendHandle`, `createEditorRoutes` and moved `roles`/`access` to the adapter. Six published extend pages (add-cairn tutorial, second sign-in group, custom admin screen, restrict admin access, replace magic links, debug your site) still show the old calls. Fix rule: same pass, but its own PR. Sweep agent in worktree `runtime-bag-docs` (off `origin/main` at `5a2e3ed93`); then fresh fact-check, PR, `approval-queue change`.
+- Component: fifth check 10/11, the token sentence narrowed in `15b8e5eaf`. Merged into ebp5-base (`d7e6a4b4a`), then origin/main (`5ad0f4cc3`); docs gate, check, check:comments, and the five drafter checks green.
+- PR #141 open. All five pages queued 2026-10-25 15:23 (items `20261025T152311-2878425`, `-2878428`, `-2878431`, `-2878435`, `-2878440`; decisions to `decision-page-<slug>.json` here). Don't push to #141 while any is queued. One decide note: the component page's share-link verify route (N1); the routes page's wrangler dev measurement (N6).
 
 ## Next session starts here
 
