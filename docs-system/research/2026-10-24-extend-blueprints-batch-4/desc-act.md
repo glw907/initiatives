@@ -1,0 +1,5 @@
+This page is for a developer whose organization wants something to happen when a post goes live, such as an email to subscribers. cairn has no publish callback. Instead, the first admin publish stamps the entry's manifest row, and `buildNewlyPublished` diffs two manifests. The published page predates the rebuild and taught the rule more than the job.
+
+The blueprint builds the page around a post-deploy job the reader copies whole: read the deployed manifest, load the stored one, diff, send, save. Two sections carry the traps no reference page states, which are where the save sits and why the first run sends nothing. A short section covers the edge cases a running job meets, and a last section covers `editor.publishActions` for an editor-facing next-step link.
+
+The fact-check corrected two claims: a bad `publishActions` entry fails the build on a scaffolded site, and a delete-and-recreate inside one diff window is not returned. The same branch fixes the sveltekit reference's publish-actions paragraph. Four questions and one dispute wait in the notes.

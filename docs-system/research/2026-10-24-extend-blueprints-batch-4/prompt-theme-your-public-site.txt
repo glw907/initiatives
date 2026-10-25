@@ -1,0 +1,55 @@
+You are the blueprint author for one cairn-cms docs page: theme-your-public-site. You build its markdown blueprint from the code, in your own git worktree, and hand back a report. A fresh fact-checker reads your work after you; you do not fact-check it yourself, queue it, or draft the page.
+
+## Where you work
+
+- Worktree: /var/home/glw907/Projects/cairn-cms/.claude/worktrees/ebp4-theme-your-public-site (branch ebp4-theme-your-public-site, off ebp4-base). Run every command from there. Dependencies are installed (`npm ci` done) and `drafter.local.toml` is in place (`drafter config` resolves). Never touch the main checkout or another worktree.
+- You work alone in this worktree. Another author works a sibling page in its own worktree at the same time, on the same facts store (docs/internal/facts/), so keep your fact edits to the bullets your page needs.
+
+## Read first, in this order
+
+1. The blueprint skill: ~/.claude/skills/blueprint/SKILL.md, then new-page.md, then format.md (the "Markdown blueprints" part whole, including the `Code:` bullet, `Figure:` bullet, and `:::constraints` block), anatomies.md (the anatomy for this page's type), and introductions.md. Follow new-page.md steps 1 to 4. Steps 5 and 6 belong to the session, not you. The session already ran new-page.md's premise test; its verdict is in "This job" below, so don't re-litigate it.
+2. The page's outline entry: `drafter outline theme-your-public-site`. Its `job` and `covers` set the reader and the scope; its `outOfScope` names what neighbors own. Apply the session's trims below to the entry, and change anything else only if the code proves it wrong; say so in your report.
+3. The page's prose plan and framing record, if they exist: docs/internal/briefs/extend/theme-your-public-site.plan.md (or .plan.yaml), theme-your-public-site.framing.md, and theme-your-public-site.json. They are inputs, not sources, and they predate the trims: read only the parts that match a kept cover, and re-verify every claim against the code. Frame the reader from the outline's job, never from a plan's worked example.
+4. The register: docs/internal/docs-register.md, "Drafting brief: developer docs" and the "Names" section. Blueprint lines read as the page's plan in plain sentences.
+5. One approved blueprint of the same type as a model of finished form: blueprints/docs/extend/configure-media.blueprint.md.
+6. The currently published page docs/extend/theme-your-public-site.md, if it exists, as a list of what a reader got before. It is never a source for a claim.
+
+The page's existing facts sit in docs/internal/facts/extend.md under `## docs/extend/theme-your-public-site.md`, possibly also under a retired page name; search the store by symbol too. Other pages' facts may apply.
+
+## Rules that bind you
+
+- Every claim rests on a fact bullet whose pointer you have read in the code (`drafter excerpt <pointer>` shows it). Re-verify each existing fact you cite and fix bullet or pointer where the code disagrees. File new facts code first, narrowest pointer, with an anchor span on every line pointer (`path:N-M` (`symbol`)), saying no more than the lines show. Never file a `candidate` or `docs-drift` fact. Edit fact bullets with the Edit tool, never a shell append.
+- Geoff's ruling D1 (2026-10-22): no claim whose only source is docs/internal/what-cairn-is-and-is-not.md (the charter) or another docs page. Drop it or retrace it to code.
+- Exhaustive words ("only", "every", "all", "no", "never", a count) were the commonest over-claim in every batch. Use one only when the code shows the whole set; otherwise give examples. `drafter check` warns on unqualified ones; settle each warning on a claim line.
+- Where a fixture question meets a concrete snippet, write the snippet and raise the fixture as an open point.
+- Shared facts: if you find a shared fact wrong, fix it and name the fix (id, was, now, why) in your report. Never revert a fix you see from another author; re-verify it.
+- Run `drafter check blueprints/docs/extend/theme-your-public-site.blueprint.md` (named; an unnamed run shows unrelated errors from older blueprints) and `drafter check --fact <id>` for each fact you changed or added, and `npm run -s check:facts`. All must have zero errors on your file and your facts.
+- Commit the blueprint, any outline change, and the facts together, naming specific files (never `git add -A`). Commit message in imperative mood, ending with the line: Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>. Never push. No em dash in commit messages.
+
+Writing discipline (Geoff sent earlier batches back for these tics; the register's developer brief lists them): no intensifier "own" ("the site's own route": cut "own" unless it marks a real contrast); no runs of trailing hinges (", so ...", ", which ...", ", because ..."); no sentence over 26 words in a task section; no em dash.
+
+## Collect friction as you go
+
+This run's second purpose is finding friction in the tools, chiefly drafter (check, excerpt, refs, outline, the markdown format, the store check) and the blueprint skill's text, and also the facts store, check:facts, the plan inputs, and this prompt. Note every snag the moment you hit it: what you tried, what happened, what you expected, the workaround, and a file:line or command where you can. Small ones count. Batch 3's list is the "Batch 3" section of ~/Projects/initiatives/docs-system/research/2026-10-22-extend-blueprints-batch-2-friction.md; skim it so you can say whether each item you meet still bites, and don't re-report one unchanged without saying it is a repeat.
+
+## Hand-back report (your final message)
+
+1. The commit sha and the files it touches.
+2. Facts: each changed fact (id, what changed, why) and each new fact id.
+3. Any outline change, and any claim you dropped for lack of a code source.
+4. Open points you could not settle from the code (these become question notes for Geoff).
+5. FRICTION: a numbered list, each item tagged with the owning repo (drafter, blueprint skill, cairn-cms, approval-queue, workstation agent, prompt), with the detail above, and "repeat of B3-N" where it is one.
+6. Rough minutes spent.
+
+## This job
+
+Author the theme-your-public-site blueprint, a task guide, trimmed by the session's premise check. Two readers have work no scaffold file or reference page gives them as a procedure: a developer who built the site by hand (the tutorial links here twice through `#theme-a-hand-built-site`, docs/extend/add-cairn-to-a-sveltekit-app.md:784 and :1222, so keep a heading whose slug is exactly `theme-a-hand-built-site`), and a developer porting their own theme onto the chassis.
+
+Apply these trims to the outline entry (blueprints/outline.yaml) and the blueprint:
+- Drop the chassis tour and the traps list as page content. templates/waymark/src/chassis/README.md already carries the file table, class prefixes, the dependents table (feed.ts against content.ts), the token tiers and heading levers, the spacing-key/max-w shadowing trap, unlayered rules beating utilities, data-flourish, and the no-flash script's hard-coded theme names. Link that file, and keep at most one line per trap where a step meets it.
+- Keep the theme guide (Geoff required it, 2026-09-24), but have the re-skin section walk templates/waymark/src/theme/theme.css (its recipe comment, lines 22-66) rather than restate it.
+- Narrow editor.preview to a short pointer plus a hand-built example: the scaffold already sets it (templates/waymark/src/theme/cairn.config.ts around :224), and docs/reference/core.md:165-205 has the `?url` rule and the preview ground.
+- Keep: the hand-built path (Tailwind, daisyUI, cairn-public.css after tailwindcss, a daisyUI theme block), porting your own theme with the composition primitives, local iteration, and the trap that seeded media shows only with the dev backend off.
+- Fix two outline errors: there is no "$chassis seam"; the seam is the `#chassis` subpath import (templates/waymark/package.json:5-8). And `check:public-tokens` is an engine-repo script only (root package.json:64); a consumer verifies with cairn-audit's public-scope rules (`--rule public-literals --rule theme-conformance --rule theme-contrast`, docs/reference/cairn-audit.md:154). Re-verify both from the code before you write them.
+- The scaffold's theme.css:66 comment names `check:public-tokens`; don't repeat it. Report it as an open point.
+Verify every one of these pointers yourself; they come from a read, not from facts.

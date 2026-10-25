@@ -1,0 +1,5 @@
+This page is for a developer who wants one markdown component to run live on the public site while its server-rendered fallback still serves readers without JavaScript. A scaffolded site already carries the island wiring, so its reader gets a four-step short path. The full page is for a hand-built site, which the tutorial leaves without islands.
+
+The blueprint walks the hand-built reader through writing the live component, registering it, and wiring the root layout. The layout section carries the gated server load, the dynamic imports, and the rule never to import the adapter module on the client. Verify happens on the public page, because the preview frame always shows the fallback, and three symptom rows close the page.
+
+Two fact-check rounds found no wrong claim. The branch also fixes the islands reference, whose root-layout example imported the whole adapter on the client. Two questions are for you: whether to keep the illustrative `converter` example, and whether a failed island should log something.

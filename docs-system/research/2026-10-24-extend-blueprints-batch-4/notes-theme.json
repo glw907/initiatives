@@ -1,0 +1,110 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "theme-your-public-site-1.heading",
+  "title": "Why this page, and what the premise check cut",
+  "body": [
+   "Two readers have theming work that no scaffold file or reference page gives as steps. One built the site by hand, and the tutorial links here twice for them. The other is porting their own theme onto the chassis. A scaffolded site that only re-skins Waymark gets a short recipe that walks `theme.css`.",
+   "The scaffold's `src/chassis/README.md` already carries the chassis tour, the class prefixes, the token tiers, and the traps list, so the page names that file and keeps one line per trap at the step that meets it. Two sections the trim would have cut, Style rendered markdown and Resolve an audit finding, stay short because other pages link their anchors."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "info",
+  "anchor": {
+   "quote": "The three public-scope rules, `public-literals`"
+  },
+  "title": "Corrected outline items",
+  "body": [
+   "The outline named a `$chassis` seam and a `check:public-tokens` verify step. The seam is the `#chassis` subpath import (`templates/waymark/package.json:5-8`). `check:public-tokens` is an engine-repo script, so a site verifies with cairn-audit's three public-scope rules."
+  ],
+  "was": "\"the $chassis seam\"; \"Verify: check:public-tokens\"",
+  "now": "The `#chassis` subpath import; `cairn-audit --rule public-literals --rule theme-conformance --rule theme-contrast`."
+ },
+ {
+  "id": "N2",
+  "kind": "question",
+  "anchor": {
+   "quote": "move the `[...path]` route into a `(site)` group directory"
+  },
+  "title": "Should the tutorial adopt the (site) group?",
+  "body": [
+   "The hand-built steps link the stylesheet from a `(site)` group layout, because the root layout also wraps `/admin` and a static import breaks the preview frame's link. The tutorial, Add cairn to a SvelteKit app, has no `(site)` group and no stylesheet, so this section has the reader create both.",
+   "Either the tutorial grows the group when it next changes, or this page keeps the step that moves the route."
+  ],
+  "choices": [
+   {
+    "label": "Keep the step here",
+    "done": "The page keeps the move-into-a-group step, and the tutorial stays as it is."
+   },
+   {
+    "label": "Move it to the tutorial",
+    "done": "The session files a cairn-cms item for the tutorial to create the `(site)` group, and this step shrinks to a check."
+   }
+  ]
+ },
+ {
+  "id": "N3",
+  "kind": "question",
+  "anchor": {
+   "quote": "The site's `src/chassis/README.md` documents the chassis"
+  },
+  "title": "Name the chassis README by path, or link it?",
+  "body": [
+   "The page names `src/chassis/README.md` as a file in the reader's site. A link would point at the template copy on GitHub, which tracks `main` and not the reader's engine version. No docs page links a site file today."
+  ],
+  "choices": [
+   {
+    "label": "Name it by path",
+    "done": "The page names the file in the reader's tree."
+   },
+   {
+    "label": "Link the template copy",
+    "done": "The page links the GitHub copy at the release tag, and the session adds the link."
+   }
+  ]
+ },
+ {
+  "id": "N4",
+  "kind": "question",
+  "anchor": {
+   "quote": "read \"What lives here\" and \"Every override seam\""
+  },
+  "title": "Is a template README an allowed source for a fact?",
+  "body": [
+   "Two facts, `f:h1qxlq` and `f:s4prb0`, and the new `f:6oqyfi` rest on the scaffold's chassis README. drafter treats the file as prose and can't excerpt it. Ruling D1 bars a claim whose only source is a docs page, and a template README sits between a docs page and code: it ships in every scaffolded site."
+  ],
+  "choices": [
+   {
+    "label": "Allow template READMEs",
+    "done": "The session adds `templates/**/README.md` to drafter's `prose_sources` for cairn, so a read can excerpt them."
+   },
+   {
+    "label": "Retrace to code",
+    "done": "The session retraces the README-only facts to the CSS and TypeScript they describe, and drops what it can't."
+   }
+  ]
+ },
+ {
+  "id": "N5",
+  "kind": "info",
+  "anchor": "verify-the-theme.heading",
+  "title": "Engine defects found, filed for the backlog",
+  "body": [
+   "The scaffold's `theme.css` comments name `check:public-tokens` (lines 11-12, 66, 126), a script a site doesn't have, and the recipe says \"about fourteen\" values where it lists twelve. The chassis README's `content.ts` dependents row misses `(site)/archive/[page]` and three chassis modules. `share-a-draft-preview.md:43` links a removed anchor; that page retires with the fold.",
+   "The same branch corrects `docs/reference/core.md`, which said the preview frame pins a white background. The frame paints `var(--color-base-100,#fff)`."
+  ]
+ },
+ {
+  "id": "N6",
+  "kind": "info",
+  "anchor": {
+   "quote": "Leave out the Tailwind guide's static"
+  },
+  "title": "Corrected: the hand-built path's static import",
+  "body": [
+   "The fact-check found the hand-built steps followed Tailwind's install guide whole. That guide's static `import \"../app.css\"` in the root layout folds the sheet into a layout chunk, which breaks the preview frame's link, and the root layout also wraps `/admin`. The step now leaves that import out, and the `(site)` layout links the sheet through `?url`."
+  ]
+ }
+]

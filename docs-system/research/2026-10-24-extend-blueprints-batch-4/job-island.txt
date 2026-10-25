@@ -1,0 +1,8 @@
+Author the add-an-island blueprint, a task guide, trimmed by the session's premise check. The real reader is a developer on a hand-built site: the tutorial has no island coverage, and docs/reference/islands.md:33-60 shows `afterNavigate` but never the `hasIslands` gate, nor the trap the scaffold's comment names (importing the adapter on the client ships the whole adapter). A scaffolded site already carries the wiring (templates/waymark/src/routes/+layout.svelte:19-26, +layout.server.ts:23, the lean registry at src/theme/islands/registry.ts wired at cairn.config.ts:178, and a worked `banner` island); for that reader the page is a Svelte component, one registry line, and `hydrate`, so give them a short path and say the tree already carries the rest.
+
+Apply these trims to the outline entry (blueprints/outline.yaml) and the blueprint:
+- Narrow the runtime-behavior items (teardown on navigation, root scoping, failure isolation, fallback restore) to one line and a link to docs/reference/islands.md (around :24-80).
+- Keep: the declaration (`hydrate` and build() output as the fallback), registration in rendering.islands with the declaration-time mismatch check, the hand-built `hasIslands` gate with a dynamic import, untrusted props as the reader's obligation (islands.md:121-130 has the contract; the page carries the do and don't), and verifying on the public page because the preview frame shows the fallback.
+- Fix an outline error: `hydrate` takes `true | 'visible'` (src/lib/render/registry.ts:74); "eager" describes `true`, it is not a value. Verify it.
+- The component itself is declared on write-a-markdown-component; link it, don't restate it.
+Verify every one of these pointers yourself; they come from a read, not from facts.

@@ -1,0 +1,5 @@
+This page is for a developer who owns their public site's design. It serves two readers above all: one who built the site by hand and needs Tailwind, daisyUI, and the engine stylesheet wired, and one who is porting their own theme onto the chassis. A scaffolded site that only re-skins Waymark gets a short recipe. The published page mostly retold the chassis README the scaffold ships.
+
+The blueprint walks the scaffold's files instead of restating them. The re-skin follows the recipe comment in `theme.css`, the port names the README's sections and gives one line per trap at the step that meets it, and every value is named by its CSS variable rather than the recipe's metaphors. Verify uses cairn-audit's three public-scope rules, and a closing section matches each failed check to its fix.
+
+Two fact-check rounds found no wrong claim and nine imprecise ones, all settled. The branch also fixes the core reference's preview-background sentence. Three questions in the notes are for you: whether the tutorial should adopt the `(site)` group, how to name the chassis README, and whether a template README can be a fact's source.

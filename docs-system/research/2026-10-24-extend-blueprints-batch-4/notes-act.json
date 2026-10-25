@@ -1,0 +1,165 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "act-on-newly-published-entries-1.heading",
+  "title": "Why this page, and what the premise check cut",
+  "body": [
+   "cairn has no publish callback, so a site that announces new posts writes its own post-deploy job. Nothing in the scaffold or the setup command does this, and no reference page gives the steps. The premise check kept the page with a trim.",
+   "The trim moves the full newly-published rule and the publishActions members to their reference entries. The page keeps the job, two traps the references never state (where the save sits, and a first run that sends nothing), the edge cases a running job meets, and a short next-step-link section."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "question",
+  "anchor": {
+   "quote": "Code: the whole job file."
+  },
+  "title": "Should the job script get a committed fixture?",
+  "body": [
+   "The author typechecked the script against the built package and ran a copy against a stubbed store. The runs covered a first run, two new publishes, a run with no change, a send that throws, and a delete-and-recreate. Those runs were in a scratchpad, and nothing in the repository repeats them.",
+   "Once the page is drafted, `check:snippets` will typecheck the block, but no check exercises what the script does."
+  ],
+  "choices": [
+   {
+    "label": "Leave it typecheck-only",
+    "done": "The page ships with the typecheck as its only check."
+   },
+   {
+    "label": "Add a fixture",
+    "done": "The session files a cairn-cms item for a fixture that runs the job against a stub store in CI."
+   }
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "question",
+  "anchor": {
+   "quote": "after the deploy step, add a step that runs"
+  },
+  "title": "Should the page say where a scaffolded site adds the step?",
+  "body": [
+   "The setup command's Workers Builds trigger runs only the build and the deploy (`f:jtl15v`), and no fact names where a scaffolded site would add a post-deploy step. A constraint keeps the page to \"your deploy pipeline\" and names no CI service."
+  ],
+  "choices": [
+   {
+    "label": "Keep it pipeline-neutral",
+    "done": "The page stays as written."
+   },
+   {
+    "label": "Name a place for scaffolded sites",
+    "done": "The session traces where a Workers Builds site can run a post-deploy step and adds one line with its fact."
+   }
+  ]
+ },
+ {
+  "id": "N3",
+  "kind": "question",
+  "anchor": {
+   "quote": "The example uses one Workers KV value"
+  },
+  "title": "Is KV through the REST API the store to show?",
+  "body": [
+   "The example reads and writes one Workers KV value through the Cloudflare REST API. That needs an API token with KV write permission in CI. The other choices are the wrangler CLI (`wrangler kv key get` and `put`) or an R2 object. The page says any store works, because `parseManifest` takes a string (`f:z2h50k`)."
+  ],
+  "choices": [
+   {
+    "label": "Keep the REST API",
+    "done": "The example stays as written."
+   },
+   {
+    "label": "Use the wrangler CLI",
+    "done": "The session rewrites the two storage functions to call wrangler and re-runs the stubbed checks."
+   }
+  ]
+ },
+ {
+  "id": "N4",
+  "kind": "question",
+  "anchor": {
+   "quote": "The example saves after it sends."
+  },
+  "title": "Which save order should the example default to?",
+  "body": [
+   "The example saves after it sends, so a failed send repeats messages on the next run. Saving first loses the failed post instead. The page explains the trade and gives a one-step change for the other order."
+  ],
+  "choices": [
+   {
+    "label": "Save after sending",
+    "done": "The default stays: a failure risks repeats, never a missed post."
+   },
+   {
+    "label": "Save before sending",
+    "done": "The session flips the example's default and the step that changes it."
+   }
+  ]
+ },
+ {
+  "id": "N5",
+  "kind": "decide",
+  "anchor": {
+   "quote": "if (res.status === 404) return null;"
+  },
+  "title": "Keep the observed KV 404 on a missing key?",
+  "body": [
+   "The fact-checker marked the script's 404 branch unsupported, because Cloudflare's API reference doesn't state the status for a missing key.",
+   "The fact (`f:3dyial`) records a live read-only GET on an unset key in an existing namespace on 2026-10-24. It returned 404, error code 10009, `key not found`."
+  ],
+  "sides": [
+   {
+    "who": "Fact-checker",
+    "text": "The vendor page doesn't state the status, so the claim has no citable source."
+   },
+   {
+    "who": "Session",
+    "text": "The status was observed against the live API and recorded with the error code. The branch is the script's only first-run detection, and treating any non-OK read as missing would hide real failures."
+   }
+  ],
+  "choices": [
+   {
+    "label": "Keep the observed 404",
+    "done": "The branch and the fact stay as written."
+   },
+   {
+    "label": "Drop the claim",
+    "done": "The session rewrites the read to treat a 404 as missing without asserting it in prose, and moves the observation to the fact's note only."
+   }
+  ]
+ },
+ {
+  "id": "N6",
+  "kind": "info",
+  "anchor": {
+   "quote": "so a bad entry fails the build"
+  },
+  "title": "Corrected: a bad publishActions entry does fail the build",
+  "body": [
+   "The first fact-check found the blueprint's constraint wrong. SvelteKit's build analysis loads every route's server nodes (`analyse.js:69`), and the scaffold's admin layout imports the module that calls `createCairnAdmin`, so the throw fails `vite build`.",
+   "The same branch corrects the sveltekit reference page, which had credited the check to the runtime's composition (`compose.ts:62` passes the list through untouched) and omitted the duplicate-label throw."
+  ],
+  "was": "The admin checks `publishActions` at server start; never say a bad entry fails the build.",
+  "now": "The check runs when the module that calls `createCairnAdmin` loads; on a scaffolded site that is during `vite build`, so a bad entry fails the build. New fact `f:sznajt`; `f:r2vx8m` corrected."
+ },
+ {
+  "id": "N7",
+  "kind": "info",
+  "anchor": {
+   "quote": "A post deleted and then recreated under the same id"
+  },
+  "title": "Corrected: delete-and-recreate inside one diff window",
+  "body": [
+   "`f:w3m0ac` was marked verified and said a deleted-then-recreated post always reads as new. Running `buildNewlyPublished` showed otherwise: when both land between two runs, the old stamp is still in `before`, and the post is not returned."
+  ],
+  "was": "A delete and recreate reads as new.",
+  "now": "It reads as new only when a run saved the manifest between the two."
+ },
+ {
+  "id": "N8",
+  "kind": "info",
+  "anchor": "verify-the-job.heading",
+  "title": "No failure row, by choice",
+  "body": [
+   "The task-guide anatomy suggests a failure path pointing at Debug your site. The job is the site's code running in its pipeline, so its failures are pipeline and provider errors. The page gives the exit code and the verify steps instead of a symptom row."
+  ]
+ }
+]

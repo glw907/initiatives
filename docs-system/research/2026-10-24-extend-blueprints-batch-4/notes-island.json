@@ -1,0 +1,76 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "add-an-island-1.heading",
+  "title": "Why this page, and what the premise check cut",
+  "body": [
+   "A scaffolded site already wires islands: the registry module, `rendering.islands`, the root load's `hasIslands`, the gated layout call, and a worked `banner` island. That reader adds a component, a registry entry, and `hydrate`, and the page gives them a four-step short path.",
+   "The full page is for a hand-built site, where the tutorial covers no islands. The runtime's teardown, scanning, and error isolation stay on the islands reference, linked from one line."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "question",
+  "anchor": {
+   "quote": "such as `src/lib/islands/Converter.svelte`"
+  },
+  "title": "Keep the illustrative converter, or use banner?",
+  "body": [
+   "No `converter` component exists in the code. The snippets for it are illustrative, modeled on the scaffold's `banner`, and two carry snippet-check skip markers. Using `banner` would put every snippet on real scaffold code, but a scaffolded reader already has it, so the example would show them nothing new."
+  ],
+  "choices": [
+   {
+    "label": "Keep converter",
+    "done": "The illustrative component stays."
+   },
+   {
+    "label": "Use banner",
+    "done": "The session rewrites the snippets around the scaffold's `banner` and drops the skip markers it can."
+   }
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "info",
+  "anchor": {
+   "quote": "the root layout imports the registry module, never"
+  },
+  "title": "Fixed on this branch: the islands reference taught the trap",
+  "body": [
+   "`docs/reference/islands.md` showed a root layout that imported the adapter module in its client script. That import ships the renderer, the icon set, and the media manifest to every public page, which the scaffold's layout comment warns against. The example had no `hasIslands` gate. It now shows the scaffold's shape: a server load returns the flag, and the layout imports the runtime and the registry only when it is set."
+  ],
+  "was": "`import { cairn } from '#theme/cairn.config.js'` in the layout's client script, gated on the registry's size.",
+  "now": "A `+layout.server.ts` returns `hasIslands`; the layout dynamically imports `@glw907/cairn-cms/islands` and the registry module when it is true."
+ },
+ {
+  "id": "N3",
+  "kind": "info",
+  "anchor": "register-the-island.heading",
+  "title": "Corrected outline item: hydrate's values",
+  "body": [
+   "The outline said \"hydrate, eager or visible\". `hydrate` is typed `boolean | 'visible'` (`src/lib/render/registry.ts:74`): `true` mounts on the layout's call, `'visible'` waits for the viewport, and `false` or no `hydrate` leaves the component static. A constraint keeps \"eager\" off the page as a value."
+  ],
+  "was": "hydrate, eager or visible",
+  "now": "hydrate set to `true` or `'visible'`; `false` acts as no hydrate."
+ },
+ {
+  "id": "N4",
+  "kind": "question",
+  "anchor": "verify-the-island-on-the-public-page.heading",
+  "title": "Should a failed island log something?",
+  "body": [
+   "The runtime swallows a props parse failure and a mount throw in bare `catch` blocks (`src/lib/islands/index.ts:43-51`). The fallback stays, which is the right reader experience, but nothing reaches the browser console or Workers Logs. The page's last symptom row tells the developer what to check by hand, since Debug your site has no island section."
+  ],
+  "choices": [
+   {
+    "label": "Leave it silent",
+    "done": "The runtime stays as it is, and the row stands."
+   },
+   {
+    "label": "File an engine item",
+    "done": "The session files a cairn-cms item for a `console.warn` naming the directive and the failure, and the row gains that message once it lands."
+   }
+  ]
+ }
+]

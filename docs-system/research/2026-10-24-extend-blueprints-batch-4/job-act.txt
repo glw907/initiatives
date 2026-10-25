@@ -1,0 +1,10 @@
+Author the act-on-newly-published-entries blueprint, a task guide, trimmed by the session's premise check. The reader wires announce-on-publish: cairn has no publish callback, so they write a post-deploy job that reads the deployed manifest, loads the prior manifest from their own storage, diffs with `buildNewlyPublished`, sends, then saves the new manifest. Nothing in templates/waymark or packages/create-cairn-site does this, and no reference page gives the procedure.
+
+Apply these trims to the outline entry (blueprints/outline.yaml) and the blueprint:
+- Keep the job's procedure as the page's spine, with the two traps no reference page states: a send that throws before the save makes the next run resend everything (order the save and the send deliberately, and say what the reader trades), and the first run should store the manifest and send nothing (`before: null` backfill only when the reader wants it).
+- Narrow "the rule" and the edge cases to one short section and a pointer: docs/reference/delivery-data.md:541-561 states the rule, the draft check, `before: null`, renames, purity, and the persistence obligation. Keep only what a step needs.
+- Qualify "delete-recreate read as new": it holds only when a deploy diff runs between the delete and the recreate; inside one diff window the prior stamp is still in `before` (src/lib/delivery/manifest.ts:68-72). Verify it from the code.
+- Narrow editor.publishActions to a short section and a link to docs/reference/sveltekit.md (around :1983-2033 covers placeholders, the concept filter, and validation when the runtime composes).
+- The exports are in src/lib/delivery/data.ts (around :71) plus the parseManifest re-export; verify.
+- Where the reader's storage choice (KV, R2, or other) meets a concrete snippet, write the snippet against one store and say the others work the same way only where the code shows it is store-agnostic.
+Verify every one of these pointers yourself; they come from a read, not from facts.
