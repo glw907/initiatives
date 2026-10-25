@@ -8,7 +8,7 @@ Geoff set the goal in chat on 2026-10-25, prompted by the phonebook work: "I've 
 
 Status: approved by Geoff in chat, 2026-10-25 ("Design approved.").
 
-Initiative: self-hosting. Risk class: `auth-data`, flagged `live-account` (it grants account seats, adds an operator key, and touches `cloudflare/access.json` and the secret store's recipients). End-to-end check: below, under "The check".
+Initiative: self-hosting. Risk class: `auth-data`, flagged `live-account` (it grants account seats, adds an operator key, and touches `cloudflare/access.json` and the secret store's recipients). Estimate: 600 path minutes, set from the servers backlog second batch (495 actual against 470 planned), a pass of similar breadth; Bulwark and mail filters ran at about half their plans, so this line is not padded further. End-to-end check: below, under "The check".
 
 ### His role in the Cloudflare account
 
