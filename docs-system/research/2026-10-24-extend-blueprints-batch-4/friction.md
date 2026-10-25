@@ -309,3 +309,7 @@ turn-on-tidy KEEP with two fixes, run-cairn-audit-on-your-site TRIM. No fold thi
   acceptance means a hand-kept brief: each sentence's text must match the page exactly. Two
   register edits took a scripted old-to-new sentence map. A `drafter brief --sync` that
   re-splits the page and carries ids across unchanged sentences would remove that.
+- P11 (cairn-cms): `check:symbols` rejects `src/app.css`, a path in the reader's site, as an
+  unresolved file, so the drafter wrote "`app.css` under `src`" to get past it. The theme agent
+  added an allowlist entry. Paths a page names in the reader's site need a marker or a
+  standing allowlist group, so the gate doesn't push the prose into circumlocution.

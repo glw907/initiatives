@@ -1,0 +1,13 @@
+[
+ {"id":"N0","kind":"info","anchor":"theme-your-public-site.heading","title":"How this draft was checked",
+  "body":["drafter wrote the page from the blueprint you approved. A fresh fact-checker read 182 claims against the code: 174 held, seven were imprecise, and one was unsupported. All eight are fixed on the page, in the blueprint, and in the facts. The register editor's review is applied in full, and a fresh check of the changed lines followed."]},
+ {"id":"N1","kind":"info","anchor":{"quote":"genre-free modules and style sheets"},"title":"\"Genre-free\", the README's word",
+  "body":["The draft called the chassis \"design-neutral\", but `prose.css` carries real visual choices, and the chassis README calls the layer genre-free. The page now uses the README's word."],
+  "was":"design-neutral","now":"genre-free"},
+ {"id":"N2","kind":"info","anchor":{"quote":"cairn-dark"},"title":"A rename touches a fourth spot",
+  "body":["`theme.css:383` hard-codes `:root[data-theme=\"cairn-dark\"]` for the dark CTA, shadow, and card-border values, and `theme-names.test.ts` doesn't read it. A rename that missed it would fail silently on an explicit dark toggle. The rename step now names it, and `f:i3rn6f` records it."]},
+ {"id":"N3","kind":"info","anchor":"iterate-locally.heading","title":"Register edit: three ways to start the loop",
+  "body":["The step's three ways to start the dev server are now a list. Seeded media runs under `npx vite dev` with `CAIRN_DEV_BACKEND` unset, or under `wrangler dev` after a build. With no seeded media, `npm run dev` sets the dev backend. The scaffold's `scripts/dev.mjs` is the only script that sets `CAIRN_DEV_BACKEND=1`."]},
+ {"id":"N4","kind":"info","anchor":"port-your-theme-onto-the-chassis.heading","title":"A port supplies the skip link's target",
+  "body":["The `<main id=\"main\" tabindex=\"-1\">` target and its skip link both live in `(site)/+layout.svelte`, which a port replaces. So the port step now has the port supply that element."]}
+]
