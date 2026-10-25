@@ -1,0 +1,3 @@
+This is the drafted page for Configure media, the task guide for a developer changing how media behaves on a site that already has it. It covers the upload limits, the image URL form, responsive images, failing the build on a missing asset, which references the Library counts, and uploading from a custom admin screen. You approved its blueprint in batch 3, and this draft comes from it.
+
+The checks found two engine-wide stale claims. Both are fixed everywhere they appeared, which takes this PR into Debug your site, three reference pages, and two TSDoc comments. Under SvelteKit 3, a `fail()` sets the HTTP status. A missing `resolveMedia` costs the hero image, not every image. There are no decisions for you on this page.

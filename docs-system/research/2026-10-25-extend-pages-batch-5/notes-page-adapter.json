@@ -1,0 +1,15 @@
+[
+ {"id":"N0","kind":"info","anchor":"define-an-adapter-and-schema.heading","title":"How this draft was checked",
+  "body":["drafter wrote the page from the blueprint you approved in batch 3. A fresh fact-checker read 95 claims against the code: 88 held and 7 were imprecise, with none wrong. The register editor's findings were applied, 2 of them blocking. The verify steps now hold one action each, and the failure fixes are numbered steps. One recheck held 67 of 71, and the other four took the checker's wording.",
+   "Each claim change was carried back to the blueprint. The blueprint's link to \"Configure rendering\" now names that page's new title, Write a markdown component."]},
+ {"id":"N1","kind":"info","anchor":{"quote":"hands the parser a function or a module object"},"title":"The glob failure names only the proven cases",
+  "body":["gray-matter throws `expected input to be a string or buffer` when it gets a function or a module object (`gray-matter/lib/utils.js:46`). A lazy glob or a glob missing `import: 'default'` hands it one. A glob missing only `?raw` makes Vite load the markdown as a module, and what follows depends on the site's plugins. The page, `f:n07oiu`, and Build the public routes now name only the proven cases. The instruction to write each glob with all three options stands."]},
+ {"id":"N2","kind":"info","anchor":{"quote":"prefixes the new entry's id"},"title":"datePrefix shapes the id",
+  "body":["The blueprint said the date prefix starts the new entry's filename. `composeDatedId` builds the id, and the filename follows from it, so the page and the blueprint now say id."]},
+ {"id":"N3","kind":"info","anchor":{"quote":"Each message a check returns"},"title":"Every check's message shares the banner",
+  "body":["The draft said only `refine` messages need to read as standalone sentences. The save banner shows the first error of any check (`Object.values(result.errors)[0]`), so `validate` messages share it."]},
+ {"id":"N4","kind":"info","anchor":{"quote":"the manifest skips an entry that fails it"},"title":"A second cause for a missing manifest row",
+  "body":["`buildSiteManifest` skips an entry that fails validation (`manifest.ts:26-33`, new fact `f:0a254m`). An empty pattern match is a third cause. Both join the missing-from-the-plugin cause in the troubleshooting row."]},
+ {"id":"N5","kind":"info","anchor":"see-also.heading","title":"See also links Arrange the admin sidebar",
+  "body":["The page says the pages under See also cover the adapter's other groups, but See also had no page for the `editor` group. Arrange the admin sidebar, which covers `navLayout`, is added on the page and the blueprint, and the list's lead-in now names the public routes too."]}
+]
