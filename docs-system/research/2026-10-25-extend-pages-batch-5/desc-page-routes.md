@@ -1,0 +1,3 @@
+This is the drafted page for Build the public routes, the task guide for a developer wiring a cairn site's public pages. It covers the entry pages, the raw-markdown twins, the archive, the feeds, the sitemap, `robots.txt`, and the draft preview route. You approved its blueprint in batch 3, and this draft comes from it.
+
+The fact checks found no wrong claim in the first read. They did find two code-level corrections: the sitemap example's `noindex` helper missed entries outside posts, and the head example's about page would collide with the scaffold's about page. One note asks you to decide whether to keep a locally measured `wrangler dev` result.

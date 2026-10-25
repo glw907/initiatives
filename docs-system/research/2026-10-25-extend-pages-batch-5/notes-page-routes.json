@@ -1,0 +1,22 @@
+[
+ {"id":"N0","kind":"info","anchor":"build-the-public-routes.heading","title":"How this draft was checked",
+  "body":["drafter wrote the page from the blueprint you approved in batch 3. A fresh fact-checker read 160 claims against the code: 148 held, 10 were imprecise, and 2 were unsupported. The register editor's 30 findings, 2 of them blocking, were applied. Two rechecks of the changed lines followed: 68 of 75 held, then 15 of 16. Each finding is fixed, and the last fix is in the fact store.",
+   "Every claim fix was carried back to the blueprint line that places it, so the blueprint and the page agree."]},
+ {"id":"N1","kind":"info","anchor":{"quote":"With both routes in place"},"title":"The twin route wins by route order, not a sorting rule",
+  "body":["The draft said SvelteKit's sorting rules prefer the more specific matched route. In SvelteKit 3.0.1, `sort.js:101-102` returns before the matcher check when it compares two bare rest parameters. `[...path=md]` comes first because routes are read in name order (`create_manifest_data/index.js:221-223`), and the `md` matcher passes only `.md` paths. The page now states the outcome alone, and `f:03lbjg` dropped the reason."],
+  "was":"SvelteKit's route sorting rules prefer the more specific matched route, so `[...path=md]` takes the `.md` paths and `[...path]` keeps the rest.","now":"With both routes in place, `[...path=md]` takes the `.md` paths and `[...path]` keeps the rest."},
+ {"id":"N2","kind":"info","anchor":{"quote":"isNoindex"},"title":"The noindex helper now covers every concept",
+  "body":["The draft's helper looked entries up with `posts.byId`, but the scaffold's sitemap rows come from `site.all()`. A `noindex` page in another concept would have slipped into the sitemap. The helper now takes a `ContentSummary` and looks it up with `site.byPermalink`."]},
+ {"id":"N3","kind":"info","anchor":{"quote":"A lazy glob, or one without"},"title":"The glob failure names only the proven cases",
+  "body":["gray-matter throws `expected input to be a string or buffer` for a non-string input (`gray-matter/lib/utils.js:46`), which a lazy glob or a missing `import: 'default'` hands it. Without `?raw`, Vite imports the `.md` as a module first, and what follows depends on the site's plugins, so the page no longer claims that case. `f:n07oiu` and Define an adapter and schema get the same narrowing in this batch."]},
+ {"id":"N4","kind":"info","anchor":{"quote":"Details** slide-over"},"title":"The share steps name where the group sits",
+  "body":["The steps split so each holds one action, and they now say the **Share preview** group is in the entry's **Details** slide-over (`EditPage.svelte:2383-2441`). The blueprint and `f:sp1mbt` changed to match."]},
+ {"id":"N5","kind":"info","anchor":"give-other-pages-a-head.heading","title":"The head example uses a contact page",
+  "body":["The draft's example added an `(site)/about` route. A scaffolded site already has an `about` pages entry, so the static route would collide with the catch-all's entry and fail SvelteKit's prerender check. The example now uses a contact page, which the scaffold doesn't have, and the sitemap example's extra route changed to `/contact` with it."]},
+ {"id":"N6","kind":"decide","anchor":{"quote":"A local test under `wrangler dev` still served"},"title":"Keep the wrangler dev measurement?",
+  "body":["The note says a local `wrangler dev` test served the twin as `text/markdown`, which suggests Cloudflare derives the type from the extension, and that no deployed zone has been tested."],
+  "sides":[{"who":"Fact-checker","text":"No code or installed package settles it; the repo holds no record of the test."},
+           {"who":"Author","text":"`f:gwpffe` records the measurement: `wrangler dev` 4.137.0 re-measured on 2026-09-29, with `vite preview` serving the type without a charset. The note is worded as a measurement, not as a contract."}],
+  "choices":[{"label":"Keep the measured note","done":"Kept as written."},
+             {"label":"Cut the wrangler dev sentences","done":"The note keeps only the adapter's header behavior."}]}
+]
