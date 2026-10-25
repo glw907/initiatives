@@ -30,6 +30,8 @@ blueprints, with friction collected for the drafter and approval-queue backlogs.
 - 21:15 Friction record committed (initiatives `16550b0`); a filing agent is filing it into drafter, approval-queue, cairn-cms, and dotfiles backlogs.
 - 21:20 Friction filed: drafter #84-#103 (`584b7e0`), approval-queue #44-#47 plus #40 addendum (`d98d2d4`), cairn-cms #57-#62 plus #37, #53, #56 addenda (`022daa849`), dotfiles #34-#36 (`a04316a`).
 - Act on newly published entries approved (blob `bd5d01080`, all five calls the defaults: typecheck-only, pipeline-neutral, REST API, save after sending, keep the observed 404). Drafting waits for theme and island, to run the three pages in one `drafter page` run.
+- Theme approved (blob `9ca70545`; N2 keep the step, N3 name the README by path, N4 allow template READMEs) and island approved (blob `2a490545`; N1 keep converter, N4 leave the runtime silent). All three branches merged into `ebp4-base`; `drafter.toml` lists the two scaffold READMEs as `prose_sources` (`947394e80`).
+- 23:10 Act on newly published entries drafted and accepted (`832acdae6`); its page fact-check is running. Theme and island drafting in sequence, each committed when accepted (log `draft-run.log`).
 
 ## Next session starts here
 

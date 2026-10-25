@@ -1,0 +1,1 @@
+{"decision":"approve","file":"blueprints/docs/extend/theme-your-public-site.blueprint.md","commit":"6887e10dccf2d541d7bc142b2f27215f82366a68","blob":"9ca7054577cb45dc6dbe31df535dce1e1c651b47","calls":[{"id":"N2","choice":"Keep the step here"},{"id":"N3","choice":"Name it by path"},{"id":"N4","choice":"Allow template READMEs"}],"comments":[],"threads":[]}

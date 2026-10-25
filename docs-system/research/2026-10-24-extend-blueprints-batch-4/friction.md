@@ -269,3 +269,12 @@ turn-on-tidy KEEP with two fixes, run-cairn-audit-on-your-site TRIM. No fold thi
   item's id and URL.
 - Island round 2: 10 claims, 9 hold, 1 imprecise (a wording repeat, taken in the checker's words).
   Theme round 2: 28 claims, 26 hold, 2 imprecise, settled (`6887e10dc`).
+
+## drafting (ebp4-base)
+
+- D1 (drafter): `drafter page` refuses a dirty worktree (exit 2), and an accepted run leaves its
+  page, brief, and `drafted.lock` uncommitted, so a loop over several blueprints fails on the
+  second page. Commit the accepted output itself (an opt-in `--commit`), or take several
+  blueprints in one run. The skill doesn't say to commit between runs.
+- D2 (drafter): `facts.prose_sources` takes exact paths only; listing "every template README"
+  (Geoff's N4 ruling) means naming each file. A glob would follow a new README automatically.
