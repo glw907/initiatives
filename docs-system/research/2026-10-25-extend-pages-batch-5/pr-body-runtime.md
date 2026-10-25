@@ -19,6 +19,7 @@ The session merges this PR.
 
 - The fix is its own PR rather than part of batch 5, so the five new pages didn't wait on a seven-page correction.
 - The signups demo was in scope only where a page now contradicted itself. Restrict admin access said the scaffold declares no access map while describing the scaffold's signups rule. Other drift the sweep found, such as the tutorial's hand-written define plugin and `src/access.ts`, is filed as BACKLOG #70 for a redraft from the blueprints, not patched by hand.
+- The last three edits to Scaffolded site files (one D1 database, `0001_roles.sql` shipped, `+error.svelte` in the route tree) are the session's, checked against the `templates/waymark` listing and `f:gepykz` rather than another fact-check round. The recheck that found them held every line the sweep changed.
 - Scaffolded site files' tree leaves out `src/app.html` on purpose, per its blueprint. The page now says the tree omits files no section discusses, rather than adding the file.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)

@@ -1,0 +1,52 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "file": "docs/extend/add-cairn-to-a-sveltekit-app.md",
+  "anchor": "wire-the-dev-backend.heading",
+  "title": "The tutorial's hooks pass the runtime",
+  "body": [
+   "Since engine pass B, both hook handles need `{ runtime }`. A bare call is a type error, and `devBackendHandle()` throws at startup because it reads `config.content`. The tutorial already exports `runtime` from `src/lib/cairn.server.ts`, so the hooks block imports it and passes it to both handles. No step was added."
+  ],
+  "was": "handle = devBackendHandle(); ... handle = createAuthGuard();",
+  "now": "handle = devBackendHandle({ runtime }); ... handle = createAuthGuard({ runtime });"
+ },
+ {
+  "id": "N1",
+  "kind": "info",
+  "file": "docs/extend/restrict-admin-access.md",
+  "anchor": "pass-the-map-to-the-adapter.heading",
+  "title": "The hooks file needs no edit",
+  "body": [
+   "The section had the reader import the map into the hooks file and pass `{ roles, access }` to both handles. Both handles now read the map from the runtime, so the section's one step declares `roles` and `access` on the adapter. Three steps came out, and the heading drops \"and the guard\".",
+   "The page also stops describing a scaffold signups screen. It lives only in `examples/showcase`, and the verify steps now open the reader's own gated route."
+  ],
+  "was": "Pass the map to the adapter and the guard (four steps)",
+  "now": "Pass the map to the adapter (one step)"
+ },
+ {
+  "id": "N2",
+  "kind": "info",
+  "file": "docs/extend/debug-your-site.md",
+  "anchor": "adminactionmisconfigured.heading",
+  "title": "The access-map refusal's cause moved",
+  "body": [
+   "The page said the dev backend attaches the access map only when given `{ access }`. It now attaches `runtime.access ?? {}` wherever it sets the editor (`handle.ts:192`), as the guard does. The refusal now comes only from a site's own hook that sets `locals.cairnEditor` without `locals.cairnAccess`. The `sveltekit.md` and `log-events.md` rows say the same."
+  ],
+  "was": "Fix: pass the map as devBackendHandle({ access }).",
+  "now": "Fix: that hook also sets locals.cairnAccess, or the route goes behind the guard."
+ },
+ {
+  "id": "N3",
+  "kind": "info",
+  "file": "docs/extend/scaffolded-site-files.md",
+  "anchor": "migrations.heading",
+  "title": "The tree matches what the scaffold ships",
+  "body": [
+   "The page still listed the signups demo the scaffold dropped: `migrations-app/`, a second D1 database, and an `admin/signups/` route. All three are gone, and the page says the site binds one D1 database. It also lists `0001_roles.sql`, which the scaffold ships, and `+error.svelte` in the admin route tree.",
+   "These last edits were the session's, checked against the `templates/waymark` listing and `f:gepykz`, without another agent round."
+  ],
+  "was": "two D1 databases; 0001_roles.sql opt-in and absent",
+  "now": "a D1 database; 0001_roles.sql shipped; 0002_audit.sql opt-in"
+ }
+]

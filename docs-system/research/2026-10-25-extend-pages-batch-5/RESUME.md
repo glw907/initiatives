@@ -62,6 +62,9 @@ and schema, Migrate existing content, and Write a markdown component.
 - Runtime-bag fact-check at `43e6f872f`: 43/53; correction holds. 5 wrong (signups screen on restrict-admin-access 18/37/96/150, `migrations-app/` on scaffolded-site-files) now contradict the page's own new line 118, so they're fixed in this PR, not left for #70. Plus 5 imprecise and three stale blueprint lines. Sweep agent resumed.
 - CI green (8 of 8); #141 merged as `ce4bee2f2` at the approved head. Batch 5 worktrees and branches removed (each confirmed an ancestor of `origin/main`). STATUS on `main` still says batch 5 is queued: update it in the runtime-bag PR once its agent finishes (don't edit that worktree while it works).
 - Sweep settled in `242f22edf`, `b08af0790`; recheck dispatched at `b08af0790`. Merged origin/main (`5715dbde1`), STATUS and #70 updated (`ea8ca520b`), gates green. PR body drafted (`pr-body-runtime.md`).
+- Recheck at `b08af0790`: every changed range holds; 5 outside. Session fixed scaffolded-site-files (one D1, `0001_roles.sql` shipped, `+error.svelte`) and `f:u78zg6` in `9f7a57b9a`; the restrict page's roles-migration step stays in #70 (`4dffcf074`). Gates green.
+- PR #142 open; change review queued 15:49 (item `20261025T154926-2917268`, decision to `decision-change-runtime.json`). Don't push to #142 while queued. On approve: wait for CI, then `gh pr merge 142 --merge --match-head-commit <head>`.
+- Friction still to file at the end: per-page cost variance ($1.03 to $3.96), SIGTERMed background tasks, the stale-anchor drafter stop, the session's own overclaimed fix, the unnamed `drafter check` errors on main, `approval-queue notes --check` rejecting a change note's `file`, the verify procedure needing three rounds, and the published pages that went stale after engine pass B with no gate catching it.
 
 ## Next session starts here
 
