@@ -2,7 +2,7 @@
 
 Target: `self-hosting/plans/2026-10-25-operator-runbook-plan.md` at `ffdad7c`, revised in place. Reviews: `2026-10-25-operator-runbook-plan-review-mechanics.md` (38 findings), `-contract.md` (29), and `-data.md` (18, counting its owner fork). The design's rulings aren't reopened. The second operator's identifiers appear only as roles; the plan's Brief says where the executor reads the real values in the private servers repo.
 
-Totals: 79 folded (13 of them convergent, folded once at their root), 4 refused, 2 owner forks with no other fold. With the four forks that sit inside folded findings, the plan carries six rulings, under "Rulings for Geoff". Path 720 to 880 minutes, task sum 1,165 to 1,400, under the 1,200 ceiling.
+Totals: 79 folded (13 of them convergent, folded once at their root), 4 refused, 2 owner forks with no other fold. With the four forks that sit inside folded findings, the plan carries six rulings, under "Rulings for Geoff". After the verification read (below): path 720 to 905 minutes, under the 1,200 path ceiling; task sum 1,165 to 1,435.
 
 A mid-fold fact from the conductor (Geoff's renaming of the `Household IT` items with category prefixes, each note naming its store variable, and the trashed Fastmail and duplicate Yealink items) is folded into T4's expected title set and the docs tasks' naming rule.
 
@@ -130,6 +130,38 @@ The fold doesn't edit the design. Two of its sentences under "The check" no long
 
 - "one live, read-only `dry-run.sh`": `dry-run.sh` creates and deletes probe objects at Cloudflare (Brief fact 1).
 - "a throwaway identity added to a scratch copy of the store": the scratch copy is rekeyed to the throwaway alone, so Geoff's key can't open it (contract M8).
+
+## Verification read
+
+Source: `2026-10-25-operator-runbook-plan-fold-verification.md` (0 blockers, 6 majors, 9 minors). All 15 folded, none refused, none owed. Each was checked against the source first.
+
+Probes for the new mechanisms:
+
+- `roles/mail-backup/server-restore:158-166` reads a missing count as `-999` and dies after Stalwart has started (read).
+- `scripts/apply.sh:95` exits before any git call in `--check` today (read).
+- A worktree mounted read-only with the main `.git` mounted read-only at its own absolute path answers `git rev-parse HEAD:<path>` and `origin/main:<path>` in a container that has git (probed; the servers gate image has no git, so `git` joins `tools/mint-packages.txt`).
+- The servers repo merges PRs with merge commits (`git log --merges`: #19, #20, #21), so a two-commit order survives the merge.
+- `stalwart-jmap show ACCOUNT` takes the `accounts.json` name, and `probe` is one (lines 9-10). `scripts/webmail-check.py:23` signs in with `STALWART_PASSWORD_TEST`.
+
+| Finding | Disposition |
+|---|---|
+| V-M1 `server-restore` fails on a rebuilt ward | Folded: T3b `stalwart-status skipped` and the `server-restore` filter, with a test; ruling 1's text now states the restore consequence with lines 158-166. |
+| V-M2 the merged render escapes twice | Folded: T3 acceptance compares against T1's record and expects the old loader to differ; Before merge 3 and After merge 6 keep old loaders from applying; `## Decisions` records the shell form. |
+| V-M3 rekey to A alone fails the write check | Folded: T4 two-step rekey; T1 test of the handoff. |
+| V-M4 `--check` needs git in the image | Folded: T2 `.git` mount (probed) and `git` in the tool list; T1 states the override case (`--check` skips the comparison and never fetches, `--apply` refuses). |
+| V-M5 rotation between T11 and merge | Folded: Before merge 1 reruns the comparison and updates the servers branch first. |
+| V-M6 probe-first not mechanized | Folded with option (b), not (a): two ordered commits and a probe-only ward apply in After merge 2. Option (a), a Stalwart container test, would need a fresh-server bootstrap the repo has no fixture for; (b) costs one apply and proves the same thing live on a test login. |
+| V-m1 `systemctl show` without ssh | Folded: After merge 2. |
+| V-m2 Entry and Close disagree | Folded: the Close sentence is dropped; Entry requires every ruling answered. |
+| V-m3 T5 needs T4's outputs | Folded: T5 placeholders, filled by the main loop after T4. |
+| V-m4 stub proof form | Folded: pre-flight 7 tests the assignment form, with flags as the fallback. |
+| V-m5 `SERVERS_STORE_BRANCH_OK` on rekey | Folded: dropped from the sitting line. |
+| V-m6 stale hash for the other members | Folded: T3b hash check covers every login with both forms; T7 names both commands. |
+| V-m7 probe hash name | Folded: `STALWART_PASSWORD_HASH_TEST` in T3b and its acceptance; the plaintext stays. |
+| V-m8 workstation history paths | Folded: T9 allows only dated files, listed. |
+| V-m9 totals line | Folded: this record's totals line. |
+
+Time: T1 +5, T2 +5, T3b +20, T4 +5. Path 905 (the T1/T2 pair at 165, T3/T3b at 155), task sum 1,435. The rulings are unchanged in number and question; ruling 1's text and both rulings' "no" paths changed (965 and 925).
 
 ## Privacy
 
