@@ -11,7 +11,7 @@ This plan builds the approved design: a servers-only age store with the second o
 Facts found at planning that correct the design's wording without changing its outcome. Each one goes in the servers PR's `## Decisions` and in `docs/decisions.md`:
 
 1. `scripts/dry-run.sh` reaches the servers only over HTTPS (the `immich-orpheus` and `webdav-*` rows). It never opens ssh. So the live route check is `dry-run.sh` plus `scripts/apply.sh orpheus --check` and `scripts/apply.sh ward --check`, all read-only.
-2. `cloudflare/access.json` already lists `oliver@907.life` for both hosts (servers `2483cef`), so the Access work needs no change.
+2. `cloudflare/access.json` already lists `<his 907.life address>` for both hosts (servers `2483cef`), so the Access work needs no change.
 3. The Hetzner console project is named `self-hosting` (STATUS, Pass 5 item 6), not "servers".
 4. `Servers emergency` no longer exists. Geoff moved every item and deleted the vault on 2026-10-25. The pass only re-points references.
 5. Geoff's mailbox and WebDAV passwords stay out of the servers store. Geoff ruled on 2026-10-25 that "his own mail account should be enough for all management". Both renders can take a hash in place of the plaintext, verified from the pinned releases' source:
@@ -19,7 +19,7 @@ Facts found at planning that correct the design's wording without changing its o
    - **rclone v1.75.2**: `--htpasswd` takes an Apache htpasswd file that "supports MD5, SHA1 and BCrypt ... Bcrypt is recommended" (`lib/http/auth.go:32-34`). Its tests sign in a bcrypt user (`lib/http/middleware_test.go:63-73`).
 
    One consumer can't use a hash. On ward, `roles/mail-filters/mail-filters:95-103` (the daily Sieve refresh) and `roles/stalwart/stalwart-jmap:39-42` sign in to Geoff's mailbox with the plaintext from `/etc/servers/stalwart.env`. So that plaintext moves to its own optional file, `/etc/servers/stalwart-geoff.env`, which only a workstation apply renders. An apply that lacks the name leaves the installed copy alone.
-6. `scripts/apply.sh:52`, `secrets/render.sh:136`, `infra/project.env:14` (`SSH_USER=geoff`), and the ward mail helpers all ssh as `geoff`. His Unix account is `oliver`.
+6. `scripts/apply.sh:52`, `secrets/render.sh:136`, `infra/project.env:14` (`SSH_USER=geoff`), and the ward mail helpers all ssh as `geoff`. His Unix account is `<his account>`.
 7. ward-probes (draft glw907/servers#22) runs in its own worktree. It adds `scripts/ward-book-check.{py,sh}`, `tests/fakes/ward-book-server.py`, and `tests/ward-book-check.test.sh`, and appends to `BACKLOG.md` and `docs/decisions.md`. Its later Part B edits `docs/runbook.md` and `roles/stalwart`. This pass doesn't wait for #22. The restructure lands first, and Part B rebases onto the new pages and adopts `SERVERS_SSH_USER`.
 
 ### Planning guidance carried from pass-core
@@ -36,7 +36,7 @@ Extras go under "Later" and are never built.
 
 The design leaves these to the builder. A reviewer may contest any of them.
 
-- **Invite address.** The Cloudflare and Hetzner invites go to `oliver.907.life@proton.me`, not `oliver@907.life`. Those two accounts are the ones that rebuild 907.life's mail, and Geoff's 2026-10-18 recovery ruling keeps their logins off 907.life. GitHub keeps `oliver@907.life`, because the Access policy matches it.
+- **Invite address.** The Cloudflare and Hetzner invites go to `<his Proton address>`, not `<his 907.life address>`. Those two accounts are the ones that rebuild 907.life's mail, and Geoff's 2026-10-18 recovery ruling keeps their logins off 907.life. GitHub keeps `<his 907.life address>`, because the Access policy matches it.
 - **His age key's home.** His age private key goes in his own Proton Pass vault, not `Household IT`, so that Claude and Geoff can't read it.
 - **Which names move to the servers store.** A name moves when a host render, a servers Worker, or a servers script reads it, unless it opens one of Geoff's own accounts. These stay only in the workstation store:
   - `CLOUDFLARE_API_TOKEN` (the broad `ws-admin`, which every project uses), `CF_ZT_TOKEN`, and the `FASTMAIL_*` names (they retire when Fastmail closes).
@@ -57,10 +57,10 @@ The design leaves these to the builder. A reviewer may contest any of them.
 
 Only Geoff can do these, except where an item says otherwise. Each item's check runs before launch. The values go in `self-hosting/plans/2026-10-25-operator-runbook-preflight.md` under "The sitting's record", the way `2026-10-21-pass5-preflight.md` did it. Amounts and dates go in that file, with no secret values.
 
-1. **Cloudflare seat.** In Manage Account > Members, invite `oliver.907.life@proton.me` as Super Administrator. Claude can't send the invite, because no standing token has member write: `ws-admin`'s scopes in `~/.claude/docs/cloudflare-estate-inventory.md` include none, and rule 6 limits temporary tokens to token management. *Check*: with `CLOUDFLARE_API_TOKEN`, `GET /accounts/120c269ad6d3dfbe6d63a0bb53758ca0/members` lists him as pending with role Super Administrator (names and states only).
+1. **Cloudflare seat.** In Manage Account > Members, invite `<his Proton address>` as Super Administrator. Claude can't send the invite, because no standing token has member write: `ws-admin`'s scopes in `~/.claude/docs/cloudflare-estate-inventory.md` include none, and rule 6 limits temporary tokens to token management. *Check*: with `CLOUDFLARE_API_TOKEN`, `GET /accounts/120c269ad6d3dfbe6d63a0bb53758ca0/members` lists him as pending with role Super Administrator (names and states only).
 2. **Two-factor on the account.** Claude tries this first: `PATCH /accounts/{id}` with `settings.enforce_twofactor: true`, using `CLOUDFLARE_API_TOKEN`. If that answers 403, Geoff turns on two-factor enforcement in the dashboard. *Check*: `GET /accounts/{id}` shows `enforce_twofactor: true`.
-3. **Hetzner seat.** In the console, open project `self-hosting` > Security > Members and invite `oliver.907.life@proton.me` as Admin. Hetzner has no member API. *Check*: Geoff confirms in the sitting, and the record names the role.
-4. **GitHub successor.** In Settings > Account > Successor settings, name `owright907`. *Check*: Geoff confirms, and the record says the invite is pending.
+3. **Hetzner seat.** In the console, open project `self-hosting` > Security > Members and invite `<his Proton address>` as Admin. Hetzner has no member API. *Check*: Geoff confirms in the sitting, and the record names the role.
+4. **GitHub successor.** In Settings > Account > Successor settings, name `<his GitHub login>`. *Check*: Geoff confirms, and the record says the invite is pending.
 5. **Billing and renewal facts.** For each account, record the amount, the card or payer, the renewal date, and whether it auto-renews. Geoff reads Cloudflare's subscriptions; 907.life's registration (expiry, auto-renew, and renewal price, under Domain Registration); Proton (the Pass Family plan); GitHub, if it's a paid plan; and any other household account billed to his card. He names those last ones himself, and candidates to ask about are Spamhaus DQS, PikaPods, and Fastmail until it closes. Claude reads the rest by API. Hetzner's monthly amounts come from `HCLOUD_TOKEN_SERVERS` (`GET /pricing` and the project's servers, Primary IPs, and backups). The GitHub plan name comes from `gh api user --jq .plan.name`. *Check*: every row of the record's table is filled.
 6. **Claude's vault route.** If the agent's login fails, Geoff renews it as `bluefin-admin.md` "Secrets" describes: a fresh `pass-cli agent create pavilion-claude --expiration 3m` in a throwaway session, then `secret-tool store --label "Proton Pass claude agent" service proton-pass-agent-claude host pavilion`. *Check*: `claude-pass --status` prints `path=proton`, and `claude-pass item list --vault-name "Household IT"` answers (the conductor reads titles only).
 7. **Permission rules** (new since the design). Geoff merges a workstation change that adds two allow rules. The first allows `scripts/store.sh` under `/var/home/glw907/Projects/servers/.claude/worktrees/*/` and never in the main checkout. The second allows `tests/mint/route-check.sh` in the same worktrees. Both are drafted in this plan's pre-flight file, with a stub proof in a `dontAsk` session, the way Pass 5's rules file did it. *Check*: both rules are in `~/.claude/settings.json`, and the stub proof passed.
@@ -104,13 +104,13 @@ The servers worktree is `.claude/worktrees/operator-runbook` on branch `operator
   - *Acceptance*: the tests pass, and the main loop's hash comparison matches for every moved name.
 
 - **T2. His machine and his keys (120 min, `auth-data`, pair with T1).**
-  - *Outcome*: the operator scripts run from a stock Linux Mint machine as `oliver`. BACKLOG #50 is done.
+  - *Outcome*: the operator scripts run from a stock Linux Mint machine as `<his account>`. BACKLOG #50 is done.
   - *ssh user*: one variable, `SERVERS_SSH_USER` (default `geoff`), replaces every hard-coded `geoff@` in `scripts/apply.sh`, `secrets/render.sh`, `scripts/ward-mail-{sort,delete}.sh`, and `scripts/mail-filters.sh`. `infra/project.env`'s `SSH_USER` follows it. The cutover-only `import-window.sh`, `imap-sweep.sh`, and `vandelay-run.sh` stay as they are, and their headers say why.
   - *Keys*: they move to `base/keys/<unix name>/<machine>.pub`. `geoff/` holds the two existing keys, and cloud-init still inlines them (`tests/base.test.sh` follows the move). After the roles run, `apply.sh` sets each existing account's `authorized_keys` to equal its directory (`geoff` and each `hosts/HOST/operators.txt` name). An account with no directory is left untouched. If `geoff`'s set would come out empty, the apply refuses.
   - *ssh errors*: `apply.sh` prints ssh's own error (an unknown host key, a refused key) in place of "needs passwordless sudo" (`apply.sh:63`).
   - *Tool list*: one list, `tools/mint-packages.txt`, that both the new gate leg `mint` and the install page read. The leg is in `scripts/check.sh`, built from `tests/mint/Containerfile`, and runs `tests/harness/run.sh` in the image. It's selected on `scripts/`, `secrets/`, `infra/`, `base/`, `tests/`, `cloudflare/*.sh`, and `tools/mint-packages.txt`.
   - *Route check*: `tests/mint/route-check.sh` is the live wrapper for T4.
-  - *Test*: `tests/apply.test.sh` covers these cases. With `SERVERS_SSH_USER=oliver`, every ssh call targets `oliver@`. The key sync writes each directory's keys and leaves `oliver` alone when he has no directory. An empty `geoff` set refuses. A refused key prints ssh's message. The `mint` leg passes locally.
+  - *Test*: `tests/apply.test.sh` covers these cases. With `SERVERS_SSH_USER=<his account>`, every ssh call targets `<his account>@`. The key sync writes each directory's keys and leaves `<his account>` alone when he has no directory. An empty `geoff` set refuses. A refused key prints ssh's message. The `mint` leg passes locally.
   - *Acceptance*: the tests and the full gate pass, and `git grep -n 'geoff@' -- scripts secrets infra` hits only the three cutover tools and comments.
 
 - **T3. The workstation renders the servers names (90 min, `auth-data`, workstation, pair with T3b).**
@@ -142,7 +142,7 @@ The servers worktree is `.claude/worktrees/operator-runbook` on branch `operator
   - *Link check*: a new gate check fails on a relative link in `docs/` or `README.md` that doesn't resolve.
   - *Re-pointing*: every `docs/runbook.md` reference outside `docs/cutover-log.md` and dated plans, including `docs/monthly-review/prompt.txt` and the `mail-tend` skill. The skill is a workstation file, and the main loop edits it.
   - *Start here*: the first hour, in order (accounts, keys, alerts, next pages), and the note that until the sitting his key isn't in the store or in `base/keys/`.
-  - *Emergency screens*: every stop line names the next screen or what's safe to leave, never "call Geoff". The pass adds #38's "Cloudflare or a tunnel is down" screen: direct ssh as `oliver@<host>.907.life` with his key, the two hosts' ed25519 fingerprints (read from pavilion's `known_hosts`), and the Hetzner console as the last resort. "Who to call" goes away. All of this is in the Microsoft register (`~/.claude/skills/survey/writing/editor.md`).
+  - *Emergency screens*: every stop line names the next screen or what's safe to leave, never "call Geoff". The pass adds #38's "Cloudflare or a tunnel is down" screen: direct ssh as `<his account>@<host>.907.life` with his key, the two hosts' ed25519 fingerprints (read from pavilion's `known_hosts`), and the Hetzner console as the last resort. "Who to call" goes away. All of this is in the Microsoft register (`~/.claude/skills/survey/writing/editor.md`).
   - *Test*: the link check fails on a planted broken link, and the emergency render still fails on drift.
   - *Acceptance*: the full gate passes, and `git grep -n 'call Geoff\|Servers emergency\|docs/runbook.md'` hits only history.
 
@@ -154,13 +154,13 @@ The servers worktree is `.claude/worktrees/operator-runbook` on branch `operator
 
 - **T7. The change pages, your machine, and Claude Code (120 min, `ordinary`, pair with T6).**
   - *`docs/changes.md`*: provision, apply, rebuild, upgrade, DNS, deploying a Worker, R2, mail filters, and bookmark members. BACKLOG #37 (the two tunnels, the three Access apps, adding or removing a person, a tunnel that is down) and #39 (the single redirects in `cloudflare/redirects/`).
-  - *`docs/your-machine.md`*: the one install path on Mint (`tools/mint-packages.txt`, the pinned extras), where the identity file lives, `SERVERS_SSH_USER=oliver`, and how to rotate a secret with `store.sh`.
+  - *`docs/your-machine.md`*: the one install path on Mint (`tools/mint-packages.txt`, the pinned extras), where the identity file lives, `SERVERS_SSH_USER=<his account>`, and how to rotate a secret with `store.sh`.
   - *`docs/claude-code.md`*: optional, and no other page depends on it.
   - *Test*: Vale and the link check pass.
   - *Acceptance*: each command on these pages is one T2 or T4 ran, or is marked "not run" in `## Decisions`.
 
 - **T8. Upkeep, accounts, and the sitting checklist (120 min, `ordinary`, pair with T9).**
-  - *`docs/upkeep.md`*: a checklist for every duty in `docs/monthly-review/prompt.txt` (upgrades, drills, DKIM and password rotation, R2 cleanup, the credential dry run, the yearly items). The prompt now reads the checklist and keeps only the session mechanics. The email alerts reach him at `oliver.907.life@proton.me`, and each one maps to its screen.
+  - *`docs/upkeep.md`*: a checklist for every duty in `docs/monthly-review/prompt.txt` (upgrades, drills, DKIM and password rotation, R2 cleanup, the credential dry run, the yearly items). The prompt now reads the checklist and keeps only the session mechanics. The email alerts reach him at `<his Proton address>`, and each one maps to its screen.
   - *`docs/accounts.md`*: every account (Cloudflare with the registration, Hetzner, Proton, GitHub, and the others pre-flight 5 named), with who holds access, how it's recovered, whether it bills Geoff's card, the amount, and the renewal date from the pre-flight record. Also what a Hetzner project Admin and a GitHub successor can and can't do, read from the vendors' docs; a check that each of his seats uses only his own addresses; and a reusable "Add an operator" section with Geoff's half and the new operator's half.
   - *Sitting checklist*: the PR body's `## Sitting checklist`, which the conductor commits after the merge as `self-hosting/plans/2026-10-25-operator-runbook-sitting.md`. His steps:
     1. Accept the Cloudflare and Hetzner invites and enroll two-factor for each.
@@ -168,7 +168,7 @@ The servers worktree is `.claude/worktrees/operator-runbook` on branch `operator
     3. Install the tools per `docs/your-machine.md`.
     4. Run `age-keygen` and save the private key in his own vault.
     5. Send his age and ssh public keys.
-  - *Claude's half in the sitting*: add his recipient line and `store.sh rekey`; add `base/keys/oliver/<machine>.pub`; commit to `main`; apply both hosts. Then, from his Mint machine, he runs `dry-run.sh`, `apply.sh orpheus --check`, `apply.sh ward --check`, and `ssh oliver@orpheus.907.life`.
+  - *Claude's half in the sitting*: add his recipient line and `store.sh rekey`; add `base/keys/<his account>/<machine>.pub`; commit to `main`; apply both hosts. Then, from his Mint machine, he runs `dry-run.sh`, `apply.sh orpheus --check`, `apply.sh ward --check`, and `ssh `<his account>@orpheus.907.life`.
   - *Test*: Vale and the link check pass.
   - *Acceptance*: no row of the accounts table is blank, and an unknown says where to read it.
 
