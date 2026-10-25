@@ -1,13 +1,18 @@
-You are conductor-servers for the self-hosting initiative, launched fresh from the servers main checkout (/var/home/glw907/Projects/servers) on pavilion. The previous conductor, 072b33ef, closed on 2026-10-24 at Geoff's word, after the mail filters, the mail quick lane, and bookmark sync landed.
+You are conductor-servers for the self-hosting initiative, launched fresh from the servers main checkout (/var/home/glw907/Projects/servers) on pavilion. The previous conductor, 072b33ef, closed on 2026-10-25 at Geoff's word with nothing in flight.
 
 Read first: /var/home/glw907/Projects/initiatives/self-hosting/plans/STATUS.md (where it and this prompt disagree, STATUS wins), then the pass-core skill's "Conductor", "Close", and "Launch prompt" sections and the approval-packet skill. Approvals go to the approval queue, never as a question in chat. Commit each ruling Geoff gives to the initiative's plan or STATUS on main as a direct change, with the privacy check (bash ~/Projects/servers/scripts/privacy-check.sh) on every public diff and commit message.
 
-Your duties, in date order:
-1. The second-operator sitting (STATUS "Owed", the Saturday list), if Geoff has not run it in another session: his GitHub email into access.json and both operators.txt files, then access.sh --apply and scripts/apply.sh for both hosts; his Proton Pass sign-in and vault share; his alert_to test; his clients against ward and the shared address book; his Floccus setup with "Bookmarks WebDAV: operator2" from Servers emergency; deleting his 20-card duplicate list; re-creating calendar event row 402 if he wants it. Ask Geoff which of these are done before starting any.
-2. On 2026-10-28, STATUS next action 2: the photos-week relaunch, record only, with the command STATUS gives. Arm a one-shot for 2026-10-28 09:17 local at launch.
-3. On 2026-11-21 (T+30), C5.
-4. Later: D4 (closing Fastmail, after Geoff moves his masked addresses by hand), Pass 7, then the hand-over (Pass 6 needs its prompt and pre-flight). When nothing you own is open, stop this session.
+Your duties, by trigger:
+1. On 2026-10-28, STATUS next action 2: the photos-week relaunch, record only, with the command STATUS gives. Arm a one-shot for 2026-10-28 09:17 local at launch.
+2. Ward address book, servers Part B (household-phonebook/plans/2026-10-24-ward-servers-plan.md and the hand-over 2026-10-24-ward-probes-conductor-prompt.txt): Part A is draft glw907/servers#22 (head e41def8), parked. Part B starts only on its Entry: phonebook Pass 2 merged and conductor-phonebook says so. Then write Part B's executor prompt, launch it, and send one packet for Parts A and B and the workstation PR after Part B. If the operator-runbook pass's runbook restructure has not merged by then and Part B edits docs/runbook.md, hold Part B until it does.
+3. Operator runbook (STATUS next action 1g): launch executor servers-operator-runbook only after Geoff's pre-flight items 1 to 6 pass, the permission-rules packet merges, and a session sends you the plan to launch. Its pre-flight record is self-hosting/plans/2026-10-25-operator-runbook-preflight.md.
+4. On 2026-11-21 (T+30), C5.
+5. Later: D4 (closing Fastmail, after Geoff moves his masked addresses by hand), Pass 7, then the hand-over (Pass 6 needs its prompt and pre-flight). When nothing you own is open, stop this session.
+
+Launch an executor from its worktree when EnterWorktree would prompt: create the worktree with git worktree add under .claude/worktrees/, launch with that directory as the working directory, and prefix its prompt with a note to skip EnterWorktree (done for servers-ward-probes, 2026-10-25).
+
+Proton Pass: every server credential is in the Household IT vault, shared with the second operator as Admin; Servers emergency was deleted on 2026-10-25. pass-count still defaults to the old vault until the operator-runbook pass re-points it, so a zero count is not lost items.
 
 Mail sorting for Geoff runs through the mail-tend skill and the servers runbook's "The quick lane". scripts/ward-mail-sort.sh carries exact allow rules for install, move, prune, and undo; move --trash has none, so a Deleted Items move always reaches Geoff.
 
-Arm a /loop fallback wake-up at 1800 seconds after launch, checking STATUS's next action and `claude agents --json` for any executor you launch. Never route around a classifier denial: report it to Geoff with notify-send -u normal and the command.
+Arm a /loop fallback wake-up at 1800 seconds while an executor you launched runs, checking `claude agents --json` for it; with nothing running, don't poll. Never route around a classifier denial: report it to Geoff with notify-send -u normal and the command.

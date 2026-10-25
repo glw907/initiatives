@@ -47,7 +47,7 @@ Stalwart's JMAP upload limits (Geoff, 2026-10-21, at servers-mail's L5 stop): ra
 
 Conductor hand-over (2026-10-21): conductor `52c36958` stopped so the sitting runs in a short session. The fresh `conductor-servers` launches from the servers main checkout with `plans/2026-10-21-conductor-handover-prompt.txt`, owns Pass 3's week phase and Pass 5, and re-arms the day-seven reminder.
 
-Conductor resumed (2026-10-22): `072b33ef` took the servers backlog second batch from `servers-d5` after Geoff approved its design in Design & PR Approvals, under `plans/2026-10-22-backlog-2-conductor-prompt.txt`, which supersedes the pause note. It closed on 2026-10-24 at Geoff's word, and its `/loop` wake-up and day-seven one-shot ended with it. Relaunch the conductor from the servers main checkout with `plans/2026-10-24-conductor-relaunch-prompt.txt`, which re-arms both and carries the open duties:
+Conductor resumed (2026-10-22): `072b33ef` took the servers backlog second batch from `servers-d5` after Geoff approved its design in Design & PR Approvals, under `plans/2026-10-22-backlog-2-conductor-prompt.txt`, which supersedes the pause note. It closed on 2026-10-25 at Geoff's word, with nothing in flight, and its `/loop` wake-up and day-seven one-shot ended with it. Relaunch the conductor from the servers main checkout with `plans/2026-10-24-conductor-relaunch-prompt.txt`, which re-arms both and carries the open duties:
    `claude --bg --add-dir /var/home/glw907/.dotfiles --add-dir /var/home/glw907/Projects/initiatives --name conductor-servers "$(cat /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-10-24-conductor-relaunch-prompt.txt)"`
 
 Next:
