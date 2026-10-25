@@ -122,7 +122,7 @@ Next:
 
 ## Sessions
 
-- Ward address book, servers Part A (2026-10-24): executor `servers-ward-probes` `fba7a225`, relaunched 2026-10-25 by conductor `072b33ef` from its worktree `.claude/worktrees/ward-probes` (cut from main at `6d18264`) after the first launch, `f3c448e8`, sat blocked on the EnterWorktree permission prompt and was stopped, under `household-phonebook/plans/2026-10-24-ward-probes-conductor-prompt.txt`. Its PR stays a draft until Part B's packet.
+- Ward address book, servers Part A (2026-10-24): executor `servers-ward-probes` `fba7a225`, relaunched 2026-10-25 by conductor `072b33ef` from its worktree `.claude/worktrees/ward-probes` (cut from main at `6d18264`) after the first launch, `f3c448e8`, sat blocked on the EnterWorktree permission prompt and was stopped, under `household-phonebook/plans/2026-10-24-ward-probes-conductor-prompt.txt`. PR-ready 2026-10-25 as draft glw907/servers#22 (head `e41def8`, CI green, all four probes pass, backlog #52 and #53 filed); the executor is stopped, and the PR waits for Part B's packet.
 - Servers backlog second batch (2026-10-22): conductor `conductor-servers` `072b33ef`; executor `servers-backlog-2` `80617061`, launched from the servers main checkout at `e036a70`. Planner `servers-d5` handed off. Merged as servers#14; the executor stopped.
 - Bulwark webmail (2026-10-23): planner `servers-eb` handed off; executor `servers-bulwark` `d2fe6b20`, conductor `072b33ef`. Merged; the executor stopped.
 - Mail filters (2026-10-23): planner `dotfiles-65` handed off; executor `servers-mail-filters` `412df39b`, conductor `072b33ef`. Merged; the executor stopped.
