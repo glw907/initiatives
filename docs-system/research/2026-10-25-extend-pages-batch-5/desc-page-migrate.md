@@ -1,0 +1,3 @@
+This is the drafted page for Migrate existing content, the task guide for a developer moving markdown and frontmatter from another system into a cairn site. It builds one Node.js script that reads the old files, maps their frontmatter onto the site's declared fields, and writes entries with the right ids. Then it covers dates, tags, drafts, images, body syntax, and how to verify the result. You approved its blueprint in batch 3, and this draft comes from it.
+
+The checks caught one step that would have published every draft, and one wrong claim about what a save does with a non-string value. Both are fixed on the page, in the blueprint, and in the facts. There are no decisions for you on this page.

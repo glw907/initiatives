@@ -1,0 +1,13 @@
+[
+ {"id":"N0","kind":"info","anchor":"migrate-existing-content.heading","title":"How this draft was checked",
+  "body":["drafter wrote the page from the blueprint you approved in batch 3. A fresh fact-checker read 85 claims against the code: 78 held, 1 was wrong, and 6 were imprecise. The register editor's 27 findings, 5 of them blocking, were applied. Two rechecks held 59 of 63 and 20 of 21, and each finding is fixed.",
+   "Each claim change was carried back to the blueprint. The blueprint's link to \"Configure rendering\" now names that page's new title, Write a markdown component."]},
+ {"id":"N1","kind":"info","anchor":{"quote":"bound for one of these fields to a string"},"title":"Drafts stay drafts",
+  "body":["The draft told the reader to convert each number or boolean to a string. A boolean field keeps only `value === true` (`fieldset.ts:198`), so a stringified `draft: true` would publish the draft. The step now converts only values bound for the text-type fields, and the page says the `draft` value stays a boolean."]},
+ {"id":"N2","kind":"info","anchor":{"quote":"a save writes that string back"},"title":"A non-string value is written back, not dropped",
+  "body":["The draft said an optional text field's non-string value is dropped on the next save. The edit page fills a text or textarea field with `String(value)` (`frontmatter.ts:371`), so a save writes the string back, and a date comes back as JavaScript's long date string. The value is missing only from the validated frontmatter the site reads. `f:gh4ckg` is corrected to match, including the select, url, and email cases."]},
+ {"id":"N3","kind":"info","anchor":{"quote":"2025-02-14"},"title":"The rolled-over date is restored",
+  "body":["The blueprint said an impossible unquoted date rolls over silently, and the draft had left that out. js-yaml 3.15.2 builds the date with `Date.UTC`, so `2024-13-45` parses as `2025-02-14` and passes the date check. A run of `parseMarkdown` confirmed it, and the claim is now its own fact, `f:mtyw16`."]},
+ {"id":"N4","kind":"info","anchor":{"quote":"Moving an image into the media library needs media turned on"},"title":"The media prerequisite comes before its steps",
+  "body":["The draft gave the Configure media link after the two steps that need it. It now comes first, on the page and in the blueprint. The screen is named by its title, **Media library**."]}
+]
