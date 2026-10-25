@@ -1,0 +1,3 @@
+This is the drafted page for Act on newly published entries, the task guide for a site that wants each new post announced once. It's drafted from the blueprint you approved. The page walks through a job that runs after each deploy, diffs the deployed manifest against the one it stored, sends each new post, and saves.
+
+You approved this draft at about 08:30, but the queue refused to log the approval. Commits for the other batch 4 pages had moved PR #140 since this page was queued, and a moved PR invalidates the approval. Since then the page has not changed, and nothing will push to #140 until you decide, so approving again logs it.

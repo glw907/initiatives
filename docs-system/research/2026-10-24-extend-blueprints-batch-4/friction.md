@@ -313,3 +313,6 @@ turn-on-tidy KEEP with two fixes, run-cairn-audit-on-your-site TRIM. No fold thi
   unresolved file, so the drafter wrote "`app.css` under `src`" to get past it. The theme agent
   added an allowlist entry. Paths a page names in the reader's site need a marker or a
   standing allowlist group, so the gate doesn't push the prose into circumlocution.
+- P12 (approval-queue): all three page approvals (about 08:30) were refused because PR #140's head
+  moved while they waited: sibling pages' commits for two, a GitHub lag after the push for the
+  third. Requeued unchanged at 09:20. Filed as approval-queue #48.

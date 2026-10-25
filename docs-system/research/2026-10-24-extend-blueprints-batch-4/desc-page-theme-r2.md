@@ -1,0 +1,3 @@
+This is the drafted page for Theme your public site, the task guide for styling a cairn site's public pages. It's drafted from the blueprint you approved. A hand-built site adds the styling stack and points the editor preview at it. A scaffolded site re-skins Waymark or ports a design onto the chassis. Every reader verifies with the public-scope audit rules.
+
+You approved this draft at about 08:30, but the queue refused to log the approval. Commits for the other batch 4 pages had moved PR #140 since this page was queued, and a moved PR invalidates the approval. Since then the page has not changed, and nothing will push to #140 until you decide, so approving again logs it.

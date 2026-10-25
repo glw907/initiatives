@@ -1,0 +1,3 @@
+This is the drafted page for Add an island, the task guide for making one markdown component live on the public site while its server-rendered fallback stays. It's drafted from the blueprint you approved. A scaffolded site follows a four-step short path, and a hand-built site walks the full wiring: the component, the registry, the root layout, and the check on the public page.
+
+You approved this draft at about 08:30, but the queue refused to log the approval. Commits for the other batch 4 pages had moved PR #140 since this page was queued, and a moved PR invalidates the approval. Since then the page has not changed, and nothing will push to #140 until you decide, so approving again logs it.

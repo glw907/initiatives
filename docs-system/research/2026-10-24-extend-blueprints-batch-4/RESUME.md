@@ -39,6 +39,7 @@ blueprints, with friction collected for the drafter and approval-queue backlogs.
 - 00:41 Theme page queued (`56b90202c`, after the agent's settlement `12e0a1c18` merged as `f24bf2b5c`): item 20261025T004112-619117, decision to `decision-page-theme.json`; no decide notes. Its recheck held 85 of 87, and both imprecise lines took the checker's wording.
 - All three pages are queued on PR glw907/cairn-cms#140. On approval of all three and #139's merge: mark #140 ready, watch CI, merge into `extend-blueprints-2`.
 - 00:50 Drafting and page-review friction filed: drafter #104-#109 plus a #88 addendum (`e41695f`), cairn-cms #63 plus a #53 addendum (`27f474f`), dotfiles #37 (`0cbcd4a`).
+- 09:20 Geoff approved all three pages about 08:30, but `approval-queue` refused each (PR #140's head moved while it waited) and logged nothing. Pages unchanged; requeued with `desc-page-<s>-r2.md`: act 20261025T092001-823508, island -823512, theme -823513 (decisions to the same `decision-page-<s>.json`). Do not push to #140 until all three are decided. Filed approval-queue #48.
 
 ## Next session starts here
 
