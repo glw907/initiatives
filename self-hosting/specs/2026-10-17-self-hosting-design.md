@@ -8,7 +8,7 @@ Fastmail, PikaPods, and 1Password each hold household data on someone else's ter
 
 ### What changes
 
-- Mail for 907.life moves to Stalwart on a small Hetzner server in the EU, sending directly on port 25. All four Fastmail mailboxes migrate: yours, the second operator's, and household members A's and B's.
+- Mail for 907.life moves to Stalwart on a small Hetzner server in the EU, sending directly on port 25. Fastmail holds four logins: yours, the second operator's, and two unused logins. Only the first two migrate (the 2026-10-20 scope ruling).
 - Immich moves from PikaPods to a second Hetzner server in the EU. photos.907.life keeps its name, and uploads over 100 MB start working.
 - The same media server is ready for dubplate when dubplate's own build ships. musicbox retires.
 - Proton Pass Family covers five people and replaces 1Password for the three who use it. Your new masked addresses end in `m.907.life`.
@@ -80,8 +80,8 @@ Geoff made these rulings in the brainstorm on pavilion and in the thinkpad-x1 se
   - **Workers Paid.** The Cloudflare account is already on Workers Paid.
   - **Pass 0.** A new first pass, "Attended access", runs with Geoff present throughout. It gathers every account and API credential the later passes need, lands the Claude infrastructure changes, and ends with a dry run proving every token works.
   - **Geoff's Proton move.** It starts in Pass 0 and runs alongside the server passes: his account and FIDO2 keys, his 1Password import, the `Workstation` and `Servers emergency` vaults and agent tokens, and the workstation security PR. New credentials from Pass 0 go into Proton Pass, never 1Password.
-  - **Three 1Password users.** Geoff, the second operator, and household member C use 1Password today. The second operator creates his Proton account in Pass 0 and handles his own migration. Household member C uses no masked addresses, so their move is a plain vault import with written macOS and iOS steps, later. 1Password is cancelled only after all three have moved. Household members A and B join Proton Pass without a 1Password vault.
-  - **Four mailboxes migrate.** Fastmail has four users today, Geoff, the second operator, and household members A and B, each a separate login with their own mailbox and contacts, and perhaps calendars. All four move to Stalwart.
+  - **Three 1Password users.** Geoff, the second operator, and household member C use 1Password today. The second operator creates his Proton account in Pass 0 and handles his own migration. Household member C uses no masked addresses, so their move is a plain vault import with written macOS and iOS steps, later. 1Password is cancelled only after all three have moved.
+  - **Four mailboxes migrate.** Fastmail has four users today, Geoff, the second operator, and two unused Fastmail logins, each a separate login with its own mailbox and contacts, and perhaps calendars. All four were to move to Stalwart; the 2026-10-20 scope ruling moves only the first two.
   - **Start at $24 a month.** Both servers start as CX33s even if the measured mailboxes make the mail disk tight. A larger type comes later, when the disk alert says so.
 
 ## Rulings needed
@@ -99,11 +99,9 @@ The repo is public, so household members appear by role. The real names live onl
 |---|---|---|---|
 | Geoff | yes, migrated | owner | Linux workstations, no smartphone |
 | Second operator | yes, migrated | member | Linux, Android |
-| Household member A | yes, migrated | member | macOS, iOS |
-| Household member B | yes, migrated | member | macOS, iOS |
 | Household member C | no | member | macOS, iOS |
 
-Three of the five Proton Pass users are on Apple devices, so the Safari, macOS, and iOS setup gets written out step by step. Nothing in the design assumes a phone of Geoff's. That covers alerts, logins, and second factors. Tests that need a phone, such as the large Immich upload, borrow a household member's.
+Household member C, one of the three Proton Pass users, is on Apple devices, so the Safari, macOS, and iOS setup gets written out step by step. Nothing in the design assumes a phone of Geoff's. That covers alerts, logins, and second factors. Tests that need a phone, such as the large Immich upload, borrow a household member's.
 
 ## Architecture
 
@@ -298,7 +296,7 @@ Stalwart's generated `dnsZoneFile` is the source for the mail records:
 
 Vandelay, run on a workstation, copies each Fastmail account into a SQLite archive, then into Stalwart:
 
-- All four accounts move: Geoff's, the second operator's, and household members A's and B's. Each needs its own Fastmail API token, DAV app password, and IMAP app password, because each is a separate login.
+- Two accounts move: Geoff's and the second operator's. The two unused Fastmail logins stay behind (the 2026-10-20 scope ruling). Each migrating account needs its own Fastmail API token, DAV app password, and IMAP app password, because each is a separate login.
 - Migration runs on each member's credentials, but Claude reads only counts and metadata for verification, never message content; the body check compares hashes. A member's masked addresses are checked with `MaskedEmail/get` alone. This is the mail side of the rule that Claude never reads a personal vault.
 - Mail and contacts go over JMAP, using `--account-id` rather than `--account-name`. Geoff's token also reaches a shared, contacts-only account, which moves with his.
 - Calendars go over CalDAV, with a DAV app password for each account.
@@ -340,7 +338,7 @@ Claude runs cutover day, with Geoff on call. Steps 1 to 5 run in one window of a
 3. Switch MX to `mail.907.life` through the API.
 4. Run the inbound probe from outside, and a send from inside Fastmail, which catches Fastmail delivering locally to a domain it hosts.
 5. Point Hylki and poplar at Stalwart, and repoint Thunderbird at Stalwart for mail, contacts, and calendars until it retires in the wind-down, so nothing on the workstations still writes to Fastmail. `vdirsyncer` either moves to Stalwart with a fresh status directory after a one-way first sync, or retires if nothing reads its local copy.
-6. Send the second operator a short guide for his Android client, and household members A and B their configuration profiles. On every device, the steps turn off Contacts and Calendars on the Fastmail account and make Stalwart the default for mail, contacts, and calendars. The Fastmail account stays for rollback until T+30.
+6. Send the second operator a short guide for his Android client. On every device, the steps turn off Contacts and Calendars on the Fastmail account and make Stalwart the default for mail, contacts, and calendars. The Fastmail account stays for rollback until T+30.
 7. Point Immich's SMTP, and dubplate's if it is deployed, at Stalwart on 587, and send a test mail from each to a household mailbox.
 
 Failed checks lead here:
@@ -387,7 +385,7 @@ Aliases are disabled during triage, never deleted, because Proton can't recover 
 
 The 165 @fastmail.com masked addresses move one service at a time, along with any the other three users hold:
 
-1. Claude snapshots every masked address over JMAP into an age-encrypted file outside git. The second operator lists his own masked addresses and Fastmail-only logins in Pass 0. Whether household members A and B have any is unknown; Claude checks over each one's API token in the mail pass.
+1. Claude snapshots every masked address over JMAP into an age-encrypted file outside git. The second operator lists his own masked addresses and Fastmail-only logins in Pass 0. The two unused Fastmail logins migrate nothing, so Geoff reads their enabled-mask counts in their Fastmail settings for the T+30 packet.
 2. For Geoff's masks, Claude adds message counts and sender domains for the last year, and joins the list against the Proton Pass logins after the import. Other members' masks get `MaskedEmail/get` alone.
 3. Each address gets a tier: critical (banks, government, health, utilities, domain and hosting, account recovery), active, dormant, or never used.
 4. Geoff works the list at his own pace: create the alias inline in the service's form, change the address at the service, confirm the verification mail arrives, then disable the Fastmail mask. No bulk path exists, so this is the one long stretch of human work in the initiative. Critical services go first.
@@ -559,7 +557,7 @@ Silence must not pass for health. The Worker posts an all-quiet message to the r
 
 ## Passwords
 
-Proton Pass Family covers Geoff, the second operator, and household members A, B, and C.
+Proton Pass Family covers Geoff, the second operator, and household member C.
 
 ### Geoff's account
 
@@ -585,7 +583,7 @@ The workstation changes follow the mapping table in the Proton Pass brief, secti
 
 ### Migration order
 
-Three people use 1Password today: Geoff, the second operator, and household member C. Household members A and B join Proton Pass with no 1Password vault to move. The order matters, because the age key lives in 1Password today.
+Three people use 1Password today: Geoff, the second operator, and household member C. The order matters, because the age key lives in 1Password today.
 
 Geoff's move starts in Pass 0 and runs alongside the server passes:
 
@@ -674,21 +672,20 @@ Geoff is present throughout. The pass gathers everything the later passes need, 
 2. Make sure the Cloudflare, Hetzner, Proton, GitHub, and Fastmail logins recover through an address that isn't on 907.life. Store their 2FA backup codes offline.
 3. Create a Hetzner project for the servers, with an API token made in its console for Claude.
 4. Create the scoped Cloudflare tokens Claude lists: DNS for 907.life, one R2 Object Read & Write token per backup bucket, the read-only R2 restore tokens, and the Workers deploy token. Claude's own token can't create tokens.
-5. Start your Proton move: buy Proton Pass Family, invite the four members, and set up your account (see "Migration order").
+5. Start your Proton move: buy Proton Pass Family, invite the two members, and set up your account (see "Migration order").
 6. Enable SFTP on the PikaPods pod. Update the stale "immich" admin login while you're there.
 7. In your own Fastmail login, create an IMAP app password and a DAV app password. Confirm the list of 907.life addresses Fastmail accepts, including any catch-all, and which plan the account is on.
-8. Arrange with household members A and B for each to create, in their own Fastmail login, an API token with read access to mail, contacts, and masked email, a DAV app password, and an IMAP app password. Whether a Fastmail admin can create these for another user is unverified, so plan on each member doing it with your help.
-9. Invite the second operator to the Hetzner project, and send him Claude's drafted message. It asks him to:
+8. Invite the second operator to the Hetzner project, and send him Claude's drafted message. It asks him to:
    - Create the same Fastmail token and two app passwords in his own login.
    - Confirm his GitHub username and the email on it.
    - Install the ntfy app on his phone.
    - Create a Proton account with a Proton Mail address, and accept the Family and Emergency Access invites.
    - List his own masked addresses and Fastmail-only logins.
-10. Create the GitHub OAuth app for Cloudflare Access, using the callback URL Claude gives you.
-11. Sign up for a free Spamhaus DQS key.
-12. Create a Gmail and an Outlook.com test account for the delivery tests. Signup captchas stop Claude.
-13. Approve and merge the workstation PR with Claude's permission rules and guard hooks.
-14. Make the recovery kit, per your ruling: the Proton recovery phrase, and the workstation age key written by hand. Keep it locked up at home, never photographed or scanned, because the key decrypts every workstation secret.
+9. Create the GitHub OAuth app for Cloudflare Access, using the callback URL Claude gives you.
+10. Sign up for a free Spamhaus DQS key.
+11. Create a Gmail and an Outlook.com test account for the delivery tests. Signup captchas stop Claude.
+12. Approve and merge the workstation PR with Claude's permission rules and guard hooks.
+13. Make the recovery kit, per your ruling: the Proton recovery phrase, and the workstation age key written by hand. Keep it locked up at home, never photographed or scanned, because the key decrypts every workstation secret.
 
 Every credential reaches Claude through `secret-receive`. The pass ends with a dry run: Claude makes one read-only call with each token and app password and reports any that fail, so no later pass stops for a credential.
 
@@ -710,7 +707,7 @@ Every credential reaches Claude through `secret-receive`. The pass ends with a d
 - Send household member C the drafted steps for their 1Password import, and ask the second operator and member C to confirm autofill and their ten most-used logins.
 - Before cutover, share each member's Stalwart password with them through Proton Pass.
 - Confirm the mail cutover date.
-- Ask household members A and B to install their configuration profiles on cutover day, and every member to turn off Fastmail contacts and calendars on their devices, with Claude's drafted steps.
+- Ask every member to turn off Fastmail contacts and calendars on their devices on cutover day, with Claude's drafted steps.
 - At T+30, ask the household to remove the Fastmail account from their devices. Then, in Fastmail's web settings, which have no API: remove the three other users, rename your login if it's on 907.life, remove 907.life, downgrade, and create the masked-mail forward with SRS.
 - Work the masked-address list.
 - Sit with the second operator for one session while he restarts a service and runs a restore from the runbook.
@@ -726,7 +723,7 @@ The plan splits the work into passes in this order. Each pass merges through the
 2. **Media server.** Provision, harden, install Docker, Caddy, and Immich, and run the Immich rehearsal under `photos-new`. Set up the backup, add the lock rules after the first verified backup, check them with the server's own token, and run the media drill.
 3. **Immich cutover and musicbox.** The upload freeze, the move, and a week of watching. The musicbox library copy.
 4. **Passwords.** The second operator's and household member C's moves, the members' Proton setup, the start of critical-tier triage on `m.907.life`, and the 1Password packet once all three users have moved. This can run alongside pass 2 or 3.
-5. **Mail server.** Measure the three unmeasured mailboxes and check A's and B's accounts for masked addresses, then provision, Stalwart, and DNS preparation. The rehearsal, the client and authentication tests, the mail drill, and then the mail bucket's lock rules after the last rehearsal import. Needs the port 25 approval.
+5. **Mail server.** Measure the second operator's mailbox, then provision, Stalwart, and DNS preparation. The rehearsal, the client and authentication tests, the mail drill, and then the mail bucket's lock rules after the last rehearsal import. Needs the port 25 approval.
 6. **Mail cutover.** On the confirmed date, then the sweeps, the contacts and calendar check, and the T+30 steps.
 7. **Wind-down.** Masked-address triage support, Hylki in place of Thunderbird, and the irreversible retirements, each as its own packet.
 
@@ -793,7 +790,7 @@ Each item is checked in the pass that needs it, and each has a fallback named no
 
 | Item | Checked in | If it fails |
 |---|---|---|
-| The sizes of the second operator's, A's, and B's mailboxes | Mail | Start on the CX33 regardless; drop the side-by-side restore room past about 12 GB of raw mail, and rescale to a CX43 when the disk alert fires |
+| The size of the second operator's mailbox | Mail | Start on the CX33 regardless; drop the side-by-side restore room past about 12 GB of raw mail, and rescale to a CX43 when the disk alert fires |
 | Whether the `music-library` bucket holds the whole library | Media | The restic copy from musicbox is the record either way |
 | Whether DMARC Management's reports are readable through the API | Mail | Read `dmarc-reports@` over JMAP |
 | Whether Email Sending delivers to `probe.907.life` | Mail | The DMARC-report check in "Monitoring" |
