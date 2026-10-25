@@ -40,6 +40,7 @@ blueprints, with friction collected for the drafter and approval-queue backlogs.
 - All three pages are queued on PR glw907/cairn-cms#140. On approval of all three and #139's merge: mark #140 ready, watch CI, merge into `extend-blueprints-2`.
 - 00:50 Drafting and page-review friction filed: drafter #104-#109 plus a #88 addendum (`e41695f`), cairn-cms #63 plus a #53 addendum (`27f474f`), dotfiles #37 (`0cbcd4a`).
 - 09:20 Geoff approved all three pages about 08:30, but `approval-queue` refused each (PR #140's head moved while it waited) and logged nothing. Pages unchanged; requeued with `desc-page-<s>-r2.md`: act 20261025T092001-823508, island -823512, theme -823513 (decisions to the same `decision-page-<s>.json`). Do not push to #140 until all three are decided. Filed approval-queue #48.
+- 09:51 All three pages approved at `56b90202c`: act-on (blob `e6159b06f`, N3 keep the constant), island (blob `0c9c033e2`, N1 keep `#lib`), theme (blob `826d3628e`). #139 is green and CLEAN; merging it was blocked by the auto-mode permission check (merge without review), so it waits for Geoff. Once #139 merges with a merge commit (the repo's convention), retarget #140 to `main` (`extend-blueprints-2` is then spent), mark it ready, watch CI, merge.
 
 ## Next session starts here
 
