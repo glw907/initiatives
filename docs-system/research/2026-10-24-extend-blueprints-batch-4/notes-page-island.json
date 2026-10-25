@@ -1,0 +1,89 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "add-an-island.heading",
+  "title": "How this draft was checked",
+  "body": [
+   "drafter wrote the page from the blueprint you approved. A fresh fact-checker read 96 claims against the code: 91 held, and five were imprecise. Two of those were the icon attribute's role default. The other three were the `#lib` imports, which N1 disputes. Three rechecks of the changed lines followed, and each finding they raised is fixed in the checker's words.",
+   "The register editor's review is applied. The troubleshooting checks are now numbered, the reload step is split in two, and the `'visible'` caveat sits with its step."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "decide",
+  "anchor": {
+   "quote": "import { siteIslands } from '#lib/islands/registry.js';",
+   "prefix": "// The adapter module (excerpt)\n"
+  },
+  "title": "Keep the #lib imports?",
+  "body": [
+   "The fact-checker flagged the three `#lib/islands/registry.js` imports, because only a `package.json` `imports` entry resolves them and the page never names it. SvelteKit 3 replaced `$lib` with a `#lib` subpath import, and its migration guide maps `#lib/*` to `./src/lib/*`. cairn's migration notes tell sites to make that move, the scaffold maps it, and nine extend pages already use `#lib`.",
+   "Sources: https://next.svelte.dev/docs/kit/migrating-to-sveltekit-3/llms.txt and https://svelte.dev/blog/sveltekit-3-release-candidate"
+  ],
+  "sides": [
+   {
+    "who": "Fact-checker",
+    "text": "Name the `imports` mapping on the page, or import from `$lib/islands/registry.js`."
+   },
+   {
+    "who": "Session",
+    "text": "Keep `#lib`. It is SvelteKit 3's convention, and every other extend page assumes it."
+   }
+  ],
+  "choices": [
+   {
+    "label": "Keep #lib",
+    "done": "The snippets stand."
+   },
+   {
+    "label": "Name the mapping",
+    "done": "The session adds a Before you begin item naming the `imports` entry, with the migration notes as its link, and rechecks it."
+   }
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "info",
+  "anchor": {
+   "quote": "The icon attribute is the exception."
+  },
+  "title": "The icon attribute's role default",
+  "body": [
+   "An unset or blank icon attribute takes the default glyph its directive's `role` maps to (`remark-directives.ts:69-71`, `registry.ts:183-188`). The page said every attribute arrives as the author wrote it, so it now names this exception. `f:hje4zb` gained the detail."
+  ]
+ },
+ {
+  "id": "N3",
+  "kind": "info",
+  "anchor": {
+   "quote": "the layout adds no adapter code to the public pages' client bundle"
+  },
+  "title": "Narrowed: what the registry module keeps off the client",
+  "body": [
+   "The draft said the registry keeps the adapter out of the client bundle. The scaffold's admin page imports the adapter on the client, so that was too broad. The page now says only that the root layout adds no adapter code to the public pages."
+  ]
+ },
+ {
+  "id": "N4",
+  "kind": "info",
+  "anchor": {
+   "quote": "The checks run on the public page, not in the editor preview"
+  },
+  "title": "Verify on the public page, built or not",
+  "body": [
+   "The draft said to check only on a built page. Nothing in the runtime requires a build, and an island mounts under `npm run dev` too. The reason to check on the public page is that the preview frame is sandboxed, which the line now says. The steps still build and serve, as the blueprint has them."
+  ]
+ },
+ {
+  "id": "N5",
+  "kind": "info",
+  "anchor": {
+   "quote": "A scaffolded site's adapter module, `src/theme/cairn.config.ts`, passes it already."
+  },
+  "title": "Restored: the scaffolded adapter's path",
+  "body": [
+   "Your blueprint required the page to give `src/theme/cairn.config.ts` as a scaffolded site's adapter module. The draft dropped the path, and it is restored here. The draft also dropped `defineComponent` in three places, and those are restored too."
+  ]
+ }
+]
