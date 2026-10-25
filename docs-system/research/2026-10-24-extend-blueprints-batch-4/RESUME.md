@@ -25,3 +25,13 @@ blueprints, with friction collected for the drafter and approval-queue backlogs.
 - 21:05 act-on-newly-published-entries queued (`4d84038aa`, pushed): item 20261024T210221-500462, decision to `decision-act.json`. Its branch also fixes the sveltekit reference's publish-actions paragraph.
 - 21:05 theme-your-public-site: register edit applied by its author (`a6a8d7136`); fact-check running.
 - 21:05 add-an-island: authored (`a8552c77f`); islands reference fixed on its branch (`3595def38`); register edit being applied by its author.
+- 21:12 add-an-island queued (`90ab5b374`, pushed): item 20261024T211146-511448, decision to `decision-island.json`. Branch also fixes the islands reference's root-layout example.
+- 21:12 theme-your-public-site queued (`6887e10dc`, pushed): item 20261024T211229-512193, decision to `decision-theme.json`. Branch also fixes core.md's preview-background sentence.
+- 21:15 Friction record committed (initiatives `16550b0`); a filing agent is filing it into drafter, approval-queue, cairn-cms, and dotfiles backlogs.
+- 21:20 Friction filed: drafter #84-#103 (`584b7e0`), approval-queue #44-#47 plus #40 addendum (`d98d2d4`), cairn-cms #57-#62 plus #37, #53, #56 addenda (`022daa849`), dotfiles #34-#36 (`a04316a`).
+
+## Next session starts here
+
+1. Collect the three decisions (`decision-act.json`, `decision-theme.json`, `decision-island.json`). If a waiting command died, its item was deleted by its exit trap; requeue from the same notes and description files. On a send-back, fix forward, fact-check the touched lines, and requeue.
+2. Each blueprint branch carries one published reference fix (sveltekit.md, islands.md, core.md). On approval, merge the three `ebp4-*` branches into `ebp4-base`, then draft the pages through `drafter page` as batch 3's pages did.
+3. Still unowned from batch 2: PR glw907/cairn-cms#139 (both pages approved 16:26) needs ready, CI, and merge; then `extend-blueprints-2` can merge `ebp4-base`.
