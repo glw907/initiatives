@@ -82,7 +82,7 @@ A product never ends, and an initiative does, so only a bounded effort gets a re
 | [Docs system](docs-system/README.md) | active | drafter, workstation | Builds the pipeline, outline standard, and Claude infrastructure that handle docs for every project. |
 | [Dubplate server](dubplate-server/README.md) | active | dubplate | Builds the greenfield dubplate server that gives a group one well-organized music library. |
 | [ECXC rebuild](ecxc-rebuild/README.md) | proposed | ecxc-ski | Would rebuild ecxc.ski on the current cairn once the cairn docs standard is complete. |
-| [Household phonebook](household-phonebook/README.md) | active | phonebook, cairn-themes | Serves one shared phonebook to the household's Yealink phones and a web app from a Cloudflare Worker. |
+| [Household phonebook](household-phonebook/README.md) | active | phonebook, servers, survey | Serves one shared phonebook to the household's Yealink phones and a web app from a Cloudflare Worker. |
 | [Monthly model review](monthly-model-review/README.md) | active | workstation | Reviews the Claude models, effort settings, and skills each month and logs the result. |
 | [Poplar re-founding](poplar-refounding/README.md) | active | poplar | Rebuilds the poplar email client from the ground up against a settled architecture. |
 | [Repo organization](repo-organization/README.md) | active | initiatives, workstation, drafter, approval-queue, dubplate, poplar, cairn-cms, 907-life, aksailingclub-org, cairn-pub, cairn-themes, ecxc-ski, phonebook, xcathletes-org | Gives every initiative a record, moves past work to the repo that owns it, and retires unused repos. |
