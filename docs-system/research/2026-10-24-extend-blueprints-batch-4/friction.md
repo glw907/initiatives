@@ -278,3 +278,12 @@ turn-on-tidy KEEP with two fixes, run-cairn-audit-on-your-site TRIM. No fold thi
   blueprints in one run. The skill doesn't say to commit between runs.
 - D2 (drafter): `facts.prose_sources` takes exact paths only; listing "every template README"
   (Geoff's N4 ruling) means naming each file. A glob would follow a new README automatically.
+- D3 (drafter): the theme draft stopped at "tree red outside drafter's pages" (exit 3) on three
+  inbound anchors the trim removed: two on scaffolded-site-files.md, whose yaml blueprint the
+  author had already repointed but whose published page was never redrafted, and one on
+  share-a-draft-preview.md. The stop message names no file; the cause sits in
+  `~/.local/state/drafter/runs/<repo>/<run>/<page>/gate-N.log`. Print the failing component's
+  first lines in the stop message. This is drafter item 5 (inbound anchors), and it bit at
+  draft time, 40 minutes into a batch run.
+- D4 (drafter): a blueprint's link-target change doesn't flag its already-drafted page as stale
+  in `drafter check`, so the page kept the old anchor after the blueprint moved on.
