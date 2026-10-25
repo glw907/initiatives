@@ -23,6 +23,8 @@ Each page is its own approval-queue item. Once you approve all five, the session
 - Define an adapter and schema dropped its section on site-config keys, per its blueprint. The `spellcheck.dialect` rule it carried (`f:a81e6y`) moved to the `parseSiteConfig` reference entry, so the rule still has a home.
 - `f:n07oiu` named a glob missing `?raw` as a cause of `expected input to be a string or buffer`. The code proves only a lazy glob and a glob missing `import: 'default'`. The fact and both pages that cite it now name only those two.
 - The media fact `f:twqb0s` was first corrected too broadly, to say every image loses its source. A recheck caught it, and the correction now separates the hero image from body images.
+- Write a markdown component's verify procedure checks the public render through a share link on the dev server instead of publishing and checking the deployed page, as the approved blueprint had it. As approved, the procedure couldn't finish from the dev server. The page's note asks you to keep this or restore the publish step.
+- A check on that page found six published extend pages still showing the hooks calls engine pass B replaced (`37797ff35`). That fix is its own PR, off `main`, so these five pages don't wait on it.
 - The unnamed `drafter check` reports 27 errors on `main`, all in blueprints and facts outside this batch. CI doesn't run it. This PR leaves them, and they're filed as friction.
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
