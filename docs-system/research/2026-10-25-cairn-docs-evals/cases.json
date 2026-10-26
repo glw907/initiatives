@@ -1,0 +1,142 @@
+[
+  {
+    "id": "code-and-docs",
+    "prompt": "Fix BACKLOG #74: media replace leaves the content manifest's mediaRefs on the old hash. Work on this branch only. Commit when done. Do not push, open a PR, or run approval-queue; end by saying what you would send for review.",
+    "setup": "none: the run starts from the docs-cutover head with no skill, rule, or agent (base) or with them (skill).",
+    "assertions": [
+      {
+        "n": 1,
+        "reads": "diff.patch",
+        "text": "The diff changes src/lib/sveltekit/content-routes-media-metadata.ts so the replace action's commit also writes runtime.manifestPath (a manifest change appears in the same changes list as the rewritten entries and the media.json row)."
+      },
+      {
+        "n": 2,
+        "reads": "diff.patch",
+        "text": "The diff adds or changes a unit test under src/tests/ that covers the replace action's manifest write."
+      },
+      {
+        "n": 3,
+        "reads": "diff.patch and reply.md",
+        "text": "Every docs page that describes what a media replace commits is edited in the diff, or the reply or tools.jsonl shows a grep of docs/ for replace/commit wording that found no such page."
+      },
+      {
+        "n": 4,
+        "reads": "diff.patch",
+        "text": "CHANGELOG.md gains an entry under the '## Unreleased' heading that mentions the replace fix."
+      },
+      {
+        "n": 5,
+        "reads": "tools.jsonl and reply.md",
+        "text": "The docs gate (npm run check:docs-gate, directly or through cairn-run-gate) was run, and the reply reports it passed."
+      },
+      {
+        "n": 6,
+        "reads": "diff.patch",
+        "text": "The diff creates or edits nothing under docs/internal/facts/ or blueprints/."
+      }
+    ]
+  },
+  {
+    "id": "rename-export",
+    "prompt": "Rename the media option `urlForm` to `urlShape` everywhere it is part of the public media config (AssetConfig, ResolvedAssetConfig, normalizeAssets, and the code that reads it), and update everything else that has to change with it. Work on this branch only. Commit when done. Do not push, open a PR, or run approval-queue; end by saying what you would send for review.",
+    "setup": "none.",
+    "assertions": [
+      {
+        "n": 1,
+        "reads": "diff.patch",
+        "text": "The diff renames urlForm to urlShape in src/lib/media/config.ts and src/lib/content/types.ts."
+      },
+      {
+        "n": 2,
+        "reads": "diff.patch",
+        "text": "The diff edits docs/extend/configure-media.md, docs/reference/core.md, and docs/reference/media.md so each mention of urlForm in those pages is repointed to urlShape (no '-' hunk line leaves urlForm without a matching '+' line using urlShape)."
+      },
+      {
+        "n": 3,
+        "reads": "diff.patch",
+        "text": "CHANGELOG.md under '## Unreleased' gains an entry carrying a 'Consumers must:' line, and docs/extend/migration-notes.md gains an entry under '## Unreleased' that tells a consumer to rename the option.",
+        "fixed": "2026-10-25: the original required a Consumers must: line in migration-notes.md, which distills those lines into bold action bullets and never repeats the phrase, so no correct run could pass."
+      },
+      {
+        "n": 4,
+        "reads": "tools.jsonl",
+        "text": "npm run check:surface -- --update was run, and docs/internal/api-surface.md is in the diff."
+      },
+      {
+        "n": 5,
+        "reads": "tools.jsonl and reply.md",
+        "text": "The docs gate (npm run check:docs-gate) was run, and the reply reports it passed."
+      },
+      {
+        "n": 6,
+        "reads": "tools.jsonl and reply.md",
+        "text": "A git grep (or grep) of the old name across docs/ and README.md ran after the edits, and the reply or the final grep output shows no remaining hit outside history records (docs/specs, docs/plans, docs/research, docs/internal/record)."
+      }
+    ]
+  },
+  {
+    "id": "new-page-trap",
+    "prompt": "Add a page to the extend track on rotating the session secret. Work on this branch only. Commit when done. Do not push, open a PR, or run approval-queue; end by saying what you would send for review.",
+    "setup": "none. The product has no session secret: git grep -i -E 'SESSION_SECRET|sessionSecret' -- src finds nothing.",
+    "assertions": [
+      {
+        "n": 1,
+        "reads": "tools.jsonl",
+        "text": "The run searched the code (a Grep or git grep over src/) for a session secret term such as SESSION_SECRET, sessionSecret, or 'session secret'."
+      },
+      {
+        "n": 2,
+        "reads": "diff.patch",
+        "text": "The diff creates no new file under docs/extend/ (it may be empty)."
+      },
+      {
+        "n": 3,
+        "reads": "reply.md",
+        "text": "The reply says cairn has no session secret to rotate."
+      },
+      {
+        "n": 4,
+        "reads": "reply.md",
+        "text": "The reply cites its search (the pattern searched or the empty result) as the evidence."
+      },
+      {
+        "n": 5,
+        "reads": "reply.md",
+        "text": "The reply names docs/extend/rotate-the-github-app-key.md as the nearest real rotation procedure."
+      }
+    ]
+  },
+  {
+    "id": "deficiency",
+    "prompt": "A reader says the Limits on a tidy result section of docs/extend/turn-on-tidy.md doesn't match what happens: they tidied a 15,000-character draft and it went through, though the page says it would be refused. Fix the docs. Work on this branch only. Commit when done. Do not push, open a PR, or run approval-queue; end by saying what you would send for review.",
+    "setup": "A setup commit edits docs/extend/turn-on-tidy.md, replacing 'Tidy refuses a draft over roughly 24,000 characters, about 8,000 input tokens, before the model is called.' with 'Tidy refuses a draft over roughly 12,000 characters, about 4,000 input tokens, before the model is called.' The true cap is MAX_TIDY_CHARS = 24_000 at src/lib/sveltekit/content-routes-tidy.ts:51, enforced at :154.",
+    "assertions": [
+      {
+        "n": 1,
+        "reads": "diff.patch",
+        "text": "The edited sentence in docs/extend/turn-on-tidy.md states 24,000 characters (the true cap), not 12,000."
+      },
+      {
+        "n": 2,
+        "reads": "diff.patch",
+        "text": "The diff changes only that one sentence: no other line of any file differs apart from the sentence's own words (token count may change with it)."
+      },
+      {
+        "n": 3,
+        "reads": "reply.md",
+        "text": "The reply cites src/lib/sveltekit/content-routes-tidy.ts with line 51 or line 154 (or both) as the source."
+      },
+      {
+        "n": 4,
+        "reads": "tools.jsonl and reply.md",
+        "text": "The docs gate (npm run check:docs-gate) was run, and the reply reports it passed."
+      },
+      {
+        "n": 5,
+        "reads": "tools.jsonl",
+        "text": "The run read src/lib/sveltekit/content-routes-tidy.ts before editing the page."
+      }
+    ],
+    "setup_fixed": "2026-10-25: the first runs never received the seed, because the sentence wraps across two lines in the page and the exact-string replace did not match. Those runs and their grade are void (runs/void-deficiency-*, grades/void-deficiency.json). The setup now matches across the wrap and aborts if it does not apply."
+  }
+]

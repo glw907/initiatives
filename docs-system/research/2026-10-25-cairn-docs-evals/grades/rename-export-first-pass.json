@@ -1,0 +1,22 @@
+{
+  "case": "rename-export",
+  "note": "First grade, with the faulty assertion 3 (migration-notes.md must carry a 'Consumers must:' line). Superseded by rename-export.json after the fix; kept as the record. Order: run1 skill, run2 base.",
+  "order": {"run1": "skill", "run2": "base"},
+  "run1_skill": [
+    {"n": 1, "pass": true, "evidence": "config.ts '-urlForm'/'+urlShape' hunks and types.ts '-urlForm?:'/'+urlShape?:'"},
+    {"n": 2, "pass": true, "evidence": "Every '-' line with urlForm in configure-media.md (5), core.md (2) and media.md (3) has a matching '+' line with urlShape"},
+    {"n": 3, "pass": false, "evidence": "CHANGELOG gains 'Consumers must: rename urlForm to urlShape...', but the migration-notes.md entry has no 'Consumers must:' line"},
+    {"n": 4, "pass": true, "evidence": "tools.jsonl runs 'npm run check:surface -- --update', and docs/internal/api-surface.md has hunks in the diff"},
+    {"n": 5, "pass": true, "evidence": "tools.jsonl runs 'npm run check:docs-gate'; reply: check:surface and the full check:docs-gate (17 checks) pass."},
+    {"n": 6, "pass": true, "evidence": "Repo-wide Grep 'urlForm' ran after the sed edits; the friction-log hit was then renamed; reply names the history locations that keep the old name"}
+  ],
+  "run2_base": [
+    {"n": 1, "pass": true, "evidence": "config.ts '+urlShape: assets.urlShape ?? slug' and types.ts '+urlShape?:' with matching '-' lines"},
+    {"n": 2, "pass": true, "evidence": "Every '-' line with urlForm in configure-media.md (5), core.md (2) and media.md (3) has a matching '+' line with urlShape"},
+    {"n": 3, "pass": false, "evidence": "CHANGELOG gains 'Consumers must: ...', but the migration-notes.md entry has no 'Consumers must:' line"},
+    {"n": 4, "pass": false, "evidence": "No check:surface -- --update call in tools.jsonl; api-surface.md was edited by hand with sed"},
+    {"n": 5, "pass": false, "evidence": "No check:docs-gate call in tools.jsonl; reply: 'Not run: ... and check:docs-gate.'"},
+    {"n": 6, "pass": true, "evidence": "git grep -n urlForm with history excluded ran after the edits; reply names the history locations"}
+  ],
+  "totals": {"base": 3, "skill": 5}
+}

@@ -1,0 +1,21 @@
+{
+  "case": "code-and-docs",
+  "order": {"run1": "base", "run2": "skill"},
+  "run1_base": [
+    {"n": 1, "pass": true, "evidence": "content-routes-media-metadata.ts hunk adds changes.push({ path: runtime.manifestPath, content: formatManifest(nextContent) }) after the media.json push, in the same changes list."},
+    {"n": 2, "pass": true, "evidence": "content-routes-media-replace.test.ts adds expect(content.entries.map((e) => e.mediaRefs)).toEqual([[NEW_HASH], [NEW_HASH]]) read from MANIFEST_PATH."},
+    {"n": 3, "pass": false, "evidence": "docs/extend/architecture.md:157 says a media replace 'neither changes the content manifest'. The diff does not edit it, and the reply says 'No docs page changes'."},
+    {"n": 4, "pass": true, "evidence": "CHANGELOG hunk under '## Unreleased' adds '**Media replace keeps the content manifest current.**'"},
+    {"n": 5, "pass": false, "evidence": "tools.jsonl has no docs-gate call, and the reply says 'I did not run the full unit suite or the other gates'."},
+    {"n": 6, "pass": true, "evidence": "The diff touches only BACKLOG.md, CHANGELOG.md, content-routes-media-metadata.ts and content-routes-media-replace.test.ts."}
+  ],
+  "run2_skill": [
+    {"n": 1, "pass": true, "evidence": "content-routes-media-metadata.ts hunk adds if (plan.entries.length > 0) changes.push({ path: runtime.manifestPath, content: formatManifest(nextContent) }) after the media.json push."},
+    {"n": 2, "pass": true, "evidence": "content-routes-media-replace.test.ts adds for (const e of content.entries) expect(e.mediaRefs).toEqual([NEW_HASH]) read from MANIFEST_PATH."},
+    {"n": 3, "pass": false, "evidence": "docs/extend/architecture.md:157 says a media replace 'neither changes the content manifest'. The diff does not edit it, and the reply says 'No docs page described this behavior', which is false."},
+    {"n": 4, "pass": true, "evidence": "CHANGELOG hunk under '## Unreleased' adds '**A media replace updates the content manifest.**'"},
+    {"n": 5, "pass": true, "evidence": "tools.jsonl shows npm run check:docs-gate (run twice), and the reply says 'npm run check:docs-gate: passed'."},
+    {"n": 6, "pass": true, "evidence": "The diff touches only BACKLOG.md, CHANGELOG.md, content-routes-media-metadata.ts and content-routes-media-replace.test.ts."}
+  ],
+  "totals": {"base": 4, "skill": 5}
+}

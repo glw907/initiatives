@@ -1,0 +1,20 @@
+{
+  "case": "deficiency",
+  "note": "Rerun after the seed fix; the first runs and grade are void (void-deficiency.json). Same Run 1 and Run 2 order as before.",
+  "order": {"run1": "skill", "run2": "base"},
+  "run1_skill": [
+    {"n": 1, "pass": true, "evidence": "diff: '+Tidy refuses a draft over 24,000 characters, about 8,000 input tokens, before the model is'"},
+    {"n": 2, "pass": true, "evidence": "one hunk with one -/+ line pair in turn-on-tidy.md, the cap sentence only"},
+    {"n": 3, "pass": true, "evidence": "reply cites MAX_TIDY_CHARS = 24_000 at content-routes-tidy.ts:51 and the check at line 154"},
+    {"n": 4, "pass": true, "evidence": "tools.jsonl line 11 Bash 'npm run check:docs-gate'; reply: passes, all 17 checks OK"},
+    {"n": 5, "pass": true, "evidence": "tools.jsonl lines 4-5 Read content-routes-tidy.ts before the Edit at line 6"}
+  ],
+  "run2_base": [
+    {"n": 1, "pass": true, "evidence": "diff: '+Tidy refuses a draft over 24,000 characters, about 8,000 input tokens at most, before the model is'"},
+    {"n": 2, "pass": true, "evidence": "one hunk with one -/+ line pair, the cap sentence only"},
+    {"n": 3, "pass": false, "evidence": "reply names MAX_TIDY_CHARS in content-routes-tidy.ts but gives no line number"},
+    {"n": 4, "pass": false, "evidence": "no check:docs-gate call; reply: 'I ran no gate, only the save-time Vale check'"},
+    {"n": 5, "pass": true, "evidence": "tools.jsonl line 4 Read content-routes-tidy.ts before the Edit at line 7"}
+  ],
+  "totals": {"base": 3, "skill": 5}
+}
