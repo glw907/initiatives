@@ -78,6 +78,5 @@ Batch 5 is done: PR #141 (five pages) and PR #142 (runtime-bag sweep) are merged
 
 Start from `docs/STATUS.md` on `main` ("Immediate next action"). The open threads this batch left:
 BACKLOG #71 (redraft the extend pages that disagree with their blueprints), #72, #73; drafter #113
-and #114; approval-queue #52. The remote branches `extend-blueprints-2`, `ebp5-base`, and
-`runtime-bag-docs` still exist on GitHub; deleting them needs Geoff (the permission check
-denied a remote delete).
+and #114; approval-queue #52.
+Geoff deleted the remote branches `extend-blueprints-2`, `ebp5-base`, and `runtime-bag-docs`.
