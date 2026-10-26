@@ -1,0 +1,30 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "architecture.heading",
+  "title": "How this draft was checked",
+  "body": [
+   "A session agent drafted the page from your approved blueprint, since drafter's API is at its October budget. A fresh fact-checker read 88 claims: 83 held and 5 were imprecise. The register editor's 3 blocking findings, sentences that contradicted each other, were fixed, and a recheck's 3 imprecise lines were fixed.",
+   "The blueprint was brought in line with the reviewed page after you approved it, so a later redraft keeps every fix. Each change rests on the code or a fact, and none changes the page's sections or the reader's path."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "info",
+  "anchor": "write-path.heading",
+  "title": "Your blueprint said every change travels one path",
+  "body": [
+   "Only a save and a revert go through a holding branch. Every other write, including a media replace and alt-text propagation, commits straight to the default branch. The page now says a content edit an editor saves reaches the live site along one path, and the blueprint says the same."
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "info",
+  "anchor": "build-verification.heading",
+  "title": "An engine bug the review found",
+  "body": [
+   "Replacing an image never rewrites the manifest, so its `mediaRefs` keep the old hash. The media usage index then shows the new image as unused, and the delete gate allows deleting it. The page describes the code as it is, and BACKLOG #74 records the fix."
+  ]
+ }
+]

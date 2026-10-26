@@ -1,0 +1,30 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "restrict-admin-access.heading",
+  "title": "How this draft was checked",
+  "body": [
+   "A session agent redrafted the page from its blueprint for #71. A fresh fact-checker read 88 claims: 82 held, 5 were imprecise, and 1 was unsupported. The register editor's 26 findings, 6 blocking, were applied, and a recheck's 7 imprecise lines were fixed.",
+   "The blueprint was brought in line with the reviewed page after you approved it, so a later redraft keeps every fix. Each change rests on the code or a fact, and none changes the page's sections or the reader's path."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "info",
+  "anchor": "declare-the-access-map.heading",
+  "title": "The three errors #71 found are gone",
+  "body": [
+   "The page no longer has the reader create `src/access.ts`, which cairn never reads. Only a site whose `migrations/` lacks `0001_roles.sql` copies it. A signed-in role the site never declared sees the welcome view at `/admin` and is refused everywhere else."
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "info",
+  "anchor": "deploy-the-changes.heading",
+  "title": "A new warning: the migration keeps four columns",
+  "body": [
+   "Applying `0001_roles.sql` rebuilds the `editor` table. It keeps every row but only the email, display name, role, and creation time (`migrations/0001_roles.sql`). A site that added its own columns adds them to its copy first. Add a second sign-in group carries the same warning."
+  ]
+ }
+]

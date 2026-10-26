@@ -1,0 +1,3 @@
+This is the redrafted page for Add cairn to a SvelteKit app, the long tutorial for wiring cairn into an existing site by hand. A session agent redrafted it from its blueprint as part of #71.
+
+The old page had the reader write a Vite plugin and a type declaration that cairn now provides, and both steps are gone. The checks also fixed a call with the wrong arguments and where `PUBLIC_ORIGIN` belongs. They made clear the audit table belongs in its own D1 database. One question is yours: Waymark has no sanctioned name, so this page calls it "cairn's reference reading theme" while the facts call it a template.

@@ -1,0 +1,5 @@
+This is the Claude Code blueprint again: now in the Markdown format, with each paragraph and bullet on one line so nothing wraps mid-sentence. The content is the same page: the first page of a new `docs/claude-code/` track, for a developer who works on a cairn site with Claude Code. The rest of the docs assume no coding assistant, so this page is the one place that teaches it.
+
+drafter's converter wrote most of the file, but it dropped content the Markdown format can hold: the constraints, five code examples' sources, and six failure causes. Those were carried over by hand from the fact-checked YAML, and the six causes were written from their facts. A second fact-check of everything the conversion changed found nothing wrong and three placement points, all fixed. The long sentences are split (59 were over the 26-word limit), with every fact tag, link, and code span left identical.
+
+The same branch registers the track in the gates, adds its entry to the docs register, and adds the track's index page. No questions wait in the notes.

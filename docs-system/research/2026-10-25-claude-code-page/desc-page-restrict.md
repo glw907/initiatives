@@ -1,0 +1,3 @@
+This is the redrafted page for Restrict admin access, the task guide for limiting which admin screens a role can reach. The old page had three errors (#71): it told the reader to create a file cairn never reads, to copy a migration every site already has, and it misdescribed what an undeclared role sees. A session agent redrafted it from its blueprint.
+
+All three errors are gone. The checks added one warning the old page lacked: applying `0001_roles.sql` rebuilds the `editor` table and keeps only four columns, so a site that added columns must add them to its copy first. Two sentences on Debug your site that overstated the same behavior are fixed too. There are no decisions for you on this page.

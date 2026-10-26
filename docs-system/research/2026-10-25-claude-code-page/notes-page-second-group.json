@@ -1,0 +1,30 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "add-a-second-sign-in-group.heading",
+  "title": "How this draft was checked",
+  "body": [
+   "A session agent redrafted the page from its blueprint for #71. A fresh fact-checker read 82 claims: 79 held and 3 were imprecise. The register editor's 26 findings, 5 blocking, were applied, and a recheck held all 54 changed lines.",
+   "The blueprint was brought in line with the reviewed page after you approved it, so a later redraft keeps every fix. Each change rests on the code or a fact, and none changes the page's sections or the reader's path."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "info",
+  "anchor": "write-the-channel-module.heading",
+  "title": "The example now typechecks",
+  "body": [
+   "The draft typed the channel module over a local `Env` that named only the member database, which would not typecheck once the lookup read another binding. It now uses the generated `Cloudflare.Env`, as the example site does."
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "info",
+  "anchor": "resolve-a-failed-setup.heading",
+  "title": "Failures name their log events",
+  "body": [
+   "New facts let the page name what a failed sign-in writes: `auth.channel.requested` with its `unknown` and `lookup_failed` outcomes, and `auth.channel.send_failed` with its `error` field."
+  ]
+ }
+]

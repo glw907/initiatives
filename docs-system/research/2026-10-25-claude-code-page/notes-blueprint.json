@@ -1,0 +1,22 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": {"quote": "cairn's guidance for Claude Code is a tree of files under"},
+  "title": "Why this page, and why it is its own track",
+  "body": [
+   "ROADMAP's \"The Claude Code arm\" entry places this page right after stage 2b, on your 2026-10-07 rulings: human pages never assume a coding assistant, and agent guidance stays in Claude Code's format only. A page about working with Claude Code therefore can't sit in the extend track without breaking the first ruling, so it opens a fifth track.",
+   "The track's register entry gives it the extend developer as its reader, Google as its base guide, and one extra test: every sentence says what cairn ships or leaves to the developer, never how Claude Code itself works."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "info",
+  "anchor": {"quote": "exits 0 even when it refuses an"},
+  "title": "What the fact-check changed",
+  "body": [
+   "A fresh fact-check read the blueprint and its 17 cited facts against the code at 59ceef08b: 59 claims hold, 6 were imprecise, none wrong. All six are fixed in a1f028a69.",
+   "The fixes narrow install's exit-0 claim to refusals and write errors (a run that throws exits nonzero), say the check reports a missing import line rather than failing on it, add the packaged-entry refusal, give the throw causes as examples rather than a complete list, name the .orig line as the seventh line, and add the guidance-resolution throw to check's failures."
+  ]
+ }
+]
