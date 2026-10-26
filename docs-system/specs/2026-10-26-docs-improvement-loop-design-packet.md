@@ -26,8 +26,8 @@ Facts: The counts follow from the seed cases and the trial count.
 
 Choices:
 - Cap at 120: a change PR fits with room for one rerun, and a monthly cycle fits easily [approve]
-- Cap at 60: halves the usage, so a change PR runs with two trials or fewer cases and noise shows more often
-- Send back: you name a different budget
+- Cap at 60: halves the usage, so a change PR runs with two trials or fewer cases and noise shows more often [approve]
+- Send back: you name a different budget in your note [send-back]
 
 ## Routine
 | Part | Verdict | Fact | Why |
