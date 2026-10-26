@@ -1,0 +1,86 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "using-claude-code-with-cairn.heading",
+  "title": "How this draft was checked",
+  "body": [
+   "A session agent drafted the page from the blueprint you approved. A fresh fact-checker read 100 claims against the code: 96 held and 4 were imprecise. The register editor's 26 findings, 8 of them blocking, were applied or declined with a reason. A recheck of the changed lines held 51 of 60, and a finisher fixed the other 9.",
+   "Four facts were minted and four extended. The blueprint was brought in line with the settled page afterward, so a later redraft keeps every fix."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "decide",
+  "anchor": "using-claude-code-with-cairn.heading",
+  "title": "Keep the title, or make it a task title?",
+  "body": [
+   "The register's heading rule flags a title that opens on an -ing word. This title comes from your approved blueprint and the outline, and the file's slug matches it, so the session kept it. A rename would also change the file name, the outline entry, the track index, and the link from Scaffolded site files."
+  ],
+  "sides": [
+   {
+    "who": "Draft",
+    "text": "Using Claude Code with cairn"
+   },
+   {
+    "who": "Register",
+    "text": "Work on a cairn site with Claude Code"
+   }
+  ],
+  "choices": [
+   {
+    "label": "Keep the title",
+    "done": "The page stands as drafted."
+   },
+   {
+    "label": "Rename it",
+    "done": "The session renames the page, its slug, the outline entry, the index, and every link to it, then reruns the gate."
+   }
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "info",
+  "anchor": {
+   "quote": "@source not \"../.claude\";"
+  },
+  "title": "Added after approval: the Tailwind exclusion step",
+  "body": [
+   "The reference asks a site to keep Tailwind from scanning `.claude/`, but no step said so. The step is conditional: only a build that uses automatic source detection and doesn't gitignore `.claude/` needs it, and a scaffold already carries it (`tokens.css:55`).",
+   "The path resolves against the stylesheet that carries it, so from a stylesheet in `src/` the line is `../.claude`. `cairn-guidance check` looks only for `./.claude`, which from `src/` excludes the wrong directory. The page never repeats that advice, and the diagnosis row says `check` can flag a correct line. The engine defect is BACKLOG #75."
+  ]
+ },
+ {
+  "id": "N3",
+  "kind": "info",
+  "anchor": {
+   "quote": "Read each `.orig` file that `install` reported"
+  },
+  "title": "Added after approval: clear `.orig` files, then commit",
+  "body": [
+   "The draft had no step that commits the tree, though the CI fix assumed it. `install` tells the reader to read and delete any `.orig` file before committing (`bin.ts:101-103`), so that step comes first, then the commit."
+  ]
+ },
+ {
+  "id": "N4",
+  "kind": "info",
+  "anchor": {
+   "quote": "Merging the entries replaces any existing"
+  },
+  "title": "Added after approval: the `pre*` scripts caution",
+  "body": [
+   "Merging the snippet's scripts replaces any `precheck`, `prebuild`, or `predev` the site already has, and makes `dev`, `build`, and `check` depend on `@tailwindcss/cli` and `src/admin.css`. `check` warns about neither. The caution says to chain an existing command instead."
+  ]
+ },
+ {
+  "id": "N5",
+  "kind": "info",
+  "anchor": {
+   "quote": "leave the following edits to you"
+  },
+  "title": "Edits the page leaves to you",
+  "body": [
+   "The draft said two edits are left to you. The steps hand over more: the import line, the hook, the scripts and workflow where missing, the optional CI gate, the Tailwind exclusion, the `.orig` files, and removable paths. The introduction now lists every one."
+  ]
+ }
+]

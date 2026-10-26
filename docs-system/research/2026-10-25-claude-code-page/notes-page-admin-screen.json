@@ -1,0 +1,30 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "add-a-custom-admin-screen.heading",
+  "title": "How this draft was checked",
+  "body": [
+   "drafter wrote the page from your approved blueprint before its budget ran out. A fresh fact-checker read 94 claims: 88 held and 6 were imprecise. The register editor's 25 findings, 6 blocking, were applied, and a recheck's 4 imprecise lines were fixed.",
+   "The blueprint was brought in line with the reviewed page after you approved it, so a later redraft keeps every fix. Each change rests on the code or a fact, and none changes the page's sections or the reader's path."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "info",
+  "anchor": "wrap-the-actions.heading",
+  "title": "Audit every successful write",
+  "body": [
+   "The draft never told the reader to call `ctx.audit`, so a screen built from it would write no audit record. The page now has that step. An action with no `access` option still audits its own write but logs no refusal, and the page says so."
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "info",
+  "anchor": "place-the-route.heading",
+  "title": "Nested routes match Restrict admin access",
+  "body": [
+   "A dynamic segment under a key that has a deeper sibling resolves to no rule. This page and Restrict admin access first chose different fixes. Both now give the same one: pass the governing key."
+  ]
+ }
+]

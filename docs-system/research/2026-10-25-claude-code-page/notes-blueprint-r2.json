@@ -1,0 +1,38 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": {
+   "quote": "cairn's guidance for Claude Code is a tree of files under"
+  },
+  "title": "Why this page, and why it is its own track",
+  "body": [
+   "ROADMAP's \"The Claude Code arm\" entry places this page right after stage 2b, on your 2026-10-07 rulings: human pages never assume a coding assistant, and agent guidance stays in Claude Code's format only. A page about working with Claude Code therefore can't sit in the extend track without breaking the first ruling, so it opens a fifth track.",
+   "The track's register entry gives it the extend developer as its reader, Google as its base guide, and one extra test: every sentence says what cairn ships or leaves to the developer, never how Claude Code itself works."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "info",
+  "anchor": {
+   "quote": "exits 0 even when it refuses an"
+  },
+  "title": "What the fact-checks changed",
+  "body": [
+   "The YAML's fact-check read the blueprint and its 17 cited facts against the code: 59 claims held, 6 were imprecise, none wrong. The fixes narrow install's exit-0 claim to refusals and write errors, say the check reports a missing import line rather than failing on it, add the packaged-entry refusal, give the throw causes as examples, name the .orig line as the seventh line, and add the guidance-resolution throw.",
+   "After the conversion, a second fact-check read only what changed: 57 held, 3 were imprecise, none wrong. Five rows had their fact tags on the Fix line, against the blueprint's own constraint; the .orig row cited a fact wider than its claim; and the wiring row cited a fact the YAML kept off this page. All three are fixed."
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "info",
+  "anchor": {
+   "quote": "The page opens the register's Claude Code track"
+  },
+  "title": "What the conversion dropped, and where it went",
+  "body": [
+   "drafter convert markdown dropped the argument, the order reasoning, the constraints, five code sources, six failure causes, and each fact item's scoping note (a silent drop: every fact bullet came out as the full fact text). The argument is now the reader block's Background paragraph, the order reasoning its last sentence, and the constraints the constraints block. The code sources are back on their Code: bullets, the causes are written from their facts, and each fact bullet is cut back to what its YAML scoping note allowed.",
+   "Preconditions and dispositions have no home in the Markdown format and are left out, as the approved Markdown blueprints do. The converter's gaps are filed as drafter #116, and your format-validation suggestion as #115."
+  ]
+ }
+]

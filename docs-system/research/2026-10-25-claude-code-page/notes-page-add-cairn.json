@@ -1,0 +1,75 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "add-cairn-to-a-sveltekit-app.heading",
+  "title": "How this draft was checked",
+  "body": [
+   "A session agent redrafted the page from its blueprint for #71. A fresh fact-checker read 108 claims: 105 held and 3 were imprecise. The register editor's 28 findings, 4 blocking, were applied, and a recheck's lines were fixed.",
+   "The blueprint was brought in line with the reviewed page after you approved it, so a later redraft keeps every fix. Each change rests on the code or a fact, and none changes the page's sections or the reader's path."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "info",
+  "anchor": "install-the-engine-and-let-vite-compile-it.heading",
+  "title": "Two hand-written steps cairn now does for you",
+  "body": [
+   "The old page had the reader write a dev-build Vite plugin and declare its flag in `app.d.ts`. `cairnManifest` now defines the flag, and `@glw907/cairn-cms/ambient` declares it, so both steps are gone."
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "decide",
+  "anchor": "add-cairn-to-a-sveltekit-app.heading",
+  "title": "What is Waymark called?",
+  "body": [
+   "Waymark has no entry in the register's Names list. The facts call it a template and the pages call it a theme. This page now says \"cairn's reference reading theme\". Whatever you pick becomes a Names entry and a Vale rule."
+  ],
+  "sides": [
+   {
+    "who": "Facts",
+    "text": "The Waymark template"
+   },
+   {
+    "who": "Pages",
+    "text": "The Waymark theme"
+   }
+  ],
+  "choices": [
+   {
+    "label": "Template for the copy, theme for its look",
+    "done": "The session adds a Names entry that says \"template\" for what the setup command copies and \"theme\" for its look, and aligns the pages."
+   },
+   {
+    "label": "Theme everywhere",
+    "done": "The session adds the Names entry and rewords the facts."
+   },
+   {
+    "label": "Template everywhere",
+    "done": "The session adds the Names entry and rewords the pages."
+   }
+  ]
+ },
+ {
+  "id": "N3",
+  "kind": "question",
+  "anchor": {
+   "quote": "Register the GitHub App"
+  },
+  "title": "\"The App\" as a short name",
+  "body": [
+   "After first use, the page shortens the GitHub App to \"the App\", a short name the Names list doesn't sanction. The session left it as is."
+  ],
+  "choices": [
+   {
+    "label": "Keep \"the App\"",
+    "done": "The page stands, and the session adds the short name to the Names list."
+   },
+   {
+    "label": "Use the full name",
+    "done": "The session writes \"the GitHub App\" every time and reruns the gate."
+   }
+  ]
+ }
+]

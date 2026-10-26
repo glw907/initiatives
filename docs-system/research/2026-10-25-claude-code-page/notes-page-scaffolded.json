@@ -1,0 +1,30 @@
+[
+ {
+  "id": "N0",
+  "kind": "info",
+  "anchor": "scaffolded-site-files.heading",
+  "title": "How this draft was checked",
+  "body": [
+   "A session agent redrafted the page from its blueprint for #71. A fresh fact-checker read 113 claims: 103 held, 6 were imprecise, and 4 were unsupported. The register editor's 2 blocking findings were applied, and a recheck's 6 imprecise lines were fixed. The session kept one claim the recheck called unsupported, because a Cloudflare doc backs it.",
+   "The blueprint was brought in line with the reviewed page after you approved it, so a later redraft keeps every fix. Each change rests on the code or a fact, and none changes the page's sections or the reader's path."
+  ]
+ },
+ {
+  "id": "N1",
+  "kind": "info",
+  "anchor": "file-tree.heading",
+  "title": "The tree lists only what the setup command writes",
+  "body": [
+   "The old tree named `.dev.vars.example` and `LICENSE`, which the setup command never writes. Only the `templates/waymark/` copy in the cairn repository carries `.dev.vars.example`, and that copy is for a Deploy button that is still pre-release."
+  ]
+ },
+ {
+  "id": "N2",
+  "kind": "info",
+  "anchor": "setup-state-outside-the-tree.heading",
+  "title": "Two unsourced claims cut",
+  "body": [
+   "The page said a second template, Topo, was planned, and described how Cloudflare revokes tokens. Nothing ships Topo, and no source shows the revocation behavior, so both are gone. The fact and its roadmap bullet were corrected too."
+  ]
+ }
+]

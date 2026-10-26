@@ -1,0 +1,5 @@
+This is the first page of a new docs track, `docs/claude-code/`, for a developer who works on a cairn site with Claude Code. The rest of the docs assume no coding assistant (your 2026-10-07 rulings), so this page is the one place that teaches it. cairn ships its guidance in Claude Code's format only, and the page says so in one line.
+
+The page covers what the `.claude/` tree holds and which of the four skills loads for which task. It covers the two edits cairn leaves to the developer: the `Stop` hook, and making the CI step gate if they want that. It ends with how `cairn-guidance install` and `cairn-guidance check` report what they did, since `install` exits 0 even when it refuses an entry.
+
+This blueprint was written on 2026-10-19, before blueprints went through the queue, so you have never approved it. A fresh fact-check against today's code found nothing wrong and six imprecise phrasings, all fixed. The same branch registers the new track in the gates, adds its entry to the docs register, and adds the track's index page. No questions wait in the notes.

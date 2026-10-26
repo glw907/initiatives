@@ -1,0 +1,5 @@
+This is the redrafted page for Add a custom admin screen, the task guide for a developer adding their own screen to the cairn admin. You approved its blueprint earlier in this batch, and drafter wrote the page from it before its budget ran out.
+
+A fresh fact-checker read 94 claims against the code, and the register editor's 6 blocking findings were applied. The page gained a step to call `ctx.audit` on every successful write, and Verify is now three steps. It also says the dev-backend branch needs `CAIRN_DEV_BACKEND=1`. Its nested-route advice now matches Restrict admin access. The blueprint was brought in line with the reviewed page after your approval. There are no decisions for you on this page.
+
+What changed since you sent it back: each paragraph and list item is now one line. The draft put one sentence per line, which the queue showed as broken wrapping. The words and the rendered page are unchanged. Architecture, Restrict admin access, and Add cairn to a SvelteKit app had the same layout and got the same fix.
