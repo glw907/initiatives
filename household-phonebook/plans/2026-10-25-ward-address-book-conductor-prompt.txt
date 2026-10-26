@@ -1,0 +1,19 @@
+conductor-servers: you own Part B of the ward address book's servers plan (executor servers-ward-address-book) beside the passes you already hold, and the one packet for Parts A and B and the workstation PR. pass-core "Conductor", "Close", and "Launch prompt" and approval-packet govern how; this hand-over restates none of them.
+
+Read: the plan /var/home/glw907/Projects/initiatives/household-phonebook/plans/2026-10-24-ward-servers-plan.md (Entry, Part B, "After merge (Part B)", "At the phonebook cutover", the Standing answers, the Close), its design /var/home/glw907/Projects/initiatives/household-phonebook/specs/2026-10-24-ward-address-book-design.md, and the executor's prompt 2026-10-25-ward-address-book-prompt.txt beside the plan. Geoff approved the design and this plan on 2026-10-24 (glw907/initiatives#135). Part A is PR-ready as draft glw907/servers#22 (head e41def8), recorded in self-hosting/plans/STATUS.md "## Sessions".
+
+The Entry's phonebook condition holds: phonebook Pass 2 merged on 2026-10-25 (glw907/phonebook#9, merge 5dd39cc), and this hand-over from the phonebook session is conductor-phonebook's word that it has. No phonebook conductor session stays live, so relay the results below by the README record, not a message.
+
+Pre-launch checks (the plan's Part B Entry and pass-core "Execute"): `git -C /var/home/glw907/Projects/servers fetch origin`; the checkout is on main, clean, and `git rev-list --count HEAD..origin/main` prints 0; origin/ward-probes is at e41def8 or later; `git -C /var/home/glw907/.dotfiles diff --quiet -- secrets/values.age` passes; `claude agents --json` lists no session working either ward-address-book worktree or branch; STATUS holds no other pass's ward hold line. The plan has no pre-flight items. Then launch:
+
+claude --bg --add-dir /var/home/glw907/Projects/phonebook --add-dir /var/home/glw907/.dotfiles --add-dir /var/home/glw907/Projects/initiatives --model opus --effort high --name servers-ward-address-book "$(cat /var/home/glw907/Projects/initiatives/household-phonebook/plans/2026-10-25-ward-address-book-prompt.txt)"
+
+Keep the `--add-dir` flags before the named flags. The executor runs at Opus, not Part A's Sonnet, because its main loop stores a secret and writes to the live mail server; its pair arms stay at Sonnet. Record its session id in STATUS. If it sits blocked on the EnterWorktree permission prompt, as Part A's first launch did, stop it and relaunch the same way: its prompt reuses the worktree.
+
+The hold line: when the executor sends "ward runs branch `ward-address-book` until it merges", check STATUS for another ward hold line, record this one, and answer the executor that it is recorded. If another pass holds ward, answer with that, and the executor waits.
+
+The results: when the executor sends its T5 line (the household book's URL and the member count) and its T6 line, record each in the "## Status" section of /var/home/glw907/Projects/initiatives/household-phonebook/README.md on a branch and self-merge it per pass-core "Ledgers". Phonebook Pass 3's planning reads the book's URL there. A T6 failure is the plan's standing answer, not a stop: record it the same way, and phonebook Pass 3 fixes it.
+
+At PR-ready: record both PR numbers and heads in STATUS, `claude stop` the executor's id, and send Geoff one packet holding servers#22, the Part B servers PR, and the workstation PR, per approval-packet. On approval, run the plan's "After merge (Part B)" steps; step 4's message to conductor-phonebook becomes a line in the household-phonebook README "## Status" saying the servers half has merged, which opens phonebook Pass 3's cutover. On a rejection, the plan's back-out stands.
+
+Standing answers are the plan's; apply them rather than stopping. A classifier denial the executor reports is yours to notify, once, with `notify-send -u normal`: Geoff runs the named command himself.
