@@ -68,6 +68,16 @@ and schema, Migrate existing content, and Write a markdown component.
 - Geoff approved #142 at `4dffcf074`; CI green, but the merge conflicted: `main` filed its own #70 (`49212dd64`). Merged main in (`abfbf6a6b`), renumbered this branch's redraft item to BACKLOG #71 (STATUS too), recorded in the PR's Decisions. Read "#70" in the entries above as #71 for the redraft item. CI rerunning on `abfbf6a6b`.
 - Friction filed: drafter #113 (warn on dropped sections other pages link), #114 (list pages whose blueprint moved since their lock); approval-queue #52 (`notes --check` for change notes). Still to file on cairn-cms after #142 merges: run the unnamed `drafter check` in CI, and stop skipping the hooks snippets (every stale block was `snippet-check-skip`).
 
+- #142 merged as `1892408cb` (CI green on `abfbf6a6b`). Sweep worktree removed. Friction filed on cairn-cms: BACKLOG #72 (unnamed `drafter check` in CI once at zero errors) and #73 (type-check the hooks snippets instead of skipping them), pushed as `0227f9fcd`. Draft log copied here as `draft-run.log`.
+
+## Closed (2026-10-25)
+
+Batch 5 is done: PR #141 (five pages) and PR #142 (runtime-bag sweep) are merged, and every worktree this batch made is removed. Nothing is queued or in flight.
+
 ## Next session starts here
 
-Read `## Done`, then pick up the first page whose step is unfinished.
+Start from `docs/STATUS.md` on `main` ("Immediate next action"). The open threads this batch left:
+BACKLOG #71 (redraft the extend pages that disagree with their blueprints), #72, #73; drafter #113
+and #114; approval-queue #52. The remote branches `extend-blueprints-2`, `ebp5-base`, and
+`runtime-bag-docs` still exist on GitHub; deleting them needs Geoff (the permission check
+denied a remote delete).
