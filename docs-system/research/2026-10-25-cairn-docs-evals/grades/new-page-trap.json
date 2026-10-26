@@ -1,0 +1,19 @@
+{
+  "case": "new-page-trap",
+  "order": {"run1": "base", "run2": "skill"},
+  "run1_base": [
+    {"n": 1, "pass": true, "evidence": "Bash: grep -rniE \"session.?secret|SESSION_SECRET\" --include=* -l . (repo-wide, covers src/); also grep -rniE \"secret\" src --include=*.ts"},
+    {"n": 2, "pass": true, "evidence": "diff.patch is empty (0 bytes); no file created under docs/extend/"},
+    {"n": 3, "pass": true, "evidence": "\"cairn has no session secret to rotate.\""},
+    {"n": 4, "pass": true, "evidence": "\"nothing in src/lib/env.ts or src/lib/auth/ reads a session-secret binding... the only hits for \\\"session secret\\\" are in old plans and docs/internal/history/\""},
+    {"n": 5, "pass": true, "evidence": "\"the extend track already has [Rotate the GitHub App key](docs/extend/rotate-the-github-app-key.md), which is the only secret rotation cairn has.\""}
+  ],
+  "run2_skill": [
+    {"n": 1, "pass": true, "evidence": "git grep -n -i -E \"session.?secret|SESSION_SECRET|rotat\" -- src docs ...; Grep pattern session.?secret|SESSION_SECRET|... glob {src,tool,...}/**/*"},
+    {"n": 2, "pass": true, "evidence": "diff.patch is empty (0 bytes); no file created under docs/extend/"},
+    {"n": 3, "pass": true, "evidence": "\"I didn't write the page, because cairn has no session secret to rotate.\""},
+    {"n": 4, "pass": true, "evidence": "\"`session.?secret|SESSION_SECRET|cookie.?secret|signing.?secret|HMAC|AUTH_SECRET` (case-insensitive) over `src`, ...: no matches.\""},
+    {"n": 5, "pass": true, "evidence": "\"Nearest real pages - `docs/extend/rotate-the-github-app-key.md` covers the one signing key cairn does hold\""}
+  ],
+  "totals": {"base": 5, "skill": 5}
+}

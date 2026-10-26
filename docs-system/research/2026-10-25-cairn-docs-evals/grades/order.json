@@ -1,0 +1,18 @@
+{
+ "code-and-docs": [
+  "base",
+  "skill"
+ ],
+ "rename-export": [
+  "skill",
+  "base"
+ ],
+ "new-page-trap": [
+  "base",
+  "skill"
+ ],
+ "deficiency": [
+  "skill",
+  "base"
+ ]
+}

@@ -1,0 +1,22 @@
+{
+  "case": "rename-export",
+  "note": "Regraded with the fixed assertion 3 (see cases.json 'fixed'). Same order as the first pass.",
+  "order": {"run1": "skill", "run2": "base"},
+  "run1_skill": [
+    {"n": 1, "pass": true, "evidence": "diff renames urlForm?: to urlShape?: in types.ts, and the type, guard, error and default in config.ts"},
+    {"n": 2, "pass": true, "evidence": "every '-' line with urlForm in configure-media.md (5), core.md (2) and media.md (3) has a matching '+' line using urlShape"},
+    {"n": 3, "pass": true, "evidence": "CHANGELOG under ### Changed in ## Unreleased adds 'Consumers must: rename urlForm to urlShape...'; migration-notes adds 'Rename urlForm to urlShape...' under '## Unreleased'"},
+    {"n": 4, "pass": true, "evidence": "tools.jsonl call 19 'npm run check:surface -- --update' (rerun at 21, 22); docs/internal/api-surface.md is in the diff"},
+    {"n": 5, "pass": true, "evidence": "tools.jsonl call 20 'npm run check:docs-gate'; reply: check:surface and the full check:docs-gate (17 checks) pass."},
+    {"n": 6, "pass": true, "evidence": "call 10 Grep 'urlForm' over the repo after the sed edits, friction-log fixed at call 15; reply names the history locations (caveat: no repo-wide grep ran after call 15)"}
+  ],
+  "run2_base": [
+    {"n": 1, "pass": true, "evidence": "diff renames urlForm?: to urlShape?: in types.ts, and the type, guard, error and default in config.ts"},
+    {"n": 2, "pass": true, "evidence": "every '-' line with urlForm in configure-media.md (5), core.md (2) and media.md (3) has a matching '+' line with urlShape"},
+    {"n": 3, "pass": true, "evidence": "CHANGELOG under ### Changed in ## Unreleased adds 'Consumers must: rename urlForm to urlShape...'; migration-notes adds 'Rename urlForm to urlShape...' under '## Unreleased'"},
+    {"n": 4, "pass": false, "evidence": "no check:surface call in tools.jsonl; api-surface.md was edited by sed, not regenerated with --update"},
+    {"n": 5, "pass": false, "evidence": "no check:docs-gate call in tools.jsonl; reply: 'Not run: ... and check:docs-gate.'"},
+    {"n": 6, "pass": true, "evidence": "call 61 git grep -n urlForm with history excluded ran after all the renames; reply names the history locations"}
+  ],
+  "totals": {"base": 4, "skill": 6}
+}

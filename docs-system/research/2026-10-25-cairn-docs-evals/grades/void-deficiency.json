@@ -1,0 +1,19 @@
+{
+  "case": "deficiency",
+  "note": "VOID. The seed did not apply in either run (the sentence wraps across two lines and the exact-string replace missed), so both runs faced a correct page. The grader noticed. Kept as the record; the case was rerun on both conditions.",
+  "order": {"run1": "skill", "run2": "base"},
+  "run1_skill": [
+    {"n": 1, "pass": true, "evidence": "diff adds a sentence stating 24,000 characters"},
+    {"n": 2, "pass": false, "evidence": "adds new sentences beyond the one sentence"},
+    {"n": 3, "pass": true, "evidence": "cites content-routes-tidy.ts:154 and :51"},
+    {"n": 4, "pass": true, "evidence": "ran npm run check:docs-gate, exit 0, 17 checks"},
+    {"n": 5, "pass": true, "evidence": "read content-routes-tidy.ts before the first edit"}
+  ],
+  "run2_base": [
+    {"n": 1, "pass": false, "evidence": "empty diff; made no edit"},
+    {"n": 2, "pass": false, "evidence": "empty diff"},
+    {"n": 3, "pass": true, "evidence": "cites content-routes-tidy.ts:51 and :154"},
+    {"n": 4, "pass": false, "evidence": "no docs gate run"},
+    {"n": 5, "pass": true, "evidence": "read content-routes-tidy.ts"}
+  ]
+}
