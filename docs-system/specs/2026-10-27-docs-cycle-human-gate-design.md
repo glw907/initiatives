@@ -38,7 +38,7 @@ LLMs to scale what you've learned, not to avoid looking at data".
 
 Labeling happens once now, and again whenever an assertion is reworded. Each item shows the assertion, the transcript excerpt the judge saw, and the diff, and asks pass or fail.
 
-- A private page published for you, which saves each label as you go and works on your phone (recommended)
+- A private page published for you, which shows each excerpt and diff formatted and saves each label as you go (recommended)
 - A Markdown file in the repo that you edit by hand
 
 ### Standing answers
