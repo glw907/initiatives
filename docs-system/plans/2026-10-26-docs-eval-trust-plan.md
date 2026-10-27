@@ -208,7 +208,9 @@ Files: `.claude/skills/cairn-docs/evals/run.mjs`, `run.test.mjs`, `evals.json`, 
   modules and the pre-pool work (`overlayHash`, `prepareModules`) may stay synchronous. The
   `SIGINT` and `SIGTERM` handler keeps a synchronous remover, since it exits at once.
 - Unique run folders: the run id gains `-<pid>`. `STATE_ROOT` is created with `recursive: true`,
-  then the leaf without it, so an existing folder refuses the run.
+  then the leaf without it, so an existing folder refuses the run. Erratum (2026-10-27):
+  glw907/cairn-cms#153 gave the run id a random 4-hex suffix through `newRunId()`, with a test. If
+  it has merged, keep that suffix in place of the pid and add only the refusal.
 - Near-miss cap: a case may carry `maxTurns`, and `validateEvals` checks it is a positive integer.
   `claudeArgs` passes `--max-turns`. Each `near-miss-*` case takes `maxTurns: 21` (planning probe).
   Claude Code 2.1.310 marks an `error_max_turns` result `is_error: true`, so `sessionErrored` returns
