@@ -33,6 +33,8 @@ The household's phones each hold their own contacts. A single phonebook that the
 - The cutover's end-to-end grant check (servers plan, "At the phonebook cutover", 2026-10-26): passed. With `probe2` flipped into the household for one apply, the grant named three members; `probe2` read 187 of 187 cards in the household book, its session listed `phonebook`, and create, update, and delete each got 403 with ETags unchanged. Ward was then applied from `main`: the grant names two members, its read-back passed, and `probe2` no longer lists the book.
 - Pass 3, the web app and cutover, merged on 2026-10-26 (glw907/phonebook#12, glw907/servers#24). Phase 1 is live: both phones take their config and directory from the Worker at `phonebook.907.life`, the ward writer is on, and the household book matches D1. Geoff deferred the rest of the exit checks and the old book's move to an automation and testing pass, which runs next in a fresh session, before Pass 4. The office phone has no line until Pass 4, since Geoff closed the Callcentric account.
 
+- The automation and testing pass merged on 2026-10-27 (glw907/phonebook#15, squash `13b7d22`; glw907/workstation#156). The phone system now tests itself: a nightly run at 4:00 AM and a 10:00 AM gate on pavilion check both phones, ward, and the Worker, and alert `geoff@907.life` on a failure. A test line on voip.ms places and receives calls, and the office phone is on its voip.ms sub-account. The deferred cutover checks and the old book's move ran with no one at home. Pass 4, phase 2, is next, brainstormed in a fresh session from `docs/plans/2026-10-27-pass-4-notes.md` in the phonebook repo.
+
 ## Records
 
 - Spec: `docs/specs/2026-10-07-phonebook-design.md` in `phonebook`.
