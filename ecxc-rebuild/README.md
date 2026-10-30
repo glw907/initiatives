@@ -23,4 +23,5 @@ The site should run on the current engine and follow the docs standard, as the o
 
 ## Records
 
-- None yet. The rebuild's spec starts when the initiative does.
+- Requirements (organizational functions, 2026-10-29): `ecxc-ski/docs/specs/2026-10-29-ecxc-rebuild-requirements.md`.
+  It supersedes the 2026-07-30 team-platform requirements where they disagree.
