@@ -24,4 +24,4 @@ Those skills, registers, and agents live in `workstation` and in each user's `~/
 
 ## Records
 
-- No spec yet. This initiative follows the repo-organization pass, which the design names as its predecessor.
+- `specs/2026-10-31-agent-first-pattern-design.md`: the agent-first pattern for cairn, approved in the Approval Queue on 2026-10-31.
