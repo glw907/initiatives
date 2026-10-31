@@ -2,41 +2,75 @@ Initiative: shared-standards
 
 # Agent-first pattern plan
 
-Design: `shared-standards/specs/2026-10-31-agent-first-pattern-design.md`, approved in the Approval Queue, item 20261031T125428-1889572. Facts below were read or probed at cairn-cms `b1c6fd374` and workstation `90af497` on 2026-10-31.
+Design: `shared-standards/specs/2026-10-31-agent-first-pattern-design.md`, approved in the Approval Queue, item 20261031T125428-1889572. Facts below were read or probed at cairn-cms `b1c6fd374` and workstation `90af497` on 2026-10-31. `90af497` is on `google-sheets-tooling`, not `main`, so task 1.3 rechecks the workstation rows against `origin/main`. Dispositions of the three plan reviews: `2026-10-31-agent-first-plan-fold.md`, beside this file.
 
-Executors run one at a time, Sonnet at medium, named `cairn-cms-agent-first-1` to `-4` under `conductor-cairn-cms`, from `/var/home/glw907/Projects/cairn-cms`. Push targets: `glw907/cairn-cms`, `glw907/workstation`, `glw907/standards`, `glw907/initiatives`. Live state: `docs/STATUS.md`, plus `~/.local/state/cairn-agent-first/` for the sitting logs, eval tables, and container files.
+Executors run one at a time, Sonnet at medium, named `cairn-cms-agent-first-1` to `-4` under `conductor-cairn-cms`, from `/var/home/glw907/Projects/cairn-cms`. Push targets: `glw907/cairn-cms`, `glw907/workstation`, `glw907/standards`, `glw907/initiatives`, plus `glw907/cairn-themes`, `glw907/dubplate`, and `glw907/phonebook` for task 1.7's agent-name lines only. Live state: `docs/STATUS.md`, plus `~/.local/state/cairn-agent-first/` for the ledger (one row per PR with its repo, state, and merge step, and the tag's SHA), the sitting logs, eval tables, and container files. Evidence tables go in the PR before any teardown.
 
 ## Acceptance
 
-Every bar maps to one proof. A pass closes only when the bars it owns are met or the stop table's standing answer applied.
+Every bar maps to one proof. Each bar ends in one of three states: **met**, **met by a stop answer**, or **unmet**. Only met is a routine row. Either other state is an ask in that pass's packet, so this table can report a failure.
 
 | Bar | Proof | Task | Pass |
 |---|---|---|---|
-| Admin without Claude | Geoff completes an install from the docs alone, in Sitting A | 4.9 | 4 |
-| Admin with Claude | Claude finishes a real install with no help beyond the expected browser and sign-in steps, in Sitting A | 4.9 | 4 |
-| Editor | Geoff writes, publishes, and adds an image from the editor docs alone, in Sitting B | 4.10 | 4 |
-| Evaluate | A fresh session answers the fixed brief in task 4.12, and every stated good-answer item appears on all three trials | 4.12 | 4 |
-| Extend | Cases S01 to S15 cover each seam and meet the eval's bar; a fresh container session then builds one custom screen | 3.8, 4.12 | 3, 4 |
-| Follows Anthropic's practices | `/doctor prompt-audit`, `claude plugin validate`, and a fresh review against the guidance are all clean | 4.14 | 4 |
-| Contribute | A clean container goes from clone to a passing PR with nothing from the workstation | 4.12 | 4 |
-| Lean and maintainable | Page and word counts fall, and the eval's tokens and time do not worsen | 3.8, 4.14 | 3, 4 |
+| Admin without Claude | Geoff completes an install from the docs alone in Sitting A, with no point where he could not continue from the page | 4.9 | 4 |
+| Admin with Claude | Claude finishes a real install in Sitting A from the fixed prompt, with no help beyond the listed browser steps, and with fewer Geoff touches and less attended time than Part 1 | 4.9 | 4 |
+| Editor | Invited at a second address, Geoff signs in from the emailed link, writes, adds an image, and publishes from the editor docs alone, in Sitting B | 4.9 | 4 |
+| Human pages | Every page in `docs/editors`, `docs/admin`, and the evaluator set passes the whole `cairn-writing-docs` chain with `register-check`, then Geoff's docs review | 4.4, 4.10 | 4 |
+| Evaluate | After the docs merge, a fresh session answers the fixed brief in task 4.13, reads only the allowed pages, and states every good-answer item on all three trials | 4.13 | 4 |
+| Extend | At least 14 of the 18 cases count, every 5/5 seam among them; S01 to S15 meet the eval's bar; a fresh container session then builds one custom screen | 3.8, 4.11 | 3, 4 |
+| Follows Anthropic's practices | `/doctor prompt-audit`, `claude plugin validate`, and a fresh review against a fixed list of the guidance's rules are all clean | 4.13 | 4 |
+| Contribute | E1 to E3 meet their bar; a clean container goes from clone to a passing PR whose new test fails on its base, with nothing from the workstation. Task 1.12 is the interim proof in pass 1 | 3.8, 4.11 | 3, 4 |
+| Lean and maintainable | The fixed counts below, the form gate in CI, and the eval's tokens and time inside the band | 3.8, 4.13 | 3, 4 |
 
-"Clean" for the audit means no finding left open: each is fixed, or overruled with a reason in the PR. `claude plugin validate` runs without `--strict`, because `--strict` fails on the missing `version` the design requires (probed below).
+"Clean" for the audit means no finding left open: each is fixed, or overruled with a reason in the PR, and an overruled blocker or major is an ask in the final packet. `claude plugin validate` runs without `--strict`, because `--strict` fails on the missing `version` the design requires (probed below); its `--json` warnings must be exactly that one, so `plugin.json` sets `author`.
 
-The lean baseline, measured on `main` and the PR heads: the three technical arms hold 61 pages and 210,287 words (`docs/extend` 27 and 101,436, `docs/reference` 32 and 105,089, `docs/claude-code` 2 and 3,762). The drafts on #160's head add 18 pages and 27,162 words (`docs/editors` 8 and 11,368, `docs/admin` 10 and 15,794). Together that is 79 pages and 237,449 words. Packaged `skills/` and `claude/` hold 52 markdown files and 24,539 words. The bar is that `docs/**` human pages fall below 79 pages and 237,449 words, and that those pages plus packaged skills fall below 261,988 words. Tokens and time are the sum over counted cases of each case's median; the end state must not exceed the baseline's sum.
+The lean baseline, measured on `main` and the PR heads: the three technical arms hold 61 pages and 210,287 words (`docs/extend` 27 and 101,436, `docs/reference` 32 and 105,089, `docs/claude-code` 2 and 3,762). The drafts on #160's head add 18 pages and 27,162 words (`docs/editors` 8 and 11,368, `docs/admin` 10 and 15,794). Together that is 79 pages and 237,449 words. Packaged `skills/` and `claude/` hold 52 markdown files and 24,539 words.
+
+The bar is fixed. `docs/**` holds at most 22 human pages: the 8 editor pages, 11 admin pages with key rotation, and the two evaluator pages, plus one spare. The sum of `docs/**`, packaged `skills/` and `claude/`, and the words the work adds to `src/lib` comments is at most 130,994, half the 261,988 baseline, so contract moved into TSDoc counts. A case that needs content keeps it whatever this says, so a miss reads unmet and goes to Geoff with the figure.
+
+Tokens are input plus cache creation plus output, with cache reads reported beside them, because reads dominate (the S01 probe: 82,356 against 1,421,477). Tokens and time are the sum over counted cases of each case's median over passing trials, with the all-trial sums beside them. The end state passes when each sum is within 10 percent of the baseline's, since a zero band on medians is a coin flip on a tie.
 
 ## Pre-flight
 
-The design foresaw one item, the install sitting's browser steps. Items 1, 2, 4, and 6 and Geoff's own install in item 3 are new; item 5 predates this plan. Only item 1 holds the launch of pass 1, which `pass-core` makes a pre-launch packet and a planning miss at the design stage. The rest fall at set points in pass 4.
+The design foresaw one item, the install sitting's browser steps. Items 1, 2, 3, 5, and 7 and Geoff's own install in item 4 are new; item 6 predates this plan. Items 1 and 2 hold the launch of pass 1, which `pass-core` makes a pre-launch packet and a planning miss at the design stage. The rest fall at set points in pass 4.
 
-1. `[you]` **Before pass 1: give the containers a model credential.** The spike and the end-to-end checks need a subscription credential passed as an environment value. `CAIRN_DOCS_READER_OAUTH_TOKEN` exists, but its registry row limits it to "the cairn-cms docs-reset reader agents only", so this plan does not use it without your word. Recommended: mint a dedicated token with `claude setup-token`; the session launches `secret-receive CAIRN_E2E_OAUTH_TOKEN`, whose dialog takes the value. A one-line ruling that widens the old token's row does the same job. Check: the store name exists and `claude -p` in a fresh `CLAUDE_CONFIG_DIR` answers, reporting `apiKeySource` other than an API key.
-2. `[you]` **At the start of Sitting A: mint one GitHub token.** The Contribute check opens a real PR from a container, and a fine-grained token has no creation API. The session creates `glw907/cairn-cms-e2e` first. You create a fine-grained token limited to that repository (Contents and Pull requests read and write, Actions and Commit statuses read), and the session launches `secret-receive CAIRN_E2E_GH_TOKEN`. Check: `gh pr list` in the container answers. Your `gh` token never enters a container, because it carries `repo`, `workflow`, and `delete_repo` over every repository.
-3. `[you]` **Sitting A, admin install (task 4.9).** Set point: after #159 and #160 carry the page calls (task 4.7) and the prerelease exists (task 4.8). It has two installs. In the first you are the reader, with no Claude. In the second a fresh Claude session installs, and you do only the browser and sign-in steps it asks for: the GitHub App creation and install, Cloudflare's sign-in, and the Workers Builds token page. At teardown (task 4.13) you delete both GitHub Apps, since the runbook's step 8.6 is yours, and revoke the mirror token.
-4. `[you]` **Sitting B, editor tasks (task 4.10).** Set point: right after Sitting A, on the site you installed. You sign in, write an entry, add an image, and publish.
-5. `[you]` **Before task 4.7: the two reviews the series left open.** #160 waits on your 14 question notes, and #159's revision waits on queue item 20261031T112244-1646105. These predate this plan and resume with the series.
-6. `[you]` **Optional, before Sitting A: name a spare zone.** The default site lives at `workers.dev`, and a `workers.dev` site cannot send sign-in email (`docs/admin/before-you-start.md`, PR #160). With a spare zone, the sitting also tests `own-your-domain.md` and the emailed sign-in, neither of which has ever run live. With none, those stay unproved and task 4.9 records it.
+1. `[you]` **Before pass 1: bring `~/.dotfiles` to `main`.** The checkout is on `google-sheets-tooling` with `secrets/values.age` modified, that branch has no PR, and `origin/main` holds commits it lacks. Every live step in task 1.7 runs against this checkout, and item 2's `secret-receive` writes to that file. Recommended: tell the session to open the Sheets PR and merge it; otherwise park the branch. Check: `git status` shows `main`, clean and level with `origin/main`.
+2. `[you]` **Before pass 1: give the containers a model credential, per ruling 1.** The spike and the end-to-end checks need a subscription credential passed as an environment value. Recommended: mint a dedicated token with `claude setup-token`; the session launches `secret-receive CAIRN_E2E_OAUTH_TOKEN`, whose dialog takes the value. Check: the store name exists and `claude -p` in a fresh `CLAUDE_CONFIG_DIR` answers, reporting `apiKeySource` other than an API key. The value reaches a container through `podman run --env-file`, never argv, because process lists and `podman inspect` show argv.
+3. `[you]` **At the start of Sitting A: mint one GitHub token.** The Contribute check opens a real PR from a container, and a fine-grained token has no creation API. The session creates `glw907/cairn-cms-e2e` first. You create a fine-grained token limited to that repository (Contents and Pull requests read and write, Actions and Commit statuses read), and the session launches `secret-receive CAIRN_E2E_GH_TOKEN`. Check: `gh pr list` in the container answers. Your `gh` token never enters a container, because it carries `repo`, `workflow`, and `delete_repo` over every repository.
+4. `[you]` **Sitting A, admin install (task 4.9).** Set point: after #159 and #160 carry the page calls (task 4.7) and the prerelease exists (task 4.8). It has two installs. In the first you are the reader, with no Claude. In the second a fresh Claude session installs, and you do only the browser and sign-in steps it asks for: the GitHub App creation and install, Cloudflare's sign-in, and the Workers Builds token page. In both, right after the site's first push, you narrow the App's installation to that one repository. You also rotate the Part 1 App's key from its page. At teardown (task 4.12) you delete both GitHub Apps, since the runbook's step 8.6 is yours, and revoke the mirror token.
+5. `[you]` **Sitting B, editor tasks (task 4.9).** Set point: right after Sitting A, on the site you installed. Bring a second address that reaches you. You invite it, sign in from the emailed link as that editor, write an entry, add an image, publish, then trigger one failure from `when-something-goes-wrong.md`.
+6. `[you]` **Before task 4.7: the two reviews the series left open.** #160 waits on your 14 question notes, and #159's revision waits on queue item 20261031T112244-1646105. These predate this plan and resume with the series.
+7. `[you]` **At the stage A packet: delete the drift routine.** Open `claude.ai/code/routines` and delete `trig_015UPQostYVisXuExTHTH2vu`; an agent cannot. Check: `RemoteTrigger list` no longer shows it.
 
-**The sitting rule.** Both sittings use it, and the observing session states it at the start: you stand in for a first-time reader, so follow only what the page says, and every point where you used knowledge the page did not give you is a docs defect. The session records each point in `~/.local/state/cairn-agent-first/sitting-<a|b>.md` as page, step, what you needed, and where you got it. It answers nothing the page does not answer. Two stand-ins are declared up front and are not defects: `npx create-cairn-site` resolves to a local tarball, because the package is not on npm (see Overview), and without a zone Sitting B's sign-in link comes from the owner's `--sign-in` command, because `workers.dev` sends no email.
+**The session's pre-launch checks.** None needs you unless it fails.
+
+- `model-review.timer` fires monthly (next 2026-11-01 00:00) and starts `cairn-docs-cycle`, an unattended session in this repo. Hold it with a user drop-in on `model-review.service` setting `CAIRN_DOCS_CYCLE_REPO=/nonexistent`, which the launcher reads and answers with "nothing to launch". Stopping the timer would also stop the model review. Task 4.13 removes the drop-in. If this month's session is already running, the launch waits until it reaches its ruling step.
+- The docs series' loop stays stopped: the ledger's line 64 stands, and a queue decision that arrives during passes 1 to 3 waits for task 4.7.
+- `podman run`, `claude plugin list`, `gh release view`, and `gh repo view` each run once under auto mode. A refusal gets a rule through `claude-infra`, and that rule becomes a `[you]` item here.
+
+**The sitting rule.** Both sittings use it, and the observing session states it at the start: you stand in for a first-time reader, so follow only what the page says, and every point where you used knowledge the page did not give you is a docs defect. The session records each point in `~/.local/state/cairn-agent-first/sitting-<a|b>.md` as page, step, what you needed, and where you got it, with your minutes and touches for each part. It answers nothing the page does not answer. Three stand-ins are declared up front and are not defects: `npx create-cairn-site` resolves to a local tarball, because the package is not on npm (see Overview); `cairn` is built from #160's head, because the published `tool/v1.1.0` predates the tool's unreleased major; and the App's installation is narrowed after the push, because All repositories would hand two sitting Apps write access to the production sites. Part 2's `workers.dev` site takes its sign-in link from the owner's `--sign-in` command, which is a fourth, limited to that site.
+
+## Rulings owed
+
+Three yes-or-no questions go in the pre-launch packet.
+
+1. **Mint a dedicated subscription token for the containers?** Recommended: yes, because a fresh token is revocable alone and the existing row reads "the cairn-cms docs-reset reader agents only". *Yes:* pre-flight item 2 as written, and task 4.13 removes the token. *No:* a one-line ruling widens `CAIRN_DOCS_READER_OAUTH_TOKEN`'s registry row, and the containers use that token. Holds pass 1.
+2. **If the marketplace does not load from `.claude/settings.json`, accept one `claude plugin install` line in `CONTRIBUTING.md`?** Recommended: yes, because the docs support the settings route, so this should not fire. *Yes:* task 1.1 writes the line, pass 1 goes on, and the PR states the departure from "nothing installed by hand". *No:* the spike stops pass 1 until Geoff rules a design change.
+3. **Set pass 4's path ceiling at 900 minutes?** The plan is 840 against the design's 720 line, because of items added after the design merged (see Path). Recommended: yes, because each item carries a bar or a Geoff request. *Yes:* pass 4 runs as written. *No:* pass 4 closes at stage A's merge (255 minutes), and stage B becomes a fifth pass with its own design line, which moves the Admin, Editor, Human pages, and Evaluate bars there.
+
+**Taken, not forks.** Each of these had one clearly correct answer.
+
+| Question | Taken | Why |
+|---|---|---|
+| Does the docs-process rule rerun in every pass? | Regression suite once in 1.11. Later PRs cite 3.7 in `## Decisions` | The design already puts the rebuilt `CLAUDE.md` and rules through the A/B, and a rerun over a hybrid overlay proves less |
+| Is pass 3 over its line? | No ruling owed | One measured session sized the eval: pass 3 is 1,120 against 1,200 |
+| What is the Lean target? | 22 pages and half the words; a miss goes to Geoff | The disposition tables fix the page count, and the eval, not the number, decides what stays |
+| Is a zone optional for the sittings? | Required: `carin-test.org` | Geoff registered it for cairn's spikes (`docs/plans/2026-08-11-create-cairn-site-t4a.md`), it holds only MX and TXT records, and the emailed link is the editor's first step, so the bar is otherwise not proved |
+| How is "easier still" measured? | Part 2 takes fewer touches and less attended time than Part 1 | The design says it, and a comparison is the only hard rule one sitting supports |
+| Can a session overrule the fresh review? | Minors yes. A blocker or major is an ask | The session that built the work cannot clear its own review |
+| What scope do the sitting Apps get? | One repository each, narrowed after the push | The page's step still runs, and production repositories leave the blast radius |
+| Does the workstation pin the plugin to a reviewed SHA? | No. A ruleset on `standards` `main` requires a PR and the validate check | That makes the merge the gate again, and a pin adds a sync step with no measured defect |
+| Does the model token outlive the plan? | No. Task 4.13 removes it | No later pass names a use |
 
 ## Overview
 
@@ -48,35 +82,34 @@ Eval wall time sits on the critical path in pass 3, so that pass is measured, no
 
 | Pass | Class | Design | Twice | Plan path | Flag |
 |---|---|---|---|---|---|
-| 1 Portable repo | `runner` | 600 | 1,200 | 685 | none |
-| 2 Records | `runner` (design: `ordinary`) | 240 | 480 | 255 | none |
-| 3 Contract, skills, measure | `auth-data` | 600 | 1,200 | 1,320 | **Over by 120** |
-| 4 Rebuild the rest | `runner`, `live-account` | 360 | 720 | 780 | **Over by 60** |
-| Total | | 1,800 | 3,600 | 3,040 | under |
+| 1 Portable repo | `runner` | 600 | 1,200 | 745 | none |
+| 2 Records | `runner` (design: `ordinary`) | 240 | 480 | 285 | none |
+| 3 Contract, skills, measure | `auth-data` | 600 | 1,200 | 1,120 | none |
+| 4 Rebuild the rest | `runner`, `live-account` | 360 | 720 | 840 | **Over by 120** |
+| Total | | 1,800 | 3,600 | 2,990 | under |
 
-**Why pass 3 is over.** The design's 600 counted no eval wall time, and the eval is 660 of the 1,320. The A/B alone is 180 sessions at the measured 13.3-minute median for an editing session, four at a time: 600 minutes. If the ablation run shows no usage-limit trouble at six concurrent sessions, task 3.7 drops to 440 and the pass to 1,100, under the line. That is unproved, so the plan states 1,320.
+**How pass 3 is sized.** One S01-shaped session in a scaffold, run for this plan with the harness's flags at Sonnet medium, took 147 seconds and 43 turns at a $0.55 list estimate. The 13.3-minute median comes from docs-editing sessions and does not fit a site case. A site trial is sized at 6 minutes (session, fixture install, grading) and an engine trial at 13.3, since it holds a whole tree and its gates. Task 3.7 is then 320 minutes at four concurrent and about 215 at six. That is one sample, and an ablated session may hunt longer, so tasks 3.1 and 3.3 re-estimate from their own trials, and the stop table answers a figure past 1,200.
 
-**Why pass 4 is over.** Items added after the design merged add 225 minutes: applying the page calls (120), your own install on top of Claude's (60), and the editor sitting (45). Without them the pass is 555.
-
-Both go back to Geoff before launch under `pass-core`. Proposed standing answers: path ceilings of 1,400 for pass 3 and 800 for pass 4.
+**Why pass 4 is over.** Items added after the design merged add 270 minutes: applying the page calls (120), your own install on top of Claude's (60), the editor sitting (45), and the emailed sign-in with its zone and the key rotation (45). Without them the pass is 570. Ruling 3 sets the ceiling. Pass 3's ceiling stays the design's 1,200, and the usage-limit wait in the stop table does not count against either.
 
 ### Eval size
 
-All sessions run on the subscription. `run.mjs` deletes `ANTHROPIC_API_KEY` from each session's environment and aborts the run on any `init` event whose `apiKeySource` is not `none`; `claude plugin eval` and the container runs get the same discipline by starting from an environment without the key.
+All sessions run on the subscription. `run.mjs` deletes `ANTHROPIC_API_KEY` from each session's environment and aborts the run on any `init` event whose `apiKeySource` is not `none`, and it inherits `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1`, so a session cannot end while a background agent runs. `claude plugin eval` and the container runs get the same key discipline by starting from an environment without the key.
 
 | Run | Pass | Cases | Trials | Arms | Sessions |
 |---|---|---|---|---|---|
-| Existing suite, by the repo's rule | 1 | 16 | 3 | 2 | 96 |
-| Ablation | 3 | 15 | 3 | 1 | 45 |
-| Baseline smoke, to catch a bad case early | 3 | 15 | 1 | 1 | 15 |
-| The A/B | 3 | 18 | 5 | 2 | 180 |
-| Code intelligence arm | 3 | 6 | 3 | 1 | 18 |
+| Existing suite, regression only | 1 | 13 | 3 | 2 | 78 |
+| Ablation | 3 | 15 | 1 | 1 | 15 |
+| Baseline smoke, reused as A/B baseline trial 1 | 3 | 15 | 1 | 1 | 15 |
+| The A/B, less the smoke trials | 3 | 18 | 5 | 2 | 165 |
+| Code intelligence arm (S01, E1) | 3 | 2 | 3 | 1 | 6 |
 | Reruns of drops (three more trials, both arms, allowance for 3 cases) | 3 | 3 | 3 | 2 | 18 |
-| `claude plugin eval` | 3 | 6 | 3 | 2 | 36 |
+| Frozen sweep after the last fix | 3 | 18 | 1 | 1 | 18 |
+| `claude plugin eval` | 3 | 3 | 3 | 2 | 18 |
 | End-to-end checks | 4 | 4 | 1 or 3 | 1 | 6 |
-| **Total** | | | | | **414** |
+| **Total** | | | | | **339** |
 
-The ceiling from the design's standing answer is 828 sessions. Judge calls are extra: about 280 blind Opus calls from `run.mjs`, plus plugin eval's Haiku graders. Sizing evidence: 815 recorded sessions in `~/.local/state/cairn-docs-evals`, with an all-case median of 0.5 minutes and 124 editing sessions at a median of 13.3 minutes and $0.66 list-price estimate. The largest day ran 705 sessions at a $234 estimate with no usage-limit result. 96-session runs took 65 to 115 minutes at `CONCURRENCY = 4`. Of 725 recorded results, 25 were errors or faults. A weekly usage limit did stop a run once (`approval-packets` plan), so the stop table covers it.
+The ceiling from the design's standing answer is 678 sessions. Judge calls are extra: about 230 blind Opus calls from `run.mjs`, plus plugin eval's Haiku graders. Sizing evidence: 815 recorded sessions in `~/.local/state/cairn-docs-evals`, with an all-case median of 0.5 minutes and 124 editing sessions at a median of 13.3 minutes and $0.66 list-price estimate, plus the S01 probe above. The largest day ran 705 sessions at a $234 estimate with no usage-limit result, though most were 0.5-minute sessions, so it is weak evidence of headroom. 96-session runs took 65 to 115 minutes at `CONCURRENCY = 4`. Of 725 recorded results, 25 were errors or faults. A weekly usage limit did stop a run once (`approval-packets` plan), so the stop table covers it.
 
 ### Mechanisms, quoted or probed
 
@@ -85,49 +118,70 @@ The ceiling from the design's standing answer is 828 sessions. Judge calls are e
 | Repo-scoped marketplace | `plugins/org`: "A plugin that the marketplace lists by a relative path loads from the marketplace copy once the repository's `extraKnownMarketplaces` entries apply." |
 | Trust in `-p` | `plugins/org`: "the entries apply only in a folder whose trust the user already accepted interactively, or whose `hasTrustDialogAccepted` flag you set in `~/.claude.json`." Probed: under `CLAUDE_CONFIG_DIR` the file is `$CLAUDE_CONFIG_DIR/.claude.json`. |
 | First turn | `plugins/org`: "Set `CLAUDE_CODE_SYNC_PLUGIN_INSTALL=1` to make the run wait for the install before its first query." |
+| Auto-update timing | `plugins/loading`: "In an interactive session, after you send your first message, Claude Code waits a random delay of up to ten minutes. It then refreshes every marketplace with auto-update on". A settings entry's `autoUpdate` is honored first. |
+| User-scope install | `claude plugin marketplace add --help` and `claude plugin install --help`: `--scope` defaults to `user`. |
 | Namespacing | Probed live: this session lists `cloudflare:wrangler` and `code-simplifier:code-simplifier`. Probed: a `--plugin-dir` plugin named `standards` lists its skill as `standards:demo-skill`. |
-| Validate | Probed: exit 0 with warnings on a plugin and marketplace with no `version`; exit 1 with `--strict`; exit 0 with no credentials at all, so CI needs no secret. |
+| Validate | Probed: exit 0 with warnings on a plugin and marketplace with no `version`; exit 1 with `--strict`; exit 0 with no credentials at all, so CI needs no secret. `--help` lists `--json`. |
 | Prompt audit headless | Probed: `claude -p '/doctor prompt-audit .'` exits 0 and reports dead paths in `CLAUDE.md` and a skill (22 seconds on a two-file tree). It audited the working directory only. `memory`: "nothing in your files changes until you ask Claude to apply them." |
-| Eval isolation | Probed: `--setting-sources project` with the normal login gives `apiKeySource: none`, no user skills or plugins, and no MCP servers. Adding `--plugin-dir` loads that plugin. So the eval needs no new credential. |
-| Plugin eval | `claude plugin eval --help`: `--ablation with-without`, `--runs`, `-j` 1 to 8. `plugin-evals`: "Nothing personal or project-level loads." Its target comes from the plugin alone, so it cannot run the repo's tree. |
+| Eval isolation | Probed: `--setting-sources project` with the normal login gives `apiKeySource: none`, no user skills or plugins, and no MCP servers. Adding `--plugin-dir` loads that plugin. So the eval needs no new credential. The S01 probe confirmed it in a scaffold, where the four template skills loaded. |
+| Scaffold fixture | `scaffold.yml`: `npm pack` for the engine and `./packages/cairn-cms-dev`, then `node scripts/build/emit-template.mjs <dir> "file:<engine>" "file:<dev>" emitted-site`. Probed: a plain `npm install` of `templates/waymark` fails on a peer conflict against the registry's `0.98.0`, so an arm must pack both. |
+| Denied commands | Probed in the S01 session: a `cd` compound and a piped form each came back as "requires approval", and the session worked around them. `NEEDED_COMMAND` does not count these as faults today. |
+| Comment-stripped forms | Probed: `ts.transpileModule` with `removeComments` keeps `// not comment` in a template literal; `ts.createPrinter({removeComments:true})` works on `.d.ts`. For `.svelte`, `svelte/compiler` `compile` alone keeps script comments, but `compile` then `transpileModule` with `removeComments` gave equal hashes for a comment-only change and different hashes for a code change. |
+| Plugin eval | `claude plugin eval --help`: `--ablation with-without`, `--runs`, `-j` 1 to 8, `--trust-plugin`, `--allow-tools`; cases are `<eval dir>/**/case.yaml or prompt.md + graders/*.md`. `plugin-evals`: "Nothing personal or project-level loads." Its target comes from the plugin alone, so it cannot run the repo's tree. |
 | Local `npx` | Probed: `npx <bin>` runs a package installed with `npm install --no-save <tarball>` in the working folder. |
+| Packing the setup package | `create-site.yml`: `npm pack --ignore-scripts --silent`, since `prepack` would rebake with default specs. Runbook step 1.7: `node scripts/bake-template.mjs --to template --engine-spec '^<RC>' --dev-spec '^<RC>'`. |
 | Unattended install | `packages/create-cairn-site/src/args.mjs`: `--yes` with flags for name, owner email, deploy, and sign-in; `src/prompts.mjs`: a "fully---yes invocation runs end to end". |
 | Plugin `bin/` | Plugin reference, as quoted in the evaluation: "`bin/` is how a plugin ships a command-line tool ... Claude Code puts this folder on the `PATH`". |
+| Routines | The 2.1.316 binary: "You CANNOT delete routines. If the user asks to delete, direct them to: https://claude.ai/code/routines". |
+| Tag ruleset | GitHub REST "Create a repository ruleset": `target` "Can be one of: `branch`, `tag`, `push`". Probed: this repository returns `[]` for rulesets and 404 for `main`'s protection. |
+| Bucket purge | Probed: `GET .../r2/buckets/<bucket>/objects` answers 200 with the account token. `wrangler r2 object delete --help`: `{bucket}/{key}` with `--remote`. |
+| Scan | Installed: `gitleaks git` scans a repository's history. |
 
-**Unprobed, and proved by a named task:** an env token's `apiKeySource` value and whether the marketplace loads under a token (1.1), the trust dialog on a fresh config (1.1), `typescript-lsp` loading in a fixture (3.1), and a custom TSDoc tag under `eslint-plugin-tsdoc` (3.4).
+**Unprobed, and proved by a named task:** an env token's `apiKeySource` value and whether the marketplace loads under a token (1.1), the trust dialog on a fresh config (1.1), `typescript-lsp` loading in a fixture (3.1), and a custom TSDoc tag under the repo's lint config (3.4). On that last one, the review's probe showed that `jsdoc/check-tag-names` `{typed:true}` errors on `@public`, and that `tsdoc.json` needs `supportForTags` for `@public` and `@beta`; 3.4's failing fixture proves the fix.
 
-**Package gap.** `create-cairn-site` is `0.0.0` in the repo, `npm view` returns E404, and `publish.yml` has no step for it, while `docs/admin/create-your-site.md` opens with `npx create-cairn-site`. The capture ran `node packages/create-cairn-site/bin.mjs`. Both sittings therefore use a local tarball, and task 4.14 files the publish as a release prerequisite.
+**Package gap.** `create-cairn-site` is `0.0.0` in the repo, `npm view` returns E404, and `publish.yml` has no step for it, while `docs/admin/create-your-site.md` opens with `npx create-cairn-site`. The capture ran `node packages/create-cairn-site/bin.mjs`. Both sittings therefore use a local tarball, and task 4.13 files the publish as a release prerequisite.
 
 ### Stops and standing answers
 
 The design's standing answers cover the rest: no-export statements go to the area's skill, content the eval shows Claude needs stays a packaged reference, a case failing both arms goes to `BACKLOG.md`, and path and eval spend may run to twice.
 
+**Escalable items.** The run may escalate one case (its pages stay as packaged references), one page held from merge, the lean figures, the code intelligence arm, and the plugin eval without breaking the outcome. Any bar that goes out of reach follows the last row.
+
 | Stop | Standing answer |
 |---|---|
 | Spike: first-turn gap only | Set the env var in the check, add a line to `CONTRIBUTING.md`, go on |
-| Spike: the marketplace does not load from `.claude/settings.json` | Proposed: one `claude plugin install` line in `CONTRIBUTING.md`, go on, state it in the PR. This departs from "nothing installed by hand", so Geoff approves it with this plan or it stays a stop |
+| Spike: the marketplace does not load from `.claude/settings.json` | Ruling 2 |
 | Spike: the pty cannot drive the trust dialog | `-p` with the trust flag is the evidence; Geoff tries it once in Sitting A |
+| Spike: auto-update not observed past the delay | `claude plugin update` becomes a line in `CONTRIBUTING.md`, go on |
 | Scan finds a secret or personal path in `standards` | Never push; remove it, rescan |
-| Local-plugin cutover breaks `verify` | Fix forward in the workstation PR; the copies come back only with `git revert` of that one commit |
+| `~/.dotfiles` is off `main` at task 1.7's merge | Hold that merge and ask in the packet; pre-flight item 1 is the fix |
+| A swept repo has a `working` session at the cutover | Send its conductor the rename list and merge; a failed dispatch there names the agent, and the namespaced name fixes it |
+| Local-plugin cutover breaks `verify` | Fix forward in the workstation PR. The copies come back only by reverting 1.6 and 1.7 as one unit; the plugin stays enabled, so names resolve either way |
 | Comment-only proof shows a non-comment change | Revert that file's move, redo it; a repeat escalates that file to its own commit with `diff-reviewer` |
+| Fewer than 14 cases count, or a 5/5 seam does not | Repair the grader or fixture while the cause traces. Still short: the pages behind the uncounted cases stay packaged references, Extend reads unmet, go on |
 | A case's baseline passes under four of five | Repair once if the grader is at fault, else the design's both-arms answer. Its pages keep their disposition only if another counted case covers them; otherwise they become skill references |
 | The end state misses a case's bar | Read the transcript, return the content as a reference, rerun both arms three more trials. After one structural fix, escalate: the mapped pages stay as packaged references |
-| Tokens or time worsen | Read the three worst cases' transcripts, fix causes. Still worse: report the figure in the packet and go on, since Geoff decides there |
-| Usage limit stops a run | Wait for the reset, rerun the missing trials by case; no question to Geoff |
+| Tokens or time pass the band | Read the three worst cases' transcripts, fix causes. Still past: the bar reads unmet, the packet reports the figure, go on |
+| Task 3.1 or 3.3 re-estimates pass 3 past 1,200 | Run at six concurrent if 3.3 saw no limit, then drop the code intelligence arm. Still over: stop for Geoff on the path ceiling with the measured figure |
+| Usage limit stops a run | The harness pauses; resume by run id after the reset. The wait does not count against a ceiling; no question to Geoff |
 | Six concurrent sessions hit a limit | Drop to four |
 | `typescript-lsp` will not load in a fixture | Record it untried and go on; the arm is a trial, not a bar |
-| Draft evaluation calls for many rewrites | Run on inside the path ceiling; past it, the remaining pages stay as drafted and go to the sittings |
+| Draft evaluation calls for many rewrites | Run on inside the path ceiling. Past it, Keep and Streamline pages go to the sittings as drafted; a Rewrite page does not merge unrewritten: it holds its merge, and the packet asks |
 | A sitting finds a defect | Fix the page on its PR branch and retest that step only. A defect in the engine or the setup command that the page cannot fix goes to `BACKLOG.md` and the packet |
-| An install stops mid-run | Runbook "Failure answers", then a fresh suffix; a GitHub App name stays taken until deleted |
+| An install stops mid-run | Runbook "Failure answers", then a fresh suffix; a GitHub App name stays taken until deleted. List by prefix on both accounts before anything else |
+| Part 2 asks for anything off its list | That is a defect on the page: fix, rerun Part 2's step once. Still asking: Admin with Claude reads unmet |
 | Mirror CI goes red for a workstation dependency | That is the finding: fix it in cairn-cms, rerun |
+| Contribute or Extend fails in the container for another cause | Read the transcript, fix the guidance or tooling, rerun once. Still failing: the bar reads unmet |
+| An Evaluate item is missing on a trial | Fix the page that holds it, rerun three trials. After one structural fix, Evaluate reads unmet |
 | The fresh review or audit finds a blocker | Fix, rerun once; a second round is a loop guard, not a stop, while each fix traces a cause |
 | A `repo-organization` non-goal item would move | Hold it: `cairn-register-editor`, `approval-brief.md`, and `cairn-docs-drafter` stay put |
+| A bar goes out of reach | The remaining evidence-bearing tasks still run, a rerun whose cause is already traced is skipped, and the pass closes with that bar reported unmet |
 
 ### Name list
 
-The residue check greps scope for these, each pass, and the list dies with this plan. Exempt: `CHANGELOG.md`, the migration notes, the ledger's dated headings, and `cairn.pub/schema/` `$id` values.
+The residue check greps scope for these, each pass, and the list dies with this plan. Exempt: `CHANGELOG.md`, the migration notes, the ledger's dated headings, `cairn.pub/schema/` `$id` values, and `docs/plans/2026-10-30-*` until task 4.13 removes them. Pass 4's scope adds `standards` and the workstation's `bin/` and `bluefin/`.
 
-Paths: `docs/extend`, `docs/reference`, `docs/claude-code`, `docs/plans`, `docs/specs`, `docs/research`, `docs/HISTORY.md`, `docs/internal/record`, `docs/internal/history`, `docs/internal/option-map.json`, `scripts/docs-review`. Gates and rules: `check:reference`, `check:reference:signatures`, `check:arm-indexes`, `arm-state`, `Cairn.NamesRetired`, `ComponentNamesRetired`, "Drafting brief: developer docs". Skills: `cairn-extend`, `cairn-public`, `cairn-admin-screens`, `cairn-consult`, `cairn-docs`. Bare agent names for every row marked plugin in the inventory. Phrases: "formerly", "previously named", "renamed from", and an inline `(Geoff, <date>)` outside the ledger.
+Paths: `docs/extend`, `docs/reference`, `docs/claude-code`, `docs/plans`, `docs/specs`, `docs/research`, `docs/HISTORY.md`, `docs/internal/record`, `docs/internal/history`, `docs/internal/option-map.json`, `docs/internal/docs-register.md`, `docs/internal/admin-design-system.md`, `docs/internal/public-design-system.md`, `docs/internal/code-idioms.md`, `docs/internal/durable-gotchas.md`, `docs/internal/what-cairn-is-and-is-not.md`, `docs/internal/api-surface.md`, `scripts/docs-review`. Gates and rules: `check:reference`, `check:reference:signatures`, `check:arm-indexes`, `arm-state`, `Cairn.NamesRetired`, `ComponentNamesRetired`, "Drafting brief: developer docs". Skills: `cairn-extend`, `cairn-public`, `cairn-admin-screens`, `cairn-consult`, `cairn-docs`. Bare agent names for every row marked plugin in the inventory. Phrases: "formerly", "previously named", "renamed from", and an inline `(Geoff, <date>)` outside the ledger. Patterns reviewed by hit: `@deprecated`, `deprecat`, `alias`, `shim`, `back-compat`, `compatib`, `redirect`.
 
 ### Later
 
@@ -135,27 +189,44 @@ Never built here: a gate fleet review, a plugin replacing `cairn-guidance`, per-
 
 ## Pass 1: portable repo
 
-Class `runner`. Path 685. Repos and order: `glw907/standards` (new; clone at `~/Projects/standards`), then `glw907/cairn-cms`, then `glw907/workstation`, so the implementer agent is never missing from both. For the short window between the last two merges, `claude-tooling-sync verify` reports personal copies shadowing project skills; the conductor merges them back to back. The workstation PR carries `## Before merge`: `stow -R claude`, `claude-tooling-sync apply`, and `claude plugin list` shows `standards@glw907-standards`.
+Class `runner`. Path 745. Repos and order: `glw907/standards` (new; clone at `~/Projects/standards`), then `glw907/cairn-cms`, then the one-line agent-name changes in `cairn-themes`, `dubplate`, and `phonebook`, then `glw907/workstation`, so the implementer agent is never missing from both. The session sends the packet for all of them at once with this merge order.
 
-First act: push the tag `pre-agent-first` at `main`. The tag gives every later citation its URL and names the eval's baseline. Pairs in `standards` use two worktrees of `~/Projects/standards`, by absolute path.
+**Cutover.** It is additive, because `~/.claude/agents` is a whole-directory symlink and `~/.claude/settings.json` is a generated file, so a pull would drop the moved agents before the plugin is on. Bare and namespaced names do not collide, so both work during the window.
+
+1. The workstation PR's `## Before merge`, run on this host while the copies are live: `claude plugin marketplace add glw907/standards`, `claude plugin install standards@glw907-standards`, and `claude plugin list` shows it.
+2. `claude agents --json --all`, for `working` sessions in the swept repos; the stop table answers one.
+3. Merge in the order above.
+4. After the merge, on this host: `git pull`, `stow -R claude`, `claude-tooling-sync apply`, `claude-tooling-sync verify`.
+5. `thinkpad-x1`: clone `glw907/standards` to `~/Projects/standards`, then steps 1 and 4. If it is offline, the handover says so and its first session runs them.
+
+First act: push the tag `pre-agent-first` at `main`, add a tag ruleset on it that blocks update and deletion (one API call), and record its SHA in the ledger. Arms and citations use the SHA or the tag URL. The tag gives every later citation its URL and names the eval's baseline. Pairs in `standards` use two worktrees of `~/Projects/standards`, by absolute path.
 
 ### Task 1.1: Prove the marketplace on a fresh config
 
-- **Outcome:** `glw907/standards` exists, public and MIT, with a one-skill stub plugin. A container proves every point in the design's spike and records each result.
+- **Outcome:** `glw907/standards` exists, public and MIT, with a one-skill stub plugin. A container proves every point in the design's spike and records each result. The repo is public from the first push because the spike's config has no GitHub credential. That is safe because the stub holds one fresh-written skill and passes the scan first.
 - **Files:** `glw907/standards` (new); `~/.local/state/cairn-agent-first/e2e/` for the Containerfile and results.
 - **Risk:** `runner`, `live-account`.
-- **Acceptance:** With an empty `CLAUDE_CONFIG_DIR` and only `CLAUDE_CODE_OAUTH_TOKEN`: `-p` with the trust flag and `CLAUDE_CODE_SYNC_PLUGIN_INSTALL=1` lists the stub skill on turn one, and an interactive pty run accepts the trust dialog and lists it. `apiKeySource` is recorded. A plugin file changed on `main` reaches a second run with `autoUpdate` on.
+- **Acceptance:** With an empty `CLAUDE_CONFIG_DIR` and only `CLAUDE_CODE_OAUTH_TOKEN` from an env file: `-p` with the trust flag and `CLAUDE_CODE_SYNC_PLUGIN_INSTALL=1` lists the stub skill on turn one, and an interactive pty run accepts the trust dialog and lists it. `apiKeySource` is recorded. A plugin file changed on `main` reaches a later launch once a pty session with `autoUpdate` on has stayed open past the ten-minute delay.
 - **Test:** The recorded `init` events.
-- **Minutes:** 60.
+- **Minutes:** 75.
 
-### Task 1.2: Freeze the inventory
+### Task 1.2: Land the stack's engine-facing work
 
-- **Outcome:** The rule is stated and every row below is rechecked at branch cut. **Rule:** plugin when a second repository needs it; repo when only cairn needs it, since committed files reach cloud sessions; personal when it serves Geoff's own operation, its license is `none`, or it depends on something personal. A vendored skill's license must allow redistribution. A `repo-organization` non-goal overrides all three.
-- **Files:** This plan's table, on the plan's branch.
+- **Outcome:** Everything on the three open PRs outside the human arms has a disposition before pass 1 moves its paths. `git diff --stat main...docs-final-5 -- . ':!docs/editors' ':!docs/admin'` becomes one row per path: land on `main` now, carry at 4.7, or drop with a reason. Land now: the friction entries, the `block` `ROADMAP.md` entry with the rename list from its new record, the `docs/reference` and `docs/extend` fixes, and the register and `CLAUDE.md` edits, none of which waits on Geoff's reviews. Carry: the `tool/` messages with the `tool/docs` move, because they point at `docs/admin`. Drop: `.capture-state.json` and `harvest/relink.json`. #161's non-draft edits get rows too.
+- **Files:** `~/.local/state/cairn-agent-first/stack-dispositions.md`; the landed paths, in one PR.
 - **Risk:** `ordinary`.
-- **Acceptance:** Every directory under `~/.dotfiles/claude/.claude/skills` and `agents` has exactly one row, and a new skill since `90af497` has a row added.
-- **Test:** A listing diff against the table.
-- **Minutes:** 20.
+- **Acceptance:** Every path in the diff has one row. Nothing landed names a path the plan removes without a row for it in 2.1's census.
+- **Test:** A row count against the diff.
+- **Minutes:** 45.
+
+### Task 1.3: Freeze the inventory and finish the standards repo's frame
+
+- **Outcome:** The rule is stated and every row below is rechecked at branch cut. **Rule:** plugin when a second repository needs it; repo when only cairn needs it, since committed files reach cloud sessions; personal when it serves Geoff's own operation, its license is `none`, or it depends on something personal. A vendored skill's license must allow redistribution. A `repo-organization` non-goal overrides all three. Root `.claude-plugin/marketplace.json` lists `./plugins/standards`, `plugin.json` has no `version` and sets `author`, a README, license, and `THIRD-PARTY-NOTICES` are in place, and CI runs `claude plugin validate` on the plugin and the marketplace.
+- **Files:** This plan's table, on the plan's branch; `glw907/standards` root, `.github/workflows/`, `scripts/scan.sh`.
+- **Risk:** `runner`.
+- **Acceptance:** Every directory under `origin/main`'s `claude/.claude/skills` and `agents` has exactly one row, and a new skill since `90af497` has a row added. CI is green with no secret configured. `scripts/scan.sh` runs `gitleaks git` plus a committed regex list (home paths, hosts, `Geoff`, workstation binaries) before every push and in CI, and a seeded fixture fails it. CI also fails a `SKILL.md` over 500 lines. A ruleset on `main` requires a PR and the validate check.
+- **Test:** A listing diff against the table; validate exits 0 locally and in CI, with only the expected `version` warning.
+- **Minutes:** 50.
 
 Reference counts come from a grep for home paths, workstation binaries, and hosts; "Geoff" counts his name. The `Rebuild` column names what the row's task must do.
 
@@ -169,8 +240,8 @@ Reference counts come from a grep for home paths, workstation binaries, and host
 | `cairn-pass` | skill | repo and personal | 6 | 1 | split | Portable facts to `cairn-running-passes`; lanes stay | 1.10 |
 | `cairn-release` | skill | repo | 5 | 2 | rebuild | `cairn-releasing`, `disable-model-invocation: true` | 1.10 |
 | `claude-infra` | skill | personal | 8 | 2 | stay | This workstation | - |
-| `content-draft` | skill | plugin | 1 | 0 | strip | Carries `web-content-method.md` as a reference | 1.4 |
-| `content-review` | skill | plugin | 1 | 0 | strip |  | 1.4 |
+| `content-draft` | skill | plugin | 1 | 0 | strip | Carries `web-content-method.md` as a reference; its `writing-voice` route becomes the site's own guide | 1.4 |
+| `content-review` | skill | plugin | 1 | 0 | strip | Links the `content-draft` reference | 1.4 |
 | `daisyui` | skill | plugin | 0 | 0 | copy | MIT | 1.4 |
 | `dependency-upgrade` | skill | plugin | 1 | 4 | strip |  | 1.4 |
 | `design-refinement` | skill | plugin | 3 | 1 | strip |  | 1.4 |
@@ -199,7 +270,7 @@ Reference counts come from a grep for home paths, workstation binaries, and host
 | `vale-setup` | skill | plugin | 0 | 0 | copy | MIT | 1.4 |
 | `vale-triage` | skill | plugin | 0 | 0 | copy | MIT | 1.4 |
 | `vale-vocab` | skill | plugin | 0 | 0 | copy | MIT | 1.4 |
-| `vhs-cli-demos` | skill | plugin | 6 | 0 | strip | MIT | 1.4 |
+| `vhs-cli-demos` | skill | plugin | 6 | 0 | strip | MIT; strip through an overlay, because `update-skills` refetches | 1.4 |
 | `visual-fidelity` | skill | plugin | 0 | 3 | strip |  | 1.4 |
 | `vps-conventions` | skill | personal | 3 | 0 | stay | Only `servers` uses it | - |
 | `writing-voice` | skill | personal | 138 | 8 | stay | Links into `survey`, license `none` | - |
@@ -211,7 +282,7 @@ Reference counts come from a grep for home paths, workstation binaries, and host
 | `engine-triage` | agent | repo | 1 | 1 | strip | Reads cairn's ledger | 1.9 |
 | `figure-verifier` | agent | plugin | 1 | 0 | strip | Pairs with `cairn-figure` | 1.5 |
 | `go-architecture-reader` | agent | plugin | 1 | 0 | strip |  | 1.5 |
-| `plan-reviewer` | agent | plugin | 6 | 8 | rebuild | Named by the lifecycle | 1.5 |
+| `plan-reviewer` | agent | plugin | 6 | 8 | rebuild | Portable lens in the plugin; Geoff's hosts, secrets, and queue lens moves to `pass-core` | 1.5 |
 | `prose-voice-reviewer` | agent | personal | 4 | 2 | stay | Preloads `writing-voice` | - |
 | `site-implementer` | agent | personal | 3 | 0 | stay | Geoff's site adapter | - |
 | `svelte-reviewer` | agent | plugin | 0 | 0 | copy |  | 1.5 |
@@ -234,31 +305,22 @@ Rows already outside the workstation, for completeness:
 
 Plugin agents become `standards:<name>`, and plugin skills become `standards:<name>`. No agent uses `hooks`, `mcpServers`, or `permissionMode`, the fields plugin agents ignore. Gerund names apply to cairn's repo and packaged skills. Vendored skills keep upstream names, and authored plugin skills keep theirs, because the namespace already separates them and a rename adds a sweep with no gain.
 
-### Task 1.3: Finish the standards repo's frame
-
-- **Outcome:** Root `.claude-plugin/marketplace.json` lists `./plugins/standards`, `plugin.json` has no `version`, a README and license are in place, and CI runs `claude plugin validate` on the plugin and the marketplace.
-- **Files:** `glw907/standards` root, `.github/workflows/`.
-- **Risk:** `runner`.
-- **Acceptance:** CI green with no secret configured. A secrets and personal-path scan passes before the first real push.
-- **Test:** Validate exits 0 locally and in CI.
-- **Minutes:** 40.
-
 ### Task 1.4: Move the conventions and craft skills
 
 - **Outcome:** Every plugin row marked "copy" or "strip" lands in the plugin, with Geoff's name and workstation paths gone and meaning unchanged. `web-content-method.md` becomes a `content-draft` reference. `kitty-headless-shot` ships in plugin `bin/`.
-- **Files:** `plugins/standards/skills/`, `plugins/standards/bin/`, `vendored-skills.json` entries for MIT rows.
+- **Files:** `plugins/standards/skills/`, `plugins/standards/bin/`, `THIRD-PARTY-NOTICES`, `vendored-skills.json` entries for MIT rows.
 - **Risk:** `runner`.
-- **Acceptance:** Validate exits 0. Each `SKILL.md` is under 500 lines, and a reference over 100 lines opens with contents. The scan is clean.
+- **Acceptance:** Validate exits 0. Each `SKILL.md` is under 500 lines, and a reference over 100 lines opens with contents. The scan is clean. Each MIT row has its notice.
 - **Test:** `claude plugin details` reports the skills and per-turn cost; record the cost in the PR.
 - **Minutes:** 90. **Pair:** 1.5.
 
 ### Task 1.5: Move the reviewers and process skills
 
-- **Outcome:** The plugin agents and the rows marked "rebuild" land in the plugin. `spec-plan-review`, `plan-reviewer`, and `diff-reviewer` lose the queue, the conductor, and `cairn-run-gate`.
-- **Files:** `plugins/standards/agents/`, `plugins/standards/skills/`.
+- **Outcome:** The plugin agents and the rows marked "rebuild" land in the plugin. `spec-plan-review`, `plan-reviewer`, and `diff-reviewer` lose the queue, the conductor, and `cairn-run-gate`. `plan-reviewer`'s workstation lens moves to `pass-core`.
+- **Files:** `plugins/standards/agents/`, `plugins/standards/skills/`, `claude/.claude/skills/pass-core/SKILL.md`.
 - **Risk:** `runner`.
-- **Acceptance:** No agent names a workstation binary or path. A dispatched `standards:diff-reviewer` runs in the fresh container against a sample diff.
-- **Test:** The dispatch's result.
+- **Acceptance:** No agent names a workstation binary or path, by the scan. Task 1.12 dispatches one in the container.
+- **Test:** The scan.
 - **Minutes:** 90. **Pair:** 1.4.
 
 ### Task 1.6: Write the portable lifecycle
@@ -266,36 +328,36 @@ Plugin agents become `standards:<name>`, and plugin skills become `standards:<na
 - **Outcome:** One plugin skill, `running-passes`, holds what any repo's pass needs: design, plan, execute, gate, review, close. It names no queue, conductor, secret store, or host. `pass-core` loads it first and keeps only Geoff's operation: the Approval Queue, conductor, lanes, models, and score.
 - **Files:** `plugins/standards/skills/running-passes/`, `claude/.claude/skills/pass-core/SKILL.md`.
 - **Risk:** `runner`.
-- **Acceptance:** `running-passes` has no workstation references by the inventory's grep and is under 150 lines. Every rule in `pass-core` today lands in exactly one of the two, checked by a line-by-line read in the PR. Under a read of both together, a session gets the same instructions as before.
-- **Test:** A fresh session with both loaded answers three fixed questions: when does a pair run, who merges an `ordinary` PR, and what stops a run.
+- **Acceptance:** `running-passes` has no workstation references by the scan and is under 150 lines. Every rule in `pass-core` and in `plan-reviewer`'s lens today lands in exactly one home, checked by a line-by-line read in the PR. Under a read of both together, a session gets the same instructions as before.
+- **Test:** A fresh session with both loaded answers three fixed questions: when does a pair run, who merges an `ordinary` PR, and what stops a run. Task 1.12 asks them again with the plugin alone.
 - **Minutes:** 60.
 
 ### Task 1.7: Cut the workstation over
 
-- **Outcome:** One commit enables the plugin at user scope and removes the local copies, so no repo breaks. `claude-tooling-sync` learns the plugin: `verify` checks it, and `update-skills` writes vendored skills into `~/Projects/standards`. Live references move to `standards:<name>`.
-- **Files:** `claude/.claude/settings.json`, `claude/.claude/skills/`, `claude/.claude/agents/`, `claude/.claude/docs/claude-tooling.md`, `claude/.claude/CLAUDE.md`, `bin/.local/bin/claude-tooling-sync`, `tooling/vendored-skills.json`, and live dispatch names in each repo's `CLAUDE.md` and adapters. The grep counts 70 workstation files; repo counts are dominated by plans pass 2 removes, so the sweep takes live files only.
+- **Outcome:** One commit removes the local copies, and the cutover above keeps every name working. `claude-tooling-sync` learns the plugin: `verify` checks it and fails clearly when it is absent, `apply` writes the enabled plugin, and `update-skills` writes vendored skills into `~/Projects/standards` and refuses cleanly when the clone is missing. Live references move to `standards:<name>`. The name list's moved `docs/internal` paths are repointed too, across `claude/`, `bin/`, `bluefin/`, and live site files, in the same merge group as the cairn-cms PR.
+- **Files:** `claude/.claude/settings.json`, `claude/.claude/skills/`, `claude/.claude/agents/`, `claude/.claude/docs/claude-tooling.md`, `claude/.claude/CLAUDE.md`, `claude/.claude/tooling/vendored-skills.json`, `bin/.local/bin/claude-tooling-sync`, `bluefin/SECOND-WORKSTATION.md`, and live dispatch names in each repo's `CLAUDE.md` and adapters. The grep counts 70 workstation files; repo counts are dominated by plans pass 2 removes, so the sweep takes live files only: today cairn-themes 2, phonebook 2, dubplate 1, each a one-line direct change. Task 1.3 reruns the grep across `~/Projects`, and a repo it adds joins the push targets.
 - **Risk:** `runner`.
-- **Acceptance:** `bash scripts/gate.sh` passes in the workstation. In a throwaway `HOME`, stow plus `apply` gives a session in `~/Projects/dubplate` the `standards:go-conventions` skill and the `standards:diff-reviewer` agent.
-- **Test:** `claude-tooling-sync lint --root .` and that session's `init` event.
-- **Minutes:** 90.
+- **Acceptance:** `bash scripts/gate.sh` passes in the workstation. In a throwaway `HOME`, stow plus `apply` gives a session in `~/Projects/dubplate` the `standards:go-conventions` skill and the `standards:diff-reviewer` agent. Each swept repo's own `CLAUDE.md` names the namespaced agent.
+- **Test:** `claude-tooling-sync lint --root .` and that session's `init` event. `verify` reads live `~/.claude`, which other sessions change, so a failure naming a file this PR did not touch gets one rerun.
+- **Minutes:** 105.
 
 ### Task 1.8: Commit the fast lane and project settings
 
 - **Outcome:** `scripts/checks/fast-lane.mjs` runs the legs `gate-tier --fast` prints and fails on empty stdout, which closes #55. `.claude/settings.json` holds the marketplace, the plugin, `autoUpdate`, and `permissions.allow` for the gates. `cairn-run-gate` stays Geoff's wrapper around the same script.
 - **Files:** `scripts/checks/fast-lane.mjs`, `.claude/settings.json`, `package.json`, its unit test.
 - **Risk:** `runner`.
-- **Acceptance:** On a clean clone with no `cairn-run-gate` on `PATH`, a one-file change passes the lane, and a forced empty `gate-tier` output fails it.
+- **Acceptance:** On a clean clone with no `cairn-run-gate` on `PATH`, a change to `src/lib/content/concepts.ts` passes the lane, the same file with a seeded type error fails it, and a forced empty `gate-tier` output fails it.
 - **Test:** A unit test on the empty-output branch, written first.
 - **Minutes:** 60. **Pair:** 1.10.
 
 ### Task 1.9: Rebuild the repo's Claude tooling
 
-- **Outcome:** Root `CLAUDE.md` is under 200 lines, carries no overview, and names only what a clone has. Rules with `paths` cover admin, public, Go, and docs. The repo gains the skills below, built from the `docs/internal` table, and `cairn-implementer` and `engine-triage` land in `.claude/agents/`. The rename of `cairn-docs` waits for task 3.1, because the harness's overlay paths and its skill check hard-code the name. The `admin-design-system` link in #70 is fixed. Every rule file passes the two-part test before it stays.
-- **Files:** `CLAUDE.md`, `.claude/rules/`, `.claude/skills/`, `.claude/agents/`, the moved files, `scripts/checks/gate-table.json`, and tests naming moved paths.
+- **Outcome:** Root `CLAUDE.md` is under 200 lines, carries no overview, and names only what a clone has. Rules with `paths` cover admin, public, Go, and docs. The repo gains the skills below, built from the `docs/internal` table, and `cairn-implementer` and `engine-triage` land in `.claude/agents/`. The rename of `cairn-docs` waits for task 3.1, because the harness's overlay paths and its skill check hard-code the name. The `admin-design-system` link in #70 is fixed. Every rule file passes the two-part test before it stays. `check-skill-budget.mjs` extends to the three skill trees and `CLAUDE.md`, so the form rules hold after this pass: 200 lines, 500 lines, one reference level, and contents over 100 lines.
+- **Files:** `CLAUDE.md`, `.claude/rules/`, `.claude/skills/`, `.claude/agents/`, the moved files, `scripts/checks/gate-table.json`, `scripts/checks/check-skill-budget.mjs`, and tests naming moved paths.
 - **Risk:** `runner`.
-- **Acceptance:** Line count under 200. Each moved doc is reachable from a skill. A skill with side effects sets `disable-model-invocation: true`, and a tree-bound skill sets `paths`. `npm run check:docs` and `check:surface` pass.
+- **Acceptance:** Line count under 200. Each moved doc is reachable from a skill. A skill with side effects sets `disable-model-invocation: true`, and a tree-bound skill sets `paths`. `npm run check:docs` and `check:surface` pass. Failing fixtures show the budget gate catches each form rule.
 - **Test:** The fast lane, then task 1.11.
-- **Minutes:** 120.
+- **Minutes:** 135.
 
 | `docs/internal` today | Target | Task |
 |---|---|---|
@@ -324,21 +386,21 @@ Plugin agents become `standards:<name>`, and plugin skills become `standards:<na
 
 ### Task 1.11: Run the existing eval suite
 
-- **Outcome:** `.claude/rules/evals-docs-process.md` requires both suites on `main` and the branch for a change to `CLAUDE.md` or the docs process, so this run lands here. Rebuilt `CLAUDE.md` and rules ride the treatment arm in task 3.7 as the design says.
+- **Outcome:** `.claude/rules/evals-docs-process.md` requires both suites on `main` and the branch for a change to `CLAUDE.md` or the docs process, so the regression suite runs here, with capability skipped because no target case exists. The narrowing is a `## Decisions` line. The overlay lays the new `CLAUDE.md` over a pinned tree without the rules and skills it names, so this run is a hybrid. Rebuilt `CLAUDE.md` and rules ride the treatment arm in task 3.7 as the design says, and that run stands for the rule's later triggers in tasks 2.2, 2.3, 3.1, and 4.2, each cited in its PR.
 - **Files:** None; the table goes in the PR.
 - **Risk:** `ordinary`.
-- **Acceptance:** Regression does not drop, by the rule's definition, and every failing transcript is read. Capability has no target case here, so it is reported, not gated.
-- **Test:** The run: 96 sessions, 65 to 115 minutes.
-- **Minutes:** 115. **Pair:** 1.12.
+- **Acceptance:** Regression does not drop, by the rule's definition, and every failing transcript is read. A drop whose transcript shows a missing overlaid file is recorded as a hybrid artifact for 3.7 to decide.
+- **Test:** `node .claude/skills/cairn-docs/evals/run.mjs main <branch> --suite regression`: 78 sessions, 55 to 95 minutes.
+- **Minutes:** 95. **Pair:** 1.12.
 
 ### Task 1.12: Dry-run the Contribute path
 
-- **Outcome:** In the container, a fresh session takes a clone, sees the plugin, runs the fast lane, and dispatches `cairn-implementer` and one plugin reviewer on a scratch change, stopping before any push.
+- **Outcome:** In the container, a fresh session takes a clone, sees the plugin, runs the fast lane, and dispatches `cairn-implementer` and `standards:diff-reviewer` on a scratch change, stopping before any push. A one-off script in the container resolves every backticked command, npm script, path, and agent name in `CLAUDE.md`, `.claude/rules/`, and repo skills. With only the plugin loaded, a fresh session answers task 1.6's three questions, reworded for a repo with no queue or conductor.
 - **Files:** `~/.local/state/cairn-agent-first/e2e/`.
 - **Risk:** `runner`.
-- **Acceptance:** The session used nothing outside the clone and the plugin. Each gap found is fixed in this pass.
-- **Test:** The transcript's tool log.
-- **Minutes:** 60. **Pair:** 1.11.
+- **Acceptance:** The session used nothing outside the clone and the plugin. Every name resolves, or sits on a short allowlist of optional tools named in `CONTRIBUTING.md`, and one seeded bad name fails. The answers come from `running-passes` and name no missing tool. Each gap found is fixed in this pass.
+- **Test:** The transcript's tool log and the script's output.
+- **Minutes:** 75. **Pair:** 1.11.
 
 ### Task 1.13: Close pass 1
 
@@ -351,16 +413,16 @@ Plugin agents become `standards:<name>`, and plugin skills become `standards:<na
 
 ## Pass 2: records
 
-Class `runner` by the `cairn-pass` path map, not the design's `ordinary`: `check-rulings-format`, `docs-links`, `arm-state`, `check-idioms`, `check-consumers`, `check-surface-leaks`, `check-arm-indexes`, `check-tellgrader`, `transcript-blocks`, and `.github/workflows/tool.yml` all name paths this pass removes. The one `auth-data` hit, a citation in `packages/create-cairn-site/src/cloudflare/api.mjs`, waits for pass 3 so this pass stays out of that class. Path 255.
+Class `runner` by the `cairn-pass` path map, not the design's `ordinary`: `check-rulings-format`, `docs-links`, `arm-state`, `check-idioms`, `check-consumers`, `check-surface-leaks`, `check-arm-indexes`, `check-tellgrader`, `transcript-blocks`, and `.github/workflows/tool.yml` all name paths this pass removes. The one `auth-data` hit, a citation in `packages/create-cairn-site/src/cloudflare/api.mjs`, and the citations in `packages/create-cairn-site/fixtures/cloudflare/*.json` wait for pass 3 so this pass stays out of that class. Path 285.
 
 ### Task 2.1: Census and dry run
 
-- **Outcome:** A committed list of every path this pass removes (1,153 tracked files under the five record trees, plus `HISTORY.md` and the two dated briefs) and every live citation into them. Each citation carries a planned reason, tag URL, or deletion.
+- **Outcome:** A committed list of every path this pass removes (1,153 tracked files under the five record trees, 9 of them the open plans that stay, plus `HISTORY.md` and the two dated briefs) and every live citation into them. Each citation carries a planned reason, tag URL, deletion, or **live obligation**: a file `STATUS.md`, `ROADMAP.md`'s live tiers, or `BACKLOG.md` still cites as owed work, such as `2026-10-31-engine-friction-2b-close.md` and `2026-09-22-cairn-pub-docs-handoff.md`. A second list holds path filters and data citations: `tool.yml`'s `paths:`, `check-surface-leaks.json`'s `sanctioned-by`, and the fixtures' `source` fields.
 - **Files:** The PR body; no repo change.
 - **Risk:** `ordinary`.
-- **Acceptance:** The grep of the removed paths over the tree minus those paths matches the list. The open plans `docs/plans/2026-10-30-*` stay until the series ends.
+- **Acceptance:** The grep of the removed paths over the tree minus those paths matches the list. `git ls-remote` shows the recorded tag SHA, and `git ls-tree -r` at that SHA holds every census path; a path missing there moves by content, never by a tag URL. The open plans `docs/plans/2026-10-30-*` stay until task 4.13.
 - **Test:** The grep.
-- **Minutes:** 30.
+- **Minutes:** 45.
 
 ### Task 2.2: Rebuild the functional spec's live content
 
@@ -373,10 +435,10 @@ Class `runner` by the `cairn-pass` path map, not the design's `ordinary`: `check
 
 ### Task 2.3: Rebuild the ledger
 
-- **Outcome:** `engine-rulings.md` holds live rulings plus one-line `decline` and `retire` policy with a live reopen condition. Today it has 612 headings: 382 `keep`, 101 `retire`, 61 `reshape`, 39 `accept`, 19 `decline`, 9 `defer`. A `keep` stays only if it passes the two-part test. `Record:` lines become a reason or a tag URL. `CLAUDE.md` says `grep '^## '` is the index. The `check-rulings-format` allowlist and format follow.
+- **Outcome:** `engine-rulings.md` holds live rulings plus one-line `decline` and `retire` policy with a live reopen condition. Today it has 612 headings: 382 `keep`, 101 `retire`, 61 `reshape`, 39 `accept`, 19 `decline`, 9 `defer`. A `keep`, `accept`, or `reshape` stays only if it passes the two-part test. A `defer` with a live trigger stays, and otherwise its open work goes to `BACKLOG.md`. A `decline` or `retire` with no live reopen condition is dropped with its reason. `Record:` lines become a reason or a tag URL. `CLAUDE.md` says `grep '^## '` is the index. The `check-rulings-format` allowlist and format follow, and the format requires the reopen field.
 - **Files:** `docs/internal/engine-rulings.md`, `scripts/checks/check-rulings-format*`.
 - **Risk:** `runner`.
-- **Acceptance:** `npm run check:rulings-format` passes. A sample of 30 dropped `keep` entries is derivable from the code, checked by a fresh read.
+- **Acceptance:** `npm run check:rulings-format` passes. A one-off script compares the old headings with a disposition table in the PR, one row each, so a missing row fails. A fresh read of 20 dropped and 20 kept entries checks the judgment.
 - **Test:** The gate's unit tests.
 - **Minutes:** 90. **Pair:** 2.4.
 
@@ -384,19 +446,18 @@ Class `runner` by the `cairn-pass` path map, not the design's `ordinary`: `check
 
 - **Outcome:** `ROADMAP.md` keeps live tiers only (today 3,690 lines over `Toward 1.0`, `Now`, `Next`, `Later`, `Considering`). The MCP reason narrows to fixed-tool-list agents. The 69 citations resolve.
 - **Files:** `ROADMAP.md`.
-- **Risk:** `ordinary`.
-- **Acceptance:** No shipped item stays. Every remaining item names something open, verified against the code for a 20-item sample. `Toward 1.0` survives intact.
+- **Acceptance:** No shipped item stays. Every remaining item names something open, verified against the code for a 20-item sample. `Toward 1.0` survives intact. The same script form gives one disposition row per old item.
 - **Test:** `npm run check:docs`.
 - **Minutes:** 90. **Pair:** 2.3.
 
 ### Task 2.5: Repoint and remove
 
-- **Outcome:** Surviving citations become a one-line reason or a `pre-agent-first` URL, including `EditPage.svelte`'s and `reproductions/manifest.ts`'s `main` URLs, and the records go. Plans now live in `<initiative>/plans/` or a pass branch, and `cairn-running-passes` says so. Tests that read `probes/` take their input from `src/tests/fixtures/`. The `docs/internal` rows marked 2.5 complete, and `docs/internal/` holds the ledger, the inbox, and whatever pass 3 and the series still need.
-- **Files:** The census's list, `scripts/checks/*` above, `.github/workflows/tool.yml`, `src/lib/**` comments outside `auth-data`, `tool/**` comments, `examples/showcase/**`.
+- **Outcome:** Live obligations move to `BACKLOG.md` first, with a count check against each record. Surviving citations become a one-line reason or a `pre-agent-first` URL, including `EditPage.svelte`'s and `reproductions/manifest.ts`'s `main` URLs, and the records go. `docs/internal/record/harvest/deletion-list.json` moves to `scripts/checks/` unchanged, because `arm-state.mjs` throws without it and the arm logic lives until task 4.2. Plans now live in `<initiative>/plans/` or a pass branch, and `cairn-running-passes` says so. Tests that read `probes/` take their input from `src/tests/fixtures/`. The `docs/internal` rows marked 2.5 complete, and `docs/internal/` holds the ledger, the inbox, and whatever pass 3 and the series still need.
+- **Files:** The census's lists, `scripts/checks/*` above, `.github/workflows/tool.yml`, `src/lib/**` comments outside `auth-data`, `tool/**` comments, `examples/showcase/**`.
 - **Risk:** `runner`.
-- **Acceptance:** `npm run check:docs` passes. A `git grep` of the name list's record paths outside the open plans returns only `pre-agent-first` URLs. `make -C tool check` passes. The tests that moved fixtures pass.
+- **Acceptance:** `npm run check:docs` passes. A `git grep` of the name list's record paths outside the open plans returns only `pre-agent-first` URLs. `make -C tool check` passes. The tests that moved fixtures pass. `readArmStates` output is identical before and after. Each workflow `paths:` filter names an existing path, because a dead filter fails open. The tag check from 2.1 reruns just before the removal commit.
 - **Test:** The fast lane, then CI.
-- **Minutes:** 60.
+- **Minutes:** 75.
 
 ### Task 2.6: Close pass 2
 
@@ -409,13 +470,24 @@ Class `runner` by the `cairn-pass` path map, not the design's `ordinary`: `check
 
 ## Pass 3: contract, skills, and measure
 
-Class `auth-data` by path, because contract text lands in `src/lib/{auth,auth-channel,auth-crypto,auth-store,github}/**`. Those edits are comment-only, and `diff-reviewer` reads each such commit while CI runs. Path 1,320, flagged above.
+Class `auth-data` by path, because contract text lands in `src/lib/{auth,auth-channel,auth-crypto,auth-store,github}/**`. Those edits are comment-only, and `diff-reviewer` reads each such commit while CI runs. Path 1,120.
 
-**The eval's shape.** `run.mjs` today lays only docs-process files over a pinned commit, so it cannot express this A/B: it has no site fixture, its arms differ only by overlay, and it faults any session missing `cairn-docs`. Task 3.1 gives it what the design needs and nothing more. The baseline ref is `pre-agent-first`, and the treatment ref is this branch.
+**The eval's shape.** `run.mjs` today lays only docs-process files over a pinned commit, so it cannot express this A/B: it has no site fixture, its arms differ only by overlay, its `parseArgs` takes no new suite, and it faults any session missing `cairn-docs`. Task 3.1 gives it what the design needs and nothing more. The baseline ref is the tag's SHA. The treatment ref is `agent-first-3-preview`, built in task 3.6: this branch with the removals of tasks 4.1 and 4.2 applied, so site and engine cases both see the real end state, with pages, gate legs, and old audit strings gone.
 
-**Site cases** build in a scaffold: the emitted `templates/waymark` tree with the arm's packed tarball installed and `cairn-guidance install` run, under `--setting-sources project`. An arm may strip paths from the tarball, which gives both the ablation and the end state, since pages leave the repo only in pass 4. **Engine cases** take the whole tree at the arm's ref, and both arms get the plugin through `--plugin-dir`, so the comparison tests the repo's own guidance, not the craft.
+**Site cases** build in a scaffold emitted the way `scaffold.yml` does it: pack the engine and `cairn-cms-dev` at the arm's ref, emit with both `file:` specs, and run `cairn-guidance install`, under `--setting-sources project`. An ablation run strips listed paths from the engine tarball. **Engine cases** take the whole tree at the arm's ref without `.claude/settings.json`, and both arms get the plugin through `--plugin-dir` from one `standards` SHA in the run header, so `init` shows exactly one `standards` and the comparison tests the repo's own guidance, not the craft.
 
-**A case counts** when its baseline passes four of five. The end state must then pass four of five, or five of five on the auth and access cases marked below. Grading is deterministic checks plus the existing blind judge, one assertion per non-obvious rule.
+**A case counts** when its baseline passes four of five. The end state must then pass four of five, or five of five on the auth and access cases marked below. A rerun's three more trials must all pass on a 5/5 case and two of three on a 4/5 case. Grading is deterministic checks plus the existing blind judge, one assertion per non-obvious rule. E1 is graded the same on both arms: that arm's own gates pass, and the option's contract is recorded where they require it.
+
+**The commands.** `$R` is `.claude/skills/cairn-writing-docs/evals/run.mjs`, `$TAG` and `$PREVIEW` are SHAs, `$STD` is the `standards` clone at its fixed SHA, and `$C` is `--suite site --concurrency 6 --plugin-dir $STD --max`. Six drops to four by the stop table. Any line resumes with `--resume <runId>`.
+
+| Run | Command |
+|---|---|
+| Baseline smoke | `node $R $TAG $C --trials 1` |
+| Ablation | `node $R $TAG $C --trials 1 --strip technical-paths.txt` |
+| A/B | `node $R $TAG $PREVIEW $C --trials 5 --baseline-first --reuse-baseline <smoke runId>` |
+| Code intelligence | `node $R $PREVIEW $C --plugin-dir $LSP --trials 3 --case S01`, then the same with `--case E1` |
+| Rerun of a drop | `node $R $TAG $PREVIEW $C --trials 3 --case <id>` |
+| Frozen sweep | `node $R $PREVIEW $C --trials 1` |
 
 | Case | Task | Seam | Bar |
 |---|---|---|---|
@@ -434,29 +506,29 @@ Class `auth-data` by path, because contract text lands in `src/lib/{auth,auth-ch
 | S13 audit-fix | Fix a seeded `cairn-audit` finding | Audit | 4/5 |
 | S14 debug-from-logs | Diagnose a failed save from seeded log records | Log events, `createLogger` | 4/5 |
 | S15 adopt-and-migrate | Add cairn to a bare SvelteKit app and move in content | Adoption path | 4/5 |
-| E1 add-public-option | Add one optional member to a public config type | Contract, tier, walker, version record | 4/5 |
+| E1 add-public-option | Add one optional member to a public config type | Contract, tier, version record | 4/5 |
 | E2 add-audit-rule | Add a static audit rule with its test | Audit engine | 4/5 |
 | E3 seam-bug-fix | Fix a seeded defect in `createSectionAction` | Engine seam, auth-adjacent | 5/5 |
 
-The code intelligence arm runs S01, S03, S07, S08, S09, and E1, the cases that lean hardest on cross-export contract.
+The code intelligence arm runs S01 and E1, the two cases that lean hardest on cross-export contract.
 
 ### Task 3.1: Extend the harness
 
-- **Outcome:** `cairn-docs` becomes `cairn-writing-docs`. `run.mjs` fixes #92, #93, and #94; gains a `site` and a `tree` fixture kind, per-arm tarball strip, a per-arm skill expectation in place of the `cairn-docs` fault, `--setting-sources project`, `--plugin-dir`, a concurrency flag, and allowed tools for `npm` and `npx`. It records `usage` and `duration_ms` per trial and prints per-case medians. The `--max` cap stays.
-- **Files:** `.claude/skills/cairn-docs/` (moved), `evals/run.mjs`, `run.test.mjs`, `README.md`, `.claude/rules/`, inbound names.
+- **Outcome:** `cairn-docs` becomes `cairn-writing-docs`, and `cairn-docs-cycle`'s prompt path follows. `run.mjs` fixes #92, #93, and #94. It gains `--suite site` reading `evals-site.json` beside the existing suites, a `site` and a `tree` fixture kind, `--strip`, a repeatable `--plugin-dir`, `--concurrency`, `--baseline-first`, `--reuse-baseline`, a per-arm skill expectation in place of the `cairn-docs` fault, and `--setting-sources project`. Allowed tools add `npm`, `npx`, `node`, `make`, `go`, and `cd` for those fixtures, and `NEEDED_COMMAND` counts a denied one as a fault. It records `usage` and `duration_ms` per trial and prints per-case medians. Each finished trial appends one JSONL row, `--resume <runId>` skips finished keys, and a usage-limit result pauses the run, because today an abort loses every grade and the stop answer needs a resume. The `--max` cap and the 40-minute session timeout stay.
+- **Files:** `.claude/skills/cairn-docs/` (moved), `evals/run.mjs`, `run.test.mjs`, `README.md`, `.claude/rules/`, inbound names, `~/.dotfiles` `bin/.local/bin/cairn-docs-cycle`.
 - **Risk:** `runner`.
-- **Acceptance:** One S01 trial and one E1 trial run on each arm: the `init` event shows no user skill, the right plugin set, and `apiKeySource: none`. One `typescript-lsp` trial loads or is recorded as untried, with `typescript-language-server` installed in a pass-local prefix.
-- **Test:** `run.test.mjs` extended, test-first for the three backlog faults.
-- **Minutes:** 90. **Pair:** 3.2.
+- **Acceptance:** One S01 trial and one E1 trial run on the tag and on this branch: the `init` event shows no user skill, exactly one `standards`, and `apiKeySource: none`. One `typescript-lsp` trial loads or is recorded as untried, with `typescript-language-server` installed in a pass-local prefix. A killed run resumes and keeps its finished grades. The trials' medians re-estimate tasks 3.3 and 3.7.
+- **Test:** `run.test.mjs` extended, test-first for the three backlog faults and for resume.
+- **Minutes:** 120. **Pair:** 3.2.
 
 ### Task 3.2: Write the cases and freeze the page map
 
-- **Outcome:** Eighteen cases with fixtures, graders, and judge assertions, and the disposition table below rechecked. No page lacks a row. A retired page's mapped cases are its test.
-- **Files:** `.claude/skills/cairn-writing-docs/evals/evals-site.json`, `setups/`, this plan's table.
+- **Outcome:** Eighteen cases with fixtures, graders, and judge assertions, and the disposition table below rechecked. No page lacks a row. A retired page's mapped cases are its test, so each case-mapped page names one assertion drawn from a statement on that page, or the smoke transcripts must show the page read. A page with neither gets an assertion or goes on a "retired without test" list with its reason, for the packet; `reproductions.md`, `cli-cairn-manifest.md`, `guidance.md`, and `ambient.md` are the known candidates. Every case has one recorded known-bad solution that its graders must fail, for S01 the delete without `requireAccess`. Three `claude plugin eval` cases land in `plugins/standards/evals/`.
+- **Files:** `.claude/skills/cairn-writing-docs/evals/evals-site.json`, `setups/`, `run.test.mjs`, `glw907/standards` `plugins/standards/evals/`, this plan's table.
 - **Risk:** `ordinary`.
-- **Acceptance:** `validateEvals` passes. Each of the 59 pages maps to a case, a move, or a reason. Each seam in `CLAUDE.md`'s lens and each `docs/extend` task page has a case.
+- **Acceptance:** `validateEvals` passes. Each of the 59 pages maps to a case, a move, or a reason, and each mapped page has its evidence. Each seam in `CLAUDE.md`'s lens and each `docs/extend` task page has a case. Each known-bad fails in `run.test.mjs`.
 - **Test:** The smoke trial in 3.3 passes on baseline, or the case is repaired.
-- **Minutes:** 120. **Pair:** 3.1.
+- **Minutes:** 150. **Pair:** 3.1.
 
 `docs/extend`, 27 pages. Classes: retire, TSDoc, skill reference, evaluator, version record, admin arm, non-TypeScript contract.
 
@@ -480,7 +552,7 @@ The code intelligence arm runs S01, S03, S07, S08, S09, and E1, the cases that l
 | `migration-notes.md` | version record | `MIGRATION-NOTES.md` at the root, packaged | None; moved |
 | `replace-magic-links-with-cloudflare-access.md` | skill reference | `cairn-extending-a-site` | S04 |
 | `restrict-admin-access.md` | skill reference | `cairn-extending-a-site` | S02 |
-| `rotate-the-github-app-key.md` | admin arm | `docs/admin/`, on #160's branch | None; moved, 4.7 |
+| `rotate-the-github-app-key.md` | admin arm | `docs/admin/`, on #160's branch | None; moved, 4.1 |
 | `run-cairn-audit-on-your-site.md` | skill reference | `cairn-extending-a-site` | S13 |
 | `scaffolded-site-files.md` | retire | None; a scaffold shows its own files | S01, S07 |
 | `security-model.md` | evaluator | `docs/architecture.md`, short | Evaluate |
@@ -532,57 +604,57 @@ The code intelligence arm runs S01, S03, S07, S08, S09, and E1, the cases that l
 
 ### Task 3.3: Run the cheap ablation
 
-- **Outcome:** The fifteen site cases run on a tarball with `docs/extend`, `docs/reference`, and `docs/claude-code` stripped and nothing else changed, three trials each, beside one baseline trial per case. The result sizes task 3.6: a case that survives ablation needs no reference.
+- **Outcome:** The fifteen site cases run on a tarball with `docs/extend`, `docs/reference`, and `docs/claude-code` stripped and nothing else changed, one trial each, beside one baseline trial per case. The baseline trial stands as A/B trial 1 unless its case is later repaired. The result sizes task 3.6: a case that survives ablation needs no reference, and the A/B catches a lucky survivor. A survivor shrinks 3.6 only because 3.2's known-bad already failed its graders.
 - **Files:** `~/.local/state/cairn-agent-first/ablation/`.
 - **Risk:** `ordinary`.
-- **Acceptance:** A table of failures by case, with each failing transcript's reason read, in the PR. It finishes before task 3.6 starts. It tries `--concurrency 6` and records whether a limit fired.
-- **Test:** The run: 60 sessions, about 200 minutes in the background.
-- **Minutes:** 200, background beside 3.4 and 3.5, whose 240 sets the path.
+- **Acceptance:** A table of failures by case, with each failing transcript's reason read, in the PR. It finishes before task 3.6 starts. It runs at six concurrent, records whether a limit fired, and re-estimates task 3.7 from its medians.
+- **Test:** The run: 30 sessions, about 30 minutes in the background.
+- **Minutes:** 45, background beside 3.4 and 3.5, whose 270 sets the path.
 
 ### Task 3.4: Add tiers and the walker
 
-- **Outcome:** Every public export carries one tier: Extension as `@public`, Unstable as `@beta`, and Scaffold as a custom tag in a new `tsdoc.json`. `check-options.mjs` keeps its walk and requires a doc comment on each public option member, so `option-map.json` goes (263 rows, 22 of them exclusions, which become explicit code exclusions or stay with a reason). `moduleExports` and the anchor helpers move out of the files pass 4 removes. `check:snippets` extends to packaged references, and moved TSDoc adds no `@example`.
+- **Outcome:** Before any comment changes, the proof's baseline hash is taken. Every public export carries one tier: Extension as `@public`, Unstable as `@beta`, and Scaffold as a custom tag in a new `tsdoc.json` with `supportForTags` for all three. `jsdoc/check-tag-names` drops `typed:true`, which would delete `@public`. A `.svelte` export takes its tier from its `@component` block, and an `export *` from its declaring symbol. `check-options.mjs` keeps its walk and requires a doc comment on each public option member, so `option-map.json` goes (263 rows, 22 of them exclusions, which become explicit code exclusions or stay with a reason). `moduleExports` and the anchor helpers move out of the files pass 4 removes. `check:snippets` extends to packaged references, and moved TSDoc adds no `@example`.
 - **Files:** `tsdoc.json`, `src/lib/**` comments, `scripts/checks/check-options.mjs`, a new tier check, `scripts/checks/check-snippets.mjs`, `eslint.config.js`, tests.
 - **Risk:** `auth-data` (comment-only on those paths), `runner` for the gates.
-- **Acceptance:** Every tier statement in `docs/reference` agrees with its tag, checked by script against about 160 statements. A new untagged export fails the gate, and so does an undocumented option member. `npm run check:comments` passes.
-- **Test:** Failing fixtures for both gates, written first.
+- **Acceptance:** Every tier statement in `docs/reference` agrees with its tag, checked by script against about 160 statements. A new untagged export fails the gate, and so does an undocumented option member. A broken snippet under a reference fails `check:snippets`, and the PR reports the count of skip comments. `npm run check:comments` passes.
+- **Test:** Failing fixtures for the three gates, written first.
 - **Minutes:** 90.
 
 ### Task 3.5: Move contract into TSDoc
 
-- **Outcome:** Per-export promises from the TSDoc-class pages land on their exports, limited to what one export promises. Prose over a page goes to a skill, per the standing answer. Non-TypeScript rows land in CSS comments, `--help`, and `cairn help`. The `api.mjs` citation left from pass 2 resolves here.
-- **Files:** `src/lib/**` comments, `tool/cmd/cairn/` help text, `src/lib/*/bin.ts` help text, `packages/create-cairn-site/src/cloudflare/api.mjs`.
+- **Outcome:** Per-export promises from the TSDoc-class pages land on their exports, limited to what one export promises. Prose over a page goes to a skill, per the standing answer. Non-TypeScript rows land in CSS comments, `--help`, and `cairn help`. The `api.mjs` citation and the fixtures' `source` fields left from pass 2 resolve here. A one-off script lists each page's promises (table rows, default values, thrown errors, MUST-style sentences), and each row lands on a named symbol or a skill, or is dropped with its two-part reason.
+- **Files:** `src/lib/**` comments, `tool/cmd/cairn/` help text and a test, `src/lib/*/bin.ts` help text, `packages/create-cairn-site/src/cloudflare/api.mjs`, `packages/create-cairn-site/fixtures/cloudflare/*.json`.
 - **Risk:** `auth-data` (comment-only), with `diff-reviewer` per auth commit.
-- **Acceptance:** Comment-only proof. `dist` keeps comments, so byte identity cannot work (`dist/sveltekit/section-action.js` in `0.98.0` holds 62 comment lines). The proof compares a comment-stripped normal form of every `dist` `.js` and `.svelte` file before and after, and the PR carries both hashes. Help-text changes in `tool/` are outside the proof and pass `make -C tool check`.
+- **Acceptance:** Every inventory row has a disposition, and a fresh read of 20 rows finds each at its destination. A Go test asserts that `cairn help` lists each exit code and JSON field. Comment-only proof: `dist` keeps comments, so byte identity cannot work (`dist/sveltekit/section-action.js` in `0.98.0` holds 62 comment lines). The proof hashes a comment-stripped normal form of every `dist` `.js`, `.d.ts`, and `.svelte` file after `transpile-dist-svelte`, using the forms in Mechanisms, against the baseline from 3.4, and the PR carries both hashes. `api.mjs` gets the same direct strip. Outside the proof: the four `dist/*/bin.js` files, reviewed by string diff; help text in `tool/`, which passes `make -C tool check`; and CSS, which is not `auth-data` and has CI's visual baselines.
 - **Test:** The hash comparison and the fast lane. The comparison is a one-off in the pass's state directory, not a new gate.
-- **Minutes:** 150.
+- **Minutes:** 180.
 
 ### Task 3.6: Rebuild references and packaged skills
 
-- **Outcome:** Skill-reference rows become packaged references, rebuilt shorter, cutting what the two-part test removes and sized by the ablation. Packaged skills rename to `cairn-extending-a-site`, `cairn-styling-public-pages`, `cairn-building-admin-screens`, and `cairn-consulting-the-engine`. Links stop pointing at pages. The recipe a site needs reaches it through a reference, and the showcase's `Recipe:` headers repoint.
-- **Files:** `skills/**`, `claude/CLAUDE.md`, `examples/showcase/src/**` headers, `templates/waymark/**` (re-emitted), `src/lib/guidance/*`, `scripts/checks/check-public-skill.mjs`, `check-skill-budget.mjs`, `check-package-files.mjs`, and the other scripts naming the old skills.
+- **Outcome:** Skill-reference rows become packaged references, rebuilt shorter, cutting what the two-part test removes and sized by the ablation. Packaged skills rename to `cairn-extending-a-site`, `cairn-styling-public-pages`, `cairn-building-admin-screens`, and `cairn-consulting-the-engine`. Links stop pointing at pages. The recipe a site needs reaches it through a reference, and the showcase's `Recipe:` headers repoint. `src/lib/audit/norms.ts` and rule messages stop printing `docs/reference` strings, so S13 sees the end state. Then `agent-first-3-preview` is cut from this branch with 4.1's page removals and 4.2's gate and chain removals as one commit. It never merges: 4.1 and 4.2 start from that commit, less any page the verdicts keep.
+- **Files:** `skills/**`, `claude/CLAUDE.md`, `examples/showcase/src/**` headers, `templates/waymark/**` (re-emitted), `src/lib/guidance/*`, `src/lib/audit/norms.ts`, `scripts/checks/check-public-skill.mjs`, `check-skill-budget.mjs`, `check-package-files.mjs`, and the other scripts naming the old skills.
 - **Risk:** `runner`.
-- **Acceptance:** `check:public-skill`, `check:package`, `check:template`, and `check:snippets` pass. A skill stays under 500 lines, references stay one level deep, and a reference over 100 lines opens with contents. The packaged tree is smaller than the pages it replaces.
+- **Acceptance:** `check:public-skill`, `check:package`, `check:template`, and `check:snippets` pass. A skill stays under 500 lines, references stay one level deep, and a reference over 100 lines opens with contents. The packaged tree counts against the Lean bar. On the preview, `npm pack` holds no removed page, and the fast lane passes.
 - **Test:** The fast lane, then 3.7.
-- **Minutes:** 180. `claude plugin eval` runs beside this task (36 sessions, about 120 minutes): six cases over `running-passes`, `go-conventions`, `ts-conventions`, `svelte-conventions`, `spec-plan-review`, and `log-issue`, with the no-plugin baseline. Its acceptance is a positive delta on each. A skill showing none is reported and stays.
+- **Minutes:** 225. `claude plugin eval plugins/standards --ablation with-without --runs 3 -j 4 --trust-plugin --allow-tools Bash` runs beside this task (18 sessions): three cases over `running-passes`, `ts-conventions`, and `go-conventions`, with the no-plugin baseline. Its result is reported. A skill showing no delta stays, as the design only asks that it be covered.
 
 ### Task 3.7: Run the A/B
 
-- **Outcome:** Eighteen cases, five trials, two arms, in one run, plus the code intelligence arm.
+- **Outcome:** Eighteen cases, five trials, two arms, in one run with the baseline arm first and the smoke trials reused, plus the code intelligence arm. Treatment skips a case that can no longer reach four of five on baseline. An arm stops at the failure that decides it. The wake-up in `unattended-work-guards.md` is armed.
 - **Files:** `~/.local/state/cairn-agent-first/ab/`.
 - **Risk:** `ordinary`.
-- **Acceptance:** Every trial is graded or its error explained. Tokens and wall time are recorded per arm.
-- **Test:** The run itself: 198 sessions, 660 minutes at four concurrent, 440 at six.
-- **Minutes:** 660.
+- **Acceptance:** Every trial is graded or its error explained. Tokens and wall time are recorded per arm, and the header records both SHAs and the `standards` SHA.
+- **Test:** The run itself: 171 sessions, 320 minutes at four concurrent, about 215 at six.
+- **Minutes:** 320.
 
 ### Task 3.8: Decide and fix
 
-- **Outcome:** Every page in the disposition table gets a verdict from its cases. Each failing transcript is read before any verdict. Failing content returns as a skill reference, and drops rerun for three more trials on both arms. The rulings on code intelligence and the Extend and token-and-time bars are stated.
-- **Files:** `skills/**`, this plan's table, the PR.
+- **Outcome:** Every page in the disposition table gets a verdict from its cases. Each failing transcript is read before any verdict. Failing content returns as a skill reference, and drops rerun for three more trials on both arms. After the last fix, one trial of every counted case runs on the frozen tree, because a fix to a shared skill can break a neighbor, and any failure reruns. The hash of `skills/` is recorded; if pass 4 changes it, the affected cases sweep again. The rulings on code intelligence and the Extend and token-and-time bars are stated, with a figure for code intelligence: recommend it only if counted cases hold and tokens fall.
+- **Files:** `skills/**`, `agent-first-3-preview`, this plan's table, the PR.
 - **Risk:** `ordinary`.
-- **Acceptance:** No page retires untested. Each counted case meets its bar, or the stop table's answer applied and is listed. The summed medians of tokens and time do not exceed the baseline.
-- **Test:** The rerun tables.
-- **Minutes:** 90.
+- **Acceptance:** No page retires untested, and the "retired without test" list is in the packet. At least 14 cases count, and each counted case meets its bar, or the stop table's answer applied and is listed. The summed medians of tokens and time are inside the band; they come from 3.7, and the PR says the sweep followed them.
+- **Test:** The rerun and sweep tables.
+- **Minutes:** 125.
 
 ### Task 3.9: Close pass 3
 
@@ -595,164 +667,160 @@ The code intelligence arm runs S01, S03, S07, S08, S09, and E1, the cases that l
 
 ## Pass 4: rebuild the rest
 
-Class `runner`, `live-account`. Path 780, flagged above. Stage A (tasks 4.1 to 4.6) ends with the PR merged, which is "the pattern lands". Stage B (tasks 4.7 to 4.14) resumes the series, runs the sittings, and proves the bars. Each task below keeps its own commit on `agent-first-4` for stage A and `agent-first-4b` for stage B.
+Class `runner`, `live-account`. Path 840, over the line; ruling 3 sets the ceiling. Stage A (tasks 4.1 to 4.6) ends with the PR merged, which is "the pattern lands". Stage B (tasks 4.7 to 4.13) resumes the series, runs the sittings, and proves the bars. Each task below keeps its own commit on `agent-first-4` for stage A and `agent-first-4b` for stage B.
 
 ### Task 4.1: Remove pages and repair what shipped
 
-- **Outcome:** Technical pages go, per pass 3's verdicts, with version records and schemas moved first. `src/lib/audit/norms.ts` and rule messages stop printing `docs/reference` strings, and `package.json` `files` matches. Tool strings stop linking `cairn.pub/docs/reference`, in nine non-test places; released binaries' old links die, as the design ruled. The route audit half of #70 runs here.
-- **Files:** `docs/extend/`, `docs/reference/`, `docs/claude-code/`, `src/lib/audit/norms.ts`, `package.json`, `tool/**`, `scripts/checks/check-package-files.mjs`, `README.md` links.
+- **Outcome:** Technical pages go, per pass 3's verdicts, starting from the preview's commit, with version records and schemas moved first and `rotate-the-github-app-key.md` already on `docs-final-4`. `package.json` `files` matches. Tool strings stop linking `cairn.pub/docs/reference`, in nine non-test places; released binaries' old links die, as the design ruled. The route audit half of #70 runs here. The PR lists its removals as its dry run. `arm-state` now reads `extend` as absent, so the PR lists which gates stop checking anything and why that is intended.
+- **Files:** `docs/extend/`, `docs/reference/`, `docs/claude-code/`, `package.json`, `tool/**`, `scripts/checks/check-package-files.mjs`, `README.md` links.
 - **Risk:** `runner`.
-- **Acceptance:** `npm pack` holds no removed path and does hold `MIGRATION-NOTES.md` and `schema/`. A grep of the tarball for `docs/reference` and `docs/extend` is empty. `make -C tool check` passes.
+- **Acceptance:** `npm pack` holds no removed path and does hold `MIGRATION-NOTES.md` and `schema/`. A grep of the tarball for `docs/reference`, `docs/extend`, `docs/claude-code`, and `cairn.pub/docs` is empty. A link check over `skills/` and `claude/` passes. `make -C tool check` passes.
 - **Test:** `check:package`, `check:audit-pack`, `check:readiness`.
-- **Minutes:** 90.
+- **Minutes:** 60.
 
 ### Task 4.2: Remove the machinery
 
-- **Outcome:** `check:reference`, its signatures check, `check:arm-indexes`, the arm logic, the old option map path, the developer brief, the two retired-name Vale rules, the docs review chain for technical pages, and `scripts/docs-review/` with its tests and Firefox step (#84) go. The drift routine `trig_015UPQostYVisXuExTHTH2vu` is deleted. `docs-fact-checker` and the `cairn-writing-docs` chain now cover editor and admin pages. `evals.json` cases that edit technical pages leave, and BACKLOG gets one item to re-add them on editor pages after #159 merges.
+- **Outcome:** `check:reference`, its signatures check, `check:arm-indexes`, the arm logic with `deletion-list.json`, the old option map path, the developer brief, the two retired-name Vale rules, the docs review chain for technical pages, and `scripts/docs-review/` with its tests and Firefox step (#84) go. Every repo reference to the drift routine goes; Geoff deletes the routine itself (pre-flight item 7). `docs-fact-checker` and the `cairn-writing-docs` chain now cover editor and admin pages, and the cycle prompt follows. `evals.json` cases that edit technical pages leave, and BACKLOG gets one item to re-add them on editor pages after #159 merges. The PR lists its removals as its dry run.
 - **Files:** `scripts/checks/*`, `package.json`, `.vale/styles/Cairn/*`, `.github/workflows/test.yml`, `src/tests/**`, `.claude/skills/cairn-writing-docs/**`, `.claude/agents/docs-fact-checker.md`, `scripts/checks/gate-table.json`.
 - **Risk:** `runner`.
 - **Acceptance:** `check:close` runs with no removed leg. `gate-tier` classifies a docs change correctly. No script imports a removed module.
 - **Test:** `gate-tier` unit tests.
-- **Minutes:** 60. **Pair:** 4.3.
+- **Minutes:** 45. **Pair:** 4.3.
 
 ### Task 4.3: Make `cairn-guidance install` remove safely
 
-- **Outcome:** Install removes a shipped file only when its hash matches a shipped version, and reports the rest, so a developer's edit survives. Today it prints `removable` paths and deletes nothing, and its manifest holds tree hashes, so the task adds what per-file matching needs. Renamed skills migrate through this path.
-- **Files:** `src/lib/guidance/*`, its tests, `skills/*/SKILL.md` lines on the behavior.
-- **Risk:** `ordinary`.
-- **Acceptance:** A site on the old skill names installs clean. An edited file stays and is named in the report.
-- **Test:** Unit tests for matched, edited, and missing files, written first.
-- **Minutes:** 45. **Pair:** 4.2.
+- **Outcome:** Install removes a shipped file only when its hash matches a shipped version, and reports the rest, so a developer's edit survives. Today it prints `removable` paths and deletes nothing, its `MANIFEST` is a site-editable path list, and its hashes are per tree. The package gains a generated `guidance-hashes.json`, built from each release tag that shipped `cairn-guidance`; `0.84.4` shipped none, so the task names the first that did. Install deletes a path only when the `MANIFEST` lists it, it is a regular file by `lstat` under `.claude/skills` or `.claude/agents`, and its hash is in the package's table, so an edited `MANIFEST` authorizes nothing. Paths it keeps stay in the `MANIFEST`, so the report persists, and the `MANIFEST` is written by temp file and rename. A `--dry-run` shows the list. `.orig` files stay and are named, and emptied directories go. An old-name skill directory with no `MANIFEST` is reported. Renamed skills migrate through this path.
+- **Files:** `src/lib/guidance/*`, its tests, `package.json`, `skills/*/SKILL.md` lines on the behavior.
+- **Risk:** `ordinary` by the path map. It turns a published bin from never deleting to deleting, so `diff-reviewer` reads its commit.
+- **Acceptance:** A real `cairn-guidance install` tree from the published `0.98.0` tarball and from the first shipping version takes the new install: old skill directories gone, new ones present, `cairn-guidance check` fresh. An edited file stays, is named in the report, and is named again on a second run.
+- **Test:** Unit tests written first: matched, edited, missing, tampered `MANIFEST`, a `.claude` line, a symlink, a directory, no `MANIFEST`, a crash between steps, and a rerun.
+- **Minutes:** 75. **Pair:** 4.2.
 
 ### Task 4.4: Build the evaluator set
 
-- **Outcome:** Root `README.md`, `docs/why-cairn.md`, and `docs/architecture.md` give the shape of the system, the security model, and the tier promise, kept short, with `docs/claude-code/` folded in. #161's drafts are harvested, then #161 closes. `docs/README.md` leaves `package.json` `files`. `why-cairn.md` follows the front-door rule: one section per read, with a fresh `cairn-register-editor` as the reader between sections in this unattended run. Geoff reads them in the packet.
+- **Outcome:** Root `README.md`, `docs/why-cairn.md`, and `docs/architecture.md` give the shape of the system, the security model, and the tier promise, kept short, with `docs/claude-code/` folded in. A brief map names the page for each item in task 4.13's brief, including a short eval summary with cases, arms, and result, and the no-MCP reason, which lands in `docs/architecture.md`. #161's drafts are harvested, then #161 closes, its other paths settled by task 1.2's rows. `docs/README.md` leaves `package.json` `files`. `why-cairn.md` follows the front-door rule: one section per read, with a fresh `cairn-register-editor` as the reader between sections in this unattended run. Geoff reads them in the packet.
 - **Files:** `README.md`, `docs/why-cairn.md`, `docs/architecture.md`, `package.json`.
 - **Risk:** `ordinary`.
-- **Acceptance:** `docs-fact-checker` is clean, `register-check` passes, and the Evaluate brief answers from these pages in a dry read.
+- **Acceptance:** `docs-fact-checker` is clean, `register-check` passes, and the brief map answers every item, reading `docs/editors` and `docs/admin` at the #159 and #160 heads for items 2 to 4.
 - **Test:** `check:docs-gate`.
 - **Minutes:** 90. **Pair:** 4.5.
 
 ### Task 4.5: Judge the drafts on #159 and #160
 
-- **Outcome:** The pattern is settled here: pages are gone and the evaluator set exists. A fresh Opus reader judges all 18 pages against it and gives each one call. **Keep:** it serves its reader, links nothing removed, and holds nothing a skill now owns. **Streamline:** the job is right and the page carries technical or developer content that left. **Rewrite:** the page's shape assumed the old arms. Inputs are the design, the register's editor and admin briefs, and Geoff's expectation that some pages need this.
+- **Outcome:** The pattern is settled here: pages are gone and the evaluator set exists. A fresh Opus reader judges all 18 pages against it and gives each one call. **Keep:** it serves its reader, links nothing removed, and holds nothing a skill now owns. **Streamline:** the job is right and the page carries technical or developer content that left. **Rewrite:** the page's shape assumed the old arms. **Cut:** a named reader's task does not fail without it, so its content merges elsewhere or goes. Inputs are the design, the register's editor and admin briefs, and Geoff's expectation that some pages need this.
 - **Files:** The table below, filled on the plan's branch; a comment on each PR. No page changes yet.
 - **Risk:** `ordinary`.
-- **Acceptance:** 18 calls, each with a reason of one line and the exact sections it touches. `rotate-the-github-app-key.md` has its slot in the admin arm.
-- **Test:** A second fresh reader spot-checks five calls.
+- **Acceptance:** 18 calls, each with a reason of one line, the exact sections it touches, and the reader and task a kept page serves. The coverage column names a sitting step or says fact-check only. `rotate-the-github-app-key.md` has its slot in the admin arm, and its coverage is Sitting A.
+- **Test:** Geoff reads the calls in the stage A packet.
 - **Minutes:** 60. **Pair:** 4.4.
 
-| PR | Page | Call | Reason |
-|---|---|---|---|
-| #159 | `docs/editors/README.md` | | |
-| #159 | `docs/editors/welcome.md` | | |
-| #159 | `docs/editors/write-in-the-editor.md` | | |
-| #159 | `docs/editors/add-an-image.md` | | |
-| #159 | `docs/editors/manage-the-media-library.md` | | |
-| #159 | `docs/editors/manage-your-tag-vocabulary.md` | | |
-| #159 | `docs/editors/publish-and-history.md` | | |
-| #159 | `docs/editors/when-something-goes-wrong.md` | | |
-| #160 | `docs/admin/README.md` | | |
-| #160 | `docs/admin/before-you-start.md` | | |
-| #160 | `docs/admin/create-your-site.md` | | |
-| #160 | `docs/admin/own-your-domain.md` | | |
-| #160 | `docs/admin/invite-editors.md` | | |
-| #160 | `docs/admin/is-it-working.md` | | |
-| #160 | `docs/admin/setup-recovery.md` | | |
-| #160 | `docs/admin/troubleshooting.md` | | |
-| #160 | `docs/admin/credentials.md` | | |
-| #160 | `docs/admin/tripwire.md` | | |
+| PR | Page | Call | Reason | Coverage |
+|---|---|---|---|---|
+| #159 | `docs/editors/README.md` | | | |
+| #159 | `docs/editors/welcome.md` | | | |
+| #159 | `docs/editors/write-in-the-editor.md` | | | |
+| #159 | `docs/editors/add-an-image.md` | | | |
+| #159 | `docs/editors/manage-the-media-library.md` | | | |
+| #159 | `docs/editors/manage-your-tag-vocabulary.md` | | | |
+| #159 | `docs/editors/publish-and-history.md` | | | |
+| #159 | `docs/editors/when-something-goes-wrong.md` | | | |
+| #160 | `docs/admin/README.md` | | | |
+| #160 | `docs/admin/before-you-start.md` | | | |
+| #160 | `docs/admin/create-your-site.md` | | | |
+| #160 | `docs/admin/own-your-domain.md` | | | |
+| #160 | `docs/admin/invite-editors.md` | | | |
+| #160 | `docs/admin/is-it-working.md` | | | |
+| #160 | `docs/admin/setup-recovery.md` | | | |
+| #160 | `docs/admin/troubleshooting.md` | | | |
+| #160 | `docs/admin/credentials.md` | | | |
+| #160 | `docs/admin/tripwire.md` | | | |
 
 ### Task 4.6: Close stage A
 
-- **Outcome:** Residue check, prompt audit, whole-branch review, packet carrying the evaluator set and the 18 calls, merge. STATUS records that the pattern landed and the series resumes.
+- **Outcome:** Residue check, prompt audit, whole-branch review, packet carrying the evaluator set, the 18 calls, and pre-flight item 7, merge. STATUS records that the pattern landed and the series resumes.
 - **Files:** `docs/STATUS.md`, `CHANGELOG.md`.
 - **Risk:** `runner`.
-- **Acceptance:** CI green. Geoff approves the packet, and his answers to the calls go to task 4.7.
+- **Acceptance:** CI green. The only name-list hits are `docs/plans/2026-10-30-*`. Geoff approves the packet, and his answers to the calls go to task 4.7.
 - **Test:** The adapter's close checklist.
 - **Minutes:** 30.
 
 ### Task 4.7: Resume #159 and #160 with the calls
 
-- **Outcome:** The series resumes from `~/.local/state/cairn-docs-final/ledger.md`. Both branches take `main`, then Geoff's 14 answers, then each call, through the `cairn-docs` chain. `rotate-the-github-app-key.md` joins the arm. The ledger's owed drift-routine widening is moot, since task 4.2 deleted the routine; its other owed items, such as the `block` rename in the final engine batch, stay owed.
+- **Outcome:** The series resumes from `~/.local/state/cairn-docs-final/ledger.md`. Both branches take `main`, then Geoff's 14 answers, then each call, through the `cairn-writing-docs` chain. On a modify/delete conflict the delete wins and the fix follows task 1.2's row. `rotate-the-github-app-key.md` is in the arm. The ledger's owed drift-routine widening is moot, since the routine is gone; its other owed items, such as the `block` rename in the final engine batch, stay owed.
 - **Files:** `docs/editors/**`, `docs/admin/**` on `docs-final-3` and `docs-final-4`.
 - **Risk:** `ordinary`.
-- **Acceptance:** Docs gates pass on both heads, with a fresh `docs-fact-checker`, and no link to a removed path.
+- **Acceptance:** Docs gates pass on both heads, with a fresh `docs-fact-checker`, and no link to a removed path. Every path in task 1.2's list is accounted for, and `git diff main...docs-final-4 --name-status` shows no path under a name-list tree. No page called Rewrite is unrewritten.
 - **Test:** `check:docs-gate`, `check:transcripts`, `check:visuals`.
 - **Minutes:** 120.
 
 ### Task 4.8: Cut the prerelease and prepare the sittings
 
-- **Outcome:** Runbook Part 0's flow, from pass 4's merged `main`, publishes a `next` prerelease; `latest` does not move. The setup package is packed into a tarball and installed with `--no-save` in each sitting's empty folder, so the page's own command works. The container image for Claude's install is ready, on host networking so its `127.0.0.1` browser links reach Chromium. `glw907/cairn-cms-e2e` exists.
+- **Outcome:** Runbook Part 0's flow, from pass 4's merged `main`, publishes a `next` prerelease; `latest` does not move. In `packages/create-cairn-site`, the bake runs with `--engine-spec '^<RC>' --dev-spec '^<RC>'`, then `npm pack --ignore-scripts`, and the tarball is installed with `--no-save` in each sitting's empty folder, so the page's own command works and a site gets the prerelease. `cairn` is built from #160's head, for the host and the container. The container image for Claude's install is ready, on host networking so its `127.0.0.1` browser links reach Chromium. It reads `docs/admin` from a checkout of #160's head at `/work/cairn-docs` and bind-mounts a host directory for `~/.config/cairn` and the site folder, so a crash loses no state. `$CLEAN` from the runbook's step 1.1 is written. `glw907/cairn-cms-e2e` is created from a fresh `--single-branch` clone of `main`, public, and BACKLOG #75 is confirmed open there, else #50. A teardown sheet derived from runbook Part 8 lists each class this plan creates, by the fixed names `cairn-e2e-a` and `cairn-e2e-b`, each delete gated on a ledger row: Workers Builds connections and triggers, the Builds token, `carin-test.org`'s records from a snapshot taken here, the mirror, and credentials added in the sitting. The zone itself is never touched. `wrangler logout` runs under `$CLEAN` only. The observing session writes the ledger row before each resource exists.
 - **Files:** A version branch only, per the runbook; `~/.local/state/cairn-agent-first/`.
 - **Risk:** `runner`, `live-account`.
-- **Acceptance:** `npm view` shows the prerelease on `next` and an unchanged `latest`. `npx create-cairn-site --version` answers in the folder.
-- **Test:** `--dry-run` in the folder.
-- **Minutes:** 45.
+- **Acceptance:** `npm view` shows the prerelease on `next` and an unchanged `latest`. `npm view "@glw907/cairn-cms@^<RC>" version` answers, and the emitted `package.json` carries `^<RC>`. `npx create-cairn-site --version` answers in the folder. `cairn --version` names the build.
+- **Test:** `--dry-run` in the folder. The purge in the teardown sheet runs once on a throwaway bucket.
+- **Minutes:** 60.
 
-### Task 4.9: Sitting A, admin install
+### Task 4.9: Sittings A and B
 
-- **Outcome:** Part 1: Geoff installs from `docs/admin` as rendered at #160's head, under the sitting rule, through a signed-in admin and Workers Builds, so that Sitting B's publish goes live. Part 2: a fresh container session gets the request to set up a site from the same docs and the setup command, relays browser links to Geoff, and finishes.
-- **Files:** `~/.local/state/cairn-agent-first/sitting-a.md`, a resource ledger per the runbook's rule 2.
+- **Outcome:** Sitting A, Part 1: Geoff installs from `docs/admin` as rendered at #160's head, in a shell started by `$CLEAN`, under the sitting rule, through a signed-in admin and Workers Builds, so that the publish in Sitting B goes live. He takes the site to `carin-test.org` by `own-your-domain.md`, and rotates the App's key from its page. Sitting A, Part 2: a fresh container session gets the prompt below, relays browser links to Geoff, and finishes. Sitting B, on the Part 1 site, under the sitting rule: Geoff invites a second address, signs in from the emailed link as that editor, writes an entry, adds an image, publishes it from `docs/editors` alone, sees it live, and triggers one failure from `when-something-goes-wrong.md`.
+- **Files:** `~/.local/state/cairn-agent-first/sitting-a.md`, `sitting-b.md`, a resource ledger per the runbook's rule 2.
 - **Risk:** `runner`, `live-account`.
-- **Acceptance:** Both sites answer and sign an owner in. Part 2's transcript shows nothing asked of Geoff beyond browser and sign-in steps, and nothing read outside the docs and tools. With no zone named, the record states `own-your-domain.md`'s domain part and emailed sign-in as unproved.
-- **Test:** `cairn doctor` passes on both sites.
-- **Minutes:** 120. Attended.
+- **Acceptance:** Both sites answer and sign an owner in. The entry and image are on the public site. Every defect point is recorded, with minutes and touches per part. The blind judge passes two assertions on Part 2's transcript: every question to Geoff is on the list below, and every read is in `/work/cairn-docs/docs/admin` or tool output. Part 2 took fewer touches and less attended time than Part 1.
+- **Test:** `cairn doctor` passes on both sites; a request to the public page.
+- **Minutes:** 195. Attended.
 
-### Task 4.10: Sitting B, editor tasks
+**Part 2's prompt.** "Set up a new cairn site for me named `cairn-e2e-b`. The admin docs are in `/work/cairn-docs/docs/admin`, and the setup command is `npx create-cairn-site`. Ask me only for what you cannot do yourself."
 
-- **Outcome:** On the Part 1 site, under the sitting rule, Geoff writes an entry, adds an image, and publishes it from `docs/editors` alone, then sees it live.
-- **Files:** `~/.local/state/cairn-agent-first/sitting-b.md`.
-- **Risk:** `live-account`.
-- **Acceptance:** The entry and image are on the public site. Every defect point is recorded.
-- **Test:** A request to the public page.
-- **Minutes:** 45. Attended.
+**Part 2's browser list.** GitHub App creation and install, the installation's narrowing to one repository, Cloudflare's sign-in, and the Workers Builds token page.
 
-### Task 4.11: Fix sitting defects
+### Task 4.10: Fix sitting defects
 
-- **Outcome:** Each recorded point is fixed on its page, or filed where the page cannot fix it, and its step retested. #159 and #160 go to Geoff as docs reviews and merge bottom-up after his approval.
+- **Outcome:** Each recorded point is fixed on its page, or filed where the page cannot fix it, and its step retested on the live sites. #159 and #160 go to Geoff as docs reviews and merge bottom-up after his approval. The diff between the heads the sittings read and the merged heads goes in the Acceptance row, because no install reruns on the fixed text: a new one needs another GitHub App in Geoff's browser.
 - **Files:** `docs/editors/**`, `docs/admin/**`, `BACKLOG.md`.
 - **Risk:** `ordinary`.
-- **Acceptance:** No defect stays open and unfiled. Both PRs are merged before task 4.14 counts pages.
+- **Acceptance:** No defect stays open and unfiled. Every page in the arms has passed the whole chain with `register-check`. Both PRs are merged before task 4.13 counts pages.
 - **Test:** The docs gates, then a fresh read of each changed step.
-- **Minutes:** 90. **Pair:** 4.12.
-
-### Task 4.12: Run the remaining end-to-end checks
-
-- **Outcome:** Three checks in the container, with an empty `CLAUDE_CONFIG_DIR`, no workstation paths, and only `CLAUDE_CODE_OAUTH_TOKEN` plus, for Contribute, `CAIRN_E2E_GH_TOKEN`. **Contribute:** from a plain request naming BACKLOG #22, a fresh clone of the mirror reaches a PR with passing checks, using the implementer and review agents. **Extend:** a fresh session builds a custom admin screen on a scaffolded site from packaged guidance alone. **Evaluate:** the brief below, three trials.
-- **Files:** `~/.local/state/cairn-agent-first/e2e/`; `glw907/cairn-cms-e2e`.
-- **Risk:** `runner`, `live-account`.
-- **Acceptance:** The mirror PR is green; its workflows need no secret, since no workflow reads one. The custom screen passes S01's graders. Evaluate covers all eight items on all trials, with no tool call opening a name-list path. Each transcript uses nothing from the workstation.
-- **Test:** The transcripts, `gh pr checks`, and the blind judge.
 - **Minutes:** 90. **Pair:** 4.11.
 
-**The brief.** "You are deciding whether a small organization should build its site on `@glw907/cairn-cms`. Using only the public repository at `github.com/glw907/cairn-cms`, tell me: what it is and what it refuses to be; what an editor's day looks like; who owns what and how to leave; what it costs; how it handles sign-in and secrets; how a developer extends it and what stability they can count on; how it works with Claude Code and whether it follows Anthropic's practices; and how to contribute."
+### Task 4.11: Run the Contribute and Extend checks
 
-A good answer states all eight, from the repo's pages:
+- **Outcome:** Two checks in the container, with an empty `CLAUDE_CONFIG_DIR`, no workstation paths, and only `CLAUDE_CODE_OAUTH_TOKEN` plus, for Contribute, `CAIRN_E2E_GH_TOKEN`, both from an env file. **Contribute:** from a plain request naming BACKLOG #75, a behavior bug with a line-cited cause, a fresh clone of the mirror reaches a PR with passing checks, using the implementer and review agents. **Extend:** a fresh session builds a custom admin screen on a scaffolded site from packaged guidance alone.
+- **Files:** `~/.local/state/cairn-agent-first/e2e/`; `glw907/cairn-cms-e2e`.
+- **Risk:** `runner`, `live-account`.
+- **Acceptance:** The mirror PR is green; its workflows need no secret, since no workflow reads one. Its new test fails on the base and passes on the head. The transcript shows `cairn-implementer` and a `standards:` reviewer dispatched. The custom screen passes S01's graders. Neither transcript shows `command not found` or a path outside the clone, the site, or the plugin.
+- **Test:** The transcripts, `gh pr checks`, and the blind judge.
+- **Minutes:** 90. **Pair:** 4.10.
+
+### Task 4.12: Tear down
+
+- **Outcome:** The teardown sheet runs, runbook Part 8 in its order: both sites' Workers, databases, repositories, state records, and wrangler sessions go, each by a name in the ledger. Buckets are purged first, since Sitting B uploads: list keys with `GET .../objects`, delete each with `wrangler r2 object delete <bucket>/<key> --remote`, then the runbook's curl delete. `carin-test.org`'s records return to the snapshot. The mirror goes. Geoff deletes the two GitHub Apps.
+- **Files:** The resource ledger.
+- **Risk:** `live-account`.
+- **Acceptance:** Listings show every resource gone. `gh api /apps/<slug>` returns 404 for each App. A call with the token from pre-flight item 3 returns 401, after Geoff revokes it in the same step.
+- **Test:** The runbook's verify step.
+- **Minutes:** 45.
+
+### Task 4.13: Prove the bars and close
+
+- **Outcome:** First, Evaluate runs in the container, since the merged docs are now public: the brief below, three trials, with the same empty config. Then the residue check across cairn-cms, `standards`, the workstation's `claude/`, `bin/`, and `bluefin/` trees, and the initiatives records. `/doctor prompt-audit` on each. `claude plugin validate` on `standards`. A fresh reader with no design context reviews cairn against a fixed list of the rules in Anthropic's best practices, skills, and plugin pages and returns findings. The lean counts run. `docs/plans/2026-10-30-*` go, and `docs/internal/` holds only the ledger and the inbox. `create-cairn-site` is filed as a prerequisite of the one release, and STATUS names the sequence ahead: the release, then each site's migration. The `cairn-docs-cycle` hold comes off. `CAIRN_E2E_OAUTH_TOKEN` and `CAIRN_E2E_GH_TOKEN` leave the store and registry. This plan is deleted, and the `shared-standards` record moves on.
+- **Files:** `docs/plans/`, `docs/internal/`, `docs/STATUS.md`, `BACKLOG.md`, `shared-standards/README.md`, `initiative.yaml`, this plan.
+- **Risk:** `runner`.
+- **Acceptance:** Evaluate states all nine items on all trials, judged blind, and each transcript reads only `README.md`, `docs/why-cairn.md`, `docs/architecture.md`, `CONTRIBUTING.md`, `docs/editors/**`, and `docs/admin/**`, with no fetch of a `pre-agent-first` URL. The Acceptance table is filled, bar by bar, in the PR, each row in one of its three states. Geoff approves the final packet.
+- **Test:** The adapter's close checklist.
+- **Minutes:** 75.
+
+**The brief.** "You are deciding whether a small organization should build its site on `@glw907/cairn-cms`. Using only the public repository at `github.com/glw907/cairn-cms`, tell me: what it is and what it refuses to be; what an editor's day looks like; who owns what and how to leave; what it costs; how it handles sign-in and secrets; how a developer extends it and what stability they can count on; how it works with Claude Code and whether it follows Anthropic's practices; and how to contribute. Then say whether you would adopt it, and why."
+
+A good answer states all nine, from the repo's pages:
 
 1. An embedded, magic-link, GitHub-committing CMS for SvelteKit on Cloudflare. It has one fixed concept shape, public output stays design-agnostic, and a site brings its own `render`. It is not an open-ended collection model.
 2. Editors sign in by email with no GitHub account or password, and write raw markdown with a live preview. Save holds the edit on a per-entry branch, and Publish copies it to `main` through a GitHub App.
 3. The site's repository holds code and content as markdown, and the site's Cloudflare account holds one Worker, one database, and one bucket. Leaving means cloning the repository and copying the bucket.
 4. Workers Paid at $5 a month, plus a domain if wanted, each as the pages state with their dates.
-5. The sign-in database holds who may sign in, the App's key is a Worker secret, and the admin's actions are guarded; the answer names the security page.
+5. The sign-in database holds who may sign in, the App's key is a Worker secret, and the admin's actions are guarded; the answer names where the security model is documented.
 6. The seams, including the custom admin route, `navLayout`, and admin-scoped `locals.cairnEditor`; auth is replaceable; the Extension, Scaffold, and Unstable tiers; and that breaking the contract from 1.0 is a major-version event.
-7. Packaged skills reach a site through `cairn-guidance install`, the repo's tooling comes with a clone and a plugin in local sessions, cloud sessions get only committed tooling, and the eval evidence. Cairn has no MCP server, with the reason.
+7. Packaged skills reach a site through `cairn-guidance install`, the repo's tooling comes with a clone and a plugin in local sessions, cloud sessions get only committed tooling, and the eval's cases, arms, and result as `docs/architecture.md` states them. Cairn has no MCP server, with the reason.
 8. Clone, accept the folder's trust, run the fast lane, open a PR; CI is the merge authority, and live-account work needs your own credentials.
-
-### Task 4.13: Tear down
-
-- **Outcome:** Both sites' Workers, databases, buckets, repositories, state records, and wrangler sessions go, per the runbook's Part 8; buckets are purged first, since Sitting B uploads. The mirror goes. Geoff deletes the two GitHub Apps.
-- **Files:** The resource ledger.
-- **Risk:** `live-account`.
-- **Acceptance:** Listings show every resource gone, and the token named in pre-flight item 2 is revoked by Geoff in the same step. `CAIRN_E2E_OAUTH_TOKEN` stays only if a later pass names a use.
-- **Test:** The runbook's verify step.
-- **Minutes:** 30.
-
-### Task 4.14: Prove the bars and close
-
-- **Outcome:** Residue check across cairn-cms, the workstation's `claude/` tree, and the initiatives records. `/doctor prompt-audit` on each. `claude plugin validate` on `standards`. A fresh reader with no design context reviews cairn against Anthropic's best practices, skills, and plugin pages and returns findings. The lean counts run. `create-cairn-site` is filed as a prerequisite of the one release, and STATUS names the sequence ahead: the release, then each site's migration. This plan is deleted, and the `shared-standards` record moves on.
-- **Files:** `docs/STATUS.md`, `BACKLOG.md`, `shared-standards/README.md`, `initiative.yaml`, this plan.
-- **Risk:** `runner`.
-- **Acceptance:** The Acceptance table is filled, bar by bar, in the PR: each met, or its stop's answer named. Geoff approves the final packet.
-- **Test:** The adapter's close checklist.
-- **Minutes:** 60.
+9. An adopt-or-not recommendation whose reasons cite what the pages state, graded for evidence, not for a yes.
