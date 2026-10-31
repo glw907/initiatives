@@ -35,6 +35,8 @@ The household's phones each hold their own contacts. A single phonebook that the
 
 - The automation and testing pass merged on 2026-10-27 (glw907/phonebook#15, squash `13b7d22`; glw907/workstation#156). The phone system now tests itself: a nightly run at 4:00 AM and a 10:00 AM gate on pavilion check both phones, ward, and the Worker, and alert `geoff@907.life` on a failure. A test line on voip.ms places and receives calls, and the office phone is on its voip.ms sub-account. The deferred cutover checks and the old book's move ran with no one at home. Pass 4, phase 2, is next, brainstormed in a fresh session from `docs/plans/2026-10-27-pass-4-notes.md` in the phonebook repo.
 
+- Pass 5 merged on 2026-10-31 (glw907/phonebook#18, glw907/workstation#167). A key changed at either phone now reaches both, each phone reports its local settings, and every push to `main` deploys through CI. No pass is planned; the next one comes from the phonebook's BACKLOG.
+
 ## Records
 
 - Spec: `docs/specs/2026-10-07-phonebook-design.md` in `phonebook`.
