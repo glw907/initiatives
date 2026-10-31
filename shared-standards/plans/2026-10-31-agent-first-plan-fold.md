@@ -2,9 +2,9 @@ Initiative: shared-standards
 
 # Agent-first plan: fold record
 
-Plan: `2026-10-31-agent-first-plan.md`, revised from `dab8b17`. Reviews: `plan-review-mechanics.md` (M), `plan-review-contract.md` (C), and `plan-review-integrity.md` (I), in the planning session's scratchpad. The design was not edited; owed errata are below.
+Plan: `2026-10-31-agent-first-plan.md`, revised from `dab8b17` at `012b681`, then by the verification read at the end of this record. Reviews: `plan-review-mechanics.md` (M), `plan-review-contract.md` (C), and `plan-review-integrity.md` (I), in the planning session's scratchpad. The design was not edited; owed errata are below.
 
-## Counts
+## Counts, first round
 
 | Disposition | Count |
 |---|---|
@@ -15,7 +15,7 @@ Plan: `2026-10-31-agent-first-plan.md`, revised from `dab8b17`. Reviews: `plan-r
 
 Each `optional` finding was dropped. Convergent findings folded once, at the root named in their row. Partial refusals are stated in the row.
 
-**Tasks** 41 (was 42). **Path** 745, 285, 1,120, 840; total 2,990 (was 685, 255, 1,320, 780; 3,040). **Sessions** 339 (was 414), ceiling 678. Only pass 4 is over its line.
+**Tasks** 41 (was 42). **Path** after both rounds: 760, 285, 1,120, 840; total 3,005 (was 685, 255, 1,320, 780; 3,040). **Sessions** 339 (was 414), ceiling 678. Only pass 4 is over its line. The second round's counts are in its section.
 
 ## What verification changed
 
@@ -173,12 +173,14 @@ The 13 "departures" in that report are verdicts, not findings. The one flagged f
 
 ## Rulings owed
 
-Three, in the plan's `## Rulings owed`, each with a recommendation and what each answer builds: the container token (yes), the marketplace fallback (yes), and pass 4's ceiling of 900 (yes).
+Three, in the plan's `## Rulings owed`, each with a recommendation and what each answer builds: the container token (yes), the marketplace fallback (yes), and pass 4's ceiling of 900 (yes). The same section names the forks closed as taken, for Geoff's veto.
 
 ## New `[you]` items
 
 - Pre-flight item 1: bring `~/.dotfiles` to `main`. Holds pass 1.
-- Pre-flight item 7: delete the drift routine at the stage A packet.
+- Pre-flight item 3: say yes to the listed permission rules, merge the rule PR, and run `apply`. Holds pass 1.
+- Pre-flight item 4: run the cutover's Claude configuration steps at pass 1's packet.
+- Pre-flight item 9: delete the drift routine at the stage A packet.
 - Added inside the sittings: narrow each App's installation, rotate the Part 1 key, bring a second address, trigger one failure.
 
 ## Owed errata
@@ -187,11 +189,71 @@ The design was not edited. Each of these changes what a ratified line says.
 
 | Id | Design says | Plan does | Why |
 |---|---|---|---|
-| E1 | Pass 1: enable the plugin "in the same commit that removes the local copies" | Enables it by additive install before the merge | One commit is atomic in git, not on the machine |
+| E1 | Pass 1: enable the plugin "in the same commit that removes the local copies" | Installs it after `standards` merges and before the other merges | One commit is atomic in git, not on the machine |
 | E2 | Pre-flight: "No step needs you before planning. Pass 4 has one named sitting" | Seven items and two sittings | Discovered in planning, plus Geoff's own request |
 | E3 | Pass 3: "proving comment-only moves by identical emitted JS in `dist`" | A comment-stripped normal form | `dist` keeps comments |
 | E4 | Pass 2 is `ordinary` | `runner` | The path map, by the gates it touches |
 | E5 | "`claude plugin eval` covers the plugin's skills"; the code intelligence plugin "is tried in the treatment arm" | Three skills; two cases | Geoff's lean instruction; neither decides a retirement |
 | E6 | "Skill names follow one pattern across the set" | Authored plugin skills keep their names | The namespace already separates them |
-| E7 | Evaluate answers "from the README and evaluator set" | Allowed reads add `CONTRIBUTING.md`, `docs/editors`, and `docs/admin` | Brief items 2 to 4 and 8 live there |
+| E7 | Evaluate answers "from the README and evaluator set" | The judge sources each item to those pages or `CONTRIBUTING.md`, `docs/editors`, or `docs/admin`; other reads are reported | Brief items 2 to 4 and 8 live there |
 | E8 | Pass 4 removes "the drift routine" | Geoff deletes it | An agent cannot |
+| E9 | "A planning session writes one plan per pass"; "A plan is deleted when its pass closes" | One plan for four passes, deleted at 4.13 | The passes share one acceptance table and one stop table |
+| E10 | "Removed with the technical pages: ... `check:options` once its walker exists" | `check-options.mjs` is the walker and stays; only `option-map.json` goes | The walk already exists there. **Changes a proof** |
+| E11 | Pass 3: ablation "runs first"; "Then fix `run.mjs` faults" | 3.1 fixes the harness before the ablation | The ablation needs the harness |
+| E12 | Pass 4 updates `norms.ts` strings and "the checks that hard-code skill paths" | Both move to 3.6, and pass 4's removals are applied in a pass 3 preview | The eval must see the end state |
+| E13 | "`tool/docs/` stays with the Go tool" | `credentials.md` and `tripwire.md` move to `docs/admin` | #160 already moved them for the admin reader |
+| E14 | "five trials per case"; "five of five on auth and access seams" | Arm early stop, baseline-gated skip, and smoke reuse; a 5/5 case can pass at 7 of 8 by rerun | The lean instruction. **Changes a proof** |
+| E15 | "In scope: `cairn-cms`, `workstation`'s `claude/` tree, and the initiatives records"; out: "other repos' docs" | Pushes to three more repos, plus `bin/` and `bluefin/` | Namespaced agent names break those repos otherwise |
+| E16 | A case failing both arms "does not block retirement"; tokens and time "recorded" | Pages keep their disposition only if another counted case covers them; a 14-case floor and a token and time band become bars | So a bar can read unmet |
+
+## Verification read
+
+Source: `plan-fold-verification.md`, against `012b681`. Each finding was checked before folding.
+
+| Disposition | Count |
+|---|---|
+| Folded | 29 |
+| Refused | 1 |
+| New owner fork | 0 |
+| **Total** | **30** |
+
+**What verification changed.**
+
+- **User settings alone load a plugin.** Probed: a fresh `CLAUDE_CONFIG_DIR` with only the two settings keys listed the plugin in `init`. So M2's `apply` test is real. `claude plugin list` still printed none and `verify` reads it, so a host still runs the install.
+- **M8's split.** Writes to other services take narrow allow rules, through the existing `permissions.allow` line. `claude plugin marketplace add`, `claude plugin install`, and `claude-tooling-sync apply` change Claude's own configuration, which the `autoMode` lines exclude on purpose, so Geoff runs them. Teardown's `gh repo delete` is added to the verifier's list, since the same refusal would hit it. A rule matches by prefix, so the plan fixes the sittings' site names and the order of each call's arguments.
+- **Minor 13 confirmed.** `{ definedTags: ['scaffold'] }` with `typed` dropped passes all three tags.
+- **The ledger.** `docs/internal/engine-rulings.md` is 88,406 words, as M5 says.
+- **Figures.** Pass 1 rises by 15 (1.1 by 10, 1.7 by 5). Sessions are unchanged, because `--fixture site` makes the commands match the counts. The 8.4 and 14.2 thresholds check: 400 minutes remain for 3.7, engine trials take 439 session-minutes, and 138 site trials share the rest.
+
+| Finding | Disposition | Where, or why |
+|---|---|---|
+| V-B1 pre-merge proofs need content not on `main` | folded | 1.7 `--plugin-dir`, 1.12 `ref` proved in 1.1, 4.11 from real `main` |
+| V-B2 step 1 installs the stub | folded | Cutover reordered: `standards` merges first. Reopened I-B2 closes |
+| V-M1 settings off tracked | folded | The reorder cuts the window; stop row says the report is expected |
+| V-M2 no auto-update at user scope | folded | 1.7 tracked entry with `autoUpdate`, `apply` test, "Taken" row |
+| V-M3 commands run 18 | folded | `--fixture site`, `$LSP`, `technical-paths.txt` |
+| V-M4 `$STD` loads nothing and contaminates site cases | folded | `$STD` path, `$E` and `--tree-plugin-dir`, 3.1 acceptance, "The eval's shape" |
+| V-M5 Lean scope | folded | Acceptance: scope stated, `STATUS.md` and `docs/internal` excluded |
+| V-M6 Evaluate fails on an innocent read | folded | Bar, 4.13 acceptance, shallow clone at `/work/cairn-cms` |
+| V-M7 comparison passes by construction | folded | Bar, 4.9, "Taken" row: first signed-in admin in both parts |
+| V-M8 writes unproved under auto mode | folded | Pre-flight items 3 and 4; read-safe check removed |
+| V-M9 Ruling 3 not rulable | folded | Ruling 3 names the bars, the margin, and past-900; stop row |
+| V-M10 errata incomplete | folded | E9 to E16 |
+| V-1 stub scan | folded | 1.1 by hand |
+| V-2 smoke transcripts at 3.2 | folded | Moved to 3.3 |
+| V-3 2.4's Risk line | folded | Restored |
+| V-4 residue per pass | folded | Name list |
+| V-5 site files, "one-line" | folded | Header, pass 1 order, 1.7 |
+| V-6 1.7 repoints before the rename | folded | 3.1 Files |
+| V-7 sweep always fires | folded | 3.8 exempts 4.3's install lines |
+| V-8 `update-skills` against the ruleset | folded | 1.7 |
+| V-9 4.5 and the evaluator set | folded | 4.4 writes the brief map first; unpairing refused, since it costs 60 of the 60-minute margin |
+| V-10 "committed" against "no repo change" | folded | 2.1: PR body |
+| V-11 1.2 has no merge route | folded | Pass branch's first commits; 1.11 |
+| V-12 drift, trust, caps | folded | Stop rows, pass 1 header |
+| V-13 `definedTags` | folded | 3.4, Mechanisms; 4.2's stale phrase cut |
+| V-14 sample caveats | folded | Path, with both thresholds |
+| V-15 ruleset quote, stop row, zone records | refused | `optional`; 4.8's snapshot reads the records anyway |
+| V-R1 Ruling 1 gaps | folded | Ruling 1, "Taken" row, 4.13 |
+| V-R2 Ruling 2 gap | folded | 1.10 writes the line |
+| V-F forks closed as taken | folded | One line in `## Rulings owed`, F5 and I-M14 first |
