@@ -37,6 +37,8 @@ The household's phones each hold their own contacts. A single phonebook that the
 
 - Pass 5 merged on 2026-10-31 (glw907/phonebook#18, glw907/workstation#167). A key changed at either phone now reaches both, each phone reports its local settings, and every push to `main` deploys through CI. No pass is planned; the next one comes from the phonebook's BACKLOG.
 
+- The cleanup pass merged on 2026-10-31 (glw907/phonebook#20). A 96.87 upload keeps a contact's Other number, and voip.ms now emails each voicemail. The voicemail and Rings web interfaces are next, each starting with a visual prototype.
+
 ## Records
 
 - Spec: `docs/specs/2026-10-07-phonebook-design.md` in `phonebook`.
