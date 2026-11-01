@@ -363,7 +363,7 @@ Plugin agents become `standards:<name>`, and plugin skills become `standards:<na
 
 ### Task 1.8: Commit the fast lane and project settings
 
-- **Outcome:** `scripts/checks/fast-lane.mjs` runs the legs `gate-tier --fast` prints and fails on empty stdout, which closes #55. `.claude/settings.json` holds the marketplace, the plugin, `autoUpdate`, and `permissions.allow` for the gates. `cairn-run-gate` stays Geoff's wrapper around the same script.
+- **Outcome:** `scripts/checks/fast-lane.mjs` runs the legs `gate-tier --fast` prints and fails on empty stdout, which closes #55. `.claude/settings.json` holds the marketplace, the plugin, `autoUpdate`, and `permissions.allow` for the gates. `cairn-run-gate` stays Geoff's wrapper around the same script. Auto mode refuses a session writing `.claude/settings.json`, so the session proposes the file, Geoff places it in the pass worktree, and the session commits it.
 - **Files:** `scripts/checks/fast-lane.mjs`, `.claude/settings.json`, `package.json`, its unit test.
 - **Risk:** `runner`.
 - **Acceptance:** On a clean clone with no `cairn-run-gate` on `PATH`, a change to `src/lib/content/concepts.ts` passes the lane, the same file with a seeded type error fails it, and a forced empty `gate-tier` output fails it.
