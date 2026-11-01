@@ -16,7 +16,7 @@ The household's phones each hold their own contacts. A single phonebook that the
 
 ## Non-goals
 
-- Voicemail messages in the web app. The Voicemail tab sets the greeting, and voip.ms emails each message.
+- Retrieving a voicemail message after its delete, which needs a stored copy of the audio.
 
 ## Where the work lives
 
@@ -43,3 +43,5 @@ The household's phones each hold their own contacts. A single phonebook that the
 ## Records
 
 - Spec: `docs/specs/2026-10-07-phonebook-design.md` in `phonebook`.
+
+- The voicemail messages and backlog clearing pass merged on 2026-11-01 (glw907/phonebook#31). The household plays and deletes messages and sets message email on the Voicemail tab, and a password set at a phone raises an alert. Serving `%NULL%` was reverted after a web password didn't clear. Recording the household greeting stays Geoff's step.
