@@ -1,0 +1,7 @@
+id: phonebook-public
+title: Public phonebook
+summary: Would publish a scrubbed copy of the household phonebook, with a README explaining the setup and what the build taught, so others can make their own.
+status: proposed
+owner: glw907
+created: 2026-11-01
+repos: [phonebook]
