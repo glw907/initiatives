@@ -82,7 +82,7 @@ A product never ends, and an initiative does, so only a bounded effort gets a re
 | [Docs system](docs-system/README.md) | active | drafter, workstation | Builds the pipeline, outline standard, and Claude infrastructure that handle docs for every project. |
 | [Dubplate server](dubplate-server/README.md) | active | dubplate | Builds the greenfield dubplate server that gives a group one well-organized music library. |
 | [ECXC rebuild](ecxc-rebuild/README.md) | proposed | ecxc-ski | Would rebuild ecxc.ski on the current cairn once the cairn docs standard is complete. |
-| [Household phonebook](household-phonebook/README.md) | active | phonebook, servers, survey | Serves one shared phonebook to the household's Yealink phones and a web app from a Cloudflare Worker. |
+| [Household phonebook](household-phonebook/README.md) | done | phonebook, servers, survey | Serves one shared phonebook to the household's Yealink phones and a web app from a Cloudflare Worker. |
 | [Monthly model review](monthly-model-review/README.md) | active | workstation | Reviews the Claude models, effort settings, and skills each month and logs the result. |
 | [Public phonebook](phonebook-public/README.md) | proposed | phonebook | Would publish a scrubbed copy of the household phonebook, with a README explaining the setup and what the build taught, so others can make their own. |
 | [Poplar re-founding](poplar-refounding/README.md) | active | poplar | Rebuilds the poplar email client from the ground up against a settled architecture. |
