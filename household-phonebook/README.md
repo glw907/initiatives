@@ -16,7 +16,7 @@ The household's phones each hold their own contacts. A single phonebook that the
 
 ## Non-goals
 
-- Remote voicemail through the voip.ms API. It needs its own design, because the API accepts only whitelisted IPs and a Worker's outbound address isn't fixed.
+- Voicemail messages in the web app. The Voicemail tab sets the greeting, and voip.ms emails each message.
 
 ## Where the work lives
 
@@ -37,6 +37,7 @@ The household's phones each hold their own contacts. A single phonebook that the
 
 - Pass 5 merged on 2026-10-31 (glw907/phonebook#18, glw907/workstation#167). A key changed at either phone now reaches both, each phone reports its local settings, and every push to `main` deploys through CI. No pass is planned; the next one comes from the phonebook's BACKLOG.
 
+- The voicemail and rings pass merged on 2026-10-31 (glw907/phonebook#23 to #28, glw907/servers#30). The Voicemail tab sets the greeting, Rings previews all 13 rings, and every voip.ms call goes through a relay on orpheus. Geoff records the real greeting.
 - The cleanup pass merged on 2026-10-31 (glw907/phonebook#20). A 96.87 upload keeps a contact's Other number, and voip.ms now emails each voicemail. The voicemail and Rings web interfaces are next, each starting with a visual prototype.
 
 ## Records
