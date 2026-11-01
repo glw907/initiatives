@@ -90,5 +90,5 @@ A product never ends, and an initiative does, so only a bounded effort gets a re
 | [Shared standards](shared-standards/README.md) | active | workstation, cairn-cms | Would package the skills, registers, and agents an outside developer needs as a Claude Code plugin marketplace. |
 | [Survey house style](survey-house-style/README.md) | done | survey, survey-notes, workstation, cairn-themes, approval-queue, phonebook, servers, cairn-cms, drafter, poplar, dubplate | Would make Survey the house style for every house tool, visual and written, kept in one public repo every repo pins by tag and improved from Geoff's corrections. |
 | [Workstation secrets](workstation-secrets/README.md) | proposed | workstation | Would track the age-encrypted secrets across both workstations so no machine holds one the other lacks. |
-| [XC Athletes data contract](xcathletes-data-contract/README.md) | paused | xcathletes-org | Publishes a versioned, stack-neutral data contract so an athlete's training data stays portable. |
+| [XC Athletes data contract](xcathletes-data-contract/README.md) | done | xcathletes-org | Publishes a versioned, stack-neutral data contract so an athlete's training data stays portable. |
 <!-- index:end -->

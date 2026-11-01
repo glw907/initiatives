@@ -27,3 +27,7 @@ Geoff's ruling of 2026-08-23: `xcathletes-org` exists so an athlete's training d
 - The approved spec of 2026-08-24, and passes 5a and 5b, which shipped the machine and published halves of `/v1/` by 2026-08-25.
 - Status
   - 2026-10-14: paused. Pass 4 is parked (Geoff, 2026-10-14).
+
+## Closed
+
+Retired with xcathletes-org on 2026-10-31 (Geoff). The data contract was not published. The archive index is in `~/Documents/retired-projects/`.

@@ -1,7 +1,7 @@
 id: xcathletes-data-contract
 title: XC Athletes data contract
 summary: Publishes a versioned, stack-neutral data contract so an athlete's training data stays portable.
-status: paused
+status: done
 owner: glw907
 created: 2026-08-23
 repos: [xcathletes-org]
