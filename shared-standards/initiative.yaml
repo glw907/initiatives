@@ -1,7 +1,7 @@
 id: shared-standards
 title: Shared standards
-summary: Would package the skills, registers, and agents an outside developer needs as a Claude Code plugin marketplace.
+summary: Publishes the skills, registers, and agents an outside developer needs as a Claude Code plugin marketplace, and carries the agent-first pattern for cairn-cms.
 status: active
 owner: glw907
 created: 2026-10-14
-repos: [workstation, cairn-cms]
+repos: [standards, workstation, cairn-cms]
