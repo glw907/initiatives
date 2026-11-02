@@ -44,6 +44,8 @@ The household's phones each hold their own contacts. A single phonebook that the
 
 - Spec: `docs/specs/2026-10-07-phonebook-design.md` in `phonebook`.
 
+- The backlog close-out pass merged on 2026-11-01 (glw907/phonebook#33). Saves confirm in a dialog, the greeting player shows its states, a deleted message leaves a History row, repeat plays are immediate, and the office shows voicemail. Geoff's greeting recording and the stale-local-account check remain in the repo's BACKLOG.
+
 - The voicemail messages and backlog clearing pass merged on 2026-11-01 (glw907/phonebook#31). The household plays and deletes messages and sets message email on the Voicemail tab, and a password set at a phone raises an alert. Serving `%NULL%` was reverted after a web password didn't clear. Recording the household greeting stays Geoff's step.
 
 - Status: done (2026-11-01). The phonebook is in maintenance mode: a monthly timer on pavilion keeps it updated (glw907/workstation#189), and feature work comes from its BACKLOG as ordinary passes. Publishing a scrubbed copy is the `phonebook-public` initiative.
