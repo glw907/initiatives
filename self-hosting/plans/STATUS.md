@@ -18,7 +18,7 @@ Rulings during Pass 0 (Geoff, 2026-10-18):
 
 Rulings 2026-10-19 and 2026-10-20 (Geoff):
 - Proton: Geoff moved his own plan from Mail Plus to Pass Family (one subscription per account; Mail Plus holders cannot join a Pass Family; Proton Family rejected on cost). Bridge needs a paid Mail plan, so the Proton Mail reader and its Bridge setup are removed (workstation#108). Step 0.6's purchase is done.
-- Claude works in Proton Pass as it did in 1Password, creating and editing items, through its own agent: `claude-pass` (workstation#114), `pavilion-claude` with editor on `Servers emergency` and `Workstation` only, token in GNOME Keyring, expiring about 2027-01-20. Bare `pass-cli` stays blocked. thinkpad-x1 needs its own `thinkpad-claude` agent.
+- Claude works in Proton Pass as it did in 1Password, creating and editing items, through its own agent: `claude-pass` (workstation#114), `pavilion-claude` and `thinkpad-claude` with editor on `Household IT` and `Workstation` only, tokens in GNOME Keyring, expiring about 2027-01-20 and 2027-02-01. Bare `pass-cli` stays blocked.
 - An executor takes its named conductor's messages as instructions; a conductor message never stands in for a packet's approval (workstation#113).
 - Server names, Venture Bros. theme: media is **orpheus**, mail is **ward**, everywhere, with fresh backup buckets. `media`, `mail`, and `music` stay as service CNAMEs; MX, PTR, and HELO use `ward.907.life`.
 - Geoff's GitHub identity for Access is `geoff@907.life`, signing in as the `geoff` account.
@@ -111,7 +111,7 @@ Next:
 - Estate-wide follow-up, outside this initiative: the `ci-deploy` token for the five site repos and Workers Builds, and retiring `CF_ZT_TOKEN`, per the scheme's table.
 
 - From Pass 2 and the rename (2026-10-20): the Immich admin login into `Servers emergency` (Geoff); the second operator's GitHub identity, Unix account, patterns lines, Hetzner invite, repo access, first sign-in on `ssh-orpheus.907.life`, and console password; no full rebuild drill yet on orpheus's new repository. Servers repo follow-ups are in its new `BACKLOG.md` (#1 to #6, `a5fae46`), led by #1: `promote.sh` must set the box's hostname before any production rebuild. Dubplate's local snapshot command is dubplate BACKLOG #103.
-- thinkpad-x1 at its next pull: `stow -R systemd bin`, `sync.sh --local`, `claude-tooling-sync apply`, a `known_hosts` line for `orpheus.907.life` (compare with its `media.907.life` entry), and a `thinkpad-claude` agent (steps in `bluefin/THINKPAD-PROTON.md`).
+- thinkpad-x1 at its next pull: `stow -R systemd bin`, `sync.sh --local`, `claude-tooling-sync apply`, a `known_hosts` line for `orpheus.907.life` (compare with its `media.907.life` entry) (the `thinkpad-claude` agent landed 2026-11-01).
 - The Cloudflare Access sign-in page still carries the sailing club's logo and wording for every app, and Geoff asked for it cleaned up (2026-10-20): one identity provider per app with the chooser skipped, and a neutral shared page.
 - `dry-run.sh access-github-idp` fails because `ws-servers` cannot list identity providers, though the provider exists and works: a dry-run defect.
 - Later (Geoff, 2026-10-20): WebDAV on orpheus for Chromium bookmark sync with floccus; its design question is how floccus authenticates past Access.
