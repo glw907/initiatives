@@ -13,12 +13,17 @@ A vault is the unit Proton grants access on, so each vault holds one set of read
 | `Family` | accounts the adult kids use or would need: family plans, phones, travel, emergencies | Geoff, the kids |
 | `Parents` | the parents' accounts | Geoff, Cathy |
 | `Proton recovery` | Proton's recovery material | Geoff; no agent |
-| `Infrastructure` | the household's servers, backups, mail, phones, voip.ms, Cloudflare, the registrar, and the age key | Geoff, the second operator, Claude (editor); each `<host>-scripts` agent on the age-key item only |
+| `Infrastructure` | the household's servers, backups, mail, phones, voip.ms, Cloudflare, and the registrar | Geoff, the second operator, Claude (editor) |
+| `Age key` | the workstation age key alone | Claude (editor); `pavilion-scripts` and `thinkpad-scripts` (viewer) |
 | `Projects` | cairn, the sites, npm, Anthropic, Resend, Twilio, and the technical identity's vendor accounts, one folder per project | Geoff, Claude (editor) |
 | `ASC` | the club's credentials and its age key, so a handover is one share | Geoff, Claude (editor), officers later |
 | `Test accounts` | `glw907-test`, the probe mailboxes, test logins | Claude (editor); later a CI token |
 
 Tiebreaker (Geoff approved): an item goes in the narrowest vault that holds everyone who signs in to it, and money or medical accounts lean to `Cathy & Geoff` unless a kid uses them. `Workstation`, `Servers emergency`, and `Household IT` are gone; `Infrastructure` replaced the last two (Geoff, the rename and moves). `pavilion-claude` has temporary editor on `Private`, `Cathy & Geoff`, `Family`, and `Parents` for the triage, revoked when it ends.
+
+The age key first went into `Infrastructure` with a single-item grant for the scripts agents. That failed. An item share hides its parent vault (pass-cli docs, "Share"), and `ws-pass-key` looks the key up by vault name. The key now has a one-item vault, which Geoff named `Age key`. Any script running as Geoff can use a scripts agent's token, and the vault keeps that token's reach to the key alone.
+
+`pass-cli` went from 2.5.1 to 2.7.0 on pavilion on 2026-11-03, unpinned and pinned again. 2.7.0 adds moves into folders, which `Projects` uses. The thinkpad takes the same upgrade at its next session.
 
 ## Mail
 
