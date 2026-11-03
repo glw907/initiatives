@@ -1,0 +1,7 @@
+id: credential-hygiene
+title: Credential and mail hygiene
+summary: Reorganizes Proton Pass into vaults by who may read them, gives Claude one consistent way in, and moves technical mail to a mailbox Claude can read, so the personal mailbox carries personal mail only.
+status: active
+owner: glw907
+created: 2026-11-03
+repos: [workstation, servers]
