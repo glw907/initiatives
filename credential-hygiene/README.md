@@ -35,5 +35,8 @@ On 2026-11-03 the vaults had drifted. `Workstation` was meant to hold the age ke
 ## Records
 
 - Decisions: [specs/2026-11-03-decisions.md](specs/2026-11-03-decisions.md).
+- Status and launch prompt: [plans/STATUS.md](plans/STATUS.md).
 
 Status: active (2026-11-03), the vault layout is approved and in place; item triage is under way.
+
+Status: active (2026-11-03), the vault work is done; the rest of the initiative is planned next in a fresh session ([plans/STATUS.md](plans/STATUS.md)).
