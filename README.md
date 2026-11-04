@@ -79,6 +79,7 @@ A product never ends, and an initiative does, so only a bounded effort gets a re
 | [ASC cutover](asc-cutover/README.md) | active | aksailingclub-org, aksailingclub-legacy | Takes the rebuilt club site live in place of the legacy site and retires the old one. |
 | [Cairn docs standard](cairn-docs-standard/README.md) | active | cairn-cms, workstation, ecxc-ski, 907-life, aksailingclub-org, xcathletes-org, cairn-pub | Keeps every cairn-family docs surface on one published base style guide plus a recorded register. |
 | [Cairn.pub rebuild](cairn-pub-rebuild/README.md) | proposed | cairn-pub | Would rebuild cairn.pub on the current cairn as the site the docs system publishes to. |
+| [Credential and mail hygiene](credential-hygiene/README.md) | active | workstation, servers | Reorganizes Proton Pass into vaults by who may read them, gives Claude one consistent way in, and moves technical mail to a mailbox Claude can read, so the personal mailbox carries personal mail only. |
 | [Docs system](docs-system/README.md) | active | drafter, workstation | Builds the pipeline, outline standard, and Claude infrastructure that handle docs for every project. |
 | [Dubplate server](dubplate-server/README.md) | active | dubplate | Builds the greenfield dubplate server that gives a group one well-organized music library. |
 | [ECXC rebuild](ecxc-rebuild/README.md) | proposed | ecxc-ski | Would rebuild ecxc.ski on the current cairn once the cairn docs standard is complete. |
