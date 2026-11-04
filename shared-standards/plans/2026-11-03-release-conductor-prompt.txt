@@ -14,7 +14,7 @@ Launch both executors now, after the pre-launch checks, from the checkout:
 
 Pre-launch checks, per each plan's "## Pre-flight" and pass-core "Execute": every pre-flight item of plan A (PF1 to PF8) and plan B (items 1 to 4) is done and checked by its own check line. Plan A's "Probe readings" hold no `<pending` row on initiatives main. Plan B's item 2 posts the environment, its tag policy, and the `main` ruleset only; the `release-tags` ruleset waits for rc.4 step 6a. If any item fails its check, launch nothing and write the failure to STATUS.
 
-Ceiling: <CEILING> path minutes for the round, set by Geoff's decision on the planning packet (queue item <ITEM>). Each pass's own line is that ceiling less rc.4's 205.
+Ceiling: 2,210 path minutes for the round, set by Geoff's decision on the planning packet (queue item 20261103T221624-3306025, ask 1: "Raise it to 2,210"). Each pass's own line is 2,005 (the ceiling less rc.4's 205). These figures replace the 1,240 and 1,035 the plans and the spec state.
 
 Standing answers: the spec's "### Standing answers" and each plan's "## Stops and standing answers" table. The plans' "Escalatable" lists are the only items that may escalate without breaking the outcome.
 
