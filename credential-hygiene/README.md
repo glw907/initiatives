@@ -13,7 +13,7 @@ On 2026-11-03 the vaults had drifted. `Workstation` was meant to hold the age ke
 - Proton Pass holds the vaults in [the decisions](specs/2026-11-03-decisions.md), each item in the vault its readers imply, under one naming scheme and one note template.
 - The setup is built into the workstation and every project, not left in this record (Geoff). A rule that must hold lives in a hook or a `check-drift` check, per Anthropic's Claude Code best practices. `check-drift` compares each agent's visible vaults to a committed grant map, so a forgotten temporary grant fails it. It also warns before an agent token expires, and lints item titles against the naming scheme. One vault-map doc is the reference, and the secrets registry names each secret's vault item. Each project's docs name its `Projects` folder and test accounts.
 - Everything ends tidy (Geoff): no duplicate items, no logins for dead services, no stray addresses or aliases, and no doc that names a vault, grant, or address that no longer exists.
-- Every agent grant matches the docs, and `list-access` is the audit.
+- Every agent grant matches the committed grant map, and `pass-access` is the audit.
 - A technical mailbox on ward receives alerts from the technical accounts, the report aliases (`dmarc-reports@`, `tls-reports@`, `postmaster@`, `abuse@`, `security@`), and vendor mail. Claude reads it with a scoped app password.
 - A public technical identity is an alias into that mailbox, and the mailbox's login name is never published.
 - Every Fastmail mask is cataloged with its item and a destination: the technical identity, a Proton alias on `m.907.life`, or closing.
@@ -35,8 +35,11 @@ On 2026-11-03 the vaults had drifted. `Workstation` was meant to hold the age ke
 ## Records
 
 - Decisions: [specs/2026-11-03-decisions.md](specs/2026-11-03-decisions.md).
+- Design for the remaining work: [specs/2026-11-03-remaining-work-design.md](specs/2026-11-03-remaining-work-design.md), sent to Geoff in [its packet](specs/2026-11-03-remaining-work-design-packet.md).
 - Status and launch prompt: [plans/STATUS.md](plans/STATUS.md).
 
 Status: active (2026-11-03), the vault layout is approved and in place; item triage is under way.
 
 Status: active (2026-11-03), the vault work is done; the rest of the initiative is planned next in a fresh session ([plans/STATUS.md](plans/STATUS.md)).
+
+Status: active (2026-11-03), the design for the remaining three passes is drafted, reviewed, and sent to Geoff.
