@@ -37,3 +37,11 @@ Private state on pavilion, mode 700, never committed: `~/.local/state/credential
 - Account details stay in the private state folder, never in this repo.
 - Leave the cairn gate's age-store names alone; the cairn-cms conductor owns them.
 - Keep `ws-pass-key` and `sync.sh --local` working through every rename.
+
+## Stop
+
+Pass A, T6 registry tie-out (2026-11-03, `dotfiles-credential-hygiene-a`). The plan has T6 add each technical item's vault and title to its registry entry, from the private `notes-tech.json`. The workstation repo is public, and auto mode refused the second run of that edit as a sensitive-source copy (item titles from the private state folder into a tracked file). I reverted the registry edit; nothing landed. Waiting on `conductor-dotfiles` for one ruling: (a) the registry names the vault and the store variable only, with no item title; (b) the titles go in anyway, with Geoff's approval in the packet; or (c) the tie-out moves to a private file beside the registry. I recommend (a). All other work continues.
+
+Pass A, T5 `settings.json` (2026-11-03). Auto mode refused three Edits to `claude/.claude/settings.json` in the worktree: the whole `permissions.allow` batch (claude-pass verbs, `pass-access`, pass B's probe rule), the same batch without the probe rule, and the `autoMode.environment` line 399 rewrite. Reasons given: `[Self-Modification]` twice and "judged dangerous" once. The planning probe on 2026-11-03 had passed this class of edit in a scratch worktree. I did not work around it. Everything else in T5 is done or proceeding. Waiting on `conductor-dotfiles`: either Geoff grants the narrow permission, or the edit moves to a `[you: apply the settings edit]` step with the exact patch in the packet.
+
+Ruling on the T6 stop (Geoff, 2026-11-04, asked by `conductor-dotfiles`): option (a). The public registry names each technical item's vault and store variable, with no item title.
