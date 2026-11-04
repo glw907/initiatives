@@ -30,13 +30,22 @@ The age key first went into `Infrastructure` with a single-item grant for the sc
 - A second mailbox on ward takes technical mail. Claude reads it with a separate app password, scoped down (Stalwart credentials can only remove permissions). The scope is Claude's call.
 - Alerts go straight to that mailbox (Geoff). Where a provider has a separate notification address, it is set at the provider; otherwise a Sieve rule moves known alert subjects only, so a reset code never follows an alert (Claude's call).
 - Technical accounts, the high-value ones included, register on the technical identity, since Claude already holds their passwords (Geoff). The exception is Proton, whose recovery stays on the personal mailbox, because resetting it would open every vault (Geoff agreed).
-- The public technical identity is an alias into the technical mailbox. Every message there is untrusted input, per Anthropic's prompt-injection guidance and OWASP LLM01. Its name is still open.
+- The public technical identity is an alias into the technical mailbox. Every message there is untrusted input, per Anthropic's prompt-injection guidance and OWASP LLM01.
+- The public identity is `glw@907.life` (Geoff, 2026-11-03): the `glw907` handle split across the @, so it ties to the GitHub and npm name without repeating 907. It appears where a person is meant to write: npm package metadata, the GitHub profile's public email, `security.txt`, and docs. It is never an account login.
+- Git commits use GitHub's noreply address (`<id>+glw907@users.noreply.github.com`), since a commit email is public in every clone (Claude's call). A project's contact address lives on its own domain (for example `security@cairn.pub`) and delivers to the same mailbox, so a project can be handed on without the personal identity (Claude's call; flag it in the packet).
 
 ## Emergency access
 
 Geoff and Cathy each name the kids as Proton Emergency Access contacts with a wait of about two weeks, and a letter with the estate documents explains the feature and each vault (Geoff). This opens the whole account, which is intended. Geoff sets it up in Proton's dashboard under Recovery.
 
+## Naming and notes
+
+Settled from the triage and applied on 2026-11-03 (Geoff reviewed both batches).
+
+- A title is the service's name as people say it, never a domain. A qualifier goes in one trailing parenthesis, only when one vault holds more than one account at the service, and is usually the username or whose it is: `Fidelity (Cathy)`, `GitHub (cms-bot, ASC)`. A key or secret is named system, then secret, then scope: `R2 backup secret (orpheus, read-only)`. No generic titles.
+- Technical vaults carry the full note template: `For`, `Used by`, `Rotate`, `Recovery`, `Mask`, `Reviewed`, each line only where a source supports it. Personal and family vaults carry only the lines that help, chiefly `Mask` and `Recovery`. A new note goes above an existing one, never over it.
+- `lint.py` in the private state folder holds the title rules; the infrastructure PR moves them into `check-drift`.
+
 ## Open
 
-- The public identity's name, and where it appears.
-- The naming scheme and the note template, drafted from the triage.
+- Nothing. The identity, the naming scheme, and the note template are settled.
