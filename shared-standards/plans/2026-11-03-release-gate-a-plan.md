@@ -12,30 +12,35 @@ Source cites are at cairn-cms `main` bb3c8d3a2. The spec's section names are cit
 
 ## Pre-flight
 
-Pass A depends on spec "Your steps" 2 and 3, plus two session reads. Steps 1 (npm sitting), 4 (environment and rulesets), and 5 (settings grant) serve pass B and `rc.4`; pass A does not wait on them.
+Pass A depends on spec "Your steps" 2 and 3, plus the session's reads and the PF7 cleanup. Steps 1 (npm sitting), 4 (environment and rulesets), and 5 (settings grant) serve pass B and `rc.4`; pass A does not wait on them.
 
 | # | Item | Who | Check |
 |---|---|---|---|
 | PF1 | Spec, Your steps 2: `tmp-token-setup` and `ci-cairn-build`, each received through `secret-receive` as the spec states. | you | `/user/tokens/verify` with `CF_CI_CAIRN_BUILD_TOKEN` answers `active`; `grep -c '^export CF_CI_CAIRN_BUILD_TOKEN=' ~/.local/secrets` prints `1` (name only, never the value); the `grep -c '^export '` count taken before the temporary paste is unchanged by it. |
-| PF2 | Spec, Your steps 3: the probe script (PS, P1, the D1 and R2 write probes with `CF_CI_CAIRN_BUILD_TOKEN`, deletions, the Proton Pass item, the inventory and registry rows on workstation `main`). | you, or the planning session if auto mode allows | Every "Done when" clause of spec step 3 holds, and the PS and P1 rows of "Probe readings" below are filled. |
+| PF2 | Spec, Your steps 3: the probe script (PS, P1, the D1 and R2 write probes with `CF_CI_CAIRN_BUILD_TOKEN`, deletions, the Proton Pass item, the inventory and registry rows on workstation `main`). | you, or the planning session if auto mode allows | `python3 -I ~/.local/state/cairn-agent-first/preflight-token-probes.py` (run as its docstring shows) prints no `FAIL` line and exits 0, which means it also deleted `tmp-token-setup`, printed `ok     tmp-token-setup no longer verifies`, and removed both scratch files (`ok     removed <path>`). Every other "Done when" clause of spec step 3 holds (Proton Pass item, inventory and registry rows pushed, `git -C ~/.dotfiles rev-list --count origin/main..main` prints `0`). Each "Probe readings" row below is copied from the script line it names. On any `FAIL`, the script keeps `tmp-token-setup` and its scratch files, so the sitting fixes the cause and reruns it with no new dashboard trip. |
 | PF3 | P-SOA (spec, A12 last bullet; Risks P-SOA), moved here because it needs nothing pass A builds: read `GET /zones/<carin-test.org zone id>/dns_settings` with `$CLOUDFLARE_API_TOKEN` (`ws-admin`), then `PATCH` the same route with the read-back `soa` object and `min_ttl: 60`. | planning session, else you (paste the printed `curl`) | The reread shows `soa.min_ttl` 60, or the refusal's code and message are in "Probe readings". A refusal does not hold the launch: A11 covers the setup tool. |
 | PF4 | Gate account name for A7: `GET /accounts/120c269ad6d3dfbe6d63a0bb53758ca0` with `$CLOUDFLARE_API_TOKEN`, `.result.name`. | planning session | The name is in "Probe readings". |
 | PF5 | Gate stores and rules present, by name: `CF_WS_CAIRN_GATE_TOKEN`, `GITHUB_TEST_LOGIN`, `GITHUB_TEST_PASSWORD`, `GITHUB_TEST_TOKEN`, `GITHUB_TEST_TOTP_SECRET`, `STALWART_PASSWORD_CAIRN_GATE` in `~/.local/secrets`; the allow rule `Bash(bash scripts/gate/run-gate.sh *)` in `~/.claude/settings.json` (line 35 on 2026-11-03); `~/.local/state/cairn-gate/github-session.json` exists. | planning session | `grep -c` per name prints 1; `grep -c 'run-gate.sh' ~/.claude/settings.json` is at least 1; `test -f` on the session file. |
-| PF6 | No `cairn-build` registration and no live gate run before launch (spec, A14 step 2, checked early). | planning session | The PF2 probe's final `GET /accounts/<id>/builds/tokens` read lists no name `cairn-build` and no `cairn-e2e-gate-probe-*`; `pgrep -f scripts/gate/gate.mjs` prints nothing. |
+| PF6 | No `cairn-build` registration and no live gate run before launch (spec, A14 step 2, checked early). | planning session | The PF2 script's last two lines read exactly `read   cairn-build registrations: 0` and `read   probe registrations left: none` (that read covers both the `cairn-gate-probe-` and `cairn-e2e-gate-probe-` prefixes). A line `read   registrations: unknown (list failed)` is not a pass: rerun the script. `pgrep -f '[s]cripts/gate/gate.mjs'` prints nothing (the bracket keeps `pgrep` from matching its own `bash -c` wrapper, mechanics 5). |
+| PF7 | The six pre-pass run dirs under `~/.local/state/cairn-gate/runs/` (one, `20261103T164910`, still holds two state records) leave the dir that `teardownStale` sweeps, so their `teardown left:` lines never enter a rehearsal run (mechanics 9, integrity I5). | planning session | `bash scripts/gate/run-gate.sh --teardown-stale` from the main checkout (main's harness; allow rule as PF5) exits 0, or each `teardown left:` line it prints is recorded in "Probe readings" with its route and code, and a line naming a live resource on `carin-test.org` stops the launch. Then `mv` every pre-pass dir to `~/.local/state/cairn-gate/runs-archive/`; `ls ~/.local/state/cairn-gate/runs` prints only the dir that teardown run made. |
+| PF8 | The filled "Probe readings" are committed to initiatives `main` before launch (mechanics 18). | planning session commits; conductor checks | ``grep -c '^- .*`<pending' <plan path>`` prints `0` on initiatives `main`. |
 
 ### Probe readings (filled at pre-flight; the executor reads them, never re-probes)
 
+Each row names the PF2 script line it copies (`preflight-token-probes.py`).
+
 - Gate account name (PF4): `<pending>`
-- P1, Builds registers a token holding only Workers Scripts, D1, and R2: `<pending: pass | fail + code>`
-- D1 and R2 write probes with `CF_CI_CAIRN_BUILD_TOKEN`: `<pending>`
-- PS, how a registration shows once its token is deleted (field name and value, or "no signal"): `<pending>`
-- PS, Builds accepts two registrations with one name: `<pending: yes | no + code>`
-- PS, the registration's fields (names only), and which one orders "newest": `<pending>`
+- P1, Builds registers a token holding only Workers Scripts, D1, and R2 (line `ok     P1 register ci-cairn-build as cairn-gate-probe-p1-<stamp>`, or its `note` line with code): `<pending: pass | fail + code>`
+- D1 and R2 write probes with `CF_CI_CAIRN_BUILD_TOKEN` (lines `D1 create cairn-gate-probe-<stamp>` and `R2 create cairn-gate-probe-<stamp>`): `<pending>`
+- PS, how a registration shows once its token is deleted (line `PS     after the token delete:`; a changed field and its before and after values, an entry count change, or "no signal within 5 minutes"): `<pending>`
+- PS, Builds accepts two registrations with one name (line `PS     two registrations with one name:`, with the `note` line's code when `no`): `<pending: yes | no + code>`
+- PS, the registration's fields (line `PS     field names:`), and the field that orders "newest" (a timestamp field in that list, read from line `PS     entries under the name, in list order:`; "list order" if none): `<pending>`
 - P-SOA (PF3): `<pending: min_ttl before -> after | refused + code>`
+- PF7 teardown of the pre-pass run dirs: `<pending: clean | left lines, each route and code>`
 
-Permissions checked: Read each task's writes and credentials against `~/.claude/settings.json` allow rules and the 22 entries of `~/.local/state/claude-denials.jsonl` (to 2026-11-03). T1 to T7, P1 to P3, S1, and R2 write only inside their own worktree under `.claude/worktrees/`, touch no `.claude/` config, and hold no credential. T5's `gh release view v0.99.0-rc.3` is a read under the maintainer's `gh` login. R1's gate runs go only through `bash scripts/gate/run-gate.sh *` (user allow rule, settings.json:35); the script sources `~/.local/secrets` itself, so the session never reads a value. The two `source ~/.local/secrets; curl` forms (PF3, PF4) run at pre-flight with Geoff present, since a sourced-secret `curl` was refused once (2026-11-01, Twilio). Two contingencies keep that risk mid-run: the uuid delete (standing answer S9) and the out-of-harness mailbox query (S7). On a refusal the executor writes the exact command to STATUS and the conductor carries it as a `[you]` step. Pushes go to `glw907/cairn-cms`, named in the launch prompt. The close's admin smoke uses local `wrangler dev` and a local D1, with no credential.
+Permissions checked: Read each task's writes and credentials against `~/.claude/settings.json` allow rules and the 22 entries of `~/.local/state/claude-denials.jsonl` (to 2026-11-03). T1 to T7, P1 to P3, S1, and R2 write only inside their own worktree under `.claude/worktrees/`, touch no `.claude/` config, and hold no credential. T5's `gh release view v0.99.0-rc.3` is a read under the maintainer's `gh` login. R1's gate runs go only through `bash scripts/gate/run-gate.sh *` (user allow rule, settings.json:35); the script sources `~/.local/secrets` itself, so the session never reads a value. The two `source ~/.local/secrets; curl` forms (PF3, PF4) run at pre-flight with Geoff present, since a sourced-secret `curl` was refused once (2026-11-01, Twilio). Two contingencies keep that risk mid-run: the uuid delete (standing answer S9) and the out-of-harness mailbox query (S7). On a refusal the executor sends the exact command to the conductor by message, never to STATUS (a pushed file), and the conductor carries it as a `[you]` step. Pushes go to `glw907/cairn-cms`, named in the launch prompt. The close's admin smoke uses local `wrangler dev` and a local D1, with no credential.
 
-Reviewed: pending (three-lens plan review)
+Reviewed: three-lens plan review (contract, mechanics, integrity), folded per 2026-11-03-release-plans-fold.md
 
 ## Rules for every task
 
@@ -44,6 +49,9 @@ Reviewed: pending (three-lens plan review)
 - auth-data tasks (P1, P2, and any product fix in R1 or the close) write the failing test first and commit it with the fix. After the push, `standards:diff-reviewer` (task scope) reads that commit while CI runs; `fix` or `escalate` stops the line like a red.
 - The clock file `.pass-task-clock` goes at the pass worktree root at each task or pair start, with the larger estimate for a pair (pass-core "Clock stop").
 - No live run of the setup tool's trigger hop outside the gate (spec, Pass A Files). Tests use `packages/create-cairn-site/test/fake-cloudflare*.mjs` and the gate tests' fakes only.
+- Each accepted-task or pair report to the conductor names the CI verdict on that head (`ci-green <sha> --pr <n>`), or `pending` with the run id (mechanics 6).
+- A command written for a refused step, in a report or a message, names each secret only as `$NAME` inside a `bash -c '. ~/.local/secrets; ...'` form, never a value, and goes to the conductor by message, never into `docs/STATUS.md` (integrity I13).
+- Until pass A merges, no gate run starts from any checkout but pass A's worktree: main's harness takes no lock, and its `--all` tears down every other run dir (integrity I19). The conductor holds this for every other session.
 - One literal is the contract between P1 and T7: the build-token prompt text is exactly `Paste your Workers Builds deploy token`. The `--yes` park row is `build-token-missing`, shared by P1 and P3.
 
 ## Tasks
@@ -51,7 +59,7 @@ Reviewed: pending (three-lens plan review)
 ### T1. Browser half: publish, URL tail, loopback, headless, failPage (A1, A2, A3, A8)
 
 - Outcome: `publishViaAdmin` publishes without Save and returns the success strip's text. Each URL tail starts at the log's current end. The setup tool's loopback pages count as done, and any other page fails the leg at once with a screenshot and a controls file. The browser runs headless unless `--headed` is passed.
-- Files: `scripts/gate/browser.mjs`; `scripts/gate/legs.mjs` (runCli's tail and handleUrl call, :362-378, and the `signedIn` set, :374); `scripts/gate/gate.mjs` (the `notifyDesktop` import, :14 and :414; `makeSession`, :283-321; `USAGE`, :261-262; `--headed` in `main`); `src/tests/unit/gate-browser.test.ts`.
+- Files: `scripts/gate/browser.mjs`; `scripts/gate/legs.mjs` (runCli's tail and handleUrl call, :362-378, and the `signedIn` set, :374); `scripts/gate/gate.mjs` (the `notifyDesktop` import, :14 and :414; `makeSession`, :283-321; `USAGE`, :261-262; `--headed` in `main`); `src/tests/unit/gate-browser.test.ts`; `src/tests/unit/gate-env.test.ts` (the `--headed` case only).
 - Class: runner. Model: sonnet, medium.
 - Mechanism: spec, Harness items rows A1, A2, A3, A8, as written. Main's code: `browser.mjs:367-378` (Save, then `.alert` `hasText: 'Published'`), `:244-245` (`offset = 0`), `:226-233` and `:155-175` (hold), `:309` (`headless = false`), `:461-465` (`notifyDesktop`). Loopback success bodies: `packages/create-cairn-site/src/github/oauth.mjs:116`, `install.mjs:251`, `manifest.mjs:183`. The admin's sent-link heading is `Check your email` (`src/lib/admin/LoginPage.svelte:116`), and the success strip is `.cairn-feedback` (`EditPage.svelte:1887`).
 - Acceptance (each fails on main):
@@ -62,8 +70,13 @@ Reviewed: pending (three-lens plan review)
   - A loopback answering `Not found` or `Forbidden` throws. A confirm that lands on `/admin/login` throws with the page text. A send whose page lacks the heading `Check your email` throws with the alert text.
   - An unrecognised page throws `UnrecognisedPageError` and writes `<leg>-<ts>.png` and `<leg>-<ts>.controls.txt` (one `role<TAB>name` line per button and link, `host + pathname` only). No PNG is written for kind `signin` or for a URL carrying `token=` or `code=`. The controls file holds no input value and no query string. Every handled GitHub page also writes its controls file into the run dir.
   - `launchBrowser` with no `headless` launches headless. `holdPage`, `HoldTimeoutError`, `STEP_MS`, and `notifyDesktop` are gone from the exports, and the test file no longer imports them.
-- Test: `src/tests/unit/gate-browser.test.ts` (headless Chromium against route fixtures; heavy lane).
-- Estimate: 120 min. Pair partner: P1.
+  - `--headed` reaches the browser: `makeSession(env, { headed: true })` launches headed, and a `gate-env.test.ts` case shows `run-gate.sh --headed` passes the flag to `gate.mjs` (contract 13; S11 depends on it).
+  - Authorize showing GitHub's consent page, then the loopback: the leg passes and the consent button is clicked once (contract 14).
+  - The loopback test captures the session's log output, and no line contains `code=` (spec A3 "Never log a URL carrying `code=`"; contract 12).
+  - The publish's `waitForURL` uses `alertWaitMs` (60 s, `browser.mjs:358`) as its timeout (mechanics 23).
+  - Every message T1 throws carries the page URL's host and path (no query) plus at most 200 characters of page or alert text, since a failure reason lands in a public release body under `rc.4` (integrity I15).
+- Test: `src/tests/unit/gate-browser.test.ts` (headless Chromium against route fixtures; heavy lane), plus the one `gate-env.test.ts` case.
+- Estimate: 140 min. Pair partner: P1.
 
 ### T2. Driver progress rule and wall clock (A6)
 
@@ -107,8 +120,9 @@ Reviewed: pending (three-lens plan review)
   - An injected `recordLeg` that throws inside the `finally`: the leg's verdict and error are unchanged, and the throw is logged.
   - `--all` writes four `pending` rows carrying the run id before A1 starts. An injected failed write makes `main` return non-zero before any leg runs.
   - `renderGateSection` and the parser round-trip eight columns, `Run` included.
+  - A `--leg A1 --leg A2` run first writes `pending` rows carrying its run id for exactly the legs it names, through the same writer, and aborts if that write fails. With an earlier `pass` row for A1 in the record, a rerun whose A1 dies before its row (an injected throw past the `finally`) leaves A1 `pending`, never the earlier `pass` (integrity I3).
 - Test: the three files above.
-- Estimate: 75 min. Pair partner: T2. Depends on T3.
+- Estimate: 85 min. Pair partner: T2. Depends on T3.
 
 ### T5. The gate table's reader (A17)
 
@@ -117,36 +131,43 @@ Reviewed: pending (three-lens plan review)
 - Class: runner. Model: sonnet, medium.
 - Mechanism: spec, Harness items row A17 and "Pass A tests" A17 bullet. Main has no reader, and `parseRows` is private (`record.mjs:90`).
 - Acceptance: fixtures built with `renderGateSection`. Each of these exits 1: three passes and a `fail`; a missing row; a `skipped` row; a `pending` row; mixed run ids; a duplicate leg; a row with the wrong cell count; a body with no `## Gate`; a failed `gh` read (injected); and the captured `rc.3` body. Four passes with one run id exit 0. Under `--file`, a record whose groups carry two run ids exits 0, and one whose A1 and A2 differ exits 1. Main fails every case, since no `verdict.mjs` exists.
+  - `verdict.mjs` fails on any row inside `## Gate` it cannot parse (a wrong cell count included), naming the reason, because `parseRows` drops such rows silently (`record.mjs:99`). Four good rows plus one malformed row exit 1, and the captured `rc.3` body exits 1 with the parse reason, not only "missing rows" (mechanics 13).
+  - The sparse-checkout contract with pass B's `verdict` job: a test parses the import specifiers of `verdict.mjs` and `record.mjs` and allows only `node:*` and `./record.mjs`. The same test copies only those two files to a temp dir and runs `node <tmp>/verdict.mjs 0.99.0-rc.3 --file <fixture>` there, exiting 0 on a passing fixture (mechanics 8, contract 6). T4 and T6 extend `record.mjs` later, so this test guards them.
 - Test: `src/tests/unit/gate-verdict.test.ts`.
-- Estimate: 60 min. Pair partner: S1. Depends on T4.
+- Estimate: 75 min. Pair partner: S1. Depends on T4.
 
 ### T6. Rehearsal mode, lock, run-dir exit file (A15, A16)
 
-- Outcome: `--cli <absolute .tgz>` runs `npx --yes file:<tgz>` in place of `create-cairn-site@<version>`, and requires `--record-file <path>`. Under `--cli`, `recordLeg` merges each row into that file through `mergeGateSection` and never touches a release body. `run-gate.sh` takes `flock -n` on `~/.local/state/cairn-gate/lock` and refuses while another run holds it, naming the holder's pid. It prints `run dir: <path>` first, and its EXIT trap writes the final status to `<run dir>/exit` after teardown.
+- Outcome: `--cli <absolute .tgz>` runs `npx --yes file:<tgz>` in place of `create-cairn-site@<version>`, and requires `--record-file <path>`. Under `--cli`, `recordLeg` merges each row into that file through `mergeGateSection` and never touches a release body. `run-gate.sh` takes `flock -n` on `~/.local/state/cairn-gate/lock` and refuses while another run holds it, naming the holder's pid. `flock(1)` cannot report a holder (`flock --help` lists no such option), so after acquiring, the script writes `<its pid> <run dir>` to `~/.local/state/cairn-gate/lock.holder`, and a refusal prints that line plus whether `kill -0` finds the pid. The lock is held on fd 9 (`exec 9>"$lock"; flock -n 9`), and every child is started with `9>&-`, so the lock dies with `run-gate.sh` and no orphaned `node`, `npx`, or Chromium keeps it (local probe: without `9>&-` an orphaned `setsid` child held the lock after `kill -9` of the script; with it the lock was free at once). The EXIT trap's teardown runs under `timeout 20m`, so `exit` is always written. A `--leg` run calls `teardownStale` before its first leg, as `--all` does (`gate.mjs:378`), under the same lock (integrity I5). It prints `run dir: <path>` first, and its EXIT trap writes the final status to `<run dir>/exit` after teardown.
 - Files: `scripts/gate/run-gate.sh`; `scripts/gate/gate.mjs` (argv parsing and `USAGE`); `scripts/gate/legs.mjs` (`runCli`'s command, :380-383); `scripts/gate/record.mjs` (the file target); `src/tests/unit/gate-env.test.ts`; `src/tests/unit/gate-legs.test.ts`; `src/tests/unit/gate-record.test.ts`.
 - Class: runner. Model: sonnet, medium.
 - Mechanism: spec, Harness items rows A15 and A16. The `exit` file and the `run dir:` line are this plan's addition, so R1's Monitor has a condition to wait on (see `## Decisions` seed D3). The lock path sits under `$HOME`, so the test sets `HOME` to a temp dir and needs no new setting.
 - Acceptance (each fails on main):
   - `--cli /abs/x.tgz --record-file /abs/r.md --version 0.99.0-rc.3`: the injected driver receives `['--yes', 'file:/abs/x.tgz', '--dir', ...]`. `--cli` with a relative path, or with no `--record-file`, returns 2 with `USAGE`.
   - Under `--cli`, a leg's row lands in the record file, and an injected `gh` sees no call. A second run on the same file replaces only its own legs' rows.
-  - With the lock held by a test process, `run-gate.sh --smoke` exits non-zero naming that pid, and starts no `gate.mjs`.
+  - Two `run-gate.sh` runs, the first held open by a stub `gate.mjs` (the test points `HOME` at a temp dir): the second exits non-zero, prints the first's pid and run dir from `lock.holder`, and starts no `gate.mjs` (mechanics 22).
+  - The first run killed with `SIGKILL` while its stub child sleeps: a third run acquires the lock at once (the `9>&-` rule).
   - After a run, `<run dir>/exit` holds the exit status, and stdout's first line is `run dir: <path>`.
+  - The record file target (mechanics 2; `record.mjs:146-147` refuses an empty release body, and the file writer must not inherit that): an absent `--record-file` is created mode 0600 holding the `## Gate` section; an empty file gets the section; a missing parent dir fails with exit 2 before any leg.
+  - `main(['--all', '--cli', <tgz>, '--record-file', <file>, '--version', '0.99.0-rc.3'])` with injected deps: zero `gh` calls across the whole run, the pending pre-write included, and the file holds the four `pending` rows before A1 starts (contract 4).
+  - A leftover state record in another run dir is torn down before a `--leg` run's first leg (integrity I5).
 - Test: the three test files above.
-- Estimate: 75 min. Pair partner: P3. Depends on T5.
+- Estimate: 105 min. Pair partner: P3. Depends on T5.
 
 ### T7. The gate's second token, the registration readout, the gate README (A12 harness half, A13 gate README)
 
-- Outcome: the gate carries `CF_CI_CAIRN_BUILD_TOKEN` and answers the build-token prompt with it. The smoke's D1, R2, and registration probes run with it, and the registration probe uses a `cairn-e2e-gate-probe-*` name, never `cairn-build`. The smoke prints one info line: the count of registrations named `cairn-build`, each one's `build_token_uuid`, and whether its `cloudflare_token_id` equals the build token's verify id. Each Builds leg (A2, B1) logs its trigger's build-token uuid from `listBuildTriggers` before teardown. Teardown still never touches a registration.
+- Outcome: the gate carries `CF_CI_CAIRN_BUILD_TOKEN` and answers the build-token prompt with it. The smoke's D1 and R2 probes run with its bearer. The registration probe registers the build token (its secret, and its verify id as `cloudflare_token_id`) under a `cairn-e2e-gate-probe-*` name, never `cairn-build`, through the gate token's api, since registering needs Workers CI, which only `CF_WS_CAIRN_GATE_TOKEN` holds (main: `gate.mjs:171,245-253` registers the gate token itself through `makeApi` on the gate token; the PF2 script registers with the gate token). The smoke prints one info line: the count of registrations named `cairn-build`, each one's `build_token_uuid`, whether its `cloudflare_token_id` equals the build token's verify id, and the count of registrations named `cairn-e2e-gate-probe-*` (integrity I10). Each Builds leg (A2, B1) logs, before teardown, one line `trigger build token: <build_token_uuid>` from `listBuildTriggers` (`api.mjs:584`), or `trigger build token: read failed: <reason>` when the read fails. It also logs the key names of the newest build's `build_trigger_metadata` from `listBuildsForWorker` (`api.mjs:633`; the field `chapter3.mjs:911` reads), which R2 uses to confirm `build_trigger_uuid` (mechanics 17). Teardown still never touches a registration.
 - Files: `scripts/gate/run-gate.sh` (allowlist, :26); `scripts/gate/gate.mjs` (redaction, :96; probes, :234-253; the info line); `scripts/gate/legs.mjs` (`promptTable` row and its `buildToken` input; the trigger log in `runLeg`); `scripts/gate/README.md` (headless, `--headed`, `--cli` and `--record-file`, the lock, `failPage`, the second token, the `exit` file; replaces :86's hold paragraph); `src/tests/unit/gate-env.test.ts`; `src/tests/unit/gate-legs.test.ts`.
 - Class: runner. Model: sonnet, medium.
 - Mechanism: spec, A12 bullets 1-5. The info line is this plan's addition, so R1 can make A14 steps 2 and 5's registration reads through the allowed `run-gate.sh --smoke` instead of a sourced-secret `curl` (seed D4). The smoke FAILs when `CF_CI_CAIRN_BUILD_TOKEN` is absent, since every Builds leg needs it.
 - Acceptance (each fails on main):
-  - The smoke against the fake server sends the D1, R2, and registration-probe calls with the build token's bearer, and the gate token's calls with the gate token. The probe name starts `cairn-e2e-gate-probe-`. Neither token appears in any printed line.
-  - With the fake holding one `cairn-build` entry whose `cloudflare_token_id` matches the build token's verify id, the info line reads count 1, prints the uuid, and reports a match. With none, it reads count 0.
+  - The smoke against the fake server sends the D1 and R2 calls and the build token's `/user/tokens/verify` with the build token's bearer. The registration probe's `POST` and `DELETE` go with the gate token's bearer, and the `POST` body carries the build token as `build_token_secret` and its verify id as `cloudflare_token_id` (integrity I9). The probe name starts `cairn-e2e-gate-probe-`. Neither token appears in any printed line.
+  - With the fake holding one `cairn-build` entry whose `cloudflare_token_id` matches the build token's verify id, the info line reads count 1, prints the uuid, and reports a match. With none, it reads count 0. With a leftover `cairn-e2e-gate-probe-x` entry, it prints probe count 1.
+  - A Builds leg against a fake `listBuildTriggers` logs exactly one `trigger build token: <uuid>` line; a failing read logs the `read failed` line instead (contract 5).
   - A prompt line `Paste your Workers Builds deploy token` selects the build-token entry, and its value is the build token.
   - `run-gate.sh` passes `CF_CI_CAIRN_BUILD_TOKEN` through and nothing else new (the existing allowlist test, extended).
 - Test: `src/tests/unit/gate-env.test.ts`, `src/tests/unit/gate-legs.test.ts`.
-- Estimate: 65 min. Pair partner: none. Depends on T6.
+- Estimate: 80 min. Pair partner: none. Depends on T6.
 
 ### P1. The narrow build token (A10, #341)
 
@@ -182,9 +203,9 @@ Reviewed: pending (three-lens plan review)
 - Acceptance (each fails on main):
   - Both fetch probes unreachable, authoritative AAAA and A present, the injected pinned probe matching: `live`. Main gives `hostname-resolver-lagging`.
   - A pinned mismatch: not `live`.
-  - Against a local HTTPS server under a made-up hostname, the real pinned request carries `servername` and `Host` equal to that hostname, and connects to the pinned address with `autoSelectFamily` on.
+  - Against a local HTTPS server under a made-up hostname, the real pinned request carries `servername` and `Host` equal to that hostname, and connects to the pinned address with `autoSelectFamily` on. The certificate comes from `openssl req -x509` into a temp dir in `beforeAll`, and its `ca` reaches the request through the `pinnedProbe` seam's test options only. A second case asserts the production call sets no `ca` and no `rejectUnauthorized: false` (mechanics 14).
 - Test: `npm test -w packages/create-cairn-site`.
-- Estimate: 60 min. Pair partner: T3.
+- Estimate: 70 min. Pair partner: T3.
 
 ### P3. Setup docs for the second token and the DNS line (A13 product docs)
 
@@ -192,9 +213,9 @@ Reviewed: pending (three-lens plan review)
 - Files: `docs/admin/own-your-domain.md` (:7, :105-118); `docs/admin/before-you-start.md` (:48-54); `docs/admin/setup-recovery.md` (:61 table); `docs/admin/create-your-site.md` (:117-119 only; never the marked transcript block, #185); `packages/create-cairn-site/README.md` (:326-357 reverse, and the at-rest paragraph); `MIGRATION-NOTES.md`; `CHANGELOG.md`.
 - Class: ordinary. Model: sonnet, medium. Load `cairn-writing-docs` and draft from the admin brief in its `references/docs-register.md`.
 - Mechanism: spec, Product items A13.
-- Acceptance: `npm run check:docs-gate` and Vale pass. `grep -rn 'cairn create-cairn-site build token\|second, wider token\|No second dashboard trip' docs/ packages/create-cairn-site/README.md` returns nothing; main returns README:326,350 and own-your-domain.md:7,105. `MIGRATION-NOTES.md` may name the old registration as the thing to delete. `docs-fact-checker` on the changed lines returns no finding.
+- Acceptance: `npm run check:docs-gate` and Vale pass. `grep -rn 'cairn create-cairn-site build token\|second, wider token\|No second dashboard trip\|reaches every Cloudflare account and zone' docs/ packages/create-cairn-site/README.md` returns nothing; main returns README:326,352 and own-your-domain.md:7,105 (mechanics 11; `:105-118` is a required rewrite). `MIGRATION-NOTES.md` may name the old registration as the thing to delete. Positive checks, since a deletion passes every negative grep (contract 11): `setup-recovery.md` names `cairn-build` and `build-token-missing`; `own-your-domain.md` or `create-your-site.md` names `Paste your Workers Builds deploy token` and the 30-minute resolver line; `MIGRATION-NOTES.md` holds the re-point steps (create the narrow token, select it under Worker > Settings > Builds > API token, delete the old one); the README names `cairn-build`. `docs-fact-checker` on the changed lines returns no finding.
 - Test: the docs gate (light lane).
-- Estimate: 60 min. Pair partner: T6. Depends on P1, P2.
+- Estimate: 65 min. Pair partner: T6. Depends on P1, P2.
 
 ### S1. Showcase spec for the admin publish (A9, optional)
 
@@ -212,28 +233,31 @@ Reviewed: pending (three-lens plan review)
 - Files: none committed. Outputs outside the worktree, mode 0700: `~/.local/state/cairn-gate/rehearsal/` holds the tarball and `rehearsal-gate.md`.
 - Class: auth-data (the live check of P1 and P2). Model: the executor (sonnet, medium).
 - Steps:
-  1. In the worktree's `packages/create-cairn-site`, run `node scripts/bake-template.mjs --to template --engine-spec 0.99.0-rc.3 --dev-spec 0.99.0-rc.3`, then `npm pack --ignore-scripts --pack-destination ~/.local/state/cairn-gate/rehearsal` (fold V8).
-  2. `bash scripts/gate/run-gate.sh --smoke`. Every check reads `ok`, and the T7 info line reads count 0.
-  3. `bash scripts/gate/run-gate.sh --all --version 0.99.0-rc.3 --cli <absolute tgz> --record-file ~/.local/state/cairn-gate/rehearsal/rehearsal-gate.md`, run with `run_in_background: true`. Take the run dir from the output's first line, then arm a Monitor whose command is `until [ -f <run dir>/exit ]; do sleep 60; done`. The background task's exit notification is the primary signal, and the Monitor is the backstop for a lost notification after an API drop. Arm the `/loop` wake-up before the first run if it is not armed.
-  4. Judge each failure by spec "The rehearsal's rules" and the standing answers below. Fix in the right files: harness in `scripts/gate/`, product in pass A's product files (test first). After each fix, run the fast lane, commit, push, and re-pack (step 1). Rerun the affected group with `bash scripts/gate/run-gate.sh --leg A1 --leg A2 ...` (or B1 and B2), with the same `--cli` and `--record-file`, in the background as in step 3. Run `bash scripts/gate/run-gate.sh --teardown-stale` first when the previous run printed a `teardown left:` line.
-  5. Pass check, all five must hold:
+  1. `mkdir -p -m 0700 ~/.local/state/cairn-gate/rehearsal` (`npm pack --pack-destination` fails ENOENT on a missing dir, probed on npm 11.20.0, mechanics 10). In the worktree's `packages/create-cairn-site`, run `node scripts/bake-template.mjs --to template --engine-spec 0.99.0-rc.3 --dev-spec 0.99.0-rc.3`, then `npm pack --ignore-scripts --pack-destination ~/.local/state/cairn-gate/rehearsal` (fold V8). A re-pack overwrites the same path, and that is safe: two different tarballs packed in turn to one path and version each ran their own bin through `npx --yes file:<path>` (local probe, npm 11.20.0; integrity I4 refused).
+  2. `bash scripts/gate/run-gate.sh --smoke`. Every check reads `ok`, the T7 info line reads `cairn-build` count 0 and probe count 0, and the run dir from its first line is appended to `~/.local/state/cairn-gate/rehearsal/runs.txt`. On a resumed session whose `runs.txt` already lists a leg run, the line reads count 1 with a token-id match instead, and the step 5 prompt count spans `runs.txt` (integrity I17).
+  3. `bash scripts/gate/run-gate.sh --all --version 0.99.0-rc.3 --cli <absolute tgz> --record-file ~/.local/state/cairn-gate/rehearsal/rehearsal-gate.md`, run with `run_in_background: true`. Take the run dir from the output's first line and append it to `runs.txt`. Then arm a Monitor whose command is `until [ -f <run dir>/exit ] || flock -n ~/.local/state/cairn-gate/lock true; do sleep 60; done`, so a run killed before it writes `exit` still ends the wait, since the lock dies with `run-gate.sh` (T6; integrity I6). The background task's exit notification is the primary signal, and the Monitor is the backstop for a lost notification after an API drop. Arm the `/loop` wake-up before the first run if it is not armed.
+  4. Judge each failure by spec "The rehearsal's rules" and the standing answers below. Fix in the right files: harness in `scripts/gate/`, product in pass A's product files (test first). After each fix, run the fast lane, commit, push, and re-pack (step 1). Rerun the affected group with `bash scripts/gate/run-gate.sh --leg A1 --leg A2 ...` (or B1 and B2), with the same `--cli` and `--record-file`, in the background as in step 3, appending its run dir to `runs.txt`. A `--leg` run sweeps stale run dirs itself (T6), so no separate `--teardown-stale` precedes it. R2 lands before the deciding run (see R2).
+  5. Pass check, every item must hold, read over the run dirs in `runs.txt`:
      - `node scripts/gate/verdict.mjs 0.99.0-rc.3 --file ~/.local/state/cairn-gate/rehearsal/rehearsal-gate.md` exits 0.
-     - A fresh `--smoke` info line reads count 1 with a token-id match.
-     - Every trigger uuid logged in the rehearsal's run dirs equals that entry's uuid.
-     - `answered "Paste your Workers Builds deploy token"` appears exactly once across the `driver.log` of every rehearsal run dir, counted from the last uuid delete if S9 took one.
-     - The run dirs are listed in the PR body's rehearsal record.
+     - A fresh `--smoke` info line reads `cairn-build` count 1 with a token-id match, and probe count 0 (integrity I10).
+     - The deciding runs of A2 and B1 each logged exactly one `trigger build token: <uuid>` line, each equal to that entry's uuid, and no `read failed` line (contract 5; an empty set never passes).
+     - The deciding runs printed no `teardown left:` line (contract 23).
+     - `answered "Paste your Workers Builds deploy token"` appears exactly once across the `driver.log` of every run dir in `runs.txt`, counted from the last uuid delete if S9 took one.
+     - The run dirs in `runs.txt` are listed in the PR body's rehearsal record.
 - Acceptance: the step 5 checks. Main fails it, since main has no `--cli`, `--record-file`, `verdict.mjs`, or build-token prompt.
-- Estimate: 120 min. Pair partner: none. Depends on every task above except P3 (merged and pushed).
+- Estimate: 125 min. Pair partner: none. Depends on every task above except P3 (merged and pushed).
 
 ### R2. Captured fixtures, the 7003 allowlist, the trigger field (A14 steps 6-8, A9, #348, #336 residue)
 
-- Outcome: the GitHub fixtures in `gate-browser.test.ts` serve the rehearsal's captured controls files, scrubbed. A test asserts that no `github-*` fixture holds the test login. Teardown allows the 404 codes R1's teardown logs show per route. R1 confirms `build_trigger_uuid` from a captured build record and records it in the PR. Main's code is `chapter3.mjs:911`, and teardown's 7003 rule is `teardown.mjs:126-128`.
+- Outcome: the GitHub fixtures in `gate-browser.test.ts` serve the rehearsal's captured controls files, scrubbed. A test asserts that no `github-*` fixture holds the test login. Teardown allows the 404 codes R1's teardown logs show per route. R1 confirms `build_trigger_uuid` from T7's logged `build_trigger_metadata` key names and records it in the PR; if the key is absent, the PR records "absent" and #336's trigger-field residue stays open in the backlog edits. Main's code is `chapter3.mjs:911`, and teardown's 7003 rule is `teardown.mjs:126-128`.
+- Order (contract 8): ruling 10 protects teardown, and the End-to-end check wants the rehearsal "against the code that merges", so R2 lands after the first `--all` that logged teardown and before R1's deciding run. When R1's later reruns are the deciding runs, they prove R2 at no extra cost. When the first `--all` already passes, R2 lands and one `--leg A1 --leg A2` rerun follows as the deciding run for group A (55 min, priced in the path), since teardown runs after every group. S5 covers any later teardown change.
+- Dispatch inputs (integrity I16): the absolute paths of the `*.controls.txt` files and of the `driver.log` files whose teardown lines it reads, by full path. The dispatch forbids reading `urls.log` and `capture-*.bin`, which hold sign-in URLs.
 - Files: `src/tests/unit/fixtures/gate-pages/github-*.txt` (new); `src/tests/unit/gate-browser.test.ts`; `scripts/gate/teardown.mjs`; `src/tests/unit/gate-teardown.test.ts`.
-- Class: runner. Model: sonnet, medium (one cairn-implementer). The dispatch names the absolute run-dir paths from R1, read by path.
+- Class: runner. Model: sonnet, medium (one cairn-implementer). The dispatch carries the inputs above.
 - Mechanism: spec, A9 last two sentences, A14 steps 6-8. The scrub replaces the test login, `cairn-e2e-gate-*` names, and any email with placeholders. The allowlist takes only codes the rehearsal logged for a route, each with its logged body in the test.
 - Acceptance: on main, the GitHub pages are hand-built (`gate-browser.test.ts:38-86`) and teardown treats every 7003 as a failure. The rebuilt `handleUrl` tests pass against the captured controls. The scrub test fails when a fixture holds the login. A 7003 from a route not on the allowlist still throws.
 - Test: `gate-browser.test.ts` (heavy), `gate-teardown.test.ts`.
-- Estimate: 40 min. Pair partner: none. Depends on R1. It changes no product file, so no group rerun follows (seed D5).
+- Estimate: 40 min, plus the 55-minute group A rerun when the first `--all` passed outright. Pair partner: none. Depends on R1's first `--all` (seed D5).
 
 ### C1. Close
 
@@ -243,16 +267,16 @@ See `## Close`. Estimate: 50 min, plus fix rounds of 70 min.
 
 | Step | Slot 1 | Slot 2 | Counted |
 |---|---|---|---|
-| Pair 1 | T1 120 | P1 140 (opus) | 140 |
-| Pair 2 | T3 75 | P2 60 (opus) | 75 |
-| Pair 3 | T4 75 | T2 60 | 75 |
-| Pair 4 | T5 60 | S1 30 | 60 |
-| Pair 5 | T6 75 | P3 60 | 75 |
-| Solo | T7 65 | | 65 |
-| Serial tail | R1 120, R2 40, C1 50, fix rounds 70 | | 280 |
-| **Path** | | | **770** |
+| Pair 1 | T1 140 | P1 140 (opus) | 140 |
+| Pair 2 | T3 75 | P2 70 (opus) | 75 |
+| Pair 3 | T4 85 | T2 60 | 85 |
+| Pair 4 | T5 75 | S1 30 | 75 |
+| Pair 5 | T6 105 | P3 65 | 105 |
+| Solo | T7 80 | | 80 |
+| Serial tail | R1 125, R2 40, R2's group A rerun 55, C1 50, fix rounds 70 | | 340 |
+| **Path** | | | **900** |
 
-The spec's pass A path is 700 (lane 1 385, lane 2 245, tail 75 + 120 + 50 + 70). This plan's 770 is 10 percent over: A12's harness half and the gate README moved from the product lane into the harness chain, since they edit `run-gate.sh`, `gate.mjs`, and `legs.mjs`, and A14 steps 6-8 are priced as their own task (R2). The sum over every task is 1,030 plus fix rounds, and it sets nothing. The round's ceiling is 1,240 path minutes (ruling 13), and `rc.4` takes 200 of them after both passes, so pass A's own line is 1,040.
+The spec's pass A path is 700 (lane 1 385, lane 2 245, tail 75 + 120 + 50 + 70). The plan as drafted was 770: A12's harness half and the gate README moved from the product lane into the harness chain, since they edit `run-gate.sh`, `gate.mjs`, and `legs.mjs`, and A14 steps 6-8 are priced as their own task (R2). The review fold adds 130 (2026-11-03-release-plans-fold.md): named tests on T1, T4 to T7, P2, P3, and R1; the lock's holder file and fd rule; and R2's live rerun (55). The sum over every task is 1,195 plus fix rounds, and it sets nothing. The round's ceiling is 1,240 path minutes (ruling 13), and `rc.4` takes 205 of them after both passes, so pass A's own line is 1,035. The round's path is this pass's 900 plus `rc.4`'s 205, or 1,105, since pass B's 610 runs beside it.
 
 ## Stops and standing answers
 
@@ -262,18 +286,18 @@ The executor never asks Geoff and never notifies him. It writes a stop to `docs/
 |---|---|---|
 | S1 | A clock stop: a task or pair passes twice its estimate. | The conductor applies the spend answer (spec, Standing answers "Spend"). With a traced cause inside the line, it names a new `estimate=` and the executor resumes. With no traced cause, it stops for Geoff. |
 | S2 | A red fast lane or CI, or `fix` or `escalate` from a task-scope diff-reviewer on an auth-data commit. | Fix forward on a traced cause, and quote each reviewer finding verbatim as the fix's criteria. A cause that returns after its fix gets one structural fix, then escalation in the PR if the item is in S12's list; otherwise it stops. A CI `test` red with no code cause reruns once. |
-| S3 | Pass A's path passes 1,040, or the round's 1,240 (ruling 13). | Stop, write STATUS, reach the conductor. No standing answer. |
+| S3 | Pass A's path passes 1,035, or the round's 1,240 (ruling 13). | Stop, write STATUS, reach the conductor. No standing answer. |
 | S4 | A rehearsal failure (spec, "The rehearsal's rules"). | Expected: none. A harness gap is fixed in the harness, a product defect in pass A's product files (test first), and an environment cause before `rc.4`, recorded. Then rerun the affected group (spec, Standing answers "The rehearsal"). Reruns come out of the fix-round minutes. |
-| S5 | A product change after the rehearsal passed, a close-review fix included. | Rerun the group that reaches the changed code before the PR is ready: group A for A11 and the email path, and the group whose Builds leg runs first for A10 (spec, "The rehearsal"). A rerun that must reach A10's collect path takes S9 first. |
+| S5 | A product change after the rehearsal passed, a close-review fix included, or a change to `scripts/gate/teardown.mjs`, `legs.mjs`'s `evaluateLeg`, or the prompt table after the deciding run (contract 8; ruling 10 names those three). | Rerun the group that reaches the changed code before the PR is ready: group A for A11 and the email path, and the group whose Builds leg runs first for A10 (spec, "The rehearsal"); group A for a teardown, `evaluateLeg`, or prompt-table change. A rerun that must reach A10's collect path takes S9 first. |
 | S6 | F2, the email throw on A1 or B2. | If the captured CLI error shows a product defect, fix it in `chapter2.mjs` or `email.mjs` with a failing test first (both join the files for this fix only). If it shows the environment, fix the environment and record it (spec, Standing answers "The email throw"). |
-| S7 | B2's mail does not arrive. | Query the gate mailbox outside the harness for mail from `no-reply@carin-test.org` since the request, and read Stalwart's DMARC verdict (spec, "B2 mail does not arrive"). No message means the environment (B-13): fix the gate zone's records, or stop with the traced cause if the fix is on ward. A message found means a harness gap. If auto mode refuses the sourced-secret query, the executor writes the exact command to STATUS, and the conductor runs it or carries it as a `[you]` step. |
+| S7 | B2's mail does not arrive. | Query the gate mailbox outside the harness for mail from `no-reply@carin-test.org` since the request, and read Stalwart's DMARC verdict (spec, "B2 mail does not arrive"). No message means the environment (B-13): fix the gate zone's records, or stop with the traced cause if the fix is on ward. A message found means a harness gap. If auto mode refuses the sourced-secret query, the executor sends the exact command to the conductor by message (never STATUS), and the conductor runs it or carries it as a `[you]` step. |
 | S8 | The narrow token is too narrow at the rehearsal: the Builds log names a missing permission. | Add the key to `BUILD_TOKEN_PERMISSION_KEYS` (P1's files). Geoff adds it to `ci-cairn-build` at a set point that the conductor notifies (spec, "Narrow token too narrow"). |
-| S9 | A second live run of the deploy-token prompt is needed. | Read the triggers. If none holds the rehearsal's `cairn-build` registration, delete it by its uuid with `CF_WS_CAIRN_GATE_TOKEN`, never by name, then rerun (spec, "A second live run"). On an auto-mode refusal, the conductor carries the exact command as a `[you]` step. |
+| S9 | A second live run of the deploy-token prompt is needed. | Read the triggers of every Worker on the account, real sites included: list the account's Worker scripts (`/accounts/<id>/workers/scripts`, `api.mjs:629`), then each one's triggers (`/accounts/<id>/builds/workers/<tag>/triggers`, `api.mjs:584`), collecting each `build_token_uuid`, and log the collected set in the run dir (integrity I12; triggers are per Worker). If the rehearsal registration's uuid is absent from that set, delete it by its uuid with `CF_WS_CAIRN_GATE_TOKEN`, never by name, then rerun (spec, "A second live run"). On an auto-mode refusal, the conductor carries the exact command as a `[you]` step. |
 | S10 | A Workers Builds outage. | One rerun after 15 minutes (spec). |
 | S11 | A headless GitHub challenge (a `failPage` screenshot shows one). | Rerun that group with `--headed`. If headed passes, `rc.4` gates headed, and the gap is listed in the PR body's `## Backlog edits for the cut`, which the conductor files in `BACKLOG.md` at the cut (spec; shared-file rule, Close step 6). |
 | S12 | Items the run may escalate without breaking the outcome. | Only three: stale-registration handling (#341 part 3), which ships as "reuse, and the first build fails inside the watch", never as a delete; S1's showcase spec; and the per-route 7003 allowlist (spec, "Items the run may escalate"). Anything else that fails after its structural fix stops. |
 | S13 | S1 is not cheap. | Skip it, keep T1's minimal editor fixture, record it in `## Decisions`, and leave it on #336. |
-| S14 | Another gate run holds the lock. | Wait for it to exit. Never start a second run (spec). |
+| S14 | Another gate run holds the lock. | Wait for it to exit. Never start a second run (spec). The lock dies with its `run-gate.sh` (T6's `9>&-` rule), so a held lock always has a live holder, which the refusal names. |
 | S15 | A write or call auto mode refuses despite the plan's reading. | Skip that step. The conductor's packet carries it as a `[you]` step with the exact command (spec, "A refused settings write", applied to any refusal). |
 | S16 | A merge conflict between a pair's two commits. | Pairs are file-disjoint, so a conflict means a task wrote outside its list. Keep each task's own files and revert the stray change. Record it, then run the fast lane. A conflict inside a task's own files stops. |
 
@@ -290,14 +314,15 @@ The executor never asks Geoff and never notifies him. It writes a stop to `docs/
 5. **CHANGELOG and MIGRATION-NOTES.** `## Unreleased` and the re-point entry come from P3, with no version bump. Run `npm run check:consumers-must`.
 6. **Backlog edits, made by the conductor at the `rc.4` cut, never on this branch.** `BACKLOG.md` items #341 to #349 sit on adjacent lines, so a branch edit here would conflict with pass B. Pass B follows the same rule (the conductor's shared-file rule, 2026-11-03). The PR body carries a `## Backlog edits for the cut` section listing each edit with its proof, and the executor writes no `BACKLOG.md` change and never runs `/standards:log-issue` on the branch. The section holds:
    - The spec's pass A folds ("Backlog verdicts"). #341 moves to `## Done`, naming the PR; if S12 escalated the stale path, the residue is a new item with its text drafted. #348 moves to `## Done`. #336 is reworded per the sweep (drop "run its first live leg"), then cut to what remains: the gone-install-dir case, plus S1 or the 7003 allowlist if either escalated. #349 gets one line saying the `rc.3` rehearsal ran in this PR; pass B's rule closes it.
-   - Every "found, not done" item, each drafted in `/standards:log-issue` shape with a `Placement` line, S11's gap among them if it occurred.
+   - Every "found, not done" item, each drafted in `/standards:log-issue` shape with a `Placement` line, S11's gap among them if it occurred, and a retention rule for `failed` run dirs, which T3 keeps indefinitely with their `urls.log` and captures (integrity I16).
    - The sweep's other edits (#330 done, the `swept` stamps, #205's line) belong to pass B's list or the conductor, never this one.
 7. **STATUS: no net change on the branch.** Before PR-ready, `git diff origin/main -- docs/STATUS.md` prints nothing: each stop entry was removed when it cleared. The state that STATUS would carry (the PR, the rehearsal's run dirs and verdict, the next action) goes into the PR-ready report to the conductor, which folds it into its hand-over. No release.
 8. **PR body.**
    - It opens with `## Brief` per `~/.claude/docs/voice/approval-brief.md`: a headline and lede; `### What changes` (bullets); `### If you approve` (numbered); and `### Worth knowing` (the `cairn-build` registration is account-wide and production-critical; the trigger hop met the collect path live once).
    - Then the technical notes: what landed, task by task; each auth-data verdict (the per-commit diff-reviewer reads, the web-auth read, the admin smoke); and the rehearsal record (the verdict output, the info line, the prompt count, the 7003 codes, the confirmed trigger field).
-   - Then `## Decisions`, seeded with D1 to D6 below; `## Planning misses`; and `## Tooling`: each skill, agent, gate, or hook that failed, misled, or was missing, with its fix or backlog number.
-   - Then the score: Gates on the critical path, Work and review (plan path 770 beside the actual), CI waits on the path, Fix rounds and reds, Close, and Total, with gate and lock time from `cairn-run-gate --records <toplevel> release-gate-a`.
+   - Then `## rc.4 inputs`, which pass B's rc.4 run sheet reads (mechanics 7): the rehearsal's `cairn-build` uuid and its `cloudflare_token_id` match; headless or headed (S11); the smoke info line `rc.4` must show before and after its gate (`cairn-build` count 1, token-id match, probe count 0); the trigger field T7 logged; and the run pattern (`run_in_background`, `run dir:` first line, the Monitor until-loop on `exit` or a free lock).
+   - Then `## Decisions`, seeded with D1 to D7 below; `## Planning misses`; and `## Tooling`: each skill, agent, gate, or hook that failed, misled, or was missing, with its fix or backlog number.
+   - Then the score: Gates on the critical path, Work and review (plan path 900 beside the actual), CI waits on the path, Fix rounds and reds, Close, and Total, with gate and lock time from `cairn-run-gate --records <toplevel> release-gate-a`.
    - It ends with the attribution line.
 9. **Hand-over.** Report PR-ready to `conductor-cairn-cms`. Never run `approval-queue`, never merge, and pass over the approval-queue reminder hook.
 
@@ -307,5 +332,6 @@ The executor never asks Geoff and never notifies him. It writes a stop to `docs/
 - D2. The rehearsal's tarball and record live in `~/.local/state/cairn-gate/rehearsal/` (fold V8), outside the worktree and beside the run dirs. The alternative was the session scratchpad, which a restart loses.
 - D3. `run-gate.sh` prints `run dir:` and writes `<run dir>/exit`, so R1's Monitor until-loop has a durable condition. The alternative was polling `pgrep`, which cannot tell a clean exit from a crash.
 - D4. The smoke prints the `cairn-build` count, uuid, and token-id match, so A14 steps 2 and 5 read through the allowed `run-gate.sh --smoke`. The alternative was a sourced-secret `curl`.
-- D5. R2's teardown allowlist lands with unit tests over the logged bodies and no group rerun. The rerun rule covers product files, and the allowlist is an escalatable item (S12).
+- D5. R2's teardown allowlist lands before R1's deciding run, so a live run proves it, with one group A rerun when the first `--all` already passed (contract 8, ruling 10). The alternative, unit tests over the logged bodies and no rerun, left the one harness file ruling 10 protects without a live run.
+- D7. `run-gate.sh` holds its lock on fd 9 and starts every child with `9>&-`, and writes `lock.holder`, since `flock(1)` names no holder and an inherited fd let an orphaned child keep the lock in a local probe (integrity I6, mechanics 22). The alternative, a stale-lock procedure with `fuser`, treats the symptom.
 - D6. `BACKLOG.md` and `docs/STATUS.md` end with no net change on the branch; the conductor makes the backlog edits at the cut from the PR's list. The alternative, editing them here, would conflict with pass B on adjacent lines (the conductor's shared-file rule, 2026-11-03).

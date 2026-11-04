@@ -17,33 +17,44 @@ Load at start: `cairn-pass`, `pass-core`, `cairn-running-passes`, `claude-infra`
 
 Each item is done and checked before the conductor launches the executor.
 
-1. **[you] Settings grant (spec "Your steps" 5), with a widened scope.** The grant script the
-   planning session writes and dry-runs adds one `autoMode` line carrying the marker
-   `release-gate-and-process`. Pass B needs it to cover, until pass B's PR merges:
-   - writes and commits in `/var/home/glw907/Projects/cairn-cms/.claude/worktrees/release-process-b`
-     and in the pair worktrees that session dispatches under
-     `/var/home/glw907/Projects/cairn-cms/.claude/worktrees/agent-*`, limited to
-     `.claude/settings.json` (only the one PreToolUse entry for `gh release create` and the two
-     allow rules in task B5), `.claude/hooks/release-cut-guard.mjs`,
-     `.claude/agents/cairn-implementer.md`, `.claude/skills/cairn-releasing/**`, and
-     `.claude/skills/cairn-running-passes/**`;
-   - edits, commits, and a PR in a `~/.dotfiles` worktree on branch `release-process-b-ws`, limited
-     to `claude/.claude/skills/pass-core/SKILL.md`, for task B8 only.
-   The pair worktrees and the dotfiles worktree go beyond the spec's wording, which names only
-   "pass B's worktree". Pairs run in `agent-*` worktrees (`pass-core` "Pairs"), and line 417 of
-   `~/.dotfiles/claude/.claude/settings.json` clears a dotfiles skill edit only on approval "in the
-   current session", which the executor never has.
+1. **[you] Settings grant (spec "Your steps" 5).** Run
+   `bash ~/.local/state/cairn-agent-first/apply-release-process-grant.sh` (dry-run first with
+   `--dry-run`). Its one `autoMode` line, marker `release-gate-and-process`, covers until pass B's
+   PR merges:
+   - edits and commits in the pass worktree
+     `/var/home/glw907/Projects/cairn-cms/.claude/worktrees/release-process-b` only, never a pair
+     worktree under `.claude/worktrees/agent-*`, limited to `.claude/settings.json` (only the one
+     PreToolUse entry for `gh release create` and the two allow rules in task B5),
+     `.claude/hooks/release-cut-guard.mjs`, `.claude/agents/cairn-implementer.md`,
+     `.claude/skills/cairn-releasing/**`, and `.claude/skills/cairn-running-passes/**`;
+   - edits, commits, a push, and a PR in a `~/.dotfiles` worktree on branch `release-process-b-ws`,
+     limited to `claude/.claude/skills/pass-core/SKILL.md`, for task B8 only. This one file goes
+     beyond spec step 5's wording ("pass B's worktree"), because line 417 of
+     `~/.dotfiles/claude/.claude/settings.json` clears a dotfiles skill edit only on approval "in
+     the current session", which the executor never has (owed erratum E3 in the fold record).
+   Pair subagents never write a `.claude/` file: they hand that content back, and the executor
+   applies it in the pass worktree ("Handback" under "First act"; ruling 2 of the fold record).
+   Before the run: `git -C ~/.dotfiles rev-list --count origin/main..main` prints `0` and
+   `git -C ~/.dotfiles status --porcelain` prints nothing, since the script's `pull --ff-only` fails
+   on a diverged checkout after its PR has merged (integrity I20).
    Check: `grep -c 'release-gate-and-process' ~/.claude/settings.json` prints `1`.
-2. **[session, else you] GitHub environment and rulesets (spec "Your steps" 4).** No pass B task
-   needs them to run. B3 names the `npm-publish` environment, and the `rc.4` cut depends on them.
-   Check: `gh api repos/glw907/cairn-cms/environments/npm-publish/deployment-branch-policies --jq '.branch_policies[]|[.name,.type]'`
-   prints `["v*","tag"]`.
+2. **[session, else you] GitHub environment and the `main` ruleset (spec "Your steps" 4, less
+   the `release-tags` ruleset).** No pass B task needs them to run. B3 names the `npm-publish`
+   environment, and the `rc.4` cut depends on it. Run the spec's environment `PUT`, its `v*` tag
+   policy `POST`, and the `main` ruleset `POST` (its fourth command); skip the third command, the
+   `release-tags` `POST`. That ruleset is posted in the `rc.4` run sheet right after the publish run succeeds and
+   before promotion, so a `publish.yml` defect found before any package publishes is fixed on
+   `main` and the unpublished tag and release are deleted and recut (ruling 4 of the fold record;
+   owed erratum E1). Check: `gh api repos/glw907/cairn-cms/environments/npm-publish/deployment-branch-policies --jq '.branch_policies[]|[.name,.type]'`
+   prints `["v*","tag"]`, and `gh api repos/glw907/cairn-cms/rulesets --jq '.[].name'` lists
+   `pre-agent-first` and `main` and not `release-tags`.
 3. **[you] npm sitting (spec "Your steps" 1).** Pass B uses no npm credential. The sitting closes
    #337 and binds the environment that B3's publish jobs name. Check: the spec's step 1 done-line.
 4. **Conductor pre-launch checks (`pass-core` "Execute").** The main checkout is on `main`,
    `git -C /var/home/glw907/Projects/cairn-cms rev-list --count HEAD..origin/main` prints `0`, and
    `git -C /var/home/glw907/Projects/cairn-cms check-ignore -q .claude/worktrees/x` succeeds.
-   No session has `release-process-b` checked out (`pgrep -f release-process-b` is empty).
+   No session has `release-process-b` checked out (`pgrep -f '[r]elease-process-b'` is empty; the
+   bracket keeps `pgrep` from matching its own `bash -c` wrapper, mechanics 5).
 
 P-DEP is settled at plan time, so `withdraw` needs no probe. The npm trusted-publishers page
 (<https://docs.npmjs.com/trusted-publishers>) says "OIDC authentication supports `npm publish`,
@@ -54,16 +65,18 @@ is not among the supported commands, so `withdraw` prints its commands and the w
 
 Permissions checked: B1 to B4 write only tracked repo files inside the pass worktree or pair
 worktrees and read the registry (`npm view`, registry fetch) and GitHub (`gh api` GET, `gh release
-view`), which are reads auto mode allows. B5, B6, and B7 write `.claude/**`, which auto mode refused
-as Self-Modification on 2026-11-02 and 2026-11-03 (`~/.local/state/claude-denials.jsonl`), so
-pre-flight item 1 covers them. B7's probe runs harmless forms, and a refusal is its expected
+view`), which are reads auto mode allows. B3's actionlint case runs `go run` of a pinned module,
+a build of public source with no credential. B5, B6, and B7 carry `.claude/**` content, which auto
+mode refused as Self-Modification on 2026-11-02 and 2026-11-03
+(`~/.local/state/claude-denials.jsonl`). Their pair subagents write none of it: they hand it back,
+and the executor writes it in the pass worktree, which pre-flight item 1 covers. B7's probe runs harmless forms, and a refusal is its expected
 result. B8 writes a dotfiles skill and pushes to glw907/workstation, covered by item 1 and the
 push target above. No task publishes, cuts a release, dispatches a workflow, or touches a
 credential. The post-merge hook probe is the conductor's step, covered by the user rule
 `Bash(gh release create v* --target * --title *)` (`~/.dotfiles/claude/.claude/settings.json:40`),
 and the hook decides before any permission check.
 
-Reviewed: pending (three-lens plan review)
+Reviewed: three-lens plan review (contract, mechanics, integrity), folded per 2026-11-03-release-plans-fold.md
 
 ## First act
 
@@ -82,15 +95,32 @@ Each task's gate is `CAIRN_GATE_LANE=<lane> cairn-run-gate 'npm run lane:fast --
 with `timeout: 600000`, re-issued on exit 75. A pair's subagents run `npm run lane:fast` themselves.
 Pair dispatch: `cairn-implementer`, `isolation: "worktree"`, `description: "release-process-b task B<n>"`.
 Each dispatch quotes the task block verbatim, since the implementer does not read the plan.
+Each accepted-task or pair report to the conductor names the CI verdict on that head
+(`ci-green <sha> --pr <n>`), or `pending` with the run id (mechanics 6).
+
+**Handback (B5, B6, B7; ruling 2 of the fold record).** A pair subagent never writes under
+`.claude/`. For each `.claude/` file in its task's list, it writes the full intended content to
+`<its worktree>/handback/B<n>/<path with the leading .claude/ replaced by dot-claude/>`, leaves
+`handback/` untracked, and commits every other file of its task. A test that reads a `.claude/`
+file (B5's hook and settings test) is committed and runs red in the pair worktree for that missing
+file only; the report says so. After merging the pair, the executor copies each handback file to
+its `.claude/` path in the pass worktree, commits them as `Apply B<n>'s .claude files`, and runs
+the fast lane there, which must pass. About 10 minutes for the pass.
 
 ## Tasks
 
 ### B1. The two checks the scripts import (serial head)
 
 - Outcome: `check-stable-source.mjs` exports `RULES`. Its CHANGELOG predicate (`:50`) also accepts
-  `^Released \d{4}-\d{2}-\d{2}\.$`. A changed path in the ignore set (`scripts/gate/**`,
-  `src/tests/**`, `packages/*/test/**`, `examples/showcase/e2e/**`) skips every check, status and
-  mode included, before the checks at `:123-125` run (ruling 17). `close-prebuilt.mjs` checks
+  `^Released \d{4}-\d{2}-\d{2}\.$`. A changed path in the ignore set skips every check, status and mode
+  included, before the checks at `:123-125` run (ruling 17). The set is the spec's four globs
+  (`scripts/gate/**`, `src/tests/**`, `packages/*/test/**`, `examples/showcase/e2e/**`) plus the
+  inert paths that ship in no package (`docs/STATUS.md`, `BACKLOG.md`, `ROADMAP.md`,
+  `docs/internal/**`), so the conductor's STATUS and backlog commits after `rc.4` do not block the
+  stable (ruling 3 of the fold record, by ruling 17's own principle; owed erratum E2). `.github/**`,
+  `scripts/build/**`, and `package.json` stay checked. The root `files` list ships `docs/admin`,
+  `docs/editors`, `docs/why-cairn.md`, and `docs/architecture.md`, never `docs/STATUS.md` or
+  `docs/internal`. `close-prebuilt.mjs` checks
   `node_modules/.bin/svelte-package` and `examples/showcase/node_modules` before `buildDist`
   (`:143`) and exits 1 printing `npm ci` and `npm ci --prefix examples/showcase` (#346). That
   check is exported for `preflight`.
@@ -103,8 +133,11 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
     at `:50`, which allows only a heading or a size marker. `Released Nov 4.` still fails.
   - A diff that changes `scripts/gate/legs.mjs`, adds `src/tests/unit/gate-x.test.ts` (status
     `A`), and changes `examples/showcase/e2e/golden-path.spec.ts` returns `ok`. Main fails each at
-    `:123` or `:125`. A change to `src/lib/` or `docs/STATUS.md` still fails, as
-    `check-stable-source.test.ts:79,123` already assert.
+    `:123` or `:125`. A change to `src/lib/` still fails, as `check-stable-source.test.ts:79`
+    asserts. The test at `:123` ("fails a docs/STATUS.md change") flips: a `docs/STATUS.md`,
+    `BACKLOG.md`, `ROADMAP.md`, or `docs/internal/x.md` change returns `ok`, and a change to
+    `.github/workflows/publish.yml`, `scripts/build/build-guidance-hashes.mjs`, or `package.json`
+    still fails.
   - A derived-inputs test builds the shipped inputs: each package's `files` (root `package.json`,
     `packages/cairn-cms-dev/package.json`, `packages/create-cairn-site/package.json`), `src/lib/**`
     and `packages/cairn-cms-dev/src/**` behind `dist`, and the bake's inputs (`examples/showcase`
@@ -115,7 +148,7 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
   - `runClose` with the svelte-package binary absent returns 1, never calls `build`, and prints both
     `npm ci` commands. Main calls `build` first (`close-prebuilt.mjs:143`).
 - Test: the two existing test files, extended.
-- Estimate: 50. Model: sonnet medium, executor inline (the head of the serial chain). Pair: none.
+- Estimate: 60. Model: sonnet medium, executor inline (the head of the serial chain). Pair: none.
 
 ### B2. `preflight`, `bump`, `wait`, `notes` (pair with B3)
 
@@ -123,7 +156,8 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
   `node scripts/release/<name>.mjs <version> [flags]`, exits 0 or 1, and ends with one `Next:` line.
   Each core is a pure function over a command runner, in the shape of `check-stable-source.mjs:31,95,146-150`.
   `PACKAGES` comes from `check-stable-source.mjs:19`. No shared helper module is added.
-  - `preflight`: clean tree; `HEAD == origin/main`, printing the sha; the version absent from
+  - `preflight`: clean tree; `HEAD` equals `git ls-remote origin refs/heads/main`, printing the
+    sha, so a stale local `origin/main` cannot pass (contract 19); the version absent from
     `npm view <pkg> versions --json` on all three; both installs present through B1's export; a
     non-empty `## Unreleased`, which `--stable` skips.
   - `bump`: computes the eight files `check-stable-source.mjs:43-67` allows in memory, then checks
@@ -135,7 +169,9 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
     existing `Released` line. The MIGRATION-NOTES heading and its `(./CHANGELOG.md#<slug>)`
     anchors are renamed, following `4644cd35b`'s eight-file stat. It refuses a dirty tree, naming
     `git restore`. It is a no-op on a tree already at the version. It refuses while
-    `## Unreleased` sits above a heading on the same numeric core. The date is injectable.
+    `## Unreleased` sits above a heading on the same numeric core. The date is injectable. If `npm run
+    emit:template` fails after the manifests are written, `bump` restores every file it wrote and
+    exits 1 naming the emit failure (integrity I22).
   - `wait <version> <tag>`: polls `https://registry.npmjs.org/<pkg>` with `cache: 'no-store'` until
     `dist-tags[<tag>]` equals the version on all three, for up to 10 minutes. On timeout it names
     each package and what its tag holds (#347).
@@ -148,7 +184,7 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
 - Class: runner.
 - Acceptance (no script exists on main, so each import fails there first; each case below is a
   named fixture):
-  - preflight: a dirty tree, `HEAD` behind `origin/main`, the version already in one package's
+  - preflight: a dirty tree, `HEAD` behind the faked `ls-remote` answer, the version already in one package's
     `versions`, a missing install, and an empty `## Unreleased` each exit 1 naming the cause. With
     `--stable` the empty window passes. A clean fake exits 0 and prints the sha and a `Next:` line.
   - bump: the `release-bump/rc3` fixture (the eight files at `0.99.0-rc.3` shape) bumped to
@@ -159,15 +195,19 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
     refused. Round trip: the fixture bumped from `rc.4` to `0.99.0` yields a diff that
     `checkStableSource`, with a fake runner serving that diff, returns `ok` for. That case needs
     B1's `Released` predicate and fails without it.
-  - Real-tree check, in the pass worktree on a clean tree: `node scripts/release/bump.mjs 0.99.0-rc.4`
-    leaves `git diff --name-only` listing exactly the eight files, and `npm run check:version` exits
-    0. Then `git restore` those eight files. Paste the listing in the report.
+  - Real-tree check, in the pass worktree on a clean tree at B's launch-time base (before any
+    rebase onto a `main` that carries pass A's `## Unreleased`, where `bump` rightly refuses;
+    contract 20): `node scripts/release/bump.mjs 0.99.0-rc.4` leaves `git diff --name-only`
+    listing exactly the eight files, and `npm run check:version` exits 0. Then `git restore` those
+    eight files, and `git status --porcelain` prints nothing (integrity I22). Paste both outputs in
+    the report.
+  - An emit failure injected through the fake runner leaves the fixture tree unchanged.
   - wait: a fake fetch serving `gate` one step behind on one package polls until it matches. A
     fake that never matches times out naming each package and its tag value. Each request carries
     the no-cache option.
   - notes: a CHANGELOG fixture with `Consumers must: nothing.` and two actionable lines writes a file
     holding the section and exactly the two actionable lines.
-- Estimate: 130. Model: sonnet medium. Pair: B3.
+- Estimate: 140. Model: sonnet medium. Pair: B3.
 
 ### B3. `publish.yml` hardened, and its pins (pair with B2)
 
@@ -176,9 +216,12 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
     `promote`.
   - The publish jobs run only on `release: published`. The `inputs.promote == ''` path
     (`:31,100,154`) goes.
-  - A `ci-green` job polls `GET /repos/{repo}/commits/{sha}/check-runs` until `test` completes
-    (plus `e2e` for a stable), failing unless each concluded `success`, within 45 minutes. It gets
-    `checks: read`, confirmed against GitHub's REST reference for that endpoint, with the URL cited
+  - A `ci-green` job polls `GET /repos/{repo}/commits/{sha}/check-runs?check_name=<name>&filter=latest`
+    until `test` completes (plus `e2e` for a stable), failing unless each concluded `success`,
+    within 45 minutes. GitHub's reference says of `filter`: "latest returns the most recent check
+    runs" (<https://docs.github.com/en/rest/checks/runs#list-check-runs-for-a-git-reference>), so
+    a rerun `test` is judged by its newest run; the job still takes the highest `id` per name
+    (integrity I23). It gets `checks: read`, confirmed against that reference, with the URL cited
     in a comment.
   - `build` has no `id-token` and needs `ci-green`. It fails unless `GITHUB_REF_NAME` is `v` plus
     the version in each of the three manifests. It runs the bounded `npm ci`, `npm run
@@ -191,7 +234,11 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
     already-published guards (`:83-86,126-129`) and the create-cairn-site guards (`:179-205`). A
     publish job may check out the repo to read manifests, but never installs.
   - `verdict` has no `id-token` and runs on dispatch with `GH_TOKEN: ${{ github.token }}`. It does a
-    sparse checkout of `scripts/gate/verdict.mjs` and `scripts/gate/record.mjs` and no install. It
+    sparse checkout of `scripts/gate/verdict.mjs` and `scripts/gate/record.mjs` with
+    `sparse-checkout-cone-mode: false`, since cone mode is the default ("Default: true") and treats
+    patterns as directories; actions/checkout's own single-file example sets it false (README,
+    `sparse-checkout: README.md` with `sparse-checkout-cone-mode: false`). It runs a sha-pinned
+    `actions/setup-node` (node 24) and no install (mechanics 8). It
     checks `GITHUB_REF_NAME == v$PROMOTE_VERSION`, then runs `node scripts/gate/verdict.mjs "$PROMOTE_VERSION"`.
   - `promote` needs `verdict` and sets `environment: npm-publish` and `id-token: write`. It prints
     each package's dist-tags before moving them and keeps its body (`:234-254`).
@@ -204,7 +251,19 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
     time. The WATCH at `:42-45` stays, reworded for the exact pin.
   - The header comment (`:9-13`) describes release-only publishing and the tag-ref promote dispatch
     (`gh workflow run publish.yml --ref v<V> -f promote=<V>`).
-- Files: `.github/workflows/publish.yml`, `src/tests/unit/workflow-yaml.test.ts`.
+  - actionlint, pinned, over every workflow (ruling 4 of the fold record): `workflow-yaml.test.ts`
+    runs `go run github.com/rhysd/actionlint/cmd/actionlint@v1.7.12` at the repo root and requires
+    exit 0. Probed 2026-11-03 (Go 1.27.3): on main it builds in about 5 s, passes
+    `publish.yml`, and fails the set on one finding, `create-site.yml:230` SC2034 (`for i in
+    $(seq 1 60)`, `i` unused), which B3 fixes by renaming the variable to `_`. GitHub's Ubuntu
+    24.04 runner lists Go only under its cached tools, not on `PATH`, so `test.yml`'s `test` job
+    gains a sha-pinned `actions/setup-go` step (`go-version: '1.26.x'`, as `tool.yml:76`) before
+    its Vitest steps. actionlint calls the runner's shellcheck (0.9.0 on that image), so a local
+    shellcheck may differ; a CI-only finding is fixed like any red. The test fails, never skips,
+    when `go` is absent.
+- Files: `.github/workflows/publish.yml`, `.github/workflows/test.yml` (the setup-go step only),
+  `.github/workflows/create-site.yml` (the SC2034 rename only), `src/tests/unit/workflow-yaml.test.ts`
+  (owed erratum E4: the spec's pass B files name only `publish.yml`).
 - Class: runner.
 - Acceptance (each fails on main's `publish.yml`):
   - The test at `workflow-yaml.test.ts:244-248` is replaced by one asserting each publish job's
@@ -220,12 +279,20 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
   - The pin test at `:262-268` asserts the exact pin and the install count the new shape has.
   - The promote stub-npm tests (`:270-323`) still pass against the new `promote` body, and gain one
     assertion that the dist-tags print before the first `dist-tag add`.
-  - `verdict` checks out only the two `scripts/gate/` files, and its script contains no `${{`. The
-    test reads the workflow only and never requires those files to exist, since pass A creates
-    them.
+  - `verdict` checks out only the two `scripts/gate/` files with `sparse-checkout-cone-mode: false`,
+    runs a sha-pinned `setup-node`, and its script contains no `${{`. The test reads the workflow
+    only and never requires those files to exist, since pass A creates them (pass A's T5 tests
+    their imports).
+  - Executable steps, in the shape of the promote stub-npm tests (`:270-323`), because
+    `publish.yml` never runs on a pull request (contract 3): `ci-green`'s script body under a
+    stubbed `gh api` passes on `test` in progress then success, fails on failure, fails on a stable
+    with no `e2e`, takes the newest of a failed run and a successful rerun of `test`, and fails at
+    its deadline (an injected short bound); `build`'s ref check fails when one of the three
+    manifests disagrees with `GITHUB_REF_NAME`.
+  - The actionlint case above exits 0.
   - `.github/ci-green.json` keeps `publish.yml` under `neverOnPullRequest`, and `:122-126` still
     passes.
-- Estimate: 110. Model: sonnet medium. Pair: B2.
+- Estimate: 145. Model: sonnet medium. Pair: B2.
 
 ### B4. `status`, `verify`, `withdraw` (pair with B5)
 
@@ -236,7 +303,9 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
     on all three, and the CHANGELOG heading. A complete prerelease has `next` on all three and
     `create-cairn-site@latest` at the version, and `node scripts/gate/verdict.mjs <V>` exits 0. A
     complete stable has `latest` on all three and runs no verdict.
-  - `verify <version>`: checks dist-tags and provenance on all three. For a stable it fetches each
+  - `verify <version> [--tag <t>]`: checks that `<t>` holds the version on all three, `<t>`
+    defaulting to `gate` for a prerelease and `latest` for a stable (rc.4 step 6 runs it after
+    `wait … gate`, before promotion; contract 10), and checks provenance on all three. For a stable it fetches each
     package's tarballs for the final candidate (the version `next` held before the stable, or
     `--from <candidate>`) and the stable, diffs each file, and applies B1's exported `RULES` by file
     kind. `guidance-hashes.json` is checked through `node scripts/build/build-guidance-hashes.mjs
@@ -247,7 +316,7 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
     half-published one it deprecates only the published half. It prints only, per P-DEP above.
 - Files: `scripts/release/{status,verify,withdraw}.mjs`,
   `src/tests/unit/release-{status,verify,withdraw}.test.ts`, and fixtures under
-  `src/tests/unit/fixtures/release-verify/`.
+  `src/tests/unit/fixtures/release-verify/` (the two `cairn-cms-dev` tarballs included).
 - Class: runner.
 - Acceptance (no script exists on main; named fixtures):
   - status: fakes for each missing item (no tag, `isPrerelease` false on a prerelease, `next`
@@ -259,27 +328,49 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
     <pkg>@<v>` into a scratch dir, read-only). The compare function fails it, naming a source path.
     A synthetic pair that differs only in the manifest `version`, template pins, `VERSION`, the
     CHANGELOG heading and `Released` line, and a MIGRATION-NOTES heading and anchor passes. A
-    missing provenance attestation fails.
+    missing provenance attestation fails. The full fetch, extract, and per-file diff path runs once
+    on real tarballs: `@glw907/cairn-cms-dev`'s `0.99.0-rc.2` and `0.99.0-rc.3` tarballs (30 files,
+    129,632 bytes unpacked each) are committed as fixtures and served through an injected fetch,
+    and the test asserts the result the compare function gives them (contract 16). A prerelease on
+    `gate` passes the tag check, one with `gate` behind on one package fails, and a stable checks
+    `latest`.
   - withdraw: a candidate on `gate` only prints three `npm deprecate` lines and the `gate` removals.
     A promoted candidate, given `release-verify/promote-log.txt` (the shape `promote` prints), also
     prints `npm dist-tag add <pkg>@<previous> next` for each package and
     `create-cairn-site@<previous> latest`. A half-published candidate, with two of three on the
     registry, deprecates only those two. It runs no `npm` mutation.
-- Estimate: 115. Model: sonnet medium. Pair: B5.
+- Estimate: 130. Model: sonnet medium. Pair: B5.
 
 ### B5. The stable-cut hook, the allow rules, and breaking-means-minor (pair with B4)
 
 - Outcome:
   - The hook is `.claude/hooks/release-cut-guard.mjs`, a project-scope PreToolUse entry with matcher
     `Bash` in `.claude/settings.json`, run as `node "$CLAUDE_PROJECT_DIR/.claude/hooks/release-cut-guard.mjs"`.
-    For a command holding `gh release create`, it applies the spec's four rules ("Claude infra",
-    Hook): it denies a non-literal tag; it denies an `-rc` tag without `--prerelease`; and for a
-    stable it denies a missing or non-40-hex `--target`, otherwise running
-    `node scripts/checks/check-stable-source.mjs` in the input's `cwd` and denying unless it exits 0
-    and `--target` equals its `sha:` line (`check-stable-source.mjs:158`). Any other literal tag
-    gets no decision. The deny is `hookSpecificOutput.permissionDecision: "deny"` with
-    `permissionDecisionReason`. Cite <https://code.claude.com/docs/en/hooks> in the file header and
-    the commit message.
+    For a command matching `gh\s+release\s+create`, it applies the spec's four rules ("Claude
+    infra", Hook), with the spec's two patterns verbatim (mechanics 4): it denies a non-literal tag;
+    it denies a tag matching `^v\d+\.\d+\.\d+-` without `--prerelease` (any hyphen, so the
+    post-merge probe tag `v9.9.9-hookprobe` is denied); and for a tag matching `^v\d+\.\d+\.\d+$`
+    it denies a missing or non-40-hex `--target`, otherwise running
+    `node scripts/checks/check-stable-source.mjs` from `git -C <input cwd> rev-parse --show-toplevel`
+    (contract 18) and denying unless it exits 0 and `--target` equals its `sha:` line
+    (`check-stable-source.mjs:158`). Any other literal tag gets no decision, and a passing stable
+    gets no decision, never an explicit allow, so the permission system still decides (contract 2).
+    Flag forms (contract 17; `gh release create --help` lists `-p, --prerelease`): `-p` and
+    `--prerelease` count, `--prerelease=false` does not, and `--target=<sha>` is read like
+    `--target <sha>`. The deny is `hookSpecificOutput.permissionDecision: "deny"` with
+    `permissionDecisionReason`.
+  - The hook fails closed (contract 2, integrity I7). The hooks reference says "Exit code 1
+    without valid JSON output is a non-blocking error unless the hook is one whose failure blocks
+    the action ... If your hook is meant to enforce a policy, use `exit 2`", and documents a
+    command hook field `onFailure`, "Whether the action that triggered the hook goes ahead when
+    the hook fails: `"continue"` or `"block"`" (Claude Code v2.1.295 or later; this host runs
+    2.1.318). So the entry sets `"onFailure": "block"`, and the hook wraps its body so any
+    exception on a command matching `gh\s+release\s+create` (malformed stdin JSON, a missing or
+    crashing check script, an unparsable `sha:` line) emits a deny naming the error. The entry also
+    sets `"if": "Bash(gh release create *)"` (the reference: "The hook command only runs if the
+    tool call matches the pattern"), so node does not spawn on every Bash call; since the
+    reference calls `if` "best-effort", the in-hook match stays. Cite
+    <https://code.claude.com/docs/en/hooks> in the file header and the commit message.
   - The two allow rules go in the project's `permissions.allow`: `Bash(node scripts/release/*)` and
     `Bash(gh workflow run publish.yml --ref v* -f promote=*)`. Cite
     <https://code.claude.com/docs/en/permissions>. Nothing else in `.claude/settings.json` changes.
@@ -290,26 +381,33 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
     initialization. Confirm both CLIs run. `RULE` (`:13`) and the header (`:1-7`) are rewritten
     for the rule as it now stands: a minor for a new subsystem or a breaking change, a marker on
     every minor or major, and no README reference.
-- Files: `.claude/settings.json`, `.claude/hooks/release-cut-guard.mjs`,
-  `src/tests/unit/release-cut-guard.test.ts`, `scripts/checks/check-version.mjs`,
+- Files: `.claude/settings.json` and `.claude/hooks/release-cut-guard.mjs` (handback, applied by
+  the executor), `src/tests/unit/release-cut-guard.test.ts`, `scripts/checks/check-version.mjs`,
   `src/tests/unit/check-version.test.ts`.
 - Class: runner.
 - Acceptance (each fails on main):
   - Hook tests spawn `node .claude/hooks/release-cut-guard.mjs` with hook JSON on stdin. The stable
     cases set `cwd` to a temp dir holding a stub `scripts/checks/check-stable-source.mjs` that
     prints `sha: <40 hex>` and exits by an environment variable. The cases are the spec's list: an
-    rc tag without `--prerelease` is denied, and with it gets no decision; a stable whose check
-    exits 1 is denied; a stable with a different `--target` is denied; a stable with no `--target`,
-    or `--target "$SHA"`, is denied; a passing stable gets an allow or no decision; and
-    `gh release create "$TAG" ...` is denied. A command without `gh release create` gets no
-    decision. Main has no hook file.
+    rc tag without `--prerelease` is denied, and with it (or `-p`) gets no decision; an rc tag
+    with `--prerelease=false` is denied; a stable whose check exits 1 is denied; a stable with a
+    different `--target` is denied; a stable with no `--target`, or `--target "$SHA"`, is denied;
+    `--target=<the sha>` reads like `--target <the sha>`; a passing stable gets no decision; and
+    `gh release create "$TAG" ...` is denied. The spec's probe command, `gh release create
+    v9.9.9-hookprobe --repo glw907/hookprobe-absent --target main --title x --notes x`, is denied.
+    Fail-closed cases, each a stable tag: the check script absent, the check script crashing,
+    garbage stdout from the check, and malformed stdin JSON are each denied. A `cwd` one directory
+    below the stub repo's root still finds the check. `gh  release  create` with doubled spaces is
+    matched. A command without `gh release create` gets no decision. Main has no hook file.
   - The same test parses `.claude/settings.json` and asserts one PreToolUse entry whose command
-    names the hook file, and both allow rules.
+    names the hook file, with `onFailure: "block"` and `if: "Bash(gh release create *)"`, and both
+    allow rules. These cases run red in the pair worktree until the executor applies the
+    handback.
   - check-version: a fixture with a stable on top, `0.99.1` over `0.99.0` with
     `Consumers must: run x.`, fails. Main returns `ok` at `:211`. An rc row, `0.99.1-rc.1` over
     `0.99.0` with a breaking line, fails. The same patch with `Consumers must: nothing.` passes.
     The live `npm run check:version` on the branch still exits 0.
-- Estimate: 80. Model: sonnet medium. Pair: B4.
+- Estimate: 100. Model: sonnet medium. Pair: B4.
 
 ### B6. The two skills and the roadmap line (pair with B7)
 
@@ -326,7 +424,9 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
     fixed before the stable, and the backlog numbers of the rest, replacing `:301-305`. "Gate the
     candidate" describes pass A's behavior from the spec: headless by default, `--headed`, an
     unknown page fails the leg with a screenshot and controls file, a lock refuses a second run,
-    and `verdict.mjs` reads the table. Promote is `gh workflow run publish.yml --ref v<V> -f promote=<V>`.
+    and `verdict.mjs` reads the table. A candidate's gate failure reruns `--all`, never a group,
+    since `verdict.mjs` without `--file` needs one run id across all four rows (integrity I24).
+    Promote is `gh workflow run publish.yml --ref v<V> -f promote=<V>`.
     The hand-edit steps go: `npm version` (`:127`), the per-package bumps (`:57-60`), and the
     one-shot `npm view` checks (`:230-235,262-267`). The rc.4 sequence's order (spec "The rc.4
     sequence" 1-8) is the procedure's spine, written generically. The frontmatter keeps
@@ -343,11 +443,12 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
   - `ROADMAP.md:176` carries breaking-means-minor until 1.0.
   - Cite <https://code.claude.com/docs/en/skills> in the commit message (`claude-infra` step 5).
 - Files: `.claude/skills/cairn-releasing/SKILL.md`, `.claude/skills/cairn-running-passes/SKILL.md`,
-  `.claude/skills/cairn-running-passes/references/launch-prompts.md`, `ROADMAP.md`.
+  and `.claude/skills/cairn-running-passes/references/launch-prompts.md` (handback, applied by the
+  executor), and `ROADMAP.md` (written by the subagent).
 - Class: runner.
 - Acceptance (each grep fails on main's text):
-  - `grep -c 'node scripts/release/' .claude/skills/cairn-releasing/SKILL.md` counts all seven
-    script names (main: 0).
+  - `grep -o 'node scripts/release/[a-z]*' .claude/skills/cairn-releasing/SKILL.md | sort -u | wc -l`
+    prints `7` (main: 0; `grep -c` would count lines, mechanics 20 and contract 15).
   - `grep -n 'npm version' .claude/skills/cairn-releasing/SKILL.md` is empty (main: `:127`).
   - `grep -n 'promote=' .claude/skills/cairn-releasing/SKILL.md` shows `--ref v` on every hit
     (main: `:224` has none).
@@ -358,9 +459,12 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
   - `references/launch-prompts.md` exists and holds no sentence that `pass-core` states, as read
     by the B9 reviewer.
   - `ROADMAP.md:176` area states the minor rule.
-  - Every command and flag the skill names exists in B2 or B4's scripts. A reviewer greps each.
+  - Every command and flag the skill names from B2 or B4's scripts exists there; a reviewer greps
+    each. Pass A's flags (`--headed`, `--cli`, `--record-file`, the lock, `verdict.mjs`) are absent
+    from pass B's tree, so the `rc.4` run sheet's step 0 greps them against merged `main`.
+  - The skill states that a candidate's gate failure reruns `--all`.
 - Test: none (prose). The fast lane's docs legs and `check` pass.
-- Estimate: 100. Model: sonnet medium. Pair: B7.
+- Estimate: 105. Model: sonnet medium. Pair: B7.
 
 ### B7. Probe P-WT and land the command-form rule in the implementer (pair with B6)
 
@@ -375,16 +479,16 @@ Each dispatch quotes the task block verbatim, since the implementer does not rea
   It records each refusal text verbatim and reads `~/.local/state/claude-denials.jsonl` for a new
   entry from its session. The source is one of three: a named workstation hook (its name in the
   text), the auto-mode classifier (a `[Reason]` entry in the denials log), or Claude Code's
-  built-in worktree isolation. It then adds the command-form rule (which forms to use, which to
-  avoid, and the source) to `.claude/agents/cairn-implementer.md` under "Workflow" or a short
-  new section.
-- Files: `.claude/agents/cairn-implementer.md`. The probe record goes in the subagent's report,
-  and B9 copies it into the PR's `## Tooling`.
+  built-in worktree isolation. It then writes the command-form rule (which forms to use, which to
+  avoid, and the source) for `.claude/agents/cairn-implementer.md`, under "Workflow" or a short new
+  section, as a handback file: the full agent file with the rule added.
+- Files: `.claude/agents/cairn-implementer.md` (handback, applied by the executor). The probe
+  record goes in the subagent's report, and B9 copies it into the PR's `## Tooling`.
 - Class: runner.
 - Acceptance: the report quotes each of the five forms with its outcome (refused, with the text,
   or ran). The agent file's rule names only forms the probe saw refused (main has no such rule).
   If no form is refused, the agent file is unchanged and the record says "not reproduced". That
-  is an allowed escalation.
+  is a recorded result of the probe, not an escalation (ruling 1 of the fold record).
 - Test: none (agent prose).
 - Estimate: 35. Model: sonnet medium. Pair: B6.
 
@@ -415,27 +519,30 @@ See `## Close`. Estimate: 50.
 
 | Step | Lane 1 | Lane 2 | Path minutes |
 |---|---|---|---|
-| Head | B1: 50 | | 50 |
-| Pair round 1 | B2: 130 | B3: 110 | 130 |
-| Pair round 2 | B4: 115 | B5: 80 | 115 |
-| Pair round 3 | B6: 100 | B7: 35 | 100 |
-| Serial tail | B8: 15, B9 close: 50, fix rounds: 95 | | 160 |
-| **Path** | | | **555** |
+| Head | B1: 60 | | 60 |
+| Pair round 1 | B2: 140 | B3: 145 | 145 |
+| Pair round 2 | B4: 130 | B5: 100 | 130 |
+| Pair round 3 | B6: 105 | B7: 35 | 105 |
+| Serial tail | B8: 15, handback applies: 10, B9 close: 50, fix rounds: 95 | | 170 |
+| **Path** | | | **610** |
 
-Work sum (pairs counted once each): 635 plus close and fix rounds. The spec's Estimate gives pass B
-a 520 path (scripts 245 in lane 1; workflow, checks, and hook 240, then skills and infra 135 in
-lane 2; close 50; fix rounds 95). This plan's 555 is 6.7 percent over it. Two causes: B1 moves the
-checks to the head, because `bump`'s round-trip test, `verify`, and `preflight` import them, and
-B8 is a priced task. Pass B runs beside pass A's 700, so the round's path stays at 900 against
-the 1,240 ceiling.
+Work sum (pairs counted once each): 730 plus the handback applies, close, and fix rounds. The
+spec's Estimate gives pass B a 520 path (scripts 245 in lane 1; workflow, checks, and hook 240,
+then skills and infra 135 in lane 2; close 50; fix rounds 95). The plan as drafted was 555: B1
+moves the checks to the head, because `bump`'s round-trip test, `verify`, and `preflight` import
+them, and B8 is a priced task. The review fold adds 55 (2026-11-03-release-plans-fold.md): the
+widened ignore set, `ci-green`'s executable tests and actionlint, `verify`'s tag and real-tarball
+cases, the hook's fail-closed cases, and the handback applies. Pass B runs beside pass A's 900, so
+the round's path is pass A's 900 plus `rc.4`'s 205, or 1,105, against the 1,240 ceiling. Pass B's
+own line is the same 1,035 as pass A's (1,240 less `rc.4`'s 205; mechanics 12).
 
 ## Stops and standing answers
 
 | Stop or call | Standing answer (source) |
 |---|---|
-| Spend | Inside the round's 1,240 path minutes, a failure with a traced cause gets a fix, and the run goes on. Each fix is listed in `## Decisions`. A cause that returns after its fix gets one structural fix, then escalation in the PR (spec "Standing answers", Spend). |
-| Clock stop (a task past twice its estimate) | The executor writes the stop to its STATUS block and reports to the conductor. Inside the Spend answer, with the cause traced and the round under 1,240, the conductor resets `estimate=` to twice the original and the task resumes. Otherwise the conductor asks Geoff (`pass-core` "Clock stop", applying the Spend answer). |
-| A refused `.claude` or dotfiles write despite the grant | In a pair worktree, the executor redoes that file's edit in the pass worktree after merging the pair. If refused there too, it skips that write, and the conductor's packet carries it as a `[you]` step with the exact command (spec "Standing answers"). |
+| Spend | Inside the round's 1,240 path minutes and pass B's 1,035, a failure with a traced cause gets a fix, and the run goes on. Each fix is listed in `## Decisions`. A cause that returns after its fix gets one structural fix. If it returns again, the run stops, since no pass B item is on the spec's escalation list (spec "Standing answers", Spend and "Items the run may escalate"; ruling 1 of the fold record). |
+| Clock stop (a task past twice its estimate) | The executor writes the stop to its STATUS block and reports to the conductor. Inside the Spend answer, with the cause traced and pass B under 1,035, the conductor resets `estimate=` to twice the original and the task resumes. Otherwise the conductor asks Geoff (`pass-core` "Clock stop", applying the Spend answer). |
+| A refused `.claude` or dotfiles write despite the grant | Pair subagents write no `.claude` file ("Handback"). If the executor's handback write in the pass worktree, or B8's dotfiles write, is refused, it skips that write, and the conductor's packet carries it as a `[you]` step with the exact command (spec "Standing answers"). |
 | Fast lane red on an unrelated test, or "Cannot connect to the server in 60 seconds" | Apply the rerun rule in `cairn-writing-engine-code` `references/durable-gotchas.md`. |
 | CI red on the draft PR | Fix forward on a traced cause. A `test` flake reruns once, and the retry is listed in the PR body. |
 | A pair merge conflict | Files are disjoint by plan, so a conflict means a task wrote outside its list. Revert the stray edit, merge, and record it in `## Decisions`. |
@@ -443,16 +550,15 @@ the 1,240 ceiling.
 | An action tag resolves to an annotated tag | Dereference it to the commit sha and verify with `gh api repos/<a>/commits/<sha>`. |
 | GitHub's REST reference names a scope other than `checks: read` | Use the scope the reference names, cite it, and record it. |
 | The check-version and check-consumers-must import cycle breaks a CLI | Keep `check-version.mjs` free of the import, and test the line with the `LINE` shape reproduced against the test cases in `check-consumers-must.test.ts`. Record it. |
-| P-WT reproduces nothing | Land no rule, record "not reproduced", and B8 opens no PR. |
+| P-WT reproduces nothing | Land no rule, record "not reproduced" as the probe's result, and B8 opens no PR. This is a result, not an escalation. |
 | A whole-branch review `fix` verdict | One batched fix chain, with each finding quoted verbatim as its acceptance, then the gate. A second review runs only on a blocker (`running-passes` "Close"). |
 | The post-merge hook probe returns gh's missing-repo error instead of the deny (conductor) | Confirm that `.claude/settings.json` on `main` holds the entry, and rerun the probe once from a session started after the pull. If it still fails, it is a traced defect, fixed on `main` by a small PR before `rc.4`'s step 5. The `rc.4` release carries `--prerelease` and is unaffected. |
 
-**Items the run may escalate without breaking the outcome** (`rc.4` promoted through the hardened
-`promote`): B7's rule and B8's PR; `verify`'s stable tarball comparison (`rc.4` uses only dist-tags
-and provenance); `status`'s stable branch; `withdraw`'s promote-log parsing (it may print the
-moves with the previous values left for the operator); and `references/launch-prompts.md`. Every
-other item is required before `rc.4`: B1, `preflight`, `bump`, `wait`, `notes`, B3, B5, and
-`cairn-releasing`. An escalated item goes to `BACKLOG.md` through the conductor (see Close).
+**Escalation.** Pass B escalates nothing. The spec's standing answers name exactly three items the
+run may escalate, all pass A's, and "Anything past them stops" (ruling 1 of the fold record). Every
+pass B item is required before `rc.4`, `verify`'s stable tarball comparison included, since ruling
+17's ignore set leans on it. B7's "not reproduced" is a recorded result of the probe (the P-WT
+row).
 
 ## Close
 
@@ -464,7 +570,7 @@ other item is required before `rc.4`: B1, `preflight`, `bump`, `wait`, `notes`, 
    "Pass B" section and this plan. The `cairn-running-passes` path map selects no checklist
    reviewer for pass B's paths: no `.svelte` or SvelteKit hook code, no Worker, D1, or `wrangler.*`,
    no `auth-data` path, no markup, and no `tool/**`. The dispatch says so, and adds the spec's
-   `publish.yml` bullets and the hook's four rules as acceptance. If a workstation PR exists, the
+   `publish.yml` bullets, the hook's four rules, and its fail-closed handling as acceptance. If a workstation PR exists, the
    same reviewer reads it in a second dispatch.
 3. **Audit the infra (`claude-infra` step 6).** Run `/skill-doctor` on `cairn-releasing` and
    `cairn-running-passes` where the session can invoke it, and `claude-tooling-sync verify`. Where a
@@ -492,18 +598,79 @@ other item is required before `rc.4`: B1, `preflight`, `bump`, `wait`, `notes`, 
    `docs/STATUS.md` is empty. The conductor's hand-over writes STATUS after both passes merge.
 8. **PR body.** It opens with `## Brief` per `~/.claude/docs/voice/approval-brief.md`: what
    approving changes (release-only publishing, the hook, breaking-means-minor, the scripts) and the
-   one `[you]` step, removing the grant's `autoMode` line after merge. Then come what landed, the
+   one `[you]` step, removing the grant's `autoMode` line after merge. `### Worth knowing` names
+   the departure from the spec's pre-flight step 4 timing: the `release-tags` ruleset is posted at
+   `rc.4` step 6a, after the first publish succeeds, not at pre-flight (owed erratum E1). Then come what landed, the
    workstation PR link or "none", `## Decisions`, `## Planning misses`, and `## Changelog lines for
    the fold`. Then `## Backlog edits for the conductor` and `## Tooling`: each skill, agent, gate,
    or hook that failed, misled, or was missing, with its fix or backlog number, and B7's P-WT
    record verbatim. Last come the score rows (Gates on the critical path, Work and review with this
-   plan's 555 beside the actual, CI waits on the path, Fix rounds and reds, Close, Total) from
+   plan's 610 beside the actual, CI waits on the path, Fix rounds and reds, Close, Total) from
    `cairn-run-gate --records <toplevel> release-process-b`, and every CI retry.
 9. **Hand-over.** Mark the PR ready and report PR-ready to `conductor-cairn-cms`. Never run
    `approval-queue` and never merge. The `claude-approval-queue-reminder` hook fires on
    `gh pr create`, and the executor passes over it.
 
-**After merge (the conductor's, listed so the packet carries it).** Pull the main checkout, then run
-the spec's hook probe: `gh release create v9.9.9-hookprobe --repo glw907/hookprobe-absent --target
-main --title x --notes x`, with no `--prerelease`, must return the hook's deny text. Then the
-`[you]` removal of the grant line. Then the `rc.4` sequence, after pass A also merges.
+## After merge: the rc.4 run sheet (the conductor's)
+
+Listed so the packet carries it (mechanics 7, contract 7). It follows spec "The rc.4 sequence",
+with the changes the plans and the fold make, each marked. Inputs: pass A's PR body section
+`## rc.4 inputs`. The spec's rules hold: gate runs go through `run_in_background`, and `<sha>` is
+the literal sha step 3 prints.
+
+0. After both PRs merge, pull the main checkout, then start a fresh conductor session there, so
+   the project's new hook and allow rules load (B5). Run the spec's hook probe:
+   `gh release create v9.9.9-hookprobe --repo glw907/hookprobe-absent --target main --title x
+   --notes x`, with no `--prerelease`, must return the hook's deny text (the post-merge probe row
+   above covers a failure). Then the `[you]` removal of the grant line. Then grep each pass A flag
+   `cairn-releasing` names against `main`: `for f in --headed --cli --record-file; do grep -c -- "$f" scripts/gate/gate.mjs; done`
+   prints no `0`, `test -f scripts/gate/verdict.mjs`, and `grep -c flock
+   scripts/gate/run-gate.sh` is at least 1 (contract 15). Pre-flight items 2 and 3 are checked
+   again here.
+1. `node scripts/release/preflight.mjs 0.99.0-rc.4`.
+2. Fold `## Unreleased` into the `## 0.99.0-rc.3` section of `CHANGELOG.md` and
+   `MIGRATION-NOTES.md`, adding pass B's `## Changelog lines for the fold`, and make pass A's and
+   pass B's `## Backlog edits` in the same commit. Commit it on its own.
+3. `node scripts/release/bump.mjs 0.99.0-rc.4`, `node scripts/build/build-guidance-hashes.mjs`, and
+   `npm run check:close`. Commit the cut, push `main` by fast-forward, and print `git rev-parse
+   HEAD`, which is `<sha>`.
+4. Wait for `test` on `<sha>` as the spec writes it. Standing answer "CI on the cut commit": a
+   `test` failure reruns once; a real red is fixed on `main` before any tag exists.
+5. `node scripts/release/notes.mjs 0.99.0-rc.4`, write the summary, then `gh release create
+   v0.99.0-rc.4 --prerelease --target <sha> --title "..." --notes-file <file>`, which the hook
+   checks.
+6. Watch the `publish.yml` release run as the spec writes it, then `node scripts/release/wait.mjs
+   0.99.0-rc.4 gate`, then `node scripts/release/verify.mjs 0.99.0-rc.4` (its tag defaults to
+   `gate` for a prerelease, B4).
+   - Changed by the fold (ruling 4; owed erratum E1). If `ci-green`, `build`, or a publish job
+     fails before any package reaches the registry (`wait` shows none on `gate`), fix the cause on
+     `main` by a small PR, delete the unpublished release and its tag with `gh release delete
+     v0.99.0-rc.4 --cleanup-tag --yes` (`gh release delete --help`: "--cleanup-tag Delete the
+     specified tag in addition to its release"), and recut from step 3 (`bump` is a no-op on a tree
+     already at the version; the new `<sha>` is the fix's). If auto mode refuses the delete, it is
+     a `[you]` step. If any package published, the spec's P-PROV path holds: `withdraw` prints the
+     deprecation of the published half, and the fix goes forward to `rc.5`.
+6a. Added by the fold (ruling 4). Once step 6 passes, before any gate run or promotion, post the
+   `release-tags` ruleset with the spec's pre-flight step 4 `POST` (the `{"name":"release-tags",...}`
+   body). Check: `gh api repos/glw907/cairn-cms/rulesets --jq '.[].name'` lists `release-tags`. On an
+   auto-mode refusal, it is a `[you]` step, and promotion waits for it.
+7. Changed by the plans (pass A seed D4): the registration read goes through
+   `bash scripts/gate/run-gate.sh --smoke`, not a sourced-secret `curl`. Its info line must read
+   `cairn-build` count 1, the uuid from pass A's `## rc.4 inputs`, a token-id match, and probe
+   count 0. Then `bash scripts/gate/run-gate.sh --all --version 0.99.0-rc.4`, plus `--headed` if
+   pass A's inputs say `rc.4` gates headed (S11), in the background with the Monitor until-loop on
+   the run dir's `exit` file or a free lock. A failure reruns `--all`, never a group, since
+   `verdict.mjs` without `--file` needs one run id across all four rows (integrity I24). After the
+   deciding run, the End-to-end "gate" bullet is checked and recorded: its `driver.log` holds no
+   `answered "Paste your Workers Builds deploy token"`; A2 and B1 each logged exactly one
+   `trigger build token:` line, equal to the rehearsal's uuid; no `teardown left:` line printed
+   (contract 8 floor); and a fresh `--smoke` info line again reads count 1, a token-id match, and
+   probe count 0 (integrity I10).
+8. Promote as the spec's step 8 writes it, after `node scripts/gate/verdict.mjs 0.99.0-rc.4` exits
+   0. Standing answer "Promotion" (P-ENV): if the trusted publisher refuses the dist-tag change from
+   the environment, `verdict.mjs` must exit 0 first, then Geoff runs the four `npm dist-tag add`
+   commands as a `[you]` step, and the record reads "promoted by hand under P-ENV" with the run id.
+   Then `node scripts/release/wait.mjs 0.99.0-rc.4 next`, and `node scripts/release/status.mjs
+   0.99.0-rc.4` exits 0.
+9. The End-to-end "promotion" bullet is checked and recorded, then Geoff's real install (spec step
+   9).
