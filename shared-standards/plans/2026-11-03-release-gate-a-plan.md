@@ -29,7 +29,7 @@ Pass A depends on spec "Your steps" 2 and 3, plus the session's reads and the PF
 
 Each row names the PF2 script line it copies (`preflight-token-probes.py`).
 
-- Gate account name (PF4): `<pending>`
+- Gate account name (PF4): `glw907` (`GET /accounts/120c269ad6d3dfbe6d63a0bb53758ca0`, `.result.name`, read 2026-11-03)
 - P1, Builds registers a token holding only Workers Scripts, D1, and R2 (line `ok     P1 register ci-cairn-build as cairn-gate-probe-p1-<stamp>`, or its `note` line with code): `<pending: pass | fail + code>`
 - D1 and R2 write probes with `CF_CI_CAIRN_BUILD_TOKEN` (lines `D1 create cairn-gate-probe-<stamp>` and `R2 create cairn-gate-probe-<stamp>`): `<pending>`
 - PS, how a registration shows once its token is deleted (line `PS     after the token delete:`; a changed field and its before and after values, an entry count change, or "no signal within 5 minutes"): `<pending>`
