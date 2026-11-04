@@ -17,13 +17,14 @@ Pass C's design class was `ordinary`; its plan review raised it, since two of it
 The approval steps from the design packet, 2026-11-03:
 
 - Done: workstation#200 merged (`34bd9eb`); initiatives#172 merged (`d454491`); the servers restore screen and registry point at `Infrastructure` (servers `ca8432f`); the operator runbook plan carries a 2026-11-03 amendment (initiatives `2cbbe82`); the backlog verdicts landed (workstation `cba4388`, servers `d89e09c`); the revoke script is written and its dry run passed; the three plans are reviewed and committed.
-- Waiting on Geoff, from the packet: step 2, pull thinkpad-x1 and upgrade `pass-cli` there; step 8, run `bash ~/.local/state/credential-hygiene/revoke.sh` (the six flags were answered in chat and applied on 2026-11-03, recorded in `open-flags.md`); step 9, confirm in Proton web that the second operator still shares `Infrastructure`.
+- Done with Geoff: the six flags were answered in chat and applied on 2026-11-03 (`open-flags.md`). The revoke is done (2026-11-04): `revoke.sh` passed Geoff's share ids and changed nothing, then `revoke2.sh`, using pavilion-claude's own share ids, ended its grants on the four personal vaults. `claude-pass vault list` shows only ASC, Age key, Infrastructure, Projects, and Test accounts. pavilion-scripts' leftover item grant in Infrastructure remains, for pass A's grant check. Geoff confirmed the second operator still shares `Infrastructure` (2026-11-04).
+- Waiting on Geoff, from the packet: step 2, pull thinkpad-x1 and upgrade `pass-cli` there.
 - Pass A launched 2026-11-03 by `conductor-dotfiles` (session `784b801f`): executor `dotfiles-credential-hygiene-a`, session `52e17415-bd90-492a-b58a-c14bdf7371ca`, branch `credential-hygiene-a`. Entry and Pre-flight checks passed, with one exception: `claude-pass vault list` still shows `Private`, `Cathy & Geoff`, `Family`, and `Parents`, so the revoke hasn't run. That holds only pass A's After merge 4, which waits for the revoke.
 - Pass A is with `conductor-dotfiles`. It hands pass B to `conductor-servers` when it merges, and pass B's conductor starts `conductor-initiatives` for pass C when B merges.
 
 ## Next action
 
-When Geoff has run `revoke.sh`, a session checks that `claude-pass vault list` no longer shows `Private`, `Cathy & Geoff`, `Family`, or `Parents`. Pass A's After merge 4, its first live grant check, waits for the revoke.
+Pass A runs under `conductor-dotfiles`, and its two stops wait on Geoff's rulings through that conductor. The revoke is done, so pass A's After merge 4 can run. Geoff still owes the thinkpad pull and `pass-cli` upgrade (packet step 2).
 
 ## Working files
 
