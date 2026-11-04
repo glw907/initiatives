@@ -103,7 +103,7 @@ No owner fork remains.
 
 ## Estimate
 
-The path rose from 620 to 875 minutes:
+The path rose from 620 to 875 minutes in the review fold, then to 900 in the verification (see Verification):
 
 - Pass A goes from 500 to 675. Lane 1 grows from 270 to 360 (A16, A17 moved in from pass B, A5's run table, A4 and A2 fixes, named tests, and the scrub). The tail adds 75 for `--cli` and 10 for the rehearsal's assertions.
 - Pass B goes from 450 to 520. Lane 2 grows from 305 to 375 (release-only publishing, the tag check, the ignore set, and the hook's denials and tests).
@@ -111,6 +111,35 @@ The path rose from 620 to 875 minutes:
 
 The path stays under the 1,240 ceiling. Ruling 13 says "twice the path, about 1,240". The spec keeps the approved 1,240 rather than doubling the new path to 1,750. That is the conservative reading, so no ruling is needed. Raising the ceiling would be Geoff's call.
 
+## Verification
+
+Source: `2026-11-03-release-gate-and-process-design-fold-verification.md` (V), read against the spec at `8be2d22`. Each finding was checked before folding.
+
+Totals: 11 findings. 9 folded (one of them by removing the mechanism), 1 refused with its gap recorded in Later, 1 owed as optional. No owner fork.
+
+Probes and quotes behind this round:
+- The Bash tool keeps no shell state between calls: "Shell state (env vars, functions) does not persist" (the session's Bash tool description).
+- `gh workflow run --help` (gh 2.103.3): "The created workflow run URL will be returned if available." `gh run list` has `--commit` and the JSON fields `databaseId` and `headBranch`.
+- `claude-pass` passes stdin through, so `item create login --from-template -` keeps the value off the command line (`~/.local/bin/claude-pass` header). The estate inventory names `Workstation` as one of the agent's vaults (`cloudflare-estate-inventory.md:184-186`).
+- V's own npx rebuild probe shows a rerun picks up a repacked tarball at the same path, so a fix reaches the next rehearsal run.
+
+| # | Sev | Disposition | Where |
+|---|---|---|---|
+| V1 | major | Folded. Under `--cli`, rows merge into a local file named by `--record-file` and never into a release body. `verdict.mjs --file` reads it. A17's real-body test uses `rc.3`'s body as captured before the rehearsal. | A15; A17; A14 steps 3, 5 |
+| V2 | major | Folded. The prompt answer is counted once across every rehearsal `driver.log`. The rehearsal record keeps each leg's latest row, and the one-run-id rule holds per group under `--file`; `rc.4` keeps one id for all four. A product change after the rehearsal passed reruns the group that reaches it before merge, out of the fix-round minutes. | Standing answers, "The rehearsal"; A14 step 5; A17; End-to-end check |
+| V3 | major | Folded. No shell variable crosses steps: step 3 prints the sha, and later commands paste it. The hook denies a stable whose `--target` is not a literal 40-hex sha, with a test for `--target "$SHA"`. `cairn-releasing` carries the literal-sha rule. | rc.4 sequence; Hook; `cairn-releasing` |
+| V4 | major | Folded. Step 6 lists by `--commit <sha> --event release` until a run appears. Step 8 takes the id from the URL `gh workflow run` prints, falling back to a larger id with `headBranch` `v0.99.0-rc.4`. | rc.4 steps 4, 6, 8 |
+| V5 | minor | Folded by removal. The old-copy check always skips while `next` and `create-cairn-site@latest` differ, so it is gone from step 4 and the standing answers. The P-ENV row states what stays untested and the residual. The deprecation message now reads "once 0.99.0-rc.4 is out". | Your steps 1, 4; `publish.yml`; P-ENV |
+| V6 | minor | Folded. Step 2 names the token `tmp-token-setup` and adds a `GET /user/tokens` read for the `9109` case. Step 3's done-check confirms both deletions and no leftover probe registration. | Your steps 2, 3 |
+| V7 | minor | Folded. Step 3 records `ci-cairn-build` in Proton Pass through `claude-pass`, checked by name. | Your steps 3 |
+| V8 | minor | Owed (optional): `npm pack --pack-destination <scratch>` keeps the tarball out of pass A's worktree. The plan may take it. | none |
+| V9 | minor | Folded. The hook's test is `src/tests/unit/release-cut-guard.test.ts`. | Pass B Files |
+| V10 | minor | Folded. The carve-out text says a harness-only fix after the final candidate writes no `CHANGELOG.md` line. | `cairn-running-passes` |
+| V11 | minor | Refused for 0.99.0. The `setup-recovery.md` row covers the too-narrow token, and a watch message naming the token and key costs product code in an `auth-data` pass for a failure the standing answer already handles. It goes to Later. | Later |
+
+The verification moved the path from 875 to 900. Pass A lane 1 rose from 360 to 385 for the local record mode and the per-group verdict. That is still under 1,240.
+
 ## Owed
 
-None. No ratified document's meaning changed.
+- V8: `--pack-destination` for the rehearsal tarball (optional).
+- No ratified document's meaning changed.
