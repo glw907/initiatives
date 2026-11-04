@@ -17,13 +17,13 @@ Pass C's design class was `ordinary`; its plan review raised it, since two of it
 The approval steps from the design packet, 2026-11-03:
 
 - Done: workstation#200 merged (`34bd9eb`); initiatives#172 merged (`d454491`); the servers restore screen and registry point at `Infrastructure` (servers `ca8432f`); the operator runbook plan carries a 2026-11-03 amendment (initiatives `2cbbe82`); the backlog verdicts landed (workstation `cba4388`, servers `d89e09c`); the revoke script is written and its dry run passed; the three plans are reviewed and committed.
-- Waiting on Geoff, from the packet: step 2, pull thinkpad-x1 and upgrade `pass-cli` there; step 6, answer the six flags in `~/.local/state/credential-hygiene/open-flags.md`; step 8, run `bash ~/.local/state/credential-hygiene/revoke.sh` once the session has applied the flag answers; step 9, confirm in Proton web that the second operator still shares `Infrastructure`.
+- Waiting on Geoff, from the packet: step 2, pull thinkpad-x1 and upgrade `pass-cli` there; step 8, run `bash ~/.local/state/credential-hygiene/revoke.sh` (the six flags were answered in chat and applied on 2026-11-03, recorded in `open-flags.md`); step 9, confirm in Proton web that the second operator still shares `Infrastructure`.
 - Pass A launched 2026-11-03 by `conductor-dotfiles` (session `784b801f`): executor `dotfiles-credential-hygiene-a`, session `52e17415-bd90-492a-b58a-c14bdf7371ca`, branch `credential-hygiene-a`. Entry and Pre-flight checks passed, with one exception: `claude-pass vault list` still shows `Private`, `Cathy & Geoff`, `Family`, and `Parents`, so the revoke hasn't run. That holds only pass A's After merge 4, which waits for the revoke.
 - Pass A is with `conductor-dotfiles`. It hands pass B to `conductor-servers` when it merges, and pass B's conductor starts `conductor-initiatives` for pass C when B merges.
 
 ## Next action
 
-When Geoff has written his flag answers, a session applies them through `claude-pass`, tells him to run `revoke.sh`, and then checks that `claude-pass vault list` no longer shows `Private`, `Cathy & Geoff`, `Family`, or `Parents`. Pass A's After merge 4, its first live grant check, waits for the revoke.
+When Geoff has run `revoke.sh`, a session checks that `claude-pass vault list` no longer shows `Private`, `Cathy & Geoff`, `Family`, or `Parents`. Pass A's After merge 4, its first live grant check, waits for the revoke.
 
 ## Working files
 
