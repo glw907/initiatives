@@ -73,3 +73,5 @@ Pass B, T9 `settings.json` (2026-11-07, `servers-credential-hygiene-b`). Auto mo
 ## Stop
 
 Pass B, T9 `settings.json` (2026-11-07, `servers-credential-hygiene-b`). Auto mode refused the edit (`[Self-Modification]`). Ruling (Geoff, 2026-11-07): he applies `settings-passB.patch` to the workstation branch himself in Ptyxis, before the packet. It is recorded in the plan's "Rulings during the run". Owed by Geoff: that Ptyxis line. State at the stop: glw907/servers#35 is a draft at `2147761` (T1 to T8), and glw907/workstation#205 is a draft at `f97312e`. The executor continues T10 work that doesn't depend on the settings commit.
+
+Update (2026-11-07, `conductor-servers`): Geoff's settings commit `da9f980` is on `origin/credential-hygiene-b` in the workstation repo, so the T9 stop is cleared. The executor reruns T9's checks and includes the commit in the whole-branch review.
