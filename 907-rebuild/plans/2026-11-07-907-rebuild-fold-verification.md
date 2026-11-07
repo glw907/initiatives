@@ -116,3 +116,48 @@ Read at initiatives `5b3f2f2`, covering the design (D), spec (S), plan (P), fold
 ## Verdict
 
 Not ready. B1 has to fold first, since the clean room as written leaves `/tmp`, the runtime directory with its D-Bus socket, and `/dev/shm` open to both builders. After that, M2 needs its fold, and Geoff rules the M1 and M3 forks. None of these changes the task order or the 680-minute path.
+
+## Second read
+
+Read at initiatives `5f9e9a3`, against F's "Verification dispositions" and the spec, plan, and design diff from `5b3f2f2`. The docs were checked against the current markdown of code.claude.com/docs/en/settings-reference ("`permissions.blockReadsOutsideWorkingDirectories`", "Sandboxed commands under the block", and "`permissions.blockWritesOutsideWorkingDirectories`") and docs/en/sandboxing.
+
+### Answers
+
+- **B1 closed, subject to T1's probes.** The file tools are held to `~/work/` by the read and write blocks. The quotes in S:44 and F:185-187 match settings-reference word for word, version floors included (v2.1.257 and v2.1.314, against CLI 2.1.319).
+  - For sandboxed commands, the block "denies them read access to your home directory and to the other roots that hold user files: `/Users`, `/home`, `/root`, `/Volumes`, `/mnt`, `/media`, `/run/media`, and `/srv`". Here, "your home directory" is the clean `HOME`, not `/var/home/glw907`. That list doesn't name `/tmp`, `/var/tmp`, `/run/user/1000`, or `/dev/shm`. The explicit `denyRead` (S:47) supplies them, and it also keeps Geoff's home denied by name. Together they cover every path in the first read.
+  - `TMPDIR` and `CLAUDE_CODE_TMPDIR` are in the allowlist with their env-vars quote.
+  - T1 now probes the `/tmp` and `/dev/shm` canaries, `ch-a-shares.json`, B's `~/.config/cairn/canary`, the bus connect, refused writes, and an `npm install` with the moved temp directory (P:97-102).
+  - The masking claim rests on sandbox-runtime's source, which isn't Claude Code's bundled build, and F:190 says so. The bus probe makes it falsifiable, with a stated fallback (the seccomp filter).
+- **M2 closed.** Setup's record sits in B's home, which is outside `~/work/` for the file tools. For sandboxed commands, the block and `denyRead` `/var/tmp` both close it, and B's `allowRead` doesn't reopen it. T6 adds the `jq -e` key test, which exits non-zero (fails closed) on a record with no `cloudflare` object. P4 adds the token delete.
+- **M1 landed as ruled.** No placeholder, `100::`, or carry-over-gate text remains in D, S, or P. The gap is stated in D:11, S:175, and the packet (P:142). T5 expects the redirects down, and T6 requires all three 308s back, records the gap's length, and stops if they don't return.
+- **M3 landed as ruled.** No Gmail or connector text remains, apart from S:50's unrelated `disableClaudeAiConnectors`. Check 1 runs every time. Geoff's message is the inbound half in P3 and P4, and P2 names his mailbox. S notes that the inbound `dkim=pass` is the sender's signature.
+- **The "get back only" paraphrase.** F:172 says sandboxed commands under the block "get only the work tree, the session temp directory, and the user-settings `allowRead` entries back". The docs reopen more: "the working directories, worktrees Claude Code creates in the session, the session temp directory, and the parts of `~/.claude` that commands need", plus the global git config files. The docs also never say outright that user-settings `allowRead` entries reopen paths under the block. They say "`allowRead` and `allowWrite` entries from repository settings don't count", and the spec infers the rest. T1's `npm install` and `gh auth status` prove that inference, so this is optional precision, not a defect.
+
+### Findings
+
+#### M1b. The clean shell's working directory is unstated, and the new block puts anything setup creates outside `~/work/` beyond B's reach
+
+- **Severity:** major. **Tag:** `correctness`.
+- **Location:** S:25, S:27-31, S:70, P:33, P:17-29.
+- **Defect.**
+  - `env -i` keeps the caller's working directory. Nothing says `cleanroom-run --shell` changes into `~/work/`, so Geoff's shell opens wherever he launched it, probably the initiatives worktree.
+  - `--dir` "Defaults to a slug of the name" (create-cairn-site README:30), so setup creates the site under that directory. Under the read and write blocks, builder B then can't read or edit the site, and its record's `dir` points into Geoff's tree.
+  - P1's interactive `claude` runs from the same directory, which loads that repo's and its ancestors' CLAUDE.md for the sign-in session.
+- **Proposed fold.**
+  - Every `cleanroom-run` form does `cd "$HOME/work"` before it execs.
+  - P4 checks `pwd` prints `/var/tmp/cairn-cleanroom/B/work` before running setup, and T6's acceptance checks that the site directory sits under B's `~/work/`.
+  - T1 checks `pwd` in a `--shell`.
+
+#### m1b. `gh` lives only under `/home/linuxbrew`, a root the block closes to sandboxed commands
+
+- **Severity:** minor. **Tag:** `correctness`.
+- **Location:** S:30, S:47.
+- **Defect.**
+  - `/usr/bin` has `git` and `jq` but no `gh`. `gh` resolves to `/var/home/linuxbrew/.linuxbrew/Cellar/gh/2.103.3/bin/gh`, through `/home -> var/home`.
+  - Under the block, sandboxed commands lose `/home`, and `allowRead` doesn't reopen Homebrew. A sandboxed `gh` and the `gh auth git-credential` helper would then fail, and builder A needs both to open its Survey PR.
+  - T1's `gh auth status` check would catch it, and S:48's "adds that one path" covers the fix. Naming the path now just saves a T1 loop.
+- **Proposed fold.** Add `/home/linuxbrew/.linuxbrew` and `/var/home/linuxbrew/.linuxbrew` to both builders' `allowRead`, and record any further path T1 has to reopen.
+
+### Second-read verdict
+
+Not ready, by one line. M1b's `cd "$HOME/work"` and its `pwd` checks have to land. Then the plan is ready: B1 and M2 are closed pending T1's probes, and M1 and M3 landed as Geoff ruled.
