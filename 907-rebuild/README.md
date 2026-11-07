@@ -13,7 +13,7 @@ This initiative rebuilds 907.life on cairn 0.99.0-rc.4, the way a newcomer would
 - Build Survey as a clean, idiomatic cairn theme, kept in `glw907/survey`.
 - Rebuild 907.life from `npx create-cairn-site` with the Survey theme, all eight posts, the About page, and a Projects section for cairn-cms, dubplate, phonebook, and approval-queue.
 - Record every gap the builders hit, with the owner who fixes it.
-- Move the 907.life domain to the new site and retire the old one.
+- Retire the old site first, saving its content, so the new one takes the real names and the 907.life domain at setup.
 
 ## Non-goals
 
@@ -22,9 +22,10 @@ This initiative rebuilds 907.life on cairn 0.99.0-rc.4, the way a newcomer would
 
 ## Where the work lives
 
-- `907-life`: the site. A new repo replaces it at cutover, and the old one becomes `907-life-legacy`.
+- `907-life`: the site. The old repo becomes `907-life-legacy`, and setup creates a fresh `glw907/907-life`.
 - `survey`: the cairn theme, in `cairn-theme/`.
 - `cairn-cms`: receives the findings through `conductor-cairn-cms`.
+- `servers`: declares the DNS records setup writes for 907.life.
 
 ## Records
 
