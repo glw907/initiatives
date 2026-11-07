@@ -31,9 +31,9 @@ The sitting started on 2026-11-07, after credential-hygiene's pass B merged. `co
 
 | Item | State on 2026-11-07 |
 |---|---|
-| Geoff's Cloudflare two-factor | **Off** at the start. `GET /accounts/{id}/members` reads one member, Geoff, `accepted`, Super Administrator, `two_factor_authentication_enabled: false`. Geoff has no smartphone, so the method is Mobile App Authentication (plain TOTP), its key in a TOTP field on an item in his personal Proton vault, with the recovery codes on that item. Neither goes in `Infrastructure`, which Claude's agents can read. |
+| Geoff's Cloudflare two-factor | **On.** Off at the start (`GET /accounts/{id}/members`: one member, Geoff, `accepted`, Super Administrator, `two_factor_authentication_enabled: false`); the same read later on 2026-11-07 shows `true`. Geoff has no smartphone, so the method is Mobile App Authentication (plain TOTP) through Proton Pass. Geoff first saved the recovery codes on the `Cloudflare` item in `Infrastructure`, then moved them to his personal vault, so Claude's agents can't read them. The `Cloudflare` login item itself stays in `Infrastructure`. |
 | 1. Cloudflare seat | Open. |
-| 2. Two-factor enforcement | Waits on Geoff's two-factor. |
+| 2. Two-factor enforcement | **Passes.** The documented `PUT /accounts/{id}` (the whole object from the first GET, only `settings.enforce_twofactor` set to `true`) answered 403, code 9109, "Unauthorized to access requested resource". A second GET matched the first in every field, `enforce_twofactor` still `false`. Geoff turned it on in the dashboard. **Passes:** a third GET reads `enforce_twofactor: true`, and the other 11 fields match the first GET. Cloudflare's docs note that turning enforcement off again takes a support ticket and 1 to 2 business days. |
 | 3. Hetzner seat | Open. |
 | 4. GitHub successor | Open. |
 | 5. Billing and renewal facts | Hetzner amounts read by Claude (below). Geoff's columns open. |
