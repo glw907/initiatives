@@ -92,6 +92,12 @@ Reviewed: standards:plan-reviewer, 2026-11-03 (2 blockers, 6 should-fix, 4 nits,
 
 Stops: the 600-minute path ceiling; a cause the session can't trace; any bare `pass-cli` call; running `pass-sitting` live from the worktree (the hook isn't live there until merge, so tests run it only against the fake `pass-cli`); any grant, revoke, or share; any item write other than T6's rename and After merge 6's rename; any write to a secret field; any write to `values.age`, `~/.local/secrets`, or a keyring entry; an escalation outside the three the table allows. Each stop sends `conductor-dotfiles` one message; the executor never asks Geoff.
 
+## Rulings during the run
+
+- **T6 registry tie-out** (Geoff, 2026-11-04, asked by `conductor-dotfiles`): the public `secrets/registry.md` names each technical item's vault and store variable, with no item title. Titles stay in the private state folder. T6's acceptance script checks the vault and store variable only.
+- **T5 `settings.json`** (Geoff, 2026-11-04): auto mode refused the executor's edits as self-modification. Geoff applies `~/.local/state/credential-hygiene/settings-passA.patch` to the branch himself in Ptyxis and pushes it. The executor never edits `settings.json`. Once his commit is on `origin/credential-hygiene-a`, the executor merges it, reruns the gate and `stale-scan.sh`, and finishes the PR.
+- **Revoke share ids** (fact from `initiatives-62`, verified 2026-11-04): `pass-cli agent access revoke <agent> --share-id <id>` takes the agent's own share id from that agent's `vault list --output json`, not the owner's. `revoke.sh` has now ended `pavilion-claude`'s four personal-vault grants. `pavilion-scripts`' item grant in `Infrastructure` remains, so After merge 4 should expect the standing answer's leftover row. `pass-sitting`'s revoke op takes the agent-side id.
+
 ## Tasks
 
 Gate: `bash scripts/gate.sh` in the worktree after each task (the `dotfiles-pass` fast lane and full-suite home). There is no CI watch. `auth-data` tasks write their failing test first and get a task-scope `standards:diff-reviewer` read before the next task starts. Live Proton reads run in the main loop, never in a pair subagent. Pair subagents take `isolation: "worktree"` with descriptions `credential-hygiene-a task <n>`. Prose follows the writing voice, and no code comment carries an em dash.
