@@ -6,7 +6,9 @@ Approving this design rebuilds 907.life on cairn rc.4, using only cairn's and Su
 
 You set two goals on 2026-11-07: a useful personal blog that also shows off four of your projects, and a real test of the engine and its new tooling. The test only counts if the builders don't have the workstation's knowledge, so two clean-room Claude Code sessions do the building, and this session watches and records (your ruling, 2026-11-07). The house bar (visual verify, review, audits, your full-page read) applies at acceptance, not to the builders.
 
-Your mail keeps working throughout (Geoff, 2026-11-07: "my mail needs to continue to work"). A mail check runs before the teardown, after it, and after setup: the zone's mail records unchanged, the three mail discovery redirects answering, and one message received on ward. Any change to a mail record stops the run until `conductor-servers` puts it back.
+Your mail keeps working throughout (Geoff, 2026-11-07: "my mail needs to continue to work"). A mail check runs before the teardown, after it, and after setup: `dns.sh --check` finds every mail record unchanged, and before the teardown and after setup you send one message to `glw@907.life` that this session reads on ward. Any change to a mail record stops the run until `conductor-servers` puts it back.
+
+One part of mail does go down. The three `/.well-known` redirects that point a mail client at ward stop answering when the teardown detaches the old site's domain, and come back when setup attaches the new one, about an hour later unless setup stops first. They serve only a client's first setup: delivery, sending, and clients you already use don't touch them. Setup's check confirms all three answer again, and if they don't, the run stops under the mail requirement.
 
 ### What changes
 
@@ -15,7 +17,7 @@ Your mail keeps working throughout (Geoff, 2026-11-07: "my mail needs to continu
 - `npx create-cairn-site` then builds the new 907.life under the real names, `glw907/907-life` and the `907-life` Worker. You run setup in your terminal, the way cairn's docs tell a newcomer to, and it connects 907.life, sign-in email, and Workers Builds in that one run (Geoff, 2026-11-07: "connect the domain at setup, not after acceptance").
 - The new site carries all eight posts, the About page, the privacy page, a Projects section with a page for each of four projects, and the home page you approved (variant A, the side rail).
 - Every gap the builders hit goes to the place that owns it. Engine, scaffolder, skill, and docs gaps go to `conductor-cairn-cms`, Survey's go to Survey's backlog, and 907 issues go to 907-life's backlog.
-- From the teardown until setup's domain step finishes, 907.life's pages and the privacy page are down. A placeholder record keeps the mail discovery redirects answering through that window. Then it shows the bare starter until the new site is ready (Geoff, 2026-11-07: "save the content for the current 907.life site and then delete everything and start fresh").
+- From the teardown until setup's domain step finishes, 907.life's pages, the privacy page, and the mail discovery redirects are down. Then it shows the bare starter until the new site is ready (Geoff, 2026-11-07: "save the content for the current 907.life site and then delete everything and start fresh").
 
 ### If you approve
 
@@ -29,7 +31,7 @@ Your mail keeps working throughout (Geoff, 2026-11-07: "my mail needs to continu
 
 Setup's domain step adds the Worker's domain record to 907.life, and its email step onboards the domain for Cloudflare Email Sending. The servers repo makes `cloudflare/dns.sh` the zone's only writer (`servers/docs/decisions.md`, line 103). The zone is already onboarded, since `cf-bounce.907.life` answers today, and Cloudflare's docs say "If you already have a DMARC record, Cloudflare keeps it unchanged." So `_dmarc` should stay at its declared `p=none`, even though setup's closing message says it wrote `p=reject` (`chapter2.mjs`, line 1064). The run treats that message as a cairn backlog item. If `_dmarc` does change, `conductor-servers` puts the declared value back with `dns.sh --apply`. A move to `p=reject` is the servers repo's call, not this rebuild's. After setup, a servers PR declares the Email Sending records, so `dns.sh` stays the only writer from then on.
 
-Source: `servers/cloudflare/dns.sh`, header comment; `servers/cloudflare/dns/ward`, line 17
+Source: `servers/cloudflare/dns.sh`, header comment; `servers/cloudflare/dns/ward`, line 18
 
 - Setup writes once, then the servers declarations cover its records (recommended)
 - Skip setup's domain and email steps and connect the domain through `dns.sh` by hand, which keeps the ruling but leaves those steps untested
@@ -57,7 +59,7 @@ Three sessions take part. Each has one job, and only the observer talks to you o
 
 ### The clean room
 
-Each builder runs as `claude -p` with a separate home directory under `/var/tmp/cairn-cleanroom/`, outside your home, so no CLAUDE.md, skill, or rule of yours sits above its work. It starts from a cleared environment that holds no workstation secret, SSH agent, or keyring session. Its settings turn on Claude Code's sandbox, deny every read under your home, turn off claude.ai connectors and synced skills, and allow only a short list of commands. Each builder signs in to `gh` and wrangler separately. Run 1 never signs in to Cloudflare, and run 2 signs out of wrangler once setup ends. A probe proves the isolation before launch. Each builder keeps a `BACKLOG.md` as it works, adding an item wherever the published tools left it guessing, stuck, or wrong. That file is the test's one instrument.
+Each builder runs as `claude -p` with a separate home directory under `/var/tmp/cairn-cleanroom/`, outside your home, so no CLAUDE.md, skill, or rule of yours sits above its work. It starts from a cleared environment that holds no workstation secret, SSH agent, or keyring session. Its settings turn on Claude Code's sandbox, hold its file tools and commands to its work tree, close your home, `/tmp`, and your session's runtime directory, turn off claude.ai connectors and synced skills, and allow only a short list of commands. Each builder signs in to `gh` and wrangler separately. Run 1 never signs in to Cloudflare, and run 2 signs out of wrangler once setup ends. A probe proves the isolation before launch. Each builder keeps a `BACKLOG.md` as it works, adding an item wherever the published tools left it guessing, stuck, or wrong. That file is the test's one instrument.
 
 ### The brief each builder gets
 
@@ -100,7 +102,7 @@ The servers DNS declarations, 20, run beside the builders. The ceiling is 1,200 
 The old site is retired through `retire-project` before setup runs. Retiring it first gives setup the real names, and it skips the cutover. The export and the inventory happen while rc.4 waits. The steps:
 1. Export the repo bundle, the posts, the About bio, the privacy page, every R2 object, the whole `cairn-907-auth` database, and the names of the secrets in use. All of it goes into an encrypted archive, proven by a scratch restore.
 2. Remove the old site's secrets from `sync.sh` and the registry through a dotfiles PR, so a routine sync can't push the shared App key into the new Worker.
-3. At promotion, you run the teardown script. It detaches the 907.life domain from the old Worker, and `conductor-servers` at once declares a placeholder apex record, since Cloudflare's redirect rules need a proxied hostname. The script then deletes its Builds triggers, the `907-life` Worker, the `cairn-907-auth` database, and the emptied `907-life-media` bucket. It deletes the repo's Actions token secret, renames the repo to `907-life-legacy`, and archives it. The deletes can't be undone.
+3. At promotion, you run the teardown script. It detaches the 907.life domain from the old Worker, which opens the redirect gap. It then deletes its Builds triggers, the `907-life` Worker, the `cairn-907-auth` database, and the emptied `907-life-media` bucket. It deletes the repo's Actions token secret, renames the repo to `907-life-legacy`, and archives it. The deletes can't be undone.
 4. Leave the shared `cairn-build` registration, the shared GitHub App, the Email Sending onboarding the servers monitor shares, and the zone's mail records alone.
 
 Three `retire-project` steps would break mail or don't fit, so they don't run: removing the zone's DNS records (step 4.1, apart from the old Worker's own domain record), parking the domain with `MX 0 .` (step 4.4), and deleting the repo (step 4.5, replaced by the rename). The inventory and the dry run come to you as a separate packet. Your approval there authorizes the deletes.
