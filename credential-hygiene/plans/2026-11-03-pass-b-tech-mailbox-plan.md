@@ -197,6 +197,10 @@ The conductor runs these after Geoff approves, outside 03:20 to 04:00 UTC.
 6. `ssh -o BatchMode=yes geoff@ward.907.life sudo mail-filters status <tech name>` shows the managed script active, and `ssh -o BatchMode=yes geoff@ward.907.life sudo stalwart-status counts` lists the new mailbox. The next nightly backup's `backup-status.json` shows ok, and STATUS carries that read for the next morning.
 7. Clear the ward hold line. Pass C reads `provider-checklist.md` for Geoff's list, and the operator runbook pass may launch.
 
+## Rulings during the run
+
+- **T9 `settings.json` (Geoff, 2026-11-07, asked by `conductor-servers`).** Auto mode refused the executor's edit to `claude/.claude/settings.json` (`[Self-Modification]`), as it did in pass A. Geoff applies `~/.local/state/credential-hygiene/settings-passB.patch` to `credential-hygiene-b` in the workstation worktree himself, in Ptyxis, before the packet, as he did for pass A. The patch adds the reader's four allow rules, drops the spent probe rule, and adds the technical mailbox line to `autoMode.environment`. The executor resumes T9's checks and T10 once that commit is on the branch.
+
 ## Not checked
 
 - Claude's operator access to ward: its ward applies hold `STALWART_PASSWORD_TECH`, and its ssh rules reach any mailbox with full rights. Nothing in this pass enforces the rule that Claude never uses the account password; the design's bar covers only the reader's credential.
