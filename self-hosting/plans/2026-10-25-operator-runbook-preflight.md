@@ -15,6 +15,8 @@ The pre-flight items of `self-hosting/plans/2026-10-25-operator-runbook-plan.md`
 | 6. Claude's vault route | Claude | Done 2026-10-25, owed again after the 2026-11-03 reorganization: the check is now `claude-pass item list --vault-name Infrastructure`. Proton rate-limits logins after about four in quick succession; space calls about two minutes apart. |
 | 7. Permission rules | Claude drafts, Geoff approves in a separate packet | Not started. It follows items 1 to 5 in the packet's order. |
 
+Also on 2026-11-07, Geoff added a passkey to his Proton account. T8's accounts page records it with Proton's recovery.
+
 `Household IT` is shared with the second operator as Admin, and `Servers emergency` is deleted. On 2026-10-25 the vault's eight items were renamed with category prefixes (Backups, Mail, Bookmarks share, Spamhaus, Phone), each with a note naming its store variable, and both Fastmail logins and a duplicate Yealink entry went to Trash. A final list read back all eight active titles and the three trashed items.
 
 ## Amendment, 2026-11-03
@@ -35,7 +37,7 @@ The sitting started on 2026-11-07, after credential-hygiene's pass B merged. `co
 | 1. Cloudflare seat | **Passes.** Geoff sent the invite after enforcement was on. `GET /accounts/{id}/members` lists two members: Geoff (`accepted`) and a `pending` Super Administrator whose address matches an entry in `cloudflare/monitor/config.json`'s `alert_to` (compared in a script, never printed). He hasn't accepted yet. Enforcement will ask him to enroll in two-factor when he does. If the invite expires before he accepts, Geoff re-sends it in the post-merge sitting (standing answer). |
 | 2. Two-factor enforcement | **Passes.** The documented `PUT /accounts/{id}` (the whole object from the first GET, only `settings.enforce_twofactor` set to `true`) answered 403, code 9109, "Unauthorized to access requested resource". A second GET matched the first in every field, `enforce_twofactor` still `false`. Geoff turned it on in the dashboard. **Passes:** a third GET reads `enforce_twofactor: true`, and the other 11 fields match the first GET. Cloudflare's docs note that turning enforcement off again takes a support ticket and 1 to 2 business days. |
 | 3. Hetzner seat | **Passes.** Geoff invited the second operator's Proton address to project `self-hosting` and pasted the Members page: two rows, Geoff as **Owner** and the second operator as **Admin**, with no pending marker shown. Hetzner has no member API, so Geoff's paste is the check. |
-| 4. GitHub successor | Open. |
+| 4. GitHub successor | **Passes.** Geoff named the second operator's GitHub login (the servers repo's one other collaborator, `write`; `gh api users/<login>` shows the account was created 2021-05-20) under Settings > Account > Successor settings. The invite is pending until he accepts. A first search found nothing; a later one did. |
 | 5. Billing and renewal facts | Hetzner amounts read by Claude (below). Geoff's columns open. |
 | 6. Claude's vault route | **Passes.** `claude-pass --status` prints `path=proton host=pavilion`. The first `item list --vault-name Infrastructure` hit Proton's login throttle. A retry five minutes later answered with the vault's titles (read, not recorded here). The `pavilion-claude` token expires 2027-01-20. |
 | 7. Permission rules | Drafted after items 1 to 5 pass, as its own packet. |
