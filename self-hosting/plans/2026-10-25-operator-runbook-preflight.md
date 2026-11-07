@@ -24,3 +24,35 @@ The plan carries a dated amendment from the credential-hygiene design (`credenti
 ## Next
 
 When Geoff says a step is done, the session that picks this up checks it as the plan's pre-flight says and updates the table. After items 1 to 6 pass, it drafts item 7's rules change and sends it as a separate packet. After that merges, it sends the plan to `conductor-servers`, which launches `servers-operator-runbook`.
+
+## The sitting's record
+
+The sitting started on 2026-11-07, after credential-hygiene's pass B merged. `conductor-servers` checks each item as Geoff finishes it.
+
+| Item | State on 2026-11-07 |
+|---|---|
+| Geoff's Cloudflare two-factor | **On.** Off at the start (`GET /accounts/{id}/members`: one member, Geoff, `accepted`, Super Administrator, `two_factor_authentication_enabled: false`); the same read later on 2026-11-07 shows `true`. Geoff has no smartphone, so the method is Mobile App Authentication (plain TOTP) through Proton Pass. Geoff first saved the recovery codes on the `Cloudflare` item in `Infrastructure`, then moved them to his personal vault, so Claude's agents can't read them. The `Cloudflare` login item itself stays in `Infrastructure`. |
+| 1. Cloudflare seat | **Passes.** Geoff sent the invite after enforcement was on. `GET /accounts/{id}/members` lists two members: Geoff (`accepted`) and a `pending` Super Administrator whose address matches an entry in `cloudflare/monitor/config.json`'s `alert_to` (compared in a script, never printed). He hasn't accepted yet. Enforcement will ask him to enroll in two-factor when he does. If the invite expires before he accepts, Geoff re-sends it in the post-merge sitting (standing answer). |
+| 2. Two-factor enforcement | **Passes.** The documented `PUT /accounts/{id}` (the whole object from the first GET, only `settings.enforce_twofactor` set to `true`) answered 403, code 9109, "Unauthorized to access requested resource". A second GET matched the first in every field, `enforce_twofactor` still `false`. Geoff turned it on in the dashboard. **Passes:** a third GET reads `enforce_twofactor: true`, and the other 11 fields match the first GET. Cloudflare's docs note that turning enforcement off again takes a support ticket and 1 to 2 business days. |
+| 3. Hetzner seat | **Passes.** Geoff invited the second operator's Proton address to project `self-hosting` and pasted the Members page: two rows, Geoff as **Owner** and the second operator as **Admin**, with no pending marker shown. Hetzner has no member API, so Geoff's paste is the check. |
+| 4. GitHub successor | **Passes.** Geoff named the second operator's GitHub login (the servers repo's one other collaborator, `write`; `gh api users/<login>` shows the account was created 2021-05-20) under Settings > Account > Successor settings. The invite is pending until he accepts. A first search found nothing; a later one did. |
+| 5. Billing and renewal facts | Hetzner amounts read by Claude (below). Geoff's columns open. |
+| 6. Claude's vault route | **Passes.** `claude-pass --status` prints `path=proton host=pavilion`. The first `item list --vault-name Infrastructure` hit Proton's login throttle. A retry five minutes later answered with the vault's titles (read, not recorded here). The `pavilion-claude` token expires 2027-01-20. |
+| 7. Permission rules | Drafted after items 1 to 5 pass, as its own packet. |
+
+Also on 2026-11-07, Geoff added a passkey to his Proton account. T8's accounts page records it with Proton's recovery.
+
+### Hetzner amounts (item 5, Claude's half)
+
+Read 2026-11-07 from `HCLOUD_TOKEN_SERVERS` (`GET /servers`, `/primary_ips`, `/images?type=snapshot`, `/pricing`). The project bills in USD, with a VAT rate of 0.
+
+| Resource | Monthly (USD) |
+|---|---|
+| orpheus, cx33, nbg1 | 9.99 |
+| ward, cax21, fsn1 | 12.49 |
+| ward's backups (20% of the server) | 2.50 |
+| Two primary IPv4 addresses (0.60 each; the two IPv6 are free) | 1.20 |
+| Snapshot `pre-change orpheus`, 2026-10-21, 29.2 GB at 0.0199/GB | 0.58 |
+| **Total** | **26.76** |
+
+The project has no volumes, floating IPs, or load balancers. Found, not done: the 2026-10-21 orpheus snapshot costs 0.58 a month and may no longer be needed. Geoff decides whether to delete it.
