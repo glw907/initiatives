@@ -2,7 +2,7 @@
 
 ## Brief
 
-Approving this design rebuilds 907.life on cairn rc.4, using only cairn's and Survey's published tools, the way a newcomer would. Every place those tools fall short gets recorded as a finding.
+Approving this design rebuilds 907.life on cairn rc.4, using only cairn's and Survey's published tools, the way a newcomer would. every place those tools fall short gets recorded as a backlog item.
 
 You set two goals on 2026-11-07: a useful personal blog that also shows off four of your projects, and a real test of the engine and its new tooling. The test only counts if the builders don't have the workstation's knowledge, so two clean-room Claude Code sessions do the building, and this session watches and records.
 
@@ -51,11 +51,11 @@ Three sessions take part. Each has one job, and only the observer talks to you o
 
 - **Run 1, the theme author.** A clean-room session with no workstation skills, CLAUDE.md, hooks, or memory. It clones `glw907/survey` fresh, builds the theme from Survey's `DESIGN.md` and cairn's `cairn-styling-public-pages` skill, and proves it on a local-only scaffold, with no GitHub or deploy. It opens a PR on `glw907/survey`.
 - **Run 2, the site builder.** A second clean-room session. It runs setup with the 907.life domain and sign-in email, adds the projects content type, migrates the content, swaps in the Survey theme once run 1 lands, and builds the home page from the prototype.
-- **The observer, 907-life-e7 (Opus).** Follows each builder's output stream, pings you at browser approvals, sends findings to their owners, answers a builder's taste questions from this design and the prototype, and runs acceptance.
+- **The observer, 907-life-e7 (Opus).** Follows each builder's output stream, pings you at browser approvals, sends backlog items to their owners, answers a builder's taste questions from this design and the prototype, and runs acceptance.
 
 ### The clean room
 
-Each builder runs as `claude -p` in headless mode with `CLAUDE_CONFIG_DIR` pointing at an empty config directory, so no user skill, CLAUDE.md, hook, plugin, or memory loads. It works under `~/Projects/cleanroom/`. That config enables Claude Code's sandbox. Its deny rules block reads of `~/.claude`, `~/.local/secrets`, `~/.dotfiles`, and every repo under `~/Projects` except `cleanroom/`, as well as any command that touches `907-life-legacy` or the shared `cairn-build` Workers Builds registration. A probe proves the isolation before launch: the session lists no workstation skill, can't read a denied path through either Read or Bash, and starts with no trust prompt. Each builder keeps a `FRICTION.md` as it works. That's the test's one instrument.
+Each builder runs as `claude -p` in headless mode with `CLAUDE_CONFIG_DIR` pointing at an empty config directory, so no user skill, CLAUDE.md, hook, plugin, or memory loads. It works under `~/Projects/cleanroom/`. That config enables Claude Code's sandbox. Its deny rules block reads of `~/.claude`, `~/.local/secrets`, `~/.dotfiles`, and every repo under `~/Projects` except `cleanroom/`, as well as any command that touches `907-life-legacy` or the shared `cairn-build` Workers Builds registration. A probe proves the isolation before launch: the session lists no workstation skill, can't read a denied path through either Read or Bash, and starts with no trust prompt. Each builder keeps a `BACKLOG.md` as it works, adding an item wherever the published tools left it guessing, stuck, or wrong. That file is the test's one instrument.
 
 ### The brief each builder gets
 
@@ -76,7 +76,7 @@ The theme follows cairn's published contract and nothing else:
 - It has no `!important` and no hand-written `[data-theme]` overrides.
 - It contains all five of Survey's signature details, with the collar's two fields as site settings.
 
-Where the contract can't carry Survey cleanly, that gap is a finding, with the smallest workaround marked by the finding's id. A site takes the theme by copying the folder in. Since no published path covers that step, it's a finding too.
+Where the contract can't carry Survey cleanly, that gap is a backlog item, with the smallest workaround marked by the item's id. A site takes the theme by copying the folder in. Since no published path covers that step, it's a backlog item too.
 
 ### The site
 
@@ -108,11 +108,11 @@ The inventory and the dry run come to you as a separate packet. Your approval th
 ### Standing answers
 
 The run takes these answers without stopping:
-- **A finding that blocks a builder.** The observer sends it to the conductor right away, and the builder waits. When a fixed candidate ships, the builder resumes on it, and the observer records which version it moved to.
+- **A backlog item that blocks a builder.** The observer sends it to the conductor right away, and the builder waits. When a fixed candidate ships, the builder resumes on it, and the observer records which version it moved to.
 - **A builder's question a newcomer would answer for themselves.** The observer answers it from this design and the prototype. Only a product, taste, or scope question this design doesn't settle comes to you.
-- **A builder past twice its estimate, with no traced cause.** The observer may give it one hint, and the hint is logged as a finding.
+- **A builder struggling.** The observer lets it struggle, since that is where the gaps show. It steps in only when the builder is truly stuck, as the spec defines it, and each hint is logged as a backlog item (Geoff, 2026-11-07).
 - **Setup offering a second Workers Builds registration.** The builder stops, and the observer tells the conductor.
-- **A gap in the theme contract.** It becomes a finding, and the theme carries the smallest workaround, marked with the finding's id.
+- **A gap in the theme contract.** It becomes a backlog item, and the theme carries the smallest workaround, marked with the item's id.
 - **A Survey gap.** It goes into Survey's `BACKLOG.md` as a direct commit, which `DESIGN.md` asks for.
 - **Anything irreversible beyond what this design and the retirement packet approve** waits for a separate packet. Setup's DNS writes are approved here, if you take the recommended choice.
 
@@ -120,13 +120,13 @@ The run takes these answers without stopping:
 
 All four open items in `907-life/BACKLOG.md` got a verdict:
 - **#2 (devcontainer): keep.** It moves to the new repo's backlog at acceptance.
-- **#3 (PR test workflow): fold.** Acceptance checks whether the scaffold ships PR CI. If it doesn't, that's a finding, and the workflow gets added.
+- **#3 (PR test workflow): fold.** Acceptance checks whether the scaffold ships PR CI. If it doesn't, that's a backlog item, and the workflow gets added.
 - **#4 (Survey look): fold.** This pass delivers it. The item's source path, `cairn-themes/survey-theme/`, is stale, since Survey now lives in `glw907/survey`.
 - **#5 (failing Workers Builds check): done at retirement.** The check belongs to the old Worker. Acceptance watches whether the new site's PR checks fail the same way.
 
-### Findings so far
+### Backlog items so far
 
-The design work has turned up three findings so far:
+The design work has turned up three backlog items so far:
 - **Setup's name clash.** Setup never checked for an existing Worker, D1 database, or bucket with the same name before its first deploy. The conductor confirmed it, you ruled that it blocks rc.4, and the fix is in your queue.
 - **No theme picker.** No published path takes a third-party theme into a site, and create-cairn-site has no way to choose a theme.
-- **Survey's skill and design guide disagree.** The `survey` skill sends gaps to `FRICTION.md`, while Survey's `DESIGN.md` sends them to `BACKLOG.md`, and only `BACKLOG.md` exists.
+- **Survey's skill and design guide disagreed** on where a gap goes. `glw907/workstation#211` points the skill at `BACKLOG.md`, the file Survey's `DESIGN.md` names.
