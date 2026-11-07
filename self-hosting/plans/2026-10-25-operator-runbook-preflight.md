@@ -24,3 +24,33 @@ The plan carries a dated amendment from the credential-hygiene design (`credenti
 ## Next
 
 When Geoff says a step is done, the session that picks this up checks it as the plan's pre-flight says and updates the table. After items 1 to 6 pass, it drafts item 7's rules change and sends it as a separate packet. After that merges, it sends the plan to `conductor-servers`, which launches `servers-operator-runbook`.
+
+## The sitting's record
+
+The sitting started on 2026-11-07, after credential-hygiene's pass B merged. `conductor-servers` checks each item as Geoff finishes it.
+
+| Item | State on 2026-11-07 |
+|---|---|
+| Geoff's Cloudflare two-factor | **Off** at the start. `GET /accounts/{id}/members` reads one member, Geoff, `accepted`, Super Administrator, `two_factor_authentication_enabled: false`. Geoff has no smartphone, so the method is Mobile App Authentication (plain TOTP), its key in a TOTP field on an item in his personal Proton vault, with the recovery codes on that item. Neither goes in `Infrastructure`, which Claude's agents can read. |
+| 1. Cloudflare seat | Open. |
+| 2. Two-factor enforcement | Waits on Geoff's two-factor. |
+| 3. Hetzner seat | Open. |
+| 4. GitHub successor | Open. |
+| 5. Billing and renewal facts | Hetzner amounts read by Claude (below). Geoff's columns open. |
+| 6. Claude's vault route | **Passes.** `claude-pass --status` prints `path=proton host=pavilion`. The first `item list --vault-name Infrastructure` hit Proton's login throttle. A retry five minutes later answered with the vault's titles (read, not recorded here). The `pavilion-claude` token expires 2027-01-20. |
+| 7. Permission rules | Drafted after items 1 to 5 pass, as its own packet. |
+
+### Hetzner amounts (item 5, Claude's half)
+
+Read 2026-11-07 from `HCLOUD_TOKEN_SERVERS` (`GET /servers`, `/primary_ips`, `/images?type=snapshot`, `/pricing`). The project bills in USD, with a VAT rate of 0.
+
+| Resource | Monthly (USD) |
+|---|---|
+| orpheus, cx33, nbg1 | 9.99 |
+| ward, cax21, fsn1 | 12.49 |
+| ward's backups (20% of the server) | 2.50 |
+| Two primary IPv4 addresses (0.60 each; the two IPv6 are free) | 1.20 |
+| Snapshot `pre-change orpheus`, 2026-10-21, 29.2 GB at 0.0199/GB | 0.58 |
+| **Total** | **26.76** |
+
+The project has no volumes, floating IPs, or load balancers. Found, not done: the 2026-10-21 orpheus snapshot costs 0.58 a month and may no longer be needed. Geoff decides whether to delete it.
