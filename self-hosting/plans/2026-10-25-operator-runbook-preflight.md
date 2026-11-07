@@ -15,8 +15,6 @@ The pre-flight items of `self-hosting/plans/2026-10-25-operator-runbook-plan.md`
 | 6. Claude's vault route | Claude | Done 2026-10-25, owed again after the 2026-11-03 reorganization: the check is now `claude-pass item list --vault-name Infrastructure`. Proton rate-limits logins after about four in quick succession; space calls about two minutes apart. |
 | 7. Permission rules | Claude drafts, Geoff approves in a separate packet | Not started. It follows items 1 to 5 in the packet's order. |
 
-Also on 2026-11-07, Geoff added a passkey to his Proton account. T8's accounts page records it with Proton's recovery.
-
 `Household IT` is shared with the second operator as Admin, and `Servers emergency` is deleted. On 2026-10-25 the vault's eight items were renamed with category prefixes (Backups, Mail, Bookmarks share, Spamhaus, Phone), each with a note naming its store variable, and both Fastmail logins and a duplicate Yealink entry went to Trash. A final list read back all eight active titles and the three trashed items.
 
 ## Amendment, 2026-11-03
@@ -41,6 +39,8 @@ The sitting started on 2026-11-07, after credential-hygiene's pass B merged. `co
 | 5. Billing and renewal facts | Hetzner amounts read by Claude (below). Geoff's columns open. |
 | 6. Claude's vault route | **Passes.** `claude-pass --status` prints `path=proton host=pavilion`. The first `item list --vault-name Infrastructure` hit Proton's login throttle. A retry five minutes later answered with the vault's titles (read, not recorded here). The `pavilion-claude` token expires 2027-01-20. |
 | 7. Permission rules | Drafted after items 1 to 5 pass, as its own packet. |
+
+Also on 2026-11-07, Geoff added a passkey to his Proton account. T8's accounts page records it with Proton's recovery.
 
 ### Hetzner amounts (item 5, Claude's half)
 
