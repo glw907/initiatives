@@ -16,7 +16,7 @@ On 2026-10-13, `DRAFTER_API_KEY` was stored on pavilion through `secret-receive`
 
 ## Non-goals
 
-- Replacing age or 1Password as the store.
+- Replacing age or Proton Pass as the store.
 - Handling secrets that belong to a Cloudflare Worker. Those stay in Workers secrets.
 
 ## Where the work lives

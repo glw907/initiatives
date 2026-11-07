@@ -90,6 +90,22 @@ Pass B is done: glw907/servers#35 (`9ed2ce8`) and glw907/workstation#205 (`8c741
 
 Update (2026-11-07, `conductor-servers`): `conductor-initiatives` launched for pass C (session `16c37311`), since none was live, and it has the pass B hand-off notes. `conductor-servers` keeps only the backup read owed for the morning of 2026-11-08.
 
+## Pass C run (2026-11-07, `initiatives-credential-hygiene-c`)
+
+PRs, all draft until the conductor's packet: glw907/initiatives (this branch, records T3 and this STATUS), glw907/workstation#210 (T6), glw907/aksailingclub-legacy#159 (T4, replaces #157), glw907/aksailingclub-org#16 (T4), glw907/907-life#4 and glw907/fishwright#7 (T5). The private scan (`~/.local/state/credential-hygiene/scan/`) fails on the 2026-11-03 trees (70 hits at the baseline revs, `scan/baseline.txt`) and exits 0 with each PR's head standing in for its repo (end-to-end check 4). The whole-branch `standards:diff-reviewer` returned accept on all six, with no blocking finding. Geoff's list is in the private files `provider-checklist.md`, `mask-catalog.md`, `emergency-access.md`, `estate-letter.md`, and `onepassword-close.md`.
+
+Backlog route (cairn-cms and phonebook have live sessions):
+- cairn-cms: `conductor-cairn-cms` filed the `SECURITY.md` contact item as #359 (Medium). It is on cairn-cms main at `5d4b6ab`.
+- phonebook: `conductor-phonebook` was not reachable, so these two items are owed. Draft text, for `phonebook/BACKLOG.md` under Open:
+  - **Send phonebook's Cloudflare alert to the technical mailbox.** `scripts/cloudflare/service-token.sh:21` sets `NOTIFY_EMAIL` to the maintainer's login address, and the live Cloudflare notification policy the script created has the same recipient. Change the constant to `glw@907.life` and update the live policy through the Cloudflare API, then read it back. `#initiative:credential-hygiene`
+  - **Add Geoff's personal addresses and the noreply commit author to the phonebook-public scrub.** The addresses sit in the private file `~/.local/state/credential-hygiene/contacts.txt` on pavilion; copy none into the repo. `#initiative:phonebook-public`
+
+Owed to the conductor: close aksailingclub-legacy#157 with a comment pointing at #159 when #159 merges (auto mode refused the executor's close).
+
+The `Projects` folders (T2) are done: three folders (`Shared`, `cairn-cms`, `sportsyou-notify`) and 11 items moved through `claude-pass`, with no refusal. The scratch probe item was created, moved, and trashed. The check `projects-check.py` passes on the final listing (11 active items, 11 mapped, 0 problems) and fails on a map with one row changed. Items with no single project went to `Shared` (standing answer 5): Stripe, both Formspree accounts, Claude, GitHub, Resend, and both Google helper entries (rows in `projects-folders.tsv`).
+
+Held edits: none. Auto mode accepted the memory edits, so no `held-edits.md` exists. It refused one action: closing aksailingclub-legacy#157.
+
 Update (2026-11-07, `conductor-initiatives`, session `16c37311`): pass C launched at 20:51 UTC from the initiatives main checkout. Executor `initiatives-credential-hygiene-c`, session `d9efb488`. Pre-flight rows 1 to 7 passed: pavilion's workstation checkout is level with `origin/main`, `pass-sitting` is installed, `ws-pass-key --status` prints `path=proton`, the provider checklist exists, the age key item carries its held title and not its old one, `claude-pass vault list` shows none of the four personal vaults, and both prompts are on `origin/main`. Row 2 (thinkpad-x1 on pass A) stands on pass A's close record above. Path ceiling 240 minutes from launch. Pass B's hand-off notes carry forward: end-to-end check 3's live half runs after Geoff works the provider checklist, and the `pass-cli` share error goes to pass C's Proton Pass checks. Next: the executor's PR-ready message, then the packet.
 
 Update (2026-11-07, `conductor-servers`, closing): pass B's last owed check, the nightly `backup-status.json` read after 04:30 UTC on 2026-11-08, moves to `conductor-initiatives`. It is a read only, and any ward fix goes to a servers session. `conductor-servers` still owes the operator runbook pass, recorded in the self-hosting STATUS (item 1g). It waits on Geoff's pre-flight items 1 to 7, and a future `conductor-servers` launches it from there.
