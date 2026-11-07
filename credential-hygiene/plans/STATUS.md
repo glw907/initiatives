@@ -47,3 +47,5 @@ Pass A, T5 `settings.json` (2026-11-03). Auto mode refused three Edits to `claud
 Ruling on the T6 stop (Geoff, 2026-11-04, asked by `conductor-dotfiles`): option (a). The public registry names each technical item's vault and store variable, with no item title.
 
 Ruling on the T5 stop (Geoff, 2026-11-04): he applies `settings-passA.patch` to `credential-hygiene-a` himself in Ptyxis. Both rulings are in the plan's "Rulings during the run". Owed by Geoff: that Ptyxis line. The executor (`52e17415`) has exited with the branch clean at `23e2e55`. `conductor-dotfiles` relaunches it once Geoff's commit lands. The revoke is done (initiatives-62, 2026-11-04), so After merge 4 is no longer held.
+
+Update (2026-11-07, `conductor-dotfiles`): Geoff's settings commit `8664519` is on `credential-hygiene-a`. The executor `dotfiles-credential-hygiene-a` was relaunched with the same line as session `529f06d2-285c-4bb3-860c-b9d9c79b56a9`, and the exited session `52e17415` was stopped. Next: its PR-ready message, then the packet for glw907/workstation#201.
