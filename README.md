@@ -73,7 +73,7 @@ A product never ends, and an initiative does, so only a bounded effort gets a re
 <!-- index:start -->
 | Initiative | Status | Repos | Summary |
 |---|---|---|---|
-| [907.life rebuild](907-rebuild/README.md) | proposed | 907-life | Would rebuild 907.life on the current cairn, re-skinned on Survey with its cairn layer. |
+| [907.life rebuild](907-rebuild/README.md) | active | 907-life, survey | Rebuilds 907.life on cairn rc.4 from the published tools alone, on a Survey cairn theme, to test the engine and its tooling. |
 | [Approval packets](approval-packets/README.md) | done | approval-queue, workstation, dubplate, poplar | Turns Design & PR Approvals into one packet per session hand-over, grouped by initiative, with at most three researched asks for Geoff. |
 | [Approval queue](approval-queue/README.md) | active | approval-queue, workstation | Puts each PR, design, and triage list in front of Geoff in one app and returns his decision to the session. |
 | [ASC cutover](asc-cutover/README.md) | active | aksailingclub-org, aksailingclub-legacy | Takes the rebuilt club site live in place of the legacy site and retires the old one. |

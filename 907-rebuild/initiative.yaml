@@ -1,7 +1,7 @@
 id: 907-rebuild
 title: 907.life rebuild
-summary: Would rebuild 907.life on the current cairn, re-skinned on Survey with its cairn layer.
-status: proposed
+summary: Rebuilds 907.life on cairn rc.4 from the published tools alone, on a Survey cairn theme, to test the engine and its tooling.
+status: active
 owner: glw907
 created: 2026-10-14
-repos: [907-life]
+repos: [907-life, survey]
