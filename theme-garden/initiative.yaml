@@ -1,0 +1,7 @@
+id: theme-garden
+title: cairn theme garden
+summary: Gives cairn one standard way to package, store, and host public themes, a catalog of house themes that cairn new installs from, a theme viewer and check, and a conformance set every theme renders.
+status: proposed
+owner: glw907
+created: 2026-11-08
+repos: [cairn-cms, survey, cairn-pub]
