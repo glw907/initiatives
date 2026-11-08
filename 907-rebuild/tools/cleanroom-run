@@ -7,13 +7,17 @@
 #   cleanroom-run <A|B> --shell                    open an interactive shell in the builder's environment
 #
 # Every form starts from a cleared environment (env -i) holding only HOME, PATH, LANG, TERM,
-# TMPDIR, and CLAUDE_CODE_TMPDIR, and changes into the builder's ~/work before it starts.
+# TMPDIR, CLAUDE_CODE_TMPDIR, and a dead DBUS_SESSION_BUS_ADDRESS, and changes into the
+# builder's ~/work before it starts. With no bus variable at all, gh's keyring client falls
+# back to /run/user/<uid>/bus and stores the builder's token in Geoff's desktop keyring (P1,
+# 2026-11-07); the dead address makes gh keep it in the builder's own hosts.yml instead.
 set -euo pipefail
 
 root=/var/tmp/cairn-cleanroom
 here=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 template=$here/cleanroom-settings.json
 clean_path=/var/home/glw907/.local/share/mise/installs/node/lts/bin:/home/linuxbrew/.linuxbrew/bin:/usr/bin:/bin
+dead_bus=unix:path=/nonexistent/cleanroom-bus
 
 die() { printf 'cleanroom-run: %s\n' "$1" >&2; exit 2; }
 
@@ -34,7 +38,7 @@ install_builder() {
 clean_env() {
   local home=$root/$1
   env -i HOME="$home" PATH="$clean_path" LANG=C.UTF-8 TERM=xterm-256color \
-    TMPDIR="$home/tmp" CLAUDE_CODE_TMPDIR="$home/tmp" "${@:2}"
+    TMPDIR="$home/tmp" CLAUDE_CODE_TMPDIR="$home/tmp" DBUS_SESSION_BUS_ADDRESS="$dead_bus" "${@:2}"
 }
 
 [[ $# -ge 1 ]] || die "usage: cleanroom-run install | <A|B> [--resume <uuid>] PROMPT | <A|B> --shell"
@@ -55,7 +59,8 @@ b=$1; shift
 if [[ ${1:-} == --shell ]]; then
   # shellcheck disable=SC2016 # $HOME expands inside the clean environment, not here.
   exec env -i HOME="$root/$b" PATH="$clean_path" LANG=C.UTF-8 TERM=xterm-256color \
-    TMPDIR="$root/$b/tmp" CLAUDE_CODE_TMPDIR="$root/$b/tmp" PS1="[cleanroom $b] \\w \\$ " \
+    TMPDIR="$root/$b/tmp" CLAUDE_CODE_TMPDIR="$root/$b/tmp" DBUS_SESSION_BUS_ADDRESS="$dead_bus" \
+    PS1="[cleanroom $b] \\w \\$ " \
     bash --noprofile --norc -c 'cd "$HOME/work" && exec bash --noprofile --norc -i'
 fi
 
