@@ -273,6 +273,25 @@ table, "Stops and standing answers".
 
 Ruled:
 
+## Alignment with the theme-garden initiative
+
+The theme-garden initiative designs cairn's theme catalog in parallel (Geoff, 2026-11-08), and its
+sessions and this run's sessions coordinate directly to keep the two aligned. Geoff hears only of a
+conflict that would change either design. Before a task changes one of these boundary points, the
+conductor sends the theme-garden session the change and waits for its reply (`ListAgents`; if no
+theme-garden session is live, the conductor reads the `theme-garden` initiative record and goes on
+if the change contradicts nothing there):
+
+- the catalog entry shape: `templates/catalog.json`, and a reader that accepts extra fields (T1.2, T1.9);
+- the scaffold's substitution targets, named once in `tool/internal/setup/scaffold/`, since the theme's
+  config files will later move out of `src/theme/` (T1.9);
+- the questions form and the summary's Theme row, where theme options are added later (T3.x);
+- `src/content/.cairn/`, where the garden may add a theme lock file beside `site-facts.json`;
+- the starter overlay (P4), which the garden's conformance set stays out of.
+
+A reply that asks for more than a one-line change to a task is recorded in the PR's `## Decisions`,
+or, when it would change the design, stops the run for Geoff.
+
 ## Planning misses at design
 
 The design's approval named no sitting, so S1 (pre-flight item 4) and the Decide items hold the
