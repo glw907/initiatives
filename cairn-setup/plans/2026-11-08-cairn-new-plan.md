@@ -48,13 +48,19 @@ later pass.
    .claude/settings.json, hooks, permission rules, autoMode, or memory, and it does not cover text
    that grants permissions or tells a session to bypass a block. Pair subagents never write these
    paths; they hand the content back and the executor writes it."
-   Check: `grep -c 'cairn-setup-passes' ~/.claude/settings.json` prints `1`, and item 8's probe
-   proves the write.
-3. **[you] Rule on the ten Decide items** in "Rulings before launch", in the pre-launch packet.
+   On a yes to Decide 11, a second line, marker `cairn-setup-passes-merge`, makes the conductor's
+   `gh pr merge <n> -R glw907/cairn-cms --merge --match-head-commit <head>` routine for P1, P2, P5,
+   and P6 once Decide 11's gates hold on that head. Both lines are in
+   `research/add-cairn-setup-grant.py`, which Geoff reads and runs. Check: `grep -c 'cairn-setup-passes'
+   ~/.claude/settings.json` prints `2` (`1` on a no to Decide 11), and item 8's probe proves the
+   write.
+3. **[you] Rule on the eleven Decide items** in "Rulings before launch", in the pre-launch packet.
    Check: `grep -cE '^Ruled: (yes|no)\b'
    /var/home/glw907/Projects/initiatives/cairn-setup/plans/2026-11-08-cairn-new-plan.md` prints
-   `10` (an empty `Ruled:` line does not count).
-4. **[you] Agree the recording sitting S1.** It runs in your Ptyxis terminal at P1's set point,
+   `11` (an empty `Ruled:` line does not count).
+4. **[you] Agree the recording sitting S1.** S1 never holds the run: Geoff runs it when the
+   notification reaches him, and the work goes on meanwhile (T1.0, "Stops and standing answers").
+   It runs in your Ptyxis terminal at P1's set point,
    after T1.0's commit and its two reviews, for about 30 minutes: one `bash <P1 worktree>/tool/scripts/record-fixtures/record.sh`
    (the conductor's `notify-send -u normal` names the absolute path and the commit) that sources
    `~/.local/secrets` in a subshell, opens your Chromium for one Cloudflare Allow (tick API Tokens:
@@ -245,6 +251,28 @@ close checklist's boundary test discourages. Depends: T2.6, T5.3.
 
 Ruled:
 
+### Decide 11: the run goes through every pass without waiting on Geoff
+
+Geoff asked for the passes to run without a break wherever possible (2026-11-08). As first written,
+the run waited on him five times: S1, and a packet after each of P1, P2, P5, and P6, each holding
+the next pass. **Recommendation: yes, the conductor merges each `auth-data` and `runner` pass's PR
+itself once every gate below holds, and sends that pass's packet as a record that the merge does not
+wait on (the 2026-11-01 cairn run sheet's pattern).** The gates, all on the PR's head commit: CI
+green; the whole-branch `standards:diff-reviewer` folded with no open finding and no `escalate`
+verdict; for an `auth-data` pass, the `standards:web-auth-security-reviewer` read folded with no
+open finding and the live admin smoke passed; the docs gate green. A record packet Geoff sends back
+becomes a fix-forward PR in the pass then running (or a follow-up PR after P6), never a revert of
+later work. Nothing publishes: no pass bumps a version or cuts a release, and no release is cut
+before the tooling brainstorm's gates exist, so Geoff's read of every merged pass still comes before
+any owner runs this code. S1 never holds the run either (T1.0, "Stops and standing answers"). The
+autoMode grant (pre-flight item 2) gains a second line for these merges. On a yes, wherever this
+plan says a pass's "packet" it means its record packet, and a pass's "approved head" means the head
+on which every gate above holds. No keeps the per-pass
+packets, and each one holds the next pass until Geoff decides. Depends: pre-flight item 2, the pass
+table, "Stops and standing answers".
+
+Ruled:
+
 ## Planning misses at design
 
 The design's approval named no sitting, so S1 (pre-flight item 4) and the Decide items hold the
@@ -267,12 +295,14 @@ brainstorm. No pass bumps a version or publishes (`cairn-running-passes` "No rel
 
 | Pass | Slug | Class | Path minutes | Packet |
 | --- | --- | --- | --- | --- |
-| P1 | `cairn-new-1` spine and provider writes | `auth-data` | 1,170 | yes |
-| P2 | `cairn-new-2` agent lane, generated reference, and health on Decide 10 | `runner` | 510 | yes |
+| P1 | `cairn-new-1` spine and provider writes | `auth-data` | 1,170 | record; the conductor merges (Decide 11) |
+| P2 | `cairn-new-2` agent lane, generated reference, and health on Decide 10 | `runner` | 510 | record; the conductor merges (Decide 11) |
 | P3 | `cairn-new-3` terminal view | `ordinary` | 765 | merges itself |
 | P4 | `cairn-new-4` starter content | `ordinary` | 300 | merges itself |
-| P5 | `cairn-new-5` docs and Claude Code tooling | `runner` | 540 | yes |
-| P6 | `cairn-new-6` the switch: launcher, release pipeline, wizard retired | `auth-data` | 480 | yes |
+| P5 | `cairn-new-5` docs and Claude Code tooling | `runner` | 540 | record; the conductor merges (Decide 11) |
+| P6 | `cairn-new-6` the switch: launcher, release pipeline, wizard retired | `auth-data` | 480 | record; the conductor merges (Decide 11) |
+
+On a no to Decide 11, each "record" row is a packet that holds the next pass until Geoff decides.
 | P7 | `cairn-pub-docs-md` markdown copies (and the loader port on a yes to Decide 4) | `ordinary` | 195, or 375 on yes | merges itself |
 
 Critical chain (P1, P2, P3, P5, P6): **3,465 path minutes.** P4 and P7 run beside it.
@@ -335,7 +365,9 @@ Test: those cases. Then `standards:diff-reviewer` (task scope) and
 `standards:web-auth-security-reviewer` read T1.0's commit, and their fixes land, before **set point
 S1**: the conductor notifies Geoff with the worktree's absolute path and the commit. The executor
 goes on with Pairs A to C, none of which needs a recording; once Geoff's S1 is done it copies the
-staged corpus in, runs the hygiene test, and commits it.
+staged corpus in, runs the hygiene test, and commits it. S1 never holds the run: if the recordings
+have not landed when Pair D is next, Pair D builds against docs-sourced bodies, and the import task
+in "Stops and standing answers" swaps in the recordings when they land.
 
 **Pair A: T1.3 and T1.4**
 
@@ -418,9 +450,14 @@ workflows; T1.2's listing test fails when `template/waymark/.github/workflows/de
 each scaffolded site carries `deploy.yml` and `.dev.vars.example`; the matrix fails on the `invite`
 case when site-facts regeneration is removed (#365). Test: unit cases for the first seven; the
 matrix for the last, run once on the branch with the regeneration stubbed out and the red recorded
-in the PR.
+in the PR. Two constraints for the theme-garden initiative (its alignment request, 2026-11-08), each
+with a unit case: the catalog reader decodes an entry carrying fields beyond `{id, name,
+description, path}` without error, and the scaffold names each substitution's target path (spec 9's
+`src/theme/site.config.yaml` and `src/theme/cairn.config.ts` among them) once, in one table in
+`tool/internal/setup/scaffold/`, so a later move of those files is a one-line change.
 
-**Pair D: T1.6 and T1.7** (after S1's recordings land on the branch)
+**Pair D: T1.6 and T1.7** (on S1's recordings when they have landed, otherwise on docs-sourced
+bodies; see "Stops and standing answers")
 
 **T1.6 Cloudflare writes** (150 min, `ordinary`). Outcome: the OAuth client (authorize URL with
 PKCE, exchange, refresh, revoke) and every call in spec 6's table, on the hosts spec 6 pins per
@@ -824,11 +861,13 @@ place of stopping.
 
 | Stop | Standing answer |
 | --- | --- |
-| Clock stop: a task past twice its estimate | When the cause is traced and the rest is in scope, reset `start=` once with `estimate=` the remaining work, and record it in `## Decisions`. A second stop on the same task writes STATUS and the conductor asks. |
-| Pass path ceiling: a pass past twice its plan path | Stop; the conductor asks with the trace and a recommendation. |
+| Clock stop: a task past twice its estimate | When the cause is traced and the rest is in scope, reset `start=` once with `estimate=` the remaining work, and record it in `## Decisions`. On a second stop on the same task, the conductor decides in place of asking: it splits the remaining work into a follow-up task in the same pass, or replaces the unit the fixes keep missing (`pass-core` step 1), and records the call in `## Decisions`. It asks only for a cause it cannot trace. |
+| Pass path ceiling: a pass past twice its plan path | Go on while the cause is traced and the initiative's actual critical-chain minutes stay under 7,370 (twice the design estimate); record the overrun in the PR's score. Past 7,370, or on a cause the session cannot trace, stop: the conductor asks with the trace and a recommendation. |
+| A merge gate in Decide 11 fails | The pass does not merge; fix forward and rerun the gate. A finding that would change the design, or an `escalate` verdict, stops: the conductor asks. |
+| S1 recordings land after Pair D started | An import task in the pass then running: copy the staged corpus in, run the hygiene test, rerun T1.6, T1.7, and T1.10's tests against the recordings, fix any body the docs got wrong, and list each fix in the PR. |
 | A red on the fast lane or CI | Fix forward or revert the commit. A known trap (`durable-gotchas.md`) reruns once. A skipped failing-first test with its `// WATCH:` is not a red. A red traced to executor reasoning moves the next task to `high`. |
 | A route S1 could not record, or spec 12's unrecordable list | A docs-sourced body with `provenance.note: "pending live recording"`, listed in the PR; the release's real-account leg records it. |
-| S1 not yet run when Pair D is next | Run T1.10's cases that need no recording against the fake clients; Pair D starts when the recordings land. |
+| S1 not yet run when Pair D is next | Pair D builds on docs-sourced bodies with `provenance.note: "pending live recording"`; the import task above swaps in the recordings when they land. |
 | S1 crashed mid-run | Geoff runs `record.sh --cleanup <run id>` in the same sitting; the conductor checks the results file's cleanup lines before the executor imports anything. |
 | Probe S1: revoke refused | Delete the keyring entries; record #354 as partly done in the PR. |
 | Probe S1: subscriptions unreadable | Workers Paid is not checked in the opening; Decide 3's ruling gives the first-deploy signal. |
