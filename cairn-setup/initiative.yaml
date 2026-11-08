@@ -1,0 +1,7 @@
+id: cairn-setup
+title: cairn site setup
+summary: Replaces create-cairn-site's wizard with cairn new, a Go setup command with one browser approval chain, an agent lane, a setup skill, and a standard starter set.
+status: proposed
+owner: glw907
+created: 2026-11-08
+repos: [cairn-cms, cairn-pub]

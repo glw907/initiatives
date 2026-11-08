@@ -1,0 +1,189 @@
+<title>cairn new prototype</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; each screen is a row of two terminal captures (80 and 60 columns) that stacks on a phone. Warm Stone, the cairn admin's palette. */
+:root {
+  --bg: #fdfbf9; --surface: #f4f0eb; --fg: #28231d; --muted: #615d57; --rule: #ddd6cd;
+  --accent: #7246cf; --ok: #197037; --warn: #915200;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #221f1a; --surface: #2b2722; --fg: #eae7e3; --muted: #a8a49e; --rule: #4a443b;
+  --accent: #9d84ec; --ok: #7ccd8e; --warn: #f7ac4d; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #221f1a; --surface: #2b2722; --fg: #eae7e3; --muted: #a8a49e; --rule: #4a443b;
+  --accent: #9d84ec; --ok: #7ccd8e; --warn: #f7ac4d; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font: 16px/1.55 var(--font-body); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 40px 80px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.prose { max-width: 68ch }
+h1 { font-size: 2rem; font-weight: 600; margin: 0 0 8px; text-wrap: balance; letter-spacing: -0.01em }
+h2 { font-size: 1.3rem; font-weight: 600; margin: 56px 0 12px; text-wrap: balance }
+h3 { font-size: 1.05rem; font-weight: 600; margin: 0 }
+.eyebrow { font: 500 .78rem/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px }
+p { margin: 0 0 12px }
+.muted { color: var(--muted) }
+code, pre { font-family: var(--font-mono); font-size: .88rem }
+pre { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; overflow-x: auto; margin: 0 }
+.cmd { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; align-items: start; margin-bottom: 10px }
+button { font: 500 .85rem var(--font-body); color: var(--fg); background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 6px 12px; cursor: pointer }
+button:hover { border-color: var(--muted) }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg) }
+.flags { display: grid; grid-template-columns: max-content minmax(0,1fr); gap: 6px 16px; margin-top: 14px }
+.flags code { white-space: nowrap }
+ol.flow { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px }
+ol.flow li { font: .85rem var(--font-mono); padding: 6px 10px; border: 1px solid var(--rule); border-radius: 999px; counter-increment: s }
+ol.flow { counter-reset: s }
+ol.flow li::before { content: counter(s) "  "; color: var(--muted); white-space: pre }
+ol.flow li.cond { border-style: dashed }
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--rule);
+  display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; padding-block: 12px; margin-top: 8px }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg) }
+.bar .label { font-size: .85rem; color: var(--muted) }
+.seg { display: inline-flex; gap: 4px }
+.screen { padding-block: 28px; border-bottom: 1px solid var(--rule) }
+.screen header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-bottom: 4px }
+.screen .id { font: .8rem var(--font-mono); color: var(--muted) }
+.screen .when { font-size: .8rem; color: var(--warn) }
+.screen p { color: var(--muted); max-width: 80ch; margin-bottom: 14px }
+.shots { display: grid; grid-template-columns: 721fr 541fr; gap: 16px; align-items: start }
+figure { margin: 0; min-width: 0 }
+figure img { display: block; width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--rule) }
+figcaption { font: .75rem var(--font-mono); color: var(--muted); margin-top: 6px }
+.pages { display: grid; grid-template-columns: 4fr 1fr; gap: 16px; align-items: start; margin-bottom: 24px }
+ul.calls { padding-left: 1.2em; margin: 0 }
+ul.calls li { margin-bottom: 10px; max-width: 80ch }
+@media (max-width: 760px) { .shots, .pages { grid-template-columns: minmax(0,1fr) } h1 { font-size: 1.6rem } }
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">Throwaway prototype · fake data · 8 November 2026</div>
+  <h1>cairn new prototype</h1>
+  <div class="prose">
+    <p>Every screen of the redesigned site setup, built in Go with Bubble Tea on made-up data, for a look before the written design. Nothing here is product code. Each screen was captured in a real terminal at 80 and 60 columns, in dark and light, and a separate reviewer graded the set before this page went up.</p>
+  </div>
+
+  <h2>Run it</h2>
+  <div class="prose">
+    <p class="muted">In Ptyxis. The whole flow takes about 30 seconds, and the clock runs fast.</p>
+    <div class="cmd"><pre id="cmd1">cd /tmp/claude-1000/-var-home-glw907-Projects-cairn-cms/3d778db3-3ae2-4251-b022-407d8b8c784f/scratchpad/proto
+go run .</pre><button type="button" data-copy="cmd1">Copy</button></div>
+    <div class="flags">
+      <code>--several-domains</code><span>adds the domain question after the approvals</span>
+      <code>--fail-deploy</code><span>ends in the failed first deploy</span>
+      <code>--no-domain</code><span>ends in the missing-domain check</span>
+      <code>--ssh</code><span>shows the remote-session stop</span>
+      <code>--screen &lt;name&gt;</code><span>jumps to one screen; the names are below</span>
+    </div>
+  </div>
+
+  <h2>The order</h2>
+  <p class="muted prose">Dashed steps appear only when they apply.</p>
+  <ol class="flow">
+    <li>welcome</li><li>questions</li><li>browser</li><li class="cond">prereq-failure</li><li class="cond">domain</li><li>summary</li><li>watch</li><li class="cond">failure</li><li>done</li>
+  </ol>
+
+  <div class="bar" role="group" aria-label="Capture theme">
+    <span class="label">Terminal theme</span>
+    <span class="seg"><button type="button" data-t="dark" aria-pressed="true">Dark</button><button type="button" data-t="light" aria-pressed="false">Light</button></span>
+    <span class="label">Left: 80 columns. Right: 60 columns.</span>
+  </div>
+
+  <div id="screens"></div>
+
+  <h2>Browser pages</h2>
+  <p class="muted prose">Setup serves these from the local loopback. Everything between them is GitHub's and Cloudflare's own pages.</p>
+  <h3>All four approvals done</h3>
+  <p class="muted">Sends you back to the terminal, where the summary waits for you to confirm.</p>
+  <div class="pages">
+    <figure><img src="pages/done-1280.png" alt="Done page at 1280 wide" loading="lazy"><figcaption>1280 wide</figcaption></figure>
+    <figure><img src="pages/done-390.png" alt="Done page at 390 wide" loading="lazy"><figcaption>390 wide</figcaption></figure>
+  </div>
+  <h3>An approval needs another try</h3>
+  <p class="muted">Shown when the Cloudflare grant comes back without API Tokens Write ticked.</p>
+  <div class="pages">
+    <figure><img src="pages/error-1280.png" alt="Error page at 1280 wide" loading="lazy"><figcaption>1280 wide</figcaption></figure>
+    <figure><img src="pages/error-390.png" alt="Error page at 390 wide" loading="lazy"><figcaption>390 wide</figcaption></figure>
+  </div>
+
+  <h2>Calls I made building it</h2>
+  <ul class="calls">
+    <li>Setup runs inline, not full screen. The screen in progress redraws in place, and the last frame (the live URL or the failure) stays in your scrollback as the record.</li>
+    <li>Cloudflare is the first approval, so the domain check runs before anything is created on GitHub.</li>
+    <li>Names are settled before the browser opens, because the repository is created during the approvals. The summary shows them read-only. Only the sign-in email can be edited there.</li>
+    <li>With several domains, the choice is its own short question after the approvals, instead of a list on the summary. It fits a 60 by 24 window with five domains.</li>
+    <li>Theme and AI crawlers carry no reason on the summary, because you just chose them. The four derived names share one reason line.</li>
+    <li>No borders anywhere. Color appears only on state marks: green for done, red for the one failed step, violet for the cursor, amber only in the last minute of the approval countdown.</li>
+    <li>The smallest usable window is 50 columns. Below that, or when a step needs more rows than the window has, setup says which one is short.</li>
+    <li>Every string follows the house register: the admin's voice, which is Microsoft's UI-text style kept professional and restrained, plus the tool's CLI copy standard. A register editor that didn't write the copy reviewed it. Each repeated fact, such as how to resume, is worded the same way everywhere.</li>
+    <li>One layout grid for every screen. Content starts at column 2, list text at column 4, and labeled values at column 20. There's one blank line between blocks. The footer is always the last line and holds only keys. Paragraphs wrap balanced, so no line ends up holding one word.</li>
+    <li>The terminal's own signals carry the phase. The window title names it, for example "cairn new · approve in your browser (2 of 4)", so you can tell which window wants you. Where the terminal supports it, its progress indicator spins during the approvals and fills during the build.</li>
+  </ul>
+
+  <h2>Open for the written design</h2>
+  <ul class="calls">
+    <li>Workers Paid is the one failure that can still happen while you watch, because no API reports whether it's on. The design will look for a way to check it up front.</li>
+    <li>What a rerun does when the GitHub App exists but its install never finished.</li>
+    <li>Huh 2.0.3's limits: fields without focus ignore the theme, and a form pads every page to its tallest field. The prototype works around both.</li>
+  </ul>
+</div>
+
+<script>
+const SCREENS = [
+  ["welcome", "Opening", "Says what setup makes, that the browser asks for four approvals in one tab, and the two things you need: a domain on Cloudflare and the Workers Paid plan."],
+  ["welcome-ssh", "Over SSH", "Stops before doing anything. The approvals need a browser on the machine running setup.", "Only over SSH"],
+  ["questions", "Theme", "Waymark is the default. The highlighted theme shows its design, features, and options at a fixed height."],
+  ["questions-option", "Theme option", "Only when the theme declares one. Answered questions stay above as quiet receipts.", "Only for some themes"],
+  ["questions-name", "Site name", "Shows the repository name it implies, live, as you type."],
+  ["questions-crawlers", "AI crawlers", "The last question in the terminal before the browser opens."],
+  ["browser-start", "Before the browser", "Lists the four approvals. Enter opens the browser."],
+  ["browser", "Approving", "Marks which approval is current and says in one sentence what it grants and why."],
+  ["browser-late", "Approving, late", "The countdown appears only in the last five minutes of thirty.", "Only near the time limit"],
+  ["prereq-failure", "No domain", "Right after Cloudflare's approval. Nothing exists on GitHub yet, so the fix is to add a domain and run again.", "Only when it fails"],
+  ["domain", "Choosing a domain", "One question after the approvals, shown with five domains.", "Only with several domains"],
+  ["summary", "Summary", "Every value setup will use, with a reason where you didn't choose it, and the deploy limit. One Enter starts the build."],
+  ["summary-edit", "Editing the email", "The only editable value. Esc keeps the old one."],
+  ["watch", "Watching", "A fixed plan ticks off. Only the current step gets a sentence of what and why. No streamed output. It says you can leave: setup emails a sign-in link when the site is live."],
+  ["watch-https", "Waiting for HTTPS", "The one long wait says it can take up to 15 minutes, only while it runs."],
+  ["failure", "A failed step", "Four parts: what happened, why, what's already done, what to do. A rerun picks up at this step.", "Only when it fails"],
+  ["done", "Done", "The live URL, that you're signed in, and three next steps. Your browser tab has already moved to the site, and the sign-in link also went out by email."],
+];
+const root = document.getElementById("screens");
+let theme = "dark";
+try { theme = localStorage.getItem("proto-theme") || "dark"; } catch (e) {}
+function shot(name, cols, label) {
+  return `<figure><img data-base="img/${name}-${cols}" src="img/${name}-${cols}-${theme}.png" alt="${label}, ${cols} columns" loading="lazy" width="721"><figcaption>--screen ${name} · ${cols} columns</figcaption></figure>`;
+}
+root.innerHTML = SCREENS.map(([id, title, note, when]) => `
+  <section class="screen" id="s-${id}">
+    <header><h3>${title}</h3><span class="id">${id}</span>${when ? `<span class="when">${when}</span>` : ""}</header>
+    <p>${note}</p>
+    <div class="shots">${shot(id, 80, title)}${shot(id, 60, title)}</div>
+  </section>`).join("") + `
+  <section class="screen" id="s-too-small">
+    <header><h3>Window too small</h3><span class="id">too-small</span><span class="when">Only in a small window</span></header>
+    <p>Names the dimension that's short. Captured in windows that really were too small: 44 columns, and 80 by 14.</p>
+    <div class="shots">
+      <figure><img data-base="img/too-small-real-80x14" src="img/too-small-real-80x14-${theme}.png" alt="Too small, 80 by 14" loading="lazy"><figcaption>80 × 14</figcaption></figure>
+      <figure><img data-base="img/too-small-real-44" src="img/too-small-real-44-${theme}.png" alt="Too small, 44 columns" loading="lazy"><figcaption>44 columns</figcaption></figure>
+    </div>
+  </section>`;
+function setTheme(t) {
+  theme = t;
+  document.querySelectorAll("img[data-base]").forEach(i => { i.src = `${i.dataset.base}-${t}.png`; });
+  document.querySelectorAll("[data-t]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.t === t)));
+  try { localStorage.setItem("proto-theme", t); } catch (e) {}
+}
+document.querySelectorAll("[data-t]").forEach(b => b.addEventListener("click", () => setTheme(b.dataset.t)));
+setTheme(theme);
+document.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", () => {
+  const el = document.getElementById(b.dataset.copy);
+  navigator.clipboard.writeText(el.textContent).then(() => { b.textContent = "Copied"; setTimeout(() => b.textContent = "Copy", 1500); })
+    .catch(() => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); });
+}));
+</script>
