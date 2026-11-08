@@ -30,8 +30,9 @@ cairn.pub is where cairn's published docs live. The docs system needs one concre
 
 ## Inputs from cairn-setup (2026-11-08)
 
-- Geoff ruled that cairn.pub is rebuilt from scratch, so cairn-setup dropped its P7 pass (its plan,
-  P7 section). The rebuild takes over what P7 would have built: a prerendered `.md` copy of each docs
+- Geoff ruled that cairn.pub gets a full redesign, rebuilt ground-up on the new version of cairn,
+  and that it is no part of the cairn-setup round, so cairn-setup dropped its P7 pass (its plan, P7
+  section). The rebuild takes over what P7 would have built: a prerendered `.md` copy of each docs
   page whose first line names the engine version, and the `/start`, `/docs`, and `/deploys` short
   links. The engine's docs now live in `docs/admin/` and `docs/editors/`.
 - `@glw907/cairn-cms@0.99.0-rc.4` peers `@sveltejs/kit ^3`, `svelte ^5.57.1`, and

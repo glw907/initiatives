@@ -870,7 +870,8 @@ Path: T6.1 195 + Pair 210 + T6.5 75 = **480**.
 does nothing with it. The conductor never relaunches P7, and its session (`ef6730ba`) was stopped
 before it pushed anything. No cairn-cms pass ships a cairn.pub link, so P1 to P6 are unchanged.
 The markdown copies, the `/start`, `/docs`, and `/deploys` short links, and the engine pin belong
-to that rebuild. Decide 4's ruling is superseded.
+to that rebuild, a full redesign on the new cairn that is outside this round of work and gates
+nothing in it. Decide 4's ruling is superseded.
 
 **T7.1 Tests first** (60 min): prerender tests that every docs page has a `.md` copy whose first line
 names the engine version, and that `/start` and `/docs` reach their pages. **T7.2 The copies** (90
@@ -1003,4 +1004,3 @@ sweep's triage still waits on Geoff (`docs/STATUS.md`, "Open decisions"), so non
   since today's `latest` (`0.98.0`) has no `template/` and the fetch would fail.
 - The tooling brainstorm's gates exist and pass (design "If you approve" 4), recording the pending
   routes.
-- The cairn.pub rebuild serves the current docs (P7 was dropped; see its section).
