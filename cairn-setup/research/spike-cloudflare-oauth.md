@@ -55,3 +55,4 @@ token file deleted. Geoff deleted the client on 2026-11-08, which ended its gran
   left unticked). Zone: Edit and Workers CI: Edit are optional spares.
 - "Sensitive scopes" is a heading on the consent page, not in the create form.
 - Token authentication method: `none` (PKCE with S256), per Cloudflare's "Create an OAuth client" page.
+- Domain verification: TXT `cloudflare_oauth_client_publisher=...` at the cairn.pub apex, record id `928b587f0e59bcf470b2de581f393c19`, added by API 2026-11-08 (comment names the client).
