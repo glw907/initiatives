@@ -36,12 +36,9 @@ Source: `servers/cloudflare/dns.sh`, header comment; `servers/cloudflare/dns/war
 - Setup writes once, then the servers declarations cover its records (recommended)
 - Skip setup's domain and email steps and connect the domain through `dns.sh` by hand, which keeps the ruling but leaves those steps untested
 
-### Decide: Bring a long outage to you after 48 hours
+### Ruled: 907.life may stay dark as long as setup needs
 
-If setup fails after the teardown on an engine defect, 907.life stays dark while the conductor ships a fix, and nothing in this design limits how long. Restoring the old site means rebuilding it from the archive: rename the repo back, recreate the database and bucket, and deploy the old `main`.
-
-- After 48 hours dark, the observer stops and brings you the choice of waiting or restoring (recommended)
-- The site stays dark until the fix ships, however long that takes
+If setup fails after the teardown on an engine defect, 907.life stays dark until the conductor ships a fix, with no time limit (Geoff, 2026-11-07: "the 907.life site can stay dark as long as it needs to. It's not actively used"). This replaces the 48-hour point approved in the design packet. Mail doesn't depend on the site, so it keeps working throughout, and the teardown still runs at promotion so the mail-discovery redirect gap stays short.
 
 ### Worth knowing
 
