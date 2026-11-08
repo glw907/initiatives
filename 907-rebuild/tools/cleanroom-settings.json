@@ -83,10 +83,16 @@
         "*.githubusercontent.com",
         "api.cloudflare.com",
         "*.workers.dev",
-        "907.life"
-      ]
+        "907.life",
+        "cdn.playwright.dev",
+        "playwright.download.prss.microsoft.com"
+      ],
+      "allowAllUnixSockets": true
     }
   },
   "disableClaudeAiConnectors": true,
-  "syncClaudeAiSkills": false
+  "syncClaudeAiSkills": false,
+  "env": {
+    "NODE_USE_ENV_PROXY": "1"
+  }
 }
