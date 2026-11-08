@@ -44,6 +44,7 @@ the site is built.
 - Research: `research/prior-art-theme-packaging.md`, `research/prior-art-theme-switching.md`.
 - Planner launch prompt: `plans/2026-11-08-theme-garden-planner-prompt.txt`.
 - 2026-11-08: proposed, from the theme-garden brainstorm.
-- Status: design approved (2026-11-08, PR #174). Next: the pass plan, written by a fresh planning
+- Status: design approved (2026-11-08, PR #174). `conductor-cairn-cms` orchestrates this initiative
+  and cairn-setup together (Geoff, 2026-11-08). Next: the pass plan, written by a fresh planning
   session once the cairn-setup run's P1 and P4 merge, since the garden's first engine pass edits the
   files they change.

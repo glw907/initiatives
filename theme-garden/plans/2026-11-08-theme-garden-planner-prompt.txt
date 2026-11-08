@@ -13,7 +13,7 @@ Process: load cairn-pass (which loads pass-core and cairn-running-passes) and fo
 - the scoped backlog sweep (standards:backlog-sweep) over #361 and the theme items filed from ~/Projects/initiatives/907-rebuild/plans/2026-11-08-friction-builder-A.md, with a verdict per item; tag the folded items #initiative:theme-garden;
 - an estimate in path minutes, set from recent passes' scores;
 - the pre-flight list (likely none beyond auto-mode writes; check every task's writes).
-The backlog edits and any pre-flight item go to Geoff in one pre-launch packet through approval-packet before the first executor launches.
+conductor-cairn-cms is the single conductor for both the cairn-setup and theme-garden initiatives (Geoff, 2026-11-08), and the one session that brings Geoff packets. Send it the backlog edits and any pre-flight items, with the plan path, and it puts them in its next packet before the first garden executor launches. Never queue an approval-queue item yourself.
 
 Shape: the design's "Order of work" steps 1 and 2 (contract and tooling, then Waymark's port) are engine work and form the first pass or passes. Step 3 (Survey's design pass) needs Geoff in the loop under standards:visual-fidelity and is planned as its own pass after the first lands. Step 4 rides the cairn-setup protocol: before any task changes one of the five boundary points, message the cairn-setup planner or conductor-cairn-cms and wait for the reply. Record the #361 scope verdict in docs/internal/engine-rulings.md in the first pass.
 
