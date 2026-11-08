@@ -36,6 +36,15 @@ Geoff approved this amendment in the credential-hygiene design packet (Approval 
 5. **The technical mailbox.** credential-hygiene's pass B adds a technical mailbox on ward before this pass launches. That mailbox receives the reset mail for Geoff's technical accounts, so its account password and Claude's app password join the "Calls" stay list. They stay only in the workstation store, like Geoff's own logins. T3b's `stalwart-geoff.env` split and hash check cover the technical mailbox the same way they cover Geoff's, and `stalwart-status counts` skips it with the same warning when its file is absent.
 6. **Order.** `conductor-servers` launches this pass after credential-hygiene's pass B merges, once pre-flight items 1 to 7 pass. The restore paragraph already names `Infrastructure` and the new titles (servers `ca8432f`).
 
+### Amendment, 2026-11-07 (Claude's send mailbox)
+
+Geoff approved servers #65 on 2026-11-07 (Approval Queue item 20261107T170519-526459; design `907-rebuild/specs/2026-11-07-claude-mailbox-design.md`). It adds `a-claude` to ward, a mailbox Claude sends from to prove 907.life's outbound mail, with a recipient list ward enforces at RCPT. If it merges before this pass launches, this pass treats it exactly as amendment item 5 treats the technical mailbox:
+
+1. `STALWART_PASSWORD_CLAUDE` and `CLAUDE_MAIL_APP_PASSWORD` join the "Calls" stay list. They stay only in the workstation store.
+2. T3b's `stalwart-geoff.env` split and hash check cover `a-claude`, and `stalwart-status counts` skips it with the same warning when its file is absent. A ward the second operator rebuilds has no `claude` mailbox password, so Claude's outbound proof stops until Geoff reruns its setup script. The rebuild screen says so in one line.
+3. The restructured runbook keeps the "Claude's send mailbox" section, beside the technical mailbox's.
+4. The RCPT rule lives in `roles/stalwart/plan.ndjson`, so a rebuilt ward gets it from the repo with no extra step.
+
 ### Planning guidance carried from pass-core
 
 > "Avoid over-engineering. Only make changes that are directly requested or clearly necessary. Keep solutions simple and focused: - Scope: Don't add features, refactor code, or make "improvements" beyond what was asked. A bug fix doesn't need surrounding code cleaned up. A simple feature doesn't need extra configurability. ... - Defensive coding: Don't add error handling, fallbacks, or validation for scenarios that can't happen. Trust internal code and framework guarantees. Only validate at system boundaries (user input, external APIs). - Abstractions: Don't create helpers, utilities, or abstractions for one-time operations. Don't design for hypothetical future requirements. The right amount of complexity is the minimum needed for the current task."
