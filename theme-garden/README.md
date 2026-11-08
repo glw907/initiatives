@@ -42,4 +42,8 @@ the site is built.
 - Design: `specs/2026-11-08-theme-garden-design.md`. Its "Alignment with cairn-setup" section is
   the record the cairn-setup conductor reads.
 - Research: `research/prior-art-theme-packaging.md`, `research/prior-art-theme-switching.md`.
+- Planner launch prompt: `plans/2026-11-08-theme-garden-planner-prompt.txt`.
 - 2026-11-08: proposed, from the theme-garden brainstorm.
+- Status: design approved (2026-11-08, PR #174). Next: the pass plan, written by a fresh planning
+  session once the cairn-setup run's P1 and P4 merge, since the garden's first engine pass edits the
+  files they change.
