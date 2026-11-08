@@ -1,0 +1,31 @@
+== Re-reading the inventory (2026-11-08T00:24:06Z)
+custom domain c377079217e7e9ca15d3ec295b6d8cef9e7e2b56: 907.life -> 907-life
+Worker 907-life: tag 05ff4b1476754994a3b11ca9c0997778
+triggers: ca2aff6d-32e0-4764-9369-4cc7ac1bacf9 cf2dc35f-2f20-405a-a64d-46b65cd918ce
+registration 503cd3fe-a701-4d5e-be7b-4c93a61335fa: used only by 907-life
+registration 503cd3fe-a701-4d5e-be7b-4c93a61335fa: 'xcathletes build token (CLAUDE_CODE admin token)'
+registration 567e83d8-9801-433d-9149-517d8993499a: '907-life build token'
+registration b8d55367-ef5d-4df6-b3b2-d8cdf8558ffe: '907-life build token'
+D1 93aa929d-0228-4f8b-8d1e-5e7e0d755617: cairn-907-auth
+R2 907-life-media: 0 objects
+Turnstile 0x4AAAAAACPc3bf8bl6ifC3c: 907.life Contact Form 907.life,localhost
+repo glw907/907-life archived=false; Actions secrets: CLOUDFLARE_ACCOUNT_ID CLOUDFLARE_API_TOKEN
+
+== Dry run (nothing changes; rerun with --apply)
+[1] would: detach custom domain 907.life (c377079217e7e9ca15d3ec295b6d8cef9e7e2b56) from Worker 907-life
+[2] would: delete Workers Builds trigger ca2aff6d-32e0-4764-9369-4cc7ac1bacf9
+[3] would: delete Workers Builds trigger cf2dc35f-2f20-405a-a64d-46b65cd918ce
+[4] would: delete Builds registration 503cd3fe-a701-4d5e-be7b-4c93a61335fa (wraps ws-admin; ws-admin itself stays)
+[5] would: delete unused Builds registration 567e83d8-9801-433d-9149-517d8993499a ('907-life build token')
+[6] would: delete unused Builds registration b8d55367-ef5d-4df6-b3b2-d8cdf8558ffe ('907-life build token')
+[7] would: delete Worker 907-life
+[8] would: delete Turnstile widget 0x4AAAAAACPc3bf8bl6ifC3c (907.life Contact Form)
+[9] would: delete R2 bucket 907-life-media
+[10] would: delete D1 cairn-907-auth (93aa929d-0228-4f8b-8d1e-5e7e0d755617)
+[11] would: delete Actions secret CLOUDFLARE_API_TOKEN on glw907/907-life
+[12] would: delete Actions secret CLOUDFLARE_ACCOUNT_ID on glw907/907-life
+[13] would: rename glw907/907-life to glw907/907-life-legacy
+[14] would: archive glw907/907-life-legacy
+[15] would: point the old checkout's origin at glw907/907-life-legacy
+
+== 15 steps. Compare them with the packet, then run: bash 907-rebuild/tools/teardown.sh --apply
