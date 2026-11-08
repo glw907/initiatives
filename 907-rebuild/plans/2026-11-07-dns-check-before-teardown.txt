@@ -1,0 +1,72 @@
+ok   907.life MX
+ok   907.life TXT
+ok   _caldavs._tcp.907.life SRV
+ok   _carddavs._tcp.907.life SRV
+ok   _dmarc.907.life TXT
+ok   _dmarc.m.907.life TXT
+ok   _dmarc.me.907.life TXT
+ok   _imaps._tcp.907.life SRV
+ok   _jmap._tcp.907.life SRV
+ok   _mta-sts.907.life TXT
+ok   _smtp._tls.907.life TXT
+ok   _submissions._tcp.907.life SRV
+ok   _ua-auto-config.907.life TXT
+ok   admin-ward.907.life CNAME
+ok   autoconfig.907.life CNAME
+ok   autodiscover.907.life CNAME
+ok   dav.907.life CNAME
+ok   dkim._domainkey.m.907.life CNAME
+ok   dkim._domainkey.me.907.life CNAME
+ok   dkim02._domainkey.m.907.life CNAME
+ok   dkim02._domainkey.me.907.life CNAME
+ok   dkim03._domainkey.m.907.life CNAME
+ok   dkim03._domainkey.me.907.life CNAME
+ok   m.907.life MX
+ok   m.907.life TXT
+ok   mail.907.life CNAME
+ok   me.907.life MX
+ok   me.907.life TXT
+ok   media.907.life CNAME
+ok   music.907.life CNAME
+ok   orpheus.907.life A
+ok   orpheus.907.life AAAA
+ok   photos-new.907.life A
+ok   photos-new.907.life AAAA
+ok   photos.907.life A
+ok   photos.907.life AAAA
+ok   photos.907.life CNAME
+ok   probe.907.life A
+ok   probe.907.life AAAA
+ok   probe.907.life MX
+ok   probe.907.life TXT
+ok   ssh-orpheus.907.life CNAME
+ok   ssh-ward.907.life CNAME
+ok   ua-auto-config.907.life CNAME
+ok   voipms.907.life CNAME
+ok   w1-ed25519._domainkey.907.life TXT
+ok   w1-ed25519._domainkey.probe.907.life TXT
+ok   w1-rsa._domainkey.907.life TXT
+ok   w1-rsa._domainkey.probe.907.life TXT
+ok   ward.907.life A
+ok   ward.907.life AAAA
+ok   ward.907.life TXT
+ok   webmail.907.life CNAME
+undeclared 907.life AAAA (1)
+undeclared _atproto.907.life TXT (1)
+undeclared cf-bounce.907.life MX (3)
+undeclared cf-bounce.907.life TXT (1)
+undeclared cf-bounce._domainkey.907.life TXT (1)
+undeclared fm1._domainkey.907.life CNAME (1)
+undeclared fm2._domainkey.907.life CNAME (1)
+undeclared fm3._domainkey.907.life CNAME (1)
+undeclared monitor.907.life AAAA (1)
+undeclared mta-sts.907.life AAAA (1)
+undeclared phonebook.907.life AAAA (1)
+undeclared www.907.life CNAME (1)
+14 undeclared record(s), left untouched
+skip admin-ward.907.life CNAME: proxied, not read back
+skip ssh-orpheus.907.life CNAME: proxied, not read back
+skip ssh-ward.907.life CNAME: proxied, not read back
+ok   redirect servers: caldav
+ok   redirect servers: carddav
+ok   redirect servers: jmap
