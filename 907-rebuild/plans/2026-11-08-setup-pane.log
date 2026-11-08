@@ -1,0 +1,739 @@
+⠙[1G[0K⠹[1G[0K⠸[1G[0K[1G[0JNeed to install the following packages:
+create-cairn-site@0.99.0-rc.4
+Ok to proceed? (y) [20Gy
+⠙[1G[0K⠹[1G[0K⠸[1G[0K⠼[1G[0K⠴[1G[0K⠦[1G[0K⠧[1G[0K⠇[1G[0K⠏[1G[0K[ok] node: Node.js 26.13.0 meets the Node 24 or later that create-cairn-site requires.
+[ok] loopback: Loopback binding on 127.0.0.1 works; the local dev server will be reachable.
+Resuming 907-life at pushed.
+Deploy your site to Cloudflare
+Cloudflare's Workers Paid plan costs $5 US per month, as of 2026-08-11 (https://developers.cloudflare.com/workers/platform/pricing/), billed once per Cloudflare account rather than once per site: a cairn site runs on it from its first deploy. Turn it on first if it is not already, then the tool installs your site's dependencies, builds it, and deploys it to your account: one Worker named 907-life, one database (907-life-auth), and one storage bucket (907-life-media). It first checks that your account has no Worker, database, or bucket by those names, and stops without deploying if it finds one. One browser trip to sign in to Cloudflare if you are not already, then one click to sign in to your site.
+[?25l[90m│[39m
+[36m◆[39m  Install, build, and deploy your site now?
+[36m│[39m  [32m●[39m Yes [2m/[22m [2m○[22m [2mNo[22m
+[36m└[39m
+[999D[4A[1B[J[32m◇[39m  Install, build, and deploy your site now?
+[90m│[39m  [2mYes[22m
+[?25hEnter your sign-in email
+Install your site's dependencies
+Dependencies are already installed; skipping npm install.
+Sign in to Cloudflare
+
+ ⛅️ wrangler 4.158.0
+────────────────────
+Getting User settings...
+👋 You are logged in with an OAuth Token, associated with the email geoff.907.life@proton.me.
+🔐 Credentials are stored in: /var/tmp/cairn-cleanroom/B/.config/.wrangler/config/default.toml
+┌──────────────┬──────────────────────────────────┐
+│ Account Name │ Account ID                       │
+├──────────────┼──────────────────────────────────┤
+│ glw907       │ 120c269ad6d3dfbe6d63a0bb53758ca0 │
+└──────────────┴──────────────────────────────────┘
+🔓 Token Permissions:
+Scope (Access)
+- user (read)
+- offline_access 
+- k2.read 
+- k2.write 
+- account (read)
+- workers (write)
+- workers_kv (write)
+- workers_routes (write)
+- workers_scripts (write)
+- workers_tail (read)
+- d1 (write)
+- pages (write)
+- zone (read)
+- ssl_certs (write)
+- ai (write)
+- ai-search (write)
+- ai-search (run)
+- agent-memory (write)
+- queues (write)
+- pipelines (write)
+- secrets_store (write)
+- artifacts (write)
+- flagship (write)
+- containers (write)
+- cloudchamber (write)
+- connectivity (admin)
+- email_routing (write)
+- email_sending (write)
+- browser (write)
+- challenge-widgets.write 
+Already signed in to Cloudflare.
+Find your Cloudflare account
+Using your Cloudflare account: glw907.
+Check that the names are free
+Checking that your Cloudflare account has nothing named 907-life yet.
+Build your site
+Building your site; this can take a few minutes.
+
+> prebuild
+> npm run build:admin-css
+
+
+> build:admin-css
+> npx --no-install @tailwindcss/cli -i src/admin.css -o .cairn/admin.css
+
+≈ tailwindcss v4.3.3
+
+Done in 252ms
+
+> build
+> vite build --logLevel warn
+
+✗ Build failed in 2.12s
+error during build:
+Build failed with 1 error:
+
+[plugin cairn-manifest]
+RolldownError: cairn-cms: src/content/.cairn/site-facts.json is stale: the committed file does not match the adapter.
+Run `npx cairn-manifest` and commit the result.
+    at error (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/rolldown/dist/shared/logs-DyTyzzWG.mjs:164:24)
+    at PluginContextImpl.error (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/rolldown/dist/shared/bindingify-input-options-CM8bmcLg.mjs:286:10)
+    at PluginContextImpl.buildStart (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/@glw907/cairn-cms/dist/vite/internal.js:294:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async plugin (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/rolldown/dist/shared/bindingify-input-options-CM8bmcLg.mjs:1665:3)
+    at async plugin.<computed> (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/rolldown/dist/shared/bindingify-input-options-CM8bmcLg.mjs:2343:12)
+    at aggregateBindingErrorsIntoJsError (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/rolldown/dist/shared/error-BJ9uQLIS.mjs:50:18)
+    at unwrapBindingResult (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/rolldown/dist/shared/error-BJ9uQLIS.mjs:20:128)
+    at #build (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/rolldown/dist/shared/rolldown-DWd2aEL4.mjs:146:34)
+    at async buildEnvironment (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/vite/dist/node/chunks/node.js:34764:66)
+    at async Object.build (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/vite/dist/node/chunks/node.js:35185:19)
+    at async BasicMinimalPluginContext.buildApp (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/@sveltejs/kit/src/exports/vite/build/index.js:449:20)
+    at async Object.buildApp (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/vite/dist/node/chunks/node.js:35179:5)
+    at async CAC.<anonymous> (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/vite/dist/node/cli.js:789:3) {
+  errors: [Getter/Setter]
+}
+Build your site: Building your site did not finish. npm reported:
+    at #build (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/rolldown/dist/shared/rolldown-DWd2aEL4.mjs:146:34)
+    at async buildEnvironment (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/vite/dist/node/chunks/node.js:34764:66)
+    at async Object.build (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/vite/dist/node/chunks/node.js:35185:19)
+    at async BasicMinimalPluginContext.buildApp (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/@sveltejs/kit/src/exports/vite/build/index.js:449:20)
+    at async Object.buildApp (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/vite/dist/node/chunks/node.js:35179:5)
+    at async CAC.<anonymous> (file:///var/tmp/cairn-cleanroom/B/work/907-life/node_modules/vite/dist/node/cli.js:789:3) {
+  errors: [Getter/Setter]
+}
+Next: fix what npm reported above, then re-run npx create-cairn-site --dir /var/tmp/cairn-cleanroom/B/work/907-life.
+⠙[1G[0KSETUP-EXIT 1
+[?2004hbash-5.3$ cd ~/work/907-life && npx cairn-manifest; echo MANIFEST-EXIT $?
+[?2004lindex.json: 17 entries, 0 changed; site-facts.json changed
+⠙[1G[0KMANIFEST-EXIT 0
+[?2004hbash-5.3$ cd ~/work && npx create-cairn-site --dir /var/tmp/cairn-cleanroom/B/work/907-life; echo SETUP-EXIT $?
+[?2004l⠙[1G[0K⠹[1G[0K[ok] node: Node.js 26.13.0 meets the Node 24 or later that create-cairn-site requires.
+[ok] loopback: Loopback binding on 127.0.0.1 works; the local dev server will be reachable.
+Resuming 907-life at pushed.
+Deploy your site to Cloudflare
+Cloudflare's Workers Paid plan costs $5 US per month, as of 2026-08-11 (https://developers.cloudflare.com/workers/platform/pricing/), billed once per Cloudflare account rather than once per site: a cairn site runs on it from its first deploy. Turn it on first if it is not already, then the tool installs your site's dependencies, builds it, and deploys it to your account: one Worker named 907-life, one database (907-life-auth), and one storage bucket (907-life-media). It first checks that your account has no Worker, database, or bucket by those names, and stops without deploying if it finds one. One browser trip to sign in to Cloudflare if you are not already, then one click to sign in to your site.
+[?25l[90m│[39m
+[36m◆[39m  Install, build, and deploy your site now?
+[36m│[39m  [32m●[39m Yes [2m/[22m [2m○[22m [2mNo[22m
+[36m└[39m
+[999D[4A[1B[J[32m◇[39m  Install, build, and deploy your site now?
+[90m│[39m  [2mYes[22m
+[?25hEnter your sign-in email
+Install your site's dependencies
+Dependencies are already installed; skipping npm install.
+Sign in to Cloudflare
+
+ ⛅️ wrangler 4.158.0
+────────────────────
+Getting User settings...
+👋 You are logged in with an OAuth Token, associated with the email geoff.907.life@proton.me.
+🔐 Credentials are stored in: /var/tmp/cairn-cleanroom/B/.config/.wrangler/config/default.toml
+┌──────────────┬──────────────────────────────────┐
+│ Account Name │ Account ID                       │
+├──────────────┼──────────────────────────────────┤
+│ glw907       │ 120c269ad6d3dfbe6d63a0bb53758ca0 │
+└──────────────┴──────────────────────────────────┘
+🔓 Token Permissions:
+Scope (Access)
+- user (read)
+- offline_access 
+- k2.read 
+- k2.write 
+- account (read)
+- workers (write)
+- workers_kv (write)
+- workers_routes (write)
+- workers_scripts (write)
+- workers_tail (read)
+- d1 (write)
+- pages (write)
+- zone (read)
+- ssl_certs (write)
+- ai (write)
+- ai-search (write)
+- ai-search (run)
+- agent-memory (write)
+- queues (write)
+- pipelines (write)
+- secrets_store (write)
+- artifacts (write)
+- flagship (write)
+- containers (write)
+- cloudchamber (write)
+- connectivity (admin)
+- email_routing (write)
+- email_sending (write)
+- browser (write)
+- challenge-widgets.write 
+Already signed in to Cloudflare.
+Find your Cloudflare account
+Check that the names are free
+Checking that your Cloudflare account has nothing named 907-life yet.
+Build your site
+Building your site; this can take a few minutes.
+Built your site.
+Deploy to workers.dev
+Checking that your Cloudflare account has nothing named 907-life yet.
+Deploying to Cloudflare; this can take a few minutes.
+
+ ⛅️ wrangler 4.158.0
+────────────────────
+
+Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
+🌀 Building list of assets...
+✨ Read 485 files from the assets directory /var/tmp/cairn-cleanroom/B/work/907-life/.svelte-kit/cloudflare
+🌀 Starting asset upload...
+🌀 Found 458 new or modified static assets to upload. Proceeding with upload...
++ /_app/immutable/chunks/DSOjcmSi.js
++ /_app/immutable/assets/2.qQsit56p.css
++ /posts/spring-thaw.md
++ /posts/trail-mix.md
++ /posts/ridge-route.md
++ /posts/layering.md
++ /_app/immutable/chunks/g8xaJG3Y.js
++ /_app/immutable/chunks/C0bIFYLb.js
++ /_app/immutable/chunks/xNp7_cfp.js
++ /_app/immutable/nodes/6.Be9UOQJC.js
++ /_app/immutable/chunks/C8r90Shi.js
++ /_app/immutable/chunks/DVMyfIch.js
++ /_app/immutable/chunks/sltzmVWM.js
++ /_app/immutable/nodes/4.Bo97npK0.js
++ /_app/immutable/chunks/CIIRa_Tk.js
++ /_app/immutable/chunks/DCQb3MpD.js
++ /_app/immutable/assets/EntryRow.XqWgR_fw.css
++ /_app/immutable/chunks/DtqmHo0_.js
++ /_app/immutable/chunks/TYqBuO47.js
++ /_app/immutable/nodes/2.CstWWRtN.js
++ /_app/immutable/nodes/1.C_zZzwmR.js
++ /_app/immutable/chunks/R4sQ-3Hc.js
++ /_app/immutable/chunks/IyjqRm3v.js
++ /_app/immutable/chunks/Dlh5hvp9.js
++ /_app/immutable/chunks/Ce1w-_mU.js
++ /_app/immutable/chunks/DXw9l8Rf.js
++ /_app/immutable/chunks/CRGYupPL.js
++ /_app/immutable/chunks/woXpYk--.js
++ /posts/second/__data.json
++ /posts/valley-loop/__data.json
++ /posts/storm-window/__data.json
++ /posts/first-frost/__data.json
++ /_app/immutable/chunks/BUDT5pXO.js
++ /_app/immutable/chunks/CBf_gBRo.js
++ /_app/immutable/chunks/CmCQp5Yx.js
++ /_app/immutable/chunks/T3zT3Jyn.js
++ /_app/immutable/chunks/BMqwQI7S.js
++ /posts/callout/__data.json
++ /_app/immutable/chunks/BtDbiS_P.js
++ /_app/immutable/entry/app.CWO0sA0w.js
++ /_app/immutable/chunks/BgfXC-Er.js
++ /_app/immutable/chunks/_X_XdTYD.js
++ /_app/immutable/chunks/DDby98so.js
++ /_app/immutable/chunks/VUp2lXgN.js
++ /_app/immutable/chunks/B2aS8a8-.js
++ /_app/immutable/nodes/5.DkE4IgV_.js
++ /_app/immutable/chunks/bTVj8UrX.js
++ /_app/immutable/chunks/Ci_nEsc7.js
++ /_app/immutable/chunks/BsKzXJz4.js
++ /_app/immutable/chunks/BbzNq8QA.js
++ /_app/immutable/chunks/CUHmPFLl.js
++ /_app/immutable/chunks/DFexBtdc.js
++ /_app/immutable/chunks/4Rifxk1h.js
++ /_app/immutable/chunks/DOwzaHZ0.js
++ /_app/immutable/chunks/CBce3t8t.js
++ /_app/immutable/chunks/B2gwz-sJ.js
++ /_app/immutable/chunks/CcmNWLt0.js
++ /_app/immutable/chunks/CYlAq2b0.js
++ /_app/immutable/chunks/Ckw8ddFX.js
++ /_app/immutable/chunks/DDpmG2fV.js
++ /_app/immutable/chunks/Cvrh5tZx.js
++ /_app/immutable/chunks/DMgNhnYS.js
++ /_app/immutable/chunks/CRHMankE.js
++ /_app/immutable/chunks/CxQk0b5a.js
++ /_app/immutable/chunks/CHZY9Xhz.js
++ /_app/immutable/chunks/DSNQnXHK.js
++ /_app/immutable/chunks/vGVdxbeo.js
++ /_app/immutable/chunks/DnToyrRv.js
++ /_app/immutable/chunks/DQwYfKfQ.js
++ /_app/immutable/chunks/DwHgFJwD.js
++ /_app/immutable/chunks/Bj61d0ZC.js
++ /_app/immutable/chunks/TX5fAPCw.js
++ /_app/immutable/chunks/ot-7Btpt.js
++ /_app/immutable/chunks/B3gFvitq.js
++ /_app/immutable/assets/source-code-pro-greek-wght-normal.BvT6WsG1.woff2
++ /_app/immutable/chunks/D9s72Y6r.js
++ /posts/trail-mix.html
++ /_app/immutable/chunks/DswuEJGm.js
++ /_app/immutable/chunks/CDv2pdJW.js
++ /_app/immutable/chunks/DExj1W_8.js
++ /posts/valley-loop.html
++ /posts/storm-window.html
++ /posts/boot-fit.html
++ /_app/immutable/chunks/U0d_L8uA.js
++ /_app/immutable/chunks/DdrHHSXu.js
++ /_app/immutable/chunks/BJitypiv.js
++ /_app/immutable/chunks/VbXTXTou.js
++ /_app/immutable/chunks/BZCL-v6S.js
++ /_app/immutable/chunks/BHpQb5nM.js
++ /_app/immutable/chunks/B68TUdTA.js
++ /_app/immutable/chunks/DXG-b-1a.js
++ /_app/immutable/chunks/7GGW24-e.js
++ /_app/immutable/chunks/IvuFDN5E.js
++ /_app/immutable/chunks/CLvhMVsD.js
++ /_app/immutable/chunks/CE9AQfxI.js
++ /_app/immutable/chunks/BtYZognU.js
++ /_app/immutable/chunks/B1RWQWA5.js
++ /_app/immutable/chunks/Bozd7klA.js
++ /_app/immutable/chunks/PGMFv7IO.js
++ /_app/immutable/chunks/Bm3Qr25_.js
+   (truncating changed assets log, set `WRANGLER_LOG=debug` environment variable to see full diff)
+Uploaded 152 of 458 assets
+Uploaded 305 of 458 assets
+Uploaded 458 of 458 assets
+✨ Success! Uploaded 458 files (12.25 sec)
+
+Total Upload: 16326.81 KiB / gzip: 3147.76 KiB
+
+The following bindings need to be provisioned:
+Binding                  Resource         
+env.AUTH_DB              D1 Database      
+env.MEDIA_BUCKET         R2 Bucket        
+
+
+Provisioning AUTH_DB (D1 Database)...
+Resource name found in config: 907-life-auth
+🌀 Creating new D1 Database "907-life-auth"...
+✨ AUTH_DB provisioned 🎉
+
+Provisioning MEDIA_BUCKET (R2 Bucket)...
+Resource name found in config: 907-life-media
+🌀 Creating new R2 Bucket "907-life-media"...
+✨ MEDIA_BUCKET provisioned 🎉
+
+🎉 Resources provisioned, continuing with deployment...
+
+Worker Startup Time: 55 ms
+Your Worker has access to the following bindings:
+Binding                                          Resource                  
+env.EMAIL (unrestricted)                         Send Email                
+env.AUTH_DB (907-life-auth)                      D1 Database               
+env.MEDIA_BUCKET (907-life-media)                R2 Bucket                 
+env.ASSETS                                       Assets                    
+env.PUBLIC_ORIGIN ("http://localhost:4173")      Environment Variable      
+
+Uploaded 907-life (38.03 sec)
+Deployed 907-life triggers (0.45 sec)
+  https://907-life.glw907.workers.dev
+Current Version ID: 64eec027-28b1-4c80-9855-8183df335b5f
+Applying database migrations to AUTH_DB.
+
+ ⛅️ wrangler 4.158.0
+────────────────────
+Resource location: remote 
+
+Migrations to be applied:
+┌──────────────────────┐
+│ name                 │
+├──────────────────────┤
+│ 0000_auth.sql        │
+├──────────────────────┤
+│ 0001_roles.sql       │
+├──────────────────────┤
+│ 0003_preview.sql     │
+├──────────────────────┤
+│ 0004_login_nonce.sql │
+└──────────────────────┘
+? About to apply 4 migration(s)
+Your database may not be available to serve requests during the migration, continue?
+🤖 Using fallback value in non-interactive context: yes
+🌀 Executing on remote database AUTH_DB (15f0ffdc-4025-49ec-a7df-1325f68d4740):
+🌀 To execute on your local development database, remove the --remote flag from your wrangler command.
+🚣 Executed 6 commands in 1.61ms
+┌──────────────────────┬────────┐
+│ name                 │ status │
+├──────────────────────┼────────┤
+│ 0000_auth.sql        │ ✅     │
+├──────────────────────┼────────┤
+│ 0001_roles.sql       │ 🕒️    │
+├──────────────────────┼────────┤
+│ 0003_preview.sql     │ 🕒️    │
+├──────────────────────┼────────┤
+│ 0004_login_nonce.sql │ 🕒️    │
+└──────────────────────┴────────┘
+🌀 Executing on remote database AUTH_DB (15f0ffdc-4025-49ec-a7df-1325f68d4740):
+🌀 To execute on your local development database, remove the --remote flag from your wrangler command.
+🚣 Executed 5 commands in 1.95ms
+┌──────────────────────┬────────┐
+│ name                 │ status │
+├──────────────────────┼────────┤
+│ 0000_auth.sql        │ ✅     │
+├──────────────────────┼────────┤
+│ 0001_roles.sql       │ ✅     │
+├──────────────────────┼────────┤
+│ 0003_preview.sql     │ 🕒️    │
+├──────────────────────┼────────┤
+│ 0004_login_nonce.sql │ 🕒️    │
+└──────────────────────┴────────┘
+🌀 Executing on remote database AUTH_DB (15f0ffdc-4025-49ec-a7df-1325f68d4740):
+🌀 To execute on your local development database, remove the --remote flag from your wrangler command.
+🚣 Executed 4 commands in 1.17ms
+┌──────────────────────┬────────┐
+│ name                 │ status │
+├──────────────────────┼────────┤
+│ 0000_auth.sql        │ ✅     │
+├──────────────────────┼────────┤
+│ 0001_roles.sql       │ ✅     │
+├──────────────────────┼────────┤
+│ 0003_preview.sql     │ ✅     │
+├──────────────────────┼────────┤
+│ 0004_login_nonce.sql │ 🕒️    │
+└──────────────────────┴────────┘
+🌀 Executing on remote database AUTH_DB (15f0ffdc-4025-49ec-a7df-1325f68d4740):
+🌀 To execute on your local development database, remove the --remote flag from your wrangler command.
+🚣 Executed 2 commands in 0.47ms
+┌──────────────────────┬────────┐
+│ name                 │ status │
+├──────────────────────┼────────┤
+│ 0000_auth.sql        │ ✅     │
+├──────────────────────┼────────┤
+│ 0001_roles.sql       │ ✅     │
+├──────────────────────┼────────┤
+│ 0003_preview.sql     │ ✅     │
+├──────────────────────┼────────┤
+│ 0004_login_nonce.sql │ ✅     │
+└──────────────────────┴────────┘
+Building your site; this can take a few minutes.
+Built your site.
+Deploying to Cloudflare; this can take a few minutes.
+
+ ⛅️ wrangler 4.158.0
+────────────────────
+🌀 Building list of assets...
+✨ Read 485 files from the assets directory /var/tmp/cairn-cleanroom/B/work/907-life/.svelte-kit/cloudflare
+🌀 Starting asset upload...
+🌀 Found 39 new or modified static assets to upload. Proceeding with upload...
++ /_app/version.json
++ /the-trail-crew/__data.json
++ /posts/second/__data.json
++ /posts/ridge-route/__data.json
++ /posts/boot-fit/__data.json
++ /posts/late-season/__data.json
++ /__data.json
++ /posts/trail-mix.html
++ /posts/late-season.html
++ /posts/pack-list.html
++ /posts/first-frost.html
++ /posts/hello.html
++ /feed.xml
++ /robots.txt
++ /posts/trail-mix/__data.json
++ /posts/valley-loop/__data.json
++ /posts/storm-window/__data.json
++ /posts/first-frost/__data.json
++ /posts/callout/__data.json
++ /the-trail-crew.html
++ /posts/second.html
++ /posts/valley-loop.html
++ /posts/storm-window.html
++ /posts/layering.html
++ /index.html
++ /posts/the-reading-surface/__data.json
++ /sitemap.xml
++ /about/__data.json
++ /posts/pack-list/__data.json
++ /posts/spring-thaw/__data.json
++ /posts/layering/__data.json
++ /posts/hello/__data.json
++ /about.html
++ /posts/spring-thaw.html
++ /posts/ridge-route.html
++ /posts/boot-fit.html
++ /posts/callout.html
++ /feed.json
++ /posts/the-reading-surface.html
+Uploaded 13 of 39 assets
+Uploaded 26 of 39 assets
+Uploaded 39 of 39 assets
+✨ Success! Uploaded 39 files (419 already uploaded) (1.35 sec)
+
+Total Upload: 16326.83 KiB / gzip: 3147.77 KiB
+Worker Startup Time: 55 ms
+Your Worker has access to the following bindings:
+Binding                                                        Resource                  
+env.EMAIL (unrestricted)                                       Send Email                
+env.AUTH_DB (inherited)                                        D1 Database               
+env.MEDIA_BUCKET (907-life-media)                              R2 Bucket                 
+env.ASSETS                                                     Assets                    
+env.PUBLIC_ORIGIN ("https://907-life.glw907.workers.dev")      Environment Variable      
+
+Uploaded 907-life (24.91 sec)
+Deployed 907-life triggers (0.42 sec)
+  https://907-life.glw907.workers.dev
+Current Version ID: e30c9369-97b2-4e70-be9a-4c46c46e7652
+Protect your site's App key
+
+ ⛅️ wrangler 4.158.0
+────────────────────
+🌀 Creating the secret for the Worker "907-life"
+✨ Success! Uploaded secret GITHUB_APP_PRIVATE_KEY_B64
+The App's private key now lives only in your Worker's secret store, not on this machine. To replace it later, generate a new key in the App's settings, base64-encode it, and run `wrangler secret put GITHUB_APP_PRIVATE_KEY_B64`.
+Sign you in
+Writing your sign-in row to the site's database.
+Open this link if the browser did not open: https://907-life.glw907.workers.dev/admin/auth/confirm?token=<redacted>
+If a sign-in page opened, click Sign in there. The link works for ten minutes; if it expires or no page opened, re-run with --sign-in for a fresh one.
+Connect your domain
+Connects a domain you already own (registered anywhere, not just at Cloudflare) to your site. This costs nothing: creating the Cloudflare zone and connecting your domain both run on the free plan. You'll paste a Cloudflare API token (one browser trip to create it) and switch your domain's nameservers to Cloudflare at your registrar; that switch can take anywhere from a few minutes to 48 hours to take effect. Your site keeps working at its workers.dev address the whole time.
+[?25l[90m│[39m
+[36m◆[39m  Connect a domain you own to this site now? (Free.)
+[36m│[39m  [32m●[39m Yes [2m/[22m [2m○[22m [2mNo[22m
+[36m└[39m
+[999D[4A[1B[J[32m◇[39m  Connect a domain you own to this site now? (Free.)
+[90m│[39m  [2mYes[22m
+[?25h[?25l[90m│[39m
+[36m◆[39m  Which domain do you want to connect? (for example, example.com)
+[36m│[39m  [7m[8m_[28m[27m
+[36m└[39m
+[999D[4A[2B[2K[G[36m│[39m  9█[2B[999D[4A[2B[2K[G[36m│[39m  90█[2B[999D[4A[2B[2K[G[36m│[39m  907█[2B[999D[4A[2B[2K[G[36m│[39m  907.█[2B[999D[4A[2B[2K[G[36m│[39m  907.l█[2B[999D[4A[2B[2K[G[36m│[39m  907.li█[2B[999D[4A[2B[2K[G[36m│[39m  907.lif█[2B[999D[4A[2B[2K[G[36m│[39m  907.life█[2B[999D[4A[1B[J[32m◇[39m  Which domain do you want to connect? (for example, example.com)
+[90m│[39m  [2m907.life[22m
+[?25hFind your Cloudflare account
+Get a Cloudflare API token
+Open this link if the browser did not open: https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22dns%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22ssl_and_certificates%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22email_sending%22%2C%22type%22%3A%22edit%22%7D%5D&accountId=*&zoneId=all&name=cairn+create-cairn-site
+[?25l[90m│[39m
+[36m◆[39m  Paste your Cloudflare API token
+[36m│[39m  [7m[8m_[28m[27m
+[36m└[39m
+[999D[4A[1B[J[32m◇[39m  Paste your Cloudflare API token
+[90m│[39m  
+[?25hThat token did not work; check it and paste it again.
+[?25l[90m│[39m
+[36m◆[39m  Paste your Cloudflare API token
+[36m│[39m  [7m[8m_[28m[27m
+[36m└[39m
+[999D[4A[1B[J[32m◇[39m  Paste your Cloudflare API token
+[90m│[39m  
+[?25hGet a Cloudflare API token: The Cloudflare API token you pasted was not accepted. Cloudflare reported:
+Invalid format for Authorization header
+Your site is untouched and still working.
+Next: re-run npx create-cairn-site --dir /var/tmp/cairn-cleanroom/B/work/907-life and paste a new token when asked.
+⠙[1G[0KSETUP-EXIT 1
+[?2004hbash-5.3$ cd ~/work && npx --yes create-cairn-site --dir /var/tmp/cairn-cleanroom/B/work/907-life; echo SETUP-EXIT $?
+[?2004l⠙[1G[0K⠹[1G[0K[ok] node: Node.js 26.13.0 meets the Node 24 or later that create-cairn-site requires.
+[ok] loopback: Loopback binding on 127.0.0.1 works; the local dev server will be reachable.
+907-life is already live.
+Connect your domain
+Connects a domain you already own (registered anywhere, not just at Cloudflare) to your site. This costs nothing: creating the Cloudflare zone and connecting your domain both run on the free plan. You'll paste a Cloudflare API token (one browser trip to create it) and switch your domain's nameservers to Cloudflare at your registrar; that switch can take anywhere from a few minutes to 48 hours to take effect. Your site keeps working at its workers.dev address the whole time.
+[?25l[90m│[39m
+[36m◆[39m  Connect a domain you own to this site now? (Free.)
+[36m│[39m  [32m●[39m Yes [2m/[22m [2m○[22m [2mNo[22m
+[36m└[39m
+[999D[4A[1B[J[32m◇[39m  Connect a domain you own to this site now? (Free.)
+[90m│[39m  [2mYes[22m
+[?25h[?25l[90m│[39m
+[36m◆[39m  Which domain do you want to connect? (for example, example.com)
+[36m│[39m  [7m[8m_[28m[27m
+[36m└[39m
+[999D[4A[2B[2K[G[36m│[39m  9█[2B[999D[4A[2B[2K[G[36m│[39m  90█[2B[999D[4A[2B[2K[G[36m│[39m  907█[2B[999D[4A[2B[2K[G[36m│[39m  907.█[2B[999D[4A[2B[2K[G[36m│[39m  907.l█[2B[999D[4A[2B[2K[G[36m│[39m  907.li█[2B[999D[4A[2B[2K[G[36m│[39m  907.lif█[2B[999D[4A[2B[2K[G[36m│[39m  907.life█[2B[999D[4A[1B[J[32m◇[39m  Which domain do you want to connect? (for example, example.com)
+[90m│[39m  [2m907.life[22m
+[?25hFind your Cloudflare account
+Get a Cloudflare API token
+Open this link if the browser did not open: https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22dns%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22ssl_and_certificates%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22email_sending%22%2C%22type%22%3A%22edit%22%7D%5D&accountId=*&zoneId=all&name=cairn+create-cairn-site
+[?25l[90m│[39m
+[36m◆[39m  Paste your Cloudflare API token
+[36m│[39m  [7m[8m_[28m[27m
+[36m└[39m
+[999D[4A[2B[2K[G[36m│[39m  ▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[2B[2K[G[36m│[39m  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[7m[8m_[28m[27m[2B[999D[4A[1B[J[32m◇[39m  Paste your Cloudflare API token
+[90m│[39m  [2m▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪[22m
+[?25hCreate your Cloudflare zone
+907.life is already a Cloudflare zone on this account; using it.
+Copy your current DNS records
+Your domain's nameservers already point at Cloudflare in this zone, so there's nothing to copy: whatever DNS records this zone already serves are your existing records, and they stay untouched.
+Wait for your domain to switch to Cloudflare
+Connect your domain to your site
+Connected 907.life to your site; checking that it answers there.
+Watch progress at http://127.0.0.1:45947/neoE_LvZRWnfbhLd0zYyFg (this page is served only while this run is going).
+907.life already serves your site, but this computer's DNS resolver may take up to 30 minutes to see it.
+Building your site; this can take a few minutes.
+Built your site.
+Deploying to Cloudflare; this can take a few minutes.
+
+ ⛅️ wrangler 4.158.0
+────────────────────
+🌀 Building list of assets...
+✨ Read 485 files from the assets directory /var/tmp/cairn-cleanroom/B/work/907-life/.svelte-kit/cloudflare
+🌀 Starting asset upload...
+🌀 Found 39 new or modified static assets to upload. Proceeding with upload...
++ /_app/version.json
++ /the-trail-crew/__data.json
++ /posts/second/__data.json
++ /posts/ridge-route/__data.json
++ /posts/boot-fit/__data.json
++ /posts/late-season/__data.json
++ /__data.json
++ /posts/trail-mix.html
++ /posts/late-season.html
++ /posts/pack-list.html
++ /posts/first-frost.html
++ /posts/hello.html
++ /feed.xml
++ /robots.txt
++ /posts/trail-mix/__data.json
++ /posts/valley-loop/__data.json
++ /posts/storm-window/__data.json
++ /posts/first-frost/__data.json
++ /posts/callout/__data.json
++ /the-trail-crew.html
++ /posts/second.html
++ /posts/valley-loop.html
++ /posts/storm-window.html
++ /posts/layering.html
++ /index.html
++ /posts/the-reading-surface/__data.json
++ /sitemap.xml
++ /about/__data.json
++ /posts/pack-list/__data.json
++ /posts/spring-thaw/__data.json
++ /posts/layering/__data.json
++ /posts/hello/__data.json
++ /about.html
++ /posts/spring-thaw.html
++ /posts/ridge-route.html
++ /posts/boot-fit.html
++ /posts/callout.html
++ /feed.json
++ /posts/the-reading-surface.html
+Uploaded 13 of 39 assets
+Uploaded 26 of 39 assets
+Uploaded 39 of 39 assets
+✨ Success! Uploaded 39 files (419 already uploaded) (1.09 sec)
+
+Total Upload: 16326.81 KiB / gzip: 3147.77 KiB
+Worker Startup Time: 85 ms
+Your Worker has access to the following bindings:
+Binding                                     Resource                  
+env.EMAIL (unrestricted)                    Send Email                
+env.AUTH_DB (inherited)                     D1 Database               
+env.MEDIA_BUCKET (907-life-media)           R2 Bucket                 
+env.ASSETS                                  Assets                    
+env.PUBLIC_ORIGIN ("https://907.life")      Environment Variable      
+
+Uploaded 907-life (24.81 sec)
+Deployed 907-life triggers (0.47 sec)
+  https://907-life.glw907.workers.dev
+Current Version ID: 20e0e78d-14f6-45e7-b2f8-4627ecb5490f
+Re-checking 907.life after redeploying.
+907.life is live.
+Finish connecting your domain
+907.life is now live and connected to your site. Sign in at https://907.life/admin. Your workers.dev address keeps working too.
+Turn on email sign-in
+Cloudflare's Workers Paid plan, already on for this account since your first deploy, is what sends this site's sign-in email. Turning this on onboards your domain for Cloudflare Email Sending, then sends a real test message to your sign-in address to prove it works before it hands the feature to anyone else. Your domain already has a DMARC record (p=none), and onboarding leaves it unchanged.
+[?25l[90m│[39m
+[36m◆[39m  Turn on email sign-in for your domain now?
+[36m│[39m  [32m●[39m Yes [2m/[22m [2m○[22m [2mNo[22m
+[36m└[39m
+[999D[4A[1B[J[32m◇[39m  Turn on email sign-in for your domain now?
+[90m│[39m  [2mYes[22m
+[?25hOnboard your domain for email
+Send a test sign-in email
+Update your sign-in email address
+Building your site; this can take a few minutes.
+
+Built your site.
+Deploying to Cloudflare; this can take a few minutes.
+
+ ⛅️ wrangler 4.158.0
+────────────────────
+^A🌀 Building list of assets...
+✨ Read 485 files from the assets directory /var/tmp/cairn-cleanroom/B/work/907-life/.svelte-kit/cloudflare
+🌀 Starting asset upload...
+🌀 Found 22 new or modified static assets to upload. Proceeding with upload...
++ /_app/version.json
++ /_app/immutable/entry/app.BD7ljNaA.js
++ /posts/trail-mix.html
++ /posts/late-season.html
++ /posts/pack-list.html
++ /posts/first-frost.html
++ /posts/hello.html
++ /_app/immutable/chunks/6Z2uIWxH.js
++ /_app/immutable/nodes/9.CVN-NpOc.js
++ /the-trail-crew.html
++ /posts/second.html
++ /posts/valley-loop.html
++ /posts/storm-window.html
++ /posts/layering.html
++ /index.html
++ /_app/immutable/chunks/BnCT6inC.js
++ /about.html
++ /posts/spring-thaw.html
++ /posts/ridge-route.html
++ /posts/boot-fit.html
++ /posts/callout.html
++ /posts/the-reading-surface.html
+Uploaded 7 of 22 assets
+Uploaded 14 of 22 assets
+Uploaded 22 of 22 assets
+✨ Success! Uploaded 22 files (436 already uploaded) (2.00 sec)
+
+Total Upload: 16326.81 KiB / gzip: 3147.77 KiB
+Worker Startup Time: 71 ms
+Your Worker has access to the following bindings:
+Binding                                     Resource                  
+env.EMAIL (unrestricted)                    Send Email                
+env.AUTH_DB (inherited)                     D1 Database               
+env.MEDIA_BUCKET (907-life-media)           R2 Bucket                 
+env.ASSETS                                  Assets                    
+env.PUBLIC_ORIGIN ("https://907.life")      Environment Variable      
+
+Uploaded 907-life (26.01 sec)
+Deployed 907-life triggers (0.43 sec)
+  https://907-life.glw907.workers.dev
+Current Version ID: 63007240-ac36-44a2-80c1-562116acbfc8
+Finish setting up email
+Cloudflare accepted a real test message sent from no-reply@907.life, your site's sign-in sender. Change that address any time by editing email: { from: '...' } in src/theme/cairn.config.ts and redeploying.
+A domain this new has no sending history yet. As of 2026-08-12, that means mail providers can take a while to trust it enough to deliver its first messages. That trust builds on its own as the domain keeps sending. If a sign-in link does not arrive yet, this warm-up period is the usual reason.
+Onboarding left your existing DMARC record at _dmarc.907.life unchanged (p=none).
+Run `cairn doctor` any time to check what is set up and what is still missing; install it with `go install github.com/glw907/cairn-cms/tool/v2/cmd/cairn@latest` or from the release page at https://github.com/glw907/cairn-cms/releases. Run `cairn adopt` then `cairn health` against this site any time to check its https and email setup live, without running this installer again.
+One more step is available: run npx create-cairn-site --dir /var/tmp/cairn-cleanroom/B/work/907-life --connect to connect this repository to Cloudflare Workers Builds, so every future commit to your default branch deploys itself, no laptop required.
+
+Your private repository on GitHub: https://github.com/glw907/907-life
+The App that publishes for you: https://github.com/apps/cairn-907-life
+To narrow which repositories the App can reach, edit its installation at https://github.com/settings/installations.
+
+Run `cairn doctor` any time to check what is set up and what is still missing. Install it with `go install github.com/glw907/cairn-cms/tool/v2/cmd/cairn@latest` or from the release page at https://github.com/glw907/cairn-cms/releases.
+Connect to Workers Builds
+Connects this repository to Cloudflare Workers Builds, so every commit to your default branch deploys itself, no laptop required. This needs a one-time authorization of Cloudflare's "Workers and Pages" GitHub App on your account (if you have not already done this), a fresh Cloudflare API token pasted the same way chapter 2 asked for one, and one sign-in click later in this chapter, when it commits its config changes back to your repository. If your Cloudflare account has no Workers Builds build token yet, it also asks for one: a second, narrow token named cairn-build that can only deploy Workers and edit D1 and R2, which later sites on this account reuse. Limit it to this one Cloudflare account under Account Resources, not all accounts. Cloudflare keeps its secret and gives it to every build that deploys with it, so treat anyone who can commit to your default branch as able to read it. It costs no money: Workers Builds' free tier includes 3,000 build minutes a month and one build running at a time, as of 2026-08-12 (https://developers.cloudflare.com/workers/platform/pricing/). Your site keeps working exactly as it does now the whole time.
+[?25l[90m│[39m
+[36m◆[39m  Connect this repository to Workers Builds now? (Free.)
+[36m│[39m  [32m●[39m Yes [2m/[22m [2m○[22m [2mNo[22m
+[36m└[39m
+[999D[4A[2B[2K[G[36m│[39m  [2m○[22m [2mYes[22m [2m/[22m [32m●[39m No[2B[999D[4A[2B[2K[G[36m│[39m  [32m●[39m Yes [2m/[22m [2m○[22m [2mNo[22m[2B[999D[4A[1B[J[32m◇[39m  Connect this repository to Workers Builds now? (Free.)
+[90m│[39m  [2mYes[22m
+[?25hFind your Cloudflare account
+Get a fresh Cloudflare API token
+Open this link if the browser did not open: https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22zone%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22dns%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22ssl_and_certificates%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22email_sending%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22workers_ci%22%2C%22type%22%3A%22edit%22%7D%5D&accountId=*&zoneId=all&name=cairn+create-cairn-site
+[?25l[90m│[39m
+[36m◆[39m  Paste your Cloudflare API token
+[36m│[39m  [7m[8m_[28m[27m
+[36m└[39m
+[999D[4A[1B[J[32m◇[39m  Paste your Cloudflare API token
+[90m│[39m  
+[?25hThat token did not work; check it and paste it again.
+[?25l[90m│[39m
+[36m◆[39m  Paste your Cloudflare API token
+[36m│[39m  [7m[8m_[28m[27m
+[36m└[39m
+[999D[4A[1B[J[31m■[39m  Paste your Cloudflare API token
+[90m│[39m  
+[?25h[90m└[39m  [31mCancelled. Run create-cairn-site again when you are ready to continue.[39m
+
+⠙[1G[0KSETUP-EXIT 1
+[?2004hbash-5.3$ 
