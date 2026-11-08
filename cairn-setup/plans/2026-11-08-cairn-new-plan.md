@@ -32,32 +32,22 @@ later pass.
    -Ec '^[0-9a-f]{32}$' ~/Projects/initiatives/cairn-setup/research/cloudflare-oauth-client-id.txt`
    prints `1`. This proves the id's shape only; S1's consent proves the redirect and the scopes.
    Going public waits until "Before the first release".
-2. **[you] Settings grant for the held files.** Add one `autoMode.allow` line, marker
-   `cairn-setup-passes`, through the dotfiles repo (`~/.dotfiles/claude/.claude/settings.json`,
-   stowed to `~/.claude/settings.json`). Text:
-   "cairn-setup-passes: Edits and commits inside git worktrees of /var/home/glw907/Projects/cairn-cms
-   (paths under /var/home/glw907/Projects/cairn-cms/.claude/worktrees/) are allowed when they
-   implement a task of the approved cairn-setup plan
-   (/var/home/glw907/Projects/initiatives/cairn-setup/plans/2026-11-08-cairn-new-plan.md), limited
-   to: .claude/skills/cairn-writing-docs/**, .claude/skills/cairn-running-passes/**,
-   .claude/skills/cairn-releasing/**, .claude/agents/cairn-implementer.md, claude/CLAUDE.md,
-   scripts/build/setup-overlay/.claude/settings.json, scripts/build/setup-overlay/.mcp.json,
-   .claude-plugin/marketplace.json, and plugins/cairn/**. Each change takes effect only after Geoff
-   merges its PR (every pass that writes these, P1, P5, and P6, closes with a packet). This clears
-   Self-Modification and Instruction Poisoning for that text only; it does not cover the repo's own
-   .claude/settings.json, hooks, permission rules, autoMode, or memory, and it does not cover text
-   that grants permissions or tells a session to bypass a block. Pair subagents never write these
-   paths; they hand the content back and the executor writes it."
-   On a yes to Decide 11, a second line, marker `cairn-setup-passes-merge`, makes the conductor's
-   `gh pr merge <n> -R glw907/cairn-cms --merge --match-head-commit <head>` routine for P1, P2, P5,
-   and P6 once Decide 11's gates hold on that head. Both lines are in
-   `research/add-cairn-setup-grant.py`, which Geoff reads and runs. Check: `grep -c 'cairn-setup-passes'
-   ~/.claude/settings.json` prints `2` (`1` on a no to Decide 11), and item 8's probe proves the
-   write.
-3. **[you] Rule on the eleven Decide items** in "Rulings before launch", in the pre-launch packet.
+2. **[you] Settings grant for the held files and the merges.** Two `autoMode.allow` lines, through
+   the dotfiles repo (`~/.dotfiles/claude/.claude/settings.json`, stowed to
+   `~/.claude/settings.json`). Their text lives in one place, the `LINE` and `MERGE_LINE` strings of
+   `research/add-cairn-setup-grant.py`, which Geoff reads and runs; this item does not restate it.
+   `cairn-setup-passes` lets executors edit the held files (the `.claude/skills/cairn-*` skills the
+   plan names, `.claude/agents/cairn-implementer.md`, `claude/CLAUDE.md`, the setup overlay's
+   `.claude/settings.json` and `.mcp.json`, `.claude-plugin/marketplace.json`, `plugins/cairn/**`),
+   and says how each change merges per Decide 12. `cairn-setup-passes-merge` (on a yes to Decide 11)
+   makes the conductor's `gh pr merge <n> -R glw907/cairn-cms --merge --match-head-commit <head>`
+   routine for the PRs of branches `cairn-new-1`, `-2`, `-5`, and `-6` once Decide 11's gates hold
+   on that head. Check: `grep -c 'cairn-setup-passes' ~/.claude/settings.json` prints `2` (`1` on a
+   no to Decide 11), and item 8's probe proves the write.
+3. **[you] Rule on the twelve Decide items** in "Rulings before launch", in the pre-launch packet.
    Check: `grep -cE '^Ruled: (yes|no)\b'
    /var/home/glw907/Projects/initiatives/cairn-setup/plans/2026-11-08-cairn-new-plan.md` prints
-   `11` (an empty `Ruled:` line does not count).
+   `12` (an empty `Ruled:` line does not count).
 4. **[you] Agree the recording sitting S1.** S1 never holds the run: Geoff runs it when the
    notification reaches him, and the work goes on meanwhile (T1.0, "Stops and standing answers").
    It runs in your Ptyxis terminal at P1's set point,
@@ -260,7 +250,14 @@ itself once every gate below holds, and sends that pass's packet as a record tha
 wait on (the 2026-11-01 cairn run sheet's pattern).** The gates, all on the PR's head commit: CI
 green; the whole-branch `standards:diff-reviewer` folded with no open finding and no `escalate`
 verdict; for an `auth-data` pass, the `standards:web-auth-security-reviewer` read folded with no
-open finding and the live admin smoke passed; the docs gate green. A record packet Geoff sends back
+open finding, and the live admin smoke passed or the PR records it as not applicable with the
+reason (P1 changes no engine auth path, T1.11); `npm run check:docs-gate` green, run locally by
+the close task on the head, since `test.yml` ignores `tool/**` and CI does not run it on a
+tool-only PR. Before merging, the conductor posts a gate record on the PR: one line per gate with
+its evidence (the CI run, the review files, the smoke or its reason, the docs-gate output). A head
+that changes after a gate ran (a fix, or P6's rebase onto `main`) reruns the gates on the new head:
+CI and the docs gate always; the two reviews too, unless `git range-diff` shows the only changes
+are the rebase's, in which case the gate record says so. A record packet Geoff sends back
 becomes a fix-forward PR in the pass then running (or a follow-up PR after P6), never a revert of
 later work. Nothing publishes: no pass bumps a version or cuts a release, and no release is cut
 before the tooling brainstorm's gates exist, so Geoff's read of every merged pass still comes before
@@ -273,13 +270,31 @@ table, "Stops and standing answers".
 
 Ruled: yes (Geoff, 2026-11-08, packet 20261108T133837-352510)
 
+### Decide 12: who merges an edit to the repo's own skills and agents
+
+Under Decide 11 the conductor would merge its passes' edits to `.claude/skills/cairn-*` and
+`.claude/agents/cairn-implementer.md`, files the run's later sessions load as instructions (P1's
+`cairn-running-passes` map edit, P5's `cairn-writing-docs` brief, P6's `cairn-releasing` and
+`cairn-implementer.md`). The delta review found that wider than Decide 11 states (finding 5,
+2026-11-08). **Recommendation: yes, each pass puts those edits in a side PR on branch
+`cairn-new-<n>-held`, cut from the pass's head, which goes to Geoff in that pass's record packet as
+an ask and merges only on his approve.** The main PR carries everything else, including the
+product files that ship to sites (`claude/CLAUDE.md`, the setup overlay, the plugin, the
+marketplace), and merges under Decide 11. Nothing in the chain waits on a side PR: every later
+pass's risk class is set in this plan, not read from the skill, and each skill edit is used only
+inside the pass that writes it. No means the conductor merges the held edits inside the main PRs.
+Depends: pre-flight item 2, T1.11, T5.x, T6.x.
+
+Ruled:
+
 ## Alignment with the theme-garden initiative
 
 The theme-garden initiative designs cairn's theme catalog in parallel (Geoff, 2026-11-08), and its
 sessions and this run's sessions coordinate directly to keep the two aligned. Geoff hears only of a
 conflict that would change either design. Before a task changes one of these boundary points, the
-conductor sends the theme-garden session the change and waits for its reply (`ListAgents`; if no
-theme-garden session is live, the conductor reads the "Alignment with cairn-setup" section of the
+conductor sends the theme-garden session the change and waits up to 30 minutes for its reply
+(`ListAgents`; if no theme-garden session is live, or none replies in 30 minutes, the conductor
+records that in `## Decisions` and reads the "Alignment with cairn-setup" section of the
 `theme-garden` initiative record and goes on if the change contradicts nothing there, or if the
 record does not exist yet):
 
@@ -321,11 +336,12 @@ brainstorm. No pass bumps a version or publishes (`cairn-running-passes` "No rel
 | P4 | `cairn-new-4` starter content | `ordinary` | 300 | merges itself |
 | P5 | `cairn-new-5` docs and Claude Code tooling | `runner` | 540 | record; the conductor merges (Decide 11) |
 | P6 | `cairn-new-6` the switch: launcher, release pipeline, wizard retired | `auth-data` | 480 | record; the conductor merges (Decide 11) |
-
-On a no to Decide 11, each "record" row is a packet that holds the next pass until Geoff decides.
 | P7 | `cairn-pub-docs-md` markdown copies (and the loader port on a yes to Decide 4) | `ordinary` | 195, or 375 on yes | merges itself |
 
-Critical chain (P1, P2, P3, P5, P6): **3,465 path minutes.** P4 and P7 run beside it.
+On a no to Decide 11, each "record" row is a packet that holds the next pass until Geoff decides.
+P1's path is 1,190 with T1.9's two theme-garden cases (20 minutes, added after the review).
+
+Critical chain (P1, P2, P3, P5, P6): **3,485 path minutes.** P4 and P7 run beside it.
 
 P5 is `runner` because `pass-core` "Lifecycle" puts skills and agents in `runner`, and P5 writes a
 skill, a plugin, and the docs brief.
@@ -541,10 +557,11 @@ plus `standards:web-auth-security-reviewer` over `tool/internal/secrets/**`,
 `tool/internal/setup/{loopback,signin,runner}*`, and the provider OAuth files; one batched fix
 chain; `tool/CHANGELOG.md` under Unreleased; ADR-0003 final; on a yes to Decide 6, the
 `cairn-running-passes` map edit (held file). The admin smoke does not apply (no engine auth path
-changes) and the PR says so. Packet through the conductor.
+changes) and the PR says so. `npm run check:docs-gate` runs on the head and the PR records its
+output. Packet through the conductor.
 
-Path: T1.1 75 + T1.0 150 + Pair A 90 + Pair B 90 + Pair C 180 + Pair D 150 + T1.10 180 + T1.12 180
-+ T1.11 75 = **1,170**.
+Path: T1.1 75 + T1.0 150 + Pair A 90 + Pair B 90 + Pair C 200 (T1.9 at 200 with the theme-garden
+cases) + Pair D 150 + T1.10 180 + T1.12 180 + T1.11 75 = **1,190**.
 
 ### P2 `cairn-new-2`: the agent lane and the generated reference (`runner`)
 
@@ -600,7 +617,8 @@ hidden. Test: the drift test and that help case.
 record write. Acceptance: a recorded Actions-deployed site reads OK with a deployment and Failing
 without one, and a Builds site keeps today's result. Test: those.
 
-**T2.5 Close** (60 min). Whole-branch review with the runner checklist; `tool/CHANGELOG.md`; packet.
+**T2.5 Close** (60 min). Whole-branch review with the runner checklist; `tool/CHANGELOG.md`;
+`npm run check:docs-gate` on the head, its output recorded in the PR; packet.
 
 Path: Pair 165 + T2.3 165 + Pair 120 + T2.5 60 = **510**.
 
@@ -882,9 +900,12 @@ place of stopping.
 | Stop | Standing answer |
 | --- | --- |
 | Clock stop: a task past twice its estimate | When the cause is traced and the rest is in scope, reset `start=` once with `estimate=` the remaining work, and record it in `## Decisions`. On a second stop on the same task, the conductor decides in place of asking: it splits the remaining work into a follow-up task in the same pass, or replaces the unit the fixes keep missing (`pass-core` step 1), and records the call in `## Decisions`. It asks only for a cause it cannot trace. |
-| Pass path ceiling: a pass past twice its plan path | Go on while the cause is traced and the initiative's actual critical-chain minutes stay under 7,370 (twice the design estimate); record the overrun in the PR's score. Past 7,370, or on a cause the session cannot trace, stop: the conductor asks with the trace and a recommendation. |
+| Pass path ceiling: a pass past twice its plan path | Go on while the cause is traced and the initiative's actual critical-chain minutes stay under 2,840 (twice the expected actual of 1,420; the 7,370 plan-minute line is the same bound in plan units, since actuals run near 0.41 of plan); record the overrun in the PR's score. Past 2,840 actual minutes, or on a cause the session cannot trace, stop: the conductor asks with the trace and a recommendation. |
 | A merge gate in Decide 11 fails | The pass does not merge; fix forward and rerun the gate. A finding that would change the design, or an `escalate` verdict, stops: the conductor asks. |
-| S1 recordings land after Pair D started | An import task in the pass then running: copy the staged corpus in, run the hygiene test, rerun T1.6, T1.7, and T1.10's tests against the recordings, fix any body the docs got wrong, and list each fix in the PR. |
+| Auto mode refuses the conductor's merge | Write STATUS, `notify-send -u normal`, and give Geoff the exact `gh pr merge` line with its `--match-head-commit` to paste as a `! ` command. Meanwhile the next pass stacks on the gated head, the way Decide 5 stacks P6 on P5, and rebases once the merge lands. |
+| A P6 gate fails after P5 merged | Acceptable: `main` carries P5's docs while `cairn new` stays hidden, and no release is cut before the tooling gates exist. Fix forward on P6. |
+| S1 recordings land after Pair D started | A separate import PR, classed `auth-data` (the bodies feed T1.10 and T1.12) with the `web-auth-security-reviewer` read, cut from `main` once P1 has merged (or folded into P1 if P1 is still open): copy the staged corpus in, run the hygiene test, rerun T1.6, T1.7, and T1.10's tests against the recordings, fix any body the docs got wrong, and list each fix in the PR. It merges under Decide 11's gates. |
+| S1 has not run by P6's close | P6's record packet and STATUS list every route still marked "pending live recording", and the release's real-account leg records them before any cut. |
 | A red on the fast lane or CI | Fix forward or revert the commit. A known trap (`durable-gotchas.md`) reruns once. A skipped failing-first test with its `// WATCH:` is not a red. A red traced to executor reasoning moves the next task to `high`. |
 | A route S1 could not record, or spec 12's unrecordable list | A docs-sourced body with `provenance.note: "pending live recording"`, listed in the PR; the release's real-account leg records it. |
 | S1 not yet run when Pair D is next | Pair D builds on docs-sourced bodies with `provenance.note: "pending live recording"`; the import task above swaps in the recordings when they land. |
