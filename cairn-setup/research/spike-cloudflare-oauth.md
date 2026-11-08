@@ -43,3 +43,15 @@ Geoff in the dashboard (Manage account > OAuth clients), public client, auth cod
 
 Minted tokens deleted; Workers `spike-oauth-deploy` and `spike-oauth-deploy-new` deleted; local
 token file deleted. Geoff deleted the client on 2026-11-08, which ended its grant.
+
+## Registering the cairn client (2026-11-08)
+
+- The dashboard's create form has no "offline access" scope. The refresh-token grant type is ticked
+  instead; setup still sends `offline_access` in its authorize request, as the spike did. S1's token
+  exchange shows whether a refresh token comes back.
+- Dashboard labels as registered: Workers: Edit (`workers-scripts.edit`; Admin left unticked), Workers
+  Routes: Edit, Workers R2 Storage: Edit, D1: Edit, DNS: Edit, Zone: Read, Email Sending: Edit,
+  Account Settings: Read, User Details: Read, and API Tokens: Edit (user tokens; Account API Tokens
+  left unticked). Zone: Edit and Workers CI: Edit are optional spares.
+- "Sensitive scopes" is a heading on the consent page, not in the create form.
+- Token authentication method: `none` (PKCE with S256), per Cloudflare's "Create an OAuth client" page.
