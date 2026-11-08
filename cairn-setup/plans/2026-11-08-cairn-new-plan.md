@@ -33,8 +33,8 @@ later pass.
    prints `1`. This proves the id's shape only; S1's consent proves the redirect and the scopes.
    Going public waits until "Before the first release".
 2. **[you] Settings grant for the held files and the merges.** Two `autoMode.allow` lines, through
-   the dotfiles repo (`~/.dotfiles/claude/.claude/settings.json`, stowed to
-   `~/.claude/settings.json`). Their text lives in one place, the `LINE` and `MERGE_LINE` strings of
+   the dotfiles repo (`~/.dotfiles/claude/.claude/settings.json`, which `claude-tooling-sync apply`
+   generates into `~/.claude/settings.json`; it is never stowed). Their text lives in one place, the `LINE` and `MERGE_LINE` strings of
    `research/add-cairn-setup-grant.py`, which Geoff reads and runs; this item does not restate it.
    `cairn-setup-passes` lets executors edit the held files (the `.claude/skills/cairn-*` skills the
    plan names, `.claude/agents/cairn-implementer.md`, `claude/CLAUDE.md`, the setup overlay's
