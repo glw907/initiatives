@@ -53,3 +53,10 @@ hot-linked (Waymark's posts load Unsplash today).
   rest at 13 per page, and ten directives (alert, banner, cta, faq, figure, icon, include, points,
   pull-quote, video).
 - The 907-rebuild record's friction files A and B (theme-packaging doc gaps) and planning miss 16.
+
+## Working alongside the `cairn new` planner
+
+A planner is writing `cairn-setup/plans/` while this brainstorm runs. Leave the `cairn-setup`
+record's files alone. Put this project's design in a new initiative record, `theme-garden`, with
+status `proposed`, and pull before each commit to the initiatives repo, since the planner's session
+commits there too. The brainstorm writes no product code in cairn-cms.
