@@ -43,7 +43,7 @@ Geoff approved servers #65 on 2026-11-07 (Approval Queue item 20261107T170519-52
 1. `STALWART_PASSWORD_CLAUDE` and `CLAUDE_MAIL_APP_PASSWORD` join the "Calls" stay list. They stay only in the workstation store.
 2. T3b's `stalwart-geoff.env` split and hash check cover `a-claude`, and `stalwart-status counts` skips it with the same warning when its file is absent. A ward the second operator rebuilds has no `claude` mailbox password, so Claude's outbound proof stops until Geoff reruns its setup script. The rebuild screen says so in one line.
 3. The restructured runbook keeps the "Claude's send mailbox" section, beside the technical mailbox's.
-4. The RCPT rule lives in `roles/stalwart/plan.ndjson`, so a rebuilt ward gets it from the repo with no extra step.
+4. The RCPT rule is rendered by `roles/stalwart/build-plan` from the `sendOnlyTo` key on `a-claude` in `accounts.json`, since the rule names the account's private login. A rebuilt ward gets it from the repo with no extra step (corrected 2026-11-07 from the #65 plan's facts).
 
 ### Planning guidance carried from pass-core
 
