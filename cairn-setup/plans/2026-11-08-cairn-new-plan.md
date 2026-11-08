@@ -285,7 +285,7 @@ pass's risk class is set in this plan, not read from the skill, and each skill e
 inside the pass that writes it. No means the conductor merges the held edits inside the main PRs.
 Depends: pre-flight item 2, T1.11, T5.x, T6.x.
 
-Ruled:
+Ruled: no (Geoff, 2026-11-08, packet 20261108T135640-373803): the held edits merge inside each pass's PR
 
 ## Alignment with the theme-garden initiative
 
