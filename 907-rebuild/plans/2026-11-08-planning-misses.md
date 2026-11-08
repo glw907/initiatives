@@ -1,0 +1,39 @@
+# 907-rebuild planning misses
+
+Geoff, 2026-11-08: "there are numerous planning failures. This session keeps stopping progress to ask me for input", and later, "We need a record of all these planning misses." This file is that record. Each miss is a stop, a cost, or a wrong number that a better plan would have prevented before approval. Each one names the fix and where it lands, so the next site rebuild's plan can be checked against the list before it reaches Geoff. The run log (`2026-11-07-907-rebuild-log.md`) holds the narrative and evidence.
+
+Geoff has several more sites queued for the same exercise: retire the old site, rebuild it with a naive clean-room builder, and collect the friction. The fixes below are what makes those runs smooth.
+
+## Misses that stopped for Geoff
+
+| # | What happened | Geoff touches it cost | Root cause | Fix | Lands in |
+|---|---|---|---|---|---|
+| 1 | The teardown's `--apply` stopped at step 2, the first Workers Builds trigger delete, after detaching the domain. | A second teardown run, and the site went dark before the fix. | `ws-admin` carries no Workers CI scope. The estate inventory already said so, and the packet's "Not checked" named the risk without checking it. | The retirement dry run checks each API family's write scope against the token record, and a missing scope fails the dry run. | The `cleanroom` tool's teardown generator (dotfiles backlog) and the `retire-project` skill. |
+| 2 | The teardown couldn't resume, and it kept no log. | A paste of the output, and a rerun of the full script. | The script was written for one clean pass. | Every `[you]` script logs to the repo and skips targets already gone. | The teardown generator, and the `pass-core` rule for `[you]` steps. |
+| 3 | The sandbox widening (proxy flag, Playwright hosts, Unix sockets) became a `[you]` step after T1's probe. | One sitting. | Auto mode refuses any sandbox change as a security weakening, and the plan probed isolation only. | Ship settings that already passed a full build probe, and Geoff approves them once in pre-flight. | `cleanroom` settings. |
+| 4 | The outside mailbox for the mail checks was asked for twice. | Two questions. | The plan assumed Geoff had to send the message. The Gmail connector could send it. | Mail checks run through the Gmail connector for inbound, and servers #65's `claude@907.life` for outbound. | The `site-rebuild` skill and servers #65. |
+| 5 | Builder sign-ins took several rounds. gh fell back to Geoff's desktop keyring through the default session bus, B's sign-ins were skipped, and Geoff had to ask "Are you unable to do this?" | Several rounds of codes and commands. | The launcher didn't own the sign-ins, and the session bus wasn't dead in the clean env. | `cleanroom signin` drives every device flow with a dead bus address, checks where each credential is stored and its scopes, and batches the codes. | `cleanroom`. |
+| 6 | Small confirmations went to Geoff: an idle session's identity, and a stray file's owner. | Two questions. | The observer asked Geoff first, before peers. | Ask peers first. Geoff only for product, taste, scope, and approvals. | The `site-rebuild` skill (observer rules). |
+| 7 | Builder A stopped mid-T7, because six compound commands used tools off the Bash allowlist (`cat >`, `chmod`, `bash`, `tail`, `curl`, `sleep`, `rm`, `sed`, `cd`, `timeout`). | One command in the setup sitting (`widen-allowlist.sh`). | The allowlist was written for the probe, not for real build work. | A wide everyday allowlist that permits chained commands, proven by the build probe. | `cleanroom` settings. |
+| 8 | The root cause behind 3 and 7: every gap a builder found became a stop, because auto mode refuses mid-pass widening. | Every widening stop. | T1 tested isolation, never a representative build. | The pre-flight probe runs a full build (scaffold, dev server, build, Playwright screenshot, commit, push to a scratch branch) under the shipped settings. After approval, no settings change happens mid-pass, and a later gap is logged and worked around inside the approved settings. | `cleanroom probe`, and the `site-rebuild` skill. |
+| 9 | During setup (P4), the observer couldn't see the wizard in Geoff's terminal, so it asked him to paste its progress. | Several pastes and questions. | The clean shell had no recording, and nothing watched the progress record. | `cleanroom shell` runs under `script -q -f <log>`, and a monitor watches setup's progress record (`~/.config/cairn/sites/*.json`, `.step`). The observer relays each browser link, and any step that needs no human login runs unattended in the builder's session. | `cleanroom`, and the `site-rebuild` skill. |
+
+## Misses that cost money or skewed the measures
+
+| # | What happened | Cost | Root cause | Fix | Lands in |
+|---|---|---|---|---|---|
+| 10 | Builder A's T7 turns resumed one long session. Context reached about 190k to 215k tokens, re-read on every call. | Turns 4 to 6 read 7.3 M, 14.5 M, and 21.6 M cached tokens, for $17.49. The fresh-session fix round cost $0.97. | Resuming kept the whole history. | A fresh session per builder task, with a handoff note. | `cleanroom turn`. |
+| 11 | The cost ledger's token columns took the closing `usage` block, which covers only the last call. | Wrong token figures until corrected (commit `11a68bb`). | The ledger format wasn't checked against a known turn. | Ledger rows take the `modelUsage` totals, written by the tool. | `cleanroom turn`. |
+| 12 | T7's theme bar check 5 required `site-index-rail` on the tags or archive page, but those pages live in `src/routes/`, outside a theme-only PR. | A failed check that wasn't the builder's fault, moved to T9. | The bar wasn't read against where cairn puts each file (`references/theme-directory.md`). | Each acceptance check names the file it reads, and the plan review checks that the task under test can reach that file. | The `site-rebuild` skill's acceptance template. |
+
+## Harness gaps found by builders (worked around, logged)
+
+These didn't reach Geoff, but each one cost a builder turn or an observer assist.
+
+- Playwright's `install chromium` outlived the Bash tool's timeout and was killed before extraction. The workaround is system Chromium at `/usr/bin/chromium-browser`. Fix: pre-seed the browser cache, or point Playwright at system Chromium.
+- The read block's outside-path check fires on URL-like arguments (`home=/`, `post=/posts/...`). That was assist 1 in T7. Fix: covered by the build probe, which uses such arguments.
+- The clean shell can't open a browser, by design. Setup prints each link (conductor-cairn-cms read the code), but the links were easy to miss. Fix: the tool's shell sets `BROWSER` to a command that echoes the link into the observer's log. The cairn side is #363.
+
+## cairn items the run filed
+
+These are engine gaps, filed in cairn-cms's backlog by conductor-cairn-cms and kept here for the fold record: #360 (an agent kit for planning setup), #361 (a theme choice at setup, and a path for third-party themes), #362 (wizard polish), #363 (browser fallback), and #364 (High: the GitHub App install step). Builder B's and builder A's friction files (`~/work/BACKLOG.md` in each home) are sent to conductor-cairn-cms in one batch at the close.
