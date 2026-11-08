@@ -32,5 +32,5 @@ Facts: The diff since the queued plan adds the alignment section and the `Ruled:
 - Your eleven rulings, each `Ruled: yes` (`glw907/initiatives:47605ea`)
 
 Choices:
-- Approve: the plan stands as approved and the build launches after your steps [approve]
+- Approve: the plan is approved and the build launches after your steps [approve]
 - Send back: say in your note what to change in the section [send-back]
