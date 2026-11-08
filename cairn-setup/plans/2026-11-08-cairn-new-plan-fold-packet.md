@@ -32,7 +32,7 @@ Facts: No later pass depends on these edits being merged.
 - The merge grant already excludes the side branches (`initiatives:cairn-setup/research/add-cairn-setup-grant.py`)
 
 Choices:
-- Side PRs for you: each such edit waits in its own PR for your approve in that pass's record packet, and the run goes on meanwhile
+- Side PRs for you: each such edit waits in a separate PR for your approve in that pass's record packet, and the run goes on meanwhile
 - Merge them with the pass: the conductor merges them inside each pass's PR, and you read them afterward in the record packet
 
 ## Ask: Approve the plan with the review's folds?
@@ -47,7 +47,7 @@ Background: The delta review's findings are in the plan's commit message. The la
 Facts: The folds tighten gates and add standing answers.
 - The smoke gate accepts a recorded "not applicable", and the docs gate runs locally on each close (`glw907/initiatives:d839777`)
 - Gates rerun on a changed head, including P6's rebase, and a gate record goes on each PR before its merge (`glw907/initiatives:d839777`)
-- The recording import is its own sign-in-class PR with a security read, and routes still unrecorded at P6 are listed for the release (`glw907/initiatives:d839777`)
+- The recording import is a separate sign-in-class PR with a security read, and routes still unrecorded at P6 are listed for the release (`glw907/initiatives:d839777`)
 - The theme-garden wait is capped at 30 minutes (`glw907/initiatives:d839777`)
 - The conductor and executor prompts (`glw907/initiatives:7de8c4d`)
 
