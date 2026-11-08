@@ -1,0 +1,554 @@
+[
+  {
+    "name": "907.life",
+    "type": "MX",
+    "content": "ward.907.life",
+    "proxied": false,
+    "ttl": 1,
+    "priority": 10
+  },
+  {
+    "name": "907.life",
+    "type": "TXT",
+    "content": "v=spf1 include:spf.messagingengine.com ip4:167.233.54.233 ~all",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "_atproto.907.life",
+    "type": "TXT",
+    "content": "\"did=did:plc:h355ol2j5yxbm4edgxriu5ii\"",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "_caldavs._tcp.907.life",
+    "type": "SRV",
+    "content": "1 443 ward.907.life",
+    "proxied": false,
+    "ttl": 3600,
+    "priority": 0
+  },
+  {
+    "name": "_carddavs._tcp.907.life",
+    "type": "SRV",
+    "content": "1 443 ward.907.life",
+    "proxied": false,
+    "ttl": 3600,
+    "priority": 0
+  },
+  {
+    "name": "_dmarc.907.life",
+    "type": "TXT",
+    "content": "v=DMARC1; p=none; rua=mailto:dmarc-reports@907.life",
+    "proxied": false,
+    "ttl": 3600,
+    "priority": null
+  },
+  {
+    "name": "_dmarc.m.907.life",
+    "type": "TXT",
+    "content": "v=DMARC1; p=quarantine; pct=100; adkim=s; aspf=s",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "_dmarc.me.907.life",
+    "type": "TXT",
+    "content": "v=DMARC1; p=quarantine; pct=100; adkim=s; aspf=s",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "_imaps._tcp.907.life",
+    "type": "SRV",
+    "content": "1 993 ward.907.life",
+    "proxied": false,
+    "ttl": 3600,
+    "priority": 0
+  },
+  {
+    "name": "_jmap._tcp.907.life",
+    "type": "SRV",
+    "content": "1 443 ward.907.life",
+    "proxied": false,
+    "ttl": 3600,
+    "priority": 0
+  },
+  {
+    "name": "_mta-sts.907.life",
+    "type": "TXT",
+    "content": "v=STSv1; id=20261021T2100",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "_smtp._tls.907.life",
+    "type": "TXT",
+    "content": "v=TLSRPTv1; rua=mailto:tls-reports@907.life",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "_submissions._tcp.907.life",
+    "type": "SRV",
+    "content": "1 465 ward.907.life",
+    "proxied": false,
+    "ttl": 3600,
+    "priority": 0
+  },
+  {
+    "name": "_ua-auto-config.907.life",
+    "type": "TXT",
+    "content": "v=UAAC1; a=sha256; d=wIEJeqqd04Ik1w+uQsJ9MA3KdnznxjejK3rKVhPr7Qc=",
+    "proxied": false,
+    "ttl": 3600,
+    "priority": null
+  },
+  {
+    "name": "admin-ward.907.life",
+    "type": "CNAME",
+    "content": "50ca9dee-5526-4c5c-81ac-1a045c3c6e07.cfargotunnel.com",
+    "proxied": true,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "autoconfig.907.life",
+    "type": "CNAME",
+    "content": "ward.907.life",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "autodiscover.907.life",
+    "type": "CNAME",
+    "content": "ward.907.life",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "cf-bounce.907.life",
+    "type": "MX",
+    "content": "route1.mx.cloudflare.net",
+    "proxied": false,
+    "ttl": 1,
+    "priority": 8
+  },
+  {
+    "name": "cf-bounce.907.life",
+    "type": "MX",
+    "content": "route2.mx.cloudflare.net",
+    "proxied": false,
+    "ttl": 1,
+    "priority": 98
+  },
+  {
+    "name": "cf-bounce.907.life",
+    "type": "MX",
+    "content": "route3.mx.cloudflare.net",
+    "proxied": false,
+    "ttl": 1,
+    "priority": 46
+  },
+  {
+    "name": "cf-bounce.907.life",
+    "type": "TXT",
+    "content": "\"v=spf1 include:_spf.mx.cloudflare.net ~all\"",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "cf-bounce._domainkey.907.life",
+    "type": "TXT",
+    "content": "\"v=DKIM1; h=sha256; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiweykoi+o48IOGuP7GR3X0MOExCUDY/BCRHoWBnh3rChl7WhdyCxW3jgq1daEjPPqoi7sJvdg5hEQVsgVRQP4DcnQDVjGMbASQtrY4WmB1VebF+RPJB2ECPsEDTpeiI5ZyUAwJaVX7r6bznU67g7LvFq35yIo4sdlmtZGV+i0H4cpYH9+3JJ78k\" \"m4KXwaf9xUJCWF6nxeD+qG6Fyruw1Qlbds2r85U9dkNDVAS3gioCvELryh1TxKGiVTkg4wqHTyHfWsp7KD3WQHYJn0RyfJJu6YEmL77zonn7p2SRMvTMP3ZEXibnC9gz3nnhR6wcYL8Q7zXypKTMD58bTixDSJwIDAQAB\"",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "dav.907.life",
+    "type": "CNAME",
+    "content": "orpheus.907.life",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "dkim._domainkey.m.907.life",
+    "type": "CNAME",
+    "content": "dkim._domainkey.alias.proton.me",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "dkim._domainkey.me.907.life",
+    "type": "CNAME",
+    "content": "dkim._domainkey.alias.proton.me",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "dkim02._domainkey.m.907.life",
+    "type": "CNAME",
+    "content": "dkim02._domainkey.alias.proton.me",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "dkim02._domainkey.me.907.life",
+    "type": "CNAME",
+    "content": "dkim02._domainkey.alias.proton.me",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "dkim03._domainkey.m.907.life",
+    "type": "CNAME",
+    "content": "dkim03._domainkey.alias.proton.me",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "dkim03._domainkey.me.907.life",
+    "type": "CNAME",
+    "content": "dkim03._domainkey.alias.proton.me",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "fm1._domainkey.907.life",
+    "type": "CNAME",
+    "content": "fm1.907.life.dkim.fmhosted.com",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "fm2._domainkey.907.life",
+    "type": "CNAME",
+    "content": "fm2.907.life.dkim.fmhosted.com",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "fm3._domainkey.907.life",
+    "type": "CNAME",
+    "content": "fm3.907.life.dkim.fmhosted.com",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "m.907.life",
+    "type": "MX",
+    "content": "mx1.alias.proton.me",
+    "proxied": false,
+    "ttl": 1,
+    "priority": 10
+  },
+  {
+    "name": "m.907.life",
+    "type": "MX",
+    "content": "mx2.alias.proton.me",
+    "proxied": false,
+    "ttl": 1,
+    "priority": 20
+  },
+  {
+    "name": "m.907.life",
+    "type": "TXT",
+    "content": "pm-verification=ivaaymfckmyaemhmaqolliqwsbdyng",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "m.907.life",
+    "type": "TXT",
+    "content": "v=spf1 include:alias.proton.me ~all",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "mail.907.life",
+    "type": "CNAME",
+    "content": "ward.907.life",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "me.907.life",
+    "type": "MX",
+    "content": "mx1.alias.proton.me",
+    "proxied": false,
+    "ttl": 1,
+    "priority": 10
+  },
+  {
+    "name": "me.907.life",
+    "type": "MX",
+    "content": "mx2.alias.proton.me",
+    "proxied": false,
+    "ttl": 1,
+    "priority": 20
+  },
+  {
+    "name": "me.907.life",
+    "type": "TXT",
+    "content": "pm-verification=tfbqvwqbpftruiatyqcktiswfeynsq",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "me.907.life",
+    "type": "TXT",
+    "content": "v=spf1 include:alias.proton.me ~all",
+    "proxied": false,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "media.907.life",
+    "type": "CNAME",
+    "content": "orpheus.907.life",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "monitor.907.life",
+    "type": "AAAA",
+    "content": "100::",
+    "proxied": true,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "mta-sts.907.life",
+    "type": "AAAA",
+    "content": "100::",
+    "proxied": true,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "music.907.life",
+    "type": "CNAME",
+    "content": "orpheus.907.life",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "orpheus.907.life",
+    "type": "A",
+    "content": "2.31.61.237",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "orpheus.907.life",
+    "type": "AAAA",
+    "content": "2a01:4f8:c0c:5681::1",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "phonebook.907.life",
+    "type": "AAAA",
+    "content": "100::",
+    "proxied": true,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "photos-new.907.life",
+    "type": "A",
+    "content": "2.31.61.237",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "photos-new.907.life",
+    "type": "AAAA",
+    "content": "2a01:4f8:c0c:5681::1",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "photos.907.life",
+    "type": "A",
+    "content": "2.31.61.237",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "photos.907.life",
+    "type": "AAAA",
+    "content": "2a01:4f8:c0c:5681::1",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "probe.907.life",
+    "type": "A",
+    "content": "167.233.54.233",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "probe.907.life",
+    "type": "AAAA",
+    "content": "2a01:4f8:c17:a7e6::1",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "probe.907.life",
+    "type": "MX",
+    "content": "ward.907.life",
+    "proxied": false,
+    "ttl": 300,
+    "priority": 10
+  },
+  {
+    "name": "probe.907.life",
+    "type": "TXT",
+    "content": "v=spf1 ip4:167.233.54.233 -all",
+    "proxied": false,
+    "ttl": 3600,
+    "priority": null
+  },
+  {
+    "name": "ssh-orpheus.907.life",
+    "type": "CNAME",
+    "content": "1be919ff-cfe3-4424-9900-6a9a9307e5df.cfargotunnel.com",
+    "proxied": true,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "ssh-ward.907.life",
+    "type": "CNAME",
+    "content": "50ca9dee-5526-4c5c-81ac-1a045c3c6e07.cfargotunnel.com",
+    "proxied": true,
+    "ttl": 1,
+    "priority": null
+  },
+  {
+    "name": "ua-auto-config.907.life",
+    "type": "CNAME",
+    "content": "ward.907.life",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "voipms.907.life",
+    "type": "CNAME",
+    "content": "orpheus.907.life",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "w1-ed25519._domainkey.907.life",
+    "type": "TXT",
+    "content": "v=DKIM1; k=ed25519; h=sha256; p=RgqqeFt7JPMvdwN20dlUl7rd6BFU6igReqr3HEE9Iao=",
+    "proxied": false,
+    "ttl": 3600,
+    "priority": null
+  },
+  {
+    "name": "w1-ed25519._domainkey.probe.907.life",
+    "type": "TXT",
+    "content": "v=DKIM1; k=ed25519; h=sha256; p=Z1WBtEZ2Ym4ft05vG5QPwKkFCPa+7u/XzQQ0QX7V9cM=",
+    "proxied": false,
+    "ttl": 3600,
+    "priority": null
+  },
+  {
+    "name": "w1-rsa._domainkey.907.life",
+    "type": "TXT",
+    "content": "v=DKIM1; k=rsa; h=sha256; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA95J2YY8rMS7u0gryaKE1w4LGOVuGE/4BPjMSfJsHOAHn1pSrv2WsfftPEhoZWYjhuNDn9p7P3K6ZTkvbd35jO6DyIq0e4QeMyY5ck30+qnzE7GjV/2G+0buf0ok34D6jUClKHDGhyiJr3Bp9vFKwEIFVCT9ZXtN56Zi6lAQ75lykvpPeUTm2LIKgladY8Z2j6mzXgjgahk8gaWhDQyubM8p4Flx+wZU4Rc9mPD9X/lDDM2Alg2/4aWO6MMz7XJncQ44szqTKlvsnzufQIp1n7z+v5F6sIB11oSH/FcFxezjveaKqk61dZtUMYCtmFWq0C/lLtP6CIjCzf+oTMAFS0QIDAQAB",
+    "proxied": false,
+    "ttl": 3600,
+    "priority": null
+  },
+  {
+    "name": "w1-rsa._domainkey.probe.907.life",
+    "type": "TXT",
+    "content": "v=DKIM1; k=rsa; h=sha256; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw1hVNtT5tbxlLYhCfOyDg7o0zZchAQQ0TL5sKUSlxxEI+FSXl/cV7BgRWoejaJDfdWSOyHmDRpyQoFn432m6OvJGOOSiY0jrh1WHPQfe7Khzc5lbZuF/aZfJds0Ak2yDVpsVQm5pyIWoxS0exHVdIyKUwV5YmtgUkYaT+Ch9BAMHaH5SnD4kRUk9T/SGQrfMcNxVVfgb2WalvDsvRgrtokrJUU2RIBdLuNW5wy9bO3T0cJ5MPf2T9J45ToN0ElU6FZ9tL2yZGMH65GRLppzS6MklobIrT1aJR92A7YuLrnsWeSzyUguPhWzr1dNZBe0YLNIUsWw98FF3/Gw/PTVyXQIDAQAB",
+    "proxied": false,
+    "ttl": 3600,
+    "priority": null
+  },
+  {
+    "name": "ward.907.life",
+    "type": "A",
+    "content": "167.233.54.233",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "ward.907.life",
+    "type": "AAAA",
+    "content": "2a01:4f8:c17:a7e6::1",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "ward.907.life",
+    "type": "TXT",
+    "content": "v=spf1 a -all",
+    "proxied": false,
+    "ttl": 3600,
+    "priority": null
+  },
+  {
+    "name": "webmail.907.life",
+    "type": "CNAME",
+    "content": "orpheus.907.life",
+    "proxied": false,
+    "ttl": 300,
+    "priority": null
+  },
+  {
+    "name": "www.907.life",
+    "type": "CNAME",
+    "content": "907.life",
+    "proxied": true,
+    "ttl": 1,
+    "priority": null
+  }
+]
