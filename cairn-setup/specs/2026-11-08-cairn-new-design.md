@@ -456,6 +456,9 @@ All on 2026-11-08 unless marked.
 - Detecting Workers Paid in the opening. No API is known to read the plan. Try the account
   subscriptions API under the OAuth scopes first, then a probe in the opening. The first-deploy
   failure copy is the fallback, and it already exists.
+- For a subdomain address such as `blog.example.com` or `docs.example.com`: whether a Worker
+  custom domain gets its certificate at any depth or only one level down, and whether sign-in email
+  sends from the zone or the subdomain. An address setup can't serve is refused on the summary.
 - Whether the Cloudflare redirect accepts any loopback port. Only the registered one was tried.
 - Whether a plugin marketplace entry can point at the npm package, so the plugin versions with the
   engine. Otherwise, a `git-subdir` source in the cairn-cms repo.
