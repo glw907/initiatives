@@ -279,8 +279,9 @@ The theme-garden initiative designs cairn's theme catalog in parallel (Geoff, 20
 sessions and this run's sessions coordinate directly to keep the two aligned. Geoff hears only of a
 conflict that would change either design. Before a task changes one of these boundary points, the
 conductor sends the theme-garden session the change and waits for its reply (`ListAgents`; if no
-theme-garden session is live, the conductor reads the `theme-garden` initiative record and goes on
-if the change contradicts nothing there):
+theme-garden session is live, the conductor reads the "Alignment with cairn-setup" section of the
+`theme-garden` initiative record and goes on if the change contradicts nothing there, or if the
+record does not exist yet):
 
 - the catalog entry shape: `templates/catalog.json`, and a reader that accepts extra fields (T1.2, T1.9);
 - the scaffold's substitution targets, named once in `tool/internal/setup/scaffold/`, since the theme's
