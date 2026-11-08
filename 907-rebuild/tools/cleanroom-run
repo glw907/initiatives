@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# Launch a 907-rebuild clean-room builder (spec: "The clean room").
+#
+# Usage:
+#   cleanroom-run install                          create the homes and install each builder's settings
+#   cleanroom-run <A|B> [--resume <uuid>] PROMPT   run one headless turn, logged as stream-json
+#   cleanroom-run <A|B> --shell                    open an interactive shell in the builder's environment
+#
+# Every form starts from a cleared environment (env -i) holding only HOME, PATH, LANG, TERM,
+# TMPDIR, and CLAUDE_CODE_TMPDIR, and changes into the builder's ~/work before it starts.
+set -euo pipefail
+
+root=/var/tmp/cairn-cleanroom
+here=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+template=$here/cleanroom-settings.json
+clean_path=/var/home/glw907/.local/share/mise/installs/node/lts/bin:/home/linuxbrew/.linuxbrew/bin:/usr/bin:/bin
+
+die() { printf 'cleanroom-run: %s\n' "$1" >&2; exit 2; }
+
+install_builder() {
+  local b=$1 other=$2 home=$root/$1
+  mkdir -p "$home/.claude" "$home/work" "$home/tmp"
+  chmod 700 "$home"
+  jq --arg b "$b" --arg other "//var/tmp/cairn-cleanroom/$other/**" '
+    .permissions.deny += ["Read(\($other))", "Edit(\($other))", "Write(\($other))"]
+    | if $b == "B" then .permissions.deny += ["Bash(*create-cairn-site*)"]
+      else .sandbox.filesystem.allowRead += ["~/.config/cairn"]
+         | .sandbox.filesystem.allowWrite += ["~/.config/cairn"] end
+  ' "$template" > "$home/.claude/settings.json.new"
+  mv "$home/.claude/settings.json.new" "$home/.claude/settings.json"
+  printf 'installed %s\n' "$home/.claude/settings.json"
+}
+
+clean_env() {
+  local home=$root/$1
+  env -i HOME="$home" PATH="$clean_path" LANG=C.UTF-8 TERM=xterm-256color \
+    TMPDIR="$home/tmp" CLAUDE_CODE_TMPDIR="$home/tmp" "${@:2}"
+}
+
+[[ $# -ge 1 ]] || die "usage: cleanroom-run install | <A|B> [--resume <uuid>] PROMPT | <A|B> --shell"
+
+if [[ $1 == install ]]; then
+  [[ -f $template ]] || die "missing $template"
+  mkdir -p "$root/logs" "$root/acceptance"
+  chmod 700 "$root/logs"
+  install_builder A B
+  install_builder B A
+  exit 0
+fi
+
+b=$1; shift
+[[ $b == A || $b == B ]] || die "builder must be A or B, got '$b'"
+[[ -f $root/$b/.claude/settings.json ]] || die "run 'cleanroom-run install' first"
+
+if [[ ${1:-} == --shell ]]; then
+  # shellcheck disable=SC2016 # $HOME expands inside the clean environment, not here.
+  exec env -i HOME="$root/$b" PATH="$clean_path" LANG=C.UTF-8 TERM=xterm-256color \
+    TMPDIR="$root/$b/tmp" CLAUDE_CODE_TMPDIR="$root/$b/tmp" PS1="[cleanroom $b] \\w \\$ " \
+    bash --noprofile --norc -c 'cd "$HOME/work" && exec bash --noprofile --norc -i'
+fi
+
+session_args=()
+if [[ ${1:-} == --resume ]]; then
+  [[ $# -ge 3 ]] || die "--resume needs a session id and a prompt"
+  session=$2; session_args=(--resume "$session"); shift 2
+else
+  session=$(uuidgen); session_args=(--session-id "$session")
+fi
+[[ $# -eq 1 && -n $1 ]] || die "give the prompt as one argument"
+
+n=1
+while [[ -e $root/logs/$b-$n.jsonl ]]; do n=$((n + 1)); done
+log=$root/logs/$b-$n.jsonl
+printf '%s\n' "$session" > "$root/logs/$b-$n.session"
+printf '%s\n' "$session" > "$root/logs/$b.session"
+printf 'builder %s turn %s session %s log %s\n' "$b" "$n" "$session" "$log"
+
+# shellcheck disable=SC2016 # "$HOME" and "$@" expand inside the clean environment, not here.
+clean_env "$b" bash --noprofile --norc -c 'cd "$HOME/work" && exec claude "$@"' claude-turn \
+  -p "$1" --permission-mode dontAsk --output-format stream-json --verbose "${session_args[@]}" \
+  < /dev/null | tee "$log" \
+  | jq -c 'select(.type == "result") | {subtype, num_turns, duration_ms, total_cost_usd, permission_denials: (.permission_denials | length)}'
