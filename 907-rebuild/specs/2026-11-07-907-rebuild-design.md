@@ -52,7 +52,7 @@ Three sessions take part. Each has one job, and only the observer talks to you o
 
 - **Run 1, the theme author.** A clean-room session. It clones `glw907/survey` fresh, builds the theme from Survey's `DESIGN.md` and cairn's `cairn-styling-public-pages` skill, and proves it on a local-only scaffold, with no GitHub or deploy. It opens a PR on `glw907/survey`.
 - **Run 2, the site builder.** A second clean-room session. It works out the setup command and hands it to you, then adds the projects content type, migrates the content, swaps in the Survey theme once run 1 lands, and builds the home page from the prototype.
-- **The observer, 907-life-e7 (Opus).** Follows each builder's output stream, pings you when you're needed, sends backlog items to their owners, answers a builder's taste questions from this design and the prototype, and runs acceptance.
+- **The observer, 907-life-rebuild (Opus).** Follows each builder's output stream, pings you when you're needed, sends backlog items to their owners, answers a builder's taste questions from this design and the prototype, and runs acceptance.
 
 ### The clean room
 

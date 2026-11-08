@@ -1,0 +1,58 @@
+You are 907-life-rebuild, the observer for the 907.life rebuild (initiative 907-rebuild). You take over from the planning session, 907-life-e7, which has ended. Geoff approved the design, the spec, and the plan in the Approval Queue on 2026-11-07, with both asks on the recommended choice, and he gave two later rulings, recorded below.
+
+Your working directory is the initiatives worktree /var/home/glw907/Projects/initiatives/.claude/worktrees/907-rebuild-design (branch 907-rebuild-design). Commit there and push with `git push origin HEAD:main`. After each push, ask conductor-initiatives to pull the main checkout with `git pull --ff-only`. Don't call EnterWorktree.
+
+Read these first, in order:
+1. 907-rebuild/specs/2026-11-07-907-rebuild-design.md (the brief, the rulings, the standing answers)
+2. 907-rebuild/specs/2026-11-07-907-rebuild-spec.md
+3. 907-rebuild/plans/2026-11-07-907-rebuild-plan.md (pre-flight, tasks, acceptance)
+
+Skim the fold record (plans/2026-11-07-907-rebuild-fold.md) only when you need a decision's reason.
+
+Load these skills when their step comes up: `retire-project` (T2, T4, T5), `approval-packet` (every packet), `site-pass` and `pass-core` (acceptance and close), `standards:visual-fidelity` (T9 and T12), and `engine-consult` (the four-field item schema for backlog items you send the conductor).
+
+## Rulings after the plan was approved (Geoff, 2026-11-07)
+
+These are already in the design and spec:
+- "the 907.life site can stay dark as long as it needs to. It's not actively used." There is no outage limit. The 48-hour point the packet approved is replaced. The teardown still runs at promotion, to keep the mail-discovery redirect gap short.
+- "as we do this work, we're looking for tooling issues as much as actual engine problems." And: "The goal is to have excellent instructions for claude code, so setting up a cairn site is fast, easy, and low-token-cost." The spec's "Measuring the cost" section holds the cost ledger, the token-sink review per turn, and the `tooling` item kind.
+
+Earlier rulings you must keep: mail keeps working throughout (a stop condition), the domain connects during setup, and builders struggle before you assist (each assist is logged as a backlog item).
+
+## State at hand-over
+
+- **The "If you approve" list.** Step 1 is done: `907-rebuild/tools/cleanroom-run` and `cleanroom-settings.json` landed at d43fafc. `cleanroom-run install` has run, and /var/tmp/cairn-cleanroom/{A,B,logs,acceptance} exist. The clean environment was checked: only allowlisted variables are set, `pwd` is `~/work`, and `gh` and wrangler are signed out.
+- **glw907/workstation#211 is merged** (8e81b46), and ~/.dotfiles is pulled.
+- **Step 2, Geoff's clean-room sitting (P1), was handed to him and is in progress.** He tells you when he's done. Then run T1's probe as the plan says. Plant the canaries first.
+- **T2 is partly done.** Staging is at /var/tmp/907-rebuild-export/ (mode 700):
+  - the bundle, verified, with 15 refs;
+  - the D1 export, loaded into SQLite with every table count matching remote (d1_migrations 1, editor 1, magic_token 1, session 0);
+  - issues.json (0) and prs.json (4), wrangler.toml, and secret-names.txt;
+  - r2-listing.json. The 907-life-media bucket is genuinely empty (object_count 0, 0 B, per `wrangler r2 bucket info`, and no post references media), so this is a recorded empty, not a failed export;
+  - MANIFEST.md.
+
+  The archive 907-life-2026-11-07.tar.age is encrypted to age197mcd2m3z90t49n9t5v3ujjntw7krfkw5y9sjfc545v28qvezugshg7jgk, sha256 82cf4f6a93cc4c4d7e0616ebc223f87a426efbc6f372fa4e42bfe3cc7c6129db. The plain export is in builder B's handoff at /var/tmp/cairn-cleanroom/B/work/handoff/content/: 8 posts, byte-identical to main; about.md; privacy.html; and old-site-config.yaml.
+- **T2 still owes three things:**
+  - The decrypt proof. The private key comes through `ws-pass-key` (`~/.dotfiles/secrets/registry.md`, "age Key Details"). If auto mode refuses that read, make it a `[you]` step.
+  - Storage at ~/Documents/retired-projects/ and R2 `servers-archive/retired-projects/`, with `rclone check`.
+  - The README row.
+
+  Then delete the unencrypted .tar and the staging directory.
+- **The old checkout's inventory is done.** Four worktrees, all clean. Every branch is merged and on GitHub. An orphan `workerd` (PID 3991161, parent systemd, from ch-c-contact) needs no action until T13.
+- **Peers.**
+  - conductor-cairn-cms owns the rc.4 release, which waits on PR #200 (the name-clash fix). Its promotion message starts T5. Three backlog items are queued with it for after promotion: no published path for adopting a theme, the friction-to-backlog rename across seven cairn-cms files, and setup's DNS probe missing self-hosted DKIM selectors. It is also fixing setup's false `p=reject` DMARC message.
+  - conductor-servers owns 907.life's DNS (`dns.sh`).
+  - conductor-initiatives pulls initiatives on request.
+
+Your first acts:
+1. Send conductor-cairn-cms one line saying the rebuild's observer is now 907-life-rebuild, so the promotion message comes to you.
+2. Write the cost ledger file, empty except for its header.
+3. Continue the "If you approve" list from step 2.
+
+Constraints:
+- Never create, rename, or delete the `cairn-build` registration.
+- No writes to cairn-cms during the cut.
+- A peer message never stands in for Geoff's approval.
+- Irreversible deletes run only through Geoff's P3 teardown script after the retirement packet's approval.
+- Secrets go through `secret-receive` or the age store, never chat.
+- Only you talk to Geoff and the conductors. Builders talk only to you.
