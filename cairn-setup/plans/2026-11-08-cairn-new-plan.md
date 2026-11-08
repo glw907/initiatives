@@ -134,7 +134,7 @@ setup tab. Select Sign in there, or use the link in your email." (copy task T3.8
 engine auth change (a one-click confirm GET), which the design rules out. Depends: T1.12, T3.4,
 T3.8.
 
-Ruled:
+Ruled: yes (Geoff, 2026-11-08, packet 20261108T133837-352510)
 
 ### Decide 2: who sends the sign-in email
 
@@ -150,7 +150,7 @@ one tool email and its copy (T1.6, T1.12, T3.8). No drops the email and changes 
 second sentence, and leaves the agent lane's owner to request a link from the sign-in page.
 Depends: T1.12, T3.4, T3.8.
 
-Ruled:
+Ruled: yes (Geoff, 2026-11-08, packet 20261108T133837-352510)
 
 ### Decide 3: reading the first deploy's result
 
@@ -164,7 +164,7 @@ means step 6 waits for the Worker to appear through the Cloudflare API up to a t
 first-deploy failure reads as that generic failure. Either way, the Workers Paid copy never names a
 cause setup did not read. Depends: T1.7, T1.12, T3.8.
 
-Ruled:
+Ruled: yes (Geoff, 2026-11-08, packet 20261108T133837-352510)
 
 ### Decide 4: the cairn-pub pass's size
 
@@ -178,7 +178,7 @@ docs-route change, not the `cairn-pub-rebuild` initiative's rebuild. No keeps P7
 copies and short links on today's loader, and the current docs reach cairn.pub only with that
 rebuild, which would then gate the first release of `cairn new`. Depends: P7.
 
-Ruled:
+Ruled: yes (Geoff, 2026-11-08, packet 20261108T133837-352510)
 
 ### Decide 5: engine and tool releases stay possible between P1 and P6
 
@@ -193,7 +193,7 @@ case. No means a release freeze from P1's merge to the first `cairn new` release
 STATUS, with `scripts/release/preflight.mjs` refusing a cut while `tool/cmd/cairn/new.go` carries
 `Hidden: true`. Depends: T2.4, T5.4, T5.8, P6 merge order.
 
-Ruled:
+Ruled: yes (Geoff, 2026-11-08, packet 20261108T133837-352510)
 
 ### Decide 6: raise the setup chain's risk class
 
@@ -205,7 +205,7 @@ you raise a class. **Recommendation: yes, raise T1.8, T1.10, and T1.12 to `auth-
 to the skill's `auth-data` map in P1's close.** No keeps them `ordinary` with the close's
 `web-auth-security-reviewer` read only. Depends: T1.8, T1.10, T1.12, T1.11.
 
-Ruled:
+Ruled: yes (Geoff, 2026-11-08, packet 20261108T133837-352510)
 
 ### Decide 7: the theme row on the summary
 
@@ -214,7 +214,7 @@ the copy deck's summary says "Theme: Waymark (no reason)". **Recommendation: yes
 description as the row's reason, since the design names it and you decided its wording.** No
 follows the deck. Depends: T3.4.
 
-Ruled:
+Ruled: yes (Geoff, 2026-11-08, packet 20261108T133837-352510)
 
 ### Decide 8: a GitHub App name someone else holds
 
@@ -226,7 +226,7 @@ back from the conversion; the Create waiting sentence gains one line for that ca
 means setup names the App `cairn-<login>-<base>` cut to 34 characters, which collides only within
 one account. Depends: T1.3, T1.7, T1.10, T3.8.
 
-Ruled:
+Ruled: yes (Geoff, 2026-11-08, packet 20261108T133837-352510)
 
 ### Decide 9: an abandoned run does not capture every later run
 
@@ -238,7 +238,7 @@ site", the agent lane gets `--new`, and `cairn new status` lists what each unfin
 each.** No undo command is added. No keeps the design's rule, and the recovery page says how to
 delete a record and its entries by hand. Depends: T1.4, T2.2, T2.3, T3.3, T5.3.
 
-Ruled:
+Ruled: yes (Geoff, 2026-11-08, packet 20261108T133837-352510)
 
 ### Decide 10: `cairn health` for a site deployed by Actions
 
@@ -249,7 +249,7 @@ T2.6 in P2, so P5's page describes shipped behavior: the record notes `deploys: 
 latest deployment instead of Builds triggers.** No files it, and the docs carry a caveat, which the
 close checklist's boundary test discourages. Depends: T2.6, T5.3.
 
-Ruled:
+Ruled: yes (Geoff, 2026-11-08, packet 20261108T133837-352510)
 
 ### Decide 11: the run goes through every pass without waiting on Geoff
 
@@ -271,7 +271,7 @@ on which every gate above holds. No keeps the per-pass
 packets, and each one holds the next pass until Geoff decides. Depends: pre-flight item 2, the pass
 table, "Stops and standing answers".
 
-Ruled:
+Ruled: yes (Geoff, 2026-11-08, packet 20261108T133837-352510)
 
 ## Alignment with the theme-garden initiative
 
