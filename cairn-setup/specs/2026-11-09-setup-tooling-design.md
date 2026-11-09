@@ -127,8 +127,9 @@ A run passes when the site is live, the owner is signed in, the sign-in email re
 mailbox, and the conductor finds no obvious flailing in the transcript. Flailing means repeating a
 failing command, circling the docs for something they don't say, asking the owner what the docs
 should have answered, or stalling on permissions. Friction points are expected and don't fail a
-run (Geoff, 2026-11-09). The record times each step, and a run that passes but takes over 30
-minutes puts its slowest steps on the setup list. One passing run ends this leg.
+run (Geoff, 2026-11-09). The record times each step, with the provider waits (the first Actions deploy and HTTPS on the
+domain) apart from the agent's own time. A run that passes but takes over 10 minutes puts its
+slowest steps on the setup list. One passing run ends this leg.
 
 ### 2. The scripted human run
 
@@ -266,7 +267,7 @@ gap is fixed or filed, and provider-facing copy is fact-checked before the cut.
 | Cost of one naive run | $20 (Geoff, 2026-11-09) | The harness stops the session. The run fails, and the record says where the cost went. |
 | The whole loop | five naive runs or $100, conductor included (Geoff, 2026-11-09) | The conductor stops and reports to Geoff with both lists. |
 | Wall time of one naive run | 60 minutes | The harness stops the session. The run fails, and the record names the step it reached. |
-| Wall time of a passing naive run | 30 minutes | A successful install should never come near the 60-minute stop (Geoff, 2026-11-09). A pass that takes longer goes on the setup list as a friction item, with the record's time per step. |
+| Wall time of a passing naive run, goal prompt to signed in | 10 minutes | Geoff, 2026-11-09: "It's hard to imagine a successful setup taking more than 5 or 10 minutes." A pass that takes longer goes on the setup list as a friction item, with the record's time per step. |
 | No progress outside an approval | 10 minutes | The conductor reads the pane and decides: reply as the owner, or end the run as a stall. |
 | A tab page the stand-in can't read or clear | 2 minutes | The run fails, and the record carries the page's screenshot, never one showing a secret. |
 | Harness overhead per run (sweep, home, start) | 5 minutes | An item on the test-drive list. |
@@ -296,7 +297,7 @@ All on 2026-11-09.
 - Friction points are expected. The goal is to find and smooth them.
 - The conductor needs an easy way to observe and interact, with no copy-paste mess.
 - $20 is the cap per run, and the loop stops after five naive runs or $100.
-- A naive run may go 60 minutes, but a successful install should never take that long.
+- A naive run may go 60 minutes, but a successful setup should take no more than 5 to 10.
 - A faster setup is an improvement, tracked across rounds.
 - Each round's candidate publishes to npm's `gate` dist-tag.
 - The start page is the GitHub repo, since cairn.pub isn't built yet.
@@ -321,8 +322,8 @@ All on 2026-11-09.
 - `cleanroom` is a stdlib Python script, per the tool-language rule and dotfiles #52. It moves to
   Go only if it needs a package or a second file.
 - Runs are sequential on the bare test address, swept between runs.
-- The time, stall, page, overhead, and scripted-run limits in the table, including 30 minutes as
-  the line past which a passing run is a friction item.
+- The time, stall, page, overhead, and scripted-run limits in the table, and the split of provider
+  waits from the agent's own time in each record.
 
 ## Left to the builder
 
