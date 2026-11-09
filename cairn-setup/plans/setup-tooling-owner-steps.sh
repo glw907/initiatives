@@ -103,10 +103,13 @@ fi
 npm whoami >/dev/null 2>&1 || die "steps 3 and 4 need npm's login: run npm login as glw907, then rerun"
 
 # 3. First publish of the six platform packages, then the trusted publishers.
+# The owner's package list, which has a package as soon as it is published (see the bind loop).
+owned=$(npm access list packages glw907 --json 2>/dev/null) || owned='{}'
+has_pkg() { jq -e --arg p "$1" 'has($p)' <<<"$owned" >/dev/null; }
 missing=()
 for t in "${TARGETS[@]}"; do
-  if npm view "@glw907/cairn-$t" name >/dev/null 2>&1; then
-    say 3 "done: @glw907/cairn-$t exists on the registry"
+  if has_pkg "@glw907/cairn-$t"; then
+    say 3 "done: @glw907/cairn-$t is published"
   else
     missing+=("$t")
   fi
@@ -157,7 +160,7 @@ for pkg in "${TARGETS[@]/#/@glw907/cairn-}" create-cairn-site; do
   # The owner's package list, not npm view: a first publish can stay 404 on the public registry
   # for a while after npm has the package. npm access get status cannot serve either, since it
   # prints "private" for a name that does not exist.
-  if ! npm access list packages glw907 --json 2>/dev/null | jq -e --arg p "$pkg" 'has($p)' >/dev/null; then
+  if ! has_pkg "$pkg"; then
     say 3 "would bind $pkg to $REPO tool.yml in $ENV once it is published"
     continue
   fi
