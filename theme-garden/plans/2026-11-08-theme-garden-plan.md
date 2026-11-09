@@ -127,7 +127,7 @@ each pass as a routine row and the held-file edits in their own row. A record Ge
 becomes a fix-forward in the next garden pass, never a revert. No keeps a packet per pass, each
 holding the next. Depends: pre-flight item 3, "Stops and standing answers".
 
-Ruled:
+Ruled: yes (Geoff, 2026-11-09, Approval Queue item 20261109T022112-3127080).
 
 ## Calls settled here
 
