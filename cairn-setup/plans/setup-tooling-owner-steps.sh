@@ -154,7 +154,9 @@ if (( ${#missing[@]} )); then
   fi
 fi
 for pkg in "${TARGETS[@]/#/@glw907/cairn-}" create-cairn-site; do
-  if ! npm view "$pkg" name >/dev/null 2>&1; then
+  # npm access, not npm view: a first publish can stay 404 on the public registry for a while
+  # after npm has the package, and trust binds to the package as soon as npm has it.
+  if ! npm access get status "$pkg" >/dev/null 2>&1; then
     say 3 "would bind $pkg to $REPO tool.yml in $ENV once it is published"
     continue
   fi
