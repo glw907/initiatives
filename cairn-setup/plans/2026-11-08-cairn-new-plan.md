@@ -632,6 +632,11 @@ Path: Pair 165 + T2.3 165 + Pair 120 + T2.5 60 = **510**.
 
 ### P3 `cairn-new-3`: the terminal view (`ordinary`)
 
+Geoff (2026-11-08, after launch): the Cloudflare approval's instruction to select API Tokens: Write
+must stand out. P1 changes the waiting sentence and adds the setup tab's callout; P3 renders the
+permission name in bold in the current-step sentence; P5's approvals page shows the checkbox in a
+figure (`research/copy-deck-final.md`, the Allow sentence).
+
 Outcome: `cairn new` in a terminal runs the design's flow inline, at the copy deck's words and the
 layout grid's columns, with golden frames at 80 and 60 columns and a real-terminal screenshot read
 of every screen. The prototype (`/var/home/glw907/Projects/initiatives/cairn-setup/research/prototype/`)

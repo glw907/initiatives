@@ -42,7 +42,7 @@ Every user-facing string in the setup prototype, in flow order. Register: the ca
 - Title: Approve setup in your browser
 - Body: Approve each request in the setup tab. The next request opens in the same tab.
 - Current-step sentence, one per approval:
-  - Allow: Select Allow to let setup create your site on Cloudflare and send sign-in email from your domain.
+  - Allow: On the Cloudflare page, select API Tokens: Write, and then select Allow. Cloudflare leaves API Tokens: Write unselected, and setup needs it to create your site's deploy key. (Geoff, 2026-11-08: the instruction must stand out, since the permission is easy to miss. The terminal shows the permission name in bold, and the setup tab shows it as a callout before it sends the owner to Cloudflare.)
   - Create: Select Create to add a GitHub App for <name>. The admin saves changes to your site through the App.
   - Install & Authorize: Select Install & Authorize to let setup create the <repo> repository. This access covers all your repositories. Setup removes it within seconds.
   - Approve: Select Approve to give the App access to <repo> only. Setup uses this access to push your site and store the deploy key.
