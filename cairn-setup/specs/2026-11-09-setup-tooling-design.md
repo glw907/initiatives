@@ -179,6 +179,21 @@ the launcher, the template), the setup skill, or the docs a naive run read. The 
 a commit whose scripted leg passed and whose other two legs passed on a commit with no such
 change since.
 
+### Candidate speed fixes
+
+The rc.4 gate run (`~/.local/state/cairn-gate/runs/20261107T151545/driver.log`) timed the old
+wizard's steps on the test accounts. A local install, build, and deploy took 2m12s and 2m07s on its
+two installs, and connecting `carin-test.org` with HTTPS took 73s and 91s. The API steps took
+seconds each. So the expected long poles are the first deploy, now in GitHub Actions, then HTTPS,
+then the agent's own reading and turns, which nothing has measured yet. Round one's records are
+read against three candidate fixes, and each one is taken only when a record shows it would help:
+
+- connecting the domain while the first deploy runs, so HTTPS overlaps the Actions job;
+- shipping a lockfile in the template, so the deploy runs `npm ci` and Actions can cache the
+  install (the scaffold now installs from `package.json`);
+- shortening the agent's path, so the README reaches the skill and the skill reaches
+  `cairn new --plan` in as few turns as possible.
+
 ## Candidates
 
 Each round's candidate is the existing prerelease path. The engine publishes to `gate` through
