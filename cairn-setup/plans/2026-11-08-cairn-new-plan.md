@@ -270,6 +270,14 @@ table, "Stops and standing answers".
 
 Ruled: yes (Geoff, 2026-11-08, packet 20261108T133837-352510)
 
+Amended (Geoff, 2026-11-08, after launch: "You should be striving to avoid a long series of
+obviously acceptable PRs."): the conductor sends no per-pass record packet. It posts each pass's
+gate record on its PR, merges, and holds the record for one packet at P6's close, which carries
+every merged pass as routine rows (held-file edits in their own row) and only the asks the seven
+rules force. A finding that meets one of those rules goes to Geoff when it arises, in a packet of
+its own. Work that would otherwise open its own small PR (the S1 import, a fix-forward) folds into
+the pass then running, unless its risk class would raise that pass's class.
+
 ### Decide 12: who merges an edit to the repo's own skills and agents
 
 Under Decide 11 the conductor would merge its passes' edits to `.claude/skills/cairn-*` and
