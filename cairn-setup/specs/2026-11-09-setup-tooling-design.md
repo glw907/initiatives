@@ -268,7 +268,7 @@ gap is fixed or filed, and provider-facing copy is fact-checked before the cut.
 | The whole loop | five naive runs or $100, conductor included (Geoff, 2026-11-09) | The conductor stops and reports to Geoff with both lists. |
 | Wall time of one naive run | 60 minutes | The harness stops the session. The run fails, and the record names the step it reached. |
 | Wall time of a passing naive run, goal prompt to signed in | 10 minutes | Geoff, 2026-11-09: "It's hard to imagine a successful setup taking more than 5 or 10 minutes." A pass that takes longer goes on the setup list as a friction item, with the record's time per step. |
-| No progress outside an approval | 10 minutes | The conductor reads the pane and decides: reply as the owner, or end the run as a stall. |
+| No progress outside an approval | 3 minutes | The conductor reads the pane and decides: reply as the owner, or end the run as a stall. |
 | A tab page the stand-in can't read or clear | 2 minutes | The run fails, and the record carries the page's screenshot, never one showing a secret. |
 | Harness overhead per run (sweep, home, start) | 5 minutes | An item on the test-drive list. |
 | The scripted human run | 20 minutes | The run fails at its step. |
