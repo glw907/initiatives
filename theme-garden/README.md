@@ -55,5 +55,5 @@ the site is built.
 - 2026-11-08: proposed, from the theme-garden brainstorm.
 - Status: plan approved with Decide G-1 ruled yes (Geoff, 2026-11-09, Approval Queue item
   `20261109T022112-3127080`). `conductor-cairn-cms` orchestrates this initiative and cairn-setup
-  together (Geoff, 2026-11-08). G1 is in flight (`cairn-cms-theme-garden-1`, session `b467d134`,
-  launched 2026-11-09); G2 launches stacked once G1 is PR-ready with an accepted review.
+  together (Geoff, 2026-11-08). G1 merged 2026-11-09 (cairn-cms #207, `64cbe711d`);
+  G2 is in flight (`cairn-cms-theme-garden-2`, session `a53cbbb8`, off `main`).
