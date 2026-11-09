@@ -60,7 +60,9 @@ trust_json() {
   # though the caller redirects this function's output.
   script -q -e --log-out "$out" -c "$(printf '%q ' npm trust list "$1" --json)" </dev/tty >/dev/tty \
     || { rm -f "$out"; return 1; }
-  tr -d '\r' <"$out" | sed -n '/^{/,/^}/p'
+  # Strip the pty's control sequences first: with npm's browser 2FA flow the log also holds the
+  # prompt and cursor codes, and a stray brace block there once parsed as a binding with no id.
+  tr -d '\r' <"$out" | sed 's/\x1b\[[0-9;?]*[A-Za-z]//g; s/\x1b\][^\x07]*\x07//g' | sed -n '/^{/,/^}/p'
   rm -f "$out"
 }
 
@@ -159,7 +161,9 @@ for pkg in "${TARGETS[@]/#/@glw907/cairn-}" create-cairn-site; do
   # (npm lib/commands/trust/github.js, bodyToOptions). The read itself runs on a pty (trust_json).
   trust_json "$pkg" >"$STATE/trusts.json" \
     || die "step 3: npm trust list $pkg failed; on EOTP, rerun and take the 5-minute skip"
-  trusts=$(cat "$STATE/trusts.json")
+  # Keep only binding objects; anything else in the recording is not a binding.
+  trusts=$(jq -c 'select(type == "object" and has("id") and has("repository") and has("file"))' "$STATE/trusts.json") \
+    || die "step 3: npm trust list $pkg printed output this script cannot read; run it by hand and check"
   rm -f "$STATE/trusts.json"
   # shellcheck disable=SC2016 # $repo is a jq variable, not a shell one
   keep='.repository == $repo and .file == "tool.yml"'
