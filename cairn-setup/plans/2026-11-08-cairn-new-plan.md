@@ -329,6 +329,11 @@ opens as a PR on `~/Projects/standards` before launch and names in the pre-launc
 
 ## Passes
 
+Run in parallel (Geoff, 2026-11-08, after launch: "You can work passes in parallel where possible"):
+P4 launched off `main` beside P1; P2 and P3 launched stacked on P1's open branch, each merging
+`origin/cairn-new-1` first and rebasing onto `main` once P1 merges, with Decide 11's gates on that
+head. P3's T3.6 waits for P2's merge. Merge order stays P1, P2, P3; P4 merges itself.
+
 Sequence and merge order: P1, P2, then P3 and P4 side by side (disjoint files), then P5, then P6
 (on a yes to Decide 5, P6's worktree is cut from P5's approved head as a stacked branch, the
 conductor merges P5's PR immediately before P6's, and P6 rebases onto `main` and passes CI on the
