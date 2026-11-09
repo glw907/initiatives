@@ -261,8 +261,9 @@ legs. Its parts:
   time, with every method error a failure;
 - the sweep: run-tagged, dry run first, and it checks each API family's write scope before it
   deletes anything (miss 1), and resumes past targets already gone (miss 2). It removes the repo,
-  the Worker and its custom domain, the database, the bucket, the DNS records setup created, and
-  the tokens setup minted. It deletes the GitHub App through its settings page as `glw907-test`,
+  the Worker and its custom domain, the database, and the bucket. Then it checks that no DNS
+  record is left at the bare address or `www`. Setup only reads DNS records and never writes one,
+  and a run on the token option mints no token, so neither needs deleting. It deletes the GitHub App through its settings page as `glw907-test`,
   because GitHub has no API for that.
 - the grader: reads the transcript and `cairn new status`, and writes the run record, including
   the harness's cost and overhead for the test-drive list;
