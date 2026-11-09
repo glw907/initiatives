@@ -116,6 +116,8 @@ Reviewed: three lenses, a fold, a verification read, and its fold; see "Review" 
 
 ### Decide S-1: probe part two runs without a packet when nothing changes
 
+Ruled: yes (Geoff, 2026-11-09, Approval Queue item 20261109T122948-4007611).
+
 T1.5 runs the probe's part one (everything but the cairn steps) before packet B, and Geoff approves
 the settings and that record there, by the template's `sha256`. Part two needs a published candidate,
 so it runs as T3.2. **Recommendation: yes. When part two passes on the `sha256` packet B approved,
@@ -123,6 +125,8 @@ the run goes on and part two's record rides the end packet; a settings change fo
 packet between T3.2 and T3.3.
 
 ### Decide S-2: accept the production Cloudflare account for the clean room's token
+
+Ruled: yes, the production account, with S-8 yes (Geoff, 2026-11-09, Approval Queue item 20261109T122948-4007611).
 
 `ws-cairn-cleanroom` can create, overwrite, and delete any Worker, D1 database, and R2 bucket on
 account `120c...0ca0`, which serves the live sites, because Cloudflare scopes those groups to the
@@ -159,6 +163,8 @@ the production account, with S-8 yes.** No stops the plan for a design change.
 
 ### Decide S-3: the clean room's Claude Code credential
 
+Ruled: yes, the API key in a `cleanroom` workspace with a $100 monthly limit (Geoff, 2026-11-09, Approval Queue item 20261109T122948-4007611).
+
 An API key in a Console workspace with a $100 monthly limit makes every figure real spend, and the
 provider enforces the loop's ceiling. A subscription token (`claude setup-token`) costs nothing extra,
 but its dollars are Claude Code's estimate ("computed client-side at list price",
@@ -167,11 +173,15 @@ yes, the API key.** No uses the subscription token, and the caps read the estima
 
 ### Decide S-4: the estimate-overrun ceiling
 
+Ruled: a ceiling of 2,070 actual minutes on the chain (Geoff, 2026-11-09, Approval Queue item 20261109T122948-4007611).
+
 **Recommendation: the run goes on past the plan's path while each cause is traced and the chain's
 actual minutes stay under 2,070, twice the expected actual of about 1,035.** Past that, the conductor
 stops and asks. Geoff may name another figure.
 
 ### Decide S-5: clean-room template changes after packet B
+
+Ruled: yes; this amends the design's "approve the settings file once" line (Geoff, 2026-11-09, Approval Queue item 20261109T122948-4007611).
 
 The design has Geoff approve the settings file once and bans a change mid-run; pass 3's harness fixes
 may need one between runs (a host, an allow rule). **Recommendation: yes. A template change inside the
@@ -184,6 +194,8 @@ design's "Geoff approves the settings file ... once".
 
 ### Decide S-6: roll the clean room's Cloudflare token when the loop ends
 
+Ruled: yes, a 30-day end date and deletion at the loop's end (Geoff, 2026-11-09, Approval Queue item 20261109T122948-4007611).
+
 The token sits in the clean room's environment and in every run repository's Actions secret until the
 sweep. **Recommendation: yes. Item 3 mints it with a 30-day end date, and the end packet carries a
 `[you]` step to delete `ws-cairn-cleanroom`; site-rebuild mints its own.** No gives it 90 days and keeps
@@ -191,6 +203,8 @@ it for site-rebuild, with its estate-inventory row naming that use. The Anthropi
 behind its $100 limit.
 
 ### Decide S-7: deprecate the wizard in pre-flight
+
+Ruled: yes, item 2 runs with `--deprecate` (Geoff, 2026-11-09, Approval Queue item 20261109T122948-4007611).
 
 `cairn-releasing` retires the wizard "after the first tool publish" because `create-cairn-site@0.99.0-rc.4`
 is "the wizard that writes the GitHub App's secrets to disk in plaintext". It is `latest` until a
@@ -203,6 +217,8 @@ with `--deprecate`.** No leaves it to the stable tool cut (`cairn-releasing` ste
 packet lists it there.
 
 ### Decide S-8: run the clean room as its own Unix user
+
+Ruled: yes, the `cleanroom` Unix user (Geoff, 2026-11-09, Approval Queue item 20261109T122948-4007611).
 
 S-2's "What remains": an excluded command can run the agent's own code as glw907, which can read every
 credential Geoff has. Geoff's home is 0755, but `~/.local/secrets`, `$AGE_KEY_FILE`, `~/.config/gh/hosts.yml`, and
