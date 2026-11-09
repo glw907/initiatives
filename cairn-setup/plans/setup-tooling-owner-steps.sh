@@ -4,8 +4,10 @@
 #
 # Geoff runs it in a Ptyxis terminal, because steps 3 and 4 need his npm login and npm asks for a
 # one-time password only when stdin and stdout are both a terminal (npm lib/utils/auth.js,
-# otplease). So stdout stays the terminal: only this script's own [n] lines go to the log, never
-# npm's or gh's output.
+# otplease). So no npm call that can ask runs inside $(...) or a pipe: stdout stays the terminal,
+# and the trust reads, which every need 2FA (npm help trust), run on a pty through script(1) with
+# their output read back from its log. Take npm's "skip two-factor authentication for the next 5
+# minutes" option at the first prompt. Only this script's own [n] lines go to the run log.
 #
 # With no argument it is a dry run: it reads each step's state and prints what --apply would do.
 # Nothing changes. With --apply it runs each step that is not already done, in order, and stops at
@@ -17,8 +19,9 @@
 #   3. Publish the six platform packages once by hand from a dispatch run's npm-tarballs artifact
 #      on main, then bind each package and create-cairn-site to tool.yml's trusted publisher,
 #      revoking create-cairn-site's publish.yml binding first (npm allows one per package).
-#   4. Remove the wizard's next dist-tag. Deprecating create-cairn-site below 1.0.0 waits for the
-#      stable tool cut (the plan's Decide S-7); --deprecate does it now instead, on a no to S-7.
+#   4. Remove the wizard's next dist-tag. With --deprecate (a yes to the plan's Decide S-7), also
+#      deprecate create-cairn-site below 1.0.0, which no 2.0 gate candidate falls under; without it
+#      the deprecation waits for the stable tool cut.
 #
 # Needs Geoff's gh sign-in (repo admin) and, for steps 3 and 4, `npm login` as glw907 first. When a
 # dry run prints no "would" line, run `npm logout` so no publish-capable token stays in ~/.npmrc.
@@ -38,7 +41,7 @@ REPO=glw907/cairn-cms
 ENV=npm-publish
 RULESET=26779320 # release-tags
 TARGETS=(darwin-arm64 darwin-x64 linux-arm64 linux-x64 win32-arm64 win32-x64)
-DEPRECATION="Retired: use the latest version, which installs the cairn tool."
+DEPRECATION="Retired: this wizard writes secrets to disk. Its replacement is create-cairn-site 2.0; see https://github.com/glw907/cairn-cms."
 STATE=$HOME/.local/state/cairn-setup
 mkdir -p "$STATE"
 LOG=$STATE/owner-steps-$(date -u +%Y%m%dT%H%M%SZ).log
@@ -46,6 +49,20 @@ LOG=$STATE/owner-steps-$(date -u +%Y%m%dT%H%M%SZ).log
 
 say() { printf '[%s] %s\n' "$1" "$2" | tee -a "$LOG"; }
 die() { printf 'owner-steps: STOP: %s\n' "$*" | tee -a "$LOG" >&2; exit 1; }
+
+# Runs `npm trust list <pkg> --json` on a pty, so npm sees a terminal and can ask for 2FA, and prints
+# the JSON objects it wrote (each begins with "{" and ends with "}" at column 0) from script's log.
+# The log also holds the start line and any prompt text, which the sed range leaves out.
+trust_json() {
+  local out
+  out=$(mktemp "$STATE/trust-XXXXXX")
+  # script's own stdin and stdout are the terminal, so Geoff sees and answers any prompt even
+  # though the caller redirects this function's output.
+  script -q -e --log-out "$out" -c "$(printf '%q ' npm trust list "$1" --json)" </dev/tty >/dev/tty \
+    || { rm -f "$out"; return 1; }
+  tr -d '\r' <"$out" | sed -n '/^{/,/^}/p'
+  rm -f "$out"
+}
 
 say - "log: $LOG"
 if (( APPLY )); then say - "mode: apply"; else say - "mode: dry run (nothing changes)"; fi
@@ -139,8 +156,11 @@ for pkg in "${TARGETS[@]/#/@glw907/cairn-}" create-cairn-site; do
     continue
   fi
   # npm trust list --json prints one object per binding: id, type, file, repository, environment
-  # (npm lib/commands/trust/github.js, bodyToOptions).
-  trusts=$(npm trust list "$pkg" --json) || die "step 3: npm trust list $pkg failed"
+  # (npm lib/commands/trust/github.js, bodyToOptions). The read itself runs on a pty (trust_json).
+  trust_json "$pkg" >"$STATE/trusts.json" \
+    || die "step 3: npm trust list $pkg failed; on EOTP, rerun and take the 5-minute skip"
+  trusts=$(cat "$STATE/trusts.json")
+  rm -f "$STATE/trusts.json"
   # shellcheck disable=SC2016 # $repo is a jq variable, not a shell one
   keep='.repository == $repo and .file == "tool.yml"'
   bound=$(jq -rs --arg repo "$REPO" "[.[] | select($keep)] | length" <<<"$trusts")
@@ -183,7 +203,7 @@ if (( DEPRECATE )); then
     say 4 "would deprecate create-cairn-site@<1.0.0: $DEPRECATION"
   fi
 else
-  say 4 "skip: deprecating create-cairn-site below 1.0.0 waits for the stable tool cut (Decide S-7)"
+  say 4 "skip: deprecating create-cairn-site below 1.0.0 waits for the stable tool cut (a no to Decide S-7)"
 fi
 
 if (( APPLY )); then

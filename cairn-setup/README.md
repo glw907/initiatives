@@ -31,10 +31,14 @@ existed.
 
 - `cairn-cms`: the Go tool under `tool/`, the npm launcher, the scaffold, the docs, and the plugin.
 - `cairn-pub`: markdown copies of the docs pages.
+- `workstation` (`~/.dotfiles`): the `cleanroom` tool the tooling plan's pass 1 builds.
 
 ## Records
 
 - Design: `specs/2026-11-08-cairn-new-design.md`.
 - Tooling design (the release legs that prove setup): `specs/2026-11-09-setup-tooling-design.md`.
 - Research, the prototype, and the screen review: `research/`.
+- Tooling plan: `plans/2026-11-09-setup-tooling-plan.md`, three passes (the clean room in workstation,
+  the gate rewrite and token option in cairn-cms, then the polish loop), with its prompts, its owner
+  scripts, and its review records beside it. Handed to `conductor-cairn-cms` on 2026-11-09 for packet A.
 - 2026-11-08: proposed, from the setup brainstorm.

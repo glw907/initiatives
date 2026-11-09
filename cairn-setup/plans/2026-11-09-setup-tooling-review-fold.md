@@ -171,3 +171,85 @@ prompts, `setup-tooling-owner-steps.sh`, and `add-setup-tooling-grant.py`. Nothi
 - The `.claude.json` onboarding and trust keys are left to T1.1's first-run probe; no fold names them.
 - The Actions step names behind the install, build, and deploy phases are left to a real jobs response
   read in T2.5 (a judgment call in the plan); the fold did not state GitHub's default naming.
+
+## Verification fold and leanness pass
+
+Fold agent `claude-opus-5-5`, 2026-11-09, on initiatives `ae02695` (the verification read; the design at
+`cc2e0b5`, which applied the erratum owed above, so the plan now binds to `cc2e0b5` and its "Tokens
+setup minted" call is gone). Each finding was checked against the source it cites before folding.
+Nothing committed or pushed.
+
+### Dispositions
+
+| # | Disposition | Where, or why not |
+| --- | --- | --- |
+| V1 | folded, plus Decide S-8 | (a) four patterns in T1.1 and the grant: `cairn *`, `npm create cairn-site`, `npm create cairn-site -- *`, `npx create-cairn-site *`. `npm create cairn-site *` is dropped too, since npm reads options before `--` as its own (`npm help init`), so `--registry=<url>` would have matched; `create-cairn-site *` and `npm init cairn-site*` are dropped as forms no doc or skill names. Probe items: `@file:` spec (T1.3), npx-cache edit, work-folder `.npmrc`, and `./node_modules` shadow (T3.2, which needs the 2.0 launcher). S-2's "What remains" names the path. Refused: the env pins for npm config (`npm_config_userconfig` and the rest), since a project `.npmrc` can set any key the environment leaves unset (scoped registries among them) and Linux `denyWrite` takes only a trailing `/**`, so pins narrow the path without closing it; S-8 is the root fix. (b) S-8, recommendation yes, pre-flight item 6, T1.2's user bullet, pass 1 +60 |
+| V2 | folded | T1.3 expected-prompt items (the `PATH=` shadow and the outside WebFetch); T1.5 acceptance "every prompt one the list marks expected and recorded"; the wrong "Sandboxed Bash never prompts" sentence removed with the calls section; "No" to an outside WebFetch in T2.7's owner rules, prompt 3, and the `cleanroom-run` line. I2 row addendum: the integrity review's "deny the rest" is not folded, because "Rules are evaluated in order: deny, then ask, then allow" (permissions page), so a `WebFetch` deny would block the allowlisted domains too |
+| V3 | folded | the owner-steps script runs `npm trust list --json` on a pty (`script -q -e --log-out`, stdin and stdout `/dev/tty`) and reads the JSON objects from the log; pre-flight 2 says to take the 5-minute skip and records the read as unprobed with a real login |
+| V4 | folded | T1.1's first-run probe is credential-free (onboarding and trust keys); T1.2 runs the approval probe through `cleanroom run --secret`; 20 minutes moved from T1.1 to T1.2 |
+| V5 | folded | `naive` never deletes and refuses while the dry run lists a target (T2.5); the proving skill and prompt 3 run `sweep` then `sweep --apply` as separate calls; the `cleanroom-run` line says none of its forms deletes |
+| V6 | folded | S-7 quotes the plaintext-secrets fact and is reframed as "deprecate in pre-flight", recommendation yes, with a message naming the replacement; the deprecation covers `<1.0.0`, so no `2.0.0-rc` candidate carries it. The script's message changed to match |
+| V7 | folded | part one's compounds use `;`, `||` after an absent `cairn`, and `|`; `&&` moves to T3.2 with `npx create-cairn-site --help`; the `cd`, redirect, and background items are dropped (the settings reference already lists those shapes as staying sandboxed, and the probe had no evidence source for them); T3.2 runs `--apply` with `run_in_background` as a pass or fail item |
+| V8 | folded | the scripted socket is `~/.local/state/cleanroom/tmux-scripted.sock`; `stop` and the refusals check it |
+| V9 | folded | `probes.jsonl` beside the ledger; `naive` reads its last passing row |
+| V10 | folded | the filled probe list joins T1.1's permitted mentions (the session must read it, so it cannot sit in the run directory) |
+| V11 | folded | T2.3 acceptance |
+| V12 | folded | "items 1 to 6 (packet A), then items 7 to 9"; the planning-miss entry names items 1 to 6 |
+| V13 | folded (optional, but it misstated what Geoff rules on) | S-5 |
+| V14 | folded | the `cleanroom-config` line names `permissions.defaultMode` `default` |
+| V15 | folded (optional, cheap) | S-2 offers the production diff beside the V1 path |
+
+### Mechanisms introduced, with their source
+
+| Mechanism | Source |
+| --- | --- |
+| Space-delimited patterns cannot match a spec suffix | settings reference, `sandbox.excludedCommands`: "the same syntax as the content of a `Bash(...)` permission rule ... A pattern with no wildcard is an exact match"; sandboxing page: `docker *` "matches `docker` with or without arguments" |
+| `npm create` options before `--` are npm's; `npx` passes all after the package | `npm help init`, "Forwarding additional options" (`npm init foo -y --registry=<url> -- --hello -a`); `npm help exec`: "When run via the `npx` binary, all flags and options *must* be set prior to any positional arguments"; `bin/npx-cli.js` inserts `--` before the first positional |
+| Linux `denyWrite` takes only a trailing `/**` | settings reference, "Where wildcards work in sandbox paths" |
+| Trust reads need 2FA; the 5-minute skip | `npm help trust` (npm 11.20.0 `docs/content/commands/npm-trust.md:54`); `lib/commands/trust/list.js` wraps its GET in `otplease`; `whoami` and `view` do not |
+| `script -q -e --log-out` gives the child a TTY and logs output | probed: a child saw `stdin.isTTY` and `stdout.isTTY` true, the exit code passed through, and `sed -n '/^{/,/^}/p'` pulled two JSON objects past prompt lines; a stub npm under a redirected caller still saw a TTY |
+| tmux server access by another uid | `man tmux` (3.8), `server-access`: the owner and root "are always permitted access", others only after `-a` |
+| sudo `SETENV` and `--preserve-env` | `man 5 sudoers` "SETENV and NOSETENV"; `man 8 sudo` `--preserve-env=list`; `secure_path` replaces `PATH` (`man 5 sudoers`); `*` "Matches any set of zero or more characters (including white space)" |
+| ACL on `/var/tmp` | probed: `setfacl -m u:nobody:rwx` on a 0700 directory under `/var/tmp` (btrfs) set the entry and mask |
+| Claude Code writes transcripts 0600 | `stat` on `~/.claude/projects/*/*.jsonl`: `-rw-------` under umask 0022, hence the watcher's mirror |
+| `claude`, node, and the dotfiles are readable by another uid | `stat`: Homebrew's `claude`, mise's node, `~/.dotfiles`, `~/.local/state` all 0755 |
+| A `WebFetch` deny outranks domain allows | permissions page: "Rules are evaluated in order: deny, then ask, then allow" |
+| The wizard writes secrets in plaintext | `.claude/skills/cairn-releasing/SKILL.md:348-350` |
+
+Not probed: creating a second user and running a real `sudo -u cleanroom` session, which needs root;
+pre-flight item 6's checks and T1.2's S-8 acceptance cases are the first proof.
+
+### Leanness cut list
+
+Each cut failed both tests (the design does not name it; the run would not fail without it), or
+restated another source.
+
+| Cut | Test it failed |
+| --- | --- |
+| T1.5, the `claude-launch-guard` planner check (50 min, its test file, its pair) | both: the design does not name it, and the run does not need it; `pass-core` "Judgment calls" puts a planning miss's fix in the `standards:plan-reviewer` checklist, which the conductor lands before packet A. Pass 1's tasks renumbered (T1.6 is now T1.5, T1.7 is T1.6) |
+| "Calls settled here" (about 250 lines) | restatement: each call now lives once in the task block that builds it (T1.1, T1.2, T2.1 to T2.7, T3.1, T3.5, pass 3's preamble); the section is a five-line index |
+| "Tokens setup minted" call and the design erratum | restatement: the design at `cc2e0b5` says it |
+| `kitty-headless-shot setup` adding tmux (T1.4) | both: T2.6 installs tmux in the existing box, and only a rebuilt box would read the setup list |
+| Probe items "`cd`, redirect, background, recorded as sandboxed or not" | both, and V7: no evidence source; the settings reference states those shapes stay sandboxed |
+| Excluded patterns `create-cairn-site *`, `npm init cairn-site*` | both: no doc or skill names those forms |
+| The record field "the items this run added to the two lists" | both: the round file holds the lists |
+| `--check-scopes` at "an executor session's first naive run" | both: it already runs at T3.1 and after any token change |
+| Four stop rows restating the design's "Failures and limits" table (caps, stall, page, relay) | restatement: one row points at the table |
+| "A found item outside the task" stop row | restatement of `pass-core` |
+| T1.7 and T2.8 close steps, the clock-file and fast-lane paragraph | restatement of `pass-core` "Close" and the adapters; only the plan-specific items stay |
+| T3.3's restated loop, the "Order and packets" packet contents, the "Permissions checked" per-pass walk | restatement of the design, the conductor prompt, and the grant lines |
+| Pre-flight 2's dry-run history, pre-flight 5 and 7 detail, the samples sentence in the header | restatement or history |
+
+Every review fix the fold record and the verification read name as closing a real defect stays.
+
+### Checks run
+
+- `bash -n` and `shellcheck` on `setup-tooling-owner-steps.sh`: clean. Its dry run printed steps 1 and
+  2 pending and stopped at the npm-login check, as written
+  (`~/.local/state/cairn-setup/owner-steps-20261109T212050Z.log`).
+- `add-setup-tooling-grant.py --dry-run` (the prototype removal and six adds) and `--remove --dry-run`
+  (the note) both ran.
+- Chain: pass 1 130 + 290 + max(100, 35) + 70 + 45 = 635 (575 on a no to S-8), off the chain; pass 2 10
+  + 240 + 165 + 280 + 170 + 90 = 955; pass 3 75 + 80 + 645 + 85 + 180 + 50 = 1,115; chain 2,070,
+  1.24 of the 1,670 estimate, under 3,340. S-4's ceiling stays 2,070 actual.
+- `grep -c '^### Decide S-'` prints `8`; pre-flight item 1's check now expects `8`.
