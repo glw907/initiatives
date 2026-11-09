@@ -33,6 +33,11 @@ gates exist.
 - Geoff's own install stays the last gate. It's the only run that tests Cloudflare's consent click,
   because the dashboard sign-in uses Turnstile and nothing scripts past it. It ends with a short
   friction log.
+- Agent-driven first (Geoff, 2026-11-08: "you should test and polish the agent-driven mode
+  first, and I'll follow with the human testing", since it is easier and more automatable). The
+  real run and the naive-agent runs go through the agent lane, repeat until they pass with every
+  docs gap and friction fixed or filed, and only then does Geoff get his test build. Design the
+  agent-driven legs to run unattended and repeatably, so a polish loop needs no sitting.
 - Two gate rules: an error is never read as an empty result, and provider-facing copy gets a fact
   check before a cut.
 

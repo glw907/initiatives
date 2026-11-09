@@ -1012,3 +1012,6 @@ sweep's triage still waits on Geoff (`docs/STATUS.md`, "Open decisions"), so non
   since today's `latest` (`0.98.0`) has no `template/` and the fetch would fail.
 - The tooling brainstorm's gates exist and pass (design "If you approve" 4), recording the pending
   routes.
+- Agent-driven first (Geoff, 2026-11-08): the agent-lane runs on the test accounts pass and are
+  polished, with every docs gap and friction fixed or filed, before Geoff's human test build
+  (`research/handoff-tooling.md`, "The test shape already settled").
