@@ -62,6 +62,9 @@ and by then the agent's path is smooth.
   sitting.
 - Learn how to make a run both useful and efficient, and improve the test drive each round the
   way setup improves (Geoff, 2026-11-09).
+- Make setup faster round over round. Each run record times setup end to end and per step, the
+  round compares those times with the last, and a faster setup counts as an improvement (Geoff,
+  2026-11-09).
 - Keep the scripted runs as a fast check for later candidates.
 - Build `cleanroom` so a later site-rebuild skill can reuse it unchanged.
 
@@ -294,6 +297,7 @@ All on 2026-11-09.
 - The conductor needs an easy way to observe and interact, with no copy-paste mess.
 - $20 is the cap per run, and the loop stops after five naive runs or $100.
 - A naive run may go 60 minutes, but a successful install should never take that long.
+- A faster setup is an improvement, tracked across rounds.
 - Each round's candidate publishes to npm's `gate` dist-tag.
 - The start page is the GitHub repo, since cairn.pub isn't built yet.
 - Site-rebuild waits for its own brainstorm, with notes kept here.
