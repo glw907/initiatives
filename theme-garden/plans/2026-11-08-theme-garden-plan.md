@@ -17,8 +17,12 @@ and `standards:ts-conventions` for comments; `cairn-writing-docs` for docs.
 
 The two rules every dispatch in this initiative carries are `pass-core` step 1's quoted samples
 ("Avoid over-engineering..." and "Deliver what was asked..."). Nothing below adds a feature the
-design does not name. Steps 1 and 2 of the design's "Order of work" are G1 and G2. Steps 3 to 5 are
-planned after G1 lands ("Later passes").
+design does not name. The design's "Order of work" steps 1 and 2 map across the two passes: G1
+carries step 2 (Waymark's port) and the contract half of step 1 (the `src/site/` move, the chassis
+vocabulary and roles, the generated names, the schemas, and the tokens build); G2 carries the rest of
+step 1 (the conformance set, the viewer, the check, and CI). The port therefore lands before the
+viewer that design step 2 names as its proof, and "The port proof" in "Calls settled here" records
+the substitution. Steps 3 to 5 are planned after G1 lands ("Later passes").
 
 ## Pre-flight
 
@@ -142,12 +146,12 @@ is settled from the code, and the executor builds it as written.
 | The tokens build | `scripts/theme/build-tokens.mjs <themeDir> [--check]`, dependency-free apart from `ajv`, on the model of Survey's `scripts/build` (157 lines, `--check` exits 1 when stale). It reads the daisyUI block `name:` values from the manifest's `colorModes`, so the blocks, `theme-names.ts`, and the cookie regex share one source | The design names Survey's build as the precedent; one source for the names replaces the drift check `theme-names.test.ts:30-31` makes today |
 | Token validation | The DTCG 2025.10 resolver schema, vendored at `schema/dtcg/2025.10/resolver.json` (it bundles the format schema under its `$id`s), compiled by `new Ajv({ validateFormats: false })` (draft-07). The house schemas (`schema/*.json`, draft 2020-12) compile in a second instance from `ajv/dist/2020` | Probed 2026-11-08 (fold probe `tmp/fold/dtcg/p.mjs`, mechanics `tmp/probe/p2.mjs`): `resolver.json` (sha256 `a5acd143...`) makes a default `new Ajv()` throw `unknown format "uri-reference"`; `ajv/dist/2020` rejects the draft-07 schema and the draft-07 class rejects a 2020-12 schema |
 | Token values | Plain colors are DTCG color objects (`colorSpace`, `components`). Fluid values (`clamp()`), `em` and `vw` dimensions, and composite values (`color-mix()`) are untyped string tokens, which the format schema accepts. The build writes each declaration with the same value text as today's (`oklch(45% 0.1 248)`, lightness as a percent at the source's precision) | Fold probe: a `$type: dimension` `clamp()` value, an `em` dimension, and a `$type: color` `"#fff"` fail the format schema; an untyped string `$value` and an oklch color object pass. The equivalence spec compares the computed text (`getPropertyValue(name).trim()`). Survey's `tokens.json` uses hex strings, so G3's derived copy converts them |
-| Option sheets | Each `options/<key>/<value>.css` holds only the custom properties that value changes, under the selectors that reach the light block, the dark block by explicit choice, and the dark block by system preference | Proven on G1's fixture theme by computed values in all three states |
+| Option sheets | Each `options/<key>/<value>.css` holds only the custom properties that value changes, under the selectors that reach the light block, the dark block by explicit choice, and the dark block by system preference, and also its dark values under the selector `modes/dark.css` pins and its light values under the one `modes/light.css` pins, so an option sheet and a mode sheet compose in `theme-options.css` | Proven on G1's fixture theme by computed values in all three states, and with the dark mode sheet pinned, no cookie, and a light system. Without the pinned-state selectors that fourth state would show the light accent on a dark page |
 | Color-mode default sheets | The build also writes `modes/light.css` and `modes/dark.css`. A mode sheet pins the no-cookie state; a visitor's cookie still wins. Contract v1 lists `modes/`, so step 4 only concatenates built CSS | Design "Setup" 5: setup copies built CSS only; settling the path and the semantics now keeps the contract fixed |
 | Fonts | Waymark ships every woff2 file its three `@fontsource-variable/*/index.css` sheets name (about 284 KB), with their `@font-face` rules in `fonts/fonts.css`; the three devDependencies leave the showcase and the template | Same files, same render; under the 400 KB limit (measured 2026-11-08) |
 | Theme tests | A theme's own `*.test.ts` files are contract paths and lay in with it | They test the theme's components, as today (`theme/banner-component.test.ts`) |
-| The contract's paths | Contract v1 lists the design's table plus `tokens/tokens.css`, `modes/`, `fonts/fonts.css`, and `*.test.ts`, and the theme-directory page names each | They extend the design's table (design 135-147), which the design allows; one list keeps the check and the page in step |
-| Required token names | The keys of `states.<state>.root` in `examples/showcase/e2e/fixtures/public-theme-computed.json`, minus the names only the chassis sets (`color-scheme`, `--flow-space`, `--depth`, `--noise`, each listed in the contract file with its reason), plus `--cairn-eyebrow-case` and `--cairn-scroll-cue` | The fixture holds 81 keys per state, captured before the two roles existed, and T1.5b may not update it; the design adds both roles to the list (design 183-186) |
+| The contract's paths | Contract v1 lists the design's table plus `tokens/tokens.css`, `modes/`, `fonts/fonts.css`, and `*.test.ts`, and the theme-directory page names each. `screenshots/` is allowed, not required; `paths-required` requires the contract's required paths plus each file the manifest names | They extend the design's table (design 135-147), which the design allows; one list keeps the check and the page in step. Waymark's manifest names no screenshot until T2.5 writes them, so the full check passes Waymark at T2.4 |
+| Required token names | The keys of `states.<state>.root` in `examples/showcase/e2e/fixtures/public-theme-computed.json`, minus the names only the chassis sets (`color-scheme`, `--flow-space`, `--depth`, `--noise`, each listed in the contract file with its reason), plus `--cairn-eyebrow-case` and `--cairn-scroll-cue`. "Defined" means declared by the theme's own built sheets (`tokens/tokens.css` and each option sheet) in each mode and option value, not computed, so a chassis default does not satisfy it. Waymark's tokens declare both new roles at the chassis defaults (`uppercase`, and the scroll cue's on value from T1.3) | The fixture holds 81 keys per state, captured before the two roles existed, and T1.5b may not update it; the design adds both roles to the list (design 183-186). Under the computed reading the chassis defaults would always define both roles, and the scroll-cue break could never fail; under the declared reading Waymark passes once T1.5b declares both |
 | The showcase's `src/theme/` | Generated and disposable. The root `.gitignore` carries `/examples/showcase/src/theme/`, anchored, so neither the template nor any site ignores its own `src/theme/`. The copy is laid in from `themes/waymark/` by the root `prepare` (after `npm run package`), the showcase's `predev`, `prebuild`, `precheck`, and `pretest:unit`, and the fast lane's first step; the chassis README and the theme-directory page say to edit `themes/waymark/` | The design: generated, no longer committed. `examples/showcase/.gitignore` is copied into `templates/waymark/` (`emit-template-dir.mjs:38-39`), and the scaffold commits a site to git, so an entry there would leave every site's theme out of its repo. Root `prepare` runs in every `npm ci`, the setup command's first step, and every CI job (`.github/workflows/test.yml:54`), so no held setup command or workflow changes |
 | The template's scripts | The bake strips the lay-in from the showcase's `predev`, `prebuild`, `precheck`, and `pretest:unit`, fail-loud like `rewriteDevScript`, leaving each in its template form | The bake copies the showcase's scripts verbatim apart from its named prunes (`bake-template.mjs:21,148`), and `scripts/theme/lay-in.mjs` exists only in cairn-cms |
 | The lay-in step | `scripts/theme/lay-in.mjs <themeDir> <siteDir>`: replaces `<siteDir>/src/theme/` wholesale with the theme minus `screenshots/`, then writes the generated names. It refuses when `<themeDir>` lacks `cairn-theme.json`, when `<siteDir>` lacks `package.json`, or when `<themeDir>` and `<siteDir>/src/theme` overlap in either direction. The emit and the pack call it; the Go scaffold extracts the composed tree and lays nothing in | One code path into every channel (design "Catalog and hosting"). The refusals catch swapped arguments and a `--theme` that names the copy itself; the copy is disposable, so no edit-preserving machinery is added |
@@ -155,9 +159,9 @@ is settled from the code, and the executor builds it as written.
 | The lock | Not written in G1 or G2. Step 4's setup pass writes `theme-lock.json` with the owner's answers | The design puts the lock under "Setup" |
 | The port proof | G1 proves the port by the 51 committed `site-visual.spec.ts` baselines and the equivalence fixture, unchanged, in place of the viewer the design names (design 370-371) | The viewer arrives in G2. The baselines are pixel-exact at five widths, and the 10 `/styleguide` baselines pin every directive under Waymark |
 | The viewer | `scripts/theme/viewer.mjs`, grown from `scripts/lab/theme-fixture-copy.mjs`'s `makeShowcaseCopy` (a showcase copy with `node_modules` linked, per process, under the ignored `.cairn-theme-fixture-<pid>/` prefix), with the `.cairn-template.json` exclusions applied and the starter overlay plus the conformance set as its content. Every server binds to a port from an environment variable or port 0 | Reuses a working copy-and-link helper whose per-pid directories and stale sweep (`theme-fixture-copy.mjs:13,41-51`) keep parallel `node --test` files apart; reads themes only through `templates/catalog.json`, a manifest, or a `--theme <dir>` path |
-| Options in the viewer | For each option combination the viewer writes the scratch site's `src/site/theme-options.css` by concatenating the chosen option sheets, as setup's step 5 does, and builds once per combination; it sets the color mode by the theme cookie | The proof then covers the cascade position a site has |
+| Options in the viewer | For each option combination and color-mode default, the viewer writes the scratch site's `src/site/theme-options.css` by concatenating the chosen option sheets and then the mode sheet (`modes/<mode>.css`), as design "Setup" step 5 does, and builds once per combination with no cookie set | The proof then covers the file and cascade position a site has, mode default included. A theme with no options takes two builds, one per mode |
 | `/styleguide` | Stays in the showcase through G2. The viewer's conformance directives page is the place to see every directive under a theme. T2.6 files one `#initiative:theme-garden` item for a later retirement: port the axe run to the viewer's directives page, move the 10 baselines, then retire the route | The design leaves the retirement to the builder (design 288-290). Today the route holds 10 of the 51 port baselines (`site-visual.spec.ts:61-67`), the equivalence spec's focus pages, the only axe run over every directive (`e2e/styleguide.spec.ts`, run by `design.yml:72`), and a primary-menu entry (`site.config.yaml:9`) |
-| The check | A node script first, `scripts/theme/check.mjs` (`npm run check:theme`); its `--json` output has a schema, `schema/cairn-theme-check.schema.json`, like the tool's other JSON outputs. `--rules <ids>` limits a run to named rules, and `--catalog` checks every `templates/catalog.json` entry. The viewer's control page runs it on the loaded theme on demand | Setup never runs it; the viewer and CI are node. Only the `render` rule builds a site, so the static rules' tests skip it |
+| The check | A node script first, `scripts/theme/check.mjs` (`npm run check:theme`); its `--json` output has a schema, `schema/cairn-theme-check.schema.json`, like the tool's other JSON outputs. `--rules <ids>` limits a run to named rules, and `--catalog` checks every `templates/catalog.json` entry. The viewer's control page runs it on the loaded theme on demand (T2.4 adds the action, with the check) | Setup never runs it; the viewer and CI are node. Only the `render` rule builds a site, so the static rules' tests skip it |
 | The check's CI home | Two steps in the existing `test` job of `.github/workflows/test.yml`, after the showcase install, with no `if:`: `npm run test:theme` and `npm run check:theme -- --catalog`. `publish.yml`'s `ci-green` waits on the `test` check run for every release (`publish.yml:44-47`), so a catalog theme that fails the check cannot cut, and neither `publish.yml` nor `.github/ci-green.json` changes | The design: "A catalog theme passes the theme check in cairn-cms CI before a release can cut." A separate path-filtered job would never run on the release commit, and `ci-green.json` lists workflow files, not jobs (`ci-green.json:2-16`). The render costs one showcase build (13 s on CI, e2e run `npm --prefix examples/showcase run build`, 2026-11-09) plus the page loads, inside a job that ran 8 to 26 minutes against `timeout-minutes: 35` |
 | The conformance set | `scripts/theme/conformance/`, mirroring `src/content/**` and `static/**`, hand-written against the CommonMark 0.31.2 section list, with no new dependency | The design allows seeding from `commonmark-spec`; hand-written pages avoid a dependency for a one-time list |
 | The contract data | `schema/cairn-theme-contract-1.json`: required paths, allowed paths, generated paths, and the required token names. The check reads it; the theme-directory page explains it | One source; it ships with the engine like the manifest schema |
@@ -195,17 +199,17 @@ of 1,190 (0.20), #188 cleanup pass 8 246 of 839 (0.29), #193 setup-fix 210 of 66
 
 Sized top-down from those actuals: G1 is like #186 (a broad move with visual baselines, about 235
 actual), G2 like #188 (new tooling with tests, about 246), so about 481 actual minutes. Divided by
-0.32, the estimate is **1,500 path minutes**. After the review fold, the plan's chain is 1,980 (G1
-975, G2 1,005), 1.32 of it, under the twice-estimate line (3,000). The fold added the files and
+0.32, the estimate is **1,500 path minutes**. After the review fold and its verification fold, the
+plan's chain is 2,020 (G1 1,015, G2 1,005), 1.35 of it, under the twice-estimate line (3,000). The fold added the files and
 guards the reviews found (the bake rewrite, the readers of the generated copy, the protected-path
-waits, the check's acceptance cases) and removed the `/styleguide` retirement. Expected actual on the
-chain: about 634 minutes.
+waits, the check's acceptance cases, the options fixture's completion) and removed the `/styleguide`
+retirement. Expected actual on the chain: about 646 minutes.
 
 ## Passes
 
 | Pass | Slug | Class | Path minutes | Merge |
 | --- | --- | --- | --- | --- |
-| G1 | `theme-garden-1` the contract and Waymark's port | `auth-data` (T1.1), with `runner` edits | 975 | the conductor, on a yes to G-1 |
+| G1 | `theme-garden-1` the contract and Waymark's port | `auth-data` (T1.1), with `runner` edits | 1,015 | the conductor, on a yes to G-1 |
 | G2 | `theme-garden-2` conformance set, viewer, check, and CI | `runner` | 1,005 | the conductor, on a yes to G-1 |
 
 G1's class comes from two paths in T1.1: `tool/internal/setup/runner_fakes_test.go` (the
@@ -263,23 +267,32 @@ named, plus the files that pin the old paths: `packages/cairn-cms-dev/src/fake-g
 `tool/internal/setup/scaffold/scaffold_test.go:46,59`; the showcase tests
 `e2e/nav-from-config.spec.ts:12`, `e2e/vocabulary-admin.spec.ts:67`, and
 `src/tests/unit/showcase-pages-singular.test.ts:16`; `scripts/build/bake-template.test.mjs`; and
-`scripts/checks/check-symbols-allowlist.mjs:38,51,60`. Acceptance, with the tests committed first
-and red: the targets change in `targets.go` lands first, and the existing
+`scripts/checks/check-symbols-allowlist.mjs:38,51,60`; `tool/internal/doctor/corpus_test.go:69` (a
+comment naming the old path); and `siteConfigPaths`' doc comment (`siteconfig.go:36-38`), which
+becomes "five candidate paths" and "four legacy locations". Acceptance, with the tests committed
+first and red: the targets change in `targets.go` lands first, and the existing
 `TestAMissingAnchorFailsNamingTheFileAndLeavesNothing` (`scaffold_test.go:373-383`) fails with "the
-template has no src/site/..." until the template is regenerated; `src/tests/unit/site-config-path.test.ts`
-pins compose's default to the JSON; a node test in `scripts/build/emit-template.test.mjs` fails when
+template has no src/site/..." until the template is regenerated; the JSON edit in
+`scripts/build/site-config-path.json` lands before compose's, so the existing pin in
+`src/tests/unit/site-config-path.test.ts` (`:24-30`, which P6 repoints to that JSON) is its red; a
+node test in `scripts/build/emit-template.test.mjs` fails when
 the emitted tree carries any of the three files under `src/theme/`; a unit test whose backend returns
 no site config for the nav load fails unless one `config.missing` record with `scope: 'nav'` and the
-path is emitted; a doctor test finds a site whose config sits at `src/theme/site.config.yaml`; a
+path is emitted; a doctor test in `siteconfig_test.go`, writing the path as one string literal,
+finds a site whose config sits at `src/theme/site.config.yaml`; a
 showcase unit test reads `routes/(site)/+layout.svelte` and `routes/+error.svelte` and fails unless
 their stylesheet links run theme, site, theme-options, overrides in that order, and fails unless the
 preview's `stylesheets` lists the same four in that order. Then `make -C tool check`, `npm run
 check:template`, `test:emit`, and the showcase's `npm run check` and `npm run build` pass; `git grep
--nE 'src/theme/(cairn\.config|site-config|site\.config)' -- . ':!docs/' ':!skills/' ':!.claude/'
-':!claude/' ':!templates/waymark/.claude/' ':!src/tests/unit/fixtures/' ':!CHANGELOG.md'
+-nE 'src/theme/(cairn\.config|site-config|site\.config)|#theme/(cairn\.config|site-config)' -- .
+':!docs/' ':!skills/' ':!.claude/' ':!claude/' ':!templates/waymark/.claude/'
+':!src/tests/unit/fixtures/' ':!src/tests/unit/check-chassis-boundary.test.ts'
+':!tool/internal/doctor/siteconfig.go' ':!tool/internal/doctor/siteconfig_test.go' ':!CHANGELOG.md'
 ':!MIGRATION-NOTES.md' ':!BACKLOG.md' ':!ROADMAP.md'` prints nothing (T1.6 owns the excluded doc
-paths; the fixtures are historical release records); and `git grep -n '"theme", "site.config.yaml"'
--- tool` prints nothing.
+paths; the fixtures are historical release records; `check-chassis-boundary.test.ts:40` holds the
+specifier as a literal under test; the doctor's two files hold the legacy path on purpose); and `git
+grep -n '"theme", "site.config.yaml"' -- tool` prints nothing, which still covers
+`siteconfig_test.go:19`'s `filepath.Join`.
 
 **Pair A: T1.2 and T1.4**
 
@@ -302,7 +315,7 @@ when the nine vocabulary names differ from `classes.json`'s; the existing direct
 pass unchanged; `npm run check:chassis-boundary`, `npm run check:public-skill`, and `test:emit`
 (which runs `starter-overlay.test.mjs`) pass.
 
-**T1.4 The schemas and the tokens build** (175 min, `ordinary`). Outcome:
+**T1.4 The schemas and the tokens build** (185 min, `ordinary`). Outcome:
 `schema/cairn-theme-1.schema.json`, the manifest schema (the design's fields; `id` matches
 `^[a-z][a-z0-9-]{1,31}$`; `description` at most 60 characters; `contract` is `1`; zero to four
 options, each with two to eight values and a `default` among them; `fonts` with SPDX licenses and
@@ -325,8 +338,10 @@ rebuild; renaming the fixture manifest's dark `colorModes` entry renames the bui
 compiled fixture page reads a different `--color-accent` under each accent value in the light,
 dark-explicit, and dark-system states; with `modes/dark.css` linked, no cookie, and a light system,
 the page reads the dark block's `--color-base-100`, and with the cookie set to the light name it
-reads the light value; the mirror case holds for `modes/light.css` under a dark system. The
-`test:emit` list (root `package.json`) gains the new test file.
+reads the light value; the mirror case holds for `modes/light.css` under a dark system; and the
+fixture's second accent sheet concatenated with `modes/dark.css` (as `theme-options.css` holds them),
+with no cookie and a light system, reads the second accent's dark `--color-accent`. The `test:emit`
+list (root `package.json`) gains the new test file.
 
 **T1.3 Two chassis roles and the generated names** (80 min, `ordinary`). Outcome:
 `--cairn-eyebrow-case` (default `uppercase`) and an `eyebrow-case` utility beside `heading-case`
@@ -349,7 +364,8 @@ on `:root`, and on `/posts/the-reading-surface` asserts a `pre` exists, then rea
 Outcome: Waymark's files move with `git mv` from `examples/showcase/src/theme/` to
 `themes/waymark/` (blame follows), unchanged apart from the fonts; `themes/waymark/cairn-theme.json`
 holds the copy deck's description, contract `1`, `colorModes` `cairn` and `cairn-dark`, no options,
-the three font families with OFL-1.1 and their files, and the three screenshot paths G2 fills;
+the three font families with OFL-1.1 and their files, and an empty `screenshots` list, which T2.5
+fills;
 `fonts/` and `fonts/fonts.css` replace the three `@fontsource-variable/*` devDependencies, which
 leave the showcase and the template; `scripts/theme/lay-in.mjs` lays a theme into a site as "The
 lay-in step" says, refusals included; the root `prepare`, the showcase's `predev`, `prebuild`,
@@ -382,21 +398,34 @@ with the reason named; `npm run lane:fast` prints the lay-in line before its fir
 worktree, `rm -rf examples/showcase/src/theme && npm run prepare` restores it and leaves `git status
 --porcelain` empty.
 
-**T1.5b Waymark's tokens** (120 min, `ordinary`). Outcome: `themes/waymark/tokens/tokens.json` and
-`tokens/resolver.json` hold today's values from `theme.css:104-273` in the forms "Token values"
+**T1.5b Waymark's tokens and the contract** (150 min, `ordinary`). Outcome:
+`themes/waymark/tokens/tokens.json` and `tokens/resolver.json` hold today's values from
+`theme.css:104-273`, plus the properties after line 273 that the judgment call moves into the tokens
+(each recorded in the test's moved list and removed from the hand-written rules), plus
+`--cairn-eyebrow-case` and `--cairn-scroll-cue` at the chassis defaults, in the forms "Token values"
 names, with the generated `tokens/tokens.css`, which `theme.css` imports in place of its inline
-blocks (the hand-written rules stay); `schema/cairn-theme-contract-1.json` lists the required,
+blocks (the other hand-written rules stay); the options fixture
+(`scripts/theme/fixtures/options-theme/`) becomes a complete contract v1 theme: `cairn-theme.json`,
+`tokens/{tokens.json,resolver.json,tokens.css}`, `options/accent/<value>.css` for both values,
+`modes/{light,dark}.css`, `theme.css`, `site.css` (with the banner rules), Waymark's four
+`components/`, `directives/renderers.ts`, `icons.ts`, and `fonts/` with one OFL-1.1 woff2 file and
+`fonts/fonts.css`, its manifest naming no screenshot; `schema/cairn-theme-contract-1.json` lists the required,
 allowed, and generated paths ("The contract's paths") and the required token names ("Required token
 names"); `scripts/lab/reskin-fixture.mjs:31,60,114,165` reads the blocks from `tokens/tokens.css`;
 and `scripts/checks/check-invisible-craft.mjs:87`'s `CSS_FILES` adds
 `examples/showcase/src/theme/tokens/tokens.css`, so `gap-scale`, `motion-band`, and `token-colors`
 keep seeing the values that moved. Files: `themes/waymark/{theme.css,tokens/**}`,
-`schema/cairn-theme-contract-1.json`, `scripts/lab/reskin-fixture.mjs`,
-`scripts/checks/check-invisible-craft.mjs`, `scripts/theme/build-tokens.test.mjs`,
-`templates/waymark/**`. Acceptance: a node test fails unless every declaration in Waymark's
-generated `tokens/tokens.css` equals the same property's declaration in `theme.css:104-273` at
-`origin/main`, name for name and value for value after whitespace normalization, and unless the
-built blocks are named `cairn` and `cairn-dark`; a node test fails unless `build-tokens.mjs
+`scripts/theme/fixtures/options-theme/**`, `schema/cairn-theme-contract-1.json`,
+`scripts/lab/reskin-fixture.mjs`, `scripts/checks/check-invisible-craft.mjs`,
+`scripts/theme/build-tokens.test.mjs`, `scripts/theme/contract.test.mjs`, `templates/waymark/**`.
+Acceptance: a node test checks both ways, after whitespace normalization, that the declarations in
+Waymark's generated `tokens/tokens.css` are exactly the declarations of `theme.css:104-273` at
+`origin/main`, plus each moved property with its `origin/main` value under the same selector, plus
+the two new roles at the chassis defaults: it fails on any of those missing or changed and on any
+other declaration added, and fails unless the built blocks are named `cairn` and `cairn-dark`; a
+node test (`contract.test.mjs`) fails unless every file in `themes/waymark/` and in the options
+fixture matches an allowed path in the contract file and every required path exists in both, and
+unless each declares every required token name in each mode and option value; a node test fails unless `build-tokens.mjs
 themes/waymark --check` exits 0; a unit test fails unless both new roles are in the contract file's
 token names; CI on the head passes `site-visual.spec.ts` and `public-theme-equivalence.spec.ts` with
 the same `git diff --exit-code` command exiting 0; `npm run test:reskin` and `npm run
@@ -421,8 +450,12 @@ on BACKLOG #361"); `CHANGELOG.md` `## Unreleased` and `MIGRATION-NOTES.md` carry
 role), the `config.missing` event, and the dev package's seed path; #388's path repoints; and
 `templates/waymark/` is regenerated, since its `.claude/skills/` derive from `skills/`. The executor
 writes the held files itself. Acceptance: `git grep -nE
-'src/theme/(cairn\.config|site-config|site\.config)' -- . ':!CHANGELOG.md' ':!MIGRATION-NOTES.md'
-':!docs/internal/' ':!src/tests/unit/fixtures/' ':!BACKLOG.md' ':!ROADMAP.md'` prints nothing; `npm
+'src/theme/(cairn\.config|site-config|site\.config)|#theme/(cairn\.config|site-config)' -- .
+':!CHANGELOG.md' ':!MIGRATION-NOTES.md' ':!docs/internal/' ':!src/tests/unit/fixtures/'
+':!src/tests/unit/check-chassis-boundary.test.ts' ':!tool/internal/doctor/siteconfig.go'
+':!tool/internal/doctor/siteconfig_test.go' ':!BACKLOG.md' ':!ROADMAP.md'` prints nothing (it
+reaches the `#theme/cairn.config.js` imports the packaged skills teach, such as
+`skills/cairn-building-admin-screens/references/admin-mount.md:22,42`); `npm
 run check:docs-gate`, `check:vale`, `check:rulings-format`, `check:consumers-must`, `check:comments`,
 `check:template`, and `test:emit` pass; `register-check`'s findings on the two rewritten pages are
 closed; `docs-fact-checker` returns no open finding.
@@ -437,8 +470,8 @@ settings screen to prove the moved `site.config.yaml` reads; the PR body (`## Br
 `## Decisions` with the conductor's boundary confirmation, `## Planning misses` from this plan's
 section, the score). PR-ready.
 
-Path: T1.0 10 + T1.1 215 + Pair A 175 + T1.3 80 + T1.5a 155 + T1.5b 120 + T1.6 130 + T1.7 90 =
-**975**.
+Path: T1.0 10 + T1.1 215 + Pair A 185 + T1.3 80 + T1.5a 155 + T1.5b 150 + T1.6 130 + T1.7 90 =
+**1,015**.
 
 ### G2 `theme-garden-2`: the conformance set, the viewer, the check, and CI (`runner`)
 
@@ -490,7 +523,7 @@ every page.
 
 **Pair C: T2.3 and T2.4a**
 
-**T2.3 The viewer** (270 min, `ordinary`). Outcome: `scripts/theme/viewer.mjs` (`npm run theme:view
+**T2.3 The viewer** (250 min, `ordinary`). Outcome: `scripts/theme/viewer.mjs` (`npm run theme:view
 -- [--theme <id|dir>]`) composes a scratch site through `makeShowcaseCopy`
 (`scripts/lab/theme-fixture-copy.mjs:68-106`), applies `.cairn-template.json`'s exclusions, replaces
 `src/content` with the starter overlay plus the conformance set (regenerating the content manifest),
@@ -498,21 +531,20 @@ and lays the theme in with `lay-in.mjs`, writing `src/site/theme-options.css` as
 viewer" says. It finds themes only through `templates/catalog.json` and each manifest, or a `--theme
 <dir>` path. Interactive mode runs `vite dev` on the scratch site and serves a control page: the
 page list (every starter and conformance route), a theme picker, each option's values, the color
-mode, the five widths in an iframe, and a "Run the check" action that runs `check.mjs` on the loaded
-theme and shows its `--json` output. A pick lays the theme in again; an edit under the theme
+mode, and the five widths in an iframe. A pick lays the theme in again; an edit under the theme
 directory copies across, and an edit under `tokens/` reruns the tokens build first. Headless mode
 (`--headless --pages <list|all> --widths <list> --modes <list> --option <key>=<value>
-[--viewport-only]`) builds once per option combination, serves the prerendered output, and for each
-combination loads the page in Playwright Chromium with the mode set, saves a full-page PNG (or the
+[--viewport-only]`) builds once per option combination and mode ("Options in the viewer"), serves
+the prerendered output, and for each combination loads the page in Playwright Chromium, saves a full-page PNG (or the
 viewport alone under `--viewport-only`), and prints a JSON list (`page`, `url`, `status`, `theme`,
 `options`, `mode`, `width`, `file`, `consoleErrors`). Ports come from environment variables or port
 0. Files: `scripts/theme/viewer*.mjs`, `scripts/theme/viewer/**`, root `package.json`. Acceptance: a
 node test runs headless on the options fixture for one conformance page at 390 and 1440, both modes,
 and both accent values, and fails unless it writes 8 PNGs that its JSON names and the two accent
-values' PNGs differ; a smoke test starts interactive mode on a copied options fixture and fails
+values' PNGs differ, and fails unless the scratch site's `src/site/theme-options.css` for the dark
+runs ends with `modes/dark.css`'s text; a smoke test starts interactive mode on a copied options fixture and fails
 unless the control page lists every conformance route, the fixture's two accent values, and the five
-widths, unless the check action's body validates against `schema/cairn-theme-check.schema.json`, and
-unless an edit to the copy's `tokens/tokens.json` accent changes the served page's `--color-accent`
+widths, and unless an edit to the copy's `tokens/tokens.json` accent changes the served page's `--color-accent`
 within a bounded wait (a timeout fails); a headless run over every page under Waymark at 1440 fails
 unless its entry count equals the composed manifest's starter and conformance routes times two
 modes, every `status` is 200 except the 404 and error pages (which return their own codes), every
@@ -527,7 +559,7 @@ Acceptance: a unit test over a fixture sheet with two named blocks fails unless 
 file are listed; a run whose scope holds no theme sheet fails unless the output says `measured
 nothing`; `npm run check:surface` shows no unintended change.
 
-**T2.4 The theme check** (270 min, `ordinary`). Outcome: `scripts/theme/check.mjs <themeDir>
+**T2.4 The theme check** (290 min, `ordinary`). Outcome: `scripts/theme/check.mjs <themeDir>
 [--json] [--rules <ids>]` and `check.mjs --catalog` (`npm run check:theme`) return a verdict and
 print one line per theme (`check:theme: <id> pass` or `fail`); `--catalog` fails when the catalog
 names no theme or an entry's directory is missing; `--json` prints each failure with `file`, `rule`,
@@ -543,8 +575,11 @@ as "What 'styled' means" says, the report naming the sheet); `audit` (`cairn-aud
 list, failing on any finding or on `measured nothing`); `fonts` (every file under `fonts/` named by
 a manifest font with an SPDX license, woff2 only, at most 400 KB per font pairing); `external-host`
 (a URL with a scheme or `//` in a CSS `url()` or `@import`, or a `src` or `href` in a component).
-Files: `scripts/theme/check*.mjs`, `schema/cairn-theme-check.schema.json`, root `package.json`.
-Acceptance: tests copy the options fixture and break one thing each, running with `--rules` set to
+`paths-required` covers the contract's required paths and each file the manifest names. The viewer's
+control page gains a "Run the check" action that runs `check.mjs` on the loaded theme and shows its
+`--json` output. Files: `scripts/theme/check*.mjs`, `schema/cairn-theme-check.schema.json`,
+`scripts/theme/viewer/**` (the control page's action), root `package.json`. Acceptance: the unbroken
+options fixture passes every rule; tests copy the options fixture and break one thing each, running with `--rules` set to
 every rule but `render` (drop a required path, add an unlisted file, a 61-character description,
 contract `2`, an invalid `tokens.json`, a resolver context with no manifest value, a manifest option
 with no resolver modifier, a token edit without a rebuild, a required token missing in dark,
@@ -555,12 +590,14 @@ url(https://fonts.googleapis.com/...)`, a component with `<img src="https://..."
 unless the check reports exactly that rule; the `render` rule's own tests run on the fixture with a
 one-page list: the unbroken fixture passes, a fixture component that throws during SSR fails with
 exactly `render`, and one that logs `console.error` on mount fails with exactly `render`; a
-`--catalog` test over an empty catalog fails; `npm run check:theme -- themes/waymark` passes.
+`--catalog` test over an empty catalog fails; the viewer's smoke test fails unless the check
+action's body validates against `schema/cairn-theme-check.schema.json`; `npm run check:theme --
+themes/waymark` passes.
 
 **T2.5 Screenshots and CI** (105 min, `runner`, protected path). Outcome:
 `themes/waymark/screenshots/` holds the three PNGs from headless mode under `--viewport-only` (1440
-by 960 light and dark, and 390 wide light), named in its manifest, and the check's `paths-required`
-covers them; the `test` job in `.github/workflows/test.yml` gains, after the showcase install
+by 960 light and dark, and 390 wide light), which T2.5 names in the manifest's `screenshots` list,
+so the check's `paths-required` covers them; the `test` job in `.github/workflows/test.yml` gains, after the showcase install
 (`npm ci --prefix examples/showcase`), two steps with no `if:`: `npm run test:theme` and `npm run
 check:theme -- --catalog` ("The check's CI home"). Files: those named,
 `src/tests/unit/workflow-yaml.test.ts`, a test under `scripts/theme/`. Acceptance:
@@ -586,9 +623,9 @@ one `#initiative:theme-garden` backlog item, filed through `standards:log-issue`
 `standards:svelte-reviewer` on any Svelte the viewer adds; the PR body (`## Brief`, what landed,
 `## Decisions`, `## Planning misses`, the score). PR-ready.
 
-Path: Pair B 170 + Pair C 270 + T2.4 270 + T2.5 105 + T2.6 115 + T2.7 75 = **1,005**.
+Path: Pair B 170 + Pair C 250 + T2.4 290 + T2.5 105 + T2.6 115 + T2.7 75 = **1,005**.
 
-Chain: G1 975 + G2 1,005 = **1,980**.
+Chain: G1 1,015 + G2 1,005 = **2,020**.
 
 ## Stops and standing answers
 
@@ -597,7 +634,7 @@ Approved with this plan; each is applied in place of stopping.
 | Stop | Standing answer |
 | --- | --- |
 | Clock stop: a task past twice its estimate | With the cause traced and the rest in scope, reset `start=` once with `estimate=` the remaining work and record it in `## Decisions`. On a second stop on the same task, the conductor splits the rest into a follow-up task in the same pass, or replaces the unit the fixes keep missing, and records the call. It asks only for a cause it cannot trace |
-| Path ceiling | Go on while the cause is traced and the chain's actual minutes stay under 1,270 (twice the expected 634); record the overrun in the score. Past that, or on an untraced cause, the conductor asks with the trace and a recommendation |
+| Path ceiling | Go on while the cause is traced and the chain's actual minutes stay under 1,290 (twice the expected 646); record the overrun in the score. Past that, or on an untraced cause, the conductor asks with the trace and a recommendation |
 | A port baseline or equivalence key differs (T1.5a, T1.5b) | Fix forward from the traced cause. Regenerating a baseline or updating the equivalence expectation is never the answer for the port. Not escalable |
 | The port's bar stays unmet after a structural fix fails | G1 holds short of PR-ready and the conductor asks Geoff with the trace, since the bar is the design's. G2's T2.1 and T2.2, which need no port, may still run stacked on G1's branch; the rest of G2 waits |
 | The import of `tokens/tokens.css` moves a computed value | The build writes the generated blocks into `theme.css` between `/* cairn-tokens:start */` and `/* cairn-tokens:end */`, fail-loud on a missing marker, and `tokens/tokens.css` leaves the contract. Record it. (Tailwind 4.3.3 with daisyUI 5.7.50 compiles `@plugin "daisyui/theme"` from an imported file; mechanics probe `tmp/tw`) |

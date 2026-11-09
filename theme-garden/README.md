@@ -43,8 +43,18 @@ the site is built.
   the record the cairn-setup conductor reads.
 - Research: `research/prior-art-theme-packaging.md`, `research/prior-art-theme-switching.md`.
 - Planner launch prompt: `plans/2026-11-08-theme-garden-planner-prompt.txt`.
+- Plan: `plans/2026-11-08-theme-garden-plan.md`, two engine passes (G1 the contract and Waymark's
+  port, G2 the conformance set, viewer, check, and CI), reviewed in three lenses and folded
+  (`plans/2026-11-08-theme-garden-review-*.md`, `-review-fold.md`, `-fold-verification.md`).
+  Launch files beside it: the conductor prompt, the G1 and G2 executor prompts, and
+  `add-theme-garden-grant.py`.
+- Owed erratum on the design, which is not edited: the generated daisyUI blocks and `@theme` scale
+  live in an imported `tokens/tokens.css`, and `theme.css` keeps the hand-written rules (fold record,
+  "Owed erratum"). The design's status line still reads "proposed"; Geoff approved it in PR #174.
+- Later, outside cairn-cms: the cairn.pub rebuild publishes the theme schemas at their `$schema` URLs.
 - 2026-11-08: proposed, from the theme-garden brainstorm.
 - Status: design approved (2026-11-08, PR #174). `conductor-cairn-cms` orchestrates this initiative
-  and cairn-setup together (Geoff, 2026-11-08). Next: the pass plan, written by a fresh planning
-  session once the cairn-setup run's P1 and P4 merge, since the garden's first engine pass edits the
-  files they change.
+  and cairn-setup together (Geoff, 2026-11-08). The plan is written and handed to the conductor
+  (2026-11-08). Next: Geoff's packet (Decide G-1, the grant, the backlog edits), then G1 launches
+  once the cairn-setup run's P6 merges, then G2 stacked on G1. Survey's design pass (G3) is planned
+  after G1 lands.
