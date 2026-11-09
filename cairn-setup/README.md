@@ -35,5 +35,6 @@ existed.
 ## Records
 
 - Design: `specs/2026-11-08-cairn-new-design.md`.
+- Tooling design (the release legs that prove setup): `specs/2026-11-09-setup-tooling-design.md`.
 - Research, the prototype, and the screen review: `research/`.
 - 2026-11-08: proposed, from the setup brainstorm.
