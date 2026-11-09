@@ -210,7 +210,7 @@ retirement. Expected actual on the chain: about 646 minutes.
 | Pass | Slug | Class | Path minutes | Merge |
 | --- | --- | --- | --- | --- |
 | G1 | `theme-garden-1` the contract and Waymark's port | `auth-data` (T1.1), with `runner` edits | 1,015 | the conductor, on a yes to G-1 |
-| G2 | `theme-garden-2` conformance set, viewer, check, and CI | `runner` | 1,005 | the conductor, on a yes to G-1 |
+| G2 | `theme-garden-2` conformance set, viewer, check, and CI | `runner` | 1,025 | the conductor, on a yes to G-1 |
 
 G1's class comes from two paths in T1.1: `tool/internal/setup/runner_fakes_test.go` (the
 `tool/internal/setup/{loopback,signin,runner}*` glob) and `examples/showcase/src/routes/admin/signups/`
@@ -523,7 +523,7 @@ every page.
 
 **Pair C: T2.3 and T2.4a**
 
-**T2.3 The viewer** (250 min, `ordinary`). Outcome: `scripts/theme/viewer.mjs` (`npm run theme:view
+**T2.3 The viewer** (270 min, `ordinary`). Outcome: `scripts/theme/viewer.mjs` (`npm run theme:view
 -- [--theme <id|dir>]`) composes a scratch site through `makeShowcaseCopy`
 (`scripts/lab/theme-fixture-copy.mjs:68-106`), applies `.cairn-template.json`'s exclusions, replaces
 `src/content` with the starter overlay plus the conformance set (regenerating the content manifest),
@@ -549,7 +549,13 @@ within a bounded wait (a timeout fails); a headless run over every page under Wa
 unless its entry count equals the composed manifest's starter and conformance routes times two
 modes, every `status` is 200 except the 404 and error pages (which return their own codes), every
 `consoleErrors` is empty, and the draft's route returns 404 with its title absent from every archive
-page and feed. A behavior escalated under "Stops and standing answers" takes its criterion with it.
+page and feed. The viewer runs with no Cloudflare account (Geoff, 2026-11-09, relayed from the
+cairn-setup tooling brainstorm: a theme designer simulates a theme on a workstation "without needing
+cloudflare"): any D1, R2, or KV binding the scratch site needs is local or stubbed, and nothing
+calls a Cloudflare API or reads a wrangler login. A node test runs both modes, headless on one
+conformance page and interactive through the control page's load, with every `CLOUDFLARE_*` and
+`WRANGLER_*` variable unset and `HOME` and `XDG_CONFIG_HOME` pointed at empty scratch directories, and
+fails unless both succeed. A behavior escalated under "Stops and standing answers" takes its criterion with it.
 
 **T2.4a `cairn-audit` prints what it measured** (60 min, `ordinary`). Outcome: `AuditReport` gains
 a `measured` list (rule, file, daisyUI theme blocks) filled by `theme-contrast` and
@@ -613,19 +619,21 @@ PR records the head's `test` job duration.
 and `theme-directory.md` name the viewer, the screenshots, and the check; `CHANGELOG.md` and
 `MIGRATION-NOTES.md` carry the footnote fix and the audit's measured list;
 `.claude/skills/cairn-running-passes/references/pass-gate-tiers.md` names the `themes/` trigger; and
-one `#initiative:theme-garden` backlog item, filed through `standards:log-issue`, scopes the later
-`/styleguide` retirement ("`/styleguide`" in "Calls settled here"). Acceptance: `check:docs-gate`,
+two `#initiative:theme-garden` backlog items, filed through `standards:log-issue`: one scopes the later
+`/styleguide` retirement ("`/styleguide`" in "Calls settled here"), and one scopes the viewer for theme
+designers outside the house: run from the published package or a clone, by one docs page, with no
+house-only path (Geoff, 2026-11-09; the design's "may use it later"). Acceptance: `check:docs-gate`,
 `check:vale`, `check:comments`, and `check:consumers-must` pass; `grep -c
-'#initiative:theme-garden' BACKLOG.md` is one more than before the task; `register-check` and
+'#initiative:theme-garden' BACKLOG.md` is two more than before the task; `register-check` and
 `docs-fact-checker` return no open finding.
 
 **T2.7 Close** (75 min). The whole-branch `standards:diff-reviewer` with the runner checklist;
 `standards:svelte-reviewer` on any Svelte the viewer adds; the PR body (`## Brief`, what landed,
 `## Decisions`, `## Planning misses`, the score). PR-ready.
 
-Path: Pair B 170 + Pair C 250 + T2.4 290 + T2.5 105 + T2.6 115 + T2.7 75 = **1,005**.
+Path: Pair B 170 + Pair C 270 + T2.4 290 + T2.5 105 + T2.6 115 + T2.7 75 = **1,025**.
 
-Chain: G1 1,015 + G2 1,005 = **2,020**.
+Chain: G1 1,015 + G2 1,025 = **2,040** (T2.3's no-account test, 2026-11-09, added 20).
 
 ## Stops and standing answers
 
