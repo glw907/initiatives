@@ -501,7 +501,7 @@ passes, Vale included. Test: the gate.
 
 **T1.5 Probe, part one** (70 min, `live-account`). Outcome: from its own `claude --bg` session, the
 executor runs `cleanroom init probe --fresh --discard`, then `cleanroom probe probe --commands
-bin/.local/share/cleanroom/probe-commands.md --secret ANTHROPIC_CLEANROOM_API_KEY:ANTHROPIC_API_KEY
+bin/.local/share/cleanroom/probe-commands.md --secret CLAUDE_CLEANROOM_OAUTH_TOKEN:CLAUDE_CODE_OAUTH_TOKEN
 --secret CF_WS_CAIRN_CLEANROOM_TOKEN:CAIRN_CF_SETUP_TOKEN --secret GITHUB_TEST_TOKEN:GH_TOKEN --env
 npm_config_tag=gate` (the Claude credential per S-3). A settings gap is fixed in the template within
 the `setup-tooling-cleanroom-config` line and the probe reruns until it passes. The record goes to
