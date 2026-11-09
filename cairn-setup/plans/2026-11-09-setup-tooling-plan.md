@@ -165,6 +165,8 @@ the production account, with S-8 yes.** No stops the plan for a design change.
 
 Ruled: yes, the API key in a `cleanroom` workspace with a $100 monthly limit (Geoff, 2026-11-09, Approval Queue item 20261109T122948-4007611).
 
+Ruled again: no, the subscription token from `claude setup-token`, stored as `CLAUDE_CLEANROOM_OAUTH_TOKEN` (Geoff, 2026-11-09, in chat at the pre-flight sitting). The Console org held $1.13 in credits, so an API key would have stopped the first run; the loop's dollar caps are now Claude Code's client-side estimates, and its runs draw on the subscription's usage limits.
+
 An API key in a Console workspace with a $100 monthly limit makes every figure real spend, and the
 provider enforces the loop's ceiling. A subscription token (`claude setup-token`) costs nothing extra,
 but its dollars are Claude Code's estimate ("computed client-side at list price",
