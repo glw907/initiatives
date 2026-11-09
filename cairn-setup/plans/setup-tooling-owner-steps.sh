@@ -60,9 +60,10 @@ trust_json() {
   # though the caller redirects this function's output.
   script -q -e --log-out "$out" -c "$(printf '%q ' npm trust list "$1" --json)" </dev/tty >/dev/tty \
     || { rm -f "$out"; return 1; }
-  # Strip the pty's control sequences first: with npm's browser 2FA flow the log also holds the
-  # prompt and cursor codes, and a stray brace block there once parsed as a binding with no id.
-  tr -d '\r' <"$out" | sed 's/\x1b\[[0-9;?]*[A-Za-z]//g; s/\x1b\][^\x07]*\x07//g' | sed -n '/^{/,/^}/p'
+  # Replay the pty's cursor moves first. npm draws a spinner and then ESC[1G ESC[0K (column 1,
+  # clear the line) on the same line as the opening brace, so drop each line up to its last
+  # ESC[1G, then strip the control sequences left, before reading the column-0 brace blocks.
+  tr -d '\r' <"$out" | sed 's/.*\x1b\[1G//; s/\x1b\[[0-9;?]*[A-Za-z]//g; s/\x1b\][^\x07]*\x07//g' | sed -n '/^{/,/^}/p'
   rm -f "$out"
 }
 
