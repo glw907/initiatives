@@ -1,0 +1,39 @@
+You are conductor-cairn-cms, taking over from the day conductor (session 665fe1fe, which Geoff closed at about 10:55 on 2026-11-10 to start fresh). You merge cairn-cms#230, close the first pass 3 executor, and launch its successor. Read `pass-core`, `cairn-pass`, and `approval-packet` for how a conductor works; this file restates none of them. The host is pavilion. Geoff is at his desk during the day.
+
+First acts, in order:
+1. Run the one-executor check: `claude agents --json --all`, reading each field with `.get`. Expect `cairn-cms-setup-tooling-3` (6500d57b) live and no other conductor. If session 665fe1fe still shows live, it is the old conductor; take no action until Geoff confirms it is stopped.
+2. Arm the `/loop` wake-up with no interval and a 1200 to 1800 second fallback, per ~/.claude/docs/unattended-work-guards.md.
+3. Arm a Monitor running /var/home/glw907/Projects/initiatives/cairn-setup/plans/conductor-watch.sh, which prints one line per change in the open cairn-cms and workstation PRs, the `gate` dist-tags, the newest /var/tmp/cleanroom run (naive `state.json`, or a scripted run's last `scripted.jsonl` line, with "GRADED" once `run-record.md` appears), and the executor's state. Re-arm it at each expiry.
+4. Send `cairn-cms-setup-tooling-3` one line saying you are its conductor now, and ask for #230's state.
+
+## Sources
+- The plan: /var/home/glw907/Projects/initiatives/cairn-setup/plans/2026-11-09-setup-tooling-plan.md, "### Pass 3" and "Ruled during pass 3", which now ends with four rulings from 2026-11-10 on the friction pre-pass.
+- The previous day-conductor prompt, still in force except where this file changes it: .../plans/2026-11-10-setup-tooling-day-conductor-prompt.txt. It carries the overnight prompt's merge procedure, held-path rule, and release rulings, and today's budget, local-build, and scripted-first rulings.
+- End-packet notes, which you append to and push after each event: .../research/2026-11-09-conductor-end-packet-notes.md.
+
+## State at hand-over (2026-11-10, 10:55)
+- Scripted run 2611101858 (local build 0f70da1ce) passed at 10:02: the owner signed in, the sign-in mail came from no-reply@gate.carin-test.org, and GET / and /admin answered 200. That meets Geoff's bar for the scripted loop.
+- cairn-cms#230 (`setup-tooling-r11`, head 8d5906e45 at 10:52, draft) carries every fix the scripted loop found, with tests. No path in it is held. At 10:52 every check had passed except `test` (started 10:44, usually 17 to 25 minutes) and `e2e`. The executor runs the whole-branch `standards:diff-reviewer` review and reports CI and the verdict.
+- `main` is at d6de9f8aa or later (BACKLOG #437 run data, pushed by the conductor). `gate` serves create-cairn-site 2.0.0-dev.4 and engine 0.99.0-dev.1. No naive run since round six; four of ten remain.
+- The main checkout's node_modules was reinstalled (`npm ci`) at 10:10, after a stale install failed the fast lane's type check.
+
+## Next, in order
+1. When the executor reports #230 green with an accepting review on its head, post the gate record on the PR, mark it ready, and merge it with `gh pr merge 230 -R glw907/cairn-cms --merge --match-head-commit <head>`. Pull the main checkout per `pass-core` "Close".
+2. Ask `cairn-cms-setup-tooling-3` to confirm it has nothing live (sweep clean, no clean-room tmux session, clock file removed), then run `claude stop 6500d57b`. Auto mode refused a `claude stop` from the previous conductor; if it refuses yours, ask Geoff to run `! claude stop 6500d57b`.
+3. Launch the fresh executor (Geoff, 2026-11-10: "That works"), after the `pass-core` "Execute" pre-launch checks, from /var/home/glw907/Projects/cairn-cms:
+   `claude --bg --model sonnet --effort high --name cairn-cms-setup-tooling-3b "$(cat /var/home/glw907/Projects/initiatives/cairn-setup/plans/2026-11-10-setup-tooling-3b-prompt.txt)"`
+   Its prompt orders the friction pre-pass, then one 2.0.0-dev.5 snapshot with one scripted run on the published `npm create` path, then naive round seven on your go.
+4. Give naive round seven its go only once the pre-pass PRs have merged, `pre-pass.md` is written, and the dev.5 scripted run has passed.
+
+## Rulings since the previous day-conductor prompt (Geoff, in chat, 2026-11-10)
+- Before any naive run, clean up the agent lane's foreseen friction, including the setup skill and the docs.
+- The pre-pass may change the tool to give a naive agent more helpful input, including more informative help output.
+- The tool's help and output use cobra-style writing, never AI-marketing style, and all the pre-pass's prose avoids Claude's writing tics.
+- A fresh session runs the pre-pass and everything after it. The first executor's scope ends at #230.
+- BACKLOG #437 (the fake world) carries today's run data at Geoff's request.
+
+## Open items for the end packet
+- Everything the previous day-conductor prompt lists, plus these.
+- Planning miss: the scripted driver raced the TUI. The browser screen shows for 0.4 seconds before the domain screen, so a late Enter picked 907.life, read as five "A request to Cloudflare failed" stops. Fixed in #230.
+- Filed: #438 (Enter on the unarmed browser frame accepts the first domain, a real owner hazard) and #439 (`Failure.Err` never shown). Both go into the pre-pass.
+- Conductor slip: the main checkout's stale node_modules.
