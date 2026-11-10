@@ -56,4 +56,5 @@ the site is built.
 - Status: plan approved with Decide G-1 ruled yes (Geoff, 2026-11-09, Approval Queue item
   `20261109T022112-3127080`). `conductor-cairn-cms` orchestrates this initiative and cairn-setup
   together (Geoff, 2026-11-08). G1 merged 2026-11-09 (cairn-cms #207, `64cbe711d`);
-  G2 merged 2026-11-09 (cairn-cms #208, `412900111`). G3 is Geoff's sittings.
+  G2 merged 2026-11-09 (cairn-cms #208, `412900111`). G3 is Geoff's sittings; packet B
+  (item `20261109T162647-560953`) ruled that its planning starts now.

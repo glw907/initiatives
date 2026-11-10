@@ -41,4 +41,6 @@ existed.
 - Tooling plan: `plans/2026-11-09-setup-tooling-plan.md`, three passes (the clean room in workstation,
   the gate rewrite and token option in cairn-cms, then the polish loop), with its prompts, its owner
   scripts, and its review records beside it. Handed to `conductor-cairn-cms` on 2026-11-09 for packet A.
+  Packets A and B approved 2026-11-09; passes 1 (glw907/workstation#215) and 2 (cairn-cms #210)
+  merged; pass 3, the polish loop, is next.
 - 2026-11-08: proposed, from the setup brainstorm.
