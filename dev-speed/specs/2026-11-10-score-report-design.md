@@ -51,6 +51,10 @@ The command is one stdlib Python file, `bin/.local/bin/pass-report`, run as `pyt
 
 The report shows medians and the 90th percentile. A share of total time doesn't work, because the sources overlap: a gate can run while CI runs.
 
+### Publication
+
+The initiatives repo is public, and 10 of the 19 repos the report reads are private. The plan review found that the backfill's quoted notes would publish text from private PR bodies, which the design didn't weigh. Geoff rules on what the public repo may hold (plan, "Publication rule"). The recommendation is figures and failing step names for every repo, and no quoted prose from a private one.
+
 Out of scope: sorting reds into those a local gate could have caught and those it couldn't. That sort needs each repo's fast-lane map. The report lists reds by failing step, which is enough to rank. Telling the two kinds apart is the job of the pass that attacks reds.
 
 ### Estimate

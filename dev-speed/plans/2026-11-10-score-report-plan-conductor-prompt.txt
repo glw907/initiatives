@@ -1,0 +1,22 @@
+conductor-dotfiles: take on the dev-speed score report pass.
+
+Executor launch, from the main checkout /var/home/glw907/.dotfiles, as soon as the pre-launch checks pass (it no longer waits for PR #223; see Contention):
+claude --bg --model sonnet --effort medium --name dotfiles-score-report "$(cat /var/home/glw907/Projects/initiatives/dev-speed/plans/2026-11-10-score-report-plan-prompt.txt)"
+
+Plan: /var/home/glw907/Projects/initiatives/dev-speed/plans/2026-11-10-score-report-plan.md
+Design, approved by Geoff in packet 20261110T092946-1899803: /var/home/glw907/Projects/initiatives/dev-speed/specs/2026-11-10-score-report-design.md
+Initiative: dev-speed.
+
+Repos and checkouts: glw907/workstation (main checkout /var/home/glw907/.dotfiles, executor worktree .claude/worktrees/score-report, branch score-report) and glw907/initiatives (public; main checkout /var/home/glw907/Projects/initiatives, executor worktree .claude/worktrees/score-report, branch dev-speed-score-report). Other sessions are live in the initiatives main checkout.
+
+Contention: only T3 touches shared files, the "Score" section of claude/.claude/skills/pass-core/SKILL.md and BACKLOG.md item #10. PR #223 edits pass-core elsewhere and PR #222 removes BACKLOG #57, so there's no line conflict. T3 runs late and merges origin/main first. Merge #223 before this pass's PR.
+
+The publication ruling: the planner, initiatives-fd, has sent Geoff a pre-launch packet asking what the public initiatives repo may hold from private repos (plan "Publication rule", options a, b, c). When the decision comes, initiatives-fd sends you the chosen option. Relay it to dotfiles-score-report as a message quoting the packet decision, and the executor applies it. Until then the executor holds T2's commit and T4 as the plan's last standing answer says.
+
+Pre-flight: the plan's one item is that ruling, which doesn't hold the launch. Run the pass-core "Execute" pre-launch checks on /var/home/glw907/.dotfiles (fetch, on main, zero commits behind origin/main, .claude/worktrees/ ignored), and the same ignore check on /var/home/glw907/Projects/initiatives.
+
+Merge order: PR #223 first, then this pass's workstation PR. If the executor fell back to an initiatives PR for the research files, that one merges before the workstation PR. No Before merge steps are known at plan time. After the merge, pull /var/home/glw907/.dotfiles per pass-core "Close" and run stow -R bin there, since the pass adds a script.
+
+Standing answers: the plan's "Standing answers" section. Apply them in place of stopping the executor.
+
+Packet: one packet under the initiative dev-speed, holding the workstation PR (and the initiatives PR if any). It may share a hand-over with the model-review packet if they're ready together. Its description names the first report's path (dev-speed/research/2026-11-10-score-report.md) and its two or three most telling figures, and says the pass-core change adds one hidden score line to every pass PR from now on. The whole-branch review verdict and the gate on the head go in the PR's routine row.
