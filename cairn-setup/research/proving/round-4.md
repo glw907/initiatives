@@ -29,8 +29,15 @@ conductor looked.
 3. Setup refused the bare address because of its mail records. Open as #430, Geoff's call; the owner chose a
    subdomain to go on.
 
+4. With `--host gate.carin-test.org` and no `--zone`, the plan left `"zone": ""` open because the account
+   holds several domains. The agent read `opening.go`, `summary.go`, `failure.go`, and `messages.go` from its
+   clone of the repository to find out why, and edited `plan.json`'s zone to `carin-test.org` before it
+   applied. Filed as #436 (glw907/cairn-cms#222): setup should fill the zone from a host that is a subdomain
+   of exactly one owned domain, or the stop should name `--zone`.
+
 ## Flailing
 
+- Reading the tool's source and editing its plan file by hand: yes, item 4.
 - A question about the docs put to the owner: yes, item 1.
 - A command repeated after it failed: no. The two apply calls differ: the second followed the plan edit.
 - A file or page read three times: no.
