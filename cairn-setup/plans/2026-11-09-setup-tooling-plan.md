@@ -947,3 +947,13 @@ Three lenses read this plan at initiatives `4618991`, each against cairn-cms `ma
 disposition per finding. The verification read, `2026-11-09-setup-tooling-fold-verification.md` (V1 to
 V15), read the fold at `1431590`; its findings and a leanness pass are folded, recorded under the fold
 record's "Verification fold and leanness pass", and V1 added Decide S-8.
+
+## Ruled during pass 3 (Geoff, 2026-11-09)
+
+No rc is cut until the install process is effective and tested: "release candidates are for actual
+release candidates." Each round's candidate is a snapshot test build ("Test builds are perfect"), a `dev`
+prerelease version published under the `gate` dist-tag only, with no GitHub release, no rc tag, and no
+CHANGELOG release heading, and `latest` and `next` never move. rc.5 is cut once, at the end. #212's rc.5
+bump is reverted; pass 3 adapts the cut, publish, and gate scripts to snapshots, and a change to a held
+path goes to Geoff in a small packet.
+
