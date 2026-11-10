@@ -958,3 +958,11 @@ CHANGELOG release heading, and `latest` and `next` never move. rc.5 is cut once,
 bump is reverted; pass 3 adapts the cut, publish, and gate scripts to snapshots, and a change to a held
 path goes to Geoff in a small packet.
 
+
+Friction pre-pass before naive runs (Geoff, in chat to the day conductor, 2026-11-10): "you should clean
+up any anticipated friction for the agent runs before you start. That probably includes updating both the
+skill and docs." After a scripted run signs an owner in on gate.carin-test.org and before naive round
+seven, the executor walks the agent lane as a naive agent meets it (the `cairn-setting-up-a-site` skill,
+the admin docs pages it points to, and `cairn new`'s agent-lane flags and messages), fixes each foreseen
+friction point and each open list item from rounds one to six, and ends with a list of what changed and
+what the naive agent may still trip on. Docs edits follow `cairn-writing-docs`.
