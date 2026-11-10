@@ -1,7 +1,12 @@
 # Review: PR glw907/cairn-cms#214, publishing a dev snapshot to gate
 
 Whole-branch `standards:diff-reviewer` at head `d473271fc`. First verdict: fix, one blocking finding.
-Folded at `f6103d16b`; the fold has not had a second read.
+Folded at `f6103d16b`. A second read of the fold (range `d473271fc..f6103d16b`) accepted it with no
+blocking finding: the exact specs flow from the pack script's flags through `composeTemplate` and `bake`
+to both dependency fields, a release with no flags keeps its caret defaults, the new `ci-green` step is a
+no-op for a release and for the bash tests that join every step, and the publish-route criteria still hold.
+Its non-blocking notes, left: the comment above the native-artifact check does not mention the snapshot
+case, and no test runs the pack CLI's flags against the baked `package.json`.
 
 The review traced every route to a publish. A snapshot cannot reach `latest`, since every validated
 snapshot version has a hyphen and the dist-tag maps any prerelease to `gate`. A ref other than `main`, or a
