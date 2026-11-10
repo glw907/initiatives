@@ -55,3 +55,31 @@ name, and two lines on `detail`) are reworded.
 ## tellgrader and Vale
 
 `check:tellgrader` passes on 25 pages, and the Vale gates pass on `docs/` and on the copy golden.
+
+## Fresh re-review of the fold, standards:diff-reviewer, whole branch at `8192bd62a`
+
+Run 2026-11-10 at the conductor's request, in a fresh context, with the auth-data bar on `tool/internal/setup` and
+`tool/internal/providers`. The reviewer read the code and the tests, not the commit messages. **Verdict: accept.**
+Nothing blocks.
+
+- **The manifest code (security H1): resolved.** At `f1e7b8391` the conversion call still passed the code in the
+  path and the new test failed. At `2a06339c3`, `github_app.go:129-133` sends the real URL through `rawSend` and
+  names `/app-manifests/{code}/conversions`, and the test passes. A sweep of every other route in the providers
+  package found no secret or one-time value in a path segment, and `Detail` is set in one place only
+  (`runner.go:697`), from a `ProviderError` match.
+- **Raw control bytes: resolved.** Cloudflare paths use `EscapedPath`, with a test that fails on the decoded path.
+  A request path to the code host cannot hold an ASCII control byte, because `url.Parse` refuses it before a
+  request goes out.
+- **The rate-limited 403 (blocker A): resolved.** `fail` passes `ClassifiedReason()`, and `providerStop` checks
+  `ReasonRateLimited` and 429 before the 401 and 403 cases. The 5xx rows still read as a wait.
+- **The wrong provider named (blocker B): resolved.** Only a Cloudflare token run points at the token, every other
+  next step names the refusing provider, and `setup-recovery.md` and the copy golden agree.
+
+Non-blocking, left for the next PR so the head the conductor merges stays this one:
+
+1. No runner-level test drives a rate-limited 403 through `fail`, so a regression in `fail` alone would pass.
+2. `CHANGELOG.md` and the BACKLOG #439 Done line say a 401 or 403 reads as a missing permission. A 401 reads as an
+   unaccepted credential, and a rate-limited 403 as a wait.
+3. BACKLOG has two stray blank lines between #434's Placement and its Done line.
+4. The health-check routes in `providers/github.go` interpolate owner, repo, and ref without `PathEscape`. It is
+   theoretical, since the routes setup calls escape theirs.
