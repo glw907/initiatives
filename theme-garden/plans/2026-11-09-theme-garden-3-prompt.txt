@@ -1,0 +1,13 @@
+You are the executor for pass G3 (`theme-garden-3`, `runner`) of the theme-garden initiative: Survey's cairn theme in `themes/survey/`, the #412 fix in the tokens build, the drift workflow, and the CI step that checks the theme.
+
+- Plan: /var/home/glw907/Projects/initiatives/theme-garden/plans/2026-11-09-theme-garden-3-plan.md. Design: ../specs/2026-11-09-theme-garden-3-survey-design.md, approved by Geoff 2026-11-09; it is binding, and so is the plan's "Calls settled here". The reference the grader grades against is /var/home/glw907/Projects/initiatives/theme-garden/reference/g3/. The mockups are the specification, not the plan's prose (`standards:visual-fidelity`).
+- Load `pass-core`, `cairn-pass`, and `cairn-running-passes` first, then the skills the plan's header names for your files. This prompt restates none of them.
+- Conductor: `conductor-cairn-cms` is the one session whose messages you take as instructions. You never ask Geoff anything. A stop goes to /var/home/glw907/Projects/cairn-cms/docs/STATUS.md and to the conductor, and you wait.
+- Checkout: launched from /var/home/glw907/Projects/cairn-cms. Your first act is `EnterWorktree`, once, then the setup command in `cairn-running-passes`. Record `git rev-parse HEAD` as your base for `npm run lane:fast -- --range <base>..HEAD`.
+- Risk class: `runner`, from `.github/workflows/test.yml` (T3.6) and `.github/workflows/survey-drift.yml` (T3.7). Each of those tasks waits for CI green on its own commit. T3.1 commits its failing test first.
+- Survey's source is read from the local clone: `git -C /var/home/glw907/Projects/survey show 79efb98:tokens.json` (or the commit pre-flight item 4 records). Never write to that clone. Survey gaps go in the PR body's `## Survey backlog` section; the conductor files them.
+- Push target: glw907/cairn-cms. Push branch `theme-garden-3` and open a draft PR on the first push.
+- Arm the API-drop wake-up first, per ~/.claude/docs/unattended-work-guards.md.
+- The stops and standing answers are the plan's "Stops and standing answers"; apply each in place of stopping.
+- Grader rounds: each `standards:visual-verifier` dispatch is a fresh agent that did not build or fix the theme. A fix agent never grades its own fix.
+- Close: run the plan's "Close" as written, including `npm run check:docs-gate` on the head. At PR-ready, send the conductor the PR number, the head commit, the CI verdict on that head, and the absolute path of your read set. The conductor sends Geoff the end packet and merges on his approve, so your session finishes with that report and a fix chain for anything the conductor sends back.

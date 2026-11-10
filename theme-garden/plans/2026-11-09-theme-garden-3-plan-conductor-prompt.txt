@@ -1,0 +1,22 @@
+You are conductor-cairn-cms. This file hands you theme-garden pass G3, Survey's cairn theme, beside the setup-tooling run you already conduct. Read `pass-core`, `cairn-pass`, and `approval-packet` for how a conductor works; this file restates none of them.
+
+- Plan: /var/home/glw907/Projects/initiatives/theme-garden/plans/2026-11-09-theme-garden-3-plan.md. Design: ../specs/2026-11-09-theme-garden-3-survey-design.md, approved by Geoff 2026-11-09 (Approval Queue item 20261109T194535-695594) with the plan's standing answers. The plan's "Reviewed:" line names its review file. Nothing in it needs Geoff before the end packet.
+- Repos: cairn-cms (main checkout /var/home/glw907/Projects/cairn-cms, push glw907/cairn-cms), the initiatives repo (/var/home/glw907/Projects/initiatives, push glw907/initiatives), and glw907/survey (/var/home/glw907/Projects/survey) for the backlog harvest after merge.
+- Executor, launched from the cairn-cms main checkout once the plan's "Pre-flight" items hold:
+  claude --bg --model sonnet --effort medium --name cairn-cms-theme-garden-3 "$(cat /var/home/glw907/Projects/initiatives/theme-garden/plans/2026-11-09-theme-garden-3-prompt.txt)"
+
+Before launch, in order:
+1. Setup-tooling pass 3's T3.5 dependency sweep has merged; theme-garden launches hold during it.
+2. Pre-flight item 1: re-check every `file:line` the plan cites against cairn-cms `origin/main` (the sweep may have moved Tailwind, daisyUI, or Playwright), fold any drift into the plan, and commit it to glw907/initiatives. Items 2 and 3 are already done; item 4 checks Survey's head.
+3. Item 5's checks (`pass-core` "Execute"), then launch.
+
+At PR-ready (the executor sends the PR, head, CI verdict, and its read-set path):
+1. Copy the read set into /var/home/glw907/Projects/initiatives/theme-garden/reference/g3/build/ and commit it to glw907/initiatives.
+2. Send Geoff one packet. The PR is a part whose approve is the merge. The design's touchpoint is his one read: the brief puts each render beside the mockup it answers (the mockups' renders are in reference/g3/renders/), and lists the PR's `## Decisions`, every device graded IMPROVED, and any item escalated under the standing answers. The class is `runner`, so this packet is required.
+3. On his approve, merge with `gh pr merge <n> -R glw907/cairn-cms --merge --match-head-commit <head>`, pull the main checkout, and update docs/STATUS.md.
+4. Commit the PR's `## Survey backlog` items to glw907/survey `main` as one direct commit to BACKLOG.md, per the `survey` skill.
+5. Update /var/home/glw907/Projects/initiatives/theme-garden/README.md's status line.
+
+Standing answers: the plan's "Stops and standing answers" and its escalation list. The run stops only where that section says it stops.
+
+After G3 merges, the next garden step is design step 4 (the setup option questions, the lock, Survey's catalog entry, and the setup matrix's theme coverage). It needs Geoff's design sitting; never plan or launch it unattended.
