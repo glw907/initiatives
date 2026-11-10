@@ -85,3 +85,4 @@ Pass 3 stopped before T3.1: the plan named `cairn-releasing` for every cut, but 
 - Ledger at round 6: six naive runs, $1.88; total about $9.5 of $100.
 - Packet 20261110T032922-1565189 approved, with all three recommendations followed: count only the clean room against $100 (ten-run cap kept, four naive runs left); #430 counts only A/AAAA/CNAME; S-2 stays narrow, revisit after round seven. Merged cairn-cms#226 (b35d659a).
 - Geoff ruled in chat (2026-11-10): run T3.4's scripted leg on dev.5 before round seven, so the deploy, DNS/HTTPS, and sign-in stages, never reached live by a naive run, are shaken out without spending naive runs.
+- Geoff added (2026-11-10, in chat): the scripted leg may run as many times as helps; loop scripted runs and fixes until one reaches an owner signed in, then spend the four naive runs. Scripted spend counts toward $100.
