@@ -11,7 +11,7 @@ while true; do
   if [ -n "$d" ]; then
     id=$(basename "$(dirname "$d")")
     if [ -f "$d/state.json" ]; then
-      st=$(python3 -I -c 'import json,sys;s=json.load(open(sys.argv[1]));print(s.get("phase") or s.get("status") or s.get("step") or "?")' "$d/state.json" 2>/dev/null || echo unreadable)
+      st=$(python3 -I -c 'import json,sys;s=json.load(open(sys.argv[1]));print(s.get("state") or s.get("phase") or s.get("status") or "?")' "$d/state.json" 2>/dev/null || echo unreadable)
       cur+="run $id naive: $st"
     elif [ -f "$d/scripted.jsonl" ]; then
       cur+="run $id scripted: $(tail -n 1 "$d/scripted.jsonl" 2>/dev/null | cut -c1-160)"
