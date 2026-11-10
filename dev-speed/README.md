@@ -43,11 +43,13 @@ has added the tables up across repos.
 
 - Research: `research/2026-11-10-baseline.md` holds the survey, the cairn-cms step timings, and the
   inputs for the first two pass designs.
-- First passes, in order. Neither has a design yet.
-  1. The score report, in workstation. It is read-only and ranks everything after it.
+- First passes, in order.
+  1. The score report, in workstation. It is read-only and ranks everything after it. Design:
+     `specs/2026-11-10-score-report-design.md`.
   2. The cairn-cms CI split and fast-lane legs. Its numbers are in the baseline, so it doesn't wait
      on the report. It is a `runner` pass.
   3. Whatever the report ranks next.
 - The fourth goal puts `pass-core` in play. A change to it comes to Geoff as a design before any
   pass builds it.
 - 2026-11-10: proposed, from a cairn-cms session that measured CI and the fast lane.
+- 2026-11-10: active. The score report's design went to Geoff for approval.
