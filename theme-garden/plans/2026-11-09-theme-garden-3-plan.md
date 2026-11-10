@@ -15,7 +15,8 @@ and `standards:visual-fidelity` for `themes/survey/`; `survey` for Survey's valu
 
 The two rules every dispatch carries are `pass-core` step 1's quoted samples ("Avoid
 over-engineering..." and "Deliver what was asked..."). Nothing below adds a feature the design does
-not name.
+not name, except the theme-building page in T3.9, which Geoff added in chat on 2026-11-09 ("add it
+to G3, then hand it off").
 
 ## Pre-flight
 
@@ -104,14 +105,14 @@ evidence in the design's table. #412 is retagged `#initiative:theme-garden` and 
 
 ## Estimate
 
-Design: 800 path minutes, stop line 1,600. This plan's path is 910 (1.14 of the estimate). Expected
-actual is about 290 minutes at the 0.32 factor.
+Design: 800 path minutes, stop line 1,600. This plan's path is 940 (1.18 of the estimate), with 30
+for the theme-building page. Expected actual is about 300 minutes at the 0.32 factor.
 
 ## The pass
 
 | Pass | Slug | Class | Path minutes | Merge |
 | --- | --- | --- | --- | --- |
-| G3 | `theme-garden-3` Survey's cairn theme | `runner` | 910 | the conductor, on Geoff's approve in the end packet |
+| G3 | `theme-garden-3` Survey's cairn theme | `runner` | 940 | the conductor, on Geoff's approve in the end packet |
 
 The class comes from `.github/workflows/test.yml` and `.github/workflows/survey-drift.yml`. Every
 task writes `.pass-task-clock` at its start, commits, and runs `npm run lane:fast -- --range
@@ -211,15 +212,26 @@ the last verifier's PASS report and the a11y verdict are in the PR body, and the
 device graded IMPROVED or recorded under the design's first standing answer. Renders and reports
 stay out of the repo: they go to `$CLAUDE_JOB_DIR/tmp/g3-review/` in the executor's job directory.
 
-**T3.9 Docs and harvest** (40 min). Outcome: `CHANGELOG.md` under `## Unreleased` names the #412
+**T3.9 Docs, the theme-building page, and harvest** (70 min). Outcome: `CHANGELOG.md` under `## Unreleased` names the #412
 fix and Survey's theme directory; `MIGRATION-NOTES.md` says the option sheet selectors changed and that a site override of an
 optioned token must now be written on `:root,:root[data-theme]` to win under a cookie;
 `skills/cairn-styling-public-pages/references/theme-directory.md` names `themes/survey/` beside
-Waymark only if it lists theme directories. Survey gaps (the reading scale, the measure, the CTA keys,
+Waymark only if it lists theme directories. The packaged skill gains
+`skills/cairn-styling-public-pages/references/building-a-theme.md` and a "Build a theme" row in its
+`SKILL.md` routing table. The page is written last, from what this pass actually did, and is
+limited to steps the pass proved: start from a design system or reference; mock up the pages the
+reference doesn't show; derive `tokens.json` and the resolver; choose the options; add fonts within
+the budget; write the four components, `theme.css`, and `site.css`; run `check.mjs`; grade with the
+viewer and a fresh verifier until PASS; finish the manifest and screenshots. Each step links the
+reference page that already covers it (`theme-directory.md`, `checking-a-theme.md`,
+`retheme-by-tokens.md`, `theme-starter.md`) rather than restating it. A packaged skill is read by an agent, so the page
+follows the agent-facing register the `writing-voice` skill routes to (`cairn-writing-docs`
+excludes the packaged skills), and matches the voice of the skill's other reference pages. Survey gaps (the reading scale, the measure, the CTA keys,
 the scroll cue, revision purple, and any found in T3.2 to T3.8) are listed in the PR body's
 `## Survey backlog` section in the `survey` skill's item form. Chassis friction is filed in
 `BACKLOG.md` through `standards:log-issue`, tagged `#initiative:theme-garden`. Acceptance: `npm run
-check:docs-gate` passes on the head.
+check:docs-gate` passes on the head; a fresh subagent that did not write the page checks every
+step, command, path, and rule id in it against the branch head, and each finding is fixed.
 
 **Close** (70 min). The viewer's headless mode makes `themes/survey/screenshots/` (the home page at
 1440 in light and dark and at 390 in light), named in the manifest, from the graded theme.
@@ -232,7 +244,7 @@ answers. It sends the conductor the PR number, the head, the CI verdict on that 
 directory's absolute path. The conductor commits the read set to glw907/initiatives under
 `theme-garden/reference/g3/build/` and links it in its packet.
 
-Path: 65 + 120 + 150 + 180 + 45 + 240 + 40 + 70 = 910.
+Path: 65 + 120 + 150 + 180 + 45 + 240 + 70 + 70 = 940.
 
 ## Stops and standing answers
 
@@ -241,7 +253,7 @@ Approved with the design; each is applied in place of stopping.
 | Stop | Standing answer |
 | --- | --- |
 | Clock stop: a task past twice its estimate | With the cause traced and the rest in scope, reset `start=` once with `estimate=` the remaining work and record it in `## Decisions`. On a second stop on the same task, the conductor splits the rest into a follow-up task or replaces the unit the fixes keep missing, and records the call |
-| Path ceiling | Go on while the cause is traced and actual minutes stay under 580 (twice the expected 290); record the overrun in the score. Past that, or on an untraced cause, the conductor asks with the trace and a recommendation |
+| Path ceiling | Go on while the cause is traced and actual minutes stay under 600 (twice the expected 300); record the overrun in the score. Past that, or on an untraced cause, the conductor asks with the trace and a recommendation |
 | A mockup device cairn's markup can't reach from theme CSS | Build the nearest form, record it in `## Decisions`, and show it in Geoff's read |
 | A token pair under WCAG AA | Tune it within its hue, record the old and new values, and list the gap under `## Survey backlog` |
 | Fonts over 400 KB after the two subsets go | Drop the next non-Latin Spectral subset and record it |
