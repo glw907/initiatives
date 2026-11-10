@@ -43,6 +43,8 @@ has added the tables up across repos.
 
 - Research: `research/2026-11-10-baseline.md` holds the survey, the cairn-cms step timings, and the
   inputs for the first two pass designs.
+- Research: `research/2026-11-10-score-report.md` is the first `pass-report` run, and
+  `research/score-backfill.json` holds the scores backfilled from 133 merged PR bodies that it reads.
 - First passes, in order.
   1. The score report, in workstation. It is read-only and ranks everything after it. Design:
      `specs/2026-11-10-score-report-design.md`.
