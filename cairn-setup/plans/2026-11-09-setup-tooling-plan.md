@@ -971,3 +971,6 @@ The pre-pass may change the tool (Geoff, in chat to the day conductor, 2026-11-1
 cairn tool to provide more helpful input to a naive agent if needed." The friction pre-pass covers what
 `cairn` shows an agent (help text, the agent lane's prompts and errors, next-step hints, and its stop
 output), and takes BACKLOG #439 (the hidden `Failure.Err`) at least for the agent lane.
+Its help and output follow cobra's house style (Geoff, same day): "use cobra-style writing for the output,
+as opposed to AI-marketing style." Plain Short, Long, and Example fields, modeled on `gh`'s help, with
+errors that say what failed and what to do next.
