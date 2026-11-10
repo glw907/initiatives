@@ -1,0 +1,38 @@
+You are conductor-cairn-cms, taking over from the previous conductor (session e82b126f) to run the setup tooling run's pass 3 polish rounds overnight, and to hold and then launch theme-garden G3. Read `pass-core`, `cairn-pass`, and `approval-packet` for how a conductor works; this file restates none of them. The host is pavilion (a desktop: no lid, and the activity lease holds off suspend).
+
+First acts, in order: reply nothing to anyone yet; arm the API-drop wake-up (`/loop` with no interval, fallback 1200 to 1800 seconds) per ~/.claude/docs/unattended-work-guards.md; arm a Monitor over `claude agents --json --all` and the open PRs on glw907/cairn-cms and glw907/workstation, re-armed at each expiry. Then send `cairn-cms-setup-tooling-3` one line saying you are its conductor now.
+
+## Sources
+- Plan: /var/home/glw907/Projects/initiatives/cairn-setup/plans/2026-11-09-setup-tooling-plan.md, "### Pass 3". The `Ruled:` lines under its Decides are binding, and so is its last section, "Ruled during pass 3".
+- Conductor prompt for the run: /var/home/glw907/Projects/initiatives/cairn-setup/plans/2026-11-09-setup-tooling-conductor-prompt.txt ("During pass 3" and "End packet").
+- cairn-cms docs/STATUS.md and the executor's STATUS on its branch.
+- End-packet notes from the previous conductor: /var/home/glw907/Projects/initiatives/cairn-setup/research/2026-11-09-conductor-end-packet-notes.md (fold them into the end packet).
+
+## State at hand-over
+- Executor: `cairn-cms-setup-tooling-3` (session 6500d57b), in /var/home/glw907/Projects/cairn-cms/.claude/worktrees/setup-tooling-3. After the overnight packet it publishes the first test build (T3.1) and runs the probe (T3.2), then the rounds.
+- Overnight packet: Approval Queue item 20261109T202146-796403, approved with all three asks as recommended; #214, #215, glw907/workstation#216, and glw907/standards#16 are merged, and the `npm-publish` environment allows branch `main` plus tags `v*` and `tool/v*`.
+- Approved clean-room template sha256: a779f417d273985ebcb095fcf3623f6b44634a2e7c39747bc256612e6a27720c (S-1: the probe proceeds without a packet while it holds; a change follows S-5).
+- Budget stop: ten naive runs or $100, whichever comes first (Geoff raised it from five for the overnight run). It always reaches Geoff with STATUS's lists, the ledger, and the executor's recommendation; nothing further runs until he rules.
+
+## Rulings (Geoff, 2026-11-09)
+- No rc is cut until the install process is effective and tested. Each round's candidate is a test build: a `0.99.0-dev.N` engine and `2.0.0-dev.N` tool published under `gate` only, through #214's dispatch on `main`, with no GitHub release, no tag, and no changelog heading; `latest` and `next` never move. rc.5 is cut once, at the end, as a separate act this run never takes. The `cairn-releasing` skill and `pass-core` "Gates" carry the rule.
+- Steps 8 and 9 of `cairn-releasing` (promote, stable) and its four owner steps are Geoff's. Never run them.
+
+## Merging round PRs
+Merge each round PR under the `setup-tooling-merge` line once every gate it names holds on that head and you have posted the gate record on the PR, with `gh pr merge <n> -R <repo> --merge --match-head-commit <head>`. Tell the executor each merge. After a workstation round merges, check `git -C ~/.dotfiles status --porcelain` and `git -C ~/.dotfiles rev-list origin/main..main` both print nothing, pull ~/.dotfiles, and run `stow -R bin`.
+A round PR touching `.claude/skills/cairn-releasing/**`, `.claude/skills/cairn-proving-setup/**`, `.github/**`, or another path pass 3's preamble sends to Geoff: merge it overnight only after a fresh `standards:diff-reviewer` read accepts it on its head and CI is green, and list each one with its review in the morning packet (Geoff, overnight packet). A clean-room template change follows S-5.
+
+## Standing answers (the overnight packet approved these)
+- Auto mode refuses a step a grant line was written for: the executor retries once after 15 minutes, then parks the run, writes STATUS, and starts no further round.
+- The clean room's subscription token hits its usage limit: end the run with `grade --end budget`, wait for the reset, resume the round, and record the lost time.
+- A round fix that needs a product, taste, or scope call: file it to BACKLOG.md with the evidence, mark it open on the round's list, and go on with the other fixes.
+- A GitHub bot or Turnstile challenge, or a first Actions deploy that fails on a provider outage: one rerun, then end the round, record it, and wait.
+- `main`'s CI red or hung on a merged round PR: one rerun (check the `vite dev` CI hang in the `cairn-writing-engine-code` skill's references/durable-gotchas.md first), then you fix forward or revert under the merge line.
+- A canary or secret leak, a `/proc/*/environ` finding, or a record on the bare address or `www`: stop, and send Geoff one packet.
+Any other stop with no standing answer parks the run; write STATUS and send nothing until morning unless it is the budget stop or a leak.
+
+## Theme-garden G3
+Its conductor prompt is /var/home/glw907/Projects/initiatives/theme-garden/plans/2026-11-09-theme-garden-3-plan-conductor-prompt.txt; follow it. G3 launches only after pass 3's T3.5 dependency sweep has merged, and every theme-garden launch holds during that sweep. Tell the pass 3 executor when no other cairn-cms worktree is live for T3.5.
+
+## Morning
+When Geoff returns, or at the budget stop, send one packet: each round's findings and fixes, the merged round PRs as routine rows, any held-path PR and its review, the ledger's spend, both lists' state, and the planning misses in the end-packet notes. The end packet after pass 3 reports follows the run's conductor prompt "End packet".
