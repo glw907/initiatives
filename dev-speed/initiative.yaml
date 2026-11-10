@@ -1,0 +1,7 @@
+id: dev-speed
+title: Development speed
+summary: Cuts the time a change takes from approved design to merged on every project on this workstation, with every quality gate still running.
+status: proposed
+owner: glw907
+created: 2026-11-10
+repos: [workstation, cairn-cms, aksailingclub-org, poplar, cairn-pub]
