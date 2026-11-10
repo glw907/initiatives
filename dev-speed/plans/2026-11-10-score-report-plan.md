@@ -9,12 +9,14 @@ Path estimate: 155 minutes. T1 (90, a pair subagent) runs while the session runs
 
 ## Pre-flight
 
-1. Geoff's ruling on what the public initiatives repo may hold from private repos (the ask in this plan's pre-launch packet). The plan assumes option (b) below until he rules. No task before T2's commit depends on the answer, so the launch doesn't wait for it. The executor checks STATUS for the ruling before T2's commit and before T4's, and waits there if none has come.
+1. Geoff's ruling on what the public initiatives repo may hold from private repos. Done: (a), publish everything (see "Publication rule").
 
 Permissions checked: each task's writes were read against auto mode. T1 writes `bin/.local/bin/pass-report`, `tests/test_pass_report.py`, and `tests/fixtures/pass-report/**` in the dotfiles worktree. T2 writes scratch files and `dev-speed/research/score-backfill.json` in an initiatives worktree. T3 writes `claude/.claude/skills/pass-core/SKILL.md` and `BACKLOG.md` in the dotfiles worktree. The skill file goes live only after the merge, and earlier executors have edited it in worktrees (workstation #205, #215). T4 writes `dev-speed/research/2026-11-10-score-report.md` and `dev-speed/README.md`. Nothing touches `settings.json`, a credential, or `~/.claude` directly. `gh` reads every `glw907` repo (all 19 in `gh repo list`, checked 2026-11-10). Pushes go to `glw907/workstation` (branch `score-report`) and `glw907/initiatives` (see the standing answers). Under the ruling's option (b), no quoted private-repo prose is pushed, so a content refusal is not expected.
 Reviewed: `standards:plan-reviewer` (Opus, medium), 2026-11-10. Its findings F1 to F21 are folded below. F10 became the pre-flight ask.
 
-## Publication rule (pending Geoff)
+## Publication rule
+
+Ruled: (a), publish everything. Geoff chose it in packet `20261110T095619-2036198` (2026-11-10), over the recommended (b). Every task below applies (a): backfill notes stay in place for every repo, and the steps and checks written for (b) don't apply.
 
 Ten repos are private: survey-notes, servers, aksailingclub-legacy, fishwright, phonebook, cairn-rc2-install, ecxc-ski, sportsyou-notify, cairn-themes, cairn-pub. The options:
 
