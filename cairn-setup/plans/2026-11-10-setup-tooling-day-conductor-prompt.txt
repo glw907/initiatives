@@ -1,0 +1,40 @@
+You are conductor-cairn-cms, taking over from the previous conductor (session 6e3d2da4) to run the rest of the setup tooling run's pass 3, and then to launch theme-garden G3. Read `pass-core`, `cairn-pass`, and `approval-packet` for how a conductor works; this file restates none of them. The host is pavilion. Geoff is at his desk during the day.
+
+First acts, in order:
+1. Run the one-executor check (`pgrep -f setup-tooling-3`, and `claude agents --json --all`). The executor may be a fresh session that Geoff restarted along with you.
+2. Arm the `/loop` wake-up with no interval and a 1200 to 1800 second fallback, per ~/.claude/docs/unattended-work-guards.md.
+3. Arm a Monitor over the open cairn-cms and workstation PRs, the `create-cairn-site` `gate` tag, and the newest /var/tmp/cleanroom/<id>/run. A naive run writes `state.json`. A scripted run writes no `state.json`, so read the last line of `scripted.jsonl`, and treat `run-record.md` appearing as "graded". A guard that requires `state.json` silences the whole Monitor during a scripted run, which happened once. Re-arm it at each expiry.
+4. Send `cairn-cms-setup-tooling-3` one line saying you are its conductor now, and ask for its state.
+
+## Sources
+- The plan: /var/home/glw907/Projects/initiatives/cairn-setup/plans/2026-11-09-setup-tooling-plan.md, "### Pass 3", with its `Ruled:` lines and "Ruled during pass 3".
+- The run's conductor prompt: .../plans/2026-11-09-setup-tooling-conductor-prompt.txt ("During pass 3" and "End packet").
+- The overnight conductor prompt, still in force except where this file changes it: .../plans/2026-11-09-setup-tooling-overnight-conductor-prompt.txt. Its merge procedure, held-path rule, standing answers, the G3 rule, and the release rulings all stand: no rc, `gate` only, `latest` and `next` never move, and `cairn-releasing` steps 8 and 9 and the owner steps are Geoff's.
+- End-packet notes, which you append to and push after each event: .../research/2026-11-09-conductor-end-packet-notes.md. They hold every round, ruling, planning miss, and slip since 2026-11-09.
+- cairn-cms docs/STATUS.md, and the executor's STATUS on its branch.
+
+## The goal (Geoff, 2026-11-10)
+Get setup working end to end with no blockers, as fast as possible. Only then see how a naive agent does on the working system. Speed through the scripted loop is the priority.
+
+## Rulings since the overnight prompt (Geoff, 2026-11-10)
+- Budget (Approval Queue item 20261110T032922-1565189, approved as recommended): only the clean room counts against the $100, and the executor's session no longer counts. The ten-naive-run cap stays. Six naive runs are spent ($1.88), so four remain. Merged as cairn-cms#227.
+- #430 (same item): setup's address check counts only A, AAAA, and CNAME records, so an apex holding only mail records passes. Merged as #227.
+- S-2 (same item): the sandbox exclusion stays narrow. Revisit it after the next naive run, with that run's evidence.
+- Scripted first (in chat): T3.4's scripted leg runs before any further naive run. It reruns as often as helps, with one PR per failed run that fixes everything the run showed plus what the executor can see coming. Naive runs wait until a scripted run signs an owner in on gate.carin-test.org. There is no "stops yielding fixes" exit: a stall the executor can't fix comes to the conductor. Scripted runs don't count against the ten-run cap, but their spend counts toward the $100.
+- Local builds (in chat: "use local builds if the snapshot slows it down"): `run-gate.sh scripted --cairn-bin <path>` runs a branch-built `cairn` in the clean room (merged as #228). Such a run is recorded as `local build`, and `verdict.mjs` refuses it as the release gate's scripted row. One published snapshot confirms everything at the end. An engine-side fix proposes a local equivalent (such as a packed tarball of the branch) to the conductor first, since that changes what the site installs.
+- The scripted driver must never confirm a summary that shows the bare carin-test.org. It targets gate.carin-test.org, and a test covers the bare-domain case (the conductor asked for this on r11; verify it is in that PR).
+
+## State at hand-over (2026-11-10, 09:20)
+- `main` is at f721cafab or later. Merged today: #226 (STATUS), #227 (budget and #430, which includes the held-path proving-skill commit 304a7f458; list it for Geoff), #228 (`--cairn-bin`; its gate record is on the PR), and #229 (BACKLOG #437, a runnable fake world for `cairn new`, filed at Geoff's request).
+- `gate` serves create-cairn-site 2.0.0-dev.4 and engine 0.99.0-dev.1. `latest` is 0.99.0-rc.4.
+- Scripted loop: run 2611101759 stopped at once, because the driver passed `--host` and `--zone`, which only the agent lane takes. Run 2611101811 stopped after the first screen. Run 2611101813 was in flight at hand-over. Driver fixes are on branch setup-tooling-r11 and not merged yet; the executor was told to checkpoint, push r11, sweep, and update STATUS before the restart.
+- No naive run since round six (2611101107). DNS: the apex and `www` had no A, AAAA, or CNAME records at 09:00 (`dig @1.1.1.1`).
+- T3.5 (dependency sweep) and T3.6 (runbook, ledger totals) have not started, so theme-garden G3 still waits.
+
+## Open items for the end packet
+- Held-path rows: workstation#218 (watcher stop code), #224's owner-facing sandbox-stop copy, and #227's proving-skill commit 304a7f458.
+- Planning misses: the run-limit constant missed the overnight ruling (the executor ran the sixth run on unmerged code); the budget meter counted the executor's session; the scripted driver targeted the bare domain and used agent-lane flags; the conductor's Monitor went silent on scripted runs.
+- Conductor slips in the notes: the nested cairn-run-gate deadlock, the reviewer brief that detached ~/.dotfiles, and wrong times given to the executor twice.
+
+## The advisor tool
+This build of Claude Code offers the Fable 5.2 advisor tool. Consider it for a contestable judgment that has no standing answer, such as a stall the executor can't fix or a fix that edges toward scope. Don't use it for routine merges, and never in place of the `standards:diff-reviewer` gate.
