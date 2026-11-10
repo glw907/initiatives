@@ -51,3 +51,8 @@ Pass 3 stopped before T3.1: the plan named `cairn-releasing` for every cut, but 
 ## Handover items for the fresh conductor
 - G3 taken 2026-11-09 ~20:05: conductor prompt /var/home/glw907/Projects/initiatives/theme-garden/plans/2026-11-09-theme-garden-3-plan-conductor-prompt.txt (design approved, item 20261109T194535-695594; plan folded initiatives 76eb2b9). Launch holds until pass 3's T3.5 dependency sweep merges, then pre-flight item 1 (re-check file:line against origin/main).
 - Snapshot ruling (initiatives 782a946); rule PRs workstation#216, standards#16, cairn-cms#215; snapshot publishing #214 (Before merge: npm-publish env branch policy `main`); revert #213 (ordinary).
+
+## Pass 3 overnight (conductor-cairn-cms, from ~20:38 2026-11-09)
+- T3.1: first test build on `gate` only: engine and dev backend 0.99.0-dev.1 (publish.yml 42763286788), create-cairn-site and six platform packages 2.0.0-dev.1 (tool.yml 42763289789). Conductor verified dist-tags: engine latest 0.98.0, next 0.99.0-rc.4, gate dev.1; launcher latest 0.99.0-rc.4, gate 2.0.0-dev.1. No release, tag, or heading.
+- Mechanism note: the snapshot dispatch waited 17 min in `ci-green` for `test` on main's head; registry visibility lagged about 5 min per package.
+- Open conflict: the `setup-tooling-merge` grant text still sends held-path PRs to Geoff, while the overnight packet allows merging them after a fresh diff-review accept and green CI. If auto mode refuses such a merge, it holds for the morning packet.
