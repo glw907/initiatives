@@ -56,5 +56,8 @@ the site is built.
 - Status: plan approved with Decide G-1 ruled yes (Geoff, 2026-11-09, Approval Queue item
   `20261109T022112-3127080`). `conductor-cairn-cms` orchestrates this initiative and cairn-setup
   together (Geoff, 2026-11-08). G1 merged 2026-11-09 (cairn-cms #207, `64cbe711d`);
-  G2 merged 2026-11-09 (cairn-cms #208, `412900111`). G3 is Geoff's sittings; packet B
-  (item `20261109T162647-560953`) ruled that its planning starts now.
+  G2 merged 2026-11-09 (cairn-cms #208, `412900111`). G3's design was approved 2026-11-09
+  (item `20261109T194535-695594`, `specs/2026-11-09-theme-garden-3-survey-design.md`, reference in
+  `reference/g3/`); its plan (`plans/2026-11-09-theme-garden-3-plan.md`, 940 path minutes) is handed
+  to `conductor-cairn-cms`, which launches it after setup-tooling pass 3's T3.5 sweep. Geoff's one
+  read comes in the end packet. glw907/survey#10 is closed.
