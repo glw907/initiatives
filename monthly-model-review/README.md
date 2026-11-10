@@ -25,3 +25,4 @@ Model releases and guidance change faster than the workstation's settings. A fix
 ## Records
 
 - The 2026-09-04 ruling that created the review is recorded in `workstation`'s ROADMAP history, which this pass retires. The log is the running record.
+- 2026-11-10: the November review's fifteen designs landed. Settings came in workstation#221. Skills and agents came in workstation#223, the single-run launcher with its plugin audit in workstation#222, and plugin fixes in standards#17. The plan is `plans/2026-11-10-november-designs.md`.
