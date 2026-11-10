@@ -977,3 +977,8 @@ errors that say what failed and what to do next.
 The pre-pass's prose (help, output, skill, and docs) also avoids Claude's writing tics (Geoff, same day:
 "And avoid claude writing tics."), checked by tellgrader on the docs and a `prose-voice-reviewer` read
 of the skill and help text before the PR.
+
+The naive-run cap rises from ten to fifteen (Geoff, in chat to the conductor, 2026-11-10: "You can do up to
+fifteen runs if needed, but hopefully we won't."). Seven are spent, so eight remain. The $100 clean-room
+ledger is unchanged. `run-gate.sh`'s naive limit and the proving skill's count follow in the next round PR,
+before an eleventh run.
