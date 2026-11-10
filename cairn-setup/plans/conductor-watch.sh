@@ -21,9 +21,9 @@ while true; do
     [ -f "$d/run-record.md" ] && cur+=" | GRADED: $(grep -m1 '^Outcome:' "$d/run-record.md")"
     cur+=$'\n'
   fi
-  cur+="executor: $(claude agents --json --all 2>/dev/null | python3 -I -c 'import json,sys
-rows=[r for r in json.load(sys.stdin) if (r.get("name") or "")=="cairn-cms-setup-tooling-3"]
-print(",".join("live" if r.get("state") in ("working","idle","busy") else str(r.get("state")) for r in rows) or "absent")' 2>/dev/null || echo '?')"$'\n'
+  cur+="executors: $(claude agents --json --all 2>/dev/null | python3 -I -c 'import json,sys
+rows=[r for r in json.load(sys.stdin) if (r.get("name") or "").startswith("cairn-cms-setup-tooling-3")]
+print(",".join(r.get("name")+"="+("live" if r.get("state") in ("working","idle","busy") else str(r.get("state"))) for r in rows) or "absent")' 2>/dev/null || echo '?')"$'\n'
   if [ -n "$prev" ]; then
     diff <(echo "$prev") <(echo "$cur") | grep --line-buffered '^>' | sed 's/^> //'
   else
