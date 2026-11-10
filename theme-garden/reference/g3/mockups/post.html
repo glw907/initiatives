@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Survey post page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400..700;1,400&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="survey-mock.css">
+<style>
+  .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 1100px) { .cols2 { grid-template-columns: 1fr; } }
+  .cols2 .mast-row, .cols2 main, .cols2 .collar-row { max-width: 40rem; }
+  article { padding: 40px 0 8px; font-family: var(--display); font-size: var(--step-0); line-height: 1.65; }
+  .hero-fig { margin: 0 0 28px; }
+  .hero-fig .pic { aspect-ratio: 16/9; border-radius: 4px; border: 1px solid var(--b3); background: var(--b2); overflow: hidden; }
+  .hero-fig .pic svg { width: 100%; height: 100%; display: block; }
+  .hero-fig .pic path { fill: none; stroke: var(--contour); stroke-opacity: .55; }
+  figcaption { font-family: var(--body); font-size: var(--step--1); color: var(--muted); margin-top: 8px; }
+  article h1 { font-weight: 500; font-size: var(--step-4); line-height: 1.12; margin: 0 0 10px; }
+  .meta { font-family: var(--body); font-size: var(--step--1); color: var(--muted); margin: 0 0 26px; }
+  .meta a { color: var(--primary); text-underline-offset: 3px; }
+  article p { margin: 0 0 1em; }
+  article a { color: var(--primary); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  article h2 { font-weight: 500; font-size: var(--step-3); line-height: 1.2; margin: 1.6em 0 .4em; }
+  article h3 { font-weight: 500; font-size: var(--step-1); margin: 1.4em 0 .3em; }
+  blockquote { margin: 1.2em 0; padding: 2px 0 2px 14px; border-left: 2px solid var(--secondary); font-style: italic; color: var(--muted); }
+  article ul, article ol { padding-left: 1.3em; margin: 0 0 1em; }
+  article li { margin: .2em 0; }
+  article li::marker { color: var(--secondary); }
+  code { font-family: var(--mono); font-size: 0.86em; background: var(--code-bg); padding: 1px 5px; border-radius: 3px; }
+  pre { font-family: var(--mono); font-size: 0.82rem; line-height: 1.55; background: var(--code-bg); border: 1px solid var(--b3); border-radius: 4px; padding: 10px 12px; margin: 0 0 1.2em; overflow-x: auto; }
+  pre code { background: none; padding: 0; font-size: inherit; }
+  .kw{color:var(--tk-kw)} .str{color:var(--tk-str)} .cm{color:var(--tk-cm);font-style:italic} .num{color:var(--tk-num)} .fn{color:var(--tk-fn)}
+  table { width: 100%; border-collapse: collapse; font-family: var(--body); font-size: var(--step--1); margin: 0 0 1.2em; }
+  th { text-align: left; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--b3); padding: 6px 8px 6px 0; }
+  td { border-bottom: 1px dashed color-mix(in oklab, var(--contour) 55%, transparent); padding: 6px 8px 6px 0; font-variant-numeric: tabular-nums; }
+  hr { border: 0; border-top: 1px dashed color-mix(in oklab, var(--contour) 70%, transparent); margin: 2em 0; }
+  sup a { font-family: var(--body); font-size: .75em; text-decoration: none; }
+  .fn-list { font-size: var(--step--1); color: var(--muted); }
+  .related { font-family: var(--body); border-top: 1px dashed color-mix(in oklab, var(--contour) 70%, transparent); margin-top: 2em; padding-top: 16px; }
+  .related h2 { font-family: var(--body); font-size: 0.82rem; font-weight: 600; color: var(--muted); margin: 0 0 8px; }
+  .related ul { list-style: none; padding: 0; margin: 0; font-family: var(--display); font-size: var(--step-1); }
+  .related li { margin: 4px 0; }
+  .related li::before { content: ""; display: inline-block; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 7px solid var(--contour); margin-right: 8px; transform: translateY(-2px); }
+  .related a { color: var(--ink); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="brief">
+  <h1>A post page, light and dark</h1>
+  <p>This is the page a theme fully owns: the hero figure, the title and date line, the post body, and the related posts at the foot. It shows every common reading element so you can judge the type, the measure, and the rules together.</p>
+  <p>Proposed: reading text in 17px Spectral at about 66 characters a line, headings in Spectral 500, interface text (date line, captions, tables) in Karla, and the related list marked with the benchmark triangle. The directives (callout, banner, and the rest) come on the next screen.</p>
+</div>
+<div class="wrap">
+<div class="cols2">
+<script>document.currentScript.remove()</script>
+<template id="page">
+  <div class="site">
+    <header class="mast">
+      <svg viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"><path d="M180 58c40-18 70-6 110-20s60-22 110-6"/><path d="M180 48c40-18 70-6 110-20s60-22 110-6"/><path d="M180 38c40-18 70-6 110-20s60-22 110-6"/><path d="M210 28c30-12 60-4 90-14s50-14 100-4"/></svg>
+      <div class="mast-row">
+        <a class="mark" href="#"><i class="bm"></i>907.life</a>
+        <nav class="nav"><a class="on" href="#">Posts</a><a href="#">About</a><svg class="toggle" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></nav>
+      </div>
+    </header>
+    <main>
+      <article>
+        <figure class="hero-fig">
+          <div class="pic"><svg viewBox="0 0 320 180" preserveAspectRatio="none"><path d="M0 150c60-30 90-10 150-40s110-30 170-10"/><path d="M0 130c60-30 90-10 150-40s110-30 170-10"/><path d="M0 110c60-30 90-10 150-40s110-30 170-10"/><path d="M40 90c50-26 80-8 120-30s90-22 160-8"/><path d="M90 70c40-20 60-6 90-22s70-16 140-6"/></svg></div>
+          <figcaption>The woodpile on October 3, with the first cord stacked bark side up.</figcaption>
+        </figure>
+        <h1>Splitting wood before the first snow</h1>
+        <p class="meta"><time>October 4, 2026</time> · By <a href="#">Geoff</a></p>
+        <p>The birch went down in August and spent September under a tarp. This week it dried enough to split, which means the <a href="#">woodshed plan</a> gets tested for real.<sup><a href="#">1</a></sup></p>
+        <blockquote>Two cords should see us through to March.</blockquote>
+        <h2>The rounds</h2>
+        <p>Most rounds split clean on the first swing. The crotch pieces don't, and they go in their own pile:</p>
+        <ul>
+          <li>Straight rounds, split in quarters</li>
+          <li>Knotted rounds, left whole for the stove's back corner</li>
+          <li>Kindling from the offcuts</li>
+        </ul>
+        <h3>Keeping count</h3>
+        <p>The tally lives in <code>woodpile.ts</code>, naturally.</p>
+<pre><code><span class="cm">// cords split so far</span>
+<span class="kw">const</span> <span class="fn">tally</span> = { cords: <span class="num">1.5</span>, species: <span class="str">"birch"</span> };</code></pre>
+        <table>
+          <thead><tr><th>Week</th><th>Cords</th><th>Moisture</th></tr></thead>
+          <tbody><tr><td>September 27</td><td>0.5</td><td>24%</td></tr><tr><td>October 4</td><td>1.0</td><td>19%</td></tr></tbody>
+        </table>
+        <hr>
+        <ol class="fn-list"><li>The plan assumed a dry September. It got one.</li></ol>
+        <nav class="related"><h2>Related posts</h2><ul><li><a href="#">Sharpening the maul</a></li><li><a href="#">The longest day, measured in cords</a></li></ul></nav>
+      </article>
+    </main>
+    <footer class="collar"><div class="collar-row"><span>907.life</span><span><a href="#">Feed</a> · <a href="#">Admin</a></span></div></footer>
+  </div>
+</template>
+<div><span class="tag">Light</span><div id="light"></div></div>
+<div class="dark-col"><span class="tag">Dark</span><div id="dark" class="dark"></div></div>
+<script>
+  const t = document.getElementById('page');
+  document.getElementById('light').append(t.content.cloneNode(true));
+  document.getElementById('dark').append(t.content.cloneNode(true));
+</script>
+</div>
+</div>
+</body>
+</html>

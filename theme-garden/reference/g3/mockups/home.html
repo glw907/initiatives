@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Survey home, two ways</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400..700;1,400&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="survey-mock.css">
+</head>
+<body>
+<div class="brief">
+  <h1>Survey's home page, two ways</h1>
+  <p>A theme can restyle cairn's home page but can't rearrange it. The page always opens on a title and description, then the newest post set apart with its summary and a "Read the post" link, then the archive grouped by year.</p>
+  <p><b>A</b> keeps that layout and dresses it in Survey. <b>B</b> is the home you approved on the map-strength screen (option 2): the title, then plain date-and-title rows. B needs either a change in cairn so a theme can lay out the home page, or CSS that fights cairn's markup. Both are light mode at desktop width; dark mode, phone widths, and the other pages come next.</p>
+</div>
+
+<div class="wrap">
+  <span class="tag">A: cairn's layout in Survey dress</span>
+  <div class="site">
+    <header class="mast">
+      <svg viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"><path d="M180 58c40-18 70-6 110-20s60-22 110-6"/><path d="M180 48c40-18 70-6 110-20s60-22 110-6"/><path d="M180 38c40-18 70-6 110-20s60-22 110-6"/><path d="M210 28c30-12 60-4 90-14s50-14 100-4"/></svg>
+      <div class="mast-row">
+        <a class="mark" href="#"><i class="bm"></i>907.life</a>
+        <nav class="nav"><a class="on" href="#">Posts</a><a href="#">About</a><svg class="toggle" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></nav>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <h1>Notes from a house in the Chugach foothills</h1>
+        <p>Woodpiles, weather, software, and whatever else the season brings.</p>
+      </section>
+      <article class="lead">
+        <p class="label">Latest</p>
+        <div class="date">November 2, 2026</div>
+        <h2><a href="#">First ice on Potter Marsh</a></h2>
+        <p>The boardwalk was empty at eight, and the marsh had gone quiet under a skin of ice thin enough to see the grass through.</p>
+        <a class="more" href="#">Read the post →</a>
+      </article>
+      <section class="index">
+        <div class="index-head"><p class="label">Archive</p><span class="count">8 entries</span></div>
+        <h2 class="year">2026</h2>
+        <div class="row"><span class="date">October 4, 2026</span><h3><a href="#">Splitting wood before the first snow</a></h3></div>
+        <div class="row"><span class="date">September 21, 2026</span><h3><a href="#">Wiring the house phones to one phonebook</a></h3></div>
+        <div class="row"><span class="date">August 30, 2026</span><h3><a href="#">Sharpening the maul</a></h3></div>
+        <div class="row"><span class="date">July 3, 2026</span><h3><a href="#">Notes on a dry summer</a></h3></div>
+        <h2 class="year">2025</h2>
+        <div class="row"><span class="date">October 12, 2025</span><h3><a href="#">Moving the garden beds uphill</a></h3></div>
+        <div class="row"><span class="date">September 6, 2025</span><h3><a href="#">Termination dust</a></h3></div>
+        <div class="row"><span class="date">June 21, 2025</span><h3><a href="#">The longest day, measured in cords</a></h3></div>
+      </section>
+      <div class="pager"><span>Page 1 of 2</span><a href="#">Older →</a></div>
+    </main>
+    <footer class="collar"><div class="collar-row"><span>907.life</span><span><a href="#">Feed</a> · <a href="#">Admin</a></span></div></footer>
+  </div>
+  <p class="note">The year markers borrow the phonebook's section letter (Spectral in contour brown over a dashed rule). The labels are in sentence case, since Survey has no all-caps.</p>
+
+  <span class="tag">B: the approved option 2 home</span>
+  <div class="site">
+    <header class="mast">
+      <svg viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"><path d="M180 58c40-18 70-6 110-20s60-22 110-6"/><path d="M180 48c40-18 70-6 110-20s60-22 110-6"/><path d="M180 38c40-18 70-6 110-20s60-22 110-6"/><path d="M210 28c30-12 60-4 90-14s50-14 100-4"/></svg>
+      <div class="mast-row">
+        <a class="mark" href="#"><i class="bm"></i>907.life</a>
+        <nav class="nav"><a class="on" href="#">Posts</a><a href="#">About</a><svg class="toggle" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></nav>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <h1>Notes from a house in the Chugach foothills</h1>
+        <p>Woodpiles, weather, software, and whatever else the season brings.</p>
+      </section>
+      <section class="rows-b">
+        <div class="row"><span class="date">November 2, 2026</span><h3><a href="#">First ice on Potter Marsh</a></h3></div>
+        <div class="row"><span class="date">October 4, 2026</span><h3><a href="#">Splitting wood before the first snow</a></h3></div>
+        <div class="row"><span class="date">September 21, 2026</span><h3><a href="#">Wiring the house phones to one phonebook</a></h3></div>
+        <div class="row"><span class="date">August 30, 2026</span><h3><a href="#">Sharpening the maul</a></h3></div>
+        <div class="row"><span class="date">July 3, 2026</span><h3><a href="#">Notes on a dry summer</a></h3></div>
+        <div class="row"><span class="date">October 12, 2025</span><h3><a href="#">Moving the garden beds uphill</a></h3></div>
+        <div class="row"><span class="date">September 6, 2025</span><h3><a href="#">Termination dust</a></h3></div>
+        <div class="row"><span class="date">June 21, 2025</span><h3><a href="#">The longest day, measured in cords</a></h3></div>
+      </section>
+      <div class="pager"><span>Page 1 of 2</span><a href="#">Older →</a></div>
+    </main>
+    <footer class="collar"><div class="collar-row"><span>907.life</span><span><a href="#">Feed</a> · <a href="#">Admin</a></span></div></footer>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Map character</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400..700;1,400&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px 16px 64px; background: #ececea; color: #1d1f22; font-family: Karla, system-ui, sans-serif; font-size: 16px; line-height: 1.5; }
+  .page { max-width: 1240px; margin-inline: auto; }
+  .intro h1 { font-weight: 700; font-size: 1.6rem; margin: 0 0 6px; }
+  .intro p { margin: 0 0 8px; max-width: 76ch; color: #44474c; }
+  .roles { background: #fff; border-radius: 10px; padding: 16px 20px; margin: 18px 0 8px; }
+  .roles h2 { font-size: 1.05rem; margin: 0 0 4px; }
+  .roles p { margin: 0 0 10px; color: #55595f; max-width: 90ch; font-size: 0.92rem; }
+  .strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; }
+  .chipc { border-radius: 6px; padding: 8px 9px 7px; font-size: 0.78rem; line-height: 1.3; min-height: 58px; }
+  .chipc b { display: block; font-size: 0.82rem; }
+  .cards { display: grid; gap: 28px; margin-top: 22px; }
+  .card { background: #fff; border: 2px solid transparent; border-radius: 10px; padding: 20px; cursor: pointer; }
+  .card.selected { border-color: #2a5bd7; }
+  .card-head h2 { margin: 0 0 4px; font-size: 1.25rem; }
+  .card-head p { margin: 0 0 14px; color: #55595f; max-width: 86ch; }
+  .panes { display: grid; grid-template-columns: 1.35fr 1fr; gap: 12px; }
+  @media (max-width: 960px) { .panes { grid-template-columns: 1fr; } }
+  .pane-label { font-size: 0.75rem; color: #6b6f75; margin: 0 0 4px; }
+
+  /* Topo tokens */
+  .t {
+    --b1: #f7f7f3; --b2: #eeede6; --b3: #d9d6c9; --ink: #22262b; --muted: #5d5f58;
+    --primary: #1c5a8c; --primary-c: #f1f7fc; --contour: #a67c52; --veg: #4c7538;
+    --r-field: 3px; --r-box: 4px;
+  }
+  .pane { background: var(--b1); color: var(--ink); border: 1px solid var(--b3); border-radius: 8px; overflow: hidden; }
+  .mast { position: relative; padding: 16px 20px 14px; border-bottom: 1px solid var(--b3); }
+  .mast-row { position: relative; display: flex; justify-content: space-between; align-items: baseline; }
+  .mark { font-weight: 700; font-size: 1.2rem; letter-spacing: -0.01em; }
+  .mark span { color: var(--primary); }
+  .nav { display: flex; gap: 16px; font-size: 0.86rem; color: var(--muted); }
+  .hero { position: relative; padding: 26px 20px 22px; }
+  .hero h3 { position: relative; font-family: Spectral; font-weight: 500; font-size: 1.9rem; line-height: 1.12; margin: 0 0 8px; max-width: 18ch; }
+  .hero p { position: relative; font-family: Spectral; margin: 0; max-width: 46ch; line-height: 1.6; }
+  .posts { padding: 6px 20px 18px; }
+  .post { display: grid; grid-template-columns: 7.5rem 1fr; gap: 12px; padding: 9px 0; border-top: 1px solid var(--b3); }
+  .post time { font-size: 0.82rem; color: var(--muted); padding-top: 3px; }
+  .post a { font-family: Spectral; font-size: 1.08rem; color: var(--ink); text-decoration: none; }
+
+  .pb-top { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: var(--b2); border-bottom: 1px solid var(--b3); }
+  .pb-top h3 { position: relative; font-family: Spectral; font-weight: 500; font-size: 1.3rem; margin: 0; }
+  .btn { position: relative; font-family: Karla; font-weight: 600; font-size: 0.85rem; border: 0; border-radius: var(--r-field); padding: 7px 12px; background: var(--primary); color: var(--primary-c); }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--b3); }
+  .form { padding: 14px; display: grid; gap: 10px; }
+  .field label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 3px; }
+  .field input, .field select { width: 100%; font-family: Karla; font-size: 0.92rem; padding: 7px 9px; border: 1px solid var(--b3); border-radius: var(--r-field); background: #fff; color: var(--ink); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 4px; }
+  .svgbg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+  /* Level 2 details */
+  .collar { display: flex; justify-content: space-between; padding: 8px 20px; border-top: 1px solid var(--b3); font-size: 0.74rem; color: var(--muted); }
+  .bm { display: inline-block; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 9px solid var(--contour); margin-right: 6px; transform: translateY(-1px); }
+  .l2 .post { border-top: 1px dashed var(--contour); }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="intro">
+    <h1>How strong should the map character be?</h1>
+    <p>All three use direction B. They differ only in how much of the topographic map shows through. In each one, the phonebook stays quieter than 907.life, because it's a tool you scan quickly.</p>
+  </div>
+
+  <div class="roles">
+    <h2>Proposed full palette for B (light)</h2>
+    <p>One change from the first screen. Contour brown becomes the secondary, and vegetation green becomes the success color, so green never means two things. The status colors come from USGS map symbols: glacier teal for info, survey ochre for warnings, and benchmark red for errors.</p>
+    <div class="strip">
+      <div class="chipc" style="background:#f7f7f3;border:1px solid #d9d6c9;color:#22262b"><b>base-100</b>Map paper</div>
+      <div class="chipc" style="background:#eeede6;color:#22262b"><b>base-200</b>Paper shade</div>
+      <div class="chipc" style="background:#d9d6c9;color:#22262b"><b>base-300</b>Paper edge</div>
+      <div class="chipc" style="background:#22262b;color:#f7f7f3"><b>base-content</b>Ink</div>
+      <div class="chipc" style="background:#1c5a8c;color:#f1f7fc"><b>primary</b>Water</div>
+      <div class="chipc" style="background:#8a5f36;color:#fbf5ee"><b>secondary</b>Contour</div>
+      <div class="chipc" style="background:#2e4a5c;color:#eef4f8"><b>accent</b>Deep water</div>
+      <div class="chipc" style="background:#33383f;color:#eef0f2"><b>neutral</b>Graphite</div>
+      <div class="chipc" style="background:#1b7f86;color:#effafa"><b>info</b>Glacier</div>
+      <div class="chipc" style="background:#4c7538;color:#f3f9ef"><b>success</b>Vegetation</div>
+      <div class="chipc" style="background:#c9952e;color:#2b1d03"><b>warning</b>Survey ochre</div>
+      <div class="chipc" style="background:#b3261e;color:#fff4f2"><b>error</b>Benchmark red</div>
+    </div>
+  </div>
+
+  <div class="cards">
+
+    <!-- Level 1 -->
+    <div class="card" data-choice="trace" onclick="toggleSelect(this)">
+      <div class="card-head">
+        <h2>1. Trace</h2>
+        <p>Contour lines appear only as faint texture in the page headers, as on the first screen. The map is felt more than seen.</p>
+      </div>
+      <div class="panes t">
+        <div>
+          <p class="pane-label">907.life home</p>
+          <div class="pane">
+            <div class="mast">
+              <svg class="svgbg" viewBox="0 0 400 60" preserveAspectRatio="none"><g fill="none" stroke="#a67c52" stroke-opacity=".28"><path d="M160 58c40-18 70-6 110-20s80-22 130-6"/><path d="M160 48c40-18 70-6 110-20s80-22 130-6"/><path d="M160 38c40-18 70-6 110-20s80-22 130-6"/></g></svg>
+              <div class="mast-row"><span class="mark">907<span>.life</span></span><span class="nav"><span>Posts</span><span>Tags</span><span>About</span></span></div>
+            </div>
+            <div class="hero">
+              <h3>Notes from a house in the Chugach foothills</h3>
+              <p>Woodpiles, weather, software, and whatever else the season brings.</p>
+            </div>
+            <div class="posts">
+              <div class="post"><time>October 4, 2026</time><a href="#">Splitting wood before the first snow</a></div>
+              <div class="post"><time>September 21, 2026</time><a href="#">Wiring the house phones to one phonebook</a></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="pane-label">Phonebook, edit contact</p>
+          <div class="pane">
+            <div class="pb-top">
+              <svg class="svgbg" viewBox="0 0 400 60" preserveAspectRatio="none"><g fill="none" stroke="#a67c52" stroke-opacity=".22"><path d="M200 58c40-18 70-6 110-20s60-16 90-6"/><path d="M200 48c40-18 70-6 110-20s60-16 90-6"/></g></svg>
+              <h3>Edit contact</h3><button class="btn ghost">Cancel</button>
+            </div>
+            <div class="form">
+              <div class="field"><label>Display name</label><input value="Barrow, Ruth"></div>
+              <div class="two"><div class="field"><label>Mobile</label><input value="907 555 0142"></div><div class="field"><label>Office</label><input placeholder="None"></div></div>
+              <div class="field"><label>Group</label><select><option>Family</option></select></div>
+              <div class="actions"><button class="btn">Save contact</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Level 2 -->
+    <div class="card" data-choice="survey-sheet" onclick="toggleSelect(this)">
+      <div class="card-head">
+        <h2>2. Survey sheet</h2>
+        <p>The trace, plus a few printed-map details. A benchmark triangle marks the wordmark, dashed contour rules separate the post list, and the page foot borrows a quad sheet's margin collar. The phonebook takes only the triangle and the header texture.</p>
+      </div>
+      <div class="panes t l2">
+        <div>
+          <p class="pane-label">907.life home</p>
+          <div class="pane">
+            <div class="mast">
+              <svg class="svgbg" viewBox="0 0 400 60" preserveAspectRatio="none"><g fill="none" stroke="#a67c52" stroke-opacity=".28"><path d="M160 58c40-18 70-6 110-20s80-22 130-6"/><path d="M160 48c40-18 70-6 110-20s80-22 130-6"/><path d="M160 38c40-18 70-6 110-20s80-22 130-6"/></g></svg>
+              <div class="mast-row"><span class="mark"><i class="bm"></i>907<span>.life</span></span><span class="nav"><span>Posts</span><span>Tags</span><span>About</span></span></div>
+            </div>
+            <div class="hero">
+              <h3>Notes from a house in the Chugach foothills</h3>
+              <p>Woodpiles, weather, software, and whatever else the season brings.</p>
+            </div>
+            <div class="posts">
+              <div class="post"><time>October 4, 2026</time><a href="#">Splitting wood before the first snow</a></div>
+              <div class="post"><time>September 21, 2026</time><a href="#">Wiring the house phones to one phonebook</a></div>
+            </div>
+            <div class="collar"><span>907.life, Anchorage quadrangle</span><span>Contour interval: one post</span></div>
+          </div>
+        </div>
+        <div>
+          <p class="pane-label">Phonebook, edit contact</p>
+          <div class="pane">
+            <div class="pb-top">
+              <svg class="svgbg" viewBox="0 0 400 60" preserveAspectRatio="none"><g fill="none" stroke="#a67c52" stroke-opacity=".22"><path d="M200 58c40-18 70-6 110-20s60-16 90-6"/><path d="M200 48c40-18 70-6 110-20s60-16 90-6"/></g></svg>
+              <h3><i class="bm"></i>Edit contact</h3><button class="btn ghost">Cancel</button>
+            </div>
+            <div class="form">
+              <div class="field"><label>Display name</label><input value="Barrow, Ruth"></div>
+              <div class="two"><div class="field"><label>Mobile</label><input value="907 555 0142"></div><div class="field"><label>Office</label><input placeholder="None"></div></div>
+              <div class="field"><label>Group</label><select><option>Family</option></select></div>
+              <div class="actions"><button class="btn">Save contact</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Level 3 -->
+    <div class="card" data-choice="terrain" onclick="toggleSelect(this)">
+      <div class="card-head">
+        <h2>3. Terrain</h2>
+        <p>One bold moment. 907.life's home page opens on a full contour map behind the hero, which could be drawn from real elevation data for a place you choose. Everything else, the phonebook included, stays at the trace level.</p>
+      </div>
+      <div class="panes t">
+        <div>
+          <p class="pane-label">907.life home</p>
+          <div class="pane">
+            <div class="mast">
+              <div class="mast-row"><span class="mark">907<span>.life</span></span><span class="nav"><span>Posts</span><span>Tags</span><span>About</span></span></div>
+            </div>
+            <div class="hero" style="padding-top:44px;padding-bottom:40px;background:#f3f2ec">
+              <svg class="svgbg" viewBox="0 0 600 240" preserveAspectRatio="xMaxYMid slice"><g fill="none" stroke="#a67c52" stroke-opacity=".38" stroke-width="1">
+                <path d="M470 120c0-30 30-52 62-50s58 26 52 56-34 48-66 44-48-22-48-50z"/>
+                <path d="M440 122c-2-46 44-80 92-76s86 38 78 84-50 74-98 68-70-34-72-76z"/>
+                <path d="M408 124c-4-62 58-108 124-102s114 52 104 114-68 100-132 92-92-44-96-104z"/>
+                <path d="M374 126c-6-80 74-138 158-130s144 66 132 146-86 128-170 118-114-56-120-134z"/>
+                <path d="M338 130c-8-98 90-170 192-160s176 82 162 180-104 156-208 144-138-68-146-164z"/>
+                <path d="M300 136c-10-118 108-204 230-192s210 98 194 216-124 186-248 172-166-80-176-196z"/>
+                <path d="M262 142c-12-138 126-238 268-224s244 114 226 252-144 216-288 200-194-92-206-228z"/>
+                <path d="M224 150c-14-158 144-272 306-256s278 130 258 288" />
+                <path d="M520 112l4 8h-8z" fill="#8a5f36" stroke="none"/>
+              </g></svg>
+              <h3>Notes from a house in the Chugach foothills</h3>
+              <p>Woodpiles, weather, software, and whatever else the season brings.</p>
+            </div>
+            <div class="posts">
+              <div class="post"><time>October 4, 2026</time><a href="#">Splitting wood before the first snow</a></div>
+              <div class="post"><time>September 21, 2026</time><a href="#">Wiring the house phones to one phonebook</a></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="pane-label">Phonebook, edit contact</p>
+          <div class="pane">
+            <div class="pb-top">
+              <svg class="svgbg" viewBox="0 0 400 60" preserveAspectRatio="none"><g fill="none" stroke="#a67c52" stroke-opacity=".22"><path d="M200 58c40-18 70-6 110-20s60-16 90-6"/><path d="M200 48c40-18 70-6 110-20s60-16 90-6"/></g></svg>
+              <h3>Edit contact</h3><button class="btn ghost">Cancel</button>
+            </div>
+            <div class="form">
+              <div class="field"><label>Display name</label><input value="Barrow, Ruth"></div>
+              <div class="two"><div class="field"><label>Mobile</label><input value="907 555 0142"></div><div class="field"><label>Office</label><input placeholder="None"></div></div>
+              <div class="field"><label>Group</label><select><option>Family</option></select></div>
+              <div class="actions"><button class="btn">Save contact</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

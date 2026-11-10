@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Survey phone, archive, 404</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400..700;1,400&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="survey-mock.css">
+<style>
+  .phones { display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-start; }
+  .phone { width: 390px; flex: none; }
+  .phone .site { min-height: 760px; display: flex; flex-direction: column; }
+  .phone main { padding: 0 16px; flex: 1; min-width: 0; width: 100%; }
+  .phone .site { overflow: hidden; }
+  article.lead { font-family: var(--body); }
+  .desk2 .site { display: flex; flex-direction: column; } .desk2 main { flex: 1; width: 100%; }
+  .phone .mast-row { padding: 14px 16px; }
+  .phone .nav { gap: 14px; }
+  .phone .hero { padding: 32px 0 24px; }
+  .phone .hero h1 { font-size: 2rem; }
+  .phone .hero p { font-size: var(--step-0); }
+  .phone .lead h2 { font-size: var(--step-3); }
+  .phone .row { grid-template-columns: 1fr; gap: 2px; }
+  .phone .collar-row { flex-direction: column; gap: 4px; padding: 10px 16px; }
+  article { padding: 28px 0 8px; font-family: var(--display); font-size: var(--step-0); line-height: 1.65; }
+  article h1 { font-weight: 500; font-size: 1.75rem; line-height: 1.15; margin: 0 0 8px; }
+  .meta { font-family: var(--body); font-size: var(--step--1); color: var(--muted); margin: 0 0 20px; }
+  .meta a, article a { color: var(--primary); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  article p { margin: 0 0 1em; }
+  blockquote { margin: 1.2em 0; padding: 2px 0 2px 14px; border-left: 2px solid var(--secondary); font-style: italic; color: var(--muted); }
+  pre { font-family: var(--mono); font-size: 0.82rem; line-height: 1.55; background: var(--code-bg); border: 1px solid var(--b3); border-radius: 4px; padding: 10px 12px; margin: 0 0 1.2em; overflow-x: auto; white-space: pre; }
+  .kw{color:var(--tk-kw)} .str{color:var(--tk-str)} .cm{color:var(--tk-cm);font-style:italic} .num{color:var(--tk-num)} .fn{color:var(--tk-fn)}
+  .err { text-align: center; padding: 64px 0 72px; }
+  .err .code { font-family: var(--display); font-weight: 500; font-size: 4.5rem; line-height: 1; margin: 0 0 6px; color: var(--ink); }
+  .err .code .bm { border-left-width: 9px; border-right-width: 9px; border-bottom-width: 16px; margin-right: 12px; vertical-align: 0.3em; }
+  .err p { font-family: var(--display); font-size: var(--step-1); color: var(--muted); margin: 0 auto 22px; max-width: 30rem; }
+  .err a { display: inline-flex; align-items: center; font-family: var(--body); font-weight: 600; font-size: var(--step--1); background: var(--primary); color: var(--b1); border-radius: 3px; padding: 10px 16px; text-decoration: none; }
+  .err .contours { display: block; width: 220px; height: 60px; margin: 0 auto 10px; }
+  .err .contours path { fill: none; stroke: var(--contour); stroke-opacity: .5; }
+  .phone .err { padding: 40px 0 48px; }
+  .phone .err .code { font-size: 3.5rem; }
+  .pager { padding: 22px 0 40px; }
+  .pager a { text-decoration: underline; text-underline-offset: 3px; }
+  .desk2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 1100px) { .desk2 { grid-template-columns: 1fr; } }
+  .desk2 .mast-row, .desk2 main, .desk2 .collar-row { max-width: 40rem; }
+  .archive-h { padding-top: 40px; }
+  .archive-h .index { border-top: 0; padding-top: 0; }
+  .archive-h .index-head h1 { font-family: var(--body); font-size: 0.82rem; font-weight: 600; color: var(--muted); margin: 0 0 10px; }
+</style>
+</head>
+<body>
+<div class="brief">
+  <h1>Phone width, the archive page, and the 404 page</h1>
+  <p>Top row: the home page, a post, and the 404 page at 390px wide, the width of most phones. The header keeps the wordmark, the nav, and the light and dark toggle on one line while the site has two or three menu items, and wraps the nav under the wordmark past that. Archive rows stack the date over the title, and the collar's two parts stack too.</p>
+  <p>Bottom row: the second archive page and the 404 page at desktop width. The 404 page's markup is cairn's, so Survey restyles it with CSS: the number in Spectral with the benchmark triangle, under a faint run of contour lines.</p>
+</div>
+<div class="wrap">
+  <span class="tag">Phone, 390px: home, post, 404</span>
+  <div class="phones">
+    <div class="phone"><div class="site">
+      <header class="mast"><svg viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"><path d="M180 58c40-18 70-6 110-20s60-22 110-6"/><path d="M180 48c40-18 70-6 110-20s60-22 110-6"/><path d="M180 38c40-18 70-6 110-20s60-22 110-6"/></svg>
+        <div class="mast-row"><a class="mark" href="#"><i class="bm"></i>907.life</a><nav class="nav"><a class="on" href="#">Posts</a><a href="#">About</a><svg class="toggle" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></nav></div></header>
+      <main>
+        <section class="hero"><h1>Notes from a house in the Chugach foothills</h1><p>Woodpiles, weather, software, and whatever else the season brings.</p></section>
+        <article class="lead" style="padding:18px 0 22px"><p class="label">Latest</p><div class="date">November 2, 2026</div><h2><a href="#">First ice on Potter Marsh</a></h2><p>The boardwalk was empty at eight, and the marsh had gone quiet under a skin of ice.</p><a class="more" href="#">Read the post →</a></article>
+        <section class="index"><div class="index-head"><p class="label">Archive</p><span class="count">8 entries</span></div><h2 class="year">2026</h2>
+          <div class="row"><span class="date">October 4, 2026</span><h3><a href="#">Splitting wood before the first snow</a></h3></div>
+          <div class="row"><span class="date">September 21, 2026</span><h3><a href="#">Wiring the house phones to one phonebook</a></h3></div></section>
+      </main>
+      <footer class="collar"><div class="collar-row"><span>907.life</span><span><a href="#">Feed</a> · <a href="#">Admin</a></span></div></footer>
+    </div></div>
+
+    <div class="phone"><div class="site">
+      <header class="mast"><svg viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"><path d="M180 58c40-18 70-6 110-20s60-22 110-6"/><path d="M180 48c40-18 70-6 110-20s60-22 110-6"/><path d="M180 38c40-18 70-6 110-20s60-22 110-6"/></svg>
+        <div class="mast-row"><a class="mark" href="#"><i class="bm"></i>907.life</a><nav class="nav"><a class="on" href="#">Posts</a><a href="#">About</a><svg class="toggle" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></nav></div></header>
+      <main><article>
+        <h1>Splitting wood before the first snow</h1>
+        <p class="meta">October 4, 2026 · By <a href="#">Geoff</a></p>
+        <p>The birch went down in August and spent September under a tarp. This week it dried enough to split, which means the <a href="#">woodshed plan</a> gets tested for real.</p>
+        <blockquote>Two cords should see us through to March.</blockquote>
+        <p>The tally lives in a file, naturally.</p>
+<pre><span class="cm">// cords split so far</span>
+<span class="kw">const</span> <span class="fn">tally</span> = { cords: <span class="num">1.5</span>, species: <span class="str">"birch"</span> };</pre>
+      </article></main>
+      <footer class="collar"><div class="collar-row"><span>907.life</span><span><a href="#">Feed</a> · <a href="#">Admin</a></span></div></footer>
+    </div></div>
+
+    <div class="phone dark"><div class="site">
+      <header class="mast"><svg viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"><path d="M180 58c40-18 70-6 110-20s60-22 110-6"/><path d="M180 48c40-18 70-6 110-20s60-22 110-6"/><path d="M180 38c40-18 70-6 110-20s60-22 110-6"/></svg>
+        <div class="mast-row"><a class="mark" href="#"><i class="bm"></i>907.life</a><nav class="nav"><a href="#">Posts</a><a href="#">About</a><svg class="toggle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></nav></div></header>
+      <main><section class="err">
+        <svg class="contours" viewBox="0 0 220 60" aria-hidden="true"><path d="M0 50c40-18 70-6 110-20s70-18 110-6"/><path d="M0 40c40-18 70-6 110-20s70-18 110-6"/><path d="M20 28c34-14 60-4 90-14s60-12 90-4"/></svg>
+        <p class="code"><i class="bm"></i>404</p>
+        <p>This page doesn't exist. It may have moved, or the link took a wrong turn.</p>
+        <a href="#">Return to homepage</a>
+      </section></main>
+      <footer class="collar"><div class="collar-row"><span>907.life</span><span><a href="#">Feed</a> · <a href="#">Admin</a></span></div></footer>
+    </div></div>
+  </div>
+
+  <span class="tag">Desktop: archive page 2 (light), 404 (light)</span>
+  <div class="desk2">
+    <div class="site">
+      <header class="mast"><svg viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"><path d="M180 58c40-18 70-6 110-20s60-22 110-6"/><path d="M180 48c40-18 70-6 110-20s60-22 110-6"/><path d="M180 38c40-18 70-6 110-20s60-22 110-6"/></svg>
+        <div class="mast-row"><a class="mark" href="#"><i class="bm"></i>907.life</a><nav class="nav"><a class="on" href="#">Posts</a><a href="#">About</a><svg class="toggle" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></nav></div></header>
+      <main class="archive-h"><section class="index"><div class="index-head"><h1>Archive</h1><span class="count">5 entries</span></div>
+        <h2 class="year">2025</h2>
+        <div class="row"><span class="date">March 9, 2025</span><h3><a href="#">Breakup, early</a></h3></div>
+        <div class="row"><span class="date">January 18, 2025</span><h3><a href="#">Forty below and the stove</a></h3></div>
+        <h2 class="year">2024</h2>
+        <div class="row"><span class="date">December 21, 2024</span><h3><a href="#">The shortest day</a></h3></div>
+        <div class="row"><span class="date">October 30, 2024</span><h3><a href="#">Stacking the first cord</a></h3></div>
+        <div class="row"><span class="date">September 2, 2024</span><h3><a href="#">Moving in</a></h3></div>
+      </section>
+      <div class="pager"><a href="#">← Newer</a><span>Page 2 of 2</span><span></span></div></main>
+      <footer class="collar"><div class="collar-row"><span>907.life</span><span><a href="#">Feed</a> · <a href="#">Admin</a></span></div></footer>
+    </div>
+    <div class="site">
+      <header class="mast"><svg viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"><path d="M180 58c40-18 70-6 110-20s60-22 110-6"/><path d="M180 48c40-18 70-6 110-20s60-22 110-6"/><path d="M180 38c40-18 70-6 110-20s60-22 110-6"/></svg>
+        <div class="mast-row"><a class="mark" href="#"><i class="bm"></i>907.life</a><nav class="nav"><a href="#">Posts</a><a href="#">About</a><svg class="toggle" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></nav></div></header>
+      <main><section class="err">
+        <svg class="contours" viewBox="0 0 220 60" aria-hidden="true"><path d="M0 50c40-18 70-6 110-20s70-18 110-6"/><path d="M0 40c40-18 70-6 110-20s70-18 110-6"/><path d="M20 28c34-14 60-4 90-14s60-12 90-4"/></svg>
+        <p class="code"><i class="bm"></i>404</p>
+        <p>This page doesn't exist. It may have moved, or the link took a wrong turn.</p>
+        <a href="#">Return to homepage</a>
+      </section></main>
+      <footer class="collar"><div class="collar-row"><span>907.life</span><span><a href="#">Feed</a> · <a href="#">Admin</a></span></div></footer>
+    </div>
+  </div>
+</div>
+</body>
+</html>

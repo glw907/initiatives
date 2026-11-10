@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Survey directives</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400..700;1,400&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="survey-mock.css">
+<style>
+  .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 1100px) { .cols2 { grid-template-columns: 1fr; } }
+  .cols2 main { max-width: 40rem; }
+  article { padding: 28px 0 24px; font-family: var(--display); font-size: var(--step-0); line-height: 1.65; }
+  article > p { margin: 0 0 1em; }
+  .dl { font-family: var(--body); font-size: 12px; font-weight: 700; color: #fff; background: #6b6f75; display: inline-block; padding: 1px 7px; border-radius: 3px; margin: 22px 0 8px; }
+  .i { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+  .callout { border: 1px solid var(--b3); border-radius: 4px; padding: 14px 16px; margin: 0 0 1em; }
+  .callout-title { display: flex; gap: 6px; align-items: center; font-family: var(--body); font-weight: 600; font-size: var(--step--1); margin: 0 0 6px; }
+  .c-note .callout-title { color: var(--info-ink); } .c-tip .callout-title { color: var(--success-ink); } .c-warn .callout-title { color: var(--warning-ink); }
+  .callout p { margin: 0; }
+  .points { list-style: none; padding: 8px 0 0; margin: 10px 0 0; border-top: 1px dashed color-mix(in oklab, var(--contour) 60%, transparent); font-size: var(--step--1); font-family: var(--body); }
+  .points li { margin: 3px 0; }
+  .points li::before { content: ""; display: inline-block; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 7px solid var(--contour); margin-right: 8px; transform: translateY(-1px); }
+
+  .alert { display: grid; grid-template-columns: 4px 1fr; border-radius: 4px; background: var(--b2); overflow: hidden; margin: 0 0 .6em; font-family: var(--body); font-size: var(--step--1); line-height: 1.5; }
+  .alert i { display: block; } .alert div { padding: 8px 14px; } .alert b { font-weight: 600; }
+  .a-note i { background: var(--info); } .a-note b { color: var(--info-ink); }
+  .a-caution i { background: var(--warning); } .a-caution b { color: var(--warning-ink); }
+
+  .inline-i { width: 1em; height: 1em; vertical-align: -0.14em; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; color: var(--muted); }
+
+  .video { margin: 0 0 1em; }
+  .video .frame { position: relative; aspect-ratio: 16/9; border: 1px solid var(--b3); border-radius: 4px; background: var(--b2); overflow: hidden; display: grid; place-items: center; }
+  .video .frame svg.bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .video .frame svg.bg path { fill: none; stroke: var(--contour); stroke-opacity: .35; }
+  .play { position: relative; width: 56px; height: 56px; border-radius: 50%; background: var(--primary); display: grid; place-items: center; }
+  .play svg { width: 22px; height: 22px; fill: var(--b1); margin-left: 3px; }
+  .video .cap { font-family: var(--body); font-size: var(--step--1); color: var(--muted); margin-top: 8px; display: flex; justify-content: space-between; gap: 12px; }
+  .video .cap b { color: var(--ink); font-weight: 600; }
+
+  .pull { margin: 1.4em 0; padding: 16px 0; border-top: 1px dashed color-mix(in oklab, var(--contour) 70%, transparent); border-bottom: 1px dashed color-mix(in oklab, var(--contour) 70%, transparent); }
+  .pull p { font-weight: 500; font-size: var(--step-3); line-height: 1.3; margin: 0 0 8px; }
+  .pull cite { font-family: var(--body); font-style: normal; font-size: var(--step--1); color: var(--muted); }
+
+  .cta { margin: 0 0 1em; display: flex; gap: 10px; flex-wrap: wrap; }
+  .cta a { display: inline-flex; gap: 8px; align-items: center; font-family: var(--body); font-weight: 600; font-size: var(--step--1); border-radius: 3px; padding: 9px 14px; text-decoration: none; }
+  .cta-primary { background: var(--primary); color: var(--b1); }
+  .cta-secondary { background: transparent; color: var(--ink); border: 1px solid var(--b3); }
+
+  .micro { margin: 0 0 1em; font-family: var(--body); font-size: var(--step--1); }
+  .micro a { display: inline-flex; gap: 8px; align-items: center; text-decoration: none; }
+  .micro .lab { color: var(--primary); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .micro .nt { color: var(--muted); }
+  .micro .i { color: var(--primary); width: 14px; height: 14px; }
+
+  .faq { border-bottom: 1px dashed color-mix(in oklab, var(--contour) 60%, transparent); }
+  .faq:first-of-type { border-top: 1px dashed color-mix(in oklab, var(--contour) 60%, transparent); }
+  .faq summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; font-weight: 500; font-size: var(--step-1); cursor: pointer; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary .i { color: var(--muted); transition: transform 150ms; }
+  .faq[open] summary .i { transform: rotate(180deg); }
+  .faq p { margin: 0 0 12px; }
+  .faqs { margin: 0 0 1.2em; }
+
+  .banner { display: flex; gap: 10px; align-items: center; border: 1px solid color-mix(in oklab, var(--secondary) 45%, transparent); background: color-mix(in oklab, var(--secondary) 9%, var(--b1)); border-radius: 4px; padding: 9px 14px; font-family: var(--body); font-size: var(--step--1); margin: 0 0 1em; }
+  .banner .bm { flex: none; }
+</style>
+</head>
+<body>
+<div class="brief">
+  <h1>The nine directives, light and dark</h1>
+  <p>Every block a post can use, in one post body. Survey's specimen styles only the alert, so the rest are new and drawn from Survey's parts: the paper-shade ground, the 1px edges, the dashed contour rule, and the benchmark triangle. Each grey tag names the block.</p>
+  <p>One conflict: Survey says reading text carries no icons, but cairn's vocabulary has an inline icon block. I've drawn it small and muted, in the text's color, so it reads as a glyph rather than decoration.</p>
+</div>
+<div class="wrap">
+<div class="cols2">
+<template id="page">
+  <div class="site">
+    <main>
+      <article>
+        <span class="dl">callout (note, tip, warning)</span>
+        <div class="callout c-note"><p class="callout-title"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Before you split</p><p>Let the rounds season at least six weeks under cover.</p>
+          <ul class="points"><li>Stack bark side up</li><li>Leave a hand's width between rows</li></ul></div>
+        <div class="callout c-tip"><p class="callout-title"><svg class="i" viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>Read the end grain</p><p>Checks running toward the center mean the round is ready.</p></div>
+        <div class="callout c-warn"><p class="callout-title"><svg class="i" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/></svg>Frozen rounds</p><p>A frozen round shatters. Split before the first hard freeze or wait for a thaw.</p></div>
+
+        <span class="dl">alert (note, caution)</span>
+        <div class="alert a-note"><i></i><div><b>Updated.</b> The moisture table now covers October.</div></div>
+        <div class="alert a-caution"><i></i><div><b>Trail closed</b> past the second gate until the snow sets.</div></div>
+
+        <span class="dl">icon (inline)</span>
+        <p>Look for the <svg class="inline-i" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"/></svg> flag on the trail map; it marks the woodlot.</p>
+
+        <span class="dl">pull quote</span>
+        <blockquote class="pull" style="border-left:0;font-style:normal;color:inherit;padding-left:0"><p>A cord is a promise you make to February.</p><cite>Ruth Barrow</cite></blockquote>
+
+        <span class="dl">video (a still until the reader presses play)</span>
+        <div class="video"><div class="frame"><svg class="bg" viewBox="0 0 320 180" preserveAspectRatio="none"><path d="M0 140c60-30 90-10 150-40s110-30 170-10"/><path d="M0 120c60-30 90-10 150-40s110-30 170-10"/><path d="M40 90c50-26 80-8 120-30s90-22 160-8"/></svg><span class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></span></div>
+          <div class="cap"><b>Splitting a knotted round</b><span>Plays from YouTube</span></div></div>
+
+        <span class="dl">call to action (primary, secondary)</span>
+        <div class="cta"><a class="cta-primary" href="#">Read the woodshed plan <svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a><a class="cta-secondary" href="#">See last winter's tally <svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></div>
+
+        <span class="dl">micro call to action</span>
+        <p class="micro"><a href="#"><span class="lab">Sharpening the maul</span><span class="nt">the five-minute version</span><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></p>
+
+        <span class="dl">FAQ (one open, one closed)</span>
+        <div class="faqs">
+          <details class="faq" open><summary>How much wood is a cord?<svg class="i" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></summary><p>A stack four feet high, four feet deep, and eight feet long.</p></details>
+          <details class="faq"><summary>Birch or spruce?<svg class="i" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></summary><p>Birch burns longer.</p></details>
+        </div>
+
+        <span class="dl">banner (an announcement that expires)</span>
+        <div class="banner" role="status"><i class="bm"></i>The woodlot opens for permit cutting on November 15.</div>
+      </article>
+    </main>
+  </div>
+</template>
+<div><span class="tag">Light</span><div id="light"></div></div>
+<div><span class="tag">Dark</span><div id="dark" class="dark"></div></div>
+<script>
+  const t = document.getElementById('page');
+  document.getElementById('light').append(t.content.cloneNode(true));
+  document.getElementById('dark').append(t.content.cloneNode(true));
+</script>
+</div>
+</div>
+</body>
+</html>

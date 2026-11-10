@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Survey ink colors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400..700;1,400&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="survey-mock.css">
+<style>
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 1100px) { .grid { grid-template-columns: 1fr; } }
+  .ink-blue   { --primary:#1c5a8c; --pc:#f1f7fc; } .dark.ink-blue   { --primary:#7fb5e4; --pc:#0b2236; }
+  .ink-purple { --primary:#6a3d8a; --pc:#f7f2fb; } .dark.ink-purple { --primary:#c3a2e0; --pc:#1e1029; }
+  .ink-teal   { --primary:#155f64; --pc:#f5fdfd; } .dark.ink-teal   { --primary:#7fd3d8; --pc:#062729; }
+  .site { margin-bottom: 14px; }
+  .site main { padding: 22px 20px 20px; }
+  .site .mast-row { max-width: none; }
+  .p { font-family: var(--display); font-size: var(--step-0); line-height: 1.65; margin: 0 0 14px; }
+  .p a { color: var(--primary); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .btns { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 0 0 14px; }
+  .btn { display: inline-flex; gap: 8px; align-items: center; font-weight: 600; font-size: var(--step--1); border-radius: 3px; padding: 9px 14px; text-decoration: none; background: var(--primary); color: var(--pc); }
+  .ghost { background: transparent; color: var(--ink); border: 1px solid var(--b3); outline: 2px solid var(--primary); outline-offset: 2px; }
+  .i { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .alert { display: grid; grid-template-columns: 4px 1fr; border-radius: 4px; background: var(--b2); overflow: hidden; font-size: var(--step--1); }
+  .alert i { display: block; background: var(--info); } .alert div { padding: 8px 14px; } .alert b { color: var(--info-ink); font-weight: 600; }
+  .cap { font-size: 13px; color: #44474c; margin: 4px 0 0; }
+  h2.inkname { font-size: 1rem; margin: 18px 0 6px; }
+</style>
+</head>
+<body>
+<div class="brief">
+  <h1>Which ink colors should Survey offer?</h1>
+  <p>The ink sets the color of links, buttons, and the focus ring. Every candidate passes WCAG contrast with room to spare. Each column shows one ink in light and dark: a paragraph with a link, a button, a focused Cancel button (the outline is the focus ring), and a note alert, which keeps its own teal in every column.</p>
+  <p>Vegetation green is left out because Survey made green the success color so it never means two things. Glacier teal has the same problem, more mildly: it's close to the note alert's teal, as the third column shows.</p>
+</div>
+<div class="wrap">
+  <template id="sample">
+    <header class="mast"><svg viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true"><path d="M180 58c40-18 70-6 110-20s60-22 110-6"/><path d="M180 48c40-18 70-6 110-20s60-22 110-6"/><path d="M180 38c40-18 70-6 110-20s60-22 110-6"/></svg>
+      <div class="mast-row"><a class="mark" href="#"><i class="bm"></i>907.life</a><nav class="nav"><a class="on" href="#">Posts</a><a href="#">About</a></nav></div></header>
+    <main>
+      <p class="p">The birch dried enough to split, which means the <a href="#">woodshed plan</a> gets tested for real. Last winter's <a href="#">tally</a> says two cords.</p>
+      <div class="btns"><a class="btn" href="#">Read the woodshed plan <svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a><a class="btn ghost" href="#">Cancel</a></div>
+      <div class="alert"><i></i><div><b>Updated.</b> The moisture table now covers October.</div></div>
+    </main>
+  </template>
+  <div class="grid">
+    <div><h2 class="inkname">Water blue (the default)</h2><div class="site ink-blue" data-s></div><div class="site dark ink-blue" data-s></div><p class="cap">Light 6.8:1, dark 8.3:1 on the page.</p></div>
+    <div><h2 class="inkname">Revision purple</h2><div class="site ink-purple" data-s></div><div class="site dark ink-purple" data-s></div><p class="cap">Light 7.4:1, dark 8.2:1. The purple USGS printed over a map to mark what aerial photos showed had changed.</p></div>
+    <div><h2 class="inkname">Glacier teal</h2><div class="site ink-teal" data-s></div><div class="site dark ink-teal" data-s></div><p class="cap">Light 6.9:1, dark 10.5:1. Close to the note alert's teal.</p></div>
+  </div>
+</div>
+<script>
+  const t = document.getElementById('sample');
+  document.querySelectorAll('[data-s]').forEach((el) => el.append(t.content.cloneNode(true)));
+</script>
+</body>
+</html>
