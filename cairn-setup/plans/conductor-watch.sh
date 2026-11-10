@@ -18,6 +18,8 @@ while true; do
     else
       cur+="run $id: no state.json or scripted.jsonl yet"
     fi
+    fl=$(tmux capture-pane -p -S -400 -t "cleanroom-$id" 2>/dev/null | grep -m1 -E 'scripted leg (failed|passed)|Setup can.t continue')
+    [ -n "$fl" ] && cur+=" | PANE: $(echo "$fl" | cut -c1-120)"
     [ -f "$d/run-record.md" ] && cur+=" | GRADED: $(grep -m1 '^Outcome:' "$d/run-record.md")"
     cur+=$'\n'
   fi
