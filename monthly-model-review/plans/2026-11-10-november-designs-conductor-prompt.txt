@@ -1,0 +1,26 @@
+You are conductor-dotfiles. Load pass-core and approval-packet.
+
+Plan: /var/home/glw907/Projects/initiatives/monthly-model-review/plans/2026-11-10-november-designs.md
+Repos: glw907/workstation (main checkout /var/home/glw907/.dotfiles) and glw907/standards (main
+checkout /var/home/glw907/Projects/standards).
+
+1. Arm the API-drop wake-up per ~/.claude/docs/unattended-work-guards.md.
+2. Run the plan's "## Pre-flight" checks, including the standards worktree it cuts and the
+   write-probe rerun if #221 has merged, then launch the three executors, the two dotfiles ones from that
+   main checkout and the standards one from its new worktree:
+   cd /var/home/glw907/.dotfiles && claude --bg --model sonnet --effort medium --name dotfiles-model-review-skills "$(cat /var/home/glw907/Projects/initiatives/monthly-model-review/plans/2026-11-10-november-designs-skills-prompt.txt)"
+   cd /var/home/glw907/.dotfiles && claude --bg --model sonnet --effort medium --advisor opus --name dotfiles-model-review-launcher "$(cat /var/home/glw907/Projects/initiatives/monthly-model-review/plans/2026-11-10-november-designs-launcher-prompt.txt)"
+   cd /var/home/glw907/Projects/standards/.claude/worktrees/model-review-2026-11 && claude --bg --model sonnet --effort medium --name standards-model-review "$(cat /var/home/glw907/Projects/initiatives/monthly-model-review/plans/2026-11-10-november-designs-standards-prompt.txt)"
+3. Watch them with Monitor over `claude agents --json --all`, reading each field with .get. Apply the
+   plan's standing answers. A refused write under claude/.claude/ is yours to make by path on the
+   executor's branch.
+4. When all three report PR-ready, add any planning misses per pass-core "Judgment calls", then send
+   one packet (initiative monthly-model-review) per approval-packet, carrying the three PRs.
+5. On approve, merge in the plan's order with --match-head-commit, pull the dotfiles checkout (never the
+   standards checkout, which stays on agent-first-1; remove the pass P worktree instead), run
+   `stow -R claude` in /var/home/glw907/.dotfiles, run pass S task 6's "after" trigger check
+   (revert the log-project description hunk by commit if it fails), then run
+   `claude plugin update standards@glw907-standards` and check `claude plugin list`. On reject, relay the note to the executor that owns the part, then resend.
+6. Last, update the initiative record /var/home/glw907/Projects/initiatives/monthly-model-review/README.md
+   with one line on what landed, commit it to glw907/initiatives main, and run `claude stop` on
+   your own row.
