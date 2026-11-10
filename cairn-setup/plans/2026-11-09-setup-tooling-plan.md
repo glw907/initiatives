@@ -700,11 +700,12 @@ newest message". Test: those cases with a fake page and a fake clock.
 - **The refusals**: `naive`, `scripted`, `probe`, and `sweep --apply` refuse while a `cleanroom-*` tmux
   session is live on either socket, a ledger row reads `running`, or a run process lives (T1.2), naming
   what they found. `naive` never deletes: it refuses while the sweep's dry run lists any target; it
-  counts every naive row, a `running` row whose session is gone at its full cap; it refuses a sixth naive
-  run, sets `--cap-usd` to the lower of $20 and $100 less the spend so far (every ledger row, probe
-  sessions included, plus `cleanroom cost` of the executor's transcript; `conductor-cairn-cms`'s own
-  watching is not counted, since it serves two initiatives), and refuses when that is under $5 (the
-  budget stop); and it refuses when
+  counts every naive row, a `running` row whose session is gone at its full cap; it refuses an eleventh
+  naive run (the cap is ten, Geoff, 2026-11-09), sets `--cap-usd` to the lower of $20 and $100 less the
+  spend so far (every ledger row, probe sessions included, and nothing else: the executor's session is not
+  counted, Geoff, 2026-11-10, Approval Queue item 20261110T032922-1565189, which replaced the
+  `cleanroom cost` term of the executor's transcript), and refuses when that is under $5 (the budget
+  stop); and it refuses when
   the stowed template's `sha256` differs from the last passing row in `/var/tmp/cleanroom/probes.jsonl`.
 
 Files: `scripts/gate/{grade.mjs,record.mjs,verdict.mjs,run-gate.sh}`, `scripts/gate/README.md`,
