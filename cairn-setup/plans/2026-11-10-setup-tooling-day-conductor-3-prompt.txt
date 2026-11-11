@@ -1,0 +1,30 @@
+You are conductor-cairn-cms for setup-tooling pass 3, taking over from the conductor session 53d01f53, which Geoff wound down at about 18:45 on 2026-11-10. Read `pass-core`, `cairn-pass`, and `approval-packet` for how a conductor works; this file restates none of them. The host is pavilion.
+
+First acts, in order:
+1. Run the one-executor check: `claude agents --json --all`, reading each field with `.get`. Expect `cairn-cms-setup-tooling-3b` (4837d614) live, `cairn-cms-setup-tooling-3` (6500d57b) stopped, and no other conductor.
+2. Arm the `/loop` wake-up with no interval and a 1200 to 1800 second fallback, per ~/.claude/docs/unattended-work-guards.md.
+3. Arm a Monitor running /var/home/glw907/Projects/initiatives/cairn-setup/plans/conductor-watch.sh. Re-arm it at each expiry.
+4. Send `cairn-cms-setup-tooling-3b` one line saying you are its conductor now, and ask for #235's state.
+
+## Sources, still in force
+- The plan: .../plans/2026-11-09-setup-tooling-plan.md, "### Pass 3" and "Ruled during pass 3". The naive cap is 15 (Geoff, 2026-11-10).
+- The earlier day-conductor prompts: .../plans/2026-11-10-setup-tooling-day-conductor-prompt.txt and -2-prompt.txt, with the merge procedure, the release rulings (dev snapshots on `gate` only, no rc, `latest` and `next` never move), and the budget.
+- End-packet notes, appended and pushed after each event: .../research/2026-11-09-conductor-end-packet-notes.md. Its last entries cover #234, dev.6, round eight, and the r16 scope.
+- Round records: .../research/proving/round-8.md, scripted-dev6.md. Review records: .../reviews/.
+
+## State at hand-over (2026-11-10, 18:45)
+- `main` is at 2a9fed671 (#234 merged). `gate` serves create-cairn-site 2.0.0-dev.6, engine 0.99.0-dev.1.
+- Scripted run 2611110255 on published dev.6 passed. The host's DNS moved to Cloudflare DoT (workstation c253f4d), a recorded confound. #234's retry and authority wait have not been exercised live.
+- Naive round eight (2611110319) failed as a stall. The agent piped its setup call, missed the sandbox exclusion, and acted on the refusal's later remedy. Naive runs used: 8 of 15. Ledger about $10.5 of $100.
+- cairn-cms#235 (`setup-tooling-r16`, draft, head 695a95ccd at 18:41) carries the r16 scope the previous conductor sent: the sandbox refusal with the bare retry first (messages.go, the agent page, the skill, the golden), an owner-card sandbox row, the grader's stall wording, the grade.mjs null-address fix, #441's stop hint, the scripted stub, the HTTPS-wait time if cheap, and a BACKLOG item for a typed body-parse error. CI was red on one lint finding (cmd/cairn/new_sandbox_test.go:129, stringsseq), and 3b was told.
+
+## Next, in order
+1. Merge #235 only when CI is green on its head and a whole-branch `standards:diff-reviewer` returns accept on that exact head, plus a prose-voice read of the refusal and the agent page. A conductor's own read never stands in for an accept the review didn't give: auto mode refused that merge once (2026-11-10), rightly.
+2. After the merge, 3b publishes 2.0.0-dev.7 on `gate`. A scripted leg runs first only if #235 touched tool code beyond messages.go or something the leg exercises.
+3. Then naive round nine. If it fails on the stand-in, the sandbox call, or the mail sign-in, 3b traces it and reports to you before any tenth run or code change.
+4. Remaining pass 3 work after a clean naive pass: T3.4 (#366 to Done), T3.5 (dependency sweep, final candidate, reruns), T3.6 (owner runbook), then the end packet via approval-packet.
+
+## Open for Geoff
+- S-2 revisit: with the clean room's sandbox.allowUnsandboxedCommands false, exclusions are the only way out, and a call that isn't bare has no fallback prompt (round-7.md, round-8.md).
+- `claude rm 6500d57b` removes the first executor's merged worktree when he wants.
+- Theme-garden G3 design session 5013bd5e still waits for him.
