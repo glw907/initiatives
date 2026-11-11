@@ -9,8 +9,8 @@ the mailbox `cairn-gate@probe.907.life`. Port 49152 must be free, so run no `mak
 
 ## Before
 
-1. Check that `gate` serves dev.7 and that no earlier test left anything behind. The sweep must list no target;
-   `cleanroom stop geoff` clears a refusal.
+1. From the cairn-cms checkout, check that `gate` serves dev.7 and that no earlier test left anything behind. The
+   sweep must list no target; `cleanroom stop geoff` clears a refusal.
 
    ```
    npm view create-cairn-site dist-tags
@@ -30,8 +30,8 @@ the mailbox `cairn-gate@probe.907.life`. Port 49152 must be free, so run no `mak
    cleanroom shell geoff --open-with "chromium-browser --user-data-dir=$HOME/.local/state/cleanroom/chromium-test"
    ```
 
-6. In that shell, run it with no token, so Cloudflare asks for your consent in the browser:
-   `npm_config_tag=gate npm create cairn-site`
+6. In that shell, which holds no Cloudflare token (`cleanroom` hands a room only what `--secret` and `--env` name), run
+   it, so Cloudflare asks for your consent in the browser: `npm_config_tag=gate npm create cairn-site`
 7. Answer as an owner would. Name: `Cairn gate <id>`. Email: `cairn-gate@probe.907.life`. Crawlers: your choice. Host:
    `gate.carin-test.org`, never the bare `carin-test.org` (the sweep refuses a record there).
 8. Approve each browser step as it opens: Cloudflare, then the GitHub App, its repositories, and its install. Fix
