@@ -19,8 +19,9 @@ the mailbox `cairn-gate@probe.907.life`. Port 49152 must be free, so run no `mak
 
 2. Pick a ten-digit id (`date -u +%y%m%d%H%M`). The site name is `Cairn gate <id>`, which is how the sweep finds it.
 3. Make a fresh clean room: `cleanroom init geoff --fresh --discard`.
-4. Once, ever: open the test profile and sign it into GitHub as `glw907-test`:
-   `chromium-browser --user-data-dir=$HOME/.local/state/cleanroom/chromium-test`.
+4. Once, ever: open the test profile, `chromium-browser --user-data-dir=$HOME/.local/state/cleanroom/chromium-test`, and
+   sign it into GitHub as `glw907-test` and into Cloudflare as `glw907`. Cloudflare's sign-in and its "Verify you are
+   human" check are yours to pass: they stop any script, and no run has seen the pages after them.
 
 ## The install
 
@@ -41,9 +42,9 @@ the mailbox `cairn-gate@probe.907.life`. Port 49152 must be free, so run no `mak
 ## Friction log
 
 Five lines in `research/owner-install-friction.md`, written as you go: what stopped or surprised you, the screen, how
-long you waited, what the words should have said, and whether the sign-in worked. Then the #403 check: in the test
-profile, Cloudflare, Profile, Manage OAuth authorizations. Is the authorization there, and is it named "cairn"
-(`doneRevokeFailed`, `tool/internal/ui/newview/catalogue.go`)?
+long you waited, what the words should have said, and whether the sign-in worked. Take a screenshot of each Cloudflare
+page. Then the #403 check: in the test profile, Cloudflare, Profile, Manage OAuth authorizations. Is the authorization
+there, and is it named "cairn" (`doneRevokeFailed`, `tool/internal/ui/newview/catalogue.go`)?
 
 ## Clean up
 
