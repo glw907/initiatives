@@ -1017,3 +1017,5 @@ The order:
    Geoff's install on the final candidate.
 
 The conductor's prompt for this order is `2026-11-10-setup-tooling-day-conductor-3-prompt.txt`.
+
+Ruled (Geoff, in chat to the conductor, 2026-11-10, about 20:15 AKST): "We only need one succesful naive agent run." The naive leg ends at its first graded pass, which is the release gate's naive row. Batch one runs one at a time on dev.7, up to three runs, with no fix between them, and stops at the first pass. If all three fail, one fix PR and one snapshot follow, then up to three more runs, again stopping at the first pass. With no pass, the end packet asks whether to ship. This replaces item 4's "one confirming batch of three" above.
