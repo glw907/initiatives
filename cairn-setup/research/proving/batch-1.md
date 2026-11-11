@@ -6,6 +6,9 @@ is enough). Candidate under test: create-cairn-site and the six platform package
 | Run | Overall run | Started (AKST) | Agent | Goal to signed in | Cost | Graded | Cause |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 2611110726 | 9 of 15 | 22:26 | Sonnet 5.5, medium | 6.5 min | $0.32 | fail, other | Two grader gaps; the product worked (PR #238) |
+| 2611110815 | 10 of 15 | 23:15 | Sonnet 5.5, medium | 3.8 min | $0.31 | fail, other; regraded pass | First grade: the registry read was killed by the room's own stop (exit 241). Regrade on the intact room: pass |
+
+The naive leg ends with run 10: the first graded naive pass.
 
 ## Run 2611110726
 
@@ -52,3 +55,51 @@ ruling for a harness failure is to rerun on the same build.
 
 None from the agent. One item for the grader PR's planning-miss note: a grader failure on a read is traced to the error the read
 returned before the cause is named.
+
+
+## Run 2611110815
+
+The agent set the site up, the stand-in signed in as owner, and the regraded record is a pass: live (`/` and `/admin` 200), owner
+signed in (08:19:46Z), sign-in mail received, launcher, platform package, and engine pin matching the candidate. Goal to signed in
+3.8 minutes (agent 3.6, provider wait 0.2); first deploy install 0.6, build 0.5, deploy 0.3; HTTPS wait 0.2. Cost about $0.31. It ran
+on the grader from #238 (merge 42f5573fb), which read the apply's events and the registry record correctly.
+
+### What the agent did
+
+1. Cloned the repository, read the docs, and asked the owner the same four questions as a form. I answered from the card.
+2. Ran the dry run, then `--plan plan.json` bare in the background. It told the owner the first GitHub approval was waiting and
+   quoted the sentence ("Select Create GitHub App to add the App for Cairn gate 2611110815. The admin saves changes to your site
+   through the App."). The stand-in had already made the App and both installs within twelve seconds, so the agent's wait was stale
+   when I read it.
+3. Read the plan and showed the plan table, asking for a go-ahead to apply. My reply, "I've approved that in the browser. Keep
+   going.", crossed with that question, and the agent took it as the go-ahead. It ran `--apply plan.json` bare in the background,
+   read the end of its output with `tail`, reported the site created and the sign-in emailed, and said it would not handle the link.
+4. The stand-in read the mail and opened the link at 08:19:46Z.
+
+No permission prompt appeared. The calls that ran in the sandbox were a `tail` and `cat` of the plan and a `tail` of the apply
+output; no unsandboxed prompt came up, so the conductor's rule for them was not tested. This run also used the token mode.
+
+### Two grades
+
+The first grade failed: `read registry record failed: exited 241`, with every end-state check ok. The cause is a race in the
+harness. Exit 241 is `sys.exit(-15)` as an unsigned byte, a SIGTERM to the `cleanroom shell` bash. The room's watcher ticks every 15
+seconds; when the session's main window is gone it records `exited` and then calls `stop`, which sends SIGTERM to every process of
+the room. State recorded `exited` at 23:19:57 and the grader wrote its record at 23:20:01, so the grader's first read inside the room
+(the registry record, which is now the first `cleanroom shell` call) ran while that kill was in progress. The same read exits 0
+before and after: the conductor ran it at about 23:25 and so did I. Run 2611110726 shows the race from the other side: its record was
+written at 22:33:14 and its state flipped to `exited` at 22:33:17, so its grader finished first.
+
+The conductor ruled that a harness race does not count against cairn, and that the run is regraded once on its intact room before
+the sweep. The regrade, on the unchanged evidence (the site still answered 200 and the room held the record), is a pass. Both
+records are kept: the first in the job's scratch, the second as the run's `run-record.md`. A fix for the race (the grade waits for
+the room's state to leave `running` and the stop to finish, or the read retries once on a signal exit) goes in a small harness PR
+for the end packet; it does not block.
+
+The record's step table is short (opening-checks, approve-cloudflare, cloudflare-checks, domains, sign-in) because this agent read
+only the last lines of the apply's output, so only those events are in the transcript. The grader still has the HTTPS wait and
+the sign-in step it needs. A grader that wants the full table would read the event log from the room's task output, not the
+agent's reads of it.
+
+### Friction and flailing
+
+None from the agent. Two harness items: the race above, and the grader's step table, which reflects what the agent chose to read.
