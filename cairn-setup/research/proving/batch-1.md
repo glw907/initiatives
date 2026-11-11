@@ -103,3 +103,17 @@ agent's reads of it.
 ### Friction and flailing
 
 None from the agent. Two harness items: the race above, and the grader's step table, which reflects what the agent chose to read.
+
+## For the end packet
+
+- **The watcher match, on a real room.** The grade's wait for `cleanroom _watch <run id>` (cairn-cms#239, cf0941497) was checked
+  against a real process with the same argument shape, not against a live room's watcher. The first live room that is graded shows
+  whether the match works: the record's reads should list `room settled` as ok, and a grade that starts right after the session ends
+  should no longer fail a read with exit 241.
+- **The done screen and the Cloudflare grant** (BACKLOG #461). A canary showed that setup's revoke kills the tokens (the access token
+  answers 403 after revoke, the refresh token is refused) while Cloudflare keeps the grant "cairn" listed in Connected Applications
+  until the owner removes it. The done screen should say where: My Profile, Access Management, Connected Applications. The 907.life
+  walk-through already tells Geoff.
+- **Optional, from run 10:** the record's step table lists only the events an agent happened to read, so a run where the agent
+  reads the end of the apply output shows a short table. The timing it needs is complete. Reading the event log from the room's task
+  output would give the full table.
