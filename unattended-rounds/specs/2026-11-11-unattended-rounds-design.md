@@ -102,7 +102,7 @@ A round of 600 planned path minutes should take about 220 to 240 actual minutes 
 
 ### Models
 
-Conductors and executors stay on Sonnet at `medium`, as the conductor and planner references set. Design and planning follow your answer to the third decision. Each plan gets one `standards:plan-reviewer` read. Anthropic's Fable 5.2 prompting page says "Early testers had good results with Claude Fable 5.2 as the planner and orchestrator for other models." The Fable allowance has its own weekly meter, which read 41 percent against 80 for all models.
+Conductors and executors stay on Sonnet at `medium`, as the conductor and planner references set. Design and planning follow your answer to the third decision. Each plan gets one `standards:plan-reviewer` read. Anthropic's Fable 5.2 prompting page says "Early testers had good results with Claude Fable 5.2 as the planner and orchestrator for other models." The Fable allowance has its own weekly meter, which read 40 percent against 80 for all models.
 
 ### What the planner must show
 
@@ -188,7 +188,7 @@ The kit is agent-facing and follows `~/.claude/docs/voice/agent-facing.md`. It h
 | The usage read | `claude -p "/usage" --model haiku < /dev/null` printed the weekly line, 2026-11-11 | The output changes shape or prints no weekly line | An unreadable figure counts as over the ceiling. |
 | Waiting for the reset | Not probed. The `/goal` page says a goal pauses on a usage limit and resumes at the reset | The session never resumes | The report is written before the wait. STATUS names the conductor prompt for a relaunch. |
 | `/goal` holds a `--bg` session to its condition | Probe `94a50d24`: "Goal achieved" after three held turns | The condition names no end the session can reach | The condition lists every end. A cleared goal doesn't show in `state.json`, so the conductor reads STATUS. |
-| The machine stays up | `uupd` stages updates without applying them, and `sleep-inactive-ac-type` is `nothing` on pavilion | A power loss or a manual restart | Standing answer 8. |
+| The machine stays up | `uupd` stages updates without applying them, and `sleep-inactive-ac-type` is `nothing` on pavilion | A power loss or a manual restart | Standing answer 10. |
 
 ### What each decision changes
 
@@ -220,6 +220,8 @@ The baseline per 100 merged PRs is 33 misses in all, 8.2 for an unprobed mechani
 - The conductor runs `approval-queue land`. A dependent pass joins its parent's close packet.
 - The symlink points into this record's worktree at `.claude/worktrees/unattended-rounds`, which stays in place until the initiative closes. A removed worktree breaks the link where a designing session will report it.
 - An unreadable usage figure counts as over the ceiling.
+
+A builder check by a fresh Opus reader raised five questions on 2026-11-11. The calls above settle four of them, and the fifth is Geoff's three answers, which the kit waits for.
 
 ### Left to the builder
 
