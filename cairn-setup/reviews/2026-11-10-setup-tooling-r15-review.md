@@ -1,6 +1,6 @@
 # setup-tooling-r15: request detail, the dial retry, and the resolver, review record
 
-PR glw907/cairn-cms#234, branch `setup-tooling-r15`, head `741c4785d`, fast lane green. Class `runner` with `auth-data` paths
+PR glw907/cairn-cms#234, branch `setup-tooling-r15`, head `95ef34ab5`, fast lane green. Class `runner` with `auth-data` paths
 (`tool/internal/setup/{runner,approvals,watch}.go`), so the web-auth-security read ran twice. Every behavior change has its failing test
 committed first.
 
@@ -44,6 +44,31 @@ body-read error still shows its text up to 200 characters.
 same clients, so the health credential and API checks repeat a failed read, which my PR text denied. Decision: accept the retry there
 (idempotent reads bounded by their context), correct the four texts that said otherwise, and add `providers.SetDialRetryWait` so the
 health test does not sleep. The creds test is 0.00 seconds again.
+
+## Round three at `741c4785d`, and four at `62dde4827`
+
+**whole-branch at 741c4785d: fix, two blockers.** `failure()` set Detail only for a provider error, so the first-sweep delete stop and
+the npm template-fetch stop carried none; and `isTLSError` missed an alert the server sent. Folded in `62dde4827`: `failure()` fills Detail
+from any `TransportError` through a new `Provider()` (host to cloudflare, github, or npm), with red-first tests holding the exact strings.
+The alert fix matched `tls.AlertError`.
+
+**whole-branch at 62dde4827: fix.** That match was wrong. crypto/tls reports a server's alert as a `*net.OpError` with Op `remote error`
+and an unexported cause, never as `tls.AlertError`, and my tests had built the error by hand, so they passed against a broken check. A real
+handshake (a TLS 1.3-only httptest server and a TLS 1.2-capped client) was classed "transport error" and retried three times. The lesson,
+recorded in the PR's Planning misses: a test for how a library reports an error must make the library produce it.
+
+## Round five at `95ef34ab5`: accept
+
+**whole-branch: accept, no blocker.** `isTLSError` matches the `remote error` Op, which only crypto/tls sets (conn.go:733 and :740 in Go 1.27.3);
+the real-handshake test fails when the matcher's Op string is changed, and passes `-count=20` with and without `-race`. A stop setup ended
+(`ReasonStopped`, `ReasonChainTimeout`) shows no transport detail. A re-read of the whole branch found no new blocking defect.
+
+Non-blocking, filed in the next round's PR with the conductor's typed-error item for body parse and read failures:
+- `scripts/gate/grade.mjs:515` treats a null `authoritativeAddress` as "the zone has no address", but `resolve.mjs` also returns null when
+  the public resolvers or the nameserver cannot be reached, so a live site on a network that blocks port 53 would grade as failed.
+- `scripts/gate/scripted.mjs:357` leaves `cat ${captureFile}` unquoted, which breaks on a path with a space.
+- The real-handshake test prints the httptest server's TLS handshake log lines into test output.
+- The Detail doc comment lists the body parse and read text, which only `fail()` sets.
 
 ## Not proved
 
