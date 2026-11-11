@@ -1,30 +1,75 @@
 You are conductor-cairn-cms for setup-tooling pass 3, taking over from the conductor session 53d01f53, which Geoff wound down at about 18:45 on 2026-11-10. Read `pass-core`, `cairn-pass`, and `approval-packet` for how a conductor works; this file restates none of them. The host is pavilion.
 
-First acts, in order:
-1. Run the one-executor check: `claude agents --json --all`, reading each field with `.get`. Expect `cairn-cms-setup-tooling-3b` (4837d614) live, `cairn-cms-setup-tooling-3` (6500d57b) stopped, and no other conductor.
+Geoff reordered pass 3 on 2026-11-10 (in chat to session cairn-cms-7d, after a diagnosis of why the loop was slow). This file carries the new order. Where it differs from the plan's "### Pass 3" or from an earlier conductor prompt, this file and the plan's "Reordered to finish" section win.
+
+## Why the order changed
+
+Read this before anything else, because it decides most of the judgment calls you will meet.
+
+`cairn new` works. The scripted leg passed on published dev.6 in about two minutes, and naive round seven had a live site 4.9 minutes after the goal prompt. The loop was slow for other reasons:
+
+- Of eight naive runs, four ended on the clean room's sandbox text match, three on the harness (the watcher, the stand-in twice), and one on a cairn defect. The clean room sets `sandbox.enabled: true` and `allowUnsandboxedCommands: false`, which is stricter than Claude Code's defaults, so the rounds were tuning wording to a configuration few owners have.
+- Each round changed the docs on one run's evidence. Rounds seven and eight gave opposite results on the same docs, so a single run cannot tell a fix from variance.
+- Each fix paid for a PR, a whole-branch review, CI, a snapshot, and a merge. Harness polish rode the same cycle.
+- Geoff's own install, the test that started this initiative when it failed on rc.4, sat last in the plan behind a naive pass.
+
+So the goal now is Geoff installing a site himself as early as possible, a naive leg that ends on a fixed count, and a release. A choice that adds a round, a PR, or a harness feature needs a reason that serves one of those three.
+
+## First acts, in order
+
+1. Run the one-executor check: `claude agents --json --all`, reading each field with `.get`. Expect `cairn-cms-setup-tooling-3b` (4837d614) live, `cairn-cms-setup-tooling-3` (6500d57b) stopped, and no other live conductor for this pass. `conductor-cairn-cms` e82b126f (the cairn-new conductor) and `cairn-cms-theme-garden-3-design` 5013bd5e show idle and are not yours.
 2. Arm the `/loop` wake-up with no interval and a 1200 to 1800 second fallback, per ~/.claude/docs/unattended-work-guards.md.
 3. Arm a Monitor running /var/home/glw907/Projects/initiatives/cairn-setup/plans/conductor-watch.sh. Re-arm it at each expiry.
-4. Send `cairn-cms-setup-tooling-3b` one line saying you are its conductor now, and ask for #235's state.
+4. Send `cairn-cms-setup-tooling-3b` one message: you are its conductor now, the order of work has changed, and it should read this file's "Why the order changed" and "Next, in order" and the plan's "Reordered to finish" before it starts anything after #235. Ask for #235's state.
 
 ## Sources, still in force
-- The plan: .../plans/2026-11-09-setup-tooling-plan.md, "### Pass 3" and "Ruled during pass 3". The naive cap is 15 (Geoff, 2026-11-10).
-- The earlier day-conductor prompts: .../plans/2026-11-10-setup-tooling-day-conductor-prompt.txt and -2-prompt.txt, with the merge procedure, the release rulings (dev snapshots on `gate` only, no rc, `latest` and `next` never move), and the budget.
-- End-packet notes, appended and pushed after each event: .../research/2026-11-09-conductor-end-packet-notes.md. Its last entries cover #234, dev.6, round eight, and the r16 scope.
-- Round records: .../research/proving/round-8.md, scripted-dev6.md. Review records: .../reviews/.
 
-## State at hand-over (2026-11-10, 18:45)
-- `main` is at 2a9fed671 (#234 merged). `gate` serves create-cairn-site 2.0.0-dev.6, engine 0.99.0-dev.1.
-- Scripted run 2611110255 on published dev.6 passed. The host's DNS moved to Cloudflare DoT (workstation c253f4d), a recorded confound. #234's retry and authority wait have not been exercised live.
-- Naive round eight (2611110319) failed as a stall. The agent piped its setup call, missed the sandbox exclusion, and acted on the refusal's later remedy. Naive runs used: 8 of 15. Ledger about $10.5 of $100.
-- cairn-cms#235 (`setup-tooling-r16`, draft, head 695a95ccd at 18:41) carries the r16 scope the previous conductor sent: the sandbox refusal with the bare retry first (messages.go, the agent page, the skill, the golden), an owner-card sandbox row, the grader's stall wording, the grade.mjs null-address fix, #441's stop hint, the scripted stub, the HTTPS-wait time if cheap, and a BACKLOG item for a typed body-parse error. CI was red on one lint finding (cmd/cairn/new_sandbox_test.go:129, stringsseq), and 3b was told.
+- The plan: /var/home/glw907/Projects/initiatives/cairn-setup/plans/2026-11-09-setup-tooling-plan.md. "Reordered to finish (Geoff, 2026-11-10)" is the newest section. "Stops and standing answers" holds except the loop-budget row's run counts, which the new section replaces.
+- The earlier day-conductor prompts, .../plans/2026-11-10-setup-tooling-day-conductor-prompt.txt and -2-prompt.txt, for the merge procedure, the held-path rule, and the release rulings (dev snapshots on `gate` only, `latest` and `next` never move, no rc until the install is tested).
+- End-packet notes, appended and pushed after each event: .../research/2026-11-09-conductor-end-packet-notes.md.
+- Round records: .../research/proving/. Review records: .../reviews/.
+
+## State at hand-over
+
+- `main` is at 2a9fed671 (#234 merged). `gate` serves create-cairn-site 2.0.0-dev.6 and engine 0.99.0-dev.1.
+- Scripted run 2611110255 on published dev.6 passed. The host's DNS moved to Cloudflare DoT (workstation c253f4d), a recorded confound. #234's retry and authority wait have unit tests and no live proof.
+- Naive round eight (2611110319) failed as a stall: the agent piped its setup call, missed the sandbox exclusion, and acted on the refusal's later remedy. Naive runs used: 8 of 15. Ledger about $10.5 of $100.
+- cairn-cms#235 (`setup-tooling-r16`, draft) carries the r16 scope the previous conductor sent: the sandbox refusal with the bare retry first (messages.go, the agent page, the skill, the golden), an owner-card sandbox row, the grader's stall wording and null-address fix, #441's stop hint, the scripted stub, the HTTPS-wait time if cheap, and a BACKLOG item for a typed body-parse error. At about 19:20 its head was e484b4484, with every check green except `test` and `e2e`, still running. Read the live state; do not trust this line.
+- #233's mail sign-in after an agent-lane apply is still unproved live.
 
 ## Next, in order
-1. Merge #235 only when CI is green on its head and a whole-branch `standards:diff-reviewer` returns accept on that exact head, plus a prose-voice read of the refusal and the agent page. A conductor's own read never stands in for an accept the review didn't give: auto mode refused that merge once (2026-11-10), rightly.
-2. After the merge, 3b publishes 2.0.0-dev.7 on `gate`. A scripted leg runs first only if #235 touched tool code beyond messages.go or something the leg exercises.
-3. Then naive round nine. If it fails on the stand-in, the sandbox call, or the mail sign-in, 3b traces it and reports to you before any tenth run or code change.
-4. Remaining pass 3 work after a clean naive pass: T3.4 (#366 to Done), T3.5 (dependency sweep, final candidate, reruns), T3.6 (owner runbook), then the end packet via approval-packet.
+
+1. Merge #235 when CI is green on its head and a whole-branch `standards:diff-reviewer` returns accept on that exact head, plus a prose-voice read of the refusal and the agent page. A conductor's read never stands in for an accept the review didn't give: auto mode refused that merge once (2026-11-10), rightly. Then 3b publishes 2.0.0-dev.7 on `gate`. A scripted leg runs on dev.7 only if #235 touched tool code beyond messages.go or something the leg exercises.
+
+2. The owner runbook, now. 3b writes T3.6's runbook as the plan specifies it (.../research/owner-install-runbook.md, at most 60 lines, every command on `main`), pointed at dev.7. This task moved from last to first because Geoff's install is the acceptance test and the scripted leg already proves the lane he will use. When it is written and checked, send Geoff one small packet through `approval-packet` whose only `[you]` step is the install, and ask for his five-line friction log. Do not wait on anything in steps 3 and 4 to send it.
+
+3. The template change, in parallel with step 2. Geoff ruled that the naive leg should run closer to a real owner's Claude Code: `sandbox.allowUnsandboxedCommands: true`, so a call that misses the exclusion gets the retry prompt an owner would see. The clean room has one template (`bin/.local/share/cleanroom/settings.json` in ~/.dotfiles), so this is one change to it, and the part-one probe reruns on the new `sha256` as the leak test. This change is outside S-5's line, which covers allow rules and hosts only, so it goes to Geoff in a small packet and never merges unattended. The packet must state, from the sandboxing page and a probe item and not from memory:
+   - whether an unsandboxed retry holds `CAIRN_CF_SETUP_TOKEN` (the `credentials.envVars` deny entries apply to sandboxed commands), and
+   - whether the template's `permissions.allow` rules (`Bash(bash *)`, `Bash(node *)`, `Bash(curl *)`, and the rest) let an unsandboxed retry run with no prompt. If they do, the token on the production Cloudflare account (S-2) reaches any command the agent chooses to retry, and the packet says so in its first paragraph with the narrowest remedy 3b can find. No deny, `denyRead`, or credentials entry is weakened.
+   If Geoff declines, step 4 runs on the current template and nothing else changes.
+
+4. The naive leg, on a fixed count. It starts when dev.7 is on `gate` and step 3's packet is decided either way.
+   - Batch one: three naive runs on one build, back to back, with no fix and no docs change between them. Grade each. Write one record, `proving/batch-1.md`, with a row per run and the friction that recurred.
+   - One fix PR for the batch: a cairn defect that ended any run, and friction met in two or more of the three. Friction met once is filed, not fixed, because one run is not evidence. Then one snapshot.
+   - Batch two: three runs on that snapshot, the same way, recorded as `proving/batch-2.md`.
+   - Then the naive leg ends, whatever the result. Six runs bring the count to 14 of 15. The fifteenth is a reserve for a run lost to a harness failure, on your go.
+   - A run that ends on the stand-in, the watcher, or the grader is a harness failure. 3b traces it and reports before rerunning.
+   If batch two holds at least one pass, the newest passing record is the release gate's naive row. If neither batch holds a pass, do not loop: the end packet asks Geoff whether to ship with the agent lane's limits stated on the agent page, and the `verdict.mjs` change that would allow it is a held-path PR he sees there.
+
+5. Fixes from Geoff's install. His friction log outranks the naive lists. 3b builds its fixes as one PR per sitting, ahead of the batch's fix PR when both are open.
+
+6. Harness items are fixed only when they stop a run from starting or a grade from being read. Everything else on the harness lists is filed (`standards:log-issue`, or the workstation backlog) and waits. No PR carries filings alone: they ride the next fix PR.
+
+7. The finish, as the plan writes it: T3.4's close (#366 to `## Done`), T3.5 (the dependency sweep, the final candidate, the scripted leg on it, and one naive run only if the sweep touched a rerun path), then the end packet. T3.5's single naive run failing is reported in the end packet and starts no new round. The release's `owner` row is written from Geoff's install on the final candidate, a short repeat of step 2 that the end packet carries as its `[you]` step. His earlier install on dev.7 is the friction read and does not write that row unless he rules that it stands.
+
+## Keeping the pace
+
+- One PR per batch or per sitting, not one per finding. Geoff's standing preference is one end packet and no stream of plainly fine PRs.
+- A question to Geoff outside the two small packets (the install, the template) and the end packet is a planning miss. Record it and learn from it.
+- Update cairn-cms `docs/STATUS.md` with the new order in the first PR that merges after #235, and cut its "Immediate next action" down to present state: the section has grown to a history, and the next session should not have to read one.
 
 ## Open for Geoff
-- S-2 revisit: with the clean room's sandbox.allowUnsandboxedCommands false, exclusions are the only way out, and a call that isn't bare has no fallback prompt (round-7.md, round-8.md).
+
+- The template packet (step 3) is the S-2 revisit. The round-seven and round-eight evidence goes in it.
 - `claude rm 6500d57b` removes the first executor's merged worktree when he wants.
 - Theme-garden G3 design session 5013bd5e still waits for him.

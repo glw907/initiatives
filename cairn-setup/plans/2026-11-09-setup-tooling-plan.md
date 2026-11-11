@@ -982,3 +982,38 @@ The naive-run cap rises from ten to fifteen (Geoff, in chat to the conductor, 20
 fifteen runs if needed, but hopefully we won't."). Seven are spent, so eight remain. The $100 clean-room
 ledger is unchanged. `run-gate.sh`'s naive limit and the proving skill's count follow in the next round PR,
 before an eleventh run.
+
+## Reordered to finish (Geoff, 2026-11-10)
+
+Geoff approved this order in chat to session cairn-cms-7d on 2026-11-10, after a diagnosis of the loop's
+pace. It replaces pass 3's order from T3.3 on, the outcome line's "a naive run passes without obvious
+flailing", and the loop-budget row's run counts. Everything else in pass 3 holds.
+
+What the diagnosis found: `cairn new` works (the scripted leg passed on published dev.6, and naive round
+seven had a live site in 4.9 minutes), and the loop was slow around it. Of eight naive runs, four ended on
+the clean room's sandbox text match, three on the harness, and one on a cairn defect. Each round changed
+the docs on one run's evidence, and rounds seven and eight gave opposite results on the same docs. Geoff's
+install, the test that failed on rc.4, sat last in the plan.
+
+The order:
+
+1. #235 merges, and dev.7 is published on `gate`.
+2. T3.6's runbook is written now, pointed at dev.7, and Geoff runs the owner install on it. His friction
+   log outranks the naive lists.
+3. S-2 revisit: the naive leg runs with `sandbox.allowUnsandboxedCommands: true`, so a call that misses
+   the exclusion gets the retry prompt an owner at Claude Code's defaults would see. The clean room has
+   one template, so this is one change to it with the part-one probe rerun on the new `sha256`. The
+   change is outside S-5's line and reaches Geoff as a small packet that states what an unsandboxed
+   retry can reach while it holds the setup token. On a no, the leg runs on the current template.
+4. The naive leg ends on a fixed count: one batch of three runs on one build with no fix between them,
+   one fix PR (a cairn defect that ended a run, and friction met in two or more runs), one snapshot, and
+   one confirming batch of three. That is 14 of the 15 runs, with one in reserve for a run lost to the
+   harness. With a pass in batch two, the newest passing record is the gate's naive row. With no pass in
+   either batch, the loop does not go on: the end packet asks Geoff whether to ship with the agent
+   lane's limits stated.
+5. A harness item is fixed only when it stops a run from starting or a grade from being read. The rest
+   is filed.
+6. T3.4's close, T3.5, and the end packet follow as written. The release's `owner` row is written from
+   Geoff's install on the final candidate.
+
+The conductor's prompt for this order is `2026-11-10-setup-tooling-day-conductor-3-prompt.txt`.
