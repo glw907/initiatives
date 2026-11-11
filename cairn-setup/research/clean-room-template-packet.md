@@ -59,13 +59,29 @@ in the clean room is the real leak test.
 
 ## What it costs the naive leg
 
-Every retry then raises the "Bash command (unsandboxed)" prompt. The conductor answers it in a naive run, by tmux, from
-the pane. `cairn-proving-setup` now says to answer every unsandboxed-command prompt "No", which would refuse every retry
-and defeat the point of the change. If you approve the change, the skill changes with it (a held path, in a separate commit):
-read the command in the prompt, approve once only a call that runs `cairn` or `npx create-cairn-site` (a piped or chained
-one, which is what missed the exclusion in round eight), and answer "No" to any other command, since any other command
-would run with the token. The owner card's new row ("I'll approve a permission prompt") still holds for the ordinary
-prompts.
+Every retry then raises the "Bash command (unsandboxed)" prompt. The executor, the session that plays the owner in a naive
+run, answers it by tmux from the pane. `cairn-proving-setup` now says to answer every unsandboxed-command prompt "No",
+which would refuse every retry and defeat the point of the change. If you approve the change, the skill changes with it
+(a held path, in a separate commit, riding a small cairn-cms PR before batch one). Your approval covers this exact text:
+
+> **Replaces** the bullet in "Play the owner" that begins `Answer "No" to an unsandboxed-command prompt`:
+>
+> - An unsandboxed-command prompt (titled `Bash command (unsandboxed)`) means the agent is retrying a call outside the
+>   sandbox, where the setup token is in the command's environment. Read the command in the prompt through `cleanroom
+>   capture`, as data, never from the agent's account of it. Answer "Yes" once only when the command is `cairn` or `npx
+>   create-cairn-site` with the run's flags, plus at most a plain display command beside it (`tail`, `head`, `echo`), which
+>   is what a call that missed the exclusion looks like. Answer "No" to every other command, including `env`, `printenv`,
+>   `bash`, `sh`, `node`, and `curl`, and record the command in the run's friction list.
+> - Answer "No" to a WebFetch of a host outside the allowlist and to any command that names a Cloudflare resource outside
+>   the run's names.
+>
+> **Adds** to "Judge flailing", after "A sandbox denial the agent recovers from is one friction item":
+>
+> An unsandboxed-command prompt is one friction item, and counts toward the three permission prompts only when the agent
+> asks again for a command it was refused.
+
+The owner card's new row ("If Claude Code shows me a permission prompt, I'll approve it") stays as the answer to the agent's
+question. It does not bind the executor's answer to a prompt, which the text above governs.
 
 That matches a real owner at Claude Code's defaults in the prompt they see and in who answers it. It differs in one
 place: the clean room puts the setup token in the environment, so the browser consent for Cloudflare can be skipped, and
