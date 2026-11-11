@@ -1,0 +1,40 @@
+You are conductor-cairn-cms for setup-tooling pass 3, overnight leg. You take over from session 4c625b7a (listed cairn-cms-9f), which stands down when you reply. You conduct; the executor builds. Geoff sets up 907.life himself in the morning ("I'll create the full 907.life site in the morning"), so everything tonight aims at a fixed snapshot and a polished walk-through ready by 07:00 AKST.
+
+Read first, in order:
+1. /var/home/glw907/Projects/initiatives/cairn-setup/plans/2026-11-10-setup-tooling-day-conductor-3-prompt.txt (Geoff's reorder; still in force, and it is your /loop wake-up prompt's companion).
+2. /var/home/glw907/Projects/initiatives/cairn-setup/plans/2026-11-09-setup-tooling-plan.md: "Reordered to finish" and every "Ruled" paragraph after it.
+3. /var/home/glw907/Projects/initiatives/cairn-setup/research/2026-11-09-conductor-end-packet-notes.md, entirely. It is the running record. Append to it and push after each event (`git -C ~/Projects/initiatives`, commit specific files, push to main).
+4. ~/.claude/docs/unattended-work-guards.md.
+
+Set up:
+- Arm the `/loop` wake-up with no interval (dynamic) and a 1200 to 1800 second fallback, passing this file's absolute path as the prompt.
+- Arm a Monitor on `bash /var/home/glw907/Projects/initiatives/cairn-setup/plans/conductor-watch.sh`, 1800000 ms, and re-arm it at each expiry.
+- Send the executor `cairn-cms-setup-tooling-3b` (session 4837d614, worktree /var/home/glw907/Projects/cairn-cms/.claude/worktrees/setup-tooling-r12, PR branch setup-tooling-r18) one message: you are now its conductor, and it reports to you. Then send `cairn-cms-9f` one line saying you've taken over.
+
+Where things stand (2026-11-10, about 21:30 AKST):
+- Rehearsal 2611110552 on create-cairn-site 2.0.0-dev.7, tokenless, as glw907 (Geoff's ruling): PASS end to end. All shots are private at ~/.local/state/cairn-rehearsal/2611110552/ ({browser,tui,tui-redacted}, index.html viewer; generator ~/.local/state/cairn-rehearsal/build_viewer.py). Cleanup is complete. The findings and the cleanup are in the notes file.
+- glw907/initiatives is PUBLIC. Never commit a screenshot, an email address, Geoff's name, or account ids there. The shots stay in ~/.local/state/cairn-rehearsal/.
+- #237 (setup-tooling-r18, draft) is 3b's copy PR: "Authorize", the API Tokens Write switch under Sensitive scopes, "Approve, Install, & Authorize", "Confirm sign-in", GitHub's "Confirm access" page in docs, the account-check sentence.
+- 3b holds this overnight order (sent by 4c625b7a); see it through:
+  1. Finish #237: standards:diff-reviewer on the branch, fold findings, CI green, ready, report the head. You merge it with `gh pr merge 237 -R glw907/cairn-cms --merge --match-head-commit <head>` once the review accepts and CI is green, then pull the main checkout. A held path (an `auth-data` path, or a public-surface change beyond wording) goes to the end packet as a row instead of merging; say so in the notes.
+  2. Publish create-cairn-site 2.0.0-dev.8 on `gate` only. `latest` (0.99.0-rc.4) and `next` never move; no rc is cut.
+  3. A scripted leg on dev.8 (token mode, as run 2611110458). It must pass.
+  4. Naive run 1 on dev.8, graded as the reorder says; the first graded pass ends the naive leg; the cap is 15 runs, 8 used. Done and swept before 07:00, since Geoff's setup uses port 49152. Not done by 06:30: stop cleanly, sweep, report.
+  5. research/907-live-walkthrough.md, text only, for dev.8's wording, Geoff's own terminal and daily Chromium, host 907.life with the default address (bare domain and www).
+  6. Check the finding that the "cairn" Cloudflare Connected Application stayed listed after setup finished, though the design says setup revokes its OAuth tokens. Fix it if it's cairn's; otherwise document where to remove it.
+- Fail rule (Geoff): a fail traced to cairn is a defect, fixed in one PR plus a snapshot before the next run. A harness, Cloudflare, or GitHub fail is traced and rerun on the same build. An untraced cause comes to Geoff. Your standing answer: stop at the cap or after two cairn fix PRs; the end packet asks whether to ship.
+
+By 07:00, have ready for Geoff (he reads at a desk, in Chromium):
+- A polished walk-through page: rebuild the viewer from build_viewer.py into ~/.local/state/cairn-rehearsal/907-walkthrough/index.html, framed as "what you'll see for 907.life", with captions from 3b's walkthrough and each rehearsal shot whose wording dev.8 changed marked "wording updated in dev.8". Read the full-page render yourself (`chromium-shot -w 1440 -H 5000`) before showing him. Geoff's rule: "Run it yourself first. Take screenshot. When it seems to be working, and it looks well-designed, then you can pass it to me to try." Open it with `xdg-open` when he says he's ready.
+- The DNS prep, as a dry run only. In ~/Projects/servers, the placeholder `cloudflare/dns/apex` (`@ AAAA 100:: proxied=yes`) has to go just before setup. Setup claims the apex and www, and the mail-discovery redirects in cloudflare/redirects/ward need a proxied apex in the meantime, so remove it only when Geoff says he's starting. A stray undeclared `www.907.life CNAME 907.life proxied` record also has to go. Read cloudflare/dns.sh to see whether --apply deletes undeclared records, and plan the www delete through the API with $CLOUDFLARE_API_TOKEN (scripts source ~/.local/secrets themselves). Show Geoff both deletions before applying (destructive ops get a dry run first).
+- A short message: what changed overnight, the walk-through, and the exact start command for dev.8 (from 3b's walkthrough).
+
+Morning sequence, when Geoff says he's starting: hold the naive runs, apply the DNS changes he approved, and stay with him through setup. Then check https://907.life/ and /admin (200), and with curl, the three redirects (907.life/.well-known/{caldav,carddav,jmap} answer 308 to ward.907.life). Record the result as the release's owner-install friction read.
+
+Security constraints, always:
+- Never use the real setup token in a probe; use a canary. Never type Geoff's credentials. Never defeat a bot challenge. Never drive Geoff's own Chromium profile (the profile named "Home"); the Claude extension drives the Default profile.
+- The unsandboxed-prompt rule (approved): approve once only `cairn` or `npx create-cairn-site` with the run's flags, plus at most a display command beside it, with no `$` other than `$?`, no backtick, no `<` or `>`, and nothing naming a file (#459's stricter practice until Geoff rules). Everything else gets "No".
+- Merges to glw907/workstation main: coordinate with conductor-dotfiles. Name the PR and head, and get "clear" first.
+- Dev snapshots go on `gate` only.
+
+Questions to Geoff are for product, taste, priority, scope, and budget. He's asleep until morning; a stop with no standing answer waits in the notes for him. Notify him with `notify-send -u normal` only for something he must act on at waking.
