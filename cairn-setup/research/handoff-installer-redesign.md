@@ -9,8 +9,8 @@ written design. Nothing is approved and nothing is built.
 > Finish the `cairn new` screen redesign with `standards:brainstorming` and `cairn-pass`. Start from
 > `~/Projects/initiatives/cairn-setup/research/handoff-installer-redesign.md`. Open
 > `research/installer-mockups/flow.html` in Chromium first. Confirm pass 3 and theme-garden G3 have
-> merged, replace the mockup's stand-ins with Survey's real options, then write the design and send
-> it through `approval-packet`.
+> merged, replace the mockup's stand-ins with Survey's real options, and mock up the other
+> commands in the same language. Then write the design and send it through `approval-packet`.
 
 ## Order (Geoff, 2026-11-11)
 
@@ -30,6 +30,28 @@ written design. Nothing is approved and nothing is built.
 - The parity gate is a requirement. The pass can't close until real-terminal frames of `cairn new`
   are graded beside the exemplars on one checklist by a fresh grader. Each row where an exemplar
   wins ends in a fix or a written reason.
+
+- The redesign covers every cairn command, and one goal is a reusable design language for the tool.
+  The other commands today are `adopt`, `agents`, `auth`, `doctor`, `health`, `logs`, `sites`,
+  `status`, and the secret commands (`list`, `set`, `unset`).
+
+## What the design language ruling changes
+
+- The design's first deliverable is the language itself, written once and applied to each command:
+  color roles, glyphs, the grid, the stage rail, the label-and-value row, the step list, the
+  three-answer failure block, the key hint line, links, and the narrow and no-color rules.
+- `cairn new` is the proving ground for the full-screen parts. The one-shot commands (`health`,
+  `status`, `doctor`, `logs`, `sites`) print and exit, so they take the same roles, glyphs, rows,
+  and failure block, and no rail or alternate screen.
+- Today the shared pieces live in `tool/internal/ui/newview/` (`theme.go`, `grid.go`,
+  `catalogue.go`). A language used by every command likely moves them to a shared package. That is
+  an architecture call for the design to make.
+- Read first: `tool/docs/design/README.md`, `charm-v2-capabilities.md`, `copy-standard.md`,
+  `render-reference/`, and ADR `0004-terminal-view.md`. The language extends those, and should not
+  restate them.
+- The parity gate widens. One-shot commands are graded against one-shot exemplars such as `gh`,
+  `flyctl status`, and `brew doctor`.
+- This is likely more than one pass: the language with `cairn new`, then the other commands.
 
 ## Claude's calls, shown to Geoff and not objected to
 
@@ -77,7 +99,6 @@ and Stripe (browser hand-off), Ghostty and kitty (theme choice), Docker (long wa
 
 - Trace when the email and address answers are first used, to confirm neither locks before Build.
 - Whether the theme screen shows when the catalog holds one theme.
-- Scope: only `cairn new`, or other commands too.
 - Who owns the cairn.pub stub (a `site-pass` change in cairn-pub) and the later browsing page,
   which the theme-garden design lists as later work.
 - The exemplar capture study has not been run. The comparison so far is from knowledge of the
