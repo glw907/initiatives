@@ -71,3 +71,21 @@ ruling.
 Anthropic's harness post puts its evaluator loop at "over 20x more expensive" and calls it
 "unnecessary overhead" inside what the model does reliably, so items 1, 2, and 5 would apply only
 to a pass that adds or changes a page.
+
+## A probe: can a script catch the report page's faults?
+
+Geoff asked on 2026-11-12 whether something more programmatic than his review could catch work
+this sloppy. The designing session ran a browser script of about 20 lines on the live report page
+(`http://127.0.0.1:7907/item/20261112T083322-3293133`, viewport 1231 px) through the Playwright
+tools.
+
+| Fault Geoff named | What the script found | Kind of check |
+| --- | --- | --- |
+| Table clipped on the right | The `TABLE` ends at 1168 px and the box that holds it at 1088 px, 80 px past | deterministic: an element's right edge past its parent's |
+| Text not in paragraphs | One `<p>` of 1,252 characters holding five `Label: ` fields | deterministic with a threshold: paragraph length and field labels in one paragraph |
+| No meaningful title | The `h1` reads "Round ur-ws, glw907/workstation, written 2026-11-12 (close packet 1 merged, close packet 2 sent)" | a model's judgment; a script can only flag an id or a date in a title |
+| A second notes UI | not probed | deterministic: every reading page renders `NotesMargin` |
+
+The digest fault (a line closing under the reader) needs a browser test that opens a line, waits
+past the layout's two-second poll, and types. The script ran on a real item in the live queue's
+state. The repo's fixture would have passed it.
