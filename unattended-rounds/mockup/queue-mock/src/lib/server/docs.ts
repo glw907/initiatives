@@ -18,7 +18,11 @@ const plain = (html: string) =>
 		.replace(/&gt;/g, '>')
 		.trim();
 const inline = (s: string) => marked.parseInline(critic(s), { async: false });
-const block = (s: string) => marked.parse(critic(s), { async: false });
+// A table scrolls inside its own frame on a narrow page, so the page itself never scrolls sideways.
+const block = (s: string) =>
+	(marked.parse(critic(s), { async: false }) as string)
+		.replaceAll('<table>', '<div class="table-frame" tabindex="0" role="group" aria-label="Table"><table>')
+		.replaceAll('</table>', '</table></div>');
 
 function frontMatter(raw: string): { meta: Record<string, string>; prs: string[]; body: string } {
 	const m = /^---\n(.*?)\n---\n(.*)$/s.exec(raw);

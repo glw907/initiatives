@@ -6,7 +6,7 @@ approve: I plan the rewrite and bring you nothing more until a pass stops or the
 sendback: Nothing is planned. I answer each note and send the design back to you.
 mock: I wrote this short draft to show how a design looks on the new page. Approving it starts nothing. The real design reaches you as a separate document after you have seen the mockup.
 ---
-# Rebuild the Approval Queue around one kind of page, a document?
+# Rebuild the Approval Queue so every item is one document its session wrote?
 
 Approving this design starts a rewrite of the Approval Queue. Today the queue has a separate page, with separate rules, for each of packets, designs, triage lists, reports, and digest lines. After the rewrite it has one page, and that page shows a document. A session writes the document as one Markdown file and marks the questions in it. The queue shows it with the notes margin beside it. The design leaves you one question, about the workstation's freeze, and I recommend its first option.
 
@@ -26,6 +26,19 @@ Approving this design starts a rewrite of the Approval Queue. Today the queue ha
 - An approve is recorded the moment you click it, and the page says so. Undo is a button on the page for as long as the session hasn't acted.
 - A document you sent back returns with its changed passages marked and a reply under each of your notes.
 - A report and the list of pull requests merged without you take notes the same way a packet does.
+
+## How the work is split
+
+Six passes build it. The second and third run at the same time, so the longest chain is 535 minutes.
+
+| Pass | What it builds | Minutes | Waits for |
+| --- | --- | ---: | --- |
+| First | The document library, the store, and `check` | 120 | The busy-check fix |
+| Second | The command | 120 | The first pass |
+| Third | The layout, the front page, and the document page | 120 | The first pass |
+| Fourth | Decisions and `merge` | 120 | The second and third passes |
+| Fifth | Notes threads and returned documents | 100 | The fourth pass |
+| Sixth | The switch | 75 | The fifth pass |
 
 ## What goes away
 
