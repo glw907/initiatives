@@ -80,11 +80,12 @@ What each kind of writing gets:
 | A queue document, a round report, a string on a queue page | All four |
 | A pull request's opening, STATUS, a hand-over's last message | 1 to 3; step 4 when it asks you for something |
 | A reply or a question in chat | Step 1 |
-| A README, doc page, pull request, issue, or release note in a public repo | 1 to 3, under the standard the router names; step 4 for a page a visitor lands on first |
+| Writing that already has its own rules: cairn's documentation, a site's pages and posts | Those rules, unchanged. This file adds no step |
+| Any other README, doc page, pull request, issue, or release note in a public repo | 1 to 3, under the standard the router names; step 4 for a page a visitor lands on first |
 | A plan or a launch prompt committed to a public repo | Your answer to the third question |
 | A plan, a prompt, a note between sessions, or any other file only a session reads, in a private repo or outside one | None |
 
-A reader per chat message would cost more than it buys, so chat follows the standard and the models alone. A file that only a session reads is written however is quickest and clearest for that session. The allowance stops at a public repo, where a person may open any file, and both halves of that rule are yours, from 2026-11-12. The file lists the public repos by reading `gh repo list`, never from memory. The agent-facing register still covers skills and `CLAUDE.md`.
+A reader per chat message would cost more than it buys, so chat follows the standard and the models alone. A file that only a session reads is written however is quickest and clearest for that session. The allowance stops at a public repo, where a person may open any file, and both halves of that rule are yours, from 2026-11-12. The file lists the public repos by reading `gh repo list`, never from memory. It replaces no rule that exists: cairn's documentation keeps its register, its four-gate review, and its skill, and each site keeps its content guide. You said so on 2026-11-12. The agent-facing register still covers skills and `CLAUDE.md`.
 
 ### The report
 

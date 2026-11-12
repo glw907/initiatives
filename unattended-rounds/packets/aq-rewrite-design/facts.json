@@ -1,0 +1,179 @@
+{
+ "kind": "design",
+ "round": "aq-rewrite",
+ "title": "Rebuild the Approval Queue around one kind of page, a document",
+ "prs": [],
+ "design": {
+  "repo": "initiatives/.claude/worktrees/unattended-rounds",
+  "path": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md"
+ },
+ "held": [],
+ "calls": [
+  {
+   "question": "How long does a merged pull request stay on the front page?",
+   "rule": "owner-call",
+   "forced": false,
+   "options": [
+    {
+     "label": "Seven days",
+     "consequence": "Each merged line shows under its tool's name for seven days, then drops off the page. The store keeps it."
+    },
+    {
+     "label": "Until you mark the section as read",
+     "consequence": "Lines pile up until you clear them, and the page needs one more button."
+    },
+    {
+     "label": "Since the previous day only",
+     "consequence": "This is what the mockup showed. A merge you didn't open the queue for within a day is never listed."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "The mockup listed merges \"since yesterday\", and the design says a fixed window is simpler to reason about.",
+     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:31"
+    }
+   ]
+  }
+ ],
+ "decidedForYou": [
+  {
+   "question": "Where is the new queue built while you keep using the old one?",
+   "rule": "owner-call",
+   "forced": false,
+   "options": [
+    {
+     "label": "In a directory beside the old app, with the first five passes landing without a packet",
+     "consequence": "Nothing you use changes until the sixth pass. Each of the five lands after green checks and an accepted whole-branch review, and you see one sentence per merge."
+    },
+    {
+     "label": "In place, pass by pass",
+     "consequence": "The queue you approve with changes under you five times, and each pass needs a packet."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "The design's order of passes and how each lands.",
+     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:152"
+    },
+    {
+     "text": "Listed among Claude's calls.",
+     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:307"
+    }
+   ],
+   "applied": "In a directory beside the old app, with the first five passes landing without a packet"
+  },
+  {
+   "question": "How does an approve reach the session, given the one that was lost?",
+   "rule": "owner-call",
+   "forced": false,
+   "options": [
+    {
+     "label": "The server records it first, and hands it to the session 20 seconds later",
+     "consequence": "The page changes only after the server has the decision on disk. Undo works for those 20 seconds, and the page says when the session has it."
+    },
+    {
+     "label": "The browser holds it for the Undo window, as today",
+     "consequence": "This is the behavior that lost your approve on 2026-11-12."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "What happened to the approve, and the new order of events.",
+     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:125"
+    },
+    {
+     "text": "The 20-second hand-off.",
+     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:128"
+    },
+    {
+     "text": "Backlog #71 records the lost approve in your words.",
+     "source": "glw907/approval-queue#71"
+    }
+   ],
+   "applied": "The server records it first, and hands it to the session 20 seconds later"
+  },
+  {
+   "question": "What happens to the old queue's decided items?",
+   "rule": "owner-call",
+   "forced": false,
+   "options": [
+    {
+     "label": "They go into one archive file, and the new queue starts empty",
+     "consequence": "`restart` writes `~/.local/state/approval-queue/archive-2026-11.tar.gz` only after the new server answers. You said you don't need to look at old decided packets."
+    },
+    {
+     "label": "The new queue shows them read-only",
+     "consequence": "The new code would carry a reader for every old item shape."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "The archive step and its order.",
+     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:215"
+    }
+   ],
+   "applied": "They go into one archive file, and the new queue starts empty"
+  },
+  {
+   "question": "What is the command written in?",
+   "rule": "owner-call",
+   "forced": false,
+   "options": [
+    {
+     "label": "TypeScript, sharing the document library with the pages",
+     "consequence": "One parser decides what a document is, for the command and the page alike. The 1,100-line bash command is retired at the switch."
+    },
+    {
+     "label": "Bash, as today",
+     "consequence": "The command and the pages would each parse a document, and could disagree."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "Listed among Claude's calls.",
+     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:305"
+    }
+   ],
+   "applied": "TypeScript, sharing the document library with the pages"
+  }
+ ],
+ "steps": [
+  {
+   "text": "After the weekly usage reset on 2026-11-13, 11pm Anchorage time, launch the round's conductor from `plans/aq-rewrite-conductor-prompt.txt`.",
+   "who": "session"
+  },
+  {
+   "text": "Read one close packet, in the old queue, once the sixth pass and the workstation round are ready. It carries the switch.",
+   "who": "you"
+  }
+ ],
+ "notChecked": [
+  {
+   "text": "No pass has parsed the five real documents with the planned library. The mockup's parser did, and pass A1 parks if the library can't.",
+   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:158"
+  },
+  {
+   "text": "Vale has not read this design. The house config's scope excludes the record's folder. `tellgrader` under the docs register reports nothing.",
+   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:1"
+  },
+  {
+   "text": "The repo runs no CI, so each pass's own gate run is the only automated check.",
+   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:228"
+  },
+  {
+   "text": "The edits made after the builder check were not read by a second fresh reader.",
+   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:300"
+  }
+ ],
+ "reviews": [
+  {
+   "text": "One builder check by a fresh Opus reader read both designs against the queue's code and the workstation's skills and returned fifteen findings. Each was folded as Claude's call, and none needed your answer.",
+   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:300"
+  }
+ ]
+}

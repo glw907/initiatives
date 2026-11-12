@@ -1,0 +1,215 @@
+{
+ "kind": "design",
+ "round": "ws-documents",
+ "title": "Teach every session to write the one document the new queue shows",
+ "prs": [],
+ "design": {
+  "repo": "initiatives/.claude/worktrees/unattended-rounds",
+  "path": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md"
+ },
+ "held": [],
+ "calls": [
+  {
+   "question": "Is this round part of the overhaul the freeze was lifted for?",
+   "rule": "contradicts-ruling",
+   "forced": false,
+   "options": [
+    {
+     "label": "Yes",
+     "consequence": "The round runs once the queue round's fifth pass lands, and both switch together."
+    },
+    {
+     "label": "No, hold both switches until 2026-12-11",
+     "consequence": "The queue round still builds its first five passes and then waits. You keep the old queue and the old packets for a month."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "The freeze allows removals only until 2026-12-11 and was lifted for the unattended-rounds overhaul alone. This round adds the rewritten skill, two model documents, and one writing-process file.",
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:30"
+    },
+    {
+     "text": "You lifted the freeze \"for this overhaul alone\" on 2026-11-11.",
+     "source": "unattended-rounds/research/2026-11-11-evidence.md:269-272"
+    }
+   ]
+  },
+  {
+   "question": "Who adds the `Evidence:` line to the nine plans the launch guard now refuses?",
+   "rule": "cross-repo",
+   "forced": false,
+   "options": [
+    {
+     "label": "The session that next launches each plan",
+     "consequence": "The guard's refusal names the missing line, and the session adds it before it launches. Nothing changes in the six repos until then."
+    },
+    {
+     "label": "This round adds all nine now",
+     "consequence": "The round edits plans in six repos other than the workstation, which makes it a cross-repo round."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "Nine plans in other repos lack only that line, and each belongs to a pass that hasn't run.",
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:37"
+    }
+   ]
+  },
+  {
+   "question": "Do plans and launch prompts in a public repo get the writing checks?",
+   "rule": "owner-call",
+   "forced": false,
+   "options": [
+    {
+     "label": "No",
+     "consequence": "A plan or a prompt is written for the session that runs it. READMEs, doc pages, pull requests, issues, and release notes in a public repo get the checks either way."
+    },
+    {
+     "label": "Yes",
+     "consequence": "Every plan and prompt committed to a public repo goes through the standard, Vale, and `tellgrader` before it is committed. Ten repos are public, the workstation and the queue among them."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "You said on 2026-11-12 that a file only a session reads can be written however works, and that the process also applies to items in public repos that might have human readers.",
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:44"
+    }
+   ]
+  }
+ ],
+ "decidedForYou": [
+  {
+   "question": "Does one writing process cover everything written for you?",
+   "rule": "owner-call",
+   "forced": false,
+   "options": [
+    {
+     "label": "Yes, one short file that the router points to",
+     "consequence": "`written-for-people.md` holds the four steps and says which of them each kind of writing gets. `approval-packet` points to it and carries no copy."
+    },
+    {
+     "label": "Keep the steps inside the packet skill",
+     "consequence": "A pull request's opening, STATUS, and a chat question would have no written process."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "You asked for this in chat on 2026-11-12, and answered \"Please do.\" when asked whether to add it.",
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:67"
+    }
+   ],
+   "applied": "Yes, one short file that the router points to"
+  },
+  {
+   "question": "Who checks a document before you see it?",
+   "rule": "owner-call",
+   "forced": false,
+   "options": [
+    {
+     "label": "A fresh reader with no context, in place of the separate writer",
+     "consequence": "The session that did the work writes the document. A `sonnet` reader says what is being asked and what it couldn't follow, twice at most."
+    },
+    {
+     "label": "A separate writer drafts from a fact file, as today",
+     "consequence": "This is the form you suspected of causing the stilted writing."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "Listed among Claude's calls.",
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:240"
+    }
+   ],
+   "applied": "A fresh reader with no context, in place of the separate writer"
+  },
+  {
+   "question": "Does a packet still put background before the summary?",
+   "rule": "contradicts-ruling",
+   "forced": false,
+   "options": [
+    {
+     "label": "No. The decision comes first",
+     "consequence": "The house departure of 2026-10-21 is withdrawn, because the opening you accepted on 2026-11-12 puts the decision first. This reverses a ruling of yours."
+    },
+    {
+     "label": "Yes, keep the departure",
+     "consequence": "The two model documents would need rewriting against the ruling."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "Listed among Claude's calls.",
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:242"
+    }
+   ],
+   "applied": "No. The decision comes first"
+  },
+  {
+   "question": "What happens if the new queue won't start at the switch?",
+   "rule": "owner-call",
+   "forced": false,
+   "options": [
+    {
+     "label": "The conductor reverts all four merges, pulls both repos, and tells you in chat",
+     "consequence": "`restart` keeps the old server and the old state, so the old queue keeps working with the old skills."
+    },
+    {
+     "label": "The conductor leaves the merges and reports",
+     "consequence": "The skills would describe a queue that isn't running."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "The switch's failure row.",
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:232"
+    }
+   ],
+   "applied": "The conductor reverts all four merges, pulls both repos, and tells you in chat"
+  }
+ ],
+ "steps": [
+  {
+   "text": "Once queue pass A5 has merged, launch the round's conductor from `plans/ws-documents-conductor-prompt.txt`.",
+   "who": "session"
+  },
+  {
+   "text": "Read one close packet, in the old queue, with the three workstation pull requests and the queue's switch.",
+   "who": "you"
+  },
+  {
+   "text": "On thinkpad-x1, the next session to start pulls both repos and runs `approval-queue restart`.",
+   "who": "session"
+  }
+ ],
+ "notChecked": [
+  {
+   "text": "No source measures whether a model document changes what a session writes. D1's end-to-end check is the only measure, on one pull request.",
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:265"
+  },
+  {
+   "text": "Whether the old queue accepts one packet naming pull requests of two repos. The conductor checks before its first launch and plans two packets if it doesn't.",
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:246"
+  },
+  {
+   "text": "Vale has not read this design. `tellgrader` under the docs register reports nothing.",
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:1"
+  },
+  {
+   "text": "The edits made after the builder check, the single writing process and the public-repo rule among them, were not read by a second fresh reader.",
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:235"
+  }
+ ],
+ "reviews": [
+  {
+   "text": "One builder check by a fresh Opus reader read both designs against the queue's code and the workstation's skills and returned fifteen findings. Each was folded as Claude's call, and none needed your answer.",
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:235"
+  }
+ ]
+}
