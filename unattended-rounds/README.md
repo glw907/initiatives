@@ -92,15 +92,18 @@ incomplete file list, and a permission block.
   approve of close packet 2, and the three conductors' reports say `Round state: ended`. His first
   approve of that packet was lost with no sign on the page (approval-queue backlog #71, fix
   deferred by him).
-- **Next:** the design sitting, which Geoff launches with `claude --model fable` and
-  `plans/ui-rules-design-prompt.txt`. Its subject is everything a session shows him to read.
-  He ruled on 2026-11-12 that the queue's new pages and their text were sloppy and that all
-  writing on a page has a job (last sections of `research/2026-11-11-evidence.md`). No round with
-  a conductor starts before that sitting's designs land, and workstation backlog #75 runs before
-  the next one. Approval-queue backlog #71 belongs in that sitting's queue round beside #70.
-  Geoff also suspects the queue's fixed forms cause the stilted writing and wants a Markdown
-  document he annotates in their place (last section of the evidence file). At his word the
-  sitting opens with a brainstorm on that idea (the prompt's step 0).
+- 2026-11-12: the design sitting ended with three designs, and Geoff approved all three in the
+  queue with no notes and every recommended answer: the queue rebuild (round `aq-rewrite`, six
+  passes; a merged pull request stays on the front page seven days), the workstation rules (round
+  `ws-documents`, four passes; he ruled it part of the overhaul the freeze was lifted for), and
+  GitHub-flavored technical writing in Survey (round `survey-docs`, one pass). The approved files
+  are under `specs/2026-11-12-*`, at commit 5f8f0e5 of this branch. The mockup he called solid is
+  in `mockup/queue-mock/`.
+- **Next:** after the weekly usage reset on 2026-11-13, 11pm Anchorage time, launch the two
+  conductors from `plans/aq-rewrite-conductor-prompt.txt` and
+  `plans/ws-documents-conductor-prompt.txt`. The workstation round's first pass fixes backlog #75
+  and the queue round's first pass waits for it. The Survey pass starts from
+  `plans/sv-s1-planning-prompt.txt` only after the queue switch has merged.
 - **Still owed:** earlier revisions of standards#20's PR body hold a pasted transcript line with a
   folder name from `~/.claude`, and Geoff has not said whether to delete them. The round reports'
   counts in the evidence file are unchecked against the pull requests.
