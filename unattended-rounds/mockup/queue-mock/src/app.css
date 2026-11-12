@@ -179,7 +179,7 @@ body {
 	line-height: 1.5;
 }
 .prose-doc > * + * {
-	margin-top: 0.75em;
+	margin-top: 0.9em;
 }
 /* Headings. The first four levels are set in the serif face over sans text, so a heading differs
    from the text in face as well as size. Each level is one visible step from the next, in bold
@@ -235,7 +235,7 @@ body {
 	font-weight: 500;
 }
 .prose-doc li + li {
-	margin-top: 0.3em;
+	margin-top: 0.4em;
 }
 .prose-doc strong {
 	font-weight: 600;
@@ -274,10 +274,10 @@ body {
 	color: color-mix(in oklab, currentColor 72%, transparent);
 }
 .prose-doc :is(h2, h3) + * {
-	margin-top: 0.5rem;
+	margin-top: 0.7rem;
 }
 .prose-doc :is(h4, h5, h6) + * {
-	margin-top: 0.35rem;
+	margin-top: 0.45rem;
 }
 .prose-doc em {
 	font-style: italic;
@@ -413,7 +413,7 @@ body {
 }
 .prose-doc th,
 .prose-doc td {
-	padding: 0.4em 1.25em 0.4em 0;
+	padding: 0.5em 1.25em 0.5em 0;
 	text-align: start;
 	vertical-align: top;
 }
