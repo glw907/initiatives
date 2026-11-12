@@ -15,6 +15,13 @@ start() {
     echo "$name is already listed by claude agents; not started"
     return
   fi
+  # /goal refuses a condition longer than 4000 characters and leaves the session blocked.
+  local length
+  length="$(wc -m <"$prompt")"
+  if (( length > 4000 )); then
+    echo "$prompt is $length characters, over /goal's 4000; $name not started" >&2
+    return 1
+  fi
   claude --bg --model sonnet --effort medium --name "$name" "$(cat "$prompt")"
 }
 
