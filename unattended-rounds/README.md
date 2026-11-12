@@ -88,6 +88,8 @@ incomplete file list, and a permission block.
 - 2026-11-11: a second fresh reader read the rewritten build design. It puts three decisions to
   Geoff: what a one-pass round takes from the design rules, who writes the launch guard change,
   and whether the queue's approve and merge code merges itself.
-- **Next:** Geoff's decision on the build design in the queue. No skill, hook, setting, permission
-  rule, or queue code changes before he approves it. On an approve, the session launches the two
-  conductors and the S1 planner from the prompts under `plans/`.
+- **Next:** close packet 2 of the workstation round (workstation#233 and #234), then the UI rules
+  sitting. Geoff ruled on 2026-11-12 that new UI goes through a prototype and that every app starts
+  from written UI rules, after the queue's new pages shipped with their own layouts. The sitting's
+  launch prompt is `plans/ui-rules-design-prompt.txt`, and the evidence is the last section of
+  `research/2026-11-11-evidence.md`.

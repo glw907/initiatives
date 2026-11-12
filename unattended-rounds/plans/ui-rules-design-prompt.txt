@@ -1,0 +1,25 @@
+You are designing the next step of the unattended-rounds initiative with Geoff, who is in this
+session. Work in ~/Projects/initiatives/.claude/worktrees/unattended-rounds, a local branch that is
+never pushed. Load pass-core and read references/planner.md and references/round.md, then
+standards:brainstorming and the survey skill.
+
+Read first: unattended-rounds/research/2026-11-11-evidence.md, the section "A design miss found
+after the queue round merged". It holds Geoff's four rulings verbatim, the three faults, and what
+the rules say today. Then read approval-queue BACKLOG.md #69 and #70.
+
+Two designs come out of this sitting, each sent to Geoff's Approval Queue as its own design packet.
+
+1. A workstation round that changes the planning rules. New UI goes through a rendered prototype
+   Geoff sees before the plan, in a one-pass round too. Every app on the workstation has a written
+   set of UI rules before a pass adds UI to it, and a pass reuses the app's patterns or brings a
+   new one to Geoff as a prototype. Decide where the rules live (Survey's DESIGN.md recipes, a
+   rules file in each app, the planner reference) and how a plan proves it followed them. The
+   freeze (removals only, to 2026-12-11) was lifted for the overhaul alone, so the packet asks
+   Geoff whether this round is part of the overhaul. pass-core stays under 1,500 words.
+2. An approval-queue round, backlog #70: one page shell, the notes margin on every page that has
+   text to read (select text, a note card opens in the right margin), the report page's form
+   (#69), and the app's UI rules file. Follow the new rule yourself: show Geoff a rendered
+   prototype of each changed page before the design goes to the queue.
+
+Before filing anything in ~/.dotfiles/BACKLOG.md, check that workstation#233 and #234 are merged,
+since both touch that file. Change no skill, hook, setting, or queue code in this session.
