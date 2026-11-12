@@ -26,8 +26,8 @@
    "recommended": 1,
    "evidence": [
     {
-     "text": "The freeze allows removals only until 2026-12-11 and was lifted for the unattended-rounds overhaul alone. This round adds the rewritten skill, two model documents, and one writing-process file.",
-     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:30"
+     "text": "The freeze allows removals only until 2026-12-11 and was lifted for the unattended-rounds overhaul alone. This round adds the rewritten skill, two model documents, and one writing-process file, and one bug fix.",
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:31"
     },
     {
      "text": "You lifted the freeze \"for this overhaul alone\" on 2026-11-11.",
@@ -53,7 +53,7 @@
    "evidence": [
     {
      "text": "Nine plans in other repos lack only that line, and each belongs to a pass that hasn't run.",
-     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:37"
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:38"
     }
    ]
   }
@@ -77,7 +77,7 @@
    "evidence": [
     {
      "text": "You asked for this in chat on 2026-11-12, and answered \"Please do.\" when asked whether to add it.",
-     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:60"
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:14"
     }
    ],
    "applied": "Yes, one short file that the router points to"
@@ -100,7 +100,7 @@
    "evidence": [
     {
      "text": "You said on 2026-11-12 that a file only a session reads can be written however works, and that the process also applies to items in public repos that might have human readers. Asked whether plans and launch prompts there get the checks, with \"no\" recommended, you answered \"That's correct.\"",
-     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:80"
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:81"
     }
    ],
    "applied": "No"
@@ -123,7 +123,7 @@
    "evidence": [
     {
      "text": "Listed among Claude's calls.",
-     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:233"
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:243"
     }
    ],
    "applied": "A fresh reader with no context, in place of the separate writer"
@@ -146,7 +146,7 @@
    "evidence": [
     {
      "text": "Listed among Claude's calls.",
-     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:235"
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:243"
     }
    ],
    "applied": "No. The decision comes first"
@@ -169,20 +169,55 @@
    "evidence": [
     {
      "text": "The switch's failure row.",
-     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:225"
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:238"
     }
    ],
    "applied": "The conductor reverts all four merges, pulls both repos, and tells you in chat"
+  },
+  {
+   "question": "Where does the fix to the busy check go?",
+   "rule": "owner-call",
+   "forced": false,
+   "options": [
+    {
+     "label": "Into this round as a short first pass that merges without a packet",
+     "consequence": "`claude-worktree-busy` stops counting the session that runs it, so a conductor's check before each launch is exact. Both conductors start outside the checkouts until it lands."
+    },
+    {
+     "label": "A round of its own before these two",
+     "consequence": "One more design packet for you, for a fix of a few lines."
+    }
+   ],
+   "recommended": 1,
+   "applied": "Into this round as a short first pass that merges without a packet",
+   "evidence": [
+    {
+     "text": "The record says workstation backlog #75 runs before the next round with a conductor.",
+     "source": "unattended-rounds/README.md:99"
+    },
+    {
+     "text": "Backlog #75: the check reads the caller's own session row as a hit and exits 1 every time.",
+     "source": "glw907/workstation#75"
+    }
+   ]
   }
  ],
  "steps": [
   {
-   "text": "Once queue pass A5 has merged, launch the round's conductor from `plans/ws-documents-conductor-prompt.txt`.",
+   "text": "After the weekly usage reset on 2026-11-13, 11pm Anchorage time, launch the round's conductor from `plans/ws-documents-conductor-prompt.txt`. Its first pass fixes the busy check (backlog #75) and merges without a packet.",
    "who": "session"
   },
   {
-   "text": "Read one close packet, in the old queue, with the three workstation pull requests and the queue's switch.",
+   "text": "Once the queue rebuild's fifth pass has merged, the conductor runs the three passes that rewrite the skill, `pass-core`, and the settings. Each ends with its pull request open.",
+   "who": "session"
+  },
+  {
+   "text": "Read one close packet, in the old queue, with the three workstation pull requests and the queue's switch, which is one pull request in the queue's repo.",
    "who": "you"
+  },
+  {
+   "text": "On your approve the conductor merges all four, pulls `~/.dotfiles`, restarts the queue, and sends the round report as the new queue's first document.",
+   "who": "session"
   },
   {
    "text": "On thinkpad-x1, the next session to start pulls both repos and runs `approval-queue restart`.",
@@ -192,25 +227,25 @@
  "notChecked": [
   {
    "text": "No source measures whether a model document changes what a session writes. D1's end-to-end check is the only measure, on one pull request.",
-   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:258"
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:272"
   },
   {
    "text": "Whether the old queue accepts one packet naming pull requests of two repos. The conductor checks before its first launch and plans two packets if it doesn't.",
-   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:239"
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:174"
   },
   {
    "text": "Vale has not read this design. `tellgrader` under the docs register reports nothing.",
-   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:1"
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:243"
   },
   {
    "text": "The edits made after the builder check, the single writing process and the public-repo rule among them, were not read by a second fresh reader.",
-   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:228"
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:243"
   }
  ],
  "reviews": [
   {
    "text": "One builder check by a fresh Opus reader read both designs against the queue's code and the workstation's skills and returned fifteen findings. Each was folded as Claude's call, and none needed your answer.",
-   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:228"
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:243"
   }
  ]
 }

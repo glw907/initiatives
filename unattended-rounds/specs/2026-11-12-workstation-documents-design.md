@@ -11,7 +11,7 @@ Today those rules are spread over the `approval-packet` skill, a 3,800-word writ
 ### What changes
 
 - One skill, `approval-packet`, says when to send you something, how to write it, how to check it, and what to do with your answer. It replaces the fact file, the separate writer, and the writing brief.
-- One file, `written-for-people.md`, is the writing process for anything a person reads. Most of that is what you read: a queue document, a string on a queue page, a pull request's opening, STATUS, a session's last message, a question in chat. Its four steps are the plain-language standard with the two models, Vale, `tellgrader`, and a reader with no context who says what is being asked and what they couldn't follow. It also covers a file in a public repo that a person might open. You asked for both on 2026-11-12.
+- One file, `written-for-people.md`, is the writing process for anything a person reads. Most of that is what you read: a queue document, a string on a queue page, a pull request's opening, STATUS, a session's last message, a question in chat. Its four steps are the plain-language standard with the two models, Vale, `tellgrader`, and a reader with no context who says what is being asked and what they couldn't follow. It also covers a file in a public repo that a person might open. You asked for both on 2026-11-12, and answered "Please do." when I offered to add the first here.
 - A round report says in its opening whether anything waits for you, then what behaves differently, what went wrong, what it cost, and what is left for later.
 - `pass-core` and its references lose their copies of the packet rules and point to the skill. `pass-core` gets shorter.
 - Stale pieces are removed: the mentions of a `dotfiles-pass` adapter that doesn't exist, and the settings lines of finished initiatives.
@@ -19,15 +19,16 @@ Today those rules are spread over the `approval-packet` skill, a 3,800-word writ
 
 ### If you approve
 
-1. The round starts after the Approval Queue round has landed its fifth pass, because the new skill names commands that pass builds.
-2. Three passes each end with a pull request left open. Nothing merges, because a skill that describes the new queue must not be live before the new queue is.
-3. The conductor sends you one close packet, in the old queue, with the three workstation pull requests and the queue's switch.
-4. On your approve the conductor merges all four, pulls `~/.dotfiles`, restarts the queue, and sends the round report as the new queue's first document.
-5. On thinkpad-x1, the next session to start pulls both repos and runs `approval-queue restart`, as the workstation's STATUS will say.
+1. A short first pass fixes the busy check that both conductors run before every launch (backlog #75), and merges without a packet. The record says that fix comes before the next round.
+2. The rest of the round starts after the Approval Queue round has landed its fifth pass, because the new skill names commands that pass builds.
+3. Three passes each end with a pull request left open. Nothing merges, because a skill that describes the new queue must not be live before the new queue is.
+4. The conductor sends you one close packet, in the old queue, with the three workstation pull requests and the queue's switch.
+5. On your approve the conductor merges all four, pulls `~/.dotfiles`, restarts the queue, and sends the round report as the new queue's first document.
+6. On thinkpad-x1, the next session to start pulls both repos and runs `approval-queue restart`, as the workstation's STATUS will say.
 
 ### Decide: Is this round part of the overhaul the freeze was lifted for
 
-The workstation is under a freeze until 2026-12-11 that allows removals only, lifted for the unattended-rounds overhaul alone. This round removes more than it adds, but it does add text: the rewritten skill and its two model documents. I found no written definition of what the overhaul covers, so the call is yours.
+The workstation is under a freeze until 2026-12-11 that allows removals only, lifted for the unattended-rounds overhaul alone. This round removes more than it adds, but it does add text: the rewritten skill, its two model documents, and the writing-process file. I found no written definition of what the overhaul covers, so the call is yours.
 
 - Yes. It finishes the overhaul, and it runs once the queue round's fifth pass lands (recommended)
 - No. Hold both switches until 2026-12-11; the queue round still builds its first five passes and waits
@@ -95,15 +96,26 @@ A string the queue shows is held to all four steps of `written-for-people.md`. T
 
 ### The round
 
-Round `ws-documents`, in `glw907/workstation`. Every pass is class `runner`. Each pass's branch is cut from the one before, and no pull request merges until the close packet.
+Round `ws-documents`, in `glw907/workstation`. Every pass is class `runner`. D0 lands by itself. From D1 on, each pass's branch is cut from the one before, and no pull request merges until the close packet.
 
 | Pass | Outcome | Minutes | Waits for |
 | --- | --- | --- | --- |
-| D1 | The skill, its two models, the writing process, and the router row | 120 | Queue pass A5 |
+| D0 | `claude-worktree-busy` skips the calling session's row | 30 | Nothing; queue pass A1 waits for it |
+| D1 | The skill, its two models, the writing process, and the router row | 120 | D0 and queue pass A5 |
 | D2 | `pass-core` and its references | 120 | D1 |
 | D3 | Settings, hooks, scripts, pointers, and removals | 120 | D2 |
 
-The longest chain is 360 minutes.
+The longest chain is 390 minutes.
+
+**Pass D0. The busy check skips the session that runs it.** 30 minutes.
+
+- `claude-worktree-busy <path>`, run from a session whose working directory is inside the path, exits 0 when no other session or process is there. Today it exits 1 every time.
+- Run the same way while a second session is in the path, it still exits 1 and names that session.
+- Its test file has a case for each, and each fails on today's script.
+- Both conductors start from this record's directory, outside either checkout, so the launch of D0 itself is not caught by the fault.
+- It lands with `approval-queue land` after its gate run and an accepted whole-branch review, as a pass with no call for you does.
+
+Files: `bin/.local/bin/claude-worktree-busy`, its test under `tests/`, `BACKLOG.md`.
 
 **Pass D1. The skill, its two models, the writing process, and the router row.** 120 minutes.
 
@@ -189,7 +201,8 @@ The twelve in `round-run.md` hold. One is added.
 | #23 Vale lints no `docs/voice/` file | Keep; the register it names is no longer loaded, and the item is reworded to say so |
 | #38 an edit made in a vendored copy | Keep; this round shows the cost again and doesn't build the check |
 | #50 a queue decision reaching the classifier | Keep open until the first merge after the switch passes with no refusal |
-| #75, #82, #73 | Keep; untouched |
+| #75 the busy check counts its caller | Done by D0 |
+| #82, #73 | Keep; untouched |
 
 ### Out of scope
 
@@ -227,7 +240,7 @@ The twelve in `round-run.md` hold. One is added.
 
 ### Claude's calls
 
-These are mine.
+These are mine. One fresh Opus reader checked this design and the queue's against the queue's code and the workstation's skills, and returned fifteen findings. Each is folded into the text above as my call. The edits made after that check had no second reader, and Vale's house config doesn't cover this folder, so `tellgrader` is the only linter that read it.
 
 - Keeping the skill's name and the word "packet".
 - Dropping the separate writer in favor of the cold reader.
@@ -238,6 +251,7 @@ These are mine.
 - Holding all three pull requests for one packet.
 - The conductor reverting all four merges if the new server won't start.
 - thinkpad-x1 switched by its next session.
+- Adding D0 to this round, and starting both conductors outside the checkouts.
 
 ### Left to the builder
 

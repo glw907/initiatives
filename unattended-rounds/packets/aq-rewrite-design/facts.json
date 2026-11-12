@@ -44,7 +44,7 @@
    "options": [
     {
      "label": "In a directory beside the old app, with the first five passes landing without a packet",
-     "consequence": "Nothing you use changes until the sixth pass. Each of the five lands after green checks and an accepted whole-branch review, and you see one sentence per merge."
+     "consequence": "Nothing you use changes until the sixth pass. Each of the five lands after its gate run passes and its whole-branch review is accepted, and you see one sentence per merge."
     },
     {
      "label": "In place, pass by pass",
@@ -59,7 +59,7 @@
     },
     {
      "text": "Listed among Claude's calls.",
-     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:307"
+     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:302"
     }
    ],
    "applied": "In a directory beside the old app, with the first five passes landing without a packet"
@@ -125,7 +125,7 @@
    "options": [
     {
      "label": "TypeScript, sharing the document library with the pages",
-     "consequence": "One parser decides what a document is, for the command and the page alike. The 1,100-line bash command is retired at the switch."
+     "consequence": "One parser decides what a document is, for the command and the page alike. The 1,124-line bash command is retired at the switch."
     },
     {
      "label": "Bash, as today",
@@ -136,7 +136,7 @@
    "evidence": [
     {
      "text": "Listed among Claude's calls.",
-     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:305"
+     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:302"
     }
    ],
    "applied": "TypeScript, sharing the document library with the pages"
@@ -144,7 +144,7 @@
  ],
  "steps": [
   {
-   "text": "After the weekly usage reset on 2026-11-13, 11pm Anchorage time, launch the round's conductor from `plans/aq-rewrite-conductor-prompt.txt`.",
+   "text": "After the weekly usage reset on 2026-11-13, 11pm Anchorage time, launch the round's conductor from `plans/aq-rewrite-conductor-prompt.txt`. Its first pass waits for the workstation round's fix to the busy check (workstation backlog #75).",
    "who": "session"
   },
   {
@@ -159,7 +159,7 @@
   },
   {
    "text": "Vale has not read this design. The house config's scope excludes the record's folder. `tellgrader` under the docs register reports nothing.",
-   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:1"
+   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:302"
   },
   {
    "text": "The repo runs no CI, so each pass's own gate run is the only automated check.",
@@ -167,13 +167,13 @@
   },
   {
    "text": "The edits made after the builder check were not read by a second fresh reader.",
-   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:300"
+   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:302"
   }
  ],
  "reviews": [
   {
    "text": "One builder check by a fresh Opus reader read both designs against the queue's code and the workstation's skills and returned fifteen findings. Each was folded as Claude's call, and none needed your answer.",
-   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:300"
+   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:302"
   }
  ]
 }

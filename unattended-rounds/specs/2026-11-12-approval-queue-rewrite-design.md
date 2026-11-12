@@ -20,7 +20,7 @@ The queue you use today builds each page from a fact file, a second writer's tex
 
 ### If you approve
 
-1. A conductor starts the round after the weekly usage reset on 2026-11-13, 11pm Anchorage time.
+1. A conductor starts the round after the weekly usage reset on 2026-11-13, 11pm Anchorage time. Its first pass waits for a small workstation fix to the busy check (workstation backlog #75), which the workstation round lands first.
 2. Five passes build the new queue in a directory beside the old one and land without a packet, because nothing you use changes until the switch.
 3. The sixth pass prepares the switch and stops with its pull request open.
 4. You get one close packet, in the old queue, that carries the switch and the workstation's skill changes together. The workstation round's conductor sends it, and this round's conductor sends none. Approving it merges both and starts the new queue.
@@ -299,7 +299,7 @@ Each pass has a planner prompt in `plans/aq-a<n>-planning-prompt.txt` and the ro
 
 ### Claude's calls
 
-These are mine. None is something you said.
+These are mine. None is something you said. One fresh Opus reader checked this design and the workstation's against the queue's code and the workstation's skills, and returned fifteen findings. Each is folded into the text above as my call. The edits made after that check had no second reader, and Vale's house config doesn't cover this folder, so `tellgrader` is the only linter that read it.
 
 - The four kinds and the names of the marks.
 - TypeScript for the command.
