@@ -46,11 +46,10 @@ incomplete file list, and a permission block.
   the pass section of `CLAUDE.md`, `claude-launch-guard`, `unattended-work-guards.md`, and
   `claude/.claude/settings.json`.
 - `approval-queue`: the fact file's fields, the `merge` and `land` commands, and the pages.
+- `standards`: the `brainstorming` skill.
 - The record stays on the local branch `unattended-rounds` and is not pushed, because it cites the
   unpublished `workstation-refinement` record. Queue commands for it run with
   `APPROVAL_QUEUE_PROJECTS=~/.local/state/unattended-rounds/projects`.
-- The round kit will live at `kit/round-kit.md` in this record, with a symlink at
-  `~/.local/state/unattended-rounds/kit.md` that a designing session can be pointed at.
 
 ## Records
 
@@ -64,4 +63,9 @@ incomplete file list, and a permission block.
 - 2026-11-11: Geoff asked whether brainstorming and planning were adjusted for the longer unit. The
   design gained four rules for a round's design step, and went back to his queue.
 - 2026-11-11: Geoff asked whether `standards:brainstorming` follows Anthropic's guidance. The
-  evidence file's last section holds the read: four gaps, three of them for the second design.
+  evidence file holds the read: four gaps, three of them for the build design.
+- 2026-11-11: Geoff said in chat that the freeze can lift for this overhaul and that this month's
+  extra credits go to it. The waiting packet recommended a pilot and no credits, so it was
+  withdrawn. The design now records both rulings as decided for him, drops the pilot and its kit
+  file, and names a build design as the next packet. His approval in the queue confirms the
+  rulings.

@@ -4,4 +4,4 @@ summary: Makes the round the basic unit of work, one design covering one to six 
 status: proposed
 owner: glw907
 created: 2026-11-11
-repos: [workstation, approval-queue]
+repos: [workstation, approval-queue, standards]
