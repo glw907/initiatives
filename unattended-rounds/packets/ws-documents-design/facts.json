@@ -122,7 +122,7 @@
    "evidence": [
     {
      "text": "Listed among Claude's calls.",
-     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:240"
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:241"
     }
    ],
    "applied": "A fresh reader with no context, in place of the separate writer"
@@ -145,7 +145,7 @@
    "evidence": [
     {
      "text": "Listed among Claude's calls.",
-     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:242"
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:243"
     }
    ],
    "applied": "No. The decision comes first"
@@ -168,7 +168,7 @@
    "evidence": [
     {
      "text": "The switch's failure row.",
-     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:232"
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:233"
     }
    ],
    "applied": "The conductor reverts all four merges, pulls both repos, and tells you in chat"
@@ -191,11 +191,11 @@
  "notChecked": [
   {
    "text": "No source measures whether a model document changes what a session writes. D1's end-to-end check is the only measure, on one pull request.",
-   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:265"
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:266"
   },
   {
    "text": "Whether the old queue accepts one packet naming pull requests of two repos. The conductor checks before its first launch and plans two packets if it doesn't.",
-   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:246"
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:247"
   },
   {
    "text": "Vale has not read this design. `tellgrader` under the docs register reports nothing.",
@@ -203,13 +203,13 @@
   },
   {
    "text": "The edits made after the builder check, the single writing process and the public-repo rule among them, were not read by a second fresh reader.",
-   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:235"
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:236"
   }
  ],
  "reviews": [
   {
    "text": "One builder check by a fresh Opus reader read both designs against the queue's code and the workstation's skills and returned fifteen findings. Each was folded as Claude's call, and none needed your answer.",
-   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:235"
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:236"
   }
  ]
 }

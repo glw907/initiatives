@@ -80,7 +80,7 @@ What each kind of writing gets:
 | A queue document, a round report, a string on a queue page | All four |
 | A pull request's opening, STATUS, a hand-over's last message | 1 to 3; step 4 when it asks you for something |
 | A reply or a question in chat | Step 1 |
-| Writing that already has its own rules: cairn's documentation, a site's pages and posts | Those rules, unchanged. This file adds no step |
+| Writing a repo already has rules for: cairn's documentation, a site's pages and posts | Those rules, unchanged. This file adds no step |
 | Any other README, doc page, pull request, issue, or release note in a public repo | 1 to 3, under the standard the router names; step 4 for a page a visitor lands on first |
 | A plan or a launch prompt committed to a public repo | Your answer to the third question |
 | A plan, a prompt, a note between sessions, or any other file only a session reads, in a private repo or outside one | None |
