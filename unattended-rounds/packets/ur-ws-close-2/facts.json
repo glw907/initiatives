@@ -1,0 +1,50 @@
+{
+  "kind": "close",
+  "round": "ur-ws",
+  "title": "ur-ws close 2 of 2: approve the packet-skill edits and the new launch guard",
+  "prs": ["glw907/workstation#233", "glw907/workstation#234"],
+  "held": [],
+  "calls": [
+    {
+      "question": "W5 edits the workstation's copy of Survey's approval-brief.md ahead of Survey's release. Approve it as written?",
+      "rule": "cross-repo",
+      "forced": false,
+      "options": [
+        { "label": "Approve as written and carry the two additions into Survey before its next release (backlog #79)", "consequence": "The stop-packet line and the round bullet are live now. The next update-skills run for Survey overwrites them with the pinned v1.7.0 text, with no warning, until Survey carries them." },
+        { "label": "Send back and make the brief's two changes in a Survey release first", "consequence": "W5 is held, acceptance item 2 stays unmet until the release exists, and W3 waits behind it." }
+      ],
+      "recommended": 1,
+      "evidence": [
+        { "text": "The build design lists the vendored approval-brief.md among W5's files. The survey skill says to edit the file in the Survey repo only.", "source": "glw907/workstation#233" },
+        { "text": "claude-tooling-sync verify does not compare a vendored file with its pin, so an overwrite gives no warning.", "source": "glw907/workstation#233" }
+      ]
+    },
+    {
+      "question": "The end-to-end outline of a round has ten faults the closing reviewer found. Accept the outline as evidence?",
+      "rule": "owner-call",
+      "forced": false,
+      "options": [
+        { "label": "Accept the outline as evidence and fix the four round.md rules through backlog #81", "consequence": "W5 merges as it stands. Four wording rules in round.md that a later designer could misread stay as they are until #81 runs." },
+        { "label": "Send back, fix the four rules in this pass, and run the end-to-end check again", "consequence": "W5 is held and its executor relaunched. It edits round.md, a W4 file the pass's design leaves alone." }
+      ],
+      "recommended": 1,
+      "evidence": [
+        { "text": "The outline holds all ten parts the acceptance item asks for. The reviewer found ten faults in it, B1 to B10, and the plan forbids editing the outline.", "source": "glw907/workstation#233" },
+        { "text": "Backlog #81 names the four round.md lines the test reader misread.", "source": "glw907/workstation#233" }
+      ]
+    }
+  ],
+  "decidedForYou": [],
+  "steps": [
+    { "text": "Merge #233 and #234 in that order with approval-queue merge and pull ~/.dotfiles with git pull --ff-only. No stow and no tooling apply.", "who": "session" },
+    { "text": "Write the final report at ~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/reports/ur-ws-report.md, with a row for each of the five passes, and end the round.", "who": "session" }
+  ],
+  "notChecked": [
+    { "text": "Neither PR runs CI. The repo has no CI that tests a pull request, so each pass's run of the gate is the only check.", "source": "glw907/workstation#234" },
+    { "text": "The launch guard in #234 is live as soon as ~/.dotfiles is pulled, because ~/.local/bin/claude-launch-guard links into the main checkout.", "source": "glw907/workstation#234" }
+  ],
+  "reviews": [
+    { "text": "W5: whole-branch review accept, ten findings on the test outline left open as call 2.", "source": "glw907/workstation#233" },
+    { "text": "W3: whole-branch review accept, no open finding, no call. It waits for your approve because you chose that for the launch guard and the CLAUDE.md change.", "source": "glw907/workstation#234" }
+  ]
+}

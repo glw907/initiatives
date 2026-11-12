@@ -1,0 +1,42 @@
+{
+  "kind": "stop",
+  "round": "ur-ws",
+  "title": "ur-ws W5 parked at its end-to-end check",
+  "reason": {
+    "text": "W5's end-to-end check failed twice on the plan's search for the initiative id workstation-refinement, and a second miss is a stop under standing answer 12. The pass needs one ruling on that search before it can run the check again and close.",
+    "source": "glw907/workstation#233"
+  },
+  "prs": ["glw907/workstation#233"],
+  "held": [],
+  "calls": [
+    {
+      "question": "May an end-to-end outline name the initiative id workstation-refinement?",
+      "rule": "owner-call",
+      "forced": false,
+      "options": [
+        { "label": "Narrow the search to /var/home and text copied from the initiative's record", "consequence": "The executor relaunches, runs the check once more with the same prompt, and an outline may name the id as a backlog tag." },
+        { "label": "Keep the search and tell the subagent to name no initiative", "consequence": "The prompt grows by one sentence the plan does not allow today, and the executor reruns the check." },
+        { "label": "Keep both as written and run the check again", "consequence": "A third outline will probably hold the string too, since the tag sits on two of the three sample items, and the pass parks again." }
+      ],
+      "recommended": 1,
+      "evidence": [
+        { "text": "Backlog items #69 and #70, the acceptance item's sample work, each carry the tag #initiative:workstation-refinement in BACKLOG.md, a file already public in the repo.", "source": "glw907/workstation#233" },
+        { "text": "Two fresh Sonnet outlines held the string on three lines and on two. Neither held /var/home, and nothing in them came from the initiative's record.", "source": "glw907/workstation#233" },
+        { "text": "The rule it reads against says to copy nothing from the record into a repo file, a plan, a PR, or a packet.", "source": "glw907/workstation#233" }
+      ]
+    }
+  ],
+  "decidedForYou": [],
+  "steps": [
+    { "text": "Record your ruling under Rulings in the W5 plan, commit it on ur-w5, and push.", "who": "session" },
+    { "text": "Relaunch the W5 executor from its prompt. It runs the end-to-end check, the full gate, and the closing review, and marks the PR ready.", "who": "session" },
+    { "text": "Hold W5, W1, W2, and W4 for the round's close packet. W3 launches after W5 ends.", "who": "session" }
+  ],
+  "notChecked": [
+    { "text": "Neither outline was read line by line against the ten contents the acceptance item asks for, since the search failed first.", "source": "glw907/workstation#233" },
+    { "text": "The full gate and the closing review have not run on W5.", "source": "glw907/workstation#233" }
+  ],
+  "reviews": [
+    { "text": "No whole-branch review has run on W5. The fast lane was green after tasks T1 and T2.", "source": "glw907/workstation#233" }
+  ]
+}

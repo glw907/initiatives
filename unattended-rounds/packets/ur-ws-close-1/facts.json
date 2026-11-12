@@ -1,0 +1,110 @@
+{
+  "kind": "close",
+  "round": "ur-ws",
+  "title": "ur-ws close 1 of 2: W1, W2, W4",
+  "prs": [
+    "glw907/workstation#230",
+    "glw907/workstation#231",
+    "glw907/workstation#232"
+  ],
+  "held": [],
+  "calls": [
+    {
+      "question": "W1's test fixtures leave their sleep children running for up to 30 seconds. Land as is, or send a follow-up?",
+      "rule": "owner-call",
+      "forced": false,
+      "options": [
+        {
+          "label": "Land as is and file the cleanup",
+          "consequence": "The test passes and exits 0. A pipe on its output waits for the leftover sleeps, up to 30 seconds."
+        },
+        {
+          "label": "Send a follow-up that kills the children another way",
+          "consequence": "W1 is held and a follow-up pass writes the cleanup, since the round rules bar a session from running pkill."
+        }
+      ],
+      "recommended": 1,
+      "evidence": [
+        {
+          "text": "The fix is pkill -P on the fixture's sleeper before the kill. No verdict reads the leftover processes as a hit.",
+          "source": "glw907/workstation#230"
+        }
+      ]
+    },
+    {
+      "question": "W4 removes the hand check from standing answer 6, but claude-worktree-busy still counts the calling session's own row. Approve as written?",
+      "rule": "owner-call",
+      "forced": false,
+      "options": [
+        {
+          "label": "Approve as written and run backlog #75 before the next round with a conductor",
+          "consequence": "The next conductor that checks the main checkout would end its launches at the first busy check until #75 lands."
+        },
+        {
+          "label": "Send back and keep a clause for the conductor's row until #75 lands",
+          "consequence": "W4 is held, its executor is relaunched with your note, and the packet is resent."
+        }
+      ],
+      "recommended": 1,
+      "evidence": [
+        {
+          "text": "Call 1 of the PR: the busy check still counts the caller's row, backlog #75.",
+          "source": "glw907/workstation#232"
+        }
+      ]
+    },
+    {
+      "question": "Three run details did not fit round-run.md under its 1,500-word cap. Take them later as backlog #78, or add them now?",
+      "rule": "owner-call",
+      "forced": false,
+      "options": [
+        {
+          "label": "Approve and take #78 later",
+          "consequence": "The clock's count for answer 7, the report file's place, and a relaunched conductor's resume steps stay out of round-run.md for now."
+        },
+        {
+          "label": "Send back, raise the cap, and add them now",
+          "consequence": "W4 is held and the 1,500-word cap on round-run.md changes, which your approved design fixed."
+        }
+      ],
+      "recommended": 1,
+      "evidence": [
+        {
+          "text": "round-run.md is 1,499 words against the cap of 1,500. This is the one review finding left open.",
+          "source": "glw907/workstation#232"
+        }
+      ]
+    }
+  ],
+  "decidedForYou": [],
+  "steps": [
+    {
+      "text": "Merge the three PRs in order with approval-queue merge and pull ~/.dotfiles with git pull --ff-only. No stow and no tooling apply: no pass adds a script or changes a setting.",
+      "who": "session"
+    },
+    {
+      "text": "Send the second close packet for W5 and W3.",
+      "who": "session"
+    }
+  ],
+  "notChecked": [
+    {
+      "text": "None of the three PRs runs CI: the repo has no PR test CI, so the gate each executor ran is the only check.",
+      "source": "glw907/workstation#230"
+    }
+  ],
+  "reviews": [
+    {
+      "text": "W1: whole-branch review accept, one finding left open (the sleep children).",
+      "source": "glw907/workstation#230"
+    },
+    {
+      "text": "W2: whole-branch review accept, no open finding.",
+      "source": "glw907/workstation#231"
+    },
+    {
+      "text": "W4: whole-branch review accept, one finding left open (the three run details, #78).",
+      "source": "glw907/workstation#232"
+    }
+  ]
+}

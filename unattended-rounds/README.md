@@ -88,15 +88,16 @@ incomplete file list, and a permission block.
 - 2026-11-11: a second fresh reader read the rewritten build design. It puts three decisions to
   Geoff: what a one-pass round takes from the design rules, who writes the launch guard change,
   and whether the queue's approve and merge code merges itself.
-- **Next:** two things wait for Geoff. Close packet 2 of the workstation round (workstation#233
-  and #234, queue item `20261112T083259-3290807`) is held by the live session `conductor-dotfiles`,
-  which merges on his approve. The design sitting is launched by him with `claude --model fable`
-  and `plans/ui-rules-design-prompt.txt`. Its subject is everything a session shows him to read.
+- 2026-11-12: all ten passes are merged. Workstation#233 and #234 merged at 18:04Z on Geoff's
+  approve of close packet 2, and the three conductors' reports say `Round state: ended`. His first
+  approve of that packet was lost with no sign on the page (approval-queue backlog #71, fix
+  deferred by him).
+- **Next:** the design sitting, which Geoff launches with `claude --model fable` and
+  `plans/ui-rules-design-prompt.txt`. Its subject is everything a session shows him to read.
   He ruled on 2026-11-12 that the queue's new pages and their text were sloppy and that all
   writing on a page has a job (last sections of `research/2026-11-11-evidence.md`). No round with
   a conductor starts before that sitting's designs land, and workstation backlog #75 runs before
-  the next one.
-- **Still owed:** commit `reports/` and `packets/` to this branch once `conductor-dotfiles` ends,
-  and add the rounds' lessons and the `/goal` trial to the evidence file. Earlier revisions of
-  standards#20's PR body hold a pasted transcript line with a folder name from `~/.claude`, and
-  Geoff has not said whether to delete them. The queue server runs on its default path again.
+  the next one. Approval-queue backlog #71 belongs in that sitting's queue round beside #70.
+- **Still owed:** earlier revisions of standards#20's PR body hold a pasted transcript line with a
+  folder name from `~/.claude`, and Geoff has not said whether to delete them. The round reports'
+  counts in the evidence file are unchecked against the pull requests.
