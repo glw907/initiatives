@@ -69,3 +69,13 @@ incomplete file list, and a permission block.
   withdrawn. The design now records both rulings as decided for him, drops the pilot and its kit
   file, and names a build design as the next packet. His approval in the queue confirms the
   rulings.
+- 2026-11-11: Geoff approved the design in the queue (packet `20261111T161236-2074074`), with no
+  notes. He took every recommendation. A later round on a low weekly allowance finishes the pass in
+  flight, starts nothing new, and waits for the reset. The overhaul runs both trials, Fable 5.2 at
+  `high` for design and planning and a `/goal` line on each prompt, and reports them to the
+  December model review. The freeze lifts for this overhaul alone, and the overhaul keeps going on
+  this month's usage credits, capped by the monthly spend limit he sets.
+- 2026-11-11: the queue had refused his approve many times before it took one. The evidence file
+  holds the cause, and he asked for the fix as part of the overhaul.
+- **Next:** the build design, sent as the next packet. No skill, hook, setting, permission rule, or
+  queue code changes before he approves it.
