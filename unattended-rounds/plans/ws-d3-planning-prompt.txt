@@ -33,7 +33,7 @@ Your pass:
 - Executor `workstation-ws-d3`: `claude --bg --model sonnet --effort medium --name workstation-ws-d3
   "$(cat <prompt path>)"`, run from the main checkout.
 - Class `runner`, so the plan gets one `standards:plan-reviewer` read before launch. The design
-  gives the pass 120 minutes, and a plan whose path passes 240 parks.
+  gives the pass 140 minutes, and a plan whose path passes 280 parks.
 - Waits for: D2.
 
 Notes for this pass:

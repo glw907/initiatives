@@ -4,7 +4,7 @@ Initiative: unattended-rounds
 
 ## Brief
 
-Rewrite the workstation's rules for putting something in front of you, so that a session writes one document, checks it the way the document you found useful was checked, and sends it to the rebuilt Approval Queue. Approving runs a round of three passes on the workstation and then switches both the rules and the queue in one step.
+Rewrite the workstation's rules for putting something in front of you, so that a session writes one document, checks it the way the document you found useful was checked, and sends it to the rebuilt Approval Queue. Approving runs a round of four passes on the workstation and then switches both the rules and the queue in one step.
 
 Today those rules are spread over the `approval-packet` skill, a 3,800-word writing brief that Survey owns, `pass-core` and four of its reference files, and a dozen other skills that each repeat a piece. A session fills in a fact file, a second writer turns it into text under fixed headings, and you get the pages you called sloppy. This design puts the whole job in one skill with two model documents beside it, the close packet and the round report you accepted on 2026-11-12. It also writes down, in one short file, the process that produced them, and applies it to everything a session writes for you. After the switch, improving what you read means editing that skill or that file and nothing else.
 
@@ -19,7 +19,7 @@ Today those rules are spread over the `approval-packet` skill, a 3,800-word writ
 
 ### If you approve
 
-1. A short first pass fixes the busy check that both conductors run before every launch (backlog #75), and merges without a packet. The record says that fix comes before the next round.
+1. A conductor starts the round after the weekly usage reset on 2026-11-13, 11pm Anchorage time. A short first pass fixes the busy check that both conductors run before every launch (backlog #75), and merges without a packet. The record says that fix comes before the next round.
 2. The rest of the round starts after the Approval Queue round has landed its fifth pass, because the new skill names commands that pass builds.
 3. Three passes each end with a pull request left open. Nothing merges, because a skill that describes the new queue must not be live before the new queue is.
 4. The conductor sends you one close packet, in the old queue, with the three workstation pull requests and the queue's switch.
@@ -28,7 +28,7 @@ Today those rules are spread over the `approval-packet` skill, a 3,800-word writ
 
 ### Decide: Is this round part of the overhaul the freeze was lifted for
 
-The workstation is under a freeze until 2026-12-11 that allows removals only, lifted for the unattended-rounds overhaul alone. This round removes more than it adds, but it does add text: the rewritten skill, its two model documents, and the writing-process file. I found no written definition of what the overhaul covers, so the call is yours.
+The workstation is under a freeze until 2026-12-11 that allows removals only, lifted for the unattended-rounds overhaul alone. This round removes more than it adds, but it does add text: the rewritten skill, its two model documents, and the writing-process file. It also fixes one bug. I found no written definition of what the overhaul covers, so the call is yours.
 
 - Yes. It finishes the overhaul, and it runs once the queue round's fifth pass lands (recommended)
 - No. Hold both switches until 2026-12-11; the queue round still builds its first five passes and waits
@@ -103,9 +103,9 @@ Round `ws-documents`, in `glw907/workstation`. Every pass is class `runner`. D0 
 | D0 | `claude-worktree-busy` skips the calling session's row | 30 | Nothing; queue pass A1 waits for it |
 | D1 | The skill, its two models, the writing process, and the router row | 120 | D0 and queue pass A5 |
 | D2 | `pass-core` and its references | 120 | D1 |
-| D3 | Settings, hooks, scripts, pointers, and removals | 120 | D2 |
+| D3 | Settings, hooks, scripts, pointers, and removals | 140 | D2 |
 
-The longest chain is 390 minutes.
+The longest chain is 410 minutes.
 
 **Pass D0. The busy check skips the session that runs it.** 30 minutes.
 
@@ -139,11 +139,13 @@ Files: `claude/.claude/skills/approval-packet/`, `claude/.claude/docs/voice/writ
 
 Files: `claude/.claude/skills/pass-core/`, `claude/.claude/skills/cairn-pass/SKILL.md`, `claude/.claude/skills/site-pass/SKILL.md`, `bin/.local/bin/claude-pass-load`, `claude/.claude/docs/unattended-work-guards.md`, `claude/.claude/docs/voice/commit-and-pr.md`.
 
-**Pass D3. Settings, hooks, scripts, pointers, and removals.** 120 minutes. Waits for D2.
+**Pass D3. Settings, hooks, scripts, pointers, and removals.** 140 minutes. Waits for D2.
 
 - `settings.json`: the reminder hook's text names `send`; the auto-mode wording on merges names `approval-queue merge` and `land` and nothing retired; the lines for finished initiatives are gone. No allow rule is added, because `Bash(approval-queue *)` covers the nine commands.
 - `claude-merge-guard` names the new commands in its refusal, and its tests pass.
 - `pass-report` reads decisions from the new store, and its monthly table still prints for October from the archive or says that month predates the store.
+- `pass-report` adds a `## Notes` line naming any repo whose listing of merged pull requests came back full at 300 (backlog #76).
+- `docs/STATUS.md` is 60 lines or fewer. It is 140 today. The paragraphs of finished passes go, and the open steps stay, the laptop's among them (backlog #73).
 - The global `CLAUDE.md` describes your touchpoints in the new words and has no more words than it has today.
 - `mail-tend`, `retire-project`, the `survey-writing-review` script, and the two model-review prompts point to the skill or drop their mention.
 - No file mentions a `dotfiles-pass` adapter except the list of adapters, which is corrected.
@@ -202,7 +204,10 @@ The twelve in `round-run.md` hold. One is added.
 | #38 an edit made in a vendored copy | Keep; this round shows the cost again and doesn't build the check |
 | #50 a queue decision reaching the classifier | Keep open until the first merge after the switch passes with no refusal |
 | #75 the busy check counts its caller | Done by D0 |
-| #82, #73 | Keep; untouched |
+| #76 `pass-report` and the 300 cap | Done by D3, which already edits the script |
+| #73 `docs/STATUS.md` over its cap | Done by D3 |
+| #11, #14 queue leftovers filed here | Closed by the queue round's third pass; see that design's sweep |
+| #82 the launch guard telling a plan from other files | Keep; the guard changed on 2026-11-12, and a second change waits until the nine refused plans are sorted |
 
 ### Out of scope
 
@@ -252,6 +257,7 @@ These are mine. One fresh Opus reader checked this design and the queue's agains
 - The conductor reverting all four merges if the new server won't start.
 - thinkpad-x1 switched by its next session.
 - Adding D0 to this round, and starting both conductors outside the checkouts.
+- Taking backlog #76 and #73 into D3, and leaving #82 out.
 
 ### Left to the builder
 

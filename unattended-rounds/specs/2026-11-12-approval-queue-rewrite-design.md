@@ -20,7 +20,7 @@ The queue you use today builds each page from a fact file, a second writer's tex
 
 ### If you approve
 
-1. A conductor starts the round after the weekly usage reset on 2026-11-13, 11pm Anchorage time. Its first pass waits for a small workstation fix to the busy check (workstation backlog #75), which the workstation round lands first.
+1. A conductor starts the round after the weekly usage reset on 2026-11-13, 11pm Anchorage time. Its first pass waits for a small workstation fix to the busy check (workstation backlog #75), which the workstation round lands first. If you send the workstation design back, this round can't start until that fix is approved some other way.
 2. Five passes build the new queue in a directory beside the old one and land without a packet, because nothing you use changes until the switch.
 3. The sixth pass prepares the switch and stops with its pull request open.
 4. You get one close packet, in the old queue, that carries the switch and the workstation's skill changes together. The workstation round's conductor sends it, and this round's conductor sends none. Approving it merges both and starts the new queue.
@@ -36,7 +36,7 @@ The mockup listed merges "since yesterday". A fixed window is simpler to reason 
 
 ### Worth knowing
 
-The new queue is built from the mockup you called solid, and the mockup's source is the visual target each page is graded against. The two rounds switch together, so this design and the workstation design need each other: if you approve only this one, passes one to five still run and the switch waits.
+The new queue is built from the mockup you called solid, and the mockup's source is the visual target each page is graded against. The two rounds switch together, so this design and the workstation design need each other: if you approve only this one, nothing starts until the busy-check fix that the workstation design carries is approved some other way.
 
 ### The document
 
@@ -182,6 +182,8 @@ Files: `next/cli/`, `next/tests/`.
 
 - The front page shows Outstanding decisions, Reports, and Recently merged PRs, the last grouped under each tool's name with one sentence per pull request. The test's merged lines are written by A2's `land` code path, or by the store module if A2 has not landed.
 - A document page renders each of the five real documents, with option buttons and the two decision buttons drawn and inert.
+- Every page is served with a content security policy whose `img-src` is `'self' data:`. A test document with a remote image shows no image and makes no outside request.
+- Straight quotes in a document's prose render as curly quotes. Quotes inside code are unchanged.
 - A fresh `standards:visual-verifier` grades screenshots of each page beside screenshots of the mockup at 1440 px and 390 px, light and dark, and returns no structural difference and no difference in typeface, type size, or spacing of the reading text. The returned close packet is graded without its change marks, which A5 draws.
 - No page scrolls sideways at 390 px, and a Playwright check finds no element wider than the viewport, so clipped content fails too.
 - The repo gains a rules file for its pages, loaded only when a session edits a file under `next/` or `approval-queue/`: one layout, one notes margin, strings in one file, the mockup as the pattern to follow (backlog #70).
@@ -259,6 +261,8 @@ The twelve standing answers in `round-run.md` hold. Two are added for this round
 | #38 Undo toasts and keys | Done by A4 |
 | #63 `restart` rollback | Folded into A2 |
 | #49 `withdraw` on a decided item, malformed decision | Folded into A1 and A2 |
+| workstation #11 queue leftovers | Remote images: done by A3. Pruning: moot, the restart archives old state. The untested 10-second exit: moot, that command goes |
+| workstation #14 brief leftovers | Curly quotes: done by A3. `listItems` in `brief.ts`: moot, the file goes |
 | #41 `collect` racing the app | Folded into A2 |
 
 ### Out of scope

@@ -4,7 +4,7 @@
  "title": "Rebuild the Approval Queue around one kind of page, a document",
  "prs": [],
  "design": {
-  "repo": "initiatives/.claude/worktrees/unattended-rounds",
+  "repo": "initiatives",
   "path": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md"
  },
  "held": [],
@@ -59,7 +59,7 @@
     },
     {
      "text": "Listed among Claude's calls.",
-     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:302"
+     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:306"
     }
    ],
    "applied": "In a directory beside the old app, with the first five passes landing without a packet"
@@ -113,7 +113,7 @@
    "evidence": [
     {
      "text": "The archive step and its order.",
-     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:215"
+     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:217"
     }
    ],
    "applied": "They go into one archive file, and the new queue starts empty"
@@ -136,7 +136,7 @@
    "evidence": [
     {
      "text": "Listed among Claude's calls.",
-     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:302"
+     "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:306"
     }
    ],
    "applied": "TypeScript, sharing the document library with the pages"
@@ -144,7 +144,7 @@
  ],
  "steps": [
   {
-   "text": "After the weekly usage reset on 2026-11-13, 11pm Anchorage time, launch the round's conductor from `plans/aq-rewrite-conductor-prompt.txt`. Its first pass waits for the workstation round's fix to the busy check (workstation backlog #75).",
+   "text": "After the weekly usage reset on 2026-11-13, 11pm Anchorage time, launch the round's conductor from `plans/aq-rewrite-conductor-prompt.txt`. Its first pass waits for the workstation round's fix to the busy check (workstation backlog #75). If the workstation design is sent back, this round can't start until that fix is approved some other way.",
    "who": "session"
   },
   {
@@ -159,21 +159,21 @@
   },
   {
    "text": "Vale has not read this design. The house config's scope excludes the record's folder. `tellgrader` under the docs register reports nothing.",
-   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:302"
+   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:306"
   },
   {
    "text": "The repo runs no CI, so each pass's own gate run is the only automated check.",
-   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:228"
+   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:230"
   },
   {
    "text": "The edits made after the builder check were not read by a second fresh reader.",
-   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:302"
+   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:306"
   }
  ],
  "reviews": [
   {
    "text": "One builder check by a fresh Opus reader read both designs against the queue's code and the workstation's skills and returned fifteen findings. Each was folded as Claude's call, and none needed your answer.",
-   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:302"
+   "source": "unattended-rounds/specs/2026-11-12-approval-queue-rewrite-design.md:306"
   }
  ]
 }
