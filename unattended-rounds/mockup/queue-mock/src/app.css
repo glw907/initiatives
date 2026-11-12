@@ -13,7 +13,7 @@
 :root {
 	/* A document is technical writing, so its text takes the size, face class, and line height of
 	   GitHub's Markdown stylesheet: 16px sans at 1.5. The column holds 80 characters of that text,
-	   the most WCAG 2.2 allows (success criterion 1.4.8). */
+	   the upper limit in WCAG 2.2's criterion for blocks of text (1.4.8, level AAA). */
 	--doc-text: 1rem;
 	--doc-measure: 36.5rem;
 	--rail-width: 17.5rem;
@@ -83,7 +83,8 @@ body {
 }
 
 /* The outline of the open document: second- and third-level headings, the current one marked
-   (US Web Design System, "In-page navigation"; Nielsen Norman Group, "Table of Contents"). */
+   (US Web Design System, "In-page navigation"). It sits in the left rail, one of the three places
+   Nielsen Norman Group lists ("Table of Contents: The Ultimate Design Guide"). */
 .page-outline {
 	margin: var(--spacing-6px) 0 var(--spacing-9px) var(--spacing-12px);
 	padding-inline-start: var(--spacing-9px);
@@ -179,10 +180,11 @@ body {
 	line-height: 1.5;
 }
 .prose-doc > * + * {
-	margin-top: 0.9em;
+	/* One em between blocks: GitHub's value, and the least the US Web Design System gives. */
+	margin-top: 1em;
 }
 /* Headings. The first four levels are set in the serif face over sans text, so a heading differs
-   from the text in face as well as size. Each level is one visible step from the next, in bold
+   from the text in face as well as size. Each level is the smallest visible step from the next
    (Butterick, "Headings"), with at least one and a half times as much space above as below
    (US Web Design System, "Typography"). */
 .prose-doc :is(h1, h2, h3, h4, h5, h6) {
@@ -207,8 +209,8 @@ body {
 	margin-top: 1.5rem;
 }
 /* Lists. A list sits close under the sentence that introduces it. The marker is quiet and hangs in
-   a fixed gutter, so the text of every item starts on one line. Items that run to several lines
-   get space between them (GOV.UK, "Lists"); each nested level steps in by the same gutter. */
+   a fixed gutter, so the text of every item starts on one line. Items sit half an em apart
+   (US Web Design System, "Typography"); each nested level steps in by the same gutter. */
 .prose-doc :is(ul, ol) {
 	padding-inline-start: 1.6em;
 }
@@ -235,7 +237,7 @@ body {
 	font-weight: 500;
 }
 .prose-doc li + li {
-	margin-top: 0.4em;
+	margin-top: 0.5em;
 }
 .prose-doc strong {
 	font-weight: 600;
@@ -394,7 +396,7 @@ body {
 }
 
 /* Tables: the sans face at a size that reads as large as the text around it, light rules between
-   rows, numbers aligned right (GOV.UK, "Table"). Code in a cell stays on one line. */
+   rows, a column of numbers aligned right (GOV.UK, "Table"). Code in a cell stays on one line. */
 .table-frame {
 	overflow-x: auto;
 	margin-block: 1.5em;
