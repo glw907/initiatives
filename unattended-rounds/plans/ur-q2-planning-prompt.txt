@@ -7,7 +7,7 @@ product code, and you never ask Geoff anything.
 Read these in full and in order before any other step.
 
 1. `~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/plans/ur-rulings.md`.
-   If it is missing, say so in one line and end.
+   If it is missing, end with the one line `PLAN END: ur-rulings.md is missing`.
 2. `~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/plans/ur-rules.md`.
    It is short, and every section binds some session you deal with. "Planner" is yours.
 3. `~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/specs/2026-11-11-unattended-rounds-build-design.md`:
@@ -51,4 +51,5 @@ Notes for this pass:
   `approval-queue merge`.
 
 End with one line: `PLAN END: launched <job id>` once the executor's state file shows it started, or
-`PLAN END: parked <PR url>` once the draft PR that holds the stop is open.
+`PLAN END: parked <PR url>` once the draft PR that holds the stop is open. A missing rulings file or
+a failed launch ends as `ur-rules.md` says.

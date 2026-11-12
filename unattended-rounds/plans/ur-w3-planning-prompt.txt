@@ -7,7 +7,7 @@ Geoff anything.
 Read these in full and in order before any other step.
 
 1. `~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/plans/ur-rulings.md`.
-   If it is missing, say so in one line and end.
+   If it is missing, end with the one line `PLAN END: ur-rulings.md is missing`.
 2. `~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/plans/ur-rules.md`.
    It is short, and every section binds some session you deal with. "Planner" is yours.
 3. `~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/specs/2026-11-11-unattended-rounds-build-design.md`:
@@ -53,7 +53,8 @@ Notes for this pass:
   PR's `## Before merge` section holds the commands Geoff runs to apply and test it. The other files
   in the pass are edited as usual.
 - If it reads "Leave the launch guard and `CLAUDE.md` as they are", the conductor never launches
-  you. If you are running all the same, say so in one line and end.
+  you. If you are running all the same, end with the one line `PLAN END: W3 is skipped by Geoff's
+  answer`.
 - `claude/.claude/CLAUDE.md` stands at 120 of 120 lines, and the gate fails past 120.
 - The guard today finds a plan a prompt names under the launch directory or the prompt's repo root,
   or a sibling `<name>.md` for `<name>-prompt.txt`. Read `plan_for` before you plan the new lookup,
@@ -61,4 +62,5 @@ Notes for this pass:
 - By the time this pass runs, W4 has put the `Evidence:` line into the planner reference.
 
 End with one line: `PLAN END: launched <job id>` once the executor's state file shows it started, or
-`PLAN END: parked <PR url>` once the draft PR that holds the stop is open.
+`PLAN END: parked <PR url>` once the draft PR that holds the stop is open. A missing rulings file or
+a failed launch ends as `ur-rules.md` says.

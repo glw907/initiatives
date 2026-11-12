@@ -38,13 +38,16 @@ After W2 ends, if the first doesn't hold yet, refresh the report with `Round sta
 a line saying the round waits for the queue. Then wait in the background and end the turn:
 
 ```bash
-timeout 3000 bash -c 'f=$HOME/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/reports/ur-queue-report.md;
+timeout 1500 bash -c 'f=$HOME/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/reports/ur-queue-report.md;
 until grep -Eq "^Queue live through: Q4|^Round state: ended" "$f" 2>/dev/null; do sleep 60; done; echo changed'
 ```
 
-Exit 124 means nothing changed: start the wait again. If the queue report reads `Round state:
-ended` without `Queue live through: Q4`, launch nothing more. W4, W5, and W3 stay `not started`,
-and the report says the queue round ended first.
+Exit 124 means nothing changed. Before you start the wait again, find the latest row named
+`conductor-approval-queue` in `claude agents --json --all`. The queue round has ended first
+when the report reads `Round state: ended` without `Queue live through: Q4`. It has also ended
+first when that row isn't live, or is missing, and the report lacks the `Q4` line or doesn't
+exist. In either case launch nothing more: W4, W5, and W3 stay `not started`, and the report
+says the queue round ended first.
 
 ## W3, by Geoff's second answer
 
@@ -57,8 +60,13 @@ refused the executor's edit of the guard or of `CLAUDE.md`, the pass parks with 
 patch in its PR body, and you send a stop packet (build standing answer 4).
 
 **"No session edits either file: the change comes to you as a patch with the commands to apply
-it."** The same, except that the PR carries a `## Before merge` section. The close packet holds
-the forced call that section brings.
+it."** W3 is marked as waiting for Geoff and never lands. Its PR carries a `## Before merge`
+section, so the close packet holds that section's forced call with the skill's two choices, and
+recommends "I'll run it myself". If Geoff answers that, merge nothing: W3's row reads `waiting`,
+and the report lists the section's commands as his. If he answers "The session runs it, then
+merges", run the section's commands as written, then `approval-queue merge --premerge-done
+glw907/workstation#<n> <id>`, and pull `~/.dotfiles`. If auto mode refuses one of the section's
+commands, stop there, merge nothing, and say so in the report.
 
 **"Leave the launch guard and `CLAUDE.md` as they are."** Never launch W3. Its row reads
 `skipped`, and the report says Geoff chose that.

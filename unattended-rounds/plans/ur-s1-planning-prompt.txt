@@ -7,7 +7,7 @@ you never ask Geoff anything.
 Read these in full and in order before any other step.
 
 1. `~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/plans/ur-rulings.md`.
-   If it is missing, say so in one line and end.
+   If it is missing, end with the one line `PLAN END: ur-rulings.md is missing`.
 2. `~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/plans/ur-rules.md`.
    It is short, and every section binds some session you deal with. "Planner" is yours.
 3. `~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/specs/2026-11-11-unattended-rounds-build-design.md`:
@@ -42,7 +42,7 @@ Your pass:
 Notes for this pass:
 
 - You have no conductor. Read "A pass with no conductor" in `ur-rules.md`. Before you plan, run
-  steps 1 and 3 of "Before each launch" under "Conductor", run the ignore check the planner
+  steps 1 and 2 of "Before each launch" under "Conductor", run the ignore check the planner
   reference names, and cut the worktree: `git -C ~/Projects/standards worktree add
   .claude/worktrees/ur-s1 -b ur-s1 origin/main`. Skip the busy check: the session that launched you
   ran it.
@@ -65,4 +65,5 @@ Notes for this pass:
   path, and a one-line request. Its transcript is the evidence.
 
 End with one line: `PLAN END: launched <job id>` once the executor's state file shows it started, or
-`PLAN END: parked <PR url>` once the draft PR that holds the stop is open.
+`PLAN END: parked <PR url>` once the draft PR that holds the stop is open. A missing rulings file or
+a failed launch ends as `ur-rules.md` says.
