@@ -1,45 +1,59 @@
 You are designing the next step of the unattended-rounds initiative with Geoff, who is in this
 session. Work in ~/Projects/initiatives/.claude/worktrees/unattended-rounds, a local branch that is
 never pushed. Load pass-core and read references/planner.md and references/round.md, then
-standards:brainstorming and the survey skill.
+standards:brainstorming.
 
-Read first: unattended-rounds/research/2026-11-11-evidence.md, the section "A design miss found
-after the queue round merged". It holds Geoff's four rulings verbatim, the three faults, and what
-the rules say today. Then read approval-queue BACKLOG.md #69 and #70.
+The subject is everything a session puts in front of Geoff to read: packets, round reports, digest
+lines, PR briefs, and the pages that show them. The first rounds produced text and pages he called
+sloppy, and he said that if the written communication and reporting is mush, the work on the new
+process is wasted. He gave his feedback in chat while other work ran. This sitting is the
+structured pass that replaces that.
 
-Read "Geoff's correction to the diagnosis" in that section before anything else. He ruled that
-the report page was sloppy UI, and that a design standard such as Survey is beside the point. The
-design starts from the page being opened and used with real content before it merges, and from
-content written for a reader. Rules files and layout guidance come second.
+Read first, in unattended-rounds/research/2026-11-11-evidence.md, the section "A design miss found
+after the queue round merged" through the end of the file. It holds his statements verbatim. Three
+of them set the terms, and you don't reopen them.
 
-Read "Geoff's second correction" there too. The words on a page are part of its UI, and he ruled
-that the fault is beyond any register: a title and a summary each have a job, and the check is
-whether a reader with only the page can do that job's work from them. Don't answer this with a
-style guide.
+- The report page was sloppy UI. A design standard such as Survey is beside the point.
+- The words on a page are part of its UI, and the fault is beyond any register. Don't answer it
+  with a style guide.
+- All writing has a job. Text that fills a space so the formatting looks right is a miss.
 
-His third statement widens that to every block of text: writing that fills a space so the
-formatting looks right is a miss. Design each page from what its reader needs to know and do, and
-give a format no field that exists only to be filled.
+Then read the two research files of 2026-11-12 beside it. ui-machinery-inventory.md ends with a
+browser probe and seven candidate changes, which are a starting list that Geoff has ruled on
+nowhere. ui-consistency-guidance.md holds what Anthropic and others publish. Cite the Anthropic
+page behind each change you keep, as claude-infra requires. Read approval-queue BACKLOG.md #69 and
+#70.
 
-Then read the two research files of 2026-11-12 beside it: ui-consistency-guidance.md (what
-Anthropic and others publish, with quotes) and ui-machinery-inventory.md (what the workstation
-already has, where each piece binds, and seven candidate changes). The candidates are a starting
-list for the sitting, and Geoff has ruled on none of them. Cite the Anthropic page behind each
-change you keep, as claude-infra requires.
+Run the sitting in this order.
 
-Two designs come out of this sitting, each sent to Geoff's Approval Queue as its own design packet.
+1. Before your first question, list every piece of text and every page the process shows Geoff:
+   each part of a design, close, and stop packet, the round report, the digest line, the PR brief,
+   STATUS, and a session's last message. For each, find who writes it, the rule that sets its
+   form, and two real examples from ~/.local/state/approval-queue and the merged PRs, one that
+   worked for a reader and one that did not where both exist.
+2. Take the surfaces to Geoff one at a time with the real examples in front of him. For each, find
+   out what he does with it and what he needs from it first. His answers are the design's source.
+   Yours are marked as guesses.
+3. Design each surface from those needs. A format has no field that exists only to be filled, and
+   a block with nothing to tell him is left out.
+4. Show him the result on real content before any design goes to the queue: the ur-ws report and
+   the close packets of 2026-11-12 rewritten, and each changed page rendered in a browser with
+   them. He reads those the way he will read the real thing.
+5. Try the two checks on the same real content and report what each caught and missed: the browser
+   script from the probe, and a fresh reader that has only the page and says, block by block, what
+   each tells him that he needs. A check goes into a design only if the trial shows it works.
 
-1. A workstation round that changes the planning rules. New UI goes through a rendered prototype
-   Geoff sees before the plan, in a one-pass round too. Every app on the workstation has a written
-   set of UI rules before a pass adds UI to it, and a pass reuses the app's patterns or brings a
-   new one to Geoff as a prototype. Decide where the rules live (Survey's DESIGN.md recipes, a
-   rules file in each app, the planner reference) and how a plan proves it followed them. The
-   freeze (removals only, to 2026-12-11) was lifted for the overhaul alone, so the packet asks
-   Geoff whether this round is part of the overhaul. pass-core stays under 1,500 words.
-2. An approval-queue round, backlog #70: one page shell, the notes margin on every page that has
-   text to read (select text, a note card opens in the right margin), the report page's form
-   (#69), and the app's UI rules file. Follow the new rule yourself: show Geoff a rendered
-   prototype of each changed page before the design goes to the queue.
+Designs come out as round designs of one repo each, and each goes to Geoff's Approval Queue as its
+own design packet.
+
+- A workstation round for what sessions write and how a pass with a page is planned and closed:
+  the report and digest text set in pass-core's references, the packet title and its parts, a
+  rendered prototype Geoff sees before the plan in a round of any size, and the close checks from
+  step 5. pass-core stays under 1,500 words. The freeze (removals only, to 2026-12-11) was lifted
+  for the overhaul alone, so the packet asks Geoff whether this round is part of the overhaul.
+- An approval-queue round, backlog #70 and #69: one page shell, the notes margin on every page
+  that has text to read (select text, a note card opens in the right margin), and the report and
+  digest pages rebuilt on the forms from step 3.
 
 Before filing anything in ~/.dotfiles/BACKLOG.md, check that workstation#233 and #234 are merged,
 since both touch that file. Change no skill, hook, setting, or queue code in this session.
