@@ -42,10 +42,11 @@ incomplete file list, and a permission block.
 
 ## Where the work lives
 
-- `workstation`: `pass-core` and its references, the `approval-packet` skill, the repo adapters,
-  the pass section of `CLAUDE.md`, `claude-launch-guard`, `unattended-work-guards.md`, and
-  `claude/.claude/settings.json`.
-- `approval-queue`: the fact file's fields, the `merge` and `land` commands, and the pages.
+- `workstation`: `pass-core` and its references, the `approval-packet` skill, the `cairn-pass`
+  adapter, the pass section of `CLAUDE.md`, `claude-launch-guard`, `claude-worktree-busy`,
+  `pass-report`, and `unattended-work-guards.md`. The build changes no setting.
+- `approval-queue`: the approve check, the fact file's fields, the `merge`, `land`, `report`, and
+  `restart` commands, and the pages.
 - `standards`: the `brainstorming` skill.
 - The record stays on the local branch `unattended-rounds` and is not pushed, because it cites the
   unpublished `workstation-refinement` record. Queue commands for it run with
@@ -56,6 +57,8 @@ incomplete file list, and a permission block.
 - Research: `research/2026-11-11-evidence.md` holds the timeline figures, the denial log, the
   planning-miss counts, the probes, and the Anthropic pages the design draws on.
 - Design: `specs/2026-11-11-unattended-rounds-design.md`.
+- Build design: `specs/2026-11-11-unattended-rounds-build-design.md`. Three rounds of one repo
+  each, ten passes: `ur-queue`, `ur-ws`, and `ur-std`.
 - 2026-11-11: proposed. The design went to Geoff's queue and was withdrawn the same day, after he
   asked whether the Approval Queue should work in rounds.
 - 2026-11-11: Geoff ruled the round the workstation's basic unit, of one to six passes, unless
@@ -77,5 +80,14 @@ incomplete file list, and a permission block.
   this month's usage credits, capped by the monthly spend limit he sets.
 - 2026-11-11: the queue had refused his approve many times before it took one. The evidence file
   holds the cause, and he asked for the fix as part of the overhaul.
-- **Next:** the build design, sent as the next packet. No skill, hook, setting, permission rule, or
-  queue code changes before he approves it.
+- 2026-11-11: the build design was written and read by a fresh builder check. Before it was sent,
+  Geoff said in chat that his weekly reset and two Fable resets replace the usage credits, that the
+  week should run close to 100 percent before he resets, and that Fable 5.2 goes wherever it makes
+  a real difference. The build design carries each statement as a ruling decided for him. Its three
+  rounds start together, and it has no 85 percent stop for the overhaul.
+- 2026-11-11: a second fresh reader read the rewritten build design. It puts three decisions to
+  Geoff: what a one-pass round takes from the design rules, who writes the launch guard change,
+  and whether the queue's approve and merge code merges itself.
+- **Next:** Geoff's decision on the build design in the queue. No skill, hook, setting, permission
+  rule, or queue code changes before he approves it. On an approve, the session launches the two
+  conductors and the S1 planner from the prompts under `plans/`.
