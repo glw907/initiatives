@@ -27,6 +27,7 @@ incomplete file list, and a permission block.
 - A round reaches Geoff as a round report with the usage it spent and each planned-against-actual
   figure, plus a close packet where a call remains and one stop packet for each parked pass.
 - The Approval Queue groups a round's packets and digest lines, and shows the round report.
+- A wrong design is caught at the sitting or in its first pass, before a later pass builds on it.
 - The three largest planning-miss classes each fall by half, counted per 100 merged pull requests.
 
 ## Non-goals
@@ -59,5 +60,6 @@ incomplete file list, and a permission block.
 - 2026-11-11: proposed. The design went to Geoff's queue and was withdrawn the same day, after he
   asked whether the Approval Queue should work in rounds.
 - 2026-11-11: Geoff ruled the round the workstation's basic unit, of one to six passes, unless
-  Anthropic's guidance argued against it. The guidance check found no argument against it. The
-  amended design went back to his queue.
+  Anthropic's guidance argued against it. The guidance check found no argument against it.
+- 2026-11-11: Geoff asked whether brainstorming and planning were adjusted for the longer unit. The
+  design gained four rules for a round's design step, and went back to his queue.

@@ -15,10 +15,11 @@ Today a session with nothing approved to start next sits idle, and one stop hold
 - In a larger round, a conductor launches each pass when the one before it reaches a finished PR. A pass with nothing for you to decide merges itself, as it does today.
 - A pass that hits a stop is parked. Its question reaches you in the queue, and the next pass that doesn't depend on it starts.
 - Before each launch the conductor reads the weekly usage. At 85 percent or more it starts nothing new.
+- A round design carries an acceptance list for each pass and the assumptions its passes share, and one fresh reader checks it before it reaches you.
 - A round's planner shows a probe or a quoted source for each mechanism, a recorded search behind each file list, and a read of the last 30 days of auto-mode refusals.
 - When you return, STATUS opens with a round report: each pass's state, planned against actual minutes, the usage spent, and every stop and planning miss by class.
 - The Approval Queue has no notion of a round today. Until it does, every packet title and digest line opens with the round's id, and the kit holds a rule for each place the queue's commands fit a round badly.
-- No skill, hook, permission rule, setting, or queue code changes before 2026-12-11, unless your first answer below says otherwise. Until then the round rules live in one kit file, which a designing session reads when you name it.
+- No skill, hook, permission rule, setting, or queue code changes before 2026-12-11, unless your first answer below says otherwise. Under the recommended answer, the round rules live until then in one kit file, which a designing session reads when you name it.
 
 ### The round as the basic unit
 
@@ -53,7 +54,30 @@ Close packets go out when the round's last pass ends, since a packet's PR list i
 
 Source: `unattended-rounds/research/2026-11-11-evidence.md:93`
 
+### A design that holds for a whole round
+
+A round raises the price of a wrong design. In one pass it costs a stop or a PR. In a round, later passes build on it while you are away.
+
+Today's design step was sized for one pass. The design is a page or less, and a pass in a round would get one line of outcome. The plan review reads mechanics and feasibility, and an `ordinary` plan gets no read. The closing review reads the diff against the design, so a wrong design passes it.
+
+Your merged PRs show the exposure. 39 of about 220 planning misses were at the design level: 20 were a design or plan missing a part or prior art, 15 an owner decision left open, and 4 an ambiguous instruction.
+
+A round design of two or more passes follows four rules, each drawn from Anthropic's guidance.
+
+| What can go wrong | The rule |
+| --- | --- |
+| The design misreads what you want. | Each pass carries an acceptance list: what you would see or run when the pass is done, each item able to fail. The designing session plays every list back to you at the sitting, with a mockup for anything you will look at. Your approval fixes the lists. A planner or executor may add a check and never edits or drops one. |
+| The design rests on a wrong assumption. | The design lists each assumption that more than one pass depends on, with a probe run or a quoted source. Where the dependencies allow, the pass resting on the least-proven assumption runs first. |
+| The design is missing a part. | One fresh reader checks the round design before it reaches you, whatever its class. It asks whether a builder could plan every pass from it, and whether any acceptance item could pass on a wrong result. |
+| The run drifts from the design. | Each PR shows evidence for every acceptance item: the command and its output, or a screenshot. The closing reviewer checks each item against that evidence. An item that can't be met as written parks the pass. |
+
+These rules lengthen the design sitting, since you confirm an acceptance list for every pass. This design takes that trade for you. Send it back if the sitting should stay as short as it is today.
+
+Source: `unattended-rounds/research/2026-11-11-evidence.md:167`
+
 ### If you approve
+
+These steps follow the recommended first answer. "What each decision changes" gives the others.
 
 1. The session writes the round kit and checks it with a reader that has seen nothing else.
 2. The session files four backlog items: two in the workstation repo for the false hits in the worktree busy check, and two in the approval-queue repo for the stop-packet merge and the base-branch check.
@@ -99,7 +123,7 @@ The weekly allowance resets on 2026-11-13 at 11pm Anchorage time, so the first r
 
 ### How a round runs
 
-A round of two or more passes is one design, one conductor, and passes that run one at a time in one repo. The design names a round id, which every PR body, packet title, and `land` claim carries. The design lists each pass with its outcome, files, class, estimate, what it depends on, and which other passes share a file with it. Your approval of the design also approves unattended planning for every pass in it, which `pass-core` already allows. The designing session commits a planner prompt for each pass and one conductor prompt that holds the order table. The conductor decides nothing: it follows the table.
+A round of two or more passes is one design, one conductor, and passes that run one at a time in one repo. The design names a round id, which every PR body, packet title, and `land` claim carries. The design lists each pass with its outcome, acceptance list, files, class, estimate, what it depends on, and which other passes share a file with it. A pass that shares a file with an unmerged pass counts as depending on it. Your approval of the design also approves unattended planning for every pass in it, which `pass-core` already allows. The designing session commits a planner prompt for each pass and one conductor prompt that holds the order table. The conductor decides nothing: it follows the table.
 
 Each pass is planned just before it runs, so its plan reads the code as the earlier passes left it. The conductor launches the pass's planner. The planner writes the plan under the repo's `docs/plans/`, where the launch guard reads it, gets its one review, and launches the executor, as `planner.md` describes for unattended planning.
 
@@ -111,17 +135,18 @@ A pass that depends on an unmerged pass starts from that pass's branch, and only
 
 Each stop a round can foresee has an answer, so the conductor never waits on you to keep going.
 
-1. A pass stops on a question only you can answer. The executor commits, pushes, opens its draft PR if none exists, and writes the stop to STATUS. The conductor waits for the PR's checks, sends one `stop` packet (with a forced `gate-failed` call if a check is red), ends that session with `claude stop`, and launches the next pass that neither depends on the parked one nor shares a file with it.
+1. A pass stops on a question only you can answer. The executor commits, pushes, opens its draft PR if none exists, and writes the stop to STATUS. The conductor waits for the PR's checks and sends one `stop` packet. The packet carries a forced `gate-failed` call if a check is red or the review's verdict is `fix` or `escalate`, and a forced call if the PR body has a `## Before merge` section. The conductor then ends that session with `claude stop` and launches the next pass that doesn't depend on the parked one.
 2. Auto mode refuses a command. The executor uses the alternative its plan names, once. A second refusal is a stop under answer 1. No session edits a setting to get past a refusal.
 3. A task needs a setting, hook, auto-mode entry, or permission rule changed. That is never an executor task. The planner writes it as a command for you in a close packet, and a pass that can't finish without it parks.
 4. The weekly usage reads 85 percent or more before a launch. The conductor follows your answer to the second decision.
 5. A pass's parent is parked. The pass parks too and never launches.
 6. The busy check exits 1. If its line names the `claude daemon run` process or the Approval Queue server, the conductor checks the session rows and recent uncommitted edits by hand, and launches when both are clean. Any other hit ends launches in that repo, and the report says so.
 7. The round passes twice its planned minutes. The pass in flight finishes, nothing new starts, and the conductor writes the report.
-8. A plan comes out over twice the design's estimate for its pass, or its review finds something that changes the design. The pass parks under answer 1 before any code is written.
-9. You answer a stop packet while the round is still running. The conductor records your ruling as `conductor.md` says, runs the packet's listed steps, and relaunches the parked pass once the pass in flight finishes. It never runs `approval-queue merge` on a stop packet. Passes that depended on the parked pass follow in order.
+8. A plan comes out over twice the design's estimate for its pass, its review finds something that changes the design, or the planner finds an acceptance item it can't plan for as written. The pass parks before any code is written. The planner commits the plan on the pass's branch, pushes it, and opens a draft PR that holds the plan alone, so the conductor's stop packet has a PR to name.
+9. You answer a stop packet while the round is still running. The conductor records your ruling as `conductor.md` says, runs the packet's listed steps, and relaunches the parked pass once the pass in flight finishes. It never runs `approval-queue merge` on a stop packet. Passes that depended on the parked pass follow in order. A stop packet you send back is fixed forward and resent with `--replies`, and each of your notes gets an `approval-queue reply`. A pass that resumes after the round's close packets have gone out lands if it qualifies, or gets a close packet to itself.
 10. The conductor's session dies or the machine restarts. Nothing recovers on its own. STATUS names the conductor prompt and each open packet, and you or any session can relaunch the conductor.
 11. An executor goes idle with its pass unfinished and no stop in STATUS. The conductor relaunches it from its prompt, twice at most. A third idle parks the pass under answer 1.
+12. An executor finds an acceptance item it can't meet as written, or an assumption the design lists proves false. The pass parks under answer 1. No session rewrites the item or builds around it.
 
 The conductor stays up while a stop packet or a close packet waits for you, and ends as `conductor.md` says, when no pass it owns is open.
 
@@ -135,7 +160,7 @@ Permissions checked: the work this design approves writes two files, the kit in 
 
 ### Estimate
 
-The kit and its check come to 40 path minutes, which is this session's guess with no scored pass behind it.
+The kit and its check come to 50 path minutes, which is this session's guess with no scored pass behind it.
 
 A round of 600 planned path minutes should take about 220 to 240 actual minutes at the median ratio of 0.36 to 0.40, and about 500 to 510 at the ninth decile of 0.83 to 0.85. CI, reviews, and waits come on top. How much of the weekly allowance one pass spends was not measured. The first pilot round measures it, and that figure sets the size of later rounds.
 
@@ -174,7 +199,7 @@ No open item folds into the pilot, and one folds into the standing change. The s
 
 ### The end-to-end check
 
-A reader that has seen only the kit must produce a complete round outline. A fresh Sonnet subagent gets the kit's path and three sample backlog items, and writes a round design outline. The check fails if the outline lacks the order table, the round id, a mechanism table, recorded searches, the denial-log read, a standing answer for each stop, the merge order, or the default branch as each PR's base.
+A reader that has seen only the kit must produce a complete round outline. A fresh Sonnet subagent gets the kit's path and three sample backlog items, and writes a round design outline. The check fails if the outline lacks the order table, the round id, an acceptance list for each pass, the shared assumptions, a mechanism table, recorded searches, the denial-log read, a standing answer for each stop, the merge order, or the default branch as each PR's base.
 
 The first pilot round is the larger check. It passes when every pass is merged, waiting in a close packet, or parked with a stop packet, the report leads STATUS, and the report shows a usage reading before each launch.
 
@@ -187,7 +212,8 @@ The pilot leaves every guard, review, and approval where it is. It also leaves o
 - Faster gates and CI, which belong to `dev-speed`.
 - A standing model or effort change, which belongs to `monthly-model-review`.
 - Running rounds on Orpheus or in the cloud.
-- A fix to `claude-worktree-busy`, `claude-launch-guard`, or the queue's code ahead of the second design.
+- A fix to `claude-worktree-busy`, `claude-launch-guard`, or the queue's code under this approval. Each comes to you in a later design.
+- The four design rules on a round of one pass. The second design settles whether a single pass takes them.
 - A change to `standards:running-passes`. The round is a layer over the pass it defines.
 
 ## Technical notes
@@ -195,10 +221,10 @@ The pilot leaves every guard, review, and approval where it is. It also leaves o
 ### Passes and order
 
 1. The kit. One small change in this record: `unattended-rounds/kit/round-kit.md`, the symlink at `~/.local/state/unattended-rounds/kit.md`, the four backlog items, and the README record line. It runs in the approving session.
-2. Pilot rounds. Each is its own design packet from a session Geoff asks, and each has two or more passes. A single pass runs as it does today. At least two rounds run before the standing change is designed.
+2. Pilot rounds. Each is its own design packet from a session Geoff asks, and each has two or more passes. A single pass runs as it does today. Under the recommended first answer, at least two rounds run before the standing change is designed.
 3. The standing change. A second design carrying the pilot's reports, run as a round. Its homes, none approved here:
    - The approval-queue repo: a `round` field in `approval-queue/src/lib/facts.ts` and on `land`, pages grouped by round, the round report as an item, `merge` refusing a stop packet, and the base-branch check in `merge` and `land`.
-   - `pass-core`: the lifecycle's design step becomes a round design, "Conductor" says a round of two or more has one, and the round rules go to the conductor and planner references or a new `references/round.md`.
+   - `pass-core`: the lifecycle's design step becomes a round design, "Conductor" says a round of two or more has one, and the round rules go to the conductor and planner references or a new `references/round.md`. The four design rules go to `planner.md` "Design".
    - The `approval-packet` skill: the round id, the stop case in its approve step, and the report. The packet writer's brief in `survey/writing/approval-brief.md` follows it.
    - The adapters `cairn-pass`, `site-pass`, and `dotfiles-pass`, and the pass section of `CLAUDE.md`, where each names what Geoff approves.
    - A required evidence line and the #72 fix in `claude-launch-guard`, the `/goal` and usage sections of the guards doc, and the miss class tag.
@@ -206,6 +232,8 @@ The pilot leaves every guard, review, and approval where it is. It also leaves o
    `pass-core` holds 1,496 of its 1,500 words and `CLAUDE.md` 120 of its 120 lines, so each addition there is paired with a removal. Session names stay `<project>-<pass>` and `conductor-<project>`.
 
 ### Files
+
+The table follows the recommended first answer.
 
 | File | Change |
 | --- | --- |
@@ -219,10 +247,10 @@ The pilot leaves every guard, review, and approval where it is. It also leaves o
 
 The kit is agent-facing and follows `~/.claude/docs/voice/agent-facing.md`. It holds, in this order:
 
-1. What a round design adds to a pass design: the round id, the pass table (outcome, files, class, path minutes, depends on, shares files with), the merge order, the usage ceiling, and the standing answers above. A design with one pass uses none of the kit.
+1. What a round design adds to a pass design: the round id, at most 12 characters; the pass table (outcome, acceptance list, files, class, path minutes, depends on, shares files with); the assumptions more than one pass depends on, each with a probe or a quoted source; the merge order; the usage ceiling; and the standing answers above. The order puts the least-proven assumption first where dependencies allow, and counts a shared file as a dependency. The designing session plays each acceptance list back to Geoff, shows a mockup for anything he will look at, and runs the `standards:brainstorming` builder check with one fresh Opus reader before the packet. A design with one pass uses none of the kit.
 2. The four planner rules and the class list.
-3. The conductor prompt's additions: the order table; one planner launch per pass from its committed prompt; `approval-queue land` for a pass that qualifies; a usage read before each launch with `claude -p "/usage" --model haiku < /dev/null`; `claude stop <id>` on each finished or parked executor before the next busy check; a dependent pass's worktree cut with `git -C <repo> worktree add .claude/worktrees/<pass> -b <branch> origin/<parent branch>` and entered by the executor with `EnterWorktree` `path`; each `approval-queue packet` run as a background command; long commands under `timeout`. The queue rules follow: the round id opens every packet title and `land` claim; every PR's base is the default branch; a pass counts as finished only on its PR, green checks, and an accepted review; a stop packet waits for the PR's checks and carries a forced `gate-failed` call on a red one; an approved stop packet runs its listed steps and never `merge`; close packets go out after the last pass ends, three unforced calls to a packet at most, split by dependency chain, the last one naming the report's path. The kit names the two places a round differs from `conductor.md`: a stop goes to you as a `stop` packet while the next independent pass runs (`conductor.md:38-41` has the conductor ask and wait), and standing answer 6 is the settled result of the investigation that `conductor.md:47-48` calls for.
-4. The executor prompt's additions: the `Round: <id>` line in the PR body, the default branch as the PR's base, the stop procedure of standing answer 1, and `TaskStop` for a background command it started.
+3. The conductor prompt's additions: the order table; one planner launch per pass from its committed prompt; `approval-queue land` for a pass that qualifies; a usage read before each launch with `claude -p "/usage" --model haiku < /dev/null`; `claude stop <id>` on each finished or parked executor before the next busy check; a dependent pass's worktree cut with `git -C <repo> worktree add .claude/worktrees/<pass> -b <branch> origin/<parent branch>` and entered by the executor with `EnterWorktree` `path`; each `approval-queue packet` run as a background command; long commands under `timeout`. The queue rules follow: the round id opens every packet's title, its text headline, and every `land` claim, inside the queue's 80-character limit; every PR's base is the default branch; a pass counts as finished only on its PR, green checks, and an accepted review; a stop packet waits for the PR's checks, carries a forced `gate-failed` call on a red check or a `fix` or `escalate` verdict, and carries a forced call on a `## Before merge` section; an approved stop packet runs its listed steps and never `merge`; a sent-back packet is fixed forward and resent with `--replies`, and every note gets a `reply`; close packets go out after the last pass ends, three unforced calls to a packet at most, split by dependency chain, the last one naming the report's path; when a chain splits, the second packet merges only after the first, and is resent if the first was sent back. The kit names the two places a round differs from `conductor.md`: a stop goes to you as a `stop` packet while the next independent pass runs (`conductor.md:38-41` has the conductor ask and wait), and standing answer 6 is the settled result of the investigation that `conductor.md:47-48` calls for.
+4. The executor prompt's additions: the `Round: <id>` line in the PR body, the default branch as the PR's base, the stop procedure of standing answers 1 and 12, and `TaskStop` for a background command it started. The PR body lists each acceptance item with its evidence, and the whole-branch review's dispatch names the acceptance list. The planner prompt carries standing answer 8.
 5. The round report's fields: for each pass its state, PR, planned and actual path minutes, and usage before and after; then stops, refusals, and planning misses by class. The conductor writes the report before any long wait and again at the end, and puts its path on the first line of the repo's STATUS.
 6. If the third decision allows it, the `/goal` line for each prompt. Its condition names every legitimate end: PR ready, parked with a stop in STATUS, or usage at the ceiling.
 
@@ -238,8 +266,11 @@ The kit is agent-facing and follows `~/.claude/docs/voice/agent-facing.md`. It h
 | A stop packet names the parked pass | The queue refuses a stop packet with no PR (`workstation-refinement/README.md:151`) | The pass stopped before its first push | Standing answer 1 has the executor push and open the draft PR first. |
 | A dependent pass's PR merges into main | `merge` and `land` run `gh pr merge` and read no base branch (`bin/.local/bin/approval-queue:152-155` in the approval-queue repo) | The PR was opened against its parent's branch | The conductor reads `baseRefName` with `gh pr view` before `land` or a close packet, and a wrong base parks the pass. |
 | An approved stop packet resumes its pass | `merge <id>` refuses only an undecided item, a non-approve, a stale item, or a design (the approval-queue repo's `README.md:105`) | A session follows the `approval-packet` skill's approve step and runs `merge` on the stop packet | `gh` refuses to merge a draft PR. Standing answer 9 names the steps to run in its place. |
-| A stop packet is accepted with a red check | The queue refuses it without a forced `gate-failed` call (`bin/.local/bin/approval-queue:635-637`) | Checks stay pending past the command's 15-minute wait | The conductor waits for the checks before it sends. A second refusal leaves the stop in STATUS and the report. |
-| A round's calls fit its close packets | `UNFORCED_CAP = 3` (`approval-queue/src/lib/facts.ts:112`) | One dependency chain holds more than three unforced calls | The chain splits at a pass boundary into two packets, and the conductor merges the second only after the first. |
+| A stop packet is accepted | The queue refuses a red check or a `fix` or `escalate` verdict without a forced `gate-failed` call, and a `## Before merge` section without a forced call (`bin/.local/bin/approval-queue:635-640`) | Checks stay pending past the command's 15-minute wait | The conductor waits for the checks before it sends. A second refusal leaves the stop in STATUS and the report. |
+| A pass parked at planning has a PR | A stop packet names at least one PR (`approval-queue/src/lib/facts.ts:252`) | The planner stopped with nothing pushed | Standing answer 8 has the planner push its plan and open a draft PR first. |
+| A pass sharing a file with an unmerged pass merges clean | `merge` stops at the first failure (`bin/.local/bin/approval-queue:327`) | The pass was cut from the default branch and conflicts | The order table counts a shared file as a dependency, so the pass starts from the other pass's branch. |
+| An acceptance list holds through a run | Anthropic's harness article fixes its feature list and lets an agent change only a `passes` field | A session rewrites an item to fit what it built | The closing reviewer reads the PR's list against the design's. A changed item is a `fix` verdict. |
+| A round's calls fit its close packets | `UNFORCED_CAP = 3` (`approval-queue/src/lib/facts.ts:112`) | One dependency chain holds more than three unforced calls | The chain splits at a pass boundary into two packets, and the conductor merges the second only after the first. A send-back of the first moves the heads under the second, which the queue then refuses as out of date (`bin/.local/bin/approval-queue:302`), so the conductor resends the second. |
 | An idle executor is relaunched | Anthropic's Opus 5.5 page: "stop after two or three automatic continuations on the same task" | The relaunch idles again | Standing answer 11 parks the pass after two relaunches. |
 | The usage read | `claude -p "/usage" --model haiku < /dev/null` printed the weekly line, 2026-11-11 | The output changes shape or prints no weekly line | An unreadable figure counts as over the ceiling. |
 | Waiting for the reset | Not probed. The `/goal` page says a goal pauses on a usage limit and resumes at the reset | The session never resumes | The report is written before the wait. STATUS names the conductor prompt for a relaunch. |
@@ -264,7 +295,7 @@ The kit is written only after the decision arrives, from the answers given.
 
 ### Measures
 
-The baseline per 100 merged PRs is 33 misses in all, 8.2 for an unprobed mechanism, 6.0 for a file list, and 6.0 for a permission block. The goal of half is counted over the first 100 PRs merged after the standing change lands. Pilot rounds report the same four figures for their own PRs, which will be too few to conclude from.
+The baseline per 100 merged PRs is 33 misses in all, 8.2 for an unprobed mechanism, 6.0 for a file list, and 6.0 for a permission block. The goal of half is counted over the first 100 PRs merged after the standing change lands. Pilot rounds report the same four figures for their own PRs, which will be too few to conclude from. They also count the three design-level classes, 5.8 per 100 merged PRs at the baseline, and each pass parked on an acceptance item or a false assumption.
 
 ### Claude's calls
 
@@ -274,6 +305,11 @@ The baseline per 100 merged PRs is 33 misses in all, 8.2 for an unprobed mechani
 - A dependent pass's PR opens against the default branch.
 - An idle executor is relaunched twice at most, then parked.
 - Close packets go out after the round's last pass ends, split by dependency chain.
+- The four design rules apply to a round of two or more passes. They lengthen Geoff's sitting, which is his trade to reverse.
+- The fresh read of a round design is the `standards:brainstorming` builder check, one Opus reader, in any class.
+- A pass parked at planning pushes its plan and opens a draft PR, so the stop goes out as a `stop` packet.
+- A pass that shares a file with an unmerged pass counts as depending on it.
+- A round id is at most 12 characters.
 - The usage ceiling is 85 percent of the weekly allowance.
 - Passes run one at a time, in one repo.
 - The kit lives in this record with a symlink under `~/.local/state`, since the record is unpushed and a session can't find it otherwise.
@@ -283,7 +319,7 @@ The baseline per 100 merged PRs is 33 misses in all, 8.2 for an unprobed mechani
 - The symlink points into this record's worktree at `.claude/worktrees/unattended-rounds`, which stays in place until the initiative closes. A removed worktree breaks the link where a designing session will report it.
 - An unreadable usage figure counts as over the ceiling.
 
-A builder check by a fresh Opus reader raised five questions on 2026-11-11. The calls above settle four of them, and the fifth is Geoff's three answers, which the kit waits for. That check read the first version, before the queue section and the ruling on the basic unit.
+A builder check by a fresh Opus reader raised five questions on 2026-11-11. The calls above settle four of them, and the fifth is Geoff's three answers, which the kit waits for. That check read the first version, before the queue section and the ruling on the basic unit. A second check the same day read the amended version against the queue's code and raised six findings: a stop at planning with no PR to name, two more triggers for a forced call, a shared file between unmerged passes, a sent-back first packet of a split chain, a stop packet sent back or answered late, and lines that assumed the recommended first answer. Each is folded above as Claude's call, and it found nothing more for Geoff.
 
 ### Left to the builder
 
