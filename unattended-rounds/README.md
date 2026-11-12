@@ -99,9 +99,12 @@ incomplete file list, and a permission block.
   GitHub-flavored technical writing in Survey (round `survey-docs`, one pass). The approved files
   are under `specs/2026-11-12-*`, at commit 5f8f0e5 of this branch. The mockup he called solid is
   in `mockup/queue-mock/`.
-- **Next:** after the weekly usage reset on 2026-11-13, 11pm Anchorage time, launch the two
-  conductors from `plans/aq-rewrite-conductor-prompt.txt` and
-  `plans/ws-documents-conductor-prompt.txt`. The workstation round's first pass fixes backlog #75
+- 2026-11-12: Geoff reset Fable's usage and ruled that the rounds start that day, ahead of the
+  2026-11-13 weekly reset the three designs name. The designs are not edited.
+- **Next:** Geoff launches the two conductors from the record's directory, each with `claude --bg
+  --model sonnet --effort medium --name <name> "$(cat <prompt>)"`: `conductor-workstation` from
+  `plans/ws-documents-conductor-prompt.txt` and `conductor-approval-queue` from
+  `plans/aq-rewrite-conductor-prompt.txt`. The workstation round's first pass fixes backlog #75
   and the queue round's first pass waits for it. The Survey pass starts from
   `plans/sv-s1-planning-prompt.txt` only after the queue switch has merged.
 - **Still owed:** earlier revisions of standards#20's PR body hold a pasted transcript line with a
