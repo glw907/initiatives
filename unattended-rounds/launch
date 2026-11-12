@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Start the conductors of rounds ws-documents and aq-rewrite as background sessions.
+# Run it from any directory. A conductor whose name is already listed by
+# `claude agents` is left alone, since its prompt forbids a second launch.
+set -euo pipefail
+
+record="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$record"
+
+live="$(claude agents --json)"
+
+start() {
+  local name="$1" prompt="$2"
+  if grep -q "\"name\": \"$name\"" <<<"$live"; then
+    echo "$name is already listed by claude agents; not started"
+    return
+  fi
+  claude --bg --model sonnet --effort medium --name "$name" "$(cat "$prompt")"
+}
+
+start conductor-workstation plans/ws-documents-conductor-prompt.txt
+start conductor-approval-queue plans/aq-rewrite-conductor-prompt.txt

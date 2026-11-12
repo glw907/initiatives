@@ -101,10 +101,11 @@ incomplete file list, and a permission block.
   in `mockup/queue-mock/`.
 - 2026-11-12: Geoff reset Fable's usage and ruled that the rounds start that day, ahead of the
   2026-11-13 weekly reset the three designs name. The designs are not edited.
-- **Next:** Geoff launches the two conductors from the record's directory, each with `claude --bg
-  --model sonnet --effort medium --name <name> "$(cat <prompt>)"`: `conductor-workstation` from
-  `plans/ws-documents-conductor-prompt.txt` and `conductor-approval-queue` from
-  `plans/aq-rewrite-conductor-prompt.txt`. The workstation round's first pass fixes backlog #75
+- **Next:** Geoff runs `.claude/worktrees/unattended-rounds/unattended-rounds/launch` from
+  `~/Projects/initiatives`. It starts both conductors in the background on `sonnet` at `medium`:
+  `conductor-workstation` from `plans/ws-documents-conductor-prompt.txt` and
+  `conductor-approval-queue` from `plans/aq-rewrite-conductor-prompt.txt`, and it skips one that
+  `claude agents` already lists. The workstation round's first pass fixes backlog #75
   and the queue round's first pass waits for it. The Survey pass starts from
   `plans/sv-s1-planning-prompt.txt` only after the queue switch has merged.
 - **Still owed:** earlier revisions of standards#20's PR body hold a pasted transcript line with a
