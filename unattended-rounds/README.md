@@ -99,8 +99,8 @@ incomplete file list, and a permission block.
   a conductor starts before that sitting's designs land, and workstation backlog #75 runs before
   the next one. Approval-queue backlog #71 belongs in that sitting's queue round beside #70.
   Geoff also suspects the queue's fixed forms cause the stilted writing and wants a Markdown
-  document he annotates in their place (last section of the evidence file). The sitting prompt
-  tests that in its step 4.
+  document he annotates in their place (last section of the evidence file). At his word the
+  sitting opens with a brainstorm on that idea (the prompt's step 0).
 - **Still owed:** earlier revisions of standards#20's PR body hold a pasted transcript line with a
   folder name from `~/.claude`, and Geoff has not said whether to delete them. The round reports'
   counts in the evidence file are unchecked against the pull requests.

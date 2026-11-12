@@ -20,9 +20,10 @@ of them set the terms, and you don't reopen them.
 
 The file's last section holds a fourth statement, which Geoff calls a suspicion: the queue's
 idea is sound and its forms are too rigid, the forms cause the stilted writing, and a session
-should write a formatted Markdown document that he annotates in the web interface. Treat it as
-the leading hypothesis for the queue's redesign. Test it in step 4 before you design either round
-around the present fact file and forms.
+should write a formatted Markdown document that he annotates in the web interface. He asked
+that the sitting start with a brainstorm on that idea, so it is the first subject you raise with
+him, and nothing below is designed around the present fact file and forms until he has settled
+it.
 
 Then read the two research files of 2026-11-12 beside it. ui-machinery-inventory.md ends with a
 browser probe and seven candidate changes, which are a starting list that Geoff has ruled on
@@ -32,7 +33,14 @@ page behind each change you keep, as claude-infra requires. Read approval-queue 
 
 Run the sitting in this order.
 
-1. Before your first question, list every piece of text and every page the process shows Geoff:
+0. Brainstorm the document idea with Geoff first, by standards:brainstorming. Have close packet 2
+   of 2026-11-12 (queue item 20261112T083259-3290807) read and in front of him as the real
+   example, and early on show it rendered as one Markdown document he can select text in and
+   annotate, beside the present form. Find out what he wants from the document form: how he
+   approves it or sends it back, how a choice between options is put and recorded, what the
+   command still refuses, and whether an approve stays tied to the pull request heads he read.
+   What he settles here decides which surfaces the steps below still cover.
+1. Before your first question on the surfaces, list every piece of text and every page the process shows Geoff:
    each part of a design, close, and stop packet, the round report, the digest line, the PR brief,
    STATUS, and a session's last message. For each, find who writes it, the rule that sets its
    form, and two real examples from ~/.local/state/approval-queue and the merged PRs, one that
@@ -44,10 +52,7 @@ Run the sitting in this order.
    a block with nothing to tell him is left out.
 4. Show him the result on real content before any design goes to the queue: the ur-ws report and
    the close packets of 2026-11-12 rewritten, and each changed page rendered in a browser with
-   them. He reads those the way he will read the real thing. Render close packet 2 both ways: as
-   the present form, and as one Markdown document he can select text in and annotate. Ask him how
-   he would approve it, send it back, and choose between options in the document form, and what
-   the command should still refuse.
+   them. He reads those the way he will read the real thing.
 5. Try the two checks on the same real content and report what each caught and missed: the browser
    script from the probe, and a fresh reader that has only the page and says, block by block, what
    each tells him that he needs. A check goes into a design only if the trial shows it works.
@@ -63,7 +68,7 @@ own design packet.
 - An approval-queue round, backlog #70, #69, and #71: one page shell, the notes margin on every
   page that has text to read (select text, a note card opens in the right margin), and the report
   and digest pages rebuilt on what step 3 and step 4 settled. If Geoff picks the document form in
-  step 4, this round replaces the fact file and forms with it, and may need a second round.
+  step 0, this round replaces the fact file and forms with it, and may need a second round.
 
 Before filing anything in ~/.dotfiles/BACKLOG.md, check that workstation#233 and #234 are merged,
 since both touch that file. Change no skill, hook, setting, or queue code in this session.
