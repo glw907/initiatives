@@ -25,7 +25,7 @@ Today a session with nothing approved to start next sits idle, and one stop hold
 
 You ruled on 2026-11-11 that the round becomes the basic unit on the whole workstation, unless Anthropic's guidance says that is a bad idea. It doesn't say that. A reader fetched 14 Anthropic pages and quoted them for and against. They support one piece of work per fresh session, state kept in files, a plan held outside the model, and a person approving the result at the end. No built-in Claude Code feature does what a round does: the agent view parks a session that needs you and orders nothing, a workflow script takes no approval mid-run, and the agent teams page advises against teams for sequential work.
 
-The pages carry four cautions, and the round answers each.
+The pages carry seven cautions. Four bear on how a round is built, and the round answers each. The other three concern agent teams and the cost of a fresh session, and the evidence file lists them.
 
 | Anthropic's caution | What a round does |
 | --- | --- |
