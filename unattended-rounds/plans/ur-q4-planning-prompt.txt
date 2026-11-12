@@ -37,7 +37,7 @@ Your pass:
 - Class `runner`. The build design gives the pass 120 minutes, so a plan whose path passes 240
   parks.
 - Waits for: Q3. The worktree was cut from `origin/main` after Q3 merged, or from `origin/ur-q3` if
-  Geoff's third answer has the queue passes wait for him.
+  that pass waits for a close packet.
 
 Notes for this pass:
 

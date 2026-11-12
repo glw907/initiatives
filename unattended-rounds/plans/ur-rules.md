@@ -147,7 +147,8 @@ An executor follows `pass-core` and its executor reference. These rules add to t
 A stop is a question only Geoff can answer, a second refusal, an acceptance item that can't be
 met, a false shared assumption, or a review that ends on `escalate` or on a second read short of
 `accept`. The executor commits, pushes, opens its draft PR if none
-exists, and writes the stop under `## Stop` in `docs/STATUS.md` on its branch: the question, what
+exists, and writes the stop under `## Stop` at the end of `docs/STATUS.md` on its branch: the
+question, what
 it tried, and the choices it sees. It pushes and ends. It tries nothing else.
 
 ## Executor prompt form
@@ -170,8 +171,9 @@ and never run approval-queue." or the no-conductor close from your planner's pro
 Geoff anything. To wait on CI or a long gate, start a background command and end the turn. This
 goal is met when your last message is one line that starts "PASS END:" and one of these is true.
 (1) Ready: the PR is open against main and marked ready, its body carries the Round, Pass,
-Review, and Calls lines and evidence under every acceptance item, the review line reads accept
-with 0 open findings, the gate is green on the head commit, and the worktree is clean. (2)
+Review, and Calls lines and evidence under every acceptance item, the review line reads accept,
+with 0 open findings or with each open finding listed as a call, the gate is green on the head
+commit, and the worktree is clean. (2)
 Parked: your work is committed and pushed, a draft PR exists, and docs/STATUS.md on the branch
 holds the stop under "## Stop". (3) ur-rulings.md was missing and the line says so. The goal is
 also met once 200 turns have passed, whatever your last message says: end every other message
@@ -240,15 +242,17 @@ When the executor is idle, read the PR with `gh pr list --repo glw907/<repo> --h
 - **Land** when the PR is open and not a draft, `Review:` reads `accept, open findings 0`,
   `Calls:` reads `none`, the body has no `## Before merge` section, no check fails, the plan's
   class isn't `auth-data`, every acceptance item in the build design's list for the pass appears
-  under `## Acceptance`, and the run sheet doesn't mark the pass as waiting for Geoff. Stop the
-  planner and the executor. Then run
+  under `## Acceptance`, the run sheet doesn't mark the pass as waiting for Geoff, and no earlier
+  pass of the round waits for a close packet. Stop the planner and the executor. Then run
   `approval-queue land glw907/<repo>#<n> "<round> <P>: <claim>"`, with `--round <round>` where
   the run sheet says so. The claim stays within 80 characters. Then pull the main checkout and
   run the sheet's after-landing steps.
 - **Wait for a close packet** when the PR is ready and the land test fails only on a call, a
-  `## Before merge` section, an `accept` with a finding left open, or the sheet's mark. Stop
-  both sessions. Close packets go out after the round's last pass ends, three unforced calls to
-  a packet at most.
+  `## Before merge` section, an `accept` with a finding left open, the sheet's mark, or an
+  earlier pass that waits. Stop both sessions. The next pass is cut from this pass's branch
+  (step 5 above), and it and every later pass of the round join the close packet in place of
+  landing. Close packets go out after the round's last pass ends, unless the run sheet sends one
+  sooner, with three unforced calls to a packet at most.
 - **Park** when `docs/STATUS.md` on the branch holds a `## Stop`, or the PR is a plan-only
   draft. If the branch has no PR, open a draft one from the pushed branch first, with the stop
   in its body: the queue refuses a stop packet that names no PR. Wait for the PR's checks, send
@@ -266,7 +270,12 @@ call on a red check or a `fix` or `escalate` verdict, and a forced call on a `##
 section. Its `steps` list what the session runs after an answer. Run `approval-queue packet` in
 the background with no `timeout`, and never kill it. An approved stop packet runs its steps and
 relaunches the pass, and never `approval-queue merge`. A sent-back packet is fixed forward and
-resent with `--replies`, and every note gets a reply. The last close packet of a round names
+resent with `--replies`, and every note gets a reply. When a note asks for a change to a PR,
+append it under `## Rulings` in that pass's plan, relaunch its executor as after a stop
+packet's answer, and resend when the PR is ready again. On an approved close packet, run
+`approval-queue merge <id>` as the skill says, pull the main checkout, and run the sheet's
+after-landing steps once, for the last pass merged. A PR that Geoff's answer leaves unmerged
+stays open, and its row reads `waiting`. The last close packet of a round names
 the report's path in a `session` step.
 
 When Geoff answers a stop packet, append his ruling under `## Rulings` in the pass's plan, commit
@@ -283,12 +292,13 @@ each pass at the first of these that matches. Relaunch counts start again at zer
 1. The PR is merged. Run the after-landing steps if the report doesn't show them done.
 2. A packet for the pass is open. Run `approval-queue collect <id>` in the background and wait
    on it, since it blocks until Geoff decides.
-3. The executor's prompt is on the branch. If the executor's latest row is live, wait on it.
+3. The planner's latest row is live. Wait on it.
+4. The executor's prompt is on the branch. If the executor's latest row is live, wait on it.
    Otherwise go to the idle-executor test.
-4. The branch exists with no executor prompt. Launch the planner without cutting the worktree
+5. The branch exists with no executor prompt. Launch the planner without cutting the worktree
    again. If `git worktree list` doesn't show the worktree, add it with
    `git -C <checkout> worktree add .claude/worktrees/ur-<p> ur-<p>`.
-5. Nothing exists. Run the steps under "Before each launch".
+6. Nothing exists. Run the steps under "Before each launch".
 
 The round's clock is the sum of each pass's minutes from its planner's launch to its PR being
 ready. Waits on another round or on Geoff don't count. When the clock passes twice the round's
@@ -307,7 +317,8 @@ a packet, and at the end. Follow the mockup in the build design, lines 207 to 22
 - A trials line: how many passes Fable 5.2 planned, how many sessions ran under a `/goal` line,
   and how many of those went idle before a `PASS END:` or `ROUND END:` line.
 - Each seat that ran on Opus under rule 6.
-- What waits for Geoff, what landed, and `Resume from:` with the conductor prompt's path.
+- What waits for Geoff, with the queue item id of each open packet, what landed, and
+  `Resume from:` with the conductor prompt's path.
 
 After writing the file, copy it into the main checkout's `docs/STATUS.md` as a block directly
 under the title line, between `<!-- round-report <round> -->` and `<!-- /round-report -->`, the
@@ -361,5 +372,5 @@ The executor does the conductor's part for its pass once the PR is ready:
 In its prompt, the conductor sentence becomes "You have no conductor: follow ur-rules.md, section
 'A pass with no conductor', once the PR is ready." End (1) becomes: the PR is merged, the main
 checkout is pulled, and the report is written. End (2) becomes: a close or stop packet you sent
-came back as a send-back you can't fix forward, the stop is under "## Stop" in the PR's body,
+came back with an answer that leaves the PR unmerged, or as a send-back you can't fix forward,
 and the report says what waits.

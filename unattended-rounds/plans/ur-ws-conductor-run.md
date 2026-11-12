@@ -57,7 +57,9 @@ Read the second answer in `ur-rulings.md`.
 marked as waiting for Geoff and never lands. When it ends ready, send one close packet naming
 its PR. On an approve, run `approval-queue merge <id>` and pull `~/.dotfiles`. If auto mode
 refused the executor's edit of the guard or of `CLAUDE.md`, the pass parks with the change as a
-patch in its PR body, and you send a stop packet (build standing answer 4).
+patch in its PR body, and you send a stop packet (build standing answer 4). Its one step is
+Geoff's: applying the patch. On his answer relaunch nothing, since the executor would meet the
+same refusal. W3's row reads `waiting`, and the report says the patch is his to apply.
 
 **"No session edits either file: the change comes to you as a patch with the commands to apply
 it."** W3 is marked as waiting for Geoff and never lands. Its PR carries a `## Before merge`
@@ -102,5 +104,8 @@ of these holds, then end with a line that starts `ROUND END:`.
 - Every pass is merged and pulled, or skipped by Geoff's answer.
 - Launches ended on the queue round ending first, a busy check, a third idle planner, or the
   clock stop, no pass is in flight, and no packet of this round waits.
+- Every pass is merged, skipped, or left unmerged by Geoff's answer, or by a step in this sheet
+  or in `ur-rules.md` that says to launch or merge nothing more. No pass is in flight, and no
+  packet of this round waits.
 
 The final report's `Resume from:` line names `ur-ws-conductor-prompt.txt` by its full path.

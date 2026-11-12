@@ -37,7 +37,7 @@ Your pass:
   medium --name approval-queue-ur-q2 "$(cat <prompt path>)"`, run from the main checkout.
 - Class `runner`. The build design gives the pass 90 minutes, so a plan whose path passes 180 parks.
 - Waits for: Q1. The worktree was cut from `origin/main` after Q1 merged, or from `origin/ur-q1` if
-  Geoff's third answer has the queue passes wait for him.
+  that pass waits for a close packet.
 
 Notes for this pass:
 

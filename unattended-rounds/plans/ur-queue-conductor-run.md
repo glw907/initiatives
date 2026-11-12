@@ -25,15 +25,16 @@ Session names: planner `approval-queue-ur-<p>-plan`, executor `approval-queue-ur
 Read the third answer in `ur-rulings.md`.
 
 **"All four queue passes land themselves after the whole-branch review."** Each pass lands when
-the land test in `ur-rules.md` passes. Every worktree is cut from `origin/main`. The next pass
-launches only after the one before it has merged, been pulled, and been restarted.
+the land test in `ur-rules.md` passes. A worktree is cut from `origin/main`, and the next pass
+launches only after the one before it has merged, been pulled, and been restarted. The one
+exception is a pass that waits for a close packet: `ur-rules.md` cuts the next pass from its
+branch, and no later pass lands.
 
-**"Q1 and Q2 each wait for your approve, and Q3, Q4, W4, W5, and W3 wait behind them."** Every
-queue pass is marked as waiting for Geoff, and none lands. When a pass ends ready with its review
-accepted, cut the next pass's worktree from its branch (`origin/ur-q1` for Q2, and so on) and
-launch it. After Q4 ends, send one close packet that names the four PRs in order Q1 to Q4. Each
-PR's base is `main`. On an approve, run `approval-queue merge <id>`, pull, and run the
-after-landing steps once, for Q4.
+**"Q1 and Q2 each wait for your approve, and Q3, Q4, W4, W5, and W3 wait behind them."** Q1 and
+Q2 are marked as waiting for Geoff and never land. When Q1 ends ready with its review accepted,
+send one close packet that names its PR at once, and launch nothing while it waits. On an
+approve, run `approval-queue merge <id>`, pull, and run the after-landing steps. Then run Q2 the
+same way. Q3 and Q4 land by the land test. Every worktree is cut from `origin/main`.
 
 ## After a queue pass lands
 
@@ -69,5 +70,8 @@ of these holds, then end with a line that starts `ROUND END:`.
 - Every pass is merged, pulled, and restarted.
 - Launches ended on a failed restart, a busy check, a third idle planner, or the clock stop, no
   pass is in flight, and no packet of this round waits.
+- Every pass is merged or left unmerged by Geoff's answer, or by a step in this sheet or in
+  `ur-rules.md` that says to launch or merge nothing more. No pass is in flight, and no packet
+  of this round waits.
 
 The final report's `Resume from:` line names `ur-queue-conductor-prompt.txt` by its full path.
