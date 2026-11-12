@@ -4,7 +4,7 @@ Initiative: unattended-rounds
 
 ## Brief
 
-Approving this starts three rounds that build the round into your tools: the Approval Queue first, then the workstation's skills and checks, then the brainstorming skill. Ten passes run back to back, and nine of them merge themselves.
+Approving this starts three rounds that build the round into your tools: one on the Approval Queue, one on the workstation's skills and checks, and one on the brainstorming skill. Ten passes run, and nine of them merge themselves.
 
 You approved the round as the unit of work on 2026-11-11. That approval built nothing. This design names every file the build changes, gives each pass a list of what you would see when it is done, and shows each queue page that changes. The fix for the approve button that refused you is the first pass.
 
@@ -15,7 +15,7 @@ You approved the round as the unit of work on 2026-11-11. That approval built no
 - A round's report is an item on the queue's pages, with one button, "Mark read".
 - A stop packet's button reads "Answer and resume". Answering merges nothing, and `merge` refuses a stop packet.
 - `merge`, `land`, and `packet` refuse a PR whose base isn't the repo's default branch.
-- `pass-core` says every design is a round design of one to six passes. The round rules you approved go into a new `references/round.md`.
+- `pass-core` says every design is a round design of one to six passes. The round rules you approved go into two new reference files.
 - A plan must show its evidence before it launches: a mechanism table, recorded searches, and a read of the auto-mode refusals.
 - The busy check stops reading a finished session, the Claude daemon, and the queue's server as a running pass.
 - The brainstorming skill states what done looks like, reads before it asks, and stops promising two or three approaches.
@@ -23,12 +23,13 @@ You approved the round as the unit of work on 2026-11-11. That approval built no
 
 ### If you approve
 
-1. The session writes the conductor and planner prompts into this record and launches the queue round, `ur-queue`.
-2. Each queue pass that finishes merges itself, and the conductor rebuilds and restarts the queue's app.
-3. When all four queue passes have merged, the workstation round, `ur-ws`, starts. Four of its passes merge themselves.
-4. Its fifth pass changes the launch guard and the pass section of `CLAUDE.md`. That PR waits for you in a close packet.
-5. When the first four workstation passes have merged, the standards round, `ur-std`, starts: one pass on the brainstorming skill, which merges itself.
-6. You return to a round report for each round, the one close packet, and a stop packet for any pass that parked.
+1. The session launches all three rounds at once, from prompts it wrote into this record while the packet waited.
+2. `ur-queue` runs its four passes in order. Each merges itself, and the conductor rebuilds and restarts the queue's app.
+3. `ur-ws` runs its first three passes while the queue round runs. Its last two write the round rules, and they wait until every queue pass has merged.
+4. The third workstation pass changes the launch guard and the pass section of `CLAUDE.md`. That PR waits for you in a close packet.
+5. `ur-std` runs its one pass on the brainstorming skill, which merges itself.
+6. The rounds run until they finish or the weekly limit halts them. If the limit comes first, you apply your weekly reset and tell a session to resume the overhaul.
+7. You return to a round report for each round, the one close packet, and a stop packet for any pass that parked.
 
 ### Decide: What a one-pass round takes from the design rules
 
@@ -40,27 +41,55 @@ Source: `unattended-rounds/specs/2026-11-11-unattended-rounds-design.md:65-74` a
 - All four rules, with the fresh reader on every design
 - None of them: a one-pass round runs exactly as a pass does today
 
+### What you said after the last packet
+
+Four things you said in chat on 2026-11-11 change what you approved. Each is written in as decided, and your approve confirms it.
+
+Your resets replace usage credits. You said you have a weekly reset and two Fable resets, "so there is no need for usage credit." The step that asked you to turn credits on is gone, and the overhaul spends nothing past the Max plan.
+
+The overhaul spends the week before you reset it. You said you'd "like to get it as close to 100% as possible before I use the reset." The overhaul's rounds have no 85 percent stop. They launch until the weekly limit halts them. The 85 percent rule you approved for later rounds is unchanged.
+
+The three rounds start together. You said you want the allowance spent quickly, since the week resets on Friday evening. The design you approved started each round when the one before it had merged. Three repos share no file, so the rounds run at once, and only the two passes that write rules for the queue's new commands wait for the queue.
+
+Fable 5.2 runs where a miss would cost most. You said quality is critical because the method touches all later work, and to use Fable "liberally where it will make a real difference." It plans every pass, executes the three passes that write rules text, and reads every pass's whole branch before it merges. The design you approved put it on planning alone.
+
+Source: `unattended-rounds/research/2026-11-11-evidence.md:328-372`
+
 ### Worth knowing
 
-The week stood at 60 percent used on 2026-11-11, with the Fable meter at 0, and it resets on 2026-11-13 at 11pm Anchorage time. `/usage` showed no usage-credits row at that read. Until it shows one, the rounds stop launching at 85 percent and wait for the reset.
+The week stood at 63 percent used on 2026-11-11, with the Fable meter at 6, and it resets on 2026-11-13 at 11pm Anchorage time. What one pass spends has never been measured. The first round measures it.
 
-The three rounds plan about 880 path minutes. At the usual ratio of actual to planned that is 320 to 350 minutes of work, and about 740 at the ninth decile. CI, reviews, and waits come on top.
+A weekly limit halts every session on the account at once, the conductors included. Nothing can write a report after that. From 85 percent on, each conductor refreshes its round report before every launch, so the report you find is at most one pass old.
 
-The queue's app restarts four times during the first round. A page you have open stays up and reloads on your next click. A packet waiting for your decision survives a restart: the approved design's packet waited through one on 2026-11-11.
+Whether a halted session picks itself up after a reset has never been tested. The design assumes it does not. A pass commits after each task, so a halt costs one task at most.
 
-Both trials you approved run in all three rounds. Planner prompts name Fable 5.2 at `high`, and each conductor and executor prompt opens with a `/goal` line.
+The three rounds plan about 880 minutes of work, and the longest chain is 640. At the usual ratio of actual to planned that chain is 235 to 255 minutes, and about 540 at the ninth decile. CI, reviews, and waits come on top.
+
+The queue's app restarts four times during the queue round. A page you have open stays up and reloads on your next click. A packet waiting for your decision survives a restart: the approved design's packet waited through one on 2026-11-11.
+
+Both trials you approved run in all three rounds: Fable 5.2 on planning, and a `/goal` line at the head of each conductor and executor prompt.
 
 ### The three rounds
 
-Each round is one repo, and its passes run one at a time. Every pass in a round shares a file with the pass before it, so each starts from the one before, once that one's review is accepted.
+Each round is one repo, and its passes run one at a time.
 
-| Round | Repo | Passes | Planned path minutes | Starts when |
+| Round | Repo | Passes | Planned minutes | Starts |
 | --- | --- | --- | --- | --- |
-| `ur-queue` | approval-queue | 4 | 390 | You approve this design. |
-| `ur-ws` | workstation | 5 | 430 | Every `ur-queue` pass has merged. |
-| `ur-std` | standards | 1 | 60 | The first four `ur-ws` passes have merged. |
+| `ur-queue` | approval-queue | Q1 to Q4 | 390 | When you approve. |
+| `ur-ws` | workstation | W1 to W5 | 430 | When you approve. W4 and W5 wait for every queue pass to merge. |
+| `ur-std` | standards | S1 | 60 | When you approve. |
 
-A round whose predecessor holds a parked pass doesn't start. Its report says so, and it starts when you answer the stop and the pass merges.
+What each pass waits for:
+
+| Pass | Waits for | Why |
+| --- | --- | --- |
+| Q2, Q3, Q4 | The queue pass before it | Each changes `bin/.local/bin/approval-queue` and `README.md`. |
+| W1, W2, W3 | Nothing | They share no file with each other or with any other pass. |
+| W4 | Q3 and Q4 merged | Its rules name the queue's `round` field and its `land --round` and `report` commands. |
+| W5 | W4 merged | Its skills cite the files W4 writes, and its closing check reads them. |
+| S1 | Nothing | It shares no file with any other pass. |
+
+A parked pass holds only the passes that wait for it. If W1 parks, W2 and W3 still run. If a queue pass parks, W4 and W5 wait, and the workstation report says so.
 
 ### Round `ur-queue`: the Approval Queue
 
@@ -72,12 +101,13 @@ The `packet` command records the design's full path in the item's `design.json`,
 - Editing the design after queuing still gets "Out of date: the design changed since this packet was queued".
 - Removing the design file gets "Could not read the design at `<path>`; nothing was recorded", and no decision is written.
 - An item queued before this change has no recorded path and is checked as it is today.
-- `approval-queue restart` exits 0 with the new build serving the same state directory. When the build fails it exits 1 and the old server keeps answering.
+- `approval-queue restart` builds beside the running build and swaps the new one in under `start.lock`. The old server serves every page until the swap.
+- `restart` exits 0 with the new build serving an item page from the same state directory. When the build fails it exits 1, and the old server still serves an item page.
 - A packet command that was waiting before a restart prints its decision after it.
 
-Files: `bin/.local/bin/approval-queue`, `approval-queue/src/lib/server/heads.ts`, `approval-queue/src/lib/server/items.ts`, their tests, `tests/lifecycle.test.sh`, `README.md`.
+Files: `bin/.local/bin/approval-queue` (`queue_packet`, the stale poll near line 824, the new command), `approval-queue/src/lib/server/heads.ts`, `approval-queue/src/lib/server/items.ts`, `approval-queue/src/lib/server/seed-facts.ts`, `approval-queue/src/routes/item/[id=id]/+page.server.ts`, `approval-queue/src/routes/item/[id=id]/facts.server.test.ts`, `tests/packet.test.sh` (line 468 asserts the old shape of `design.json`), `tests/lifecycle.test.sh`, `README.md`.
 
-**Pass Q2. A stop packet is answered, and a PR merges into the default branch.** 90 minutes, class `runner`. Depends on Q1.
+**Pass Q2. A stop packet is answered, and a PR merges into the default branch.** 90 minutes, class `runner`. Waits for Q1.
 
 - `approval-queue merge <id>` on an approved stop packet exits 2, says a stop packet is answered and never merged, and runs no `gh pr merge`.
 - `merge` on a close packet holding a PR based on another branch exits 2 before it merges anything, and names the PR, its base, and the default branch.
@@ -85,7 +115,7 @@ Files: `bin/.local/bin/approval-queue`, `approval-queue/src/lib/server/heads.ts`
 - `packet --check` refuses a fact file that names such a PR.
 - The stop page reads as the mockup below. A close page and a design page read as they do today.
 
-Files: `bin/.local/bin/approval-queue`, `approval-queue/src/lib/packet-view.ts`, `approval-queue/src/lib/components/PacketPage.svelte`, their tests, `tests/merge.test.sh`, `tests/packet.test.sh`, `README.md`.
+Files: `bin/.local/bin/approval-queue`, `approval-queue/src/check-brief.ts`, `approval-queue/src/lib/packet-view.ts`, `approval-queue/src/lib/components/PacketPage.svelte`, their tests, `tests/merge.test.sh` and `tests/packet.test.sh` with their `gh` stubs, the `gh` fixtures under `tests/fixtures/ct/`, `README.md`.
 
 ```text
 ur-queue · Pass paused · glw907/approval-queue#52
@@ -100,16 +130,16 @@ Pass parked until you answer.
   then relaunches the pass.
 ```
 
-**Pass Q3. The round on packets, landings, and pages.** 120 minutes, class `runner`. Depends on Q2.
+**Pass Q3. The round on packets, landings, and pages.** 120 minutes, class `runner`. Waits for Q2.
 
 - A fact file with `"round": "ur-queue"` passes the check. An id over 12 characters, or one that isn't lowercase letters, digits, and hyphens starting with a letter, is refused with the rule named.
 - The queued item's `item.json` holds the round.
 - `approval-queue land --round ur-queue <owner/repo#n> <claim>` appends a digest line that holds the round.
-- The board shows a round's waiting items under one round heading, inside their initiative's group. An item with no round sits where it does today.
+- The board and the sidebar show a round's waiting items under one round heading, inside their initiative's group. An item with no round sits where it does today.
 - The digest page groups a round's lines under its id. A line with no round shows as it does today.
-- Every item and digest line written before this change still loads.
+- Every item and digest line written before this change still loads, on the board, the digest page, and the history page.
 
-Files: `bin/.local/bin/approval-queue`, `approval-queue/src/lib/facts.ts`, `approval-queue/src/lib/server/items.ts`, `approval-queue/src/lib/server/digest.ts`, `approval-queue/src/lib/board.ts`, `approval-queue/src/lib/packet-view.ts`, `approval-queue/src/routes/+page.server.ts`, the board, digest, and history pages, the fixtures under `approval-queue/src/lib/fixtures/`, their tests, `README.md`.
+Files: `bin/.local/bin/approval-queue`, `approval-queue/src/lib/facts.ts`, `approval-queue/src/lib/server/items.ts`, `approval-queue/src/lib/server/digest.ts`, `approval-queue/src/lib/server/history.ts`, `approval-queue/src/lib/board.ts`, `approval-queue/src/lib/packet-view.ts`, `approval-queue/src/routes/+page.server.ts`, `approval-queue/src/routes/+layout.server.ts`, `approval-queue/src/routes/+layout.svelte`, the board, digest, and history pages, the fixtures under `approval-queue/src/lib/fixtures/`, their tests, `README.md`.
 
 ```text
 Waiting
@@ -136,26 +166,27 @@ approval-queue
     #49  The withdraw message for a decided item
 ```
 
-**Pass Q4. The round report as an item.** 120 minutes, class `runner`. Depends on Q3.
+**Pass Q4. The round report as an item.** 120 minutes, class `runner`. Waits for Q3.
 
-- `approval-queue report <initiative> <round> <report.md>` prints an item id and exits 0 without waiting.
+- `approval-queue report <initiative> <round> <report.md>` prints an item id and exits 0 without waiting. The item records no process id, so the board never shows it as abandoned.
 - The board shows the report as the first row of its round, labelled "Round report".
 - Opening it shows the report's Markdown with its tables, and beneath it the round's waiting packets and landed PRs as links.
-- "Mark read" moves it to history. Nothing merges, and no line is written to `decisions.jsonl`.
+- "Mark read" moves it to history. It writes the item's `decision.json` and no line in `decisions.jsonl`, and nothing merges.
 - A second `report` for a round whose report still waits replaces that report. The board keeps one row.
-- `approval-queue merge <id>` on a report exits 2.
+- `approval-queue merge <id>` and `approval-queue collect <id>` on a report exit 2.
+- A state directory holding all four kinds of item loads on the board, the history page, and through `pending`.
 - `docs/STATUS.md` adds the rebuild to the steps thinkpad-x1 runs before its first hand-over.
 
-Files: `bin/.local/bin/approval-queue`, `approval-queue/src/lib/server/items.ts`, `approval-queue/src/lib/board.ts`, a new report page under `approval-queue/src/routes/`, their tests, `tests/approval-queue.test.sh`, `README.md`, `docs/STATUS.md`.
+Files: `bin/.local/bin/approval-queue` (the new command, the kind list in `collect`), `approval-queue/src/lib/server/items.ts` (`KINDS`, the `ItemMeta` kind), `approval-queue/src/lib/server/history.ts`, `approval-queue/src/lib/board.ts`, `approval-queue/src/routes/+page.server.ts`, `approval-queue/src/routes/history/+page.svelte`, a new report page under `approval-queue/src/routes/`, their tests, `tests/approval-queue.test.sh`, `README.md`, `docs/STATUS.md`.
 
 ```text
 Round ur-queue · approval-queue · written 2026-11-12 06:14
 
 | Pass | State   | PR  | Planned | Actual | Usage before | Usage after |
-| Q1   | merged  | #51 | 60      | 31     | 60%          | 62%         |
-| Q2   | merged  | #52 | 90      | 44     | 62%          | 65%         |
-| Q3   | merged  | #53 | 120     | 70     | 65%          | 69%         |
-| Q4   | parked  | #54 | 120     | 38     | 69%          | 71%         |
+| Q1   | merged  | #51 | 60      | 31     | 63%          | 66%         |
+| Q2   | merged  | #52 | 90      | 44     | 66%          | 71%         |
+| Q3   | merged  | #53 | 120     | 70     | 71%          | 79%         |
+| Q4   | parked  | #54 | 120     | 38     | 79%          | 84%         |
 
 Stops 1 · Refusals 0 · Calls sent to you 1
 Planning misses 2: mechanism 1, file-list 1
@@ -163,6 +194,7 @@ Trials: Fable 5.2 planned 4 passes · /goal held 8 sessions, cleared early 0
 
 Waiting for you: Pass paused, the round report as an item
 Landed: #51 #52 #53
+Resume from: unattended-rounds/plans/ur-queue-conductor-prompt.txt
 
 [ Mark read ]
 ```
@@ -176,32 +208,46 @@ The figures in the mockups are made up. Each page keeps the look it has today.
 - A session row whose `state` is `done` is not a hit.
 - A `claude daemon run` process and the queue's server (`node <path>/approval-queue/build`) are not hits.
 - A running `--bg` session in the path, another process with the path in its command line, and an uncommitted file edited in the last hour are hits, as today.
-- `claude-worktree-busy ~/Projects/approval-queue` exits 0 with the queue's server up and no pass running.
+- With a fixture holding the queue's server process and one finished session row, the check exits 0 for the approval-queue path.
 
 Files: `bin/.local/bin/claude-worktree-busy`, `tests/claude-worktree-busy.test.sh`.
 
-**Pass W2. The pass report counts planning misses by class.** 60 minutes, class `ordinary`. Depends on W1.
+**Pass W2. The pass report counts planning misses by class.** 60 minutes, class `ordinary`.
 
-- A miss line in a PR's `## Planning misses` section opens with one of ten tags: `[mechanism]`, `[file-list]`, `[permission]`, `[design-gap]`, `[stale-fact]`, `[owner-call]`, `[no-answer]`, `[conflict]`, `[estimate]`, `[ambiguous]`.
-- `pass-report` prints a table of misses by class for its window, and counts a line with no tag as `untagged`.
+- Given a PR body whose `## Planning misses` lines open with a tag, `pass-report` prints a table of misses by class for its window. The ten tags are `[mechanism]`, `[file-list]`, `[permission]`, `[design-gap]`, `[stale-fact]`, `[owner-call]`, `[no-answer]`, `[conflict]`, `[estimate]`, and `[ambiguous]`.
+- A miss line with no tag counts as `untagged`.
 - A PR with no such section adds nothing, and the report's other tables don't change.
 
-Files: `bin/.local/bin/pass-report`, its test under `tests/`.
+Files: `bin/.local/bin/pass-report`, `tests/test_pass_report.py`.
 
-**Pass W3. The round rules in `pass-core`.** 150 minutes, class `runner`. Depends on W2.
+**Pass W3. The launch guard and the pass section of `CLAUDE.md`.** 75 minutes, class `runner`. Its PR waits for you in a close packet.
 
-- `pass-core/SKILL.md` "Lifecycle" says a design is a round design of one to six passes in one repo, and points to `references/round.md`. "Conductor" says a round of two or more passes has one.
-- `references/round.md` holds what a round design adds, the twelve standing answers, the conductor's order table and queue rules, and the report's fields, as the approved design lists them. It uses the queue's `round` field, `land --round`, and `report` in place of the title prefix.
-- `references/planner.md` holds the four planner rules and, under "Design", the design rules, with your answer on a one-pass round.
-- `references/conductor.md` sends a stop as a `stop` packet and launches the next pass that doesn't depend on the parked one. Today it asks and waits.
-- `references/executor.md` holds the `Round:` line, the default branch as the PR's base, the stop procedure, the evidence for each acceptance item, and the class tag on each planning miss.
-- The four capped files stay inside their caps: 1,500, 940, 560, and 900 words. `references/round.md` gets a cap of 1,500 in `claude-context-budget`, and the gate's `skill-caps` leg passes.
-- "Clock stop" leaves `SKILL.md`, since `standards:running-passes` "Clock" holds the same rule. One of the two copies of the polish-loop sentence goes.
+- The launch guard finds a plan kept in an initiative record: `<slug>-plan.md` beside `<slug>-prompt.txt`. This closes backlog #72.
+- A plan's `## Pre-flight` section needs a third line, `Evidence:`, naming its mechanism table and its recorded searches. A launch without it is denied with a message that names the line.
+- A planner launch and a launch with no plan go through, as today.
+- The pass section of `CLAUDE.md` names your touchpoints as the round design, its pre-flight sitting, a close packet where a call remains, a stop packet for a parked pass, and the round report. The file stays at 120 lines.
+- `dotfiles-pass` lists `claude-launch-guard` under `runner`.
+- The close packet says whether W4 has merged, since the new pass section describes rounds.
+
+Files: `bin/.local/bin/claude-launch-guard`, `tests/test_claude_launch_guard.py`, `claude/.claude/CLAUDE.md`, `.claude/skills/dotfiles-pass/SKILL.md`, `BACKLOG.md`.
+
+**Pass W4. The round rules in `pass-core`.** 150 minutes, class `runner`. Waits for Q3 and Q4.
+
+Two of the four capped files have no room for the rules. `references/planner.md` has 15 words free and needs about 130. The rules go into two new reference files, each with a cap of its own, and the caps on the four existing files hold.
+
+- `references/round.md` is new, capped at 1,500 words, and loaded by every planner. It holds what a round design adds, the four planner rules, and the design rules with your answer on a one-pass round.
+- `references/round-run.md` is new, capped at 1,500 words, and loaded by every conductor and executor. It holds the twelve standing answers, the conductor's order table and queue rules, the stop procedure, the evidence rule for each acceptance item, the ten miss tags, and the report's fields. It uses the queue's `round` field, `land --round`, and `report` in place of the title prefix.
+- Standing answer 6 loses its check by hand, since W1 made the busy check exact.
+- `pass-core/SKILL.md` "Lifecycle" says a design is a round design of one to six passes in one repo, and names both files. "Conductor" says a round of two or more passes has one. "Clock stop" leaves the file, freeing 47 words, since `standards:running-passes` "Clock" holds the same rule.
+- `references/planner.md` points to `round.md`. Its copy of the polish-loop sentence goes, freeing 20 words, and the copy in `conductor.md` stays.
+- `references/conductor.md` sends a stop as a `stop` packet and launches the next pass that doesn't wait for the parked one. Today it asks and waits. The new rule replaces the 49 words at lines 38 to 41 in no more words.
+- `references/executor.md` gains the `Round:` line, the default branch as the PR's base, and a pointer to `round-run.md`, inside its 107 free words.
+- The four capped files stay inside 1,500, 940, 560, and 900 words. `claude-context-budget` holds a cap row for each new file, and `claude-pass-load` counts each in the roles that load it. The gate's `skill-caps` and `pass-loads` legs pass.
 - "Round" alone means the unit. "A backlog round" becomes "a backlog pass", and "a polish loop's rounds" becomes "a polish loop's iterations". The score line keeps "Fix rounds".
 
-Files: `claude/.claude/skills/pass-core/SKILL.md`, `references/round.md` (new), `references/planner.md`, `references/conductor.md`, `references/executor.md`, `references/planning-samples.md`, `bin/.local/bin/claude-context-budget`, its test.
+Files: `claude/.claude/skills/pass-core/SKILL.md`, `references/round.md` (new), `references/round-run.md` (new), `references/planner.md`, `references/conductor.md`, `references/executor.md`, `references/planning-samples.md`, `bin/.local/bin/claude-context-budget`, `tests/claude-context-budget.test.sh`, `bin/.local/bin/claude-pass-load`, `tests/claude-pass-load.test.sh`.
 
-**Pass W4. The packet skill, the adapters, and the guards doc.** 100 minutes, class `runner`. Depends on W3.
+**Pass W5. The packet skill, the adapters, and the guards doc.** 100 minutes, class `runner`. Waits for W4.
 
 - The `approval-packet` skill lists `round` among the fact keys and names the `report` command. Its step 8 gains a stop case: an approved stop packet runs its listed steps and resumes the pass, and never `merge`.
 - The packet writer's brief says what approving a stop packet does. The contract beneath it lists the `round` key.
@@ -210,16 +256,6 @@ Files: `claude/.claude/skills/pass-core/SKILL.md`, `references/round.md` (new), 
 - The end-to-end check passes. A fresh Sonnet subagent gets the path of the changed `pass-core` and workstation backlog items #63, #69, and #70, and writes a round design outline. The outline holds the order table, the round id, an acceptance list for each pass, the shared assumptions, a mechanism table, recorded searches, the denial-log read, a standing answer for each stop, the merge order, and the default branch as each PR's base.
 
 Files: `claude/.claude/skills/approval-packet/SKILL.md`, `claude/.claude/skills/survey/writing/approval-brief.md`, `claude/.claude/skills/cairn-pass/SKILL.md`, `claude/.claude/docs/unattended-work-guards.md`.
-
-**Pass W5. The launch guard and the pass section of `CLAUDE.md`.** 75 minutes, class `runner`. Depends on W4. Its PR waits for you in a close packet.
-
-- The launch guard finds a plan kept in an initiative record: `<slug>-plan.md` beside `<slug>-prompt.txt`. This closes backlog #72.
-- A plan's `## Pre-flight` section needs a third line, `Evidence:`, naming its mechanism table and its recorded searches. A launch without it is denied with a message that names the line.
-- A planner launch and a launch with no plan go through, as today.
-- The pass section of `CLAUDE.md` names your touchpoints as the round design, its pre-flight sitting, a close packet where a call remains, a stop packet for a parked pass, and the round report. The file stays at 120 lines.
-- `dotfiles-pass` lists `claude-launch-guard` under `runner`.
-
-Files: `bin/.local/bin/claude-launch-guard`, `tests/test_claude_launch_guard.py`, `claude/.claude/CLAUDE.md`, `.claude/skills/dotfiles-pass/SKILL.md`, `BACKLOG.md`.
 
 ### Round `ur-std`: the brainstorming skill
 
@@ -241,37 +277,41 @@ Each row is an assumption that more than one pass rests on.
 | Assumption | Proof |
 | --- | --- |
 | A waiting packet survives a restart of the queue's server. | This session restarted the server on 2026-11-11 while packet `20261111T161236-2074074` waited, and the command printed your approve afterwards. |
-| The queue's command changes for every session as soon as its checkout is pulled. | `~/.local/bin/approval-queue` is a link into `~/Projects/approval-queue`. The repo's `README.md` says the command "must be a link to this checkout, not a copy". |
+| The queue's command changes for every new call as soon as its checkout is pulled. | `~/.local/bin/approval-queue` is a link into `~/Projects/approval-queue`. A command already waiting keeps the code it started with. |
+| An old server and a new command can run side by side. | `parseFacts` ignores a key it doesn't know (`approval-queue/src/lib/facts.ts:215-312`), and an item of a kind the server doesn't know is not listed. Read in the code, not run. |
 | The app can show a Markdown file. | `marked` 18.1 is a dependency (`approval-queue/package.json:33`), and a design packet shows `design.md` today. |
 | `gh` can name a repo's default branch. | `gh repo view` printed `main` for all three repos on 2026-11-11. |
 | A session row says when it is finished. | `claude agents --json` printed rows with a `state` of `busy` or `done` on 2026-11-11. |
 | A new file under `pass-core/references/` reaches every session with the pull. | `~/.claude/skills/pass-core` is a link to the directory in the main checkout. |
 | A changed standards skill reaches the workstation. | `claude-tooling.md:21` says the plugin "auto-updates from `main`". Not probed. |
-| A session can edit a skill in a workstation worktree. | Your auto-mode entry allows it for a task of a plan you approved. It names `CLAUDE.md` and hooks as not covered, which is why W5 comes to you. |
-
-Q1 runs first because every later design packet rests on the approve check. No other order was open: each pass shares a file with the one before it.
+| A session can edit a skill in a workstation worktree. | Your auto-mode entry allows it for a task of a plan you approved. It names `CLAUDE.md` and hooks as not covered, which is why W3 comes to you. |
+| The ten miss tags are the same in W2's parser and W4's rules. | Both take the list in W2 above. |
 
 ### Standing answers for the build
 
-The twelve standing answers you approved hold in all three rounds. The build adds five.
+The twelve standing answers you approved hold in all three rounds, except that the overhaul has no 85 percent stop. The build adds nine.
 
-1. A queue pass lands. The conductor pulls the main checkout and runs `approval-queue restart`. The first restart, after Q1, is the first use of that command.
+1. A queue pass lands. The conductor pulls the main checkout and runs `approval-queue restart`. Until Q1 lands, no restart is needed.
 2. A restart fails. The old server keeps answering. The conductor starts no new pass, and the report says so.
 3. A workstation pass lands. The conductor pulls `~/.dotfiles`, which puts the change live. A session already running keeps the rules in its prompt until its round ends.
-4. Auto mode refuses the edit of the launch guard or of `CLAUDE.md` in W5. The executor puts the change in the PR body as a patch, and the pass parks.
+4. Auto mode refuses the edit of the launch guard or of `CLAUDE.md` in W3. The executor puts the change in the PR body as a patch, and the pass parks.
 5. The plugin cache still holds the old brainstorming skill after S1 merges. The report names the commit the cache holds, and nothing else waits on it.
+6. The week reads 85 percent or more before a launch, or the figure can't be read. The conductor refreshes its round report, then launches.
+7. The weekly limit halts the sessions. Nothing runs until you apply your weekly reset and tell a session to resume the overhaul. That session reads each report and `claude agents --json`, and relaunches a conductor only where no session is running. A relaunched pass starts from its last commit.
+8. A halted session still holds its worktree on resume. The resuming session stops it with `claude stop`. If auto mode refuses, it prints the command for you and leaves that round parked.
+9. The Fable meter reads 95 percent or more. A session due to run on Fable 5.2 runs on Opus at `high`, and the report names each pass that did.
+
+A round report goes to the head of its repo's `docs/STATUS.md`. Once Q4 has merged it also goes to the queue with `approval-queue report`. The standards repo has no STATUS file, so S1's report waits in this record until then.
 
 ### Pre-flight
 
-One step is yours, and the work starts without it.
-
-`[you: turn usage credits on and set a monthly spend limit]` This is the step from the design you approved. `/usage` showed no usage-credits row at the last read, so the rounds stop launching at 85 percent of the week until it does.
+No step is yours before the work starts. Two may come later: the weekly reset once the limit halts the rounds, and a Fable reset if a report shows that meter near its end. No session can apply either.
 
 The session checks the sign-in before the first launch with `claude -p "say ok" --model haiku`.
 
-Permissions checked: the passes run `git`, `gh pr create`, `npm`, `pytest`, the repos' gates, `claude --bg`, `claude stop`, `claude -p "/usage"`, and `approval-queue` with `packet`, `land`, `report`, and `restart`. The denial log's 57 rows from 2026-11-01 to 2026-11-11 were read against them. No pass edits `settings.json` or runs `stow` (10 rows, "Self-Modification"): W3's new file arrives through a directory link, and no pass adds a script. No pass runs `pkill` (9 rows, "Interfere With Workloads"): the queue's server restarts through `approval-queue restart`, which the allow rule `Bash(approval-queue *)` covers. Every merge goes through `approval-queue land` or your approved packet (3 rows, "Merge Without Review"). Whether auto mode lets a conductor stop an executor it launched rests on four stops by this session and one earlier refusal, as the approved design says.
+Permissions checked: the passes run `git`, `gh pr create`, `npm`, `pytest`, the repos' gates, `claude --bg`, `claude stop`, `claude -p "/usage"`, and `approval-queue` with `packet`, `land`, `report`, and `restart`. The denial log's 57 rows from 2026-11-01 to 2026-11-11 were read against them. No pass edits `settings.json` or runs `stow` (10 rows, "Self-Modification"): W4's new files arrive through a directory link, and no pass adds a script. No pass runs `pkill` (9 rows, "Interfere With Workloads"): the queue's server restarts through `approval-queue restart`, which the allow rule `Bash(approval-queue *)` covers. Every merge goes through `approval-queue land` or your approved packet (3 rows, "Merge Without Review"). Whether auto mode lets a conductor stop an executor it launched rests on four stops by this session and one earlier refusal, as the approved design says.
 
-Reviewed: one fresh Opus reader ran the `standards:brainstorming` builder check on this design before it reached you.
+Reviewed: one fresh Opus reader ran the `standards:brainstorming` builder check on the first draft and returned three blocking findings and a list of missed files. Each is folded: the word caps in W4, the workstation passes' real dependencies, and the changed round order. A second fresh reader, on Fable 5.2, read this version.
 
 ### Backlog sweep
 
@@ -279,19 +319,20 @@ The sweep read 38 open workstation items at commit `64063f0`, 3 open approval-qu
 
 | Item | Verdict | What the build does |
 | --- | --- | --- |
-| workstation #72, the launch guard finds plans only under `docs/plans/` | fold | W5 fixes and closes it. |
+| workstation #72, the launch guard finds plans only under `docs/plans/` | fold | W3 fixes and closes it. |
 | workstation #74, an eval for the brainstorming skill | keep | Nothing. S1 changes the skill, and the eval stays filed. |
 | workstation #50, a queue decision reaching the auto-mode classifier | keep | Nothing. |
-| workstation #63, #69, #70 | keep | W4 reads them as sample items and changes none. |
+| workstation #63, #69, #70 | keep | W5 reads them as sample items and changes none. |
 | workstation #73, #71, #68, #38, #23, #1, #8, #10, #11, #14, #29 | keep | Nothing. None names a file above. |
 | approval-queue #49, #41, #38 | keep | Nothing. None touches a stop packet, a base branch, a round, or a report. |
 
 ### Out of scope
 
 - Every setting, hook registration, permission rule, auto-mode entry, and secret guard. The build changes none.
+- Usage credits. The overhaul spends nothing past the Max plan.
 - An auto-mode entry for a conductor stopping its executors. If the rounds meet a refusal there, the report says so and a later design proposes the entry.
 - A stop packet with no pull request. The standing answers have the pass push and open a draft first.
-- A standing model or effort change. `pass-core` keeps Opus for design, and the trials report to the December review.
+- A standing model or effort change. `pass-core` keeps Opus for design, and the Fable seats below hold for these three rounds alone.
 - `standards:running-passes`, the `site-pass` adapter, and every repo other than the three above.
 - An eval for the brainstorming skill.
 - The thinkpad's cutover, beyond the line Q4 adds to the queue's STATUS.
@@ -300,15 +341,27 @@ The sweep read 38 open workstation items at commit `64063f0`, 3 open approval-qu
 
 ### Prompts and where they live
 
-The session writes one conductor prompt for `ur-queue`, one for `ur-ws`, and a planner prompt for each of the ten passes, under `unattended-rounds/plans/` in this record. Each planner prompt's name ends `-planning-prompt.txt`, which the launch guard passes as a planner launch. Sessions read them by full path, since the record is local and unpushed.
+The session writes one conductor prompt for `ur-queue`, one for `ur-ws`, and a planner prompt for each of the ten passes, under `unattended-rounds/plans/` in this record. It writes them while this packet waits, and launches none before your approve. Each planner prompt's name ends `-planning-prompt.txt`, which the launch guard passes as a planner launch. Sessions read them by full path, since the record is local and unpushed.
 
-Each planner writes its plan and executor prompt under the pass's repo, in `docs/plans/`, where the launch guard reads them until W5 lands. All three repos are public. A plan or PR body cites the round id and this design's pass name, and copies nothing from the `workstation-refinement` record.
+Each planner writes its plan and executor prompt under the pass's repo, in `docs/plans/`, where the launch guard reads them today. Every plan carries the `Evidence:` line from the start, so W3's merge denies none of them. All three repos are public. A plan or PR body cites the round id and this design's pass name, and copies nothing from the `workstation-refinement` record.
 
-The `ur-queue` conductor's last step launches the `ur-ws` conductor when all four queue passes have merged and `claude-worktree-busy ~/.dotfiles` exits 0. The `ur-ws` conductor launches the S1 planner the same way once W4 has merged. S1 has no conductor, so its executor lands its PR and sends the report itself.
+The `ur-ws` conductor runs W1, W2, and W3, then waits for the fourth queue PR to merge before it launches W4. It checks with `gh pr view` and `claude-worktree-busy ~/.dotfiles`. S1 has no conductor, so its executor lands its PR and writes its report itself.
+
+Three rounds mean at most three executors and two conductors at once, each executor in a worktree of a different repo.
 
 ### Models
 
-Conductors and executors run Sonnet at `medium`. Planners run Fable 5.2 at `high`, the first trial. Each plan gets one `standards:plan-reviewer` read. Each conductor and executor prompt opens with a `/goal` line whose condition names every end: PR ready, parked with a stop in STATUS, or usage at the ceiling. That is the second trial.
+| Seat | Model and effort | Why |
+| --- | --- | --- |
+| Planner, all ten passes | Fable 5.2, `high` | The first trial you approved. A plan's misses are what stop a run. |
+| Executor on W4, W5, and S1 | Fable 5.2, `medium` | These write rules text every later session reads, inside tight word caps. |
+| Whole-branch review at each pass's close | Fable 5.2, `high` | Nine passes merge themselves. This read is the last one before the merge. |
+| Executor on Q1 to Q4 and W1 to W3 | Sonnet, `medium` | Code with tests and an acceptance list, under a Fable plan and a Fable review. |
+| Conductor | Sonnet, `medium` | It follows a table and decides nothing. |
+| Plan review, one per plan | The `standards:plan-reviewer` agent as defined | Unchanged. |
+| End-to-end check in W5 and the check in S1 | Sonnet | The test is whether an ordinary session can follow the changed rules. |
+
+Each conductor and executor prompt opens with a `/goal` line whose condition names every end: PR ready, or parked with a stop in STATUS. That is the second trial. The `/goal` page says a goal pauses on a usage limit and resumes at the reset, and each report's trial line records whether its sessions did.
 
 ### How each mechanism fails
 
@@ -317,39 +370,46 @@ The approved design's table holds for the build. These rows are new.
 | Mechanism | Evidence | How it fails | What happens |
 | --- | --- | --- | --- |
 | `approval-queue restart` replaces the server | The README's cutover does it by hand with `npm run build` and `pkill` | The build fails, or auto mode refuses the command | Build standing answer 2. |
-| The old server reads an item the new command wrote | Not probed | The old build refuses an unknown fact key such as `round` | The conductor restarts after every landed queue pass, before the next packet is queued. |
-| A pass edits a skill that running sessions loaded | Skills load when a session starts | A later session reads a rule that differs from its prompt | The prompt wins until the round ends. W3's text and the prompts hold the same rules. |
-| The launch guard's new line | `REQUIRED` at `bin/.local/bin/claude-launch-guard:34` | A plan written before W5 merged lacks the line | The launch is denied with a message naming the line, and the planner adds it. |
-| The report item | `KINDS` in `approval-queue/src/lib/server/items.ts` holds three kinds | A reader of items meets a kind it doesn't know | Q4's tests load a state directory holding all four kinds through every page and through `pending`. |
+| A build while the old server runs | The server loads its chunks from `approval-queue/build` as pages are opened | Building in place breaks a page the old server has not loaded yet | `restart` builds beside the running build and swaps under `start.lock`. |
+| A new command beside an old server | `parseFacts` ignores unknown keys, and an unknown kind is not listed | A report queued before the restart doesn't show | The conductor restarts after every landed queue pass, before it uses a new command. |
+| A pass edits a skill that running sessions loaded | Skills load when a session starts | A later session reads a rule that differs from its prompt | The prompt wins until the round ends. W4's text and the prompts hold the same rules. |
+| The launch guard's new line | `REQUIRED` at `bin/.local/bin/claude-launch-guard:34` | A plan written before W3 merged lacks the line | Every overhaul plan carries it from the start. Any other is denied with a message naming the line. |
+| The report item | `KINDS` in `approval-queue/src/lib/server/items.ts` holds three kinds | A reader of items meets a kind it doesn't know | Q4's test loads a state directory holding all four kinds through every page and through `pending`. |
+| `report` returns without waiting | The command's exit trap retires an item that has no decision | The trap retires the report as it exits | `report` leaves before the trap is set and records no process id. |
 | The base-branch check | `merge` reads `state,headRefOid,body` (`bin/.local/bin/approval-queue:283-338`) | `gh` can't name the default branch | The command exits 1 and merges nothing. |
-| `pass-report` reads the tags | It reads merged PRs through `gh` | A PR written before W3 has no tags | The line counts as `untagged`. |
+| `pass-report` reads the tags | It reads merged PRs through `gh` | A PR written before W4 has no tags | The line counts as `untagged`. |
+| The weekly limit halts the sessions | Three sessions waited about 64 hours on the limit from 2026-11-04. Resume after a reset is not probed | A halted session never resumes, or resumes while a relaunch is under way | Build standing answers 7 and 8. The resuming session relaunches only where nothing runs. |
+| The Fable meter | `/usage` prints "Current week (Fable)". What happens at 100 percent is not probed | A Fable session halts while the week still has room | Build standing answer 9 moves the seat to Opus at 95 percent. |
 
 ### Claude's calls
 
+- The three rounds start together. Only W4 and W5 wait for the queue.
 - The queue's code that checks an approve and runs a merge lands itself with the rest of `ur-queue`. Each change there adds a refusal and removes none.
-- W5 waits for you. The approved design keeps a hook change out of an executor's hands, and your auto-mode entry names `CLAUDE.md` as not covered. The pass builds and tests the change, and your approve merges it.
+- W3 waits for you. The approved design keeps a hook change out of an executor's hands, and your auto-mode entry names `CLAUDE.md` as not covered. The pass builds and tests the change, and your approve merges it.
+- W3 runs before the round rules land, so your close packet may arrive while W4 is still running.
 - The build changes no setting. A conductor stopping its executors stays on the evidence it has.
 - `approval-queue restart` is new. Four restarts in one round by hand would each run `pkill`, the command class auto mode refused nine times.
 - `packet` refuses a wrong base as well as `merge` and `land`, so you never approve a packet that can't merge.
 - A round id is lowercase letters, digits, and hyphens, starting with a letter, 12 characters at most.
-- The report is a fourth item kind with one action, and writes no decision line.
+- The report is a fourth item kind with one action, and writes no line in `decisions.jsonl`.
 - A second report for a waiting round replaces the first.
-- The round rules go in one new reference file with a cap of 1,500 words. The caps on the four existing files hold.
+- The round rules go in two new reference files, one for planners and one for conductors and executors, each capped at 1,500 words. The caps on the four existing files hold.
 - The miss classes are ten short tags, counted by `pass-report`.
 - The launch guard's third line is `Evidence:`. The guard checks that the line is there, and the plan reviewer checks what it claims.
-- The busy-check pass runs first in `ur-ws`, since the conductor leans on it before every launch.
+- Fable 5.2 takes the planner seat, the executor seat on the three rules-text passes, and every closing review. It falls back to Opus at 95 percent of its meter.
+- The overhaul refreshes its reports from 85 percent of the week and launches until the limit.
 - The sample items for the end-to-end check are workstation #63, #69, and #70: a wrapper for two adapters, a session-start change, and a fix on an `auth-data` path.
 - `site-pass` and `dotfiles-pass` hold no line naming what you approve, so only `cairn-pass` changes there.
 - The overhaul's packets keep the round id at the head of their titles through all three rounds.
 
 ### Left to the builder
 
-Each rule's wording in its home file, which sentences move to `references/round.md` to hold the caps, the report page's route, and each page's markup.
+Each rule's wording in its home file, which sentences sit in which of the two new files within their caps, how `restart` builds beside the running build, the report page's route, and each page's markup.
 
 ### Sources
 
 - `unattended-rounds/specs/2026-11-11-unattended-rounds-design.md`, approved in packet `20261111T161236-2074074`.
-- `unattended-rounds/research/2026-11-11-evidence.md`: the denial log at `:26`, the miss classes at `:43`, the probes at `:65`, the queue in a round at `:93`, and the approve refusal at `:299`.
+- `unattended-rounds/research/2026-11-11-evidence.md`: the denial log at `:26`, the miss classes at `:43`, the probes at `:65`, the queue in a round at `:93`, the approve refusal at `:299`, and what you said about resets and Fable at `:328`.
 - The approval-queue repo at commit `0bd4828`: `README.md`, `bin/.local/bin/approval-queue`, `approval-queue/src/lib/facts.ts`, and `approval-queue/src/lib/server/heads.ts:52-60`.
-- The workstation repo at commit `64063f0`: `pass-core` and its references, `bin/.local/bin/claude-launch-guard`, `bin/.local/bin/claude-worktree-busy`, `bin/.local/bin/claude-context-budget:28-33`, `.claude/skills/dotfiles-pass/SKILL.md`, and `claude/.claude/settings.json:61`.
+- The workstation repo at commit `64063f0`: `pass-core` and its references, `bin/.local/bin/claude-launch-guard`, `bin/.local/bin/claude-worktree-busy`, `bin/.local/bin/claude-context-budget:28-33`, `bin/.local/bin/claude-pass-load`, `.claude/skills/dotfiles-pass/SKILL.md`, and `claude/.claude/settings.json:61`.
 - The standards repo at commit `896f819`: `plugins/standards/skills/brainstorming/SKILL.md`.
