@@ -394,7 +394,7 @@ Three rounds mean at most three executors and two conductors at once, each execu
 | Plan review, one per plan | The `standards:plan-reviewer` agent as defined | Unchanged. |
 | End-to-end check in W5 and the check in S1 | Sonnet | The test is whether an ordinary session can follow the changed rules. |
 
-Each conductor and executor prompt opens with a `/goal` line whose condition names every end: PR ready, or parked with a stop in STATUS. That is the second trial. The `/goal` page says a goal pauses on a usage limit and resumes at the reset, and each report's trial line records whether its sessions did.
+Each conductor and executor prompt opens with `/goal`, and the whole prompt is the goal's condition. The `/goal` page makes the condition the directive and caps it at 4,000 characters. The line therefore names every end, PR ready or parked with a stop in STATUS, and points at a run sheet or a plan for the rest. That is the second trial. A session under a goal waits on a background command, never on an idle turn: the page says the goal's check is skipped while a background command runs, and two probes on 2026-11-11 saw no extra turn during such a wait. The page also says a goal pauses on a usage limit and resumes at the reset, and each report's trial line records whether its sessions did.
 
 ### How each mechanism fails
 
@@ -413,6 +413,7 @@ The approved design's table holds for the build. These rows are new.
 | `pass-report` reads the tags | It reads merged PRs through `gh` | A PR written before W4 has no tags | The line counts as `untagged`. |
 | The weekly limit halts the sessions | Three sessions waited about 64 hours on the limit from 2026-11-04. Resume after a reset is not probed | A halted session never resumes, or resumes while a relaunch is under way | Build standing answers 7 and 8. The resuming session stops every overhaul session before it relaunches any. |
 | The Fable meter | `/usage` prints "Current week (Fable)". What happens at 100 percent is not probed | A Fable session halts while the week still has room | Build standing answer 9 moves the seat to Opus at 95 percent. |
+| A `/goal` line on a session that waits | The `/goal` page skips the check while "a subagent or a background shell command is still running". Probe jobs `6735aed9` and `7cefc958` waited 75 and 40 seconds on one with no extra turn | A session that waits any other way is prompted again at each turn's end, and the loop stops after several turns with no tool use | A conductor waits on a background command that reads its executor's job state, and an executor watches CI the same way. |
 
 ### Claude's calls
 
