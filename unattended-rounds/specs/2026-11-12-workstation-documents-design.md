@@ -39,13 +39,6 @@ Nine plans in other repos lack only that line. Each belongs to a pass that hasn'
 - The session that next launches each plan adds it, since the guard's refusal names the missing line (recommended)
 - This round adds all nine now, in six repos other than the workstation
 
-### Decide: Do plans and launch prompts in a public repo get the writing checks
-
-You said the process covers files in public repos that a person might read. Ten of your repos are public, the workstation and the queue among them, and each holds the plans and launch prompts its sessions write for one another. A README, a doc page, a pull request, an issue, and a release note get the checks either way.
-
-- No. A plan or a prompt is written for the session that runs it, and a visitor has the pull request and the docs (recommended)
-- Yes. Every plan and prompt committed to a public repo goes through the standard, Vale, and `tellgrader`
-
 ### Worth knowing
 
 Survey still ships `approval-brief.md`, and this round can't delete a file another repo owns. The workstation stops reading its copy at the switch, and a backlog item in Survey asks for the file's removal at the next release. Until then the copy sits unused. Skills in five other repos mention the old packet commands; each gets a backlog item, and the old commands answer with a line that names the skill.
@@ -82,10 +75,9 @@ What each kind of writing gets:
 | A reply or a question in chat | Step 1 |
 | Writing a repo already has rules for: cairn's documentation, a site's pages and posts | Those rules, unchanged. This file adds no step |
 | Any other README, doc page, pull request, issue, or release note in a public repo | 1 to 3, under the standard the router names; step 4 for a page a visitor lands on first |
-| A plan or a launch prompt committed to a public repo | Your answer to the third question |
-| A plan, a prompt, a note between sessions, or any other file only a session reads, in a private repo or outside one | None |
+| A plan, a launch prompt, a note between sessions, or any other file only a session reads | None, in a public repo too |
 
-A reader per chat message would cost more than it buys, so chat follows the standard and the models alone. A file that only a session reads is written however is quickest and clearest for that session. The allowance stops at a public repo, where a person may open any file, and both halves of that rule are yours, from 2026-11-12. The file lists the public repos by reading `gh repo list`, never from memory. It replaces no rule that exists: cairn's documentation keeps its register, its four-gate review, and its skill, and each site keeps its content guide. You said so on 2026-11-12. The agent-facing register still covers skills and `CLAUDE.md`.
+A reader per chat message would cost more than it buys, so chat follows the standard and the models alone. A file that only a session reads is written however is quickest and clearest for that session. A public repo's README, docs, pull requests, issues, and release notes may have human readers, so they get the checks. Its plans and launch prompts are written for the session that runs them and get none. All three rulings are yours, from 2026-11-12. The file lists the public repos by reading `gh repo list`, never from memory. It replaces no rule that exists: cairn's documentation keeps its register, its four-gate review, and its skill, and each site keeps its content guide. You said so on 2026-11-12. The agent-facing register still covers skills and `CLAUDE.md`.
 
 ### The report
 

@@ -56,28 +56,6 @@
      "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:37"
     }
    ]
-  },
-  {
-   "question": "Do plans and launch prompts in a public repo get the writing checks?",
-   "rule": "owner-call",
-   "forced": false,
-   "options": [
-    {
-     "label": "No",
-     "consequence": "A plan or a prompt is written for the session that runs it. READMEs, doc pages, pull requests, issues, and release notes in a public repo get the checks either way."
-    },
-    {
-     "label": "Yes",
-     "consequence": "Every plan and prompt committed to a public repo goes through the standard, Vale, and `tellgrader` before it is committed. Ten repos are public, the workstation and the queue among them."
-    }
-   ],
-   "recommended": 1,
-   "evidence": [
-    {
-     "text": "You said on 2026-11-12 that a file only a session reads can be written however works, and that the process also applies to items in public repos that might have human readers.",
-     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:44"
-    }
-   ]
   }
  ],
  "decidedForYou": [
@@ -99,10 +77,33 @@
    "evidence": [
     {
      "text": "You asked for this in chat on 2026-11-12, and answered \"Please do.\" when asked whether to add it.",
-     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:67"
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:60"
     }
    ],
    "applied": "Yes, one short file that the router points to"
+  },
+  {
+   "question": "Do plans and launch prompts in a public repo get the writing checks?",
+   "rule": "owner-call",
+   "forced": false,
+   "options": [
+    {
+     "label": "No",
+     "consequence": "A plan or a prompt is written for the session that runs it. READMEs, doc pages, pull requests, issues, and release notes in a public repo get the checks either way."
+    },
+    {
+     "label": "Yes",
+     "consequence": "Every plan and prompt committed to a public repo goes through the standard, Vale, and `tellgrader` before it is committed. Ten repos are public, the workstation and the queue among them."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "You said on 2026-11-12 that a file only a session reads can be written however works, and that the process also applies to items in public repos that might have human readers. Asked whether plans and launch prompts there get the checks, with \"no\" recommended, you answered \"That's correct.\"",
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:80"
+    }
+   ],
+   "applied": "No"
   },
   {
    "question": "Who checks a document before you see it?",
@@ -122,7 +123,7 @@
    "evidence": [
     {
      "text": "Listed among Claude's calls.",
-     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:241"
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:233"
     }
    ],
    "applied": "A fresh reader with no context, in place of the separate writer"
@@ -145,7 +146,7 @@
    "evidence": [
     {
      "text": "Listed among Claude's calls.",
-     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:243"
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:235"
     }
    ],
    "applied": "No. The decision comes first"
@@ -168,7 +169,7 @@
    "evidence": [
     {
      "text": "The switch's failure row.",
-     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:233"
+     "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:225"
     }
    ],
    "applied": "The conductor reverts all four merges, pulls both repos, and tells you in chat"
@@ -191,11 +192,11 @@
  "notChecked": [
   {
    "text": "No source measures whether a model document changes what a session writes. D1's end-to-end check is the only measure, on one pull request.",
-   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:266"
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:258"
   },
   {
    "text": "Whether the old queue accepts one packet naming pull requests of two repos. The conductor checks before its first launch and plans two packets if it doesn't.",
-   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:247"
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:239"
   },
   {
    "text": "Vale has not read this design. `tellgrader` under the docs register reports nothing.",
@@ -203,13 +204,13 @@
   },
   {
    "text": "The edits made after the builder check, the single writing process and the public-repo rule among them, were not read by a second fresh reader.",
-   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:236"
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:228"
   }
  ],
  "reviews": [
   {
    "text": "One builder check by a fresh Opus reader read both designs against the queue's code and the workstation's skills and returned fifteen findings. Each was folded as Claude's call, and none needed your answer.",
-   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:236"
+   "source": "unattended-rounds/specs/2026-11-12-workstation-documents-design.md:228"
   }
  ]
 }
