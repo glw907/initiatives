@@ -46,23 +46,28 @@ tells a session to mock a new surface first. Nothing carries that pattern to ano
 
 ## Candidate changes for the sitting
 
-These are the designing session's reading of the two research files. None is a ruling.
+Reordered after Geoff's correction of 2026-11-12 (see the evidence file): the report page was
+sloppy, and a design standard would not have caught it. The first four address that. None is a
+ruling.
 
-1. A UI rules file in each app's repo, forced by a path rule as in cairn-cms: the page shell, the
-   components in use, each interaction pattern (notes among them), and "ask before inventing".
-   Anthropic's skills page supports path-scoped loading.
-2. A page-layout section in Survey's plain-app recipe, so a new app starts from a shell.
-3. A rendered prototype built from the app's real CSS and components, approved by Geoff, in a
-   round of any size. Its screenshot becomes the reference image.
-4. A plan line per UI task naming the existing page or component it follows, as Anthropic's
-   "follow the pattern in HotDogWidget.php" does.
-5. The screenshot beside the prototype as required evidence, never an added check.
-6. A fresh-context visual read at close in every repo with rendered UI, graded against the
-   prototype and one sibling page, with a criterion Anthropic's grader lacks: the page matches
-   the app's existing patterns.
-7. One deterministic test per app that every route renders inside the shared shell. No published
-   lint does this.
+1. Before a pass that adds or changes a page ends, the executor opens the page in a browser with
+   real content and uses it: reads every part, and performs each action the page offers. Anthropic:
+   "use browser automation tools and do all testing as a human user would".
+2. A fresh reader repeats that at close and answers plain questions. Is anything clipped or
+   overflowing? Does text sit in paragraphs? Does each title and description tell a reader what
+   the thing is? Does each action work? Anthropic's functionality criterion: "users can understand
+   what the interface does, find primary actions, and complete tasks without guessing".
+3. Test and prototype content comes from a real item, never a made-up fixture shorter and tidier
+   than the real thing.
+4. What a page shows is written for its reader. A report or packet title follows the
+   approval-brief register, and a session's field block is turned into a page, never printed.
+5. A rendered prototype with real content, approved by Geoff, for any new page, in a round of
+   any size.
+6. A plan line per UI task naming the existing page or component it follows, and "ask before
+   inventing" for an interaction the app already has (notes).
+7. A short UI rules file per app, forced by a path rule as in cairn-cms, holding the app's shell
+   and its interaction patterns. Secondary: it covers the notes fault only.
 
 Anthropic's harness post puts its evaluator loop at "over 20x more expensive" and calls it
-"unnecessary overhead" inside what the model does reliably, so items 3, 5, and 6 would apply only
+"unnecessary overhead" inside what the model does reliably, so items 1, 2, and 5 would apply only
 to a pass that adds or changes a page.

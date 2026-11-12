@@ -7,6 +7,11 @@ Read first: unattended-rounds/research/2026-11-11-evidence.md, the section "A de
 after the queue round merged". It holds Geoff's four rulings verbatim, the three faults, and what
 the rules say today. Then read approval-queue BACKLOG.md #69 and #70.
 
+Read "Geoff's correction to the diagnosis" in that section before anything else. He ruled that
+the report page was sloppy UI, and that a design standard such as Survey is beside the point. The
+design starts from the page being opened and used with real content before it merges, and from
+content written for a reader. Rules files and layout guidance come second.
+
 Then read the two research files of 2026-11-12 beside it: ui-consistency-guidance.md (what
 Anthropic and others publish, with quotes) and ui-machinery-inventory.md (what the workstation
 already has, where each piece binds, and seven candidate changes). The candidates are a starting
