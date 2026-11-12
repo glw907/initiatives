@@ -18,7 +18,7 @@ The rules for sending you something are spread over the `approval-packet` skill,
 
 One skill, `approval-packet`, holds the whole job. It keeps its name and is rewritten to about 900 words. It says when to send you something, how to write it, how to check it, how to send it, and what to do with your answer. Beside it sit two model documents: the close packet and the round report that you accepted on 2026-11-12. The skill tells a session to imitate them.
 
-One file, `written-for-people.md`, holds the writing process for anything a person reads. It is about 400 words and has four steps:
+One file, `written-for-people.md`, holds the writing process for anything a person reads. It is about 500 words. It opens with the format, which is GitHub Flavored Markdown for every document a session writes for a person, and then has four steps:
 
 1. Write from the plain-language standard and the two model documents. The file also holds your corrections of 2026-11-12: no made-up ids, a plain question, a title that never counts, and an opening that is the whole page made small.
 2. Run Vale.

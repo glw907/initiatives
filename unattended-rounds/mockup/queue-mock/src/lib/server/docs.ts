@@ -5,8 +5,41 @@ import type { Doc, Kind, Option, PullRequest, Segment } from '#lib/types';
 
 const DIR = join(process.cwd(), 'content');
 
-const critic = (s: string) =>
-	s.replace(/\{--(.+?)--\}/gs, '<del>$1</del>').replace(/\{\+\+(.+?)\+\+\}/gs, '<ins>$1</ins>');
+// Change marks. A session never types these: the queue writes them when it compares two versions.
+// They are inline tokens, so a mark inside code stays as typed.
+const changeMark = (name: string, open: string, close: string, tag: string) => ({
+	name,
+	level: 'inline' as const,
+	start: (src: string) => src.indexOf(open),
+	tokenizer(this: { lexer: { inlineTokens(s: string): unknown[] } }, src: string) {
+		if (!src.startsWith(open)) return undefined;
+		const end = src.indexOf(close, open.length);
+		if (end < 0) return undefined;
+		const text = src.slice(open.length, end);
+		return { type: name, raw: src.slice(0, end + close.length), tokens: this.lexer.inlineTokens(text) };
+	},
+	renderer(this: { parser: { parseInline(t: unknown[]): string } }, token: { tokens: unknown[] }) {
+		return `<${tag}>${this.parser.parseInline(token.tokens)}</${tag}>`;
+	}
+});
+
+// The nine tags the GitHub Flavored Markdown specification turns into text (section 6.11).
+const FILTERED = /<(?=\/?(?:title|textarea|style|xmp|iframe|noembed|noframes|script|plaintext)(?:[\s/>]|$))/gi;
+
+marked.use({
+	gfm: true,
+	extensions: [changeMark('removed', '{--', '--}', 'del'), changeMark('added', '{++', '++}', 'ins')] as never,
+	renderer: {
+		// Struck text is <s>, so it never looks like a passage the session removed.
+		del(this: { parser: { parseInline(t: unknown[]): string } }, token: { tokens: unknown[] }) {
+			return `<s>${this.parser.parseInline(token.tokens)}</s>`;
+		},
+		html(token: { text: string }) {
+			return token.text.replace(FILTERED, '&lt;');
+		}
+	} as never
+});
+
 const plain = (html: string) =>
 	html
 		.replace(/<del>.*?<\/del>\s*/gs, '')
@@ -17,10 +50,10 @@ const plain = (html: string) =>
 		.replace(/&lt;/g, '<')
 		.replace(/&gt;/g, '>')
 		.trim();
-const inline = (s: string) => marked.parseInline(critic(s), { async: false });
+const inline = (s: string) => marked.parseInline(s, { async: false }) as string;
 // A table scrolls inside its own frame on a narrow page, so the page itself never scrolls sideways.
 const block = (s: string) =>
-	(marked.parse(critic(s), { async: false }) as string)
+	(marked.parse(s, { async: false }) as string)
 		.replaceAll('<table>', '<div class="table-frame" tabindex="0" role="group" aria-label="Table"><table>')
 		.replaceAll('</table>', '</table></div>');
 
@@ -55,8 +88,13 @@ function parse(id: string, raw: string): Doc {
 		buf = [];
 	};
 	let q = 0;
+	// A question block or decide mark inside a code fence is text, and draws nothing.
+	let fence = '';
 	for (let i = 0; i < lines.length; i++) {
-		const open = /^:::question\s+(.*)$/.exec(lines[i]);
+		const f = /^ {0,3}(`{3,}|~{3,})/.exec(lines[i]);
+		if (f && !fence) fence = f[1];
+		else if (f && f[1][0] === fence[0] && f[1].length >= fence.length && lines[i].trim() === f[1]) fence = '';
+		const open = fence ? null : /^:::question\s+(.*)$/.exec(lines[i]);
 		if (open) {
 			flush();
 			const options: Option[] = [];
@@ -68,7 +106,7 @@ function parse(id: string, raw: string): Doc {
 				options.push({ html, label: plain(bold ? bold[1] : html).replace(/\.$/, ''), recommended: !!o[2] });
 			}
 			segments.push({ type: 'question', id: `q${++q}`, name: open[1], options });
-		} else if (lines[i] === ':::decide') {
+		} else if (!fence && lines[i] === ':::decide') {
 			flush();
 			segments.push({ type: 'decide' });
 		} else buf.push(lines[i]);
@@ -108,7 +146,11 @@ export function allDocs(): Doc[] {
 		.map((f) => parse(f.replace(/\.md$/, ''), readFileSync(join(DIR, f), 'utf8')));
 }
 
+// The specimen shows every Markdown form. It has an address and stays out of the lists.
+const SPECIMEN = join(process.cwd(), 'specimen', 'markdown.md');
+
 export function oneDoc(id: string): Doc | undefined {
+	if (id === 'markdown') return parse(id, readFileSync(SPECIMEN, 'utf8'));
 	return allDocs().find((d) => d.id === id);
 }
 

@@ -14,9 +14,9 @@ The design describes the document, the pages, how a decision is recorded, the co
 
 ### What a document is
 
-A document is a Markdown file with a short header. The header names the kind of document: pull requests to merge, a design to approve, questions only, or a report with nothing to decide. For pull requests, the header lists them in merge order, each with a few plain words that the page shows with the number. Two header lines say in one sentence each what the session does after an approve and after a send-back, and the page prints them on the two buttons.
+A document is a GitHub Flavored Markdown file with a short header. The header names the kind of document: pull requests to merge, a design to approve, questions only, or a report with nothing to decide. For pull requests, the header lists them in merge order, each with a few plain words that the page shows with the number. Two header lines say in one sentence each what the session does after an approve and after a send-back, and the page prints them on the two buttons.
 
-Below the header come a title, a first paragraph that is the whole page made small, and ordinary Markdown. A question is a marked block under the paragraph that asks it. The block holds two to six options, and at most one is marked as recommended. The page draws the options as buttons where the block sits.
+Below the header come a title, a first paragraph that is the whole page made small, and the rest of the document. The page draws every form in the GitHub Flavored Markdown specification, tables and task lists among them, and the mockup now has one page that shows each form: http://127.0.0.1:7933/d/markdown. Footnotes, alerts, mathematics, and diagrams are features of GitHub's website that the specification leaves out, and the queue shows them as plain text. A question is a marked block under the paragraph that asks it. The block holds two to six options, and at most one is marked as recommended. The page draws the options as buttons where the block sits.
 
 For a design, the design file is the document. There is no separate packet text and no fact file.
 

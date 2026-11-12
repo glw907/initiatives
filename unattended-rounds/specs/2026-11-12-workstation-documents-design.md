@@ -12,6 +12,7 @@ Today those rules are spread over the `approval-packet` skill, a 3,800-word writ
 
 - One skill, `approval-packet`, says when to send you something, how to write it, how to check it, and what to do with your answer. It replaces the fact file, the separate writer, and the writing brief.
 - One file, `written-for-people.md`, is the writing process for anything a person reads. Most of that is what you read: a queue document, a string on a queue page, a pull request's opening, STATUS, a session's last message, a question in chat. Its four steps are the plain-language standard with the two models, Vale, `tellgrader`, and a reader with no context who says what is being asked and what they couldn't follow. It also covers a file in a public repo that a person might open. You asked for both on 2026-11-12, and answered "Please do." when I offered to add the first here.
+- Everything a session writes for a person is GitHub Flavored Markdown. The writing process says so once, and the skill repeats nothing.
 - A round report says in its opening whether anything waits for you, then what behaves differently, what went wrong, what it cost, and what is left for later.
 - `pass-core` and its references lose their copies of the packet rules and point to the skill. `pass-core` gets shorter.
 - Stale pieces are removed: the mentions of a `dotfiles-pass` adapter that doesn't exist, and the settings lines of finished initiatives.
@@ -60,7 +61,15 @@ The house departure of 2026-10-21, background before the summary, is withdrawn, 
 
 ### The writing process when a person is the reader
 
-`claude/.claude/docs/voice/written-for-people.md`, about 400 words. The `writing-voice` router gets one row, "anything Geoff reads from a session", that points to it, and one sentence sending every public-repo file through steps 1 to 3, and `approval-packet` points to it and carries no copy.
+`claude/.claude/docs/voice/written-for-people.md`, about 500 words. The `writing-voice` router gets one row, "anything Geoff reads from a session", that points to it, and one sentence sending every public-repo file through steps 1 to 3, and `approval-packet` points to it and carries no copy.
+
+The file opens with the format, ahead of the steps. Every document a session writes for a person is GitHub Flavored Markdown, as the specification at github.github.com/gfm defines it. That is your ruling of 2026-11-12: one clear standard for technical writing, the same for a queue document, a README, a pull request, and a design. The file gives the forms in a short list (headings, lists, task lists, tables, code fences, quotations, links, struck text) and three rules of use:
+
+- A table is for values a reader compares across rows. Prose that happens to have three points stays prose.
+- A command, a path, or a name a reader would type is in code marks, and a block of commands is in a fence that names its language.
+- Footnotes, alerts, mathematics, and diagrams are features of GitHub's website and are outside the specification. A document doesn't use them, because the queue shows them as plain text.
+
+A repo whose own rules name a different format keeps it.
 
 1. **Write from the standard and the models.** When you are the reader, the standards are the ones named today: the Federal Plain Language Guidelines, Nielsen Norman Group on web writing, and Google's rules for headings. The two model documents show them applied. The file also holds your corrections of 2026-11-12, which now sit in a memory file: no made-up ids, a plain question, a title that never counts, an opening that is the whole page made small. For a reader of a public repo, the standard is the one the router already names for that file, such as Google's guide for developer docs.
 2. **Run Vale.** Today the house config lints no file of this kind. D1 adds queue documents and this file's folder to its scope.
@@ -121,7 +130,7 @@ Files: `bin/.local/bin/claude-worktree-busy`, its test under `tests/`, `BACKLOG.
 
 - `approval-packet/SKILL.md` is rewritten as above and is under 1,000 words.
 - The two model documents are in `references/`, in the new form, and `approval-queue check` accepts each. Their source is `mockup/model-close-packet.md` and `mockup/model-report.md` in this record. Only the markup changes: with the header, the marks, and the old HTML buttons stripped from both sides, a word diff against the source prints nothing.
-- `written-for-people.md` exists as described above, and `vale` run on a model document reports one file linted.
+- `written-for-people.md` exists as described above and opens with the format rule, and `vale` run on a model document reports one file linted.
 - End-to-end check: a fresh `sonnet` session is given the skill and the diff of one merged pull request, workstation #231, and nothing else. It writes a close document. `approval-queue check` accepts it, and `tellgrader --register docs` prints no finding and no warning. A second fresh reader, given the document alone, writes down the question and what each option causes. The closing reviewer compares that with the pull request and judges it right or wrong. The executor edits neither the document nor the reader's answer.
 - `writing-voice` has the one row for anything you read, pointing to `written-for-people.md`, and no row names `approval-brief.md`.
 - The workstation's copy of `approval-brief.md` is left in place and nothing loads it. A backlog item is filed in Survey for its removal, and workstation #79 is closed as moot.
@@ -252,6 +261,7 @@ These are mine. One fresh Opus reader checked this design and the queue's agains
 - A `sonnet` cold reader, capped at two rounds.
 - Withdrawing the background-first departure.
 - Which of the four steps each kind of writing gets, and the file's name.
+- Putting the Markdown rule in the writing process and applying it to everything written for a person, and the three rules of use under it. You said a document is always GitHub Flavored Markdown and that this is the standard for technical writing. The wider reach and the three rules are mine.
 - Leaving Survey's file and the other repos' skills to backlog items.
 - Holding all three pull requests for one packet.
 - The conductor reverting all four merges if the new server won't start.

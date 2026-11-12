@@ -184,6 +184,127 @@ body {
 	overflow-wrap: anywhere;
 }
 
+/* The rest of GitHub Flavored Markdown. */
+.prose-doc h1 {
+	font-weight: var(--font-weight-heading);
+	font-size: 1.5rem;
+	line-height: 1.25;
+	margin-top: 2.6rem;
+}
+.prose-doc h4,
+.prose-doc h5,
+.prose-doc h6 {
+	font-family: var(--font-body);
+	font-weight: 600;
+	font-size: 0.9375rem;
+	margin-top: 1.6rem;
+}
+.prose-doc h5,
+.prose-doc h6 {
+	font-size: 0.875rem;
+}
+.prose-doc h6 {
+	font-weight: 500;
+	color: color-mix(in oklab, currentColor 72%, transparent);
+}
+.prose-doc :is(h3, h4, h5, h6) + * {
+	margin-top: 0.5em;
+}
+.prose-doc em {
+	font-style: italic;
+}
+.prose-doc s {
+	text-decoration-thickness: 1px;
+	color: color-mix(in oklab, currentColor 62%, transparent);
+}
+.prose-doc a {
+	overflow-wrap: anywhere;
+}
+.prose-doc li > :is(ul, ol) {
+	margin-top: 0.45em;
+}
+.prose-doc li > p + p {
+	margin-top: 0.6em;
+}
+.prose-doc ul ul {
+	list-style: circle;
+}
+.prose-doc li:has(> input[type="checkbox"]),
+.prose-doc li:has(> p > input[type="checkbox"]) {
+	list-style: none;
+	margin-inline-start: -1.25em;
+	padding-inline-start: 1.7em;
+	position: relative;
+}
+.prose-doc li input[type="checkbox"] {
+	position: absolute;
+	inset-inline-start: 0;
+	top: 0.42em;
+	width: 1.05em;
+	height: 1.05em;
+	accent-color: var(--color-primary);
+}
+.prose-doc blockquote {
+	border-inline-start: 2px solid var(--site-rule-color);
+	padding-inline-start: 1.1em;
+	font-style: italic;
+}
+.prose-doc blockquote > * + * {
+	margin-top: 0.8em;
+}
+.prose-doc pre {
+	font-family: var(--font-mono);
+	font-size: 0.8125rem;
+	line-height: 1.6;
+	background-color: var(--color-base-200);
+	border-radius: var(--radius-box);
+	padding: 0.9em 1.1em;
+	overflow-x: auto;
+	tab-size: 2;
+}
+.prose-doc pre:focus-visible {
+	outline: 2px solid var(--color-primary);
+	outline-offset: 2px;
+}
+.prose-doc pre code {
+	font-size: inherit;
+	background: none;
+	padding: 0;
+	border-radius: 0;
+	overflow-wrap: normal;
+	white-space: pre;
+}
+.prose-doc hr {
+	border: 0;
+	border-top: var(--border) solid var(--site-rule-color);
+	margin-block: 2.2rem;
+}
+.prose-doc img {
+	max-width: 100%;
+	height: auto;
+	border-radius: var(--radius-field);
+}
+.prose-doc kbd {
+	font-family: var(--font-mono);
+	font-size: 0.78em;
+	border: var(--border) solid var(--site-rule-color);
+	border-bottom-width: 2px;
+	border-radius: var(--radius-field);
+	padding: 0.05em 0.35em;
+}
+.prose-doc summary {
+	cursor: pointer;
+	font-family: var(--font-body);
+	font-size: 0.9375rem;
+	font-weight: 600;
+}
+.prose-doc details > * + * {
+	margin-top: 0.6em;
+}
+.prose-doc :is(th, td)[align="center"] {
+	text-align: center;
+}
+
 /* Tables: the sans face at a smaller size, rules under the head and at the foot only, numbers aligned right. */
 .table-frame {
 	overflow-x: auto;

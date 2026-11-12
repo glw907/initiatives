@@ -15,6 +15,7 @@ The queue you use today builds each page from a fact file, a second writer's tex
 - An approve, a send-back, an answer, and an Undo are each recorded at once, and a click that can't be recorded says so on the page and stays there until it can.
 - Notes are threads beside the passage they are about, and a session can answer in the thread or start one.
 - A document that comes back after a send-back shows what changed, marked as Word or Google Docs would mark it.
+- A document is written in GitHub Flavored Markdown, and the page draws all of it: tables, task lists, struck text, code blocks, quotations, and the rest.
 - The command a session uses shrinks to nine verbs, and one library checks a document for both the command and the page.
 - The old queue's code, its fact files, and its decided items go. The decided items are kept in one archive file and no page shows them.
 
@@ -40,7 +41,7 @@ The new queue is built from the mockup you called solid, and the mockup's source
 
 ### The document
 
-A document is a Markdown file with a short header. This is all a session has to learn.
+A document is a GitHub Flavored Markdown file with a short header. This is all a session has to learn.
 
 ```markdown
 ---
@@ -76,9 +77,28 @@ gained two passages that Survey doesn't have yet.
 | First paragraph | Required. The front page shows it under the title |
 | `:::question <label>` | The buttons for a question asked in the paragraph above it. The label is a few plain words, and the page uses it to name a question you haven't answered. Two to six options. One option at most ends `{recommended}`. The page draws the options as buttons where the block sits |
 | `:::decide` | Where the approve and send-back buttons go. Left out, they go at the end |
-| Everything else | Ordinary Markdown, rendered as written |
+| Everything else | GitHub Flavored Markdown, all of it. See "Markdown" below |
 
 For a design, the design file is the document. There is no separate packet text and no fact file.
+
+### Markdown
+
+You ruled on 2026-11-12 that a document is always written in GitHub Flavored Markdown and that the queue supports all of it. "All of it" means the published specification, version 0.29-gfm at github.github.com/gfm: CommonMark plus tables, task lists, struck text, bare addresses as links, and the filter on raw HTML. The page draws every form the specification defines.
+
+The mockup has one specimen document, `specimen/markdown.md`, that uses each form once. It has an address, `/d/markdown`, and appears in no list. Its styles are the specification for how each form looks.
+
+| Form | How the page treats it |
+| --- | --- |
+| Headings | The first `# ` line is the title. Levels two and three are set in Spectral, four to six in the sans face |
+| Tables | The sans face, a rule under the head and at the foot, numbers aligned right. A table too wide for the column scrolls inside its frame |
+| Task lists | A checkbox in place of the bullet. The box can't be clicked, because the document belongs to the session |
+| Struck text | Drawn as `<s>`. A passage the session removed between versions is drawn as `<del>`, so the two never look alike |
+| Code blocks | Monospace on a tinted ground, and a long line scrolls inside the block. No syntax coloring |
+| A question block or decide mark inside a code fence | Shown as text. It draws no buttons |
+| Raw HTML | Kept, after the specification's filter turns its nine tags into text. The content security policy allows no inline script, so an event attribute does nothing |
+| Images | Loaded only from the queue or from a `data:` address in the document |
+
+Four features of GitHub's website are outside the specification and outside this design: footnotes, alerts, mathematics, and diagrams. A document that uses one shows it as the plain text that was typed.
 
 ### What the queue refuses
 
@@ -112,7 +132,7 @@ One TypeScript file replaces the 1,124-line bash command. It imports the same do
 
 ### The pages
 
-The mockup is the specification for both pages, and where it and the example above differ on a mark, the mockup's parser is right: `mockup/queue-mock/` in this record, 2,107 lines, with the five real documents it was shown with. Layout, type, spacing, and every string come from it.
+The mockup is the specification for both pages, and where it and the example above differ on a mark, the mockup's parser is right: `mockup/queue-mock/` in this record, 3,003 lines, with the five real documents it was shown with and the Markdown specimen. Layout, type, spacing, and every string come from it.
 
 - **One layout.** A left rail lists the three sections. The main column holds the front page or a document. A notes margin sits to the right of every document, at every width down to 390 px, where it becomes a sheet.
 - **Reading text** is Spectral at 1.125rem. Everything else follows Survey.
@@ -157,9 +177,11 @@ New code is built in `next/` at the repo's root. The old app in `approval-queue/
 
 This pass carries the least-proven assumption: that the five real documents parse as written and that the queue can mark changes without the session's help. It runs first.
 
-- The mockup and its five documents are copied into the repo as `docs/mockup/`, with their hand-written change marks and mockup-only header keys removed. Later passes read them there.
+- The mockup, its five documents, and the Markdown specimen are copied into the repo as `docs/mockup/`, with their hand-written change marks and mockup-only header keys removed. Later passes read them there.
 - The library parses the header, title, first paragraph, question blocks, and decide mark, and returns every fault in the refusal table with its line.
 - For each of the five documents a test states the expected title, first paragraph, question labels, option count per question, and recommended option, and compares the parse with them.
+- The library renders GitHub Flavored Markdown. For each form in the specimen a test states the element it must produce: a table, a disabled checkbox, `<s>`, a link from a bare address, a `<pre>`, a `<blockquote>`, a heading at each of six levels. A `<script>` tag in the specimen comes out as text.
+- A question block inside a code fence yields no question, and a change mark inside code stays as typed.
 - Each fault in the refusal table has a test, and the closing reviewer removes each check in turn and confirms its test fails.
 - A comparison of two versions of one document returns the changed passages. Fed the sent and returned versions of the second close packet, it marks the same words the mockup's hand-written marks do, no more and no fewer, in every passage.
 - `scripts/gate.sh` type-checks and tests `next/` as well as the old app.
@@ -181,10 +203,11 @@ Files: `next/cli/`, `next/tests/`.
 **Pass A3. The layout, the front page, and the document page.** 120 minutes. Waits for A1.
 
 - The front page shows Outstanding decisions, Reports, and Recently merged PRs, the last grouped under each tool's name with one sentence per pull request. The test's merged lines are written by A2's `land` code path, or by the store module if A2 has not landed.
-- A document page renders each of the five real documents, with option buttons and the two decision buttons drawn and inert.
-- Every page is served with a content security policy whose `img-src` is `'self' data:`. A test document with a remote image shows no image and makes no outside request.
+- A document page renders each of the five real documents, with option buttons and the two decision buttons drawn and inert, and the Markdown specimen at `/d/markdown`.
+- Every page is served with a content security policy whose `img-src` is `'self' data:`. A test document with a remote image shows no image and makes no outside request. The policy allows no inline script, and a test document with an `onclick` attribute on a link runs nothing when the link is clicked.
 - Straight quotes in a document's prose render as curly quotes. Quotes inside code are unchanged.
 - A fresh `standards:visual-verifier` grades screenshots of each page beside screenshots of the mockup at 1440 px and 390 px, light and dark, and returns no structural difference and no difference in typeface, type size, or spacing of the reading text. The returned close packet is graded without its change marks, which A5 draws.
+- At 390 px the specimen's wide table and its long code line each scroll inside its frame.
 - No page scrolls sideways at 390 px, and a Playwright check finds no element wider than the viewport, so clipped content fails too.
 - The repo gains a rules file for its pages, loaded only when a session edits a file under `next/` or `approval-queue/`: one layout, one notes margin, strings in one file, the mockup as the pattern to follow (backlog #70).
 
@@ -306,6 +329,8 @@ Each pass has a planner prompt in `plans/aq-a<n>-planning-prompt.txt` and the ro
 These are mine. None is something you said. One fresh Opus reader checked this design and the workstation's against the queue's code and the workstation's skills, and returned fifteen findings. Each is folded into the text above as my call. The edits made after that check had no second reader, and Vale's house config doesn't cover this folder, so `tellgrader` is the only linter that read it.
 
 - The four kinds and the names of the marks.
+- Reading "all of GitHub Flavored Markdown" as the published specification, which leaves out footnotes, alerts, mathematics, and diagrams. Say so in a note if you want any of the four.
+- How each Markdown form looks, and no syntax coloring in code blocks.
 - TypeScript for the command.
 - Files as the only store, with the command reading them directly.
 - Building beside the old queue in `next/` and landing the first five passes without you.
