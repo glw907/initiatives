@@ -2,10 +2,11 @@
 
 ## Summary
 
-This initiative turns one design sitting with Geoff into a round: several approved passes that run
-back to back without him and end in one packet. It also cuts the planning misses that stop a run.
-Success is a round where every pass is merged, waiting on one call in the end packet, or parked
-with one question when Geoff returns 12 to 24 hours later.
+This initiative makes the round the workstation's basic unit of work: one design, approved at one
+sitting with Geoff, covering one to six passes that run back to back without him. It also cuts the
+planning misses that stop a run.
+Success is a round where every pass is merged, waiting on a call in a close packet, or parked with
+one question when Geoff returns 12 to 24 hours later.
 
 ## Motivation
 
@@ -24,7 +25,8 @@ incomplete file list, and a permission block.
 - A round design approved at one sitting launches every pass in it with no further word from Geoff.
 - A stop in one pass parks that pass. Every pass that shares no file with it still runs.
 - A round reaches Geoff as a round report with the usage it spent and each planned-against-actual
-  figure, plus one close packet when a call remains and one stop packet for each parked pass.
+  figure, plus a close packet where a call remains and one stop packet for each parked pass.
+- The Approval Queue groups a round's packets and digest lines, and shows the round report.
 - The three largest planning-miss classes each fall by half, counted per 100 merged pull requests.
 
 ## Non-goals
@@ -39,8 +41,10 @@ incomplete file list, and a permission block.
 
 ## Where the work lives
 
-- `workstation`: `pass-core`'s planner and conductor references, `claude-launch-guard`,
-  `unattended-work-guards.md`, and `claude/.claude/settings.json`.
+- `workstation`: `pass-core` and its references, the `approval-packet` skill, the repo adapters,
+  the pass section of `CLAUDE.md`, `claude-launch-guard`, `unattended-work-guards.md`, and
+  `claude/.claude/settings.json`.
+- `approval-queue`: the fact file's fields, the `merge` and `land` commands, and the pages.
 - The record stays on the local branch `unattended-rounds` and is not pushed, because it cites the
   unpublished `workstation-refinement` record. Queue commands for it run with
   `APPROVAL_QUEUE_PROJECTS=~/.local/state/unattended-rounds/projects`.
@@ -53,4 +57,7 @@ incomplete file list, and a permission block.
   planning-miss counts, the probes, and the Anthropic pages the design draws on.
 - Design: `specs/2026-11-11-unattended-rounds-design.md`.
 - 2026-11-11: proposed. The design went to Geoff's queue and was withdrawn the same day, after he
-  asked whether the Approval Queue should work in rounds. The design is being amended.
+  asked whether the Approval Queue should work in rounds.
+- 2026-11-11: Geoff ruled the round the workstation's basic unit, of one to six passes, unless
+  Anthropic's guidance argued against it. The guidance check found no argument against it. The
+  amended design went back to his queue.

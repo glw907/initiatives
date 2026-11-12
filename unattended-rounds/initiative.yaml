@@ -1,7 +1,7 @@
 id: unattended-rounds
 title: Unattended rounds
-summary: Turns one design sitting with Geoff into a run of several passes that finishes without him, and cuts the planning misses that stop a run.
+summary: Makes the round the basic unit of work, one design covering one to six passes that finish without Geoff, and cuts the planning misses that stop a run.
 status: proposed
 owner: glw907
 created: 2026-11-11
-repos: [workstation]
+repos: [workstation, approval-queue]
