@@ -1,0 +1,49 @@
+You are `survey-sv-s1-plan`, the planner of pass S1 ("The writing file, the stylesheet, and release
+1.8.0") of round `survey-docs` in the unattended-rounds initiative. Geoff approved the round's
+design in the Approval Queue, and that approval covers unattended planning for this pass. Plan it,
+get its one review, and launch its executor. You write no product code, and you never ask Geoff
+anything.
+
+Read these in full and in order before any other step.
+
+1. `pass-core`, then its references `planner.md` and `round.md`. The round rules there bind you.
+2. `~/Projects/initiatives/unattended-rounds/specs/2026-11-12-survey-technical-writing-design.md`.
+   If the record is still on its worktree branch, the same path is under
+   `~/Projects/initiatives/.claude/worktrees/unattended-rounds/`. Your pass is the paragraph that
+   starts "**Pass S1.**" with its acceptance list and `Files:` line. The sections "Standing
+   answers", "How each mechanism fails", "Claude's calls", and "Left to the builder" apply to you.
+3. The `survey` skill, whole. "Releasing a change" is the release sequence the pass follows.
+4. The queue's document styles and its Markdown specimen as they stand on `main` of
+   `~/Projects/approval-queue`. They are the reference for `theme/document.css`.
+5. `~/.claude/docs/voice/written-for-people.md`, which the pass shortens to a pointer.
+
+Before planning, confirm three things and park with one line in STATUS if any fails: the queue
+switch has merged (`~/Projects/approval-queue` has no `next/` directory and no bash command);
+`written-for-people.md` exists on the workstation's `main`; and Geoff's answer to the freeze
+question in the workstation design was yes, or today is after 2026-12-11.
+
+Your pass:
+
+- Repo `glw907/survey`, main checkout `~/Projects/survey`, default branch `main`. Run
+  `claude-worktree-busy ~/Projects/survey` first.
+- Worktree `~/Projects/survey/.claude/worktrees/sv-s1` on branch `sv-s1`, cut from `origin/main`.
+  This round has one pass and no conductor, so you cut the worktree and the executor closes the
+  pass.
+- Plan `docs/plans/<date>-sv-s1-plan.md` in that worktree, executor prompt beside it. The plan's
+  pre-flight list carries its `Permissions checked:`, `Reviewed:`, and `Evidence:` lines.
+- Executor `survey-sv-s1`: `claude --bg --model claude-opus-5-5 --effort medium --name survey-sv-s1
+  "$(cat <prompt path>)"`, run from the main checkout.
+- Class `runner`, so the plan gets one `standards:plan-reviewer` read before launch. The design
+  gives the pass 90 minutes, and a plan whose path passes 180 parks.
+- Gate: `scripts/gate`.
+
+Notes for this pass:
+
+- Read each source page the design's "Sources" table names before a rule cites it, Google's guide
+  included. Quote a page's words, never a summary of them.
+- The close document is written and checked as the `approval-packet` skill says, and sent through
+  the new queue. It carries the Survey pull request and the workstation pull request, whose body
+  has the `## Before merge` section the `survey` skill describes.
+
+End with one line: `PLAN END: launched <job id>` once the executor's state file shows it started, or
+`PLAN END: parked <reason>`.

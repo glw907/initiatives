@@ -1,0 +1,116 @@
+{
+ "kind": "design",
+ "round": "survey-docs",
+ "title": "Add GitHub-flavored technical writing to Survey",
+ "prs": [],
+ "design": {
+  "repo": "initiatives",
+  "path": "unattended-rounds/specs/2026-11-12-survey-technical-writing-design.md"
+ },
+ "held": [],
+ "calls": [],
+ "decidedForYou": [
+  {
+   "question": "When does the Survey pass run?",
+   "rule": "owner-call",
+   "forced": false,
+   "options": [
+    {
+     "label": "After the queue switch",
+     "consequence": "The queue round never waits on a Survey release. The queue ships its copy of the document styles, and a later dependency update swaps in Survey's file."
+    },
+    {
+     "label": "Before the queue's page pass, so the queue takes the styles from Survey from the start",
+     "consequence": "The queue's third pass would wait for your approve of a Survey release in the middle of an unattended round."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "The design's round section and its first call.",
+     "source": "unattended-rounds/specs/2026-11-12-survey-technical-writing-design.md:75"
+    }
+   ],
+   "applied": "After the queue switch"
+  },
+  {
+   "question": "Does a design fold its technical notes?",
+   "rule": "owner-call",
+   "forced": false,
+   "options": [
+    {
+     "label": "Yes, once the new queue is the one you read in",
+     "consequence": "A design's reference sections take one line each until you open them. The headings stay in the \"On this page\" list."
+    },
+    {
+     "label": "No, every section stays open",
+     "consequence": "The long test page stays about two screens longer."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "You said \"Excellent, continue\" to the suggestion on 2026-11-12. Reading that as a yes to folding is Claude's.",
+     "source": "unattended-rounds/specs/2026-11-12-survey-technical-writing-design.md:142"
+    }
+   ],
+   "applied": "Yes, once the new queue is the one you read in"
+  },
+  {
+   "question": "How deep do headings go in a document?",
+   "rule": "owner-call",
+   "forced": false,
+   "options": [
+    {
+     "label": "A title and three levels below it",
+     "consequence": "A writer who needs a fifth level splits the section. The page still draws six, for a document that arrives with them."
+    },
+    {
+     "label": "Six levels, as the page can draw",
+     "consequence": "Deep nesting that a reader can't follow in the list of headings."
+    }
+   ],
+   "recommended": 1,
+   "evidence": [
+    {
+     "text": "Butterick advises three levels at most; the title makes the fourth.",
+     "source": "unattended-rounds/specs/2026-11-12-survey-technical-writing-design.md:141"
+    }
+   ],
+   "applied": "A title and three levels below it"
+  }
+ ],
+ "steps": [
+  {
+   "text": "Nothing starts until you approve the queue switch.",
+   "who": "session"
+  },
+  {
+   "text": "One pass, launched from `plans/sv-s1-planning-prompt.txt`, writes the writing file and the stylesheet in Survey and opens the release: a Survey pull request and a workstation pull request.",
+   "who": "session"
+  },
+  {
+   "text": "Read one document in the new queue. Approving it merges both pull requests and publishes Survey 1.8.0.",
+   "who": "you"
+  }
+ ],
+ "notChecked": [
+  {
+   "text": "No fresh reader has checked this design against Survey's code.",
+   "source": "unattended-rounds/specs/2026-11-12-survey-technical-writing-design.md:137"
+  },
+  {
+   "text": "Google's rules for headings, lists, and tables were not read again for this design. The pass reads them before it writes a rule that cites them.",
+   "source": "unattended-rounds/specs/2026-11-12-survey-technical-writing-design.md:166"
+  },
+  {
+   "text": "Vale has not read this design. `tellgrader` under the docs register reports nothing.",
+   "source": "unattended-rounds/specs/2026-11-12-survey-technical-writing-design.md:135"
+  },
+  {
+   "text": "Whether Survey's repo can render the specimen for the visual comparison with what it has installed. How the pass renders it is left to the builder.",
+   "source": "unattended-rounds/specs/2026-11-12-survey-technical-writing-design.md:149"
+  }
+ ],
+ "reviews": []
+}

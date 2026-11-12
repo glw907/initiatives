@@ -1,4 +1,4 @@
-# Rebuild the Approval Queue around one kind of page, a document
+# Rebuild the Approval Queue so every item is one document its session wrote
 
 Initiative: unattended-rounds
 
@@ -89,13 +89,14 @@ The mockup has one specimen document, `specimen/markdown.md`, that uses each for
 
 | Form | How the page treats it |
 | --- | --- |
-| Headings | The first `# ` line is the title. Levels two and three are set in Spectral, four to six in the sans face |
-| Tables | The sans face, a rule under the head and at the foot, numbers aligned right. A table too wide for the column scrolls inside its frame |
+| Headings | The first `# ` line is the title. Levels two to four are set in the serif face, five and six in the sans face. Each heading gets an address made from its words, and levels two and three are listed under "On this page" |
+| Tables | A rule under the head and at the foot, light rules between rows, numbers aligned right. A table too wide for the column scrolls inside its frame |
 | Task lists | A checkbox in place of the bullet. The box can't be clicked, because the document belongs to the session |
 | Struck text | Drawn as `<s>`. A passage the session removed between versions is drawn as `<del>`, so the two never look alike |
 | Code blocks | Monospace on a tinted ground, and a long line scrolls inside the block. No syntax coloring |
 | A question block or decide mark inside a code fence | Shown as text. It draws no buttons |
 | Raw HTML | Kept, after the specification's filter turns its nine tags into text. The content security policy allows no inline script, so an event attribute does nothing |
+| A folded section | `<details>` with a heading inside its `<summary>` folds that section to one line. The heading keeps its size and its line under "On this page", and a link to anything inside opens the fold |
 | Images | Loaded only from the queue or from a `data:` address in the document |
 
 Four features of GitHub's website are outside the specification and outside this design: footnotes, alerts, mathematics, and diagrams. A document that uses one shows it as the plain text that was typed.
@@ -132,10 +133,12 @@ One TypeScript file replaces the 1,124-line bash command. It imports the same do
 
 ### The pages
 
-The mockup is the specification for both pages, and where it and the example above differ on a mark, the mockup's parser is right: `mockup/queue-mock/` in this record, 3,003 lines, with the five real documents it was shown with and the Markdown specimen. Layout, type, spacing, and every string come from it.
+The mockup is the specification for both pages, and where it and the example above differ on a mark, the mockup's parser is right: `mockup/queue-mock/` in this record, 2,732 lines of TypeScript, Svelte, and CSS, with the five real documents it was shown with and the Markdown specimen. Layout, type, spacing, and every string come from it.
 
 - **One layout.** A left rail lists the three sections. The main column holds the front page or a document. A notes margin sits to the right of every document, at every width down to 390 px, where it becomes a sheet.
-- **Reading text** is Spectral at 1.125rem. Everything else follows Survey.
+- **A document is set as technical writing.** Its text takes the size, line height, and kind of face of GitHub's Markdown stylesheet: 16 px sans at a line height of 1.5. Headings are in the serif face, so a heading differs from the text in face as well as size. The column holds 80 characters, the upper limit in WCAG 2.2's criterion for blocks of text (1.4.8, level AAA). Blocks sit one em apart and list items half an em, the least the US Web Design System gives for each. You asked on 2026-11-12 for a layout that follows published guidance for reading technical documents, for less scrolling inside that guidance, and then for a little room back. The long test page at `/d/long` went from 20.1 screens to 15.3.
+- **"On this page"** heads the left rail when a document is open. It lists the document's second- and third-level headings and marks the one you are reading.
+- **Everything else follows Survey.** The document styles sit in one file, so that Survey can take them over (see "Out of scope").
 - **No bottom bar** in the main area and no strip at the foot of the rail.
 - **Every string** a page shows lives in one file, copied from the mockup. A changed or added string goes through the writing process before it merges.
 - **No made-up ids.** A page never shows an item id, a round id, or a pull request number without its plain words.
@@ -179,8 +182,9 @@ This pass carries the least-proven assumption: that the five real documents pars
 
 - The mockup, its five documents, and the Markdown specimen are copied into the repo as `docs/mockup/`, with their hand-written change marks and mockup-only header keys removed. Later passes read them there.
 - The library parses the header, title, first paragraph, question blocks, and decide mark, and returns every fault in the refusal table with its line.
+- Each heading gets an address made from its words, and two headings with the same words get different addresses. A test states the address of every heading in the specimen.
 - For each of the five documents a test states the expected title, first paragraph, question labels, option count per question, and recommended option, and compares the parse with them.
-- The library renders GitHub Flavored Markdown. For each form in the specimen a test states the element it must produce: a table, a disabled checkbox, `<s>`, a link from a bare address, a `<pre>`, a `<blockquote>`, a heading at each of six levels. A `<script>` tag in the specimen comes out as text.
+- The library renders GitHub Flavored Markdown. For each form in the specimen a test states the element it must produce: a table, a disabled checkbox, `<s>`, a link from a bare address, a `<pre>`, a `<blockquote>`, a heading at each of six levels, a `<details>` whose `<summary>` holds a heading. A `<script>` tag in the specimen comes out as text.
 - A question block inside a code fence yields no question, and a change mark inside code stays as typed.
 - Each fault in the refusal table has a test, and the closing reviewer removes each check in turn and confirms its test fails.
 - A comparison of two versions of one document returns the changed passages. Fed the sent and returned versions of the second close packet, it marks the same words the mockup's hand-written marks do, no more and no fewer, in every passage.
@@ -207,6 +211,9 @@ Files: `next/cli/`, `next/tests/`.
 - Every page is served with a content security policy whose `img-src` is `'self' data:`. A test document with a remote image shows no image and makes no outside request. The policy allows no inline script, and a test document with an `onclick` attribute on a link runs nothing when the link is clicked.
 - Straight quotes in a document's prose render as curly quotes. Quotes inside code are unchanged.
 - A fresh `standards:visual-verifier` grades screenshots of each page beside screenshots of the mockup at 1440 px and 390 px, light and dark, and returns no structural difference and no difference in typeface, type size, or spacing of the reading text. The returned close packet is graded without its change marks, which A5 draws.
+- On the long test page a Playwright check finds reading text at 16 px with a 24 px line height, and no full line of a paragraph longer than 80 characters.
+- "On this page" lists every second- and third-level heading of the open document. After a scroll to a heading, that heading's line is the one marked.
+- A click on the line of a heading inside a closed fold opens the fold and leaves that heading within 100 px of the top of the window one second later.
 - At 390 px the specimen's wide table and its long code line each scroll inside its frame.
 - No page scrolls sideways at 390 px, and a Playwright check finds no element wider than the viewport, so clipped content fails too.
 - The repo gains a rules file for its pages, loaded only when a session edits a file under `next/` or `approval-queue/`: one layout, one notes margin, strings in one file, the mockup as the pattern to follow (backlog #70).
@@ -294,6 +301,7 @@ The twelve standing answers in `round-run.md` hold. Two are added for this round
 - A page for old decided items.
 - Phone layouts beyond not breaking at 390 px. You read at a desk.
 - Search, filters, and keyboard shortcuts beyond ordinary tab order.
+- Survey. A third design, "Add GitHub-flavored technical writing to Survey", moves the document styles and the rules for writing in each Markdown form into Survey. A6 files a backlog item to swap the queue's copy for Survey's file once that release exists.
 
 ## Technical notes
 
@@ -331,6 +339,9 @@ These are mine. None is something you said. One fresh Opus reader checked this d
 - The four kinds and the names of the marks.
 - Reading "all of GitHub Flavored Markdown" as the published specification, which leaves out footnotes, alerts, mathematics, and diagrams. Say so in a note if you want any of the four.
 - How each Markdown form looks, and no syntax coloring in code blocks.
+- Sans text under serif headings. GitHub's stylesheet sets one face for both.
+- Listing the headings in the left rail. Nielsen Norman Group names the left rail, the right rail, and the top of the text as the three places for such a list, and the notes margin already holds the right side.
+- Building the document styles in the queue first and filing their move to Survey as a later change, so the round never waits on a Survey release.
 - TypeScript for the command.
 - Files as the only store, with the command reading them directly.
 - Building beside the old queue in `next/` and landing the first five passes without you.
@@ -356,5 +367,17 @@ These are mine. None is something you said. One fresh Opus reader checked this d
 | Decisions and state in files | "Effective harnesses for long-running agents", anthropic.com/engineering, 2025-11-26 |
 | Playwright tests that click as you would | Prompting best practices, platform.claude.com |
 | A rules file loaded by path | Skills, code.claude.com/docs/en/skills |
+
+The document styles rest on published guidance for reading, each checked against the words on its page on 2026-11-12:
+
+| Style | Source |
+| --- | --- |
+| 16 px sans text at a line height of 1.5 | GitHub's Markdown stylesheet, `github-markdown-css` 5.8.1 |
+| A column of at most 80 characters | WCAG 2.2, success criterion 1.4.8, level AAA |
+| One em between blocks, half an em between list items, and one and a half times as much space above a heading as below | US Web Design System, "Typography" |
+| Heading levels one small visible step apart | Butterick, Practical Typography, "Headings" |
+| A list of second- and third-level headings with the current one marked | US Web Design System, "In-page navigation" |
+| Where that list sits | Nielsen Norman Group, "Table of Contents: The Ultimate Design Guide" |
+| A column of numbers aligned right | GOV.UK Design System, "Table" |
 
 No source measures whether a rules file changes what a session builds, and none offers a check that catches a new page built outside the shared layout. A3's visual grade covers the pages that exist; a later page is caught only by review.

@@ -63,13 +63,16 @@ The house departure of 2026-10-21, background before the summary, is withdrawn, 
 
 `claude/.claude/docs/voice/written-for-people.md`, about 500 words. The `writing-voice` router gets one row, "anything Geoff reads from a session", that points to it, and one sentence sending every public-repo file through steps 1 to 3, and `approval-packet` points to it and carries no copy.
 
-The file opens with the format, ahead of the steps. Every document a session writes for a person is GitHub Flavored Markdown, as the specification at github.github.com/gfm defines it. That is your ruling of 2026-11-12: one clear standard for technical writing, the same for a queue document, a README, a pull request, and a design. The file gives the forms in a short list (headings, lists, task lists, tables, code fences, quotations, links, struck text) and three rules of use:
+The file opens with the format, ahead of the steps. Every document a session writes for a person is GitHub Flavored Markdown, as the specification at github.github.com/gfm defines it. That is your ruling of 2026-11-12: one clear standard for technical writing, the same for a queue document, a README, a pull request, and a design. The file gives the forms in a short list (headings, lists, task lists, tables, code fences, quotations, links, struck text) and four rules of use:
 
 - A table is for values a reader compares across rows. Prose that happens to have three points stays prose.
 - A command, a path, or a name a reader would type is in code marks, and a block of commands is in a fence that names its language.
+- Reference material that a reader doesn't need in order to decide goes in a folded section: `<details>` with the section's heading inside `<summary>`. A design folds its technical notes this way once the new queue is the one you read in. The old queue shows raw HTML as text.
 - Footnotes, alerts, mathematics, and diagrams are features of GitHub's website and are outside the specification. A document doesn't use them, because the queue shows them as plain text.
 
 A repo whose own rules name a different format keeps it.
+
+A third design, "Add GitHub-flavored technical writing to Survey", moves the forms and these rules into Survey after the switch, with a rule for each form. This file then keeps the four steps and one line that names Survey's file.
 
 1. **Write from the standard and the models.** When you are the reader, the standards are the ones named today: the Federal Plain Language Guidelines, Nielsen Norman Group on web writing, and Google's rules for headings. The two model documents show them applied. The file also holds your corrections of 2026-11-12, which now sit in a memory file: no made-up ids, a plain question, a title that never counts, an opening that is the whole page made small. For a reader of a public repo, the standard is the one the router already names for that file, such as Google's guide for developer docs.
 2. **Run Vale.** Today the house config lints no file of this kind. D1 adds queue documents and this file's folder to its scope.

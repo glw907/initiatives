@@ -30,6 +30,8 @@ The front page has three sections: Outstanding decisions, Reports, and Recently 
 
 Every page uses one layout. A left rail lists the three sections, the main column holds the front page or a document, and a notes margin sits to the right of every document. The main area has no bottom bar. A page never shows an item id, a round id, or a pull request number without its plain words. Every string a page shows lives in one file, copied from the mockup, and a changed or added string goes through the writing process before it merges.
 
+A document is set as technical writing. The reading text is 16 px sans at a line height of 1.5, in a column of at most 80 characters, under serif headings. Blocks sit one em apart and list items half an em apart. Each figure comes from published guidance, and the design's sources table names the page for each. A long document gets an "On this page" list of its headings in the left rail, with the current one marked. A section of reference material can be folded to one line, and a link to anything inside it opens the fold. The long test page is 15.3 screens at these settings, down from 20.1: http://127.0.0.1:7933/d/long.
+
 ### How a decision is recorded
 
 On 2026-11-12 the queue held your approve in the browser for five seconds to allow an Undo, hid the item at once, and then failed to post it. Nothing told you. The design changes the order of events:
@@ -71,7 +73,7 @@ If weekly usage reaches 85 percent, the pass in flight finishes and nothing new 
 
 ### What the design leaves out
 
-The design changes nothing on the workstation. The skill, `pass-core`, the hooks, and the settings belong to the other design. It also leaves out a page for old decided items, phone layouts beyond not breaking at 390 px, and search, filters, and keyboard shortcuts beyond ordinary tab order.
+The design changes nothing on the workstation. The skill, `pass-core`, the hooks, and the settings belong to the other design. A third design, "Add GitHub-flavored technical writing to Survey", moves the document styles into Survey after the switch, and the sixth pass files a backlog item to swap them in. This design also leaves out a page for old decided items, phone layouts beyond not breaking at 390 px, and search, filters, and keyboard shortcuts beyond ordinary tab order.
 
 ### What was checked
 
@@ -120,4 +122,5 @@ Why: One parser decides what a document is, for the command and for the page. Wi
 - No pass has parsed the five real documents with the planned library. The mockup's parser did parse them, and the first pass parks if the library cannot.
 - Vale has not read this design, because the house configuration excludes the folder that holds this record. `tellgrader` under the docs register reports nothing.
 - The queue's repo runs no CI, so each pass's gate run is the only automated check.
+- A wide table can't use the notes margin. It scrolls sideways inside the column.
 - Edits were made to the design after the fresh reader's check. No second fresh reader read those edits.
