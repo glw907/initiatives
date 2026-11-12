@@ -22,6 +22,8 @@
 		return list.length >= 3 ? list : [];
 	});
 	const listed = $derived(data.items.some((i) => here(i.id)));
+	/** Opens the fold around a heading, so that a link to it has somewhere to land. */
+	const unfold = (id: string) => document.getElementById(id)?.closest('details')?.setAttribute('open', '');
 	let current = $state('');
 	let outlineEl = $state<HTMLElement>();
 
@@ -35,7 +37,8 @@
 			let at = '';
 			for (const id of ids) {
 				const el = document.getElementById(id);
-				if (el && el.getBoundingClientRect().top <= 96) at = id;
+				// A heading inside a closed fold has no place on the page.
+				if (el?.checkVisibility() && el.getBoundingClientRect().top <= 96) at = id;
 			}
 			current = at;
 		};
@@ -48,7 +51,16 @@
 		};
 	});
 	$effect(() => {
-		if (current) outlineEl?.querySelector('[aria-current]')?.scrollIntoView({ block: 'nearest' });
+		// Keeps the current entry in view by scrolling the rail alone. `scrollIntoView` would also
+		// scroll the window, which moves the document the reader is in.
+		const link = current ? outlineEl?.querySelector<HTMLElement>('[aria-current]') : null;
+		let box = link?.parentElement;
+		while (box && !/auto|scroll/.test(getComputedStyle(box).overflowY)) box = box.parentElement;
+		if (!link || !box) return;
+		const l = link.getBoundingClientRect();
+		const b = box.getBoundingClientRect();
+		if (l.top < b.top) box.scrollTop -= b.top - l.top + 8;
+		else if (l.bottom > b.bottom) box.scrollTop += l.bottom - b.bottom + 8;
 	});
 
 	async function mock(body: Record<string, boolean>) {
@@ -64,7 +76,7 @@
 		<ul aria-labelledby="outline-label">
 			{#each outline as h (h.id)}
 				<li>
-					<a href="#{h.id}" class:page-outline-sub={h.level === 3} aria-current={current === h.id ? 'location' : undefined}>
+					<a href="#{h.id}" onclick={() => unfold(h.id)} class:page-outline-sub={h.level === 3} aria-current={current === h.id ? 'location' : undefined}>
 						{h.text}
 					</a>
 				</li>

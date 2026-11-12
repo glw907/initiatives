@@ -2,10 +2,11 @@
 kind: design
 repo: glw907/approval-queue
 sent: 2026-11-12T14:30
-approve: x
-sendback: y
+approve: I plan the rewrite and bring you nothing more until a pass stops or the work is done.
+sendback: Nothing is planned. I answer each note and send the design back to you.
+mock: This is the queue design as it stood this morning, loaded so that the document styles can be judged on a long page. Its buttons record nothing a session reads. The copy to decide on is in your real queue.
 ---
-# Rebuild the Approval Queue around one kind of page, a document
+# Rebuild the Approval Queue so every item is one document its session wrote
 
 Initiative: unattended-rounds
 
@@ -302,7 +303,8 @@ The twelve standing answers in `round-run.md` hold. Two are added for this round
 - Phone layouts beyond not breaking at 390 px. You read at a desk.
 - Search, filters, and keyboard shortcuts beyond ordinary tab order.
 
-## Technical notes
+<details>
+<summary><h2>Technical notes</h2></summary>
 
 ### Prompts
 
@@ -365,3 +367,5 @@ These are mine. None is something you said. One fresh Opus reader checked this d
 | A rules file loaded by path | Skills, code.claude.com/docs/en/skills |
 
 No source measures whether a rules file changes what a session builds, and none offers a check that catches a new page built outside the shared layout. A3's visual grade covers the pages that exist; a later page is caught only by review.
+
+</details>

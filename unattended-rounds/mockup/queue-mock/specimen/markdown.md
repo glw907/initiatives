@@ -25,11 +25,11 @@ The reading text continues under it at the same size.
 
 #### A fourth-level heading
 
-From this level down, a heading is set in the sans face.
+This is the last level set in the serif face.
 
 ##### A fifth-level heading
 
-It is one size smaller than the fourth.
+It is set in the sans face, one size smaller than the text.
 
 ###### A sixth-level heading
 
@@ -63,7 +63,7 @@ A task list shows what is done and what is left. The queue draws the five additi
 
 ## Tables
 
-A table is set in the sans face, and a column of numbers aligns to the right.
+A column of numbers aligns to the right.
 
 | What the queue counts | Fewest | Most |
 | --- | ---: | ---: |
@@ -117,6 +117,15 @@ HTML typed into a document is kept, so a key such as <kbd>Tab</kbd> can be shown
 <summary>The nine tags the filter turns into text</summary>
 
 `title`, `textarea`, `style`, `xmp`, `iframe`, `noembed`, `noframes`, `script`, and `plaintext`.
+
+</details>
+
+A whole section folds the same way when its heading sits inside the summary. The heading keeps its size and its line in the "On this page" list, and a link to anything inside opens the fold:
+
+<details>
+<summary><h3>A folded section</h3></summary>
+
+A design puts its technical notes in a fold like this one, so the part you decide on comes first and the reference material takes one line until you want it.
 
 </details>
 
