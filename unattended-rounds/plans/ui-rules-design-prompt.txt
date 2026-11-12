@@ -12,6 +12,11 @@ the report page was sloppy UI, and that a design standard such as Survey is besi
 design starts from the page being opened and used with real content before it merges, and from
 content written for a reader. Rules files and layout guidance come second.
 
+Read "Geoff's second correction" there too. The words on a page are part of its UI, and he ruled
+that the fault is beyond any register: a title and a summary each have a job, and the check is
+whether a reader with only the page can do that job's work from them. Don't answer this with a
+style guide.
+
 Then read the two research files of 2026-11-12 beside it: ui-consistency-guidance.md (what
 Anthropic and others publish, with quotes) and ui-machinery-inventory.md (what the workstation
 already has, where each piece binds, and seven candidate changes). The candidates are a starting

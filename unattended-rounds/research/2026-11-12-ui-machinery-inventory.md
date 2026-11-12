@@ -59,8 +59,12 @@ ruling.
    what the interface does, find primary actions, and complete tasks without guessing".
 3. Test and prototype content comes from a real item, never a made-up fixture shorter and tidier
    than the real thing.
-4. What a page shows is written for its reader. A report or packet title follows the
-   approval-brief register, and a session's field block is turned into a page, never printed.
+4. The words on a page get a reader test, in any register (Geoff's second correction, in the
+   evidence file). A fresh reader with only the page, and no plan, code, or record, says from the
+   title alone what the thing is and what is asked of him, and from the summary alone what
+   happened and what waits for him. The answers are compared with the facts the author holds. A
+   title made of ids, or a summary that names topics and leaves out the outcome, fails. A
+   session's field block is turned into a page, never printed.
 5. A rendered prototype with real content, approved by Geoff, for any new page, in a round of
    any size.
 6. A plan line per UI task naming the existing page or component it follows, and "ask before
