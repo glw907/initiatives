@@ -7,6 +7,12 @@ Read first: unattended-rounds/research/2026-11-11-evidence.md, the section "A de
 after the queue round merged". It holds Geoff's four rulings verbatim, the three faults, and what
 the rules say today. Then read approval-queue BACKLOG.md #69 and #70.
 
+Then read the two research files of 2026-11-12 beside it: ui-consistency-guidance.md (what
+Anthropic and others publish, with quotes) and ui-machinery-inventory.md (what the workstation
+already has, where each piece binds, and seven candidate changes). The candidates are a starting
+list for the sitting, and Geoff has ruled on none of them. Cite the Anthropic page behind each
+change you keep, as claude-infra requires.
+
 Two designs come out of this sitting, each sent to Geoff's Approval Queue as its own design packet.
 
 1. A workstation round that changes the planning rules. New UI goes through a rendered prototype
