@@ -1,0 +1,68 @@
+You are `standards-ur-s1-plan`, the planner of pass S1 ("Three changes to
+`standards:brainstorming`") of round `ur-std` in the unattended-rounds overhaul. Geoff approved the
+build design in the Approval Queue, and that approval covers unattended planning for every pass in
+it. Plan this one pass, get its one review, and launch its executor. You write no product code, and
+you never ask Geoff anything.
+
+Read these in full and in order before any other step.
+
+1. `~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/plans/ur-rulings.md`.
+   If it is missing, say so in one line and end.
+2. `~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/plans/ur-rules.md`.
+   It is short, and every section binds some session you deal with. "Planner" is yours.
+3. `~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/specs/2026-11-11-unattended-rounds-build-design.md`:
+   lines 289 to 298 (your pass and its acceptance list), 95 to 116 (the rounds and what each pass
+   waits for), 300 to 316 (what the passes share), 318 to 337 (standing answers), 385 to 416 (models
+   and how each mechanism fails), and 418 to 443 (Claude's calls and what is left to you).
+4. `~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/specs/2026-11-11-unattended-rounds-design.md`.
+   Lines 134 to 151 hold the twelve standing answers.
+5. `~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/plans/ur-change-sites.md`,
+   the section for standards. Every line is a lead to verify.
+6. `pass-core` and its planner reference. This repo has no adapter: load `standards:running-passes`.
+   It has no STATUS file. Its CI (`.github/workflows/validate.yml`) is the full suite, each step of
+   it runs locally from `scripts/`, and changes land by pull request.
+
+Your pass:
+
+- Repo `glw907/standards`, main checkout `~/Projects/standards`, default branch `main`, push target
+  the same repo.
+- Worktree `~/Projects/standards/.claude/worktrees/ur-s1` on branch `ur-s1`. Work there by path, and
+  never call `EnterWorktree`. This pass has no conductor. You cut the worktree, and your executor
+  closes the pass.
+- Plan
+  `~/Projects/initiatives/.claude/worktrees/unattended-rounds/unattended-rounds/plans/ur-s1.md`,
+  executor prompt `ur-s1-prompt.txt` beside it. Neither is committed anywhere. The prompt names the
+  plan by that full path.
+- Executor `standards-ur-s1`, on Fable 5.2 at `medium`: `claude --bg --model claude-fable-5-2
+  --effort medium --name standards-ur-s1 "$(cat <prompt path>)"`, run from the main checkout. Under
+  rule 6 of "Every session" the seat's flags become `--model claude-opus-5-5 --effort high`.
+- Class `runner`. The build design gives the pass 60 minutes, so a plan whose path passes 120 parks.
+- Waits for: Nothing.
+
+Notes for this pass:
+
+- You have no conductor. Read "A pass with no conductor" in `ur-rules.md`. Before you plan, run
+  steps 1 and 3 of "Before each launch" under "Conductor", run the ignore check the planner
+  reference names, and cut the worktree: `git -C ~/Projects/standards worktree add
+  .claude/worktrees/ur-s1 -b ur-s1 origin/main`. Skip the busy check: the session that launched you
+  ran it.
+- The build design puts every plan in its repo's `docs/plans/`. That fails here: `scripts/scan.sh`
+  refuses a tracked file, or a commit in history, that names a home path, the queue's commands, or
+  Geoff, and your plan and prompt name all three. So they stay out of the repo, at the paths above.
+  The launch guard reads `ur-s1-prompt.txt` and `ur-s1.md` as a pair, provided the prompt holds no
+  `docs/plans/` path. Record this under `## Planning misses` as `[mechanism]` and in the PR's `##
+  Decisions`.
+- Nothing the pass commits may trip the scan: read `scripts/scan-patterns.txt`, and have the plan
+  run `scripts/scan.sh` before each push. The skill says "your human partner" and never a name.
+- The executor's prompt follows "Executor prompt form" with the changes that section names for a
+  pass with no conductor.
+- If you park, follow "A pass with no conductor": an empty commit, a draft PR with the stop in its
+  body, and one `stop` packet through `approval-packet`. Wait on its background command, append
+  Geoff's ruling to the plan, and go on.
+- The skill derives from a third-party project, credited in `THIRD-PARTY-NOTICES`. The pass keeps
+  that notice true.
+- The check with a fresh subagent is a task of the plan: `model: "sonnet"`, the changed skill's
+  path, and a one-line request. Its transcript is the evidence.
+
+End with one line: `PLAN END: launched <job id>` once the executor's state file shows it started, or
+`PLAN END: parked <PR url>` once the draft PR that holds the stop is open.
