@@ -90,13 +90,13 @@ Approving builds nothing. It confirms the round rules and your two rulings of 20
 
 You said in chat that the freeze can lift for this overhaul, and that you have extra credits this month and want them spent on it. An approval normally reaches a session through the queue, so this design records both as decided for you. Approving it confirms them, and sending it back undoes them.
 
-The freeze you set on 2026-11-10 allows removals only until 2026-12-11. It lifts for the standing change alone, in the files this design names in the workstation, approval-queue, and standards repos, and it holds for all other work. The exception costs the clean measure read planned for 2026-12-11, which will now read a system that changed mid-freeze. Each of the overhaul's PRs carries a `Round:` line so that read can count them apart.
+The freeze you accepted on 2026-11-10 as D6 allows removals only until 2026-12-11. It lifts for the standing change alone, in the files this design names in the workstation, approval-queue, and standards repos, and it holds for all other work. The refinement's plan reruns its measuring scripts thirty days after its pass 3 merged, which falls on 2026-12-11. The exception costs that run its clean reading, since it will now read a system that changed mid-freeze. Each of the overhaul's PRs carries a `Round:` line so that read can count them apart.
 
 The earlier version of this design recommended two pilot rounds first. They would have supplied three figures that only a real round gives: what a pass costs of the weekly allowance, how many calls a round sends you, and which queue rule chafes. The overhaul's first round now supplies them, and its report carries all three.
 
 Usage credits let the overhaul's sessions keep working past the weekly limit. You cap them with a monthly spend limit under Settings > Usage on claude.ai, which `/usage-credits` opens. A session can't set that limit. `/usage` printed no usage-credits row on 2026-11-11. Anthropic's cost page says the row shows while credits are on, so they looked off at that read.
 
-Source: `unattended-rounds/research/2026-11-11-evidence.md:267`, and `workstation-refinement/README.md:167` on the local `workstation-refinement` branch
+Source: `unattended-rounds/research/2026-11-11-evidence.md:267`, and `workstation-refinement/README.md:167` and `workstation-refinement/plans/2026-11-10-workstation-refinement-plan.md:5`, `:275`, and `:283` on the local `workstation-refinement` branch
 
 ### Decide: What a later round does when the weekly allowance runs low
 
