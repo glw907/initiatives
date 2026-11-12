@@ -1,4 +1,4 @@
-# Rebuild the Approval Queue around one kind of page, a document
+# Rebuild the Approval Queue so every item is one document its session wrote
 
 Today the Approval Queue builds each page from a fact file, a second writer's text, and a form with fixed headings. You called the result sloppy, and the first document you found useful to read was one a session wrote straight through. This design makes that the only way. The session that did the work writes one Markdown document and asks its questions where they come up, and the queue shows that document on one kind of page. The pages follow the mockup you called solid.
 

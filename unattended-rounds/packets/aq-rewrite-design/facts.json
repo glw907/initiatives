@@ -1,7 +1,7 @@
 {
  "kind": "design",
  "round": "aq-rewrite",
- "title": "Rebuild the Approval Queue around one kind of page, a document",
+ "title": "Rebuild the Approval Queue so every item is one document its session wrote",
  "prs": [],
  "design": {
   "repo": "initiatives",
