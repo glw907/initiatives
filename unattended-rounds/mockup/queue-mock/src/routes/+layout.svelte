@@ -5,6 +5,7 @@
 	import Menu from '@lucide/svelte/icons/menu';
 	import { when } from '#lib/when';
 	import { DECIDED, plural, rowNote } from '#lib/words';
+	import type { Doc, Heading } from '#lib/types';
 
 	let { data, children } = $props();
 	let open = $state(false);
@@ -15,12 +16,62 @@
 	const decided = $derived(data.items.filter((i) => i.decision));
 	const here = (id: string) => (page.url.pathname === `/d/${id}` ? 'page' : undefined);
 
+	// The outline of the open document. A page with fewer than three headings needs none.
+	const outline = $derived.by((): Heading[] => {
+		const list = (page.data.doc as Doc | undefined)?.outline ?? [];
+		return list.length >= 3 ? list : [];
+	});
+	const listed = $derived(data.items.some((i) => here(i.id)));
+	let current = $state('');
+	let outlineEl = $state<HTMLElement>();
+
+	// The current section is the last heading that has passed the top of the window.
+	$effect(() => {
+		const ids = outline.map((h) => h.id);
+		if (!ids.length) return;
+		let frame = 0;
+		const mark = () => {
+			frame = 0;
+			let at = '';
+			for (const id of ids) {
+				const el = document.getElementById(id);
+				if (el && el.getBoundingClientRect().top <= 96) at = id;
+			}
+			current = at;
+		};
+		const onscroll = () => (frame ||= requestAnimationFrame(mark));
+		mark();
+		addEventListener('scroll', onscroll, { passive: true });
+		return () => {
+			removeEventListener('scroll', onscroll);
+			cancelAnimationFrame(frame);
+		};
+	});
+	$effect(() => {
+		if (current) outlineEl?.querySelector('[aria-current]')?.scrollIntoView({ block: 'nearest' });
+	});
+
 	async function mock(body: Record<string, boolean>) {
 		await fetch('/api/mock', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
 		if (body.reset) location.assign('/');
 		else await invalidateAll();
 	}
 </script>
+
+{#snippet onThisPage()}
+	<div class="page-outline" bind:this={outlineEl}>
+		<p class="page-outline-label" id="outline-label">On this page</p>
+		<ul aria-labelledby="outline-label">
+			{#each outline as h (h.id)}
+				<li>
+					<a href="#{h.id}" class:page-outline-sub={h.level === 3} aria-current={current === h.id ? 'location' : undefined}>
+						{h.text}
+					</a>
+				</li>
+			{/each}
+		</ul>
+	</div>
+{/snippet}
 
 {#snippet rows(items: typeof data.items)}
 	<ul class="grid gap-0.5">
@@ -36,6 +87,9 @@
 						{/if}
 					</span>
 				</a>
+				{#if here(item.id) && outline.length}
+					{@render onThisPage()}
+				{/if}
 			</li>
 		{/each}
 	</ul>
@@ -75,6 +129,9 @@
 			</div>
 
 			<div class="grid flex-1 content-start gap-6 px-2 pb-6">
+				{#if outline.length && !listed}
+					<section>{@render onThisPage()}</section>
+				{/if}
 				<section>
 					<h2 class="rail-heading">Outstanding decisions <span>{waiting.length}</span></h2>
 					{#if waiting.length}

@@ -17,6 +17,13 @@ export interface PullRequest {
 	url: string;
 }
 
+/** A heading the rail lists under "On this page". */
+export interface Heading {
+	id: string;
+	level: 2 | 3;
+	text: string;
+}
+
 export interface Doc {
 	id: string;
 	kind: Kind;
@@ -31,6 +38,7 @@ export interface Doc {
 	title: string;
 	summary: string;
 	segments: Segment[];
+	outline: Heading[];
 	questions: number;
 	changes: number;
 }

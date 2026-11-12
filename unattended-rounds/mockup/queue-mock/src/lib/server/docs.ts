@@ -1,7 +1,7 @@
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { marked } from 'marked';
-import type { Doc, Kind, Option, PullRequest, Segment } from '#lib/types';
+import type { Doc, Heading, Kind, Option, PullRequest, Segment } from '#lib/types';
 
 const DIR = join(process.cwd(), 'content');
 
@@ -115,6 +115,22 @@ function parse(id: string, raw: string): Doc {
 	const kind = meta.kind as Kind;
 	if (!segments.some((s) => s.type === 'decide')) segments.push({ type: 'decide' });
 
+	// Every heading gets an address, formed the way GitHub forms one. The outline lists levels two and three.
+	const outline: Heading[] = [];
+	const used = new Map<string, number>();
+	for (const s of segments) {
+		if (s.type !== 'html') continue;
+		s.html = s.html.replace(/<h([1-6])>(.*?)<\/h\1>/gs, (_, level: string, inner: string) => {
+			const text = plain(inner);
+			const slug = text.toLowerCase().replace(/[^\p{L}\p{N} _-]/gu, '').trim().replace(/ /g, '-') || 'section';
+			const seen = used.get(slug) ?? 0;
+			used.set(slug, seen + 1);
+			const id = seen ? `${slug}-${seen}` : slug;
+			if (level === '2' || level === '3') outline.push({ id, level: Number(level) as 2 | 3, text });
+			return `<h${level} id="${id}">${inner}</h${level}>`;
+		});
+	}
+
 	const first = segments.find((s) => s.type === 'html');
 	const para = first && first.type === 'html' ? /<p>(.*?)<\/p>/s.exec(first.html) : null;
 	return {
@@ -134,6 +150,7 @@ function parse(id: string, raw: string): Doc {
 		title: plain(titleHtml),
 		summary: para ? plain(para[1]) : '',
 		segments,
+		outline,
 		questions: q,
 		changes: (raw.match(/\{\+\+/g) ?? []).length
 	};
@@ -146,11 +163,12 @@ export function allDocs(): Doc[] {
 		.map((f) => parse(f.replace(/\.md$/, ''), readFileSync(join(DIR, f), 'utf8')));
 }
 
-// The specimen shows every Markdown form. It has an address and stays out of the lists.
-const SPECIMEN = join(process.cwd(), 'specimen', 'markdown.md');
+// A specimen has an address and stays out of the lists.
+const SPECIMENS = join(process.cwd(), 'specimen');
 
 export function oneDoc(id: string): Doc | undefined {
-	if (id === 'markdown') return parse(id, readFileSync(SPECIMEN, 'utf8'));
+	if (/^[a-z-]+$/.test(id) && existsSync(join(SPECIMENS, `${id}.md`)))
+		return parse(id, readFileSync(join(SPECIMENS, `${id}.md`), 'utf8'));
 	return allDocs().find((d) => d.id === id);
 }
 

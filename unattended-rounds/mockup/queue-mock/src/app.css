@@ -81,6 +81,39 @@ body {
 	color: var(--color-muted);
 }
 
+/* The outline of the open document: second- and third-level headings, the current one marked
+   (US Web Design System, "In-page navigation"; Nielsen Norman Group, "Table of Contents"). */
+.page-outline {
+	margin: var(--spacing-6px) 0 var(--spacing-9px) var(--spacing-12px);
+	padding-inline-start: var(--spacing-9px);
+	border-inline-start: var(--border) solid var(--color-base-300);
+}
+.page-outline-label {
+	padding: var(--spacing-3px) var(--spacing-6px);
+	font-size: var(--text-step-4);
+	font-weight: 600;
+	color: var(--color-muted);
+}
+.page-outline a {
+	display: block;
+	padding: var(--spacing-3px) var(--spacing-6px);
+	border-radius: var(--radius-field);
+	font-size: var(--text-step-5);
+	line-height: 1.35;
+	color: var(--color-muted);
+}
+.page-outline a.page-outline-sub {
+	padding-inline-start: var(--spacing-16px);
+}
+.page-outline a:hover {
+	color: var(--color-base-content);
+}
+.page-outline a[aria-current] {
+	color: var(--color-base-content);
+	font-weight: 600;
+	background-color: color-mix(in oklab, var(--color-base-300) 45%, transparent);
+}
+
 /* The page: one reading column and one notes margin, on every page. */
 .page {
 	display: grid;
@@ -147,29 +180,56 @@ body {
 .prose-doc > * + * {
 	margin-top: 1.05em;
 }
+/* Headings. Each level is one visible step from the next, in bold (Butterick, "Headings"), with at
+   least one and a half times as much space above as below (US Web Design System, "Typography"). */
+.prose-doc :is(h1, h2, h3, h4, h5, h6) {
+	text-wrap: balance;
+}
 .prose-doc h2 {
-	font-weight: var(--font-weight-heading);
-	font-size: 1.32rem;
-	line-height: 1.3;
-	margin-top: 2.6rem;
-	padding-top: 1.5rem;
+	font-weight: 600;
+	font-size: 1.5rem;
+	line-height: 1.25;
+	letter-spacing: -0.005em;
+	margin-top: 3rem;
+	padding-top: 1.75rem;
 	border-top: var(--border) dashed var(--site-rule-color);
 }
 .prose-doc h3 {
 	font-weight: 600;
-	font-size: var(--doc-text);
-	margin-top: 1.8rem;
+	font-size: 1.25rem;
+	line-height: 1.3;
+	margin-top: 2.25rem;
+}
+/* Lists. A list sits close under the sentence that introduces it. The marker is quiet and hangs in
+   a fixed gutter, so the text of every item starts on one line. Items that run to several lines
+   get space between them (GOV.UK, "Lists"); each nested level steps in by the same gutter. */
+.prose-doc :is(ul, ol) {
+	padding-inline-start: 1.6em;
 }
 .prose-doc ul {
 	list-style: disc;
-	padding-inline-start: 1.25em;
 }
 .prose-doc ol {
 	list-style: decimal;
-	padding-inline-start: 1.4em;
+	font-variant-numeric: tabular-nums lining-nums;
+}
+.prose-doc p + :is(ul, ol) {
+	margin-top: 0.55em;
+}
+.prose-doc li {
+	padding-inline-start: 0.2em;
+	line-height: 1.5;
+}
+.prose-doc li::marker {
+	color: var(--color-muted);
+}
+.prose-doc ol > li::marker {
+	font-family: var(--font-body);
+	font-size: 0.9em;
+	font-weight: 500;
 }
 .prose-doc li + li {
-	margin-top: 0.45em;
+	margin-top: 0.5em;
 }
 .prose-doc strong {
 	font-weight: 600;
@@ -191,7 +251,11 @@ body {
 	line-height: 1.25;
 	margin-top: 2.6rem;
 }
-.prose-doc h4,
+.prose-doc h4 {
+	font-weight: 600;
+	font-size: var(--doc-text);
+	margin-top: 1.75rem;
+}
 .prose-doc h5,
 .prose-doc h6 {
 	font-family: var(--font-body);
@@ -199,16 +263,15 @@ body {
 	font-size: 0.9375rem;
 	margin-top: 1.6rem;
 }
-.prose-doc h5,
-.prose-doc h6 {
-	font-size: 0.875rem;
-}
 .prose-doc h6 {
 	font-weight: 500;
 	color: color-mix(in oklab, currentColor 72%, transparent);
 }
-.prose-doc :is(h3, h4, h5, h6) + * {
-	margin-top: 0.5em;
+.prose-doc :is(h2, h3) + * {
+	margin-top: 0.75rem;
+}
+.prose-doc :is(h4, h5, h6) + * {
+	margin-top: 0.5rem;
 }
 .prose-doc em {
 	font-style: italic;
@@ -221,7 +284,13 @@ body {
 	overflow-wrap: anywhere;
 }
 .prose-doc li > :is(ul, ol) {
-	margin-top: 0.45em;
+	margin-top: 0.35em;
+}
+.prose-doc li li + li {
+	margin-top: 0.3em;
+}
+.prose-doc ol ol {
+	list-style: lower-alpha;
 }
 .prose-doc li > p + p {
 	margin-top: 0.6em;
@@ -232,8 +301,8 @@ body {
 .prose-doc li:has(> input[type="checkbox"]),
 .prose-doc li:has(> p > input[type="checkbox"]) {
 	list-style: none;
-	margin-inline-start: -1.25em;
-	padding-inline-start: 1.7em;
+	margin-inline-start: -1.6em;
+	padding-inline-start: 1.8em;
 	position: relative;
 }
 .prose-doc li input[type="checkbox"] {
@@ -254,7 +323,7 @@ body {
 }
 .prose-doc pre {
 	font-family: var(--font-mono);
-	font-size: 0.8125rem;
+	font-size: 0.875rem;
 	line-height: 1.6;
 	background-color: var(--color-base-200);
 	border-radius: var(--radius-box);
@@ -305,7 +374,8 @@ body {
 	text-align: center;
 }
 
-/* Tables: the sans face at a smaller size, rules under the head and at the foot only, numbers aligned right. */
+/* Tables: the sans face at a size that reads as large as the text around it, light rules between
+   rows, numbers aligned right (GOV.UK, "Table"). Code in a cell stays on one line. */
 .table-frame {
 	overflow-x: auto;
 	margin-block: 1.5em;
@@ -319,7 +389,7 @@ body {
 	width: 100%;
 	border-collapse: collapse;
 	font-family: var(--font-body);
-	font-size: 0.875rem;
+	font-size: 1rem;
 	line-height: 1.45;
 	font-variant-numeric: tabular-nums lining-nums;
 }
@@ -348,7 +418,13 @@ body {
 	white-space: nowrap;
 }
 .prose-doc td code {
-	font-size: 0.92em;
+	font-size: 0.86em;
+}
+@media (min-width: 48rem) {
+	.prose-doc td code {
+		white-space: nowrap;
+		overflow-wrap: normal;
+	}
 }
 
 /* Changed passages, marked the way Word and Google Docs mark them. */
