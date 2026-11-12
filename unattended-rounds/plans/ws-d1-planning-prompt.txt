@@ -42,7 +42,7 @@ Notes for this pass:
   and `model-report.md`. Geoff accepted their words. Change markup only.
 - The new commands are in `~/Projects/approval-queue/next/cli/` on that repo's `main`. The installed
   `approval-queue` is still the old one until the switch, so run the new one by path.
-- Geoff's corrections to carry into `for-geoff.md` are in
+- Geoff's corrections to carry into `written-for-people.md` are in
   `~/.claude/projects/-var-home-glw907-Projects-initiatives/memory/plain-words-for-geoff.md`.
 - `approval-brief.md` under `skills/survey/` is a vendored copy. Do not edit it.
 

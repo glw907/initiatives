@@ -11,7 +11,7 @@ Today those rules are spread over the `approval-packet` skill, a 3,800-word writ
 ### What changes
 
 - One skill, `approval-packet`, says when to send you something, how to write it, how to check it, and what to do with your answer. It replaces the fact file, the separate writer, and the writing brief.
-- One file, `for-geoff.md`, is the writing process for anything you read: a queue document, a string on a queue page, a pull request's opening, STATUS, a session's last message, a question in chat. Its four steps are the plain-language standard with the two models, Vale, `tellgrader`, and a reader with no context who says what is being asked and what they couldn't follow. You asked for this on 2026-11-12.
+- One file, `written-for-people.md`, is the writing process for anything a person reads. Most of that is what you read: a queue document, a string on a queue page, a pull request's opening, STATUS, a session's last message, a question in chat. Its four steps are the plain-language standard with the two models, Vale, `tellgrader`, and a reader with no context who says what is being asked and what they couldn't follow. It also covers a file in a public repo that a person might open. You asked for both on 2026-11-12.
 - A round report says in its opening whether anything waits for you, then what behaves differently, what went wrong, what it cost, and what is left for later.
 - `pass-core` and its references lose their copies of the packet rules and point to the skill. `pass-core` gets shorter.
 - Stale pieces are removed: the mentions of a `dotfiles-pass` adapter that doesn't exist, and the settings lines of finished initiatives.
@@ -39,6 +39,13 @@ Nine plans in other repos lack only that line. Each belongs to a pass that hasn'
 - The session that next launches each plan adds it, since the guard's refusal names the missing line (recommended)
 - This round adds all nine now, in six repos other than the workstation
 
+### Decide: Do plans and launch prompts in a public repo get the writing checks
+
+You said the process covers files in public repos that a person might read. Ten of your repos are public, the workstation and the queue among them, and each holds the plans and launch prompts its sessions write for one another. A README, a doc page, a pull request, an issue, and a release note get the checks either way.
+
+- No. A plan or a prompt is written for the session that runs it, and a visitor has the pull request and the docs (recommended)
+- Yes. Every plan and prompt committed to a public repo goes through the standard, Vale, and `tellgrader`
+
 ### Worth knowing
 
 Survey still ships `approval-brief.md`, and this round can't delete a file another repo owns. The workstation stops reading its copy at the switch, and a backlog item in Survey asks for the file's removal at the next release. Until then the copy sits unused. Skills in five other repos mention the old packet commands; each gets a backlog item, and the old commands answer with a line that names the skill.
@@ -50,18 +57,18 @@ Survey still ships `approval-brief.md`, and this round can't delete a file anoth
 1. **Whether to send.** A pass with nothing for you to decide lands its pull request with `approval-queue land` and one plain sentence. Anything that needs your decision is a document. A round's report is a document of kind `report`. Nothing is asked in chat that belongs in the queue.
 2. **Write the document.** The session that did the work writes it. The title names what changed or what is asked, and never counts. The first paragraph is the whole page made small. Each question is asked where the reader meets it, with its options and a recommendation. Detail follows under headings a reader can navigate by. Reasons live in the text. No id appears that the session made up, and a pull request is named by what it does.
 3. **Follow the models.** `references/model-close-packet.md` and `references/model-report.md` are the two documents you accepted. The skill says to imitate them, and gives the header and the two marks from the queue's README in a dozen lines.
-4. **Check it.** Follow `for-geoff.md`, all four steps.
+4. **Check it.** Follow `written-for-people.md`, all four steps.
 5. **Send and wait.** `approval-queue check`, then `send` as a background command.
 6. **Act on the answer.** On approve, `approval-queue merge <id>`, then pull the checkout. On send-back, answer each note in its thread with `reply`, fix forward, and `send --returns`. The session writes no change marks; the queue shows what changed.
 7. **File follow-ups.** As today.
 
 The house departure of 2026-10-21, background before the summary, is withdrawn, because the opening you accepted puts the decision first. That reverses a ruling of yours, so say so in a note if you want it kept.
 
-### The writing process when you are the reader
+### The writing process when a person is the reader
 
-`claude/.claude/docs/voice/for-geoff.md`, about 400 words. The `writing-voice` router gets one row, "anything Geoff reads from a session", that points to it, and `approval-packet` points to it and carries no copy.
+`claude/.claude/docs/voice/written-for-people.md`, about 400 words. The `writing-voice` router gets one row, "anything Geoff reads from a session", that points to it, and one sentence sending every public-repo file through steps 1 to 3, and `approval-packet` points to it and carries no copy.
 
-1. **Write from the standard and the models.** The standards are the ones named today: the Federal Plain Language Guidelines, Nielsen Norman Group on web writing, and Google's rules for headings. The two model documents show them applied. The file also holds your corrections of 2026-11-12, which now sit in a memory file: no made-up ids, a plain question, a title that never counts, an opening that is the whole page made small.
+1. **Write from the standard and the models.** When you are the reader, the standards are the ones named today: the Federal Plain Language Guidelines, Nielsen Norman Group on web writing, and Google's rules for headings. The two model documents show them applied. The file also holds your corrections of 2026-11-12, which now sit in a memory file: no made-up ids, a plain question, a title that never counts, an opening that is the whole page made small. For a reader of a public repo, the standard is the one the router already names for that file, such as Google's guide for developer docs.
 2. **Run Vale.** Today the house config lints no file of this kind. D1 adds queue documents and this file's folder to its scope.
 3. **Run `tellgrader --register docs`** and fix every finding and warning.
 4. **Give the page, alone, to a reader with no context** (`sonnet` at `medium`). The reader says what is being asked, what happens for each answer, and lists every term or claim they couldn't explain from the page. Fix what the reader missed, and run the reader once more if the fix changed a question.
@@ -73,9 +80,11 @@ What each kind of writing gets:
 | A queue document, a round report, a string on a queue page | All four |
 | A pull request's opening, STATUS, a hand-over's last message | 1 to 3; step 4 when it asks you for something |
 | A reply or a question in chat | Step 1 |
-| A plan, a prompt, a note between sessions, or any file only a session reads | None |
+| A README, doc page, pull request, issue, or release note in a public repo | 1 to 3, under the standard the router names; step 4 for a page a visitor lands on first |
+| A plan or a launch prompt committed to a public repo | Your answer to the third question |
+| A plan, a prompt, a note between sessions, or any other file only a session reads, in a private repo or outside one | None |
 
-A reader per chat message would cost more than it buys, so chat follows the standard and the models alone. A file that only a session reads is written however is quickest and clearest for that session, which you said on 2026-11-12. The agent-facing register still covers skills and `CLAUDE.md`.
+A reader per chat message would cost more than it buys, so chat follows the standard and the models alone. A file that only a session reads is written however is quickest and clearest for that session. The allowance stops at a public repo, where a person may open any file, and both halves of that rule are yours, from 2026-11-12. The file lists the public repos by reading `gh repo list`, never from memory. The agent-facing register still covers skills and `CLAUDE.md`.
 
 ### The report
 
@@ -89,7 +98,7 @@ A reader per chat message would cost more than it buys, so chat follows the stan
 
 ### Text on a queue page
 
-A string the queue shows is held to all four steps of `for-geoff.md`. The queue repo's rules file, which the queue round adds, says so and names the file.
+A string the queue shows is held to all four steps of `written-for-people.md`. The queue repo's rules file, which the queue round adds, says so and names the file.
 
 ### The round
 
@@ -107,12 +116,12 @@ The longest chain is 360 minutes.
 
 - `approval-packet/SKILL.md` is rewritten as above and is under 1,000 words.
 - The two model documents are in `references/`, in the new form, and `approval-queue check` accepts each. Their source is `mockup/model-close-packet.md` and `mockup/model-report.md` in this record. Only the markup changes: with the header, the marks, and the old HTML buttons stripped from both sides, a word diff against the source prints nothing.
-- `for-geoff.md` exists as described above, and `vale` run on a model document reports one file linted.
+- `written-for-people.md` exists as described above, and `vale` run on a model document reports one file linted.
 - End-to-end check: a fresh `sonnet` session is given the skill and the diff of one merged pull request, workstation #231, and nothing else. It writes a close document. `approval-queue check` accepts it, and `tellgrader --register docs` prints no finding and no warning. A second fresh reader, given the document alone, writes down the question and what each option causes. The closing reviewer compares that with the pull request and judges it right or wrong. The executor edits neither the document nor the reader's answer.
-- `writing-voice` has the one row for anything you read, pointing to `for-geoff.md`, and no row names `approval-brief.md`.
+- `writing-voice` has the one row for anything you read, pointing to `written-for-people.md`, and no row names `approval-brief.md`.
 - The workstation's copy of `approval-brief.md` is left in place and nothing loads it. A backlog item is filed in Survey for its removal, and workstation #79 is closed as moot.
 
-Files: `claude/.claude/skills/approval-packet/`, `claude/.claude/docs/voice/for-geoff.md`, `vale/.config/vale/.vale.ini`, `claude/.claude/skills/writing-voice/SKILL.md`, `claude/.claude/skills/survey/SKILL.md`, `claude/.claude/docs/authoring-charter.md`, `BACKLOG.md`.
+Files: `claude/.claude/skills/approval-packet/`, `claude/.claude/docs/voice/written-for-people.md`, `vale/.config/vale/.vale.ini`, `claude/.claude/skills/writing-voice/SKILL.md`, `claude/.claude/skills/survey/SKILL.md`, `claude/.claude/docs/authoring-charter.md`, `BACKLOG.md`.
 
 **Pass D2. `pass-core` and its references.** 120 minutes. Waits for D1.
 
@@ -231,7 +240,7 @@ These are mine.
 - Dropping the separate writer in favor of the cold reader.
 - A `sonnet` cold reader, capped at two rounds.
 - Withdrawing the background-first departure.
-- Which of the four steps each kind of writing gets.
+- Which of the four steps each kind of writing gets, and the file's name.
 - Leaving Survey's file and the other repos' skills to backlog items.
 - Holding all three pull requests for one packet.
 - The conductor reverting all four merges if the new server won't start.
