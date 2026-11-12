@@ -17,6 +17,10 @@ that the fault is beyond any register: a title and a summary each have a job, an
 whether a reader with only the page can do that job's work from them. Don't answer this with a
 style guide.
 
+His third statement widens that to every block of text: writing that fills a space so the
+formatting looks right is a miss. Design each page from what its reader needs to know and do, and
+give a format no field that exists only to be filled.
+
 Then read the two research files of 2026-11-12 beside it: ui-consistency-guidance.md (what
 Anthropic and others publish, with quotes) and ui-machinery-inventory.md (what the workstation
 already has, where each piece binds, and seven candidate changes). The candidates are a starting
