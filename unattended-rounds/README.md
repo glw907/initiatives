@@ -63,3 +63,5 @@ incomplete file list, and a permission block.
   Anthropic's guidance argued against it. The guidance check found no argument against it.
 - 2026-11-11: Geoff asked whether brainstorming and planning were adjusted for the longer unit. The
   design gained four rules for a round's design step, and went back to his queue.
+- 2026-11-11: Geoff asked whether `standards:brainstorming` follows Anthropic's guidance. The
+  evidence file's last section holds the read: four gaps, three of them for the second design.
