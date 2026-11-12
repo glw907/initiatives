@@ -332,7 +332,7 @@ The approved design's table holds for the build. These rows are new.
 - `approval-queue restart` is new. Four restarts in one round by hand would each run `pkill`, the command class auto mode refused nine times.
 - `packet` refuses a wrong base as well as `merge` and `land`, so you never approve a packet that can't merge.
 - A round id is lowercase letters, digits, and hyphens, starting with a letter, 12 characters at most.
-- The report is an item kind of its own with one action, and writes no decision line.
+- The report is a fourth item kind with one action, and writes no decision line.
 - A second report for a waiting round replaces the first.
 - The round rules go in one new reference file with a cap of 1,500 words. The caps on the four existing files hold.
 - The miss classes are ten short tags, counted by `pass-report`.
