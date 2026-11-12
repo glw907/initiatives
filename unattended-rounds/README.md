@@ -52,4 +52,5 @@ incomplete file list, and a permission block.
 - Research: `research/2026-11-11-evidence.md` holds the timeline figures, the denial log, the
   planning-miss counts, the probes, and the Anthropic pages the design draws on.
 - Design: `specs/2026-11-11-unattended-rounds-design.md`.
-- 2026-11-11: proposed. The design went to Geoff for approval.
+- 2026-11-11: proposed. The design went to Geoff's queue and was withdrawn the same day, after he
+  asked whether the Approval Queue should work in rounds. The design is being amended.
