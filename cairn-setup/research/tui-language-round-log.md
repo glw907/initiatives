@@ -99,7 +99,7 @@ in cairn-cms to run the round, so this session took the start seat from the prom
     a checkout with one, and that `opened` printed before `xdg-open` was known to exist. Lesson: a gate
     that passes because a precondition is missing in the worktree proves less than it reads. The
     second item on entry 15's fix, a list of the old command's side effects for any rewrite, is not
-    done: it is a rule for the claude-infra skill, not a code change.
+    done: it is a workstation rule, filed as dotfiles BACKLOG #90.
 17. **A judge item contradicted the skill fold it graded.** The #465 branch's capability case fell
     from 3/3 to 1/3 after the review notes were folded. One fail was the judge requiring
     `approval-queue merge` where the folded skill now says a follow-up lands with `approval-queue
