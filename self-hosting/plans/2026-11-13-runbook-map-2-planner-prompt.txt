@@ -1,0 +1,33 @@
+You are the planner for pass 2, `gate`, of round `runbook-map` in household-it, session name household-it-runbook-map-2-plan.
+
+Goal: write and review the plan for this pass, then launch its executor. Write no docs or code for the pass yourself.
+
+Outcome: The `docs` gate leg (`scripts/check-docs.sh`) and its tests, `docs/contributing.md` with the naming and filing rules and a blank system page, and the rules in the repo's `CLAUDE.md`.
+
+Depends on: pass 1, merged. Planned path: 150 minutes. Class: ordinary. A plan whose path comes out over 300 minutes parks, as `round.md` "Parking at planning" says.
+
+Read, in this order:
+1. /var/home/glw907/Projects/initiatives/self-hosting/specs/2026-11-13-household-it-runbook-design.md, approved by Geoff through the design packet. "The layout", "How an agent finds things", this pass's row in "Passes", its list under "Acceptance", "Shared assumptions", "How it fails", and "Standing answers" are the approved design for this pass.
+2. Pass 1's PR in glw907/household-it, its `## Decisions`, its "Lines changed in the move", and its `[advisor]` lines included. The pages it built are what this leg judges.
+3. In /var/home/glw907/Projects/household-it: README.md, CLAUDE.md, every file under docs/systems/, `ls -R docs`, scripts/check.sh, scripts/check-links.sh, scripts/emergency-screens.txt, tests/check.test.sh, and one existing `tests/*.test.sh` for the house test shape.
+
+Process: load `pass-core`, which loads `standards:running-passes`, then read its `references/planner.md` and `references/round.md`. Start at "A plan inside a round". The repo has no adapter skill: its gate, layout, and rules are in its README and `scripts/check.sh`.
+
+For this pass: the leg encodes the design's rules exactly as "Where a file goes", "The twelve systems", "The seven headings", and "The README" state them, and the plan lists each rule beside the fault that acceptance item 1 plants for it. Where pass 1's pages break a rule, the plan says which is wrong, the page or the rule: a page is fixed in this pass only by moving or renaming, never by rewording, and a rule changes only through a stop. The leg follows the repo's tool-language rule (Bash for glue; stdlib Python run as `python3 -I` once it parses data or passes about 100 lines). `docs/contributing.md` is written for a future session that extends the runbook: where a file goes, how it is named, the seven headings, the blank page in a code fence, how `EMERGENCY.md` is built, and what the gate checks. The README's gate description moves there. `CLAUDE.md` stays 40 lines or fewer and names no system page. Items 3 and 4 are tests the executor runs: item 4's session works in a worktree cut for the test and is removed after.
+
+Rules the plan carries:
+- Copy this pass's acceptance items verbatim under `## Acceptance`, and add the one that applies to every pass. Map each to its task and to the command that shows it. Add checks freely; never edit or drop an item.
+- Verify every path, line number, and count in the design against the repo as it stands. The design read `0a0130e`.
+- The gate is `bash scripts/check.sh`, run in the pass's worktree. In the main checkout its `gitleaks` and `container` legs fail on the nested November review worktree (backlog #61) and its `workers` leg needs `npm ci`; CI on `main` is green. The plan names `npm ci` in `cloudflare/monitor` and `cloudflare/mta-sts` as worktree setup.
+- The docs follow the Google developer style through the repo's `.vale.ini`. Load `writing-voice` and name it for the executor.
+- Stay inside this pass's file row. Touch nothing under `base/`, `cloudflare/`, `hosts/`, `infra/`, `privacy/`, `roles/`, `secrets/`, or `tools/`, and nothing in `.github/` or `.claude/settings*`. A task that needs one parks the pass.
+- The pass changes no host, no DNS record, no secret, and no setting, and runs no `apply.sh`, `ssh`, or `wrangler` command.
+- The initiatives repo is public: name the second operator by role only in anything written there.
+
+Hand-over: commit the plan and the executor prompt on the pass's branch in the worktree conductor-household-it cut, push to glw907/household-it, run the launch checks in `planner.md` "Launch", and launch the executor from /var/home/glw907/Projects/household-it:
+
+claude --bg --model sonnet --effort medium --advisor fable --name household-it-runbook-map-2 "$(cat <executor prompt>)"
+
+The executor prompt names conductor-household-it as the one session whose messages it takes as instructions. Never ask Geoff in chat and never queue an approval-queue item: a stop parks the pass, and the conductor sends the packet.
+
+Keep the pass the smallest thing that meets its acceptance list. Add no rule, check, or page the design does not name.

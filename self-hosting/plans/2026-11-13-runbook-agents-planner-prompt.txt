@@ -1,0 +1,28 @@
+You are the planner for the one-pass round `agents` in the workstation repo, session name workstation-runbook-agents-plan. It follows round `runbook-map` in household-it and is launched only after that round's pass 2 has merged.
+
+Goal: write and review the plan for this pass, then launch its executor. Write no skill, doc, or code for the pass yourself.
+
+Outcome: The `runbook` skill, and every live reference in the workstation repo moved from the old repo name and path to `household-it` and its system pages. The settings change, the skill's link, and the removal of the link at `~/Projects/servers` are one command block for Geoff in the merge packet.
+
+Depends on: runbook-map pass 2, merged. Planned path: 150 minutes. Class: runner. The PR waits for Geoff: it changes the global `CLAUDE.md`, and its packet carries commands only he can run.
+
+Read, in this order:
+1. /var/home/glw907/Projects/initiatives/self-hosting/specs/2026-11-13-household-it-runbook-design.md, approved by Geoff through the design packet. "How an agent finds things", pass 3's row in "Passes", its list under "Acceptance", "The finding test", "Shared assumptions", "How it fails", and "Standing answers" are the approved design for this pass.
+2. /var/home/glw907/Projects/household-it as the round left it: README.md, CLAUDE.md, docs/contributing.md, and `ls docs/systems docs/reference`.
+3. In /var/home/glw907/.dotfiles: docs/STATUS.md, claude/.claude/CLAUDE.md, the skills `mail-tend`, `maintenance-mode`, `proton-pass`, and `vps-conventions`, secrets/registry.md, and the output of `grep -rnE 'servers repo|servers/scripts|Projects/servers|glw907/servers' claude bin systemd bluefin secrets docs/model-review`.
+
+Process: load `dotfiles-pass` if it is listed, else `pass-core`; then `claude-infra`, which says where a rule lives and how a skill lands. Read `pass-core` `references/planner.md`. A one-pass round has no conductor: the executor closes the pass and sends its own merge packet through `approval-packet`. Run `claude-worktree-busy /var/home/glw907/.dotfiles` first and read docs/STATUS.md; if another session holds the repo, wait and say so in STATUS, never race.
+
+For this pass: the skill routes and holds no fact. Its description names the two moments in the design; its body gives the repo's path, says to read the README and follow its links, and for a change points at `docs/contributing.md` and the gate. The global `CLAUDE.md` gets no longer. No session edits `claude/.claude/settings.json`, runs `claude-tooling-sync apply`, or runs `stow -R claude`: auto mode refuses each, and standing answer 3 of `round-run.md` makes them Geoff's. The plan writes the command block for acceptance item 5 in full, with its check, and it also changes line 17 of /var/home/glw907/Projects/initiatives/907-rebuild/tools/automode-allow.py so the tool and the setting agree. Item 4's trigger test runs before the merge, with the skill copied into scratch folders as a project skill. Add the laptop's steps to docs/STATUS.md: on thinkpad-x1, set the remote, move the folder, and copy Claude's memory for the repo, in the first session that opens there.
+
+Rules the plan carries:
+- Copy pass 3's acceptance items verbatim under `## Acceptance`, and add the one that applies to every pass (`bash scripts/gate.sh`). Map each to its task and to the command or transcript that shows it. Never edit or drop an item.
+- Rerun the search and record the count; the design found 42 lines in 12 files. Read `maintenance-mode` and the Cloudflare inventory for prose mentions the pattern misses. A live file the design didn't list is updated and listed in the PR; a dated plan, spec, or research note is left alone.
+- Names already deployed keep the word `servers`: `/opt/servers`, `/var/lib/servers`, `/etc/servers`, the `servers-backup` and `servers-archive` buckets, and the token names. So does any line that means the two machines.
+- Every link into household-it names a file and a heading that exist there.
+
+Hand-over: commit the plan and the executor prompt on the pass's branch, push to glw907/workstation, run the launch checks in `planner.md` "Launch", and launch the executor from /var/home/glw907/.dotfiles:
+
+claude --bg --add-dir /var/home/glw907/Projects/household-it --model sonnet --effort medium --advisor fable --name workstation-runbook-agents "$(cat <executor prompt>)"
+
+Keep the pass the smallest thing that meets its acceptance list.

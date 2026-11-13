@@ -1,0 +1,34 @@
+You are the planner for pass 1, `pages`, of round `runbook-map` in household-it, session name household-it-runbook-map-1-plan.
+
+Goal: write and review the plan for this pass, then launch its executor. Write no docs or code for the pass yourself.
+
+Outcome: The runbook split into twelve system pages, every other doc in its folder, the README as the table of contents, `EMERGENCY.md` rendered from the pages through an ordered list, and the old repo name gone from living files. No sentence of operating instruction is added or reworded.
+
+Depends on: the rename, done 2026-11-13. Planned path: 270 minutes. Class: ordinary. A plan whose path comes out over 540 minutes parks, as `round.md` "Parking at planning" says.
+
+Read, in this order:
+1. /var/home/glw907/Projects/initiatives/self-hosting/specs/2026-11-13-household-it-runbook-design.md, approved by Geoff through the design packet. "The layout" (all of it), "How an agent finds things", this pass's row in "Passes", its list under "Acceptance", "The finding test", "Shared assumptions", "How it fails", "Standing answers", and "Backlog sweep" are the approved design for this pass. Each Decide carries a `Ruled:` line.
+2. In /var/home/glw907/Projects/household-it: README.md, EMERGENCY.md, BACKLOG.md, every file under docs/, scripts/render-emergency.sh, scripts/check-links.sh, scripts/check.sh, scripts/restore-drill.sh, scripts/drill-remote.sh, tests/check.test.sh, tests/stalwart.test.sh, .vale.ini, and `ls roles`.
+3. /var/home/glw907/Projects/initiatives/self-hosting/plans/STATUS.md, its "Current state" opening.
+
+Process: load `pass-core`, which loads `standards:running-passes`, then read its `references/planner.md` and `references/round.md`. Start at "A plan inside a round". The repo has no adapter skill: its gate, layout, and rules are in its README and `scripts/check.sh`.
+
+For this pass: it rests on the round's least-proven assumption, that 819 lines sort into twelve pages and seven headings with nothing left over. Before any task list, build the table acceptance item 4 asks for: one row for each `##` and `###` heading of docs/runbook.md, with the page and heading it moves to. Write the answer key for "The finding test" from the runbook as it stands, before any text moves, and put it in the plan. Write the line-check script (item 3) as the first task, so every later task runs it. `EMERGENCY.md` may differ from today's file in one line only (item 6), so the ordered list in `scripts/emergency-screens.txt` is settled in the plan, screen by screen. The pass creates `CLAUDE.md` with the permission notes from the runbook's "Claude infrastructure" part and nothing else; pass 2 adds the rules. The stubs for GitHub, Proton, and the network each cite a backlog item: an open one where it covers the gap, otherwise one filed through `standards:log-issue`. File one more item asking whether the phonebook guide belongs in the phonebook repo. Land the three rewordings and the sweep stamps from "Backlog sweep".
+
+Rules the plan carries:
+- Copy this pass's acceptance items verbatim under `## Acceptance`, and add the one that applies to every pass. Map each to its task and to the command that shows it. Add checks freely; never edit or drop an item.
+- Verify every path, line number, and count in the design against the repo as it stands. The design read `0a0130e`.
+- The gate is `bash scripts/check.sh`, run in the pass's worktree. In the main checkout its `gitleaks` and `container` legs fail on the nested November review worktree (backlog #61) and its `workers` leg needs `npm ci`; CI on `main` is green. The plan names `npm ci` in `cloudflare/monitor` and `cloudflare/mta-sts` as worktree setup.
+- The docs follow the Google developer style through the repo's `.vale.ini`. Load `writing-voice` and name it for the executor.
+- Stay inside this pass's file row. Touch nothing under `base/`, `cloudflare/`, `hosts/`, `infra/`, `privacy/`, `roles/`, `secrets/`, or `tools/`, and nothing in `.github/` or `.claude/settings*`. A task that needs one parks the pass.
+- The pass changes no host, no DNS record, no secret, and no setting, and runs no `apply.sh`, `ssh`, or `wrangler` command.
+- The initiatives repo is public: name the second operator by role only in anything written there.
+- Standing answer 4 of the design holds hardest here: the pass moves text and never edits it, apart from links, heading levels, and the repo's name. A fix to moved text is filed, never made.
+
+Hand-over: commit the plan and the executor prompt on the pass's branch in the worktree conductor-household-it cut, push to glw907/household-it, run the launch checks in `planner.md` "Launch", and launch the executor from /var/home/glw907/Projects/household-it:
+
+claude --bg --model sonnet --effort medium --advisor fable --name household-it-runbook-map-1 "$(cat <executor prompt>)"
+
+The executor prompt names conductor-household-it as the one session whose messages it takes as instructions. Never ask Geoff in chat and never queue an approval-queue item: a stop parks the pass, and the conductor sends the packet.
+
+Keep the pass the smallest thing that meets its acceptance list. Add no page, folder, script, or rule the design does not name.

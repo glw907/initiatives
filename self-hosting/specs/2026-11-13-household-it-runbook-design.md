@@ -3,7 +3,7 @@
 Initiative: `self-hosting`. Repos: `servers` (renamed here to `household-it`) and `workstation`.
 Round in the renamed repo: `runbook-map`, two passes. One further pass runs in `workstation`.
 
-Status: drafted 2026-11-13, waiting for Geoff's approval in the Approval Queue.
+Status: approved by Geoff on 2026-11-13 (Approval Queue item 20261113-230244-df1beb). The rename ran the same day: the repo is `glw907/household-it` at `~/Projects/household-it`, with a link at `~/Projects/servers`.
 
 ## Brief
 
@@ -41,6 +41,8 @@ Source: `specs/2026-10-25-operator-runbook-design.md`, "The docs" and "The skill
 - Run this work first. Amend the operator pass: its pages are the system pages here plus its start-here, overview, and accounts pages, and its skill is dropped because the `runbook` skill covers it (recommended)
 - Run the operator pass first as approved, and reorganize after it lands
 
+Ruled: Run this work first (Geoff, 2026-11-13, in the queue). The operator pass is amended as the first option says, and is re-planned after this work lands.
+
 ### Decide: Whether to remove the leftover worktrees
 
 The repo holds 56 leftover worktrees and 57 local branches from earlier passes. A folder move breaks each worktree's link to the repo, and the clutter is why the busy check reads this repo as busy today. Fifty-five sit on branches already merged into `main`. Thirteen of those hold an untracked scratch file: a `scripts/__pycache__/` folder or a commit-message draft. The one unmerged branch is the open November review, which stays.
@@ -49,6 +51,8 @@ Source: `git worktree list` and `git branch --merged origin/main` in `~/Projects
 
 - Remove the 55 merged worktrees and every merged branch, scratch files included, and keep the November review (recommended)
 - Remove only the 42 clean ones, and leave the thirteen for you to look at
+
+Ruled: Remove all 55 (Geoff, 2026-11-13, in the queue). Done: the repo holds its main checkout and the November review's worktree.
 
 ### Worth knowing
 
@@ -227,7 +231,7 @@ worktrees: 42 to remove, 13 kept, plus the November review
 dry run: nothing changed
 ```
 
-After the script, the same session edits three live files in the initiatives repo by hand: `self-hosting/plans/STATUS.md`, `credential-hygiene/plans/STATUS.md`, and `907-rebuild/tools/automode-allow.py:17`. It runs `scripts/index` and `scripts/check`, then `bash scripts/check.sh` in the new folder, and commits.
+After the script, the same session adds one line on the rename to `self-hosting/plans/STATUS.md`. The other lines in the two STATUS files that name the repo are dated history and stay. `907-rebuild/tools/automode-allow.py:17` holds the text of the auto-mode rule, so pass 3's command block changes it together with `settings.json`. It runs `scripts/index` and `scripts/check`, then `bash scripts/check.sh` in the new folder, and commits.
 
 To undo the rename, run `gh repo rename servers --repo glw907/household-it`, remove the link, move the folder back, and reset the remote.
 

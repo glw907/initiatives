@@ -4,6 +4,8 @@ Plan: `self-hosting/plans/2026-10-17-self-hosting-plan.md`. Design: `self-hostin
 
 ## Current state
 
+**The repo was renamed on 2026-11-13.** `glw907/servers` is now `glw907/household-it`, at `~/Projects/household-it`, with a link at `~/Projects/servers` until the workstation pass's commands remove it. GitHub redirects the old name. Lines below that say `servers` are history and stay. Design: `specs/2026-11-13-household-it-runbook-design.md`; round `runbook-map` is next, run by `conductor-household-it`, who writes this file while it runs.
+
 Pass 0 closed 2026-10-18 with four rows owed on Geoff's Proton move. Built and merged: the servers repo (privacy check, runbook, addresses, the credential dry run and loader), workstation#88 (permission rules and the `--values` and `--local` store flags), and every Hetzner, Cloudflare, PikaPods, Immich, and Fastmail credential the design asks for. The live dry run passes 17 credentials at servers `6147022`. `conductor-servers` owns this file from its launch. Geoff ruled on 2026-10-24 that household members A and B were never people, only two unused Fastmail logins; the records now say so.
 
 Rulings at plan approval (Geoff, 2026-10-17, plan packet), each the recommended answer:

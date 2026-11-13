@@ -1,0 +1,45 @@
+You are conductor-household-it. This file hands you round `runbook-map` of the self-hosting initiative: two passes that split the household runbook into one page per system behind a README table of contents, then add the gate leg that keeps it that way. Read `pass-core` with its `references/conductor.md` and `references/round-run.md`, and `approval-packet`, for how a conductor works; this file restates none of them. The repo has no adapter skill.
+
+- Design: /var/home/glw907/Projects/initiatives/self-hosting/specs/2026-11-13-household-it-runbook-design.md, approved by Geoff through the design packet (item 20261113-230244-df1beb). Its two Decides carry `Ruled:` lines.
+- Repos: household-it (main checkout /var/home/glw907/Projects/household-it, push glw907/household-it, default branch `main`) for both passes, and initiatives (/var/home/glw907/Projects/initiatives, push glw907/initiatives) for the record. The repo was `servers` until 2026-11-13; a link at /var/home/glw907/Projects/servers still resolves, and you use the new path everywhere.
+- STATUS: /var/home/glw907/Projects/initiatives/self-hosting/plans/STATUS.md. You are its writer while the round runs. Add to "Current state"; leave its history lines alone.
+- Round id: `runbook-map`. Every PR body, fact file, and landing carries it. Usage ceiling: 85 percent of the weekly allowance.
+
+Your first act is the API-drop wake-up per ~/.claude/docs/unattended-work-guards.md; the host has no lid.
+
+Order table. Passes run one at a time, in this order, and merge in this order.
+
+| Pass | Planner prompt | Depends on | Path minutes | Waits for Geoff |
+| --- | --- | --- | --- | --- |
+| 1 `pages` | plans/2026-11-13-runbook-map-1-planner-prompt.txt | the rename (done) | 270 | no |
+| 2 `gate` | plans/2026-11-13-runbook-map-2-planner-prompt.txt | 1 | 150 | no |
+
+The prompts sit beside this file in /var/home/glw907/Projects/initiatives/self-hosting/plans/. The chain is 420 path minutes, and the round stops new launches past 840.
+
+Planner launch, from /var/home/glw907/Projects/household-it, after you cut the worktree `.claude/worktrees/runbook-map-<n>` on branch `runbook-map-<n>` from `origin/main`:
+
+claude --bg --model claude-opus-5-5 --effort high --advisor fable --name household-it-runbook-map-<n>-plan "$(cat /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-11-13-runbook-map-<n>-planner-prompt.txt)"
+
+Each planner launches its own executor, named household-it-runbook-map-<n>.
+
+Before the first launch, on top of the checks in `round-run.md` "The order table":
+1. The design's two `Ruled:` lines are present.
+2. `gh repo view glw907/household-it` answers, and `git -C /var/home/glw907/Projects/household-it remote get-url origin` names household-it.
+3. `git -C /var/home/glw907/Projects/household-it worktree list` shows the main checkout and the November review's worktree (`servers-review-2026-11`, draft PR #31) and nothing else. That worktree and its PR are another job's: never touch, rebase, or remove them. The split moves files PR #31 may also edit; if it merges or conflicts mid-round, say so in STATUS and the report, and change nothing in it.
+4. `claude agents --json` shows no other session with its cwd in the repo.
+
+The gate, `bash scripts/check.sh`, fails three legs in the main checkout for reasons that are not the round's: `gitleaks` and `container` read the nested review worktree (backlog #61), and `workers` needs `npm ci`. CI on `main` is green. Judge a pass by the gate run in its own worktree and by its PR's CI, never by the main checkout's run.
+
+Reading a pass: both are `ordinary` and neither is marked as waiting, so a pass that meets the land test in `round-run.md` lands with `approval-queue land <owner/repo#n> "<claim>"`. The closing review checks each acceptance item against the evidence in the PR. For pass 1 that means the line-check script's output with every printed line accounted for, the heading-by-heading move table, and a one-line diff of `EMERGENCY.md`; a PR that rewords operating text, or whose `EMERGENCY.md` differs by more than the source sentence, is sent back. A PR whose diff touches `base/`, `cloudflare/`, `hosts/`, `infra/`, `privacy/`, `roles/`, `secrets/`, `tools/`, `.github/`, or `.claude/settings*` never lands unattended, whatever its review says: it waits for a close packet. No pass runs `apply.sh`, `ssh`, `wrangler`, or a DNS publish.
+
+Standing answers: the twelve in `round-run.md`, and the five the design adds under "Standing answers" (answers 1 and 2 concerned the rename and are spent).
+
+After pass 2 lands, launch the workstation pass. It is a separate one-pass round with no conductor. First run `claude-worktree-busy /var/home/glw907/.dotfiles` and read /var/home/glw907/.dotfiles/docs/STATUS.md; if the repo is held, record that in STATUS and the report and do not launch. Otherwise, from /var/home/glw907/.dotfiles:
+
+claude --bg --add-dir /var/home/glw907/Projects/household-it --model claude-opus-5-5 --effort high --advisor fable --name workstation-runbook-agents-plan "$(cat /var/home/glw907/Projects/initiatives/self-hosting/plans/2026-11-13-runbook-agents-planner-prompt.txt)"
+
+Its executor sends its own merge packet to Geoff. You don't wait for it.
+
+Round report, after pass 2 lands and the workstation planner is launched, or when the round stops: one `approval-packet` report for round `runbook-map`, initiative `self-hosting`. It carries each PR with its acceptance evidence, the finding test's ten answers, each pass's planning misses and score, the backlog items the passes filed, and the state of the workstation pass. It says what is left: Geoff's command block at the end of the workstation pass, the laptop's folder move, and the operator pass, which is re-planned against the new pages (design, first Decide) once its pre-flight items 5 and 7 pass. Then update STATUS and the self-hosting README's record line.
+
+Questions reach Geoff only through you, only for a stop the design or `round-run.md` names, one packet per stop. The initiatives repo is public: name the second operator by role only.

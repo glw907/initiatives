@@ -4,4 +4,4 @@ summary: Reorganizes Proton Pass into vaults by who may read them, gives Claude 
 status: active
 owner: glw907
 created: 2026-11-03
-repos: [workstation, servers]
+repos: [workstation, household-it]

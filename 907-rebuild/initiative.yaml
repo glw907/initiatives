@@ -4,4 +4,4 @@ summary: Rebuilds 907.life on cairn rc.4 from the published tools alone, on a Su
 status: active
 owner: glw907
 created: 2026-10-14
-repos: [907-life, survey, servers]
+repos: [907-life, survey, household-it]

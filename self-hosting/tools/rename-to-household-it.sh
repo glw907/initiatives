@@ -85,7 +85,7 @@ step git -C "$old" remote set-url origin https://github.com/glw907/household-it.
 step mv "$old" "$new"
 step ln -s household-it "$old"
 if [ -n "$keep_path" ]; then
-  step git -C "$new" worktree repair "$keep_path"
+  step git -C "$new" worktree repair "${keep_path/#$old/$new}"
 else
   step git -C "$new" worktree repair
 fi

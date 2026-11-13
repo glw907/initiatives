@@ -4,4 +4,4 @@ summary: Serves one shared phonebook to the household's Yealink phones and a web
 status: done
 owner: glw907
 created: 2026-10-07
-repos: [phonebook, servers, survey]
+repos: [phonebook, household-it, survey]
