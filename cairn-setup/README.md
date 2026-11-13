@@ -49,8 +49,9 @@ existed.
 - Terminal design language, round `tui-language` (2026-11-13): design at
   `specs/2026-11-13-tui-language-design.md`, four passes over every print-and-exit command, with the
   debt read at `research/tool-debt-read-2026-11-13.md` and mockups in `research/command-mockups/`.
-  Written and reviewed, not yet approved. `plans/2026-11-13-tui-language-start-prompt.txt` starts it:
-  that session sends the design packet and hands the round to `conductor-cairn-cms`. The conductor
-  prompt and four planner prompts sit beside it. The installer's screens are the round after, once
+  Approved by Geoff on 2026-11-13 (packet `20261113-224909-04cfc7`), his rulings written into the
+  design. Handed to `conductor-cairn-cms` the same day; it runs beside theme-garden G3 and starts once
+  setup-tooling pass 3 has closed. The conductor prompt, four planner prompts, and the round's process
+  log (`research/tui-language-round-log.md`) sit beside it. The installer's screens are the round after, once
   theme-garden G3 has merged.
 - 2026-11-08: proposed, from the setup brainstorm.
