@@ -84,3 +84,11 @@ in cairn-cms to run the round, so this session took the start seat from the prom
     questions of two or three options were enough. The start seat dropped the bold from the four
     backlog questions. Fix: the approval-packet skill says bold names are optional, or tellgrader
     skips `:::question` blocks.
+15. **The design packet sat unseen in the queue.** `approval-queue send` stored it at 22:49, and no
+    page opened for Geoff, who had to ask. Cause: the queue rewrite (`45c155e`, 2026-11-12) replaced
+    the bash command, whose send started the server if it was down and ran `xdg-open
+    $base/item/$id`, with a TypeScript `send` that only stores and waits. Neither the new README nor
+    the approval-packet skill took over the duty. The start seat compounded it: the packet says the
+    mock-ups are open "beside this page", and the seat opened the mock-ups and never checked that the
+    page was open. Fix: `send` and `send --returns` open the document's page again; a rewrite carries
+    a list of the old command's side effects, each kept or retired by name.
