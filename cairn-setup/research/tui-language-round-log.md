@@ -92,3 +92,17 @@ in cairn-cms to run the round, so this session took the start seat from the prom
     mock-ups are open "beside this page", and the seat opened the mock-ups and never checked that the
     page was open. Fix: `send` and `send --returns` open the document's page again; a rewrite carries
     a list of the old command's side effects, each kept or retired by name.
+16. **The queue fix landed the same session, and its review caught two faults the gate could not.**
+    approval-queue#25 (`4616ae8`) makes `send` and `send --returns` start the page server when it is
+    down and open `/d/<id>` for every document. The first commit passed the gate because the worktree
+    had no build; the diff reviewer found that a synchronous test would have started the real server in
+    a checkout with one, and that `opened` printed before `xdg-open` was known to exist. Lesson: a gate
+    that passes because a precondition is missing in the worktree proves less than it reads. The
+    second item on entry 15's fix, a list of the old command's side effects for any rewrite, is not
+    done: it is a rule for the claude-infra skill, not a code change.
+17. **A judge item contradicted the skill fold it graded.** The #465 branch's capability case fell
+    from 3/3 to 1/3 after the review notes were folded. One fail was the judge requiring
+    `approval-queue merge` where the folded skill now says a follow-up lands with `approval-queue
+    land`; the other was the skill's question template showing only the options block, so an agent
+    left both readings in its prose. Lesson: when a fold changes what the skill tells an agent to do,
+    reread the case's judge items in the same commit.
