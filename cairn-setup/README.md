@@ -46,4 +46,11 @@ existed.
 - Screen redesign brainstorm (2026-11-11): `research/handoff-installer-redesign.md`, with mockups in
   `research/installer-mockups/`. Unapproved. It resumes in a fresh session after pass 3 and
   theme-garden G3.
+- Terminal design language, round `tui-language` (2026-11-13): design at
+  `specs/2026-11-13-tui-language-design.md`, four passes over every print-and-exit command, with the
+  debt read at `research/tool-debt-read-2026-11-13.md` and mockups in `research/command-mockups/`.
+  Written and reviewed, not yet approved. `plans/2026-11-13-tui-language-start-prompt.txt` starts it:
+  that session sends the design packet and hands the round to `conductor-cairn-cms`. The conductor
+  prompt and four planner prompts sit beside it. The installer's screens are the round after, once
+  theme-garden G3 has merged.
 - 2026-11-08: proposed, from the setup brainstorm.

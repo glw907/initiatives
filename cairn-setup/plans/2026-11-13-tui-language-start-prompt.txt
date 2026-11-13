@@ -1,0 +1,36 @@
+You start round `tui-language` in cairn-cms, session name cairn-cms-tui-language-start. You take the designing session's seat for a design that is written and not yet approved. Your job is to check it against today's code, put it before Geoff as one design packet, and on his approval hand the round to conductor-cairn-cms. Write no product code, and edit nothing in cairn-cms.
+
+What the round is: one terminal design language for every `cairn` command, taken from the `cairn new` mockups, written down as a standard, with the technical debt cleared in each package a pass opens. Geoff asked for it built in and not bolted on, for the tool to end lean and idiomatic Go, and for a standard that makes the next command easy to build.
+
+Read, in this order:
+1. /var/home/glw907/Projects/initiatives/cairn-setup/specs/2026-11-13-tui-language-design.md. The design: four passes, 580 path minutes, three Decides.
+2. /var/home/glw907/Projects/initiatives/cairn-setup/research/tool-debt-read-2026-11-13.md. Four architecture reads, 41 items with ids.
+3. /var/home/glw907/Projects/initiatives/cairn-setup/research/command-mockups/commands.html and ../installer-mockups/flow.html. `mock.py` beside the first rebuilds it.
+4. /var/home/glw907/Projects/initiatives/cairn-setup/research/handoff-installer-redesign.md, for Geoff's 2026-11-11 rulings and order.
+5. /var/home/glw907/Projects/initiatives/cairn-setup/plans/2026-11-13-tui-language-conductor-prompt.txt and the four planner prompts beside it.
+6. `pass-core` with `references/planner.md` and `references/round.md`, `cairn-pass`, and `approval-packet`.
+
+History you need. The design went through a builder check and an adversarial review on 2026-11-13, and both were folded. The debt work was folded after those two reads, so no fresh reader has seen the final text. Geoff saw the mockups and the design in Chromium and has not approved anything. He held the packet on 2026-11-13 because the rounds setup and the approval-packet tool were still being finished, and he means this round to be their first full test. The design was read against cairn-cms `b3d0c2062`, while setup-tooling pass 3 was editing `tool/internal/setup` and `tool/internal/ui/newview`.
+
+Steps:
+1. Check that the tooling is ready: `approval-queue --help` lists `snapshot` and `packet`, and the `approval-packet` skill describes a `design` kind with a `round` field. If either is missing, stop and tell Geoff in one line. Do not work around it.
+2. Check the ground. Setup-tooling pass 3 has merged (`git -C /var/home/glw907/Projects/cairn-cms worktree list` shows no `setup-tooling` entry). `claude-worktree-busy /var/home/glw907/Projects/cairn-cms` and `claude agents --json` show what else is live. If another round is live or queued in cairn-cms, theme-garden G3 above all, say so in the packet's facts: the design asks only for pass 3 to merge first, and rounds run one at a time.
+3. Bring the design up to today's `main`. Re-run each probe under "Shared assumptions". Spot-check every debt id's file:line and every line reference in the design, since pass 3 moved code in `cmd/cairn` and `newview`. Correct what moved. Mark a debt item already fixed as done. A change that alters an outcome, an acceptance item, a file row, or an estimate is listed for Geoff in the packet's facts.
+4. Run one fresh builder check on the final design: one Opus reader with no context, with the prompt at `builder-check-prompt.md` in the `standards:brainstorming` skill's directory. It asks whether a builder could plan every pass, and whether any acceptance item could pass on a wrong result. Fold what it finds as `standards:brainstorming` "The Written Design" sorts it.
+5. Run the full backlog sweep the design says is due, through `standards:backlog-sweep`, as its own triage and apart from the design packet. The scoped verdicts already in the design go in the packet.
+6. Send the design packet through `approval-packet`: kind `design`, round `tui-language`, initiative `cairn-setup`, the design's path, and the three Decides as its calls, with the design's recommendation on each. The design names no owner step. Carry its "Not checked" list. Serve the two mockup pages on `127.0.0.1` and open them in Chromium, in Claude's `Default` profile, so Geoff has a frame for everything he will look at. Stay open until the command returns his decision.
+7. On a send-back, fix forward from his note and send again.
+8. On an approve, write a `Ruled:` line under each Decide, commit the design by path, and push to glw907/initiatives. Then:
+   - A yes to the fifth pass (installer chrome now) needs a design this file does not hold. Write that pass's row, acceptance list, and planner prompt, add its row to the conductor prompt, and send the amendment as a second design packet before anything launches.
+   - A no to the light-terminal Decide or the plain-mode Decide needs no edit. Pass 3's acceptance items already carry both forms.
+9. Hand over as `pass-core` `references/conductor.md` says. If `claude agents --json` lists conductor-cairn-cms, send it the conductor prompt's path. If not, launch it from /var/home/glw907/Projects/cairn-cms:
+
+   claude --bg --model sonnet --effort medium --name conductor-cairn-cms "$(cat /var/home/glw907/Projects/initiatives/cairn-setup/plans/2026-11-13-tui-language-conductor-prompt.txt)"
+
+   Read its `state.json` to confirm the launch, update the cairn-setup README's record line, commit it by path, and end.
+
+Rules that hold throughout. Commit named files only, never `git add -A`, and never force push. Check `claude-worktree-busy` before you write in a repo another session may hold. Every agent you dispatch gets a model and an effort. Method and architecture calls are yours; product, taste, priority, scope, and budget are Geoff's, and they reach him only through the packet. Mockup wording is placeholder and is never copied into a plan as final copy.
+
+Launch line for this session, from /var/home/glw907/Projects/cairn-cms:
+
+claude --bg --model claude-opus-5-5 --effort high --advisor fable --name cairn-cms-tui-language-start "$(cat /var/home/glw907/Projects/initiatives/cairn-setup/plans/2026-11-13-tui-language-start-prompt.txt)"

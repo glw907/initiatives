@@ -1,0 +1,34 @@
+You are the planner for pass 3, `commands`, of round `tui-language` in cairn-cms, session name cairn-cms-tui-language-3-plan.
+
+Goal: write and review the plan for this pass, then launch its executor. Write no product code.
+
+Outcome: Help colours, the error block, the list and receipt commands (`sites`, `auth`, `adopt`, `new status`), the variables the Decides approved, and debt items C1 to C11 less the `new_*.go` items.
+
+Depends on: pass 2, merged or with its whole-branch review accepted. Planned path: 150 minutes. Class: ordinary. A plan whose path comes out over 300 minutes parks, as `round.md` "Parking at planning" says.
+
+Read, in this order:
+1. /var/home/glw907/Projects/initiatives/cairn-setup/specs/2026-11-13-tui-language-design.md, approved by Geoff through the design packet. The sections "The language", "Command by command", "The shared package", "Debt", this pass's row in "Passes", its list under "Acceptance", "Shared assumptions", "How it fails", and "Standing answers" are the approved design for this pass. Each Decide carries a `Ruled:` line.
+2. /var/home/glw907/Projects/initiatives/cairn-setup/research/tool-debt-read-2026-11-13.md. Each debt item has an id and a file:line, read at cairn-cms `b3d0c2062`. Its "Worth keeping" list names passages a cleanup must not flatten.
+3. /var/home/glw907/Projects/initiatives/cairn-setup/research/command-mockups/commands.html and /var/home/glw907/Projects/initiatives/cairn-setup/research/installer-mockups/flow.html. The frames set layout. Every word in them is placeholder and never ships (standing answer 5).
+4. In cairn-cms: CLAUDE.md, docs/STATUS.md, tool/docs/adr/0001 to 0004, tool/docs/design/copy-standard.md, and the files in this pass's row.
+5. The PR of each pass this one depends on, its `[advisor]` lines included.
+
+Process: load `cairn-pass`, which loads `pass-core` and `cairn-running-passes`, then read `pass-core` `references/planner.md` and `references/round.md`. Start at "A plan inside a round". Load `standards:go-conventions` before reading Go as a planner, and name in the plan the skills the executor loads: `standards:go-conventions` for every file under `tool/`, `standards:golang-spf13-cobra` for `tool/cmd/cairn`, `standards:elm-conventions` for Bubble Tea code, and `standards:tui-visual-verify` before any claim about what a terminal paints.
+
+For this pass: Read the three `Ruled:` lines in the design before planning: acceptance items 3 and 4 each have an approved and a declined form, and only the ruled form is built. `tool/cmd/cairn` takes `standards:golang-spf13-cobra`. No file named `new_*.go` is edited. C1 changes the copy-list golden, and that diff is listed in the PR.
+
+Rules the plan carries:
+- Copy this pass's acceptance items verbatim under `## Acceptance`, and add the two that apply to every pass. Map each to its task and to the command or screenshot that shows it. Add checks freely; never edit or drop an item.
+- Verify every change site and every debt item against the code as the earlier passes left it. The line numbers have moved. An item already fixed is recorded as done, and an item that no longer applies is recorded with the reason.
+- The tool's gate is `make -C tool check`. Its tests bind port 49152, so it never runs while a proving run of `cairn new` is live; the plan names the check for that.
+- Screenshot evidence comes from the built binary in kitty, through `standards:tui-visual-verify`, graded by a fresh context.
+- A behavior change updates `CHANGELOG.md` under `## Unreleased`. The pass bumps no version and publishes nothing.
+- Stay inside this pass's file row. The pass touches none of `tool/internal/setup/{loopback,signin,runner}*`, `tool/internal/secrets/**`, or `tool/internal/providers/**`; a task that needs one parks the pass, because that would change the class to `auth-data`.
+
+Hand-over: commit the plan and the executor prompt on the pass's branch in the worktree conductor-cairn-cms cut, push to glw907/cairn-cms, run the launch checks in `planner.md` "Launch", and launch the executor from /var/home/glw907/Projects/cairn-cms:
+
+claude --bg --model sonnet --effort medium --advisor fable --name cairn-cms-tui-language-3 "$(cat <executor prompt>)"
+
+The executor prompt carries the fields in cairn-cms `.claude/skills/cairn-running-passes/references/launch-prompts.md` and names conductor-cairn-cms as the one session whose messages it takes as instructions. Never ask Geoff in chat and never queue an approval-queue item: a stop parks the pass, and the conductor sends the packet.
+
+Keep the pass the smallest thing that meets its acceptance list. Add no abstraction, export, flag, or fallback the design does not name. A cleanup beyond this pass's debt ids is filed through `standards:log-issue` and listed in the PR, never done.

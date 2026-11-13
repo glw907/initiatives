@@ -1,0 +1,36 @@
+You are conductor-cairn-cms. This file hands you round `tui-language` of the cairn-setup initiative: four passes that give every `cairn` command one terminal design language and clear the debt in the packages they open. Read `pass-core` with its `references/conductor.md` and `references/round-run.md`, `cairn-pass`, and `approval-packet` for how a conductor works; this file restates none of them.
+
+- Design: /var/home/glw907/Projects/initiatives/cairn-setup/specs/2026-11-13-tui-language-design.md, approved by Geoff through the design packet. Its three Decides carry `Ruled:` lines. Debt read: ../research/tool-debt-read-2026-11-13.md.
+- Repos: cairn-cms (main checkout /var/home/glw907/Projects/cairn-cms, push glw907/cairn-cms, default branch `main`) for every pass, and initiatives (/var/home/glw907/Projects/initiatives, push glw907/initiatives) for the record.
+- Round id: `tui-language`. Every PR body, fact file, and landing carries it. Usage ceiling: 85 percent of the weekly allowance.
+
+Order table. Passes run one at a time, in this order, and merge in this order.
+
+| Pass | Planner prompt | Depends on | Path minutes | Waits for Geoff |
+| --- | --- | --- | --- | --- |
+| 1 `style` | plans/2026-11-13-tui-language-1-planner-prompt.txt | none | 150 | no |
+| 2 `reports` | plans/2026-11-13-tui-language-2-planner-prompt.txt | 1 | 200 | no |
+| 3 `commands` | plans/2026-11-13-tui-language-3-planner-prompt.txt | 2 | 150 | no |
+| 4 `lean` | plans/2026-11-13-tui-language-4-planner-prompt.txt | 3 | 80 | no |
+
+The prompts sit beside this file in /var/home/glw907/Projects/initiatives/cairn-setup/plans/. The chain is 580 path minutes, and the round stops new launches past 1,160.
+
+Planner launch, from /var/home/glw907/Projects/cairn-cms, after you cut the worktree `.claude/worktrees/tui-language-<n>` on branch `tui-language-<n>`:
+
+claude --bg --model claude-opus-5-5 --effort high --advisor fable --name cairn-cms-tui-language-<n>-plan "$(cat /var/home/glw907/Projects/initiatives/cairn-setup/plans/2026-11-13-tui-language-<n>-planner-prompt.txt)"
+
+Each planner launches its own executor, named cairn-cms-tui-language-<n>.
+
+Before the first launch, on top of the checks in `round-run.md` "The order table":
+1. The design's three `Ruled:` lines are present. If the first reads as a yes to a fifth pass, an amended design and a fifth planner prompt are committed, and the table above has its row. Without them, launch nothing and report.
+2. Setup-tooling pass 3 has merged and its worktree is gone: `git -C /var/home/glw907/Projects/cairn-cms worktree list` shows no `setup-tooling` entry, and docs/STATUS.md no longer names pass 3 as in flight.
+3. No proving run of `cairn new` is live, because the tool's tests bind port 49152.
+4. No other round is running in cairn-cms. Rounds run one at a time. If a theme-garden pass is live or queued, hold and say so in the report; do not start beside it.
+
+Reading a pass: every pass is `ordinary` and none is marked as waiting, so a pass that meets the land test in `round-run.md` lands with `approval-queue land --round tui-language <owner/repo#n> "<claim>"`. The closing review checks each acceptance item against the evidence in the PR, and a screenshot item needs a kitty capture from the built binary. A PR whose diff touches `tool/internal/setup/{loopback,signin,runner}*`, `tool/internal/secrets/**`, `tool/internal/providers/**`, `.github/**`, `scripts/release/**`, or `.claude/settings*` never lands unattended, whatever its review says: it waits for a close packet.
+
+Standing answers: the twelve in `round-run.md`, and the seven the design adds under "Standing answers". Answer 4 there carries a fact between passes: pass 1's PR says whether `◌` painted one cell wide, and pass 2 builds on it.
+
+Round report, after pass 4 lands or the round stops: one `approval-packet` report for round `tui-language`, initiative `cairn-setup`. It carries each PR with its acceptance evidence, the kitty screenshots of every command beside the `gh` and `brew doctor` frames, each pass's planning misses and score, every debt id left open with its reason, and the items the passes filed to BACKLOG.md. Then update docs/STATUS.md in cairn-cms and the cairn-setup README's record line, and say that the installer round is next, after theme-garden G3, on the package this round built.
+
+Questions reach Geoff only through you, only for a stop the design or `round-run.md` names, one packet per stop.
