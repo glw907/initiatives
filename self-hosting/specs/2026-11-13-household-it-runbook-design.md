@@ -393,3 +393,7 @@ GitHub Docs, "Renaming a repository" and "About READMEs". Google's developer doc
 ## Owner steps
 
 None before the work starts. At the end, the workstation pass's merge packet carries one command block: it edits three lines of `settings.json`, applies the settings, links the new skill, and removes the link at the old path. A session can't do the first three itself.
+
+## Planning misses
+
+- **The trust prompt at the new path (2026-11-13).** Claude Code keeps a folder's trust by its path, so moving `~/Projects/servers` to `~/Projects/household-it` left the repo untrusted and the conductor's launch was refused. Geoff had to open `claude` in the folder and accept the prompt before the round could start. The design's rename section and its "How it fails" list should have named this as a step for Geoff, to run straight after the move. Any later design that moves or renames a repo folder carries that step in its pre-flight.
