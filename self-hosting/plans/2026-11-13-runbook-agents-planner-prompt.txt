@@ -20,6 +20,7 @@ Rules the plan carries:
 - Rerun the search and record the count; the design found 42 lines in 12 files. Read `maintenance-mode` and the Cloudflare inventory for prose mentions the pattern misses. A live file the design didn't list is updated and listed in the PR; a dated plan, spec, or research note is left alone.
 - Names already deployed keep the word `servers`: `/opt/servers`, `/var/lib/servers`, `/etc/servers`, the `servers-backup` and `servers-archive` buckets, and the token names. So does any line that means the two machines.
 - Every link into household-it names a file and a heading that exist there.
+- Text a person reads (docs/STATUS.md, the merge packet, a backlog item) follows `~/.claude/docs/voice/written-for-people.md`, all four steps (Geoff, 2026-11-13). The skill and `CLAUDE.md` are agent-facing and follow the Claude Code best practices, as `claude-infra` says.
 
 Hand-over: commit the plan and the executor prompt on the pass's branch, push to glw907/workstation, run the launch checks in `planner.md` "Launch", and launch the executor from /var/home/glw907/.dotfiles:
 

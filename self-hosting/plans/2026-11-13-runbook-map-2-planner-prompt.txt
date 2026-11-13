@@ -19,7 +19,7 @@ Rules the plan carries:
 - Copy this pass's acceptance items verbatim under `## Acceptance`, and add the one that applies to every pass. Map each to its task and to the command that shows it. Add checks freely; never edit or drop an item.
 - Verify every path, line number, and count in the design against the repo as it stands. The design read `0a0130e`.
 - The gate is `bash scripts/check.sh`, run in the pass's worktree. In the main checkout its `gitleaks` and `container` legs fail on the nested November review worktree (backlog #61) and its `workers` leg needs `npm ci`; CI on `main` is green. The plan names `npm ci` in `cloudflare/monitor` and `cloudflare/mta-sts` as worktree setup.
-- The docs follow the Google developer style through the repo's `.vale.ini`. Load `writing-voice` and name it for the executor.
+- Everything the pass writes for a person (a page, the README, `docs/contributing.md`, a stub, a backlog item) follows `~/.claude/docs/voice/written-for-people.md`, all four steps, the same guide the approval packets use (Geoff, 2026-11-13). The repo's `.vale.ini` (Google) is the linter under it. Load `writing-voice` and name both for the executor. Moved text keeps its wording.
 - Stay inside this pass's file row. Touch nothing under `base/`, `cloudflare/`, `hosts/`, `infra/`, `privacy/`, `roles/`, `secrets/`, or `tools/`, and nothing in `.github/` or `.claude/settings*`. A task that needs one parks the pass.
 - The pass changes no host, no DNS record, no secret, and no setting, and runs no `apply.sh`, `ssh`, or `wrangler` command.
 - The initiatives repo is public: name the second operator by role only in anything written there.
