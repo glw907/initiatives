@@ -29,7 +29,7 @@ Your pass:
   `2026-11-13-ws-d1-prompt.txt` beside it. The prompt names the plan by that full path, where the
   launch guard looks for it. The plan's pre-flight list carries its `Permissions checked:`,
   `Reviewed:`, and `Evidence:` lines.
-- Executor `workstation-ws-d1`: `claude --bg --model claude-opus-5-5 --effort medium --name
+- Executor `workstation-ws-d1`: `claude --bg --model claude-opus-5-5 --effort medium --advisor fable --name
   workstation-ws-d1 "$(cat <prompt path>)"`, run from the main checkout.
 - Class `runner`, so the plan gets one `standards:plan-reviewer` read before launch. The design
   gives the pass 120 minutes, and a plan whose path passes 240 parks.

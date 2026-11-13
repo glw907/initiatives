@@ -30,7 +30,7 @@ Your pass:
   executor prompt `2026-11-13-aq-a6-prompt.txt` beside it. The prompt names the plan by that full
   path, where the launch guard looks for it. The plan's pre-flight list carries its `Permissions
   checked:`, `Reviewed:`, and `Evidence:` lines.
-- Executor `approval-queue-aq-a6`: `claude --bg --model sonnet --effort medium --name
+- Executor `approval-queue-aq-a6`: `claude --bg --model sonnet --effort medium --advisor fable --name
   approval-queue-aq-a6 "$(cat <prompt path>)"`, run from the main checkout.
 - Class `runner`, so the plan gets one `standards:plan-reviewer` read before launch. The design
   gives the pass 75 minutes, and a plan whose path passes 150 parks.
