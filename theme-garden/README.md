@@ -44,7 +44,7 @@ the site is built.
 - Hosted catalog design (approved 2026-11-14): `specs/2026-11-14-theme-catalog-design.md`. It
   replaces the first design's "Catalog and hosting" section and adds content sets by kind of site.
   Its first pass is planned: `plans/2026-11-14-theme-catalog-1-plan.md` (750 path minutes, launch
-  prompt beside it, review in `-review.md`). It launched on 2026-11-14 beside the `tui-language` round (Geoff, 2026-11-14), conducted by session `cairn-cms-c2`.
+  prompt beside it, review in `-review.md`). It launched on 2026-11-14 beside the `tui-language` round (Geoff, 2026-11-14), conducted by session `conductor-theme-catalog`.
   The buckets, the demo Workers, the four CI tokens, and the two GitHub environments were
   provisioned on 2026-11-14 (the plan's pre-flight items 2 to 5).
 - Research: `research/prior-art-theme-packaging.md`, `research/prior-art-theme-switching.md`,

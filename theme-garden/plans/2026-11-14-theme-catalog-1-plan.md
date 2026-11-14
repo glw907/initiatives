@@ -6,7 +6,7 @@ Design: `../specs/2026-11-14-theme-catalog-design.md` (approved by Geoff 2026-11
 item 20261114-194635-5aa21f; binding). This pass is step 1 of its "Order of work".
 Repo: `glw907/cairn-cms`, main checkout `/var/home/glw907/Projects/cairn-cms`. Every `file:line` was
 read at `839232fe9`; the conductor re-checks them against `main` before launch (pre-flight item 1).
-Conductor: `cairn-cms-c2` (see "Pre-flight"). Executor: `cairn-cms-theme-catalog-1`.
+Conductor: `conductor-theme-catalog` (see "Pre-flight"). Executor: `cairn-cms-theme-catalog-1`.
 Load at start: `pass-core`, `cairn-pass`, `cairn-running-passes`; `cairn-writing-engine-code` for
 `scripts/**`; `standards:ts-conventions` for comments; `cloudflare:wrangler` for the demo's Wrangler
 file; `cairn-writing-docs` only if a page under `docs/` changes; `cairn-judging-scope` before any
@@ -102,7 +102,7 @@ Item 1 was read on 2026-11-14 against `origin/main` `e5f4a4e6e`: no drift. None 
 changed since `839232fe9`, and `themes/survey/` isn't on `main`, so nothing is folded.
 
 Geoff ruled on 2026-11-14 that this pass runs beside the `tui-language` round. Session
-`cairn-cms-c2` conducts it, and `conductor-cairn-cms` keeps `docs/STATUS.md` and its round. The
+`conductor-theme-catalog` conducts it, and `conductor-cairn-cms` keeps `docs/STATUS.md` and its round. The
 only file the two share is `CHANGELOG.md`; whoever merges second rebases it.
 
 Items 2 to 5 were done on 2026-11-14, after Geoff created the temporary token and approved the dry
