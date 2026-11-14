@@ -41,7 +41,7 @@ the site is built.
 
 - Design: `specs/2026-11-08-theme-garden-design.md`. Its "Alignment with cairn-setup" section is
   the record the cairn-setup conductor reads.
-- Hosted catalog design (proposed 2026-11-14): `specs/2026-11-14-theme-catalog-design.md`. It
+- Hosted catalog design (approved 2026-11-14): `specs/2026-11-14-theme-catalog-design.md`. It
   replaces the first design's "Catalog and hosting" section and adds content sets by kind of site.
 - Research: `research/prior-art-theme-packaging.md`, `research/prior-art-theme-switching.md`,
   `research/site-kinds.md`, `research/docs-page-trees.md`.
