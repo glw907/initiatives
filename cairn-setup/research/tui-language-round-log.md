@@ -112,3 +112,12 @@ in cairn-cms to run the round, so this session took the start seat from the prom
     is four platform files, not two. Moving either one as planned would have turned the gate red.
     Lesson: before a plan moves or renames a file or an exported name, grep the test files for its
     path and its name, and list every platform-suffixed sibling.
+19. **Entries 1, 2, 6, 7, 8, and 12 became rules.** Geoff asked on 2026-11-14 why the round took a
+    day to start building, and approved a workstation pass the same morning
+    (glw907/workstation#243). `pass-core` `references/ready.md` now says a round's design names a
+    start condition a command reads, never a merge; records the launch checks already run; points
+    its prompts at a skill and copies no command; and leaves nothing but the hand-over between
+    approve and the first launch. A due full sweep runs apart from a design, and a pass that
+    retires a command searches every skill and prompt for it. A fresh reader given this round's
+    design as first committed (`68bd8e1`) and the new rules named all three faults with no hint.
+    This round keeps the rules it started with.
