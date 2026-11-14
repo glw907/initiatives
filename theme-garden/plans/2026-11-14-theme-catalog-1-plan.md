@@ -98,6 +98,13 @@ that asks for it.
    `probe/` prefixes list empty; the temporary token's id answers 404.
 6. **[session] The pre-launch checks** in `pass-core` "Execute".
 
+Items 2 to 5 were done on 2026-11-14, after Geoff created the temporary token and approved the dry
+run in chat, so no pre-launch packet is owed for them. Every check in items 3 to 5 passed, and
+`tmp-account-tokens` is deleted. The Editor tokens accept only a Wrangler file with no `routes`
+entry (with one, `wrangler deploy` exits 1 with code 10084), so C1.5 generates the file without
+it. The replies are in the review file under "Replies recorded at pre-flight". Items 1 and 6
+remain, and launch still waits behind `tui-language` and Geoff's theme round.
+
 Permissions checked: each task's writes and credentials were read against auto mode for a `claude
 --bg` executor, and against the last 30 days of `~/.local/state/claude-denials.jsonl` (66 rows,
 2026-11-01 to 2026-11-14). The classes that bear on this pass are Create Public Surface (2), DNS,

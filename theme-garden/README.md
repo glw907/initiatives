@@ -44,10 +44,9 @@ the site is built.
 - Hosted catalog design (approved 2026-11-14): `specs/2026-11-14-theme-catalog-design.md`. It
   replaces the first design's "Catalog and hosting" section and adds content sets by kind of site.
   Its first pass is planned: `plans/2026-11-14-theme-catalog-1-plan.md` (750 path minutes, launch
-  prompt beside it, review in `-review.md`). It isn't launched. Launch waits for the theme round
-  and for a pre-launch packet that asks Geoff for one temporary Cloudflare token (the plan's
-  pre-flight item 2), after which an interactive session provisions the buckets, the demo Workers,
-  the four CI tokens, and the two GitHub environments.
+  prompt beside it, review in `-review.md`). It isn't launched. Launch waits for the theme round.
+  The buckets, the demo Workers, the four CI tokens, and the two GitHub environments were
+  provisioned on 2026-11-14 (the plan's pre-flight items 2 to 5).
 - Research: `research/prior-art-theme-packaging.md`, `research/prior-art-theme-switching.md`,
   `research/site-kinds.md`, `research/docs-page-trees.md`.
 - Planner launch prompt: `plans/2026-11-08-theme-garden-planner-prompt.txt`.
