@@ -128,6 +128,12 @@ branch, with the proving tokens.
 Reviewed: one `standards:plan-reviewer` read, 2026-11-14, folded. Its findings and what each
 changed are in `2026-11-14-theme-catalog-1-review.md`.
 
+Evidence: the mechanism table is "What was probed" below. The Cloudflare and GitHub mechanisms it
+could not settle from code were probed live at pre-flight on 2026-11-14, with the tokens the run
+uses, and the raw replies are in `2026-11-14-theme-catalog-1-review.md` under "Replies recorded at
+pre-flight". The planning session recorded no web search of its own; the design's Cloudflare
+documentation reads are in the design.
+
 ## What was probed
 
 | Mechanism | Evidence |
