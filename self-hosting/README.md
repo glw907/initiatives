@@ -43,6 +43,7 @@ Fastmail, PikaPods, and 1Password each hold part of the household's data on some
 - Pass plan: [plans/2026-10-17-self-hosting-plan.md](plans/2026-10-17-self-hosting-plan.md), with its reviews and fold records in [research/](research/).
 - Brainstorm state and the pavilion handoff: [specs/2026-10-17-brainstorm-decisions.md](specs/2026-10-17-brainstorm-decisions.md). The design supersedes it where they differ.
 - Research: the per-area briefs in [research/](research/).
+- Round `runbook-map` (2026-11-13): design in [specs/2026-11-13-household-it-runbook-design.md](specs/2026-11-13-household-it-runbook-design.md), report in [reports/runbook-map-report.md](reports/runbook-map-report.md). Pass 1 merged; pass 2 waits on the household-it checkout.
 
 Status: proposed (2026-10-17), research complete; the design waits on Geoff's answers to the open questions.
 
