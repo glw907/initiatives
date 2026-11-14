@@ -42,7 +42,9 @@ existed.
   the gate rewrite and token option in cairn-cms, then the polish loop), with its prompts, its owner
   scripts, and its review records beside it. Handed to `conductor-cairn-cms` on 2026-11-09 for packet A.
   Packets A and B approved 2026-11-09; passes 1 (glw907/workstation#215) and 2 (cairn-cms #210)
-  merged; pass 3, the polish loop, is next.
+  merged. Pass 3's naive leg passed on dev.8 (run 10 of 15) on 2026-11-11. Its close (T3.5 and the
+  end packet, with Geoff's 907.life live setup as the `[you]` step) went to session
+  `cairn-cms-setup-tooling-close` on 2026-11-13, from `plans/2026-11-13-setup-tooling-close-prompt.txt`.
 - Screen redesign brainstorm (2026-11-11): `research/handoff-installer-redesign.md`, with mockups in
   `research/installer-mockups/`. Unapproved. It resumes in a fresh session after pass 3 and
   theme-garden G3.
