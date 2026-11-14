@@ -14,7 +14,7 @@ SETTINGS = REPO / "claude/.claude/settings.json"
 QUOTE = '(2026-11-08: "You need to be able to do this kind of thing directly")'
 
 RULES = [
-    "Publishing 907.life DNS from a checkout or worktree of github.com/glw907/servers is routine "
+    "Publishing 907.life DNS from a checkout or worktree of github.com/glw907/household-it is routine "
     f"work Geoff asked for {QUOTE}. This covers `cloudflare/dns.sh --apply` and "
     "`bash cloudflare/dns.sh --apply` when every record it creates, changes, or deletes is "
     "declared in a file under `cloudflare/dns/` or `cloudflare/redirects/` committed on that "
