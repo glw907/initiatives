@@ -41,7 +41,10 @@ the site is built.
 
 - Design: `specs/2026-11-08-theme-garden-design.md`. Its "Alignment with cairn-setup" section is
   the record the cairn-setup conductor reads.
-- Research: `research/prior-art-theme-packaging.md`, `research/prior-art-theme-switching.md`.
+- Hosted catalog design (proposed 2026-11-14): `specs/2026-11-14-theme-catalog-design.md`. It
+  replaces the first design's "Catalog and hosting" section and adds content sets by kind of site.
+- Research: `research/prior-art-theme-packaging.md`, `research/prior-art-theme-switching.md`,
+  `research/site-kinds.md`, `research/docs-page-trees.md`.
 - Planner launch prompt: `plans/2026-11-08-theme-garden-planner-prompt.txt`.
 - Plan: `plans/2026-11-08-theme-garden-plan.md`, two engine passes (G1 the contract and Waymark's
   port, G2 the conformance set, viewer, check, and CI), reviewed in three lenses and folded
