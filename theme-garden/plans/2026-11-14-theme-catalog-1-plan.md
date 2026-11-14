@@ -6,7 +6,7 @@ Design: `../specs/2026-11-14-theme-catalog-design.md` (approved by Geoff 2026-11
 item 20261114-194635-5aa21f; binding). This pass is step 1 of its "Order of work".
 Repo: `glw907/cairn-cms`, main checkout `/var/home/glw907/Projects/cairn-cms`. Every `file:line` was
 read at `839232fe9`; the conductor re-checks them against `main` before launch (pre-flight item 1).
-Conductor: `conductor-cairn-cms`. Executor: `cairn-cms-theme-catalog-1`.
+Conductor: `cairn-cms-c2` (see "Pre-flight"). Executor: `cairn-cms-theme-catalog-1`.
 Load at start: `pass-core`, `cairn-pass`, `cairn-running-passes`; `cairn-writing-engine-code` for
 `scripts/**`; `standards:ts-conventions` for comments; `cloudflare:wrangler` for the demo's Wrangler
 file; `cairn-writing-docs` only if a page under `docs/` changes; `cairn-judging-scope` before any
@@ -98,12 +98,18 @@ that asks for it.
    `probe/` prefixes list empty; the temporary token's id answers 404.
 6. **[session] The pre-launch checks** in `pass-core` "Execute".
 
+Item 1 was read on 2026-11-14 against `origin/main` `e5f4a4e6e`: no drift. None of the cited files
+changed since `839232fe9`, and `themes/survey/` isn't on `main`, so nothing is folded.
+
+Geoff ruled on 2026-11-14 that this pass runs beside the `tui-language` round. Session
+`cairn-cms-c2` conducts it, and `conductor-cairn-cms` keeps `docs/STATUS.md` and its round. The
+only file the two share is `CHANGELOG.md`; whoever merges second rebases it.
+
 Items 2 to 5 were done on 2026-11-14, after Geoff created the temporary token and approved the dry
 run in chat, so no pre-launch packet is owed for them. Every check in items 3 to 5 passed, and
 `tmp-account-tokens` is deleted. The Editor tokens accept only a Wrangler file with no `routes`
 entry (with one, `wrangler deploy` exits 1 with code 10084), so C1.5 generates the file without
-it. The replies are in the review file under "Replies recorded at pre-flight". Items 1 and 6
-remain, and launch still waits behind `tui-language` and Geoff's theme round.
+it. The replies are in the review file under "Replies recorded at pre-flight". Item 6 runs at launch.
 
 Permissions checked: each task's writes and credentials were read against auto mode for a `claude
 --bg` executor, and against the last 30 days of `~/.local/state/claude-denials.jsonl` (66 rows,
@@ -469,7 +475,7 @@ The conductor, not the executor, does these once the merge's `catalog` run on `m
 | --- | --- |
 | Clock stop: a task past twice its estimate | With the cause traced and the rest in scope, reset `start=` once with `estimate=` the remaining work and record it in `## Decisions`. On a second stop on the same task, the conductor splits the rest into a follow-up task and records the call |
 | Path ceiling | Go on while the cause is traced and actual minutes stay under 480 (twice the expected 240); record the overrun in the score. Past that, or on an untraced cause, the conductor asks with the trace and a recommendation |
-| The proving run fails on a Cloudflare permission (a 403 from R2 or from `wrangler deploy`) | Never widen a token and never use another credential. Write the request, the response, and the token's name to STATUS and stop for the conductor, whose interactive session rescopes it |
+| The proving run fails on a Cloudflare permission (a 403 from R2 or from `wrangler deploy`) | Never widen a token and never use another credential. Write the request, the response, and the token's name to the conductor by message and stop, whose interactive session rescopes it |
 | `wrangler deploy` rejects the recorded `routes` form | Use the other form pre-flight item 5 proved, and record it. If neither works, stop as in the row above |
 | The proving run can't go green and the conductor can't clear the cause | Finish C1.9 and the Close on what is built. The PR stays draft, its body names acceptance lines 1 to 4 as unmet with the failing run, and the conductor sends Geoff a `decide` document |
 | Auto mode denies an `npm install --save-dev` of one of the three packages | Stop for the conductor with the denial text. Never fetch the package another way |
