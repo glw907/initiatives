@@ -1,6 +1,6 @@
 # Hosted theme catalog design
 
-Status: proposed (2026-11-14), from the theme catalog brainstorm. Not yet approved.
+Status: approved by Geoff (2026-11-14), from the theme catalog brainstorm.
 
 cairn's themes and default content move out of the engine package and into a small hosted catalog.
 The catalog is one JSON file and a set of archives on Cloudflare R2, at a public address. `cairn new`
@@ -48,6 +48,7 @@ These came from Geoff in this brainstorm (2026-11-13 and 2026-11-14).
 - The technical design is lightweight, streamlined, and built on current published standards that
   suit SvelteKit and Go. With two readers, it stays light and easy to change.
 - Acceptance: a system the installer can use, and that cairn.pub can adopt easily when it is built.
+- A page can be a site's home page, in place of the newest posts (his answer at approval).
 
 ## Goals
 
@@ -290,17 +291,15 @@ the earlier design fixed, so every theme renders every set.
 
 ### The home page
 
-This part waits on Geoff's answer.
-
 The template's home page is always the newest posts (`src/routes/(site)/+page.server.ts`). That
 suits a blog. A product page, a portfolio, and an organization site each need a home page that
 isn't a list of posts, and no content set can change a route.
 
-Claude recommends one small template change. When the content holds a page marked as the home page,
+Geoff approved one small template change. When the content holds a page marked as the home page,
 the home route shows that page, and otherwise it shows the newest posts. The change is in the
 template's route, which a site owns, and the engine library doesn't change. It still needs a scope
-ruling before a pass builds it. The other choice is to leave the home page alone, and then those
-three sets open on a post list with their pages in the menu.
+ruling before a pass builds it. How a page is marked is left to the builder. The portfolio,
+organization, and product-page sets each carry a home page.
 
 ## Content sets
 
@@ -492,8 +491,9 @@ The cairn-setup conductor reads this section before a `cairn new` task touches o
    the reference page, proven by publishing Waymark.
 2. `cairn new` reading the catalog, with every row of the failure table, together with the earlier
    design's step 4.
-3. The society sheet, then the blog, portfolio, organization, and product-page sets, which can be
-   written in parallel with step 2.
+3. The home page change in the template, after its scope ruling. Then the society sheet and the
+   blog, portfolio, organization, and product-page sets, which can be written in parallel with
+   step 2.
 4. The documentation set, after Topo's design.
 
 ## Left out now
@@ -546,7 +546,8 @@ a stand-in.
 8. The catalog holds one content set for each kind it lists, and lists no kind without one. Each
    set's published archive matches its digest.
 9. Every catalog theme builds every set from the published archives with no theme-check failure.
-   If Geoff approves the home page change, each set's home page is the one its kind describes.
+   The portfolio, organization, and product-page sets each open on their home page, and the blog
+   set opens on its newest posts.
 10. `cairn new` asks the kind and lays in that kind's set. Two runs with different kinds both
     build. Each site holds only its set's content files, with none left from the packaged blog
     set, and its menus are the set's.
