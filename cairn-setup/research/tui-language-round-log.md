@@ -106,3 +106,9 @@ in cairn-cms to run the round, so this session took the start seat from the prom
     land`; the other was the skill's question template showing only the options block, so an agent
     left both readings in its prose. Lesson: when a fold changes what the skill tells an agent to do,
     reread the case's judge items in the same commit.
+18. **Pass 1's plan missed two pins that a moved file carries.** The plan-reviewer read of
+    `tui-language-1` (2026-11-14) found that `cmd/cairn/root_test.go` names
+    `internal/render/profile.go` as the one file allowed a TTY check, and that render's detection
+    is four platform files, not two. Moving either one as planned would have turned the gate red.
+    Lesson: before a plan moves or renames a file or an exported name, grep the test files for its
+    path and its name, and list every platform-suffixed sibling.
