@@ -121,3 +121,19 @@ in cairn-cms to run the round, so this session took the start seat from the prom
     retires a command searches every skill and prompt for it. A fresh reader given this round's
     design as first committed (`68bd8e1`) and the new rules named all three faults with no hint.
     This round keeps the rules it started with.
+20. **A round now goes on past an open question.** Pass 2 parked at planning on two acceptance
+    items nobody had run: one compared two runs byte for byte while the output held a clock line,
+    and one forbade a colour byte the design's tier rule requires. The advisor had an answer to
+    both, and the rules only let it say whether the park held. Before that, the conductor sat
+    about four hours at pass 1's close after an idle notice never arrived. Geoff called the
+    process "delicate, brittle, and prone to stopping" on 2026-11-14 and approved a change the
+    same afternoon (glw907/workstation#245). Five things now stop a run: spend past a ceiling, an
+    irreversible or destructive act, a secret or a step only Geoff can do, any question in an
+    `auth-data` task, and work beyond the approved scope. Everything else goes to the advisor
+    and is listed for Geoff at the close. An acceptance item keeps its outcome and its check can
+    be amended, a design runs each check before Geoff reads it, and a review short of `accept` no
+    longer holds the passes behind it. The conductor also waits on `round-watch`, which exits
+    when a pass changes while none of its sessions is working. A fresh reader given the new rules
+    and pass 2's two questions answered that the planner amends, flags, and launches. Geoff asked
+    that the change apply to running rounds, so this round takes the new rules from pass 2 on:
+    `conductor-cairn-cms` was told by message on 2026-11-14.
