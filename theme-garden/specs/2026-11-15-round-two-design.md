@@ -1,7 +1,7 @@
 # Round two: the starter features, built as layers
 
-Initiative: theme-garden. Rounds: `site-events`, then `site-basics`. Status: draft, waiting for
-Geoff's approval. Read against cairn-cms at `6499871a8`, and against the foundation design
+Initiative: theme-garden. Rounds: `site-events`, then `site-basics`. Status: approved by
+Geoff, 2026-11-15. Read against cairn-cms at `6499871a8`, and against the foundation design
 (`specs/2026-11-15-foundation-design.md`), which this design builds on.
 
 ## Brief
@@ -742,11 +742,16 @@ The twelve in `round-run.md` hold for both rounds. This design adds:
 
 ## Rulings
 
-Geoff's answers are recorded here when the queue document returns.
+Geoff approved this design in queue document `20261115-232026-ec9bbc`, 2026-11-15. Each `Ruled:`
+line quotes his answer there.
 
 1. One round or two, and which goes first.
+   Ruled: "Two rounds, events first". Round `site-events` runs its two passes when the
+   foundation round has closed, and round `site-basics` runs its five when the `site-events`
+   report is in.
 2. Whether the site-basics design's three rulings and the events design's five rulings stand as
-   quoted under "Decided by Geoff". This design assumes they do.
+   quoted under "Decided by Geoff".
+   Ruled: "They stand as quoted".
 
 ## Backlog verdicts
 
