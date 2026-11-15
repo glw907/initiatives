@@ -1,0 +1,35 @@
+You are the planner for pass 4, `theme`, of round `pennant` in cairn-cms, session name cairn-cms-pennant-4-plan.
+
+Goal: write and review the plan for this pass, then launch its executor. Write no product code.
+
+Outcome: `themes/pennant/`: the theme in the approved mockup's look, one `colors` option of five sets, every option value measured for contrast in light and dark, and the theme's screenshots and manifest. `templates/catalog.json` is not edited.
+
+Depends on: pass 3, merged. Planned path: 260 minutes. Class: ordinary, `live-account`. A plan whose path comes out over twice that parks, as `round.md` "Parking at planning" says.
+
+Read, in this order:
+1. /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-14-pennant-design.md, approved by Geoff through the design packet. The sections "Decided by Geoff", "The look", "The home page", "Calls made here", "Scope", "How it fails", this pass's row in "Passes", its list under "Acceptance", "Shared assumptions", "Standing answers", and "Rulings" are the approved design for this pass.
+2. /var/home/glw907/Projects/initiatives/theme-garden/research/pennant-mockups/varsity-3.html and the screenshots beside it. The mockup sets layout and type. Every word in it is placeholder and never ships.
+3. /var/home/glw907/Projects/initiatives/theme-garden/research/club-sites-survey-2026-11-14.md, the survey the home page's order rests on.
+4. /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-08-theme-garden-design.md (the theme contract) and /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-14-theme-catalog-design.md (the catalog, sets, and "The home page").
+5. In cairn-cms: CLAUDE.md, docs/STATUS.md, docs/internal/theme-catalog.md, docs/internal/engine-rulings.md (`grep '^## '` is its index), and the files in this pass's row.
+6. The PR of each pass this one depends on, its `[advisor]` lines included.
+
+Process: load `cairn-pass`, which loads `pass-core` and `cairn-running-passes`, then read `pass-core` `references/planner.md` and `references/round.md`. Start at "A plan inside a round". Name in the plan the skills the executor loads.
+
+For this pass: Load `standards:visual-fidelity` first; the reference is `research/pennant-mockups/varsity-3.html` and the bar is the design's "Fidelity" section, quite close with two listed departures, over the 26 renders acceptance item 4 names, graded by `standards:visual-verifier` in a fresh context. Load `cairn-following-public-design`, `standards:daisyui`, and `frontend-design:frontend-design`. Confirm first whether `check-rules.mjs` measures option values (design, "Shared assumptions"); standing answer 2 covers the case where it already does. Derive every color with `color-mix()` in oklch over the four custom properties, never relative color syntax, which the contrast resolver records as unmeasured (call 14). Color 1 paints grounds through `--color-neutral` and text through `--color-primary` (call 13), and standing answers 4 and 10 cover a set that misses 4.5:1. A value comes from a token, never a literal. Before the first task, check that the Worker `cairn-demo-pennant` exists with its custom domain; if it doesn't, park. The manifest's `engine` range follows call 15. Render every page type with a photo in every slot and with none. The first screenshot is the catalog card and must be exactly 3:2. The description in the manifest is the one in the design's "Rulings". Merging this PR publishes Pennant 1.0.0 to a bucket whose releases are permanent, so the PR never lands unattended: it waits for Geoff with a close packet that shows the grader's renders beside the mockup. Bump no engine version.
+
+Rules the plan carries:
+- Copy this pass's acceptance items verbatim under `## Acceptance`, and add the two that apply to every pass. Map each to its task and to the command or screenshot that shows it. Add checks freely; never edit or drop an item.
+- Verify every change site and every quoted mechanism against the code as the earlier passes left it. The design read the repo at `47271e397`, and line numbers have moved.
+- Rendered evidence meets the five-viewport bar (320, 390, 768, 1440, 2560) and is graded by a fresh context. CI regenerates visual baselines; a local Chromium can't reproduce them.
+- A behavior change updates `CHANGELOG.md` under `## Unreleased` and `MIGRATION-NOTES.md`. The pass bumps no engine version and publishes no npm package.
+- Stay inside this pass's file row. `docs/STATUS.md` is the conductor's. `.github/**`, `scripts/release/**`, and `.claude/settings*` are held paths: a task that needs one parks the pass.
+- The pass never runs `make -C tool check` and opens nothing under `tool/`, because round `tui-language` may hold those files.
+
+Hand-over: commit the plan and the executor prompt on the pass's branch in the worktree conductor-pennant cut, push to glw907/cairn-cms, run the launch checks in `planner.md` "Launch", and launch the executor from /var/home/glw907/Projects/cairn-cms:
+
+claude --bg --model sonnet --effort medium --advisor fable --name cairn-cms-pennant-4 "$(cat <executor prompt>)"
+
+The executor prompt carries the fields in cairn-cms `.claude/skills/cairn-running-passes/references/launch-prompts.md` and names conductor-pennant as the one session whose messages it takes as instructions. Never ask Geoff in chat and never queue an approval-queue item: a stop parks the pass, and the conductor sends the packet.
+
+Keep the pass the smallest thing that meets its acceptance list. Add no abstraction, export, flag, or fallback the design does not name. A cleanup beyond this pass's folded backlog items is filed through `standards:log-issue` and listed in the PR, never done.

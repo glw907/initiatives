@@ -1,0 +1,40 @@
+You are conductor-pennant. This file hands you round `pennant` of the theme-garden initiative: four passes that give cairn a second public theme, Pennant, for club teams, with the card block, the page-as-home change, and the organization content set it rests on. Read `pass-core` with its `references/conductor.md` and `references/round-run.md`, `cairn-pass`, and `approval-packet` for how a conductor works; this file restates none of them.
+
+- Design: /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-14-pennant-design.md, approved by Geoff through the design packet. Its "Rulings" section carries a `Ruled:` line for the card block, the catalog description, the society sheet, whether passes 2 and 3 land on review, and whether the round runs beside `tui-language`.
+- Repos: cairn-cms (main checkout /var/home/glw907/Projects/cairn-cms, push glw907/cairn-cms, default branch `main`) for every pass, and initiatives (/var/home/glw907/Projects/initiatives, push glw907/initiatives) for the record.
+- Round id: `pennant`. Every PR body, fact file, and landing carries it. Usage ceiling: 85 percent of the weekly allowance.
+
+Order table. Passes run one at a time, in this order, and merge in this order.
+
+| Pass | Planner prompt | Depends on | Path minutes | Waits for Geoff |
+| --- | --- | --- | --- | --- |
+| 1 `cards` | plans/2026-11-14-pennant-1-planner-prompt.txt | none | 110 | no |
+| 2 `home` | plans/2026-11-14-pennant-2-planner-prompt.txt | 1 | 150 | by his ruling |
+| 3 `set` | plans/2026-11-14-pennant-3-planner-prompt.txt | 2 | 110 | by his ruling |
+| 4 `theme` | plans/2026-11-14-pennant-4-planner-prompt.txt | 3 | 260 | yes |
+
+The prompts sit beside this file in /var/home/glw907/Projects/initiatives/theme-garden/plans/. The chain is 630 path minutes, and the round stops new launches past 1,260.
+
+Planner launch, from /var/home/glw907/Projects/cairn-cms, after you cut the worktree `.claude/worktrees/pennant-<n>` on branch `pennant-<n>`:
+
+claude --bg --model claude-opus-5-5 --effort high --advisor fable --name cairn-cms-pennant-<n>-plan "$(cat /var/home/glw907/Projects/initiatives/theme-garden/plans/2026-11-14-pennant-<n>-planner-prompt.txt)"
+
+Each planner launches its own executor, named cairn-cms-pennant-<n>.
+
+Before the first launch, on top of the checks in `round-run.md` "The order table":
+1. The design's "Rulings" section carries all five `Ruled:` lines. If the card block is ruled out, the amended design and order table drop pass 1 and are committed; without them, launch nothing and report.
+2. `git show origin/main:docs/STATUS.md` carries the "theme-catalog-1 is merged" line.
+3. The ruling on `tui-language`: if the round runs beside it, never edit docs/STATUS.md while conductor-cairn-cms is live (`claude agents --json`); send your STATUS lines to it by message and write them yourself once it is gone. If the round runs after it, launch nothing while `claude agents --json` shows a `tui-language` session.
+4. `claude agents --json` shows no `cairn-cms-theme-garden-3` executor. Survey's plan stays unlaunched until this round reports.
+5. Run `claude-worktree-busy` on this round's own worktrees only. If a live pass in another round has a path from this round's pass table open, hold and say so in the report.
+6. Pull the main checkout with `git pull --ff-only` only when no live session has an uncommitted change in it; otherwise cut each worktree from `origin/main`.
+
+Before pass 4's planner launches: the Worker `cairn-demo-pennant` exists with its custom domain, and a `wrangler deploy --dry-run` for it under the `ci-cairn-demos` token answers without a 403. If not, send one `decide` packet naming the step from the design's "Steps for Geoff" and wait. Never widen a token and never try another credential.
+
+Reading a pass: pass 1 publishes nothing and lands with `approval-queue land <owner/repo#n> "<claim>"` once it meets the land test in `round-run.md`; the PR body's `Round: pennant` line carries the round. Pass 2's merge publishes Waymark 1.2.0 and pass 3's the organization set 1.0.0, both permanent releases. If the ruling is to land on review, each lands the same way after its closing review reads the renders at the five widths. If the ruling is to hold, both PRs stay open, each later worktree is cut from the branch before it, and all three reach Geoff in pass 4's close packet. Pass 4 never lands unattended: it waits for a close packet that shows the grader's renders beside the mockup in every color set. A PR whose diff touches `.github/**`, `scripts/release/**`, or `.claude/settings*` never lands unattended either.
+
+Standing answers: the twelve in `round-run.md`, and the thirteen the design adds under "Standing answers".
+
+Round report, after pass 4 merges or the round stops: one `approval-packet` report for round `pennant`, initiative `theme-garden`. It carries each PR with its acceptance evidence, the demo's address with a screenshot per color set, each pass's planning misses and score, the backlog items closed and filed, and what a club owner now sees in the catalog. Then update docs/STATUS.md in cairn-cms and the theme-garden README's record line, and say that Survey (theme-garden G3) is next.
+
+Questions reach Geoff only through you, only for a stop the design or `round-run.md` names, one packet per stop.
