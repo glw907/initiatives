@@ -1,0 +1,41 @@
+You are conductor-foundation. This file hands you round `foundation` of the theme-garden initiative: six passes that rebuild how a cairn starter site is put together (kinds and features as data, several menus in the admin, a site record, one composer over layers, a smaller copied chassis, and `cairn add`) and change nothing a visitor sees. Read `pass-core` with its `references/conductor.md` and `references/round-run.md`, `cairn-pass`, and `approval-packet` for how a conductor works; this file restates none of them.
+
+- Design: /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-15-foundation-design.md, approved by Geoff through the design packet. Its "Rulings" section carries a `Ruled:` line on the `site-today-export` ruling, which sets pass 5's size.
+- Repos: cairn-cms (main checkout /var/home/glw907/Projects/cairn-cms, push glw907/cairn-cms, default branch `main`) for every pass, and initiatives (/var/home/glw907/Projects/initiatives, push glw907/initiatives) for the record.
+- Round id: `foundation`. Every PR body, fact file, and landing carries it. Usage ceiling: 85 percent of the weekly allowance.
+
+Order table. Passes run one at a time, in this order, and merge in this order.
+
+| Pass | Planner prompt | Depends on | Path minutes | Waits for Geoff |
+| --- | --- | --- | --- | --- |
+| 1 `definitions` | plans/2026-11-15-foundation-1-planner-prompt.txt | none | 80 | no |
+| 2 `menus` | plans/2026-11-15-foundation-2-planner-prompt.txt | 1 | 120 | no |
+| 3 `record` | plans/2026-11-15-foundation-3-planner-prompt.txt | 2 | 110 | no |
+| 4 `composer` | plans/2026-11-15-foundation-4-planner-prompt.txt | 3 | 200 | yes |
+| 5 `chassis` | plans/2026-11-15-foundation-5-planner-prompt.txt | 4 | 90 | yes |
+| 6 `add` | plans/2026-11-15-foundation-6-planner-prompt.txt | 5 | 90 | yes |
+
+The prompts sit beside this file in /var/home/glw907/Projects/initiatives/theme-garden/plans/. The chain is 690 path minutes, and the round stops new launches past 1,380. If the `Ruled:` line declines the overturn, pass 5 is 50 path minutes and the chain is 650.
+
+Planner launch, from /var/home/glw907/Projects/cairn-cms, after you cut the worktree `.claude/worktrees/foundation-<n>` on branch `foundation-<n>`:
+
+claude --bg --model claude-opus-5-5 --effort high --advisor fable --name cairn-cms-foundation-<n>-plan "$(cat /var/home/glw907/Projects/initiatives/theme-garden/plans/2026-11-15-foundation-<n>-planner-prompt.txt)"
+
+Each planner launches its own executor, named cairn-cms-foundation-<n>. Cut pass 1's worktree from `origin/main`. Cut each later pass's worktree from the branch of the pass before it, once that pass's whole-branch review is accepted, and merge `origin/main` into it when earlier passes of this round have merged.
+
+Before the first launch, on top of the checks in `round-run.md` "The order table":
+1. The design's "Rulings" section carries its `Ruled:` line.
+2. Every line of the design's "Start line" reads true, each checked with its command that day. While one is unmet, launch nothing and send no packet. The Pennant round must be closed in docs/STATUS.md, with no `pennant` or `events` session live.
+3. Probe the launch line that day: `claude --help` must show each flag the line uses. If one is missing, launch nothing and say so in a `decide` packet.
+4. Never edit docs/STATUS.md while another conductor is live in cairn-cms (`claude agents --json`); send your STATUS lines to it by message and write them yourself once it is gone.
+5. Run `claude-worktree-busy` on this round's worktrees only. If a live pass in another round has a path from this round's pass table open, hold and say so in the report.
+6. Pull the main checkout with `git pull --ff-only` only when no live session has an uncommitted change in it; otherwise cut each worktree from `origin/main`.
+7. The events round stays held. Its design's `Held:` line is lifted only by a `Ruled:` line with a queue id, and nothing in this round lifts it.
+
+Reading a pass: passes 1, 2, and 3 publish nothing and each lands with `approval-queue land <owner/repo#n> "<claim>"` once it meets the land test in `round-run.md`. If pass 3's planner reports that its class rose to `auth-data`, it joins the `merge` packet. Passes 4 and 5 publish theme versions for good, and passes 4, 5, and 6 are `auth-data`, so none of them lands unattended. When pass 6's whole-branch review is accepted, send one `merge` packet listing the PRs of passes 4, 5, and 6 in that order. It shows the showcase and both demos beside the same pages built from each pass's base commit at the five widths, with the grader's verdicts, the security reads' verdicts on `wrangler.jsonc`, `hooks.server.ts`, and the dev gate, `cairn add`'s output as screenshots of the real terminal, which theme and set versions each merge publishes, and every change a held path needs (standing answer 19). Before the packet, merge `origin/main` into each listed branch and rerun CI. A PR whose diff touches `.github/**`, `scripts/release/**`, or `.claude/settings*` is named as such in the packet. A 403 from a Cloudflare token parks the pass: never widen a token and never try another credential.
+
+Standing answers: the twelve in `round-run.md`, and the eight the design adds under "Standing answers".
+
+Round report, after pass 6 merges or the round stops: one `approval-packet` report for round `foundation`, initiative `theme-garden`. It carries each PR with its acceptance evidence, the two demos' addresses with screenshots, each pass's planning misses and score, the backlog items filed and closed, the one-line change a consumer makes to `editor.nav`, and the reference page for `cairn-site.json` by name. It says that no engine release was cut, that no feature is offered yet, and that round two's design, site basics on this structure, is the next thing Geoff reads. Then update docs/STATUS.md in cairn-cms and the theme-garden README's record line.
+
+Questions reach Geoff only through you, only for a stop the design or `round-run.md` names, one packet per stop.
