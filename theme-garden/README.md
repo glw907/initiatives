@@ -43,8 +43,15 @@ the site is built.
   the record the cairn-setup conductor reads.
 - Hosted catalog design (approved 2026-11-14): `specs/2026-11-14-theme-catalog-design.md`. It
   replaces the first design's "Catalog and hosting" section and adds content sets by kind of site.
-  Its first pass is planned: `plans/2026-11-14-theme-catalog-1-plan.md` (750 path minutes, launch
-  prompt beside it, review in `-review.md`). It launched on 2026-11-14 beside the `tui-language` round (Geoff, 2026-11-14), conducted by session `conductor-theme-catalog`.
+  Its first pass merged on 2026-11-14 as glw907/cairn-cms#246 (merge `ef9e37206`), run beside the
+  `tui-language` round on Geoff's ruling. Plan: `plans/2026-11-14-theme-catalog-1-plan.md`, with
+  its launch prompt and review beside it. The `catalog` run on `main` (run 43668346547) published
+  Waymark 1.1.0, and the reference check passed against the live catalog. Live addresses:
+  `https://catalog.cairn.pub/index.json`, `https://catalog.cairn.pub/themes/waymark/1.1.0.tgz`,
+  and the demo `https://demo-waymark.cairn.pub/`. The proving pair is
+  `https://catalog-proving.cairn.pub/index.json` and `https://demo-proving.cairn.pub/`. Nothing
+  reads the catalog yet: `cairn new` reading it is the design's step 2. Before a second theme,
+  cairn-cms backlog #486 (every proving demo shares one Worker) needs its fix.
   The buckets, the demo Workers, the four CI tokens, and the two GitHub environments were
   provisioned on 2026-11-14 (the plan's pre-flight items 2 to 5).
 - Research: `research/prior-art-theme-packaging.md`, `research/prior-art-theme-switching.md`,
