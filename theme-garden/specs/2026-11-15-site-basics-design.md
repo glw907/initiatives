@@ -176,7 +176,7 @@ These are Claude's calls. Geoff can overrule any of them in the approval.
   site build. It adds no service and no cost. The search page loads Pagefind's script only when a
   visitor opens that page.
 - **Reaching search.** A "Search" link in the menu, added by the layout load when the switch is
-  on. Ruling 1 asks Geoff whether he prefers a box in the header.
+  on. Geoff ruled for the link (ruling 1).
 - **The form's mail.** One message goes to the recipient, with the visitor's address as reply-to
   and the site's sending address as the sender. Nothing is stored.
 - **Recipients.** The default recipient is a `wrangler.jsonc` variable, `CONTACT_TO`, which
@@ -531,10 +531,16 @@ The twelve in `round-run.md` hold. This design adds:
 
 ## Rulings
 
+Geoff approved this design in queue document `20261115-212709-ef6b42`, 2026-11-15. Each `Ruled:`
+line quotes his answer there.
+
 1. How a visitor reaches search: a "Search" link in the menu that opens a search page, or a search
-   box in the header of every page. The design assumes the link. If Geoff rules for the box, pass
-   1 is unchanged, and pass 3, which already changes both themes, puts the box in both headers and
-   drops the menu link. Pass 3 grows by 30 path minutes.
+   box in the header of every page.
+   Ruled: "A "Search" link in the menu". Pass 3 keeps its 90 path minutes.
+2. Whether every content set carries a privacy page, or only the sets where the form starts on.
+   Ruled: "In every set".
+3. Whether to build to the mock-up or revise it first.
+   Ruled: "Build to the mock-up".
 
 ## Backlog verdicts
 

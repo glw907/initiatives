@@ -231,7 +231,7 @@ before 1.0 (Claude's call).
 | Field | Required | Content |
 | --- | --- | --- |
 | `engine` | Yes | The engine versions the theme works with. See the next section. |
-| `kinds` | Yes | One to three kind ids. The first is the kind the theme was designed for. |
+| `kinds` | Yes | One to five kind ids. The first is the kind the theme was designed for. |
 | `notes` | Yes | One line on what this version changed, at most 200 characters. |
 | `summary` | No | Up to 300 characters for a catalog page. |
 | `repository` | No | The URL of the theme's source. |
@@ -270,8 +270,9 @@ more than the risk warrants with house themes only.
 
 The list is closed at five. It follows what purpose lists look like in other catalogs: the closed
 ones run five to nine entries (Carrd 5, Astro 5, Ghost 8, WordPress.org 9), and long lists come from
-free tagging (`../research/site-kinds.md`). WordPress.org caps a theme at three subjects, and this
-design takes the same cap.
+free tagging (`../research/site-kinds.md`). WordPress.org caps a theme at three subjects. This
+design took the same cap at first. Geoff raised it to five, one per kind, when he approved the
+site-basics design on 2026-11-15 (`2026-11-15-site-basics-design.md`).
 
 The labels and descriptions are data in the catalog file, so both readers show the same words. The
 wording here is a draft to finish against the editor-copy standard. Geoff approved the fourth
@@ -398,8 +399,9 @@ a time.
    a theme, the `contract` must also equal the one in the packaged Waymark's manifest, which is
    how the tool learns what the engine supports.
 3. It asks the kind of site, showing each kind's label and description. `--kind <id>` answers it.
-4. It asks the theme. Themes that declare the kind come first, and the rest follow, since every
-   theme renders every set. `--theme <id>` answers it. The color-mode and option questions follow
+4. It asks the theme, offering only the themes that declare the kind, and skips the question when
+   there is one (Geoff, 2026-11-15, in `2026-11-15-site-basics-design.md`). `--theme <id>` answers
+   it and may name any theme, since every theme renders every set. The color-mode and option questions follow
    as the earlier design describes.
 5. It downloads the theme and set archives and verifies each against its `integrity`.
 6. Only then does it write the site: the engine's template, with the chosen theme and set in place
@@ -440,7 +442,7 @@ These are Claude's calls.
 | Set archive | 8 MiB, with each image at most 400 KB |
 | Card image | 100 KB |
 | Archive download | 2 minute timeout, the same as the engine download |
-| Kinds per theme | 1 to 3 |
+| Kinds per theme | 1 to 5 |
 | Kind description | At most 160 characters |
 | Theme `summary` | At most 300 characters |
 | Release `notes` | At most 200 characters |
