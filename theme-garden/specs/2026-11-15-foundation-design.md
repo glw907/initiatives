@@ -502,7 +502,8 @@ The twelve in `round-run.md` hold. This design adds:
 
 ## Rulings
 
-One ruling is asked in the approval.
+Geoff approved this design in queue document `20261115-223648-1d48b9`, 2026-11-15. Each `Ruled:`
+line quotes his answer there.
 
 1. Whether to overturn `site-today-export`, the ruling of 2026-08-26 that declined a date helper
    as an engine export. It reopens on "Evidence an export fixes discoverability better than the
@@ -510,6 +511,11 @@ One ruling is asked in the approval.
    a fix to one reaches no site that already exists, and the charter puts fix-prone code in the
    engine. Pass 5 depends on the answer. If Geoff declines, pass 5 moves only `dev-gate.ts`,
    which guards something, and drops to 50 path minutes.
+   Ruled: "Move all seven into the engine". Pass 5 keeps its 90 path minutes and records the
+   new ruling in `engine-rulings.md`.
+2. When the docs are written.
+   Ruled: "Split it". Each pass corrects what it breaks, pass 3 adds the record's reference
+   page, and the teaching pages are written in round two's last pass.
 
 ## Backlog verdicts
 
