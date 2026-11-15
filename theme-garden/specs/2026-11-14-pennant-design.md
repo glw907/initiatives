@@ -68,7 +68,9 @@ Each of these is his words or his answer in the design conversation of 2026-11-1
 
 ## Non-goals
 
-- Fixtures, results, standings, rosters, or a calendar. A club that needs them builds them.
+- Fixtures, results, standings, or rosters. A club that needs them builds them.
+- Events. A dated events list with a calendar feed is the next round's work (see "Rulings"), and
+  Pennant gains its section for them there.
 - School teams.
 - A color picker in the admin. The option is chosen at setup and changed in a file.
 - A font option, a tinted-photo option, or a layout option.
@@ -507,6 +509,13 @@ Geoff approved the design packet `20261115-041501-ead5c5` on 2026-11-15 (04:19 U
 - Ruled: releases before the gate. Passes 2 and 3 land on review.
 - Ruled: the round runs beside `tui-language`, under `conductor-pennant`.
 - Ruled: the society sheet. Use it as written.
+
+Geoff ruled one more thing on 2026-11-15, in packet `20261115-043946-a5b754` ("Make both edits"):
+
+- Ruled: events come in the next round, and this round runs as approved. Pass 2 keeps the door
+  open: the home route hands the view its lists as named members of one object (`posts` today),
+  so a later round adds an events list beside the posts without changing what a theme already
+  reads.
 
 ## The society sheet
 
