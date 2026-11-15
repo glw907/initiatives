@@ -1,0 +1,71 @@
+[mWork seamlessly with GitHub from the command line.
+
+[m[22;1mUSAGE
+[m  gh <command> <subcommand> [flags]
+
+[m[22;1mCORE COMMANDS
+[m  auth:          Authenticate gh and git with GitHub
+[m  browse:        Open repositories, issues, pull requests, and more in the brows[mer
+[m  codespace:     Connect to and manage codespaces
+[m  discussion:    Work with GitHub Discussions (preview)
+[m  gist:          Manage gists
+[m  issue:         Manage issues
+[m  org:           Manage organizations
+[m  pr:            Manage pull requests
+[m  project:       Work with GitHub Projects.
+[m  release:       Manage releases
+[m  repo:          Manage repositories
+[m  skill:         Install and manage agent skills (preview)
+
+[m[22;1mGITHUB ACTIONS COMMANDS
+[m  cache:         Manage GitHub Actions caches
+[m  run:           View details about workflow runs
+[m  workflow:      View details about GitHub Actions workflows
+
+[m[22;1mALIAS COMMANDS
+[m  co:            Alias for "pr checkout"
+
+[m[22;1mADDITIONAL COMMANDS
+[m  agent-task:    Work with agent tasks (preview)
+[m  alias:         Create command shortcuts
+[m  api:           Make an authenticated GitHub API request
+[m  attestation:   Work with artifact attestations
+[m  completion:    Generate shell completion scripts
+[m  config:        Manage configuration for gh
+[m  copilot:       Run the GitHub Copilot CLI (preview)
+[m  extension:     Manage gh extensions
+[m  gpg-key:       Manage GPG keys
+[m  label:         Manage labels
+[m  licenses:      View third-party license information
+[m  preview:       Execute previews for gh features
+[m  ruleset:       View info about repo rulesets
+[m  search:        Search for repositories, issues, and pull requests
+[m  secret:        Manage GitHub secrets
+[m  ssh-key:       Manage SSH keys
+[m  status:        Print information about relevant issues, pull requests, and not[mifications across repositories
+[m  variable:      Manage GitHub Actions variables
+
+[m[22;1mHELP TOPICS
+[m  accessibility: Learn about GitHub CLI's accessibility experiences
+[m  actions:       Learn about working with GitHub Actions
+[m  environment:   Environment variables that can be used with gh
+[m  exit-codes:    Exit codes used by gh
+[m  formatting:    Formatting options for JSON data exported from gh
+[m  mintty:        Information about using gh with MinTTY
+[m  reference:     A comprehensive reference of all gh commands
+[m  telemetry:     Information about telemetry in gh
+
+[m[22;1mFLAGS
+[m  --help[=true|false]      Show help for command
+[m  --version[=true|false]   Show gh version
+
+[m[22;1mEXAMPLES
+[m  $ gh issue create
+[m  $ gh repo clone cli/cli
+[m  $ gh pr checkout 321
+
+[m[22;1mLEARN MORE
+[m  Use `gh <command> <subcommand> --help` for more information about a command.
+[m  Read the manual at https://cli.github.com/manual
+[m  Learn about exit codes using `gh help exit-codes`
+[m  Learn about accessibility experiences using `gh help accessibility`

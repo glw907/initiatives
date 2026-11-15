@@ -1,0 +1,14 @@
+[m  [38:5:243mcairn: this output carries identifiers and is not safe to paste in public.
+
+[m  [38:5:243mcairn: the Workers after the blank line serve no Custom Domain, so cairn
+[m  [38:5:243mcannot adopt them from what it discovered.
+[m  [38:5:243mRun `cairn adopt --worker <name> --domain <domain>` to adopt one, naming the
+[m  [38:5:243mdomain it serves
+
+[m  [22;1mready to adopt
+[m  [38:5:243mworker[39m       [38:5:243mdomain[39m           [38:5:243mrepository
+[m  my-site-web  my-site.example  /site-web
+
+[m  [22;1mno custom domain
+[m  [38:5:243mworker[39m          [38:5:243mrepository
+[m  other-site-web  /site-web

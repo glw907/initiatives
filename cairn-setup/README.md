@@ -52,10 +52,8 @@ existed.
   `specs/2026-11-13-tui-language-design.md`, four passes over every print-and-exit command, with the
   debt read at `research/tool-debt-read-2026-11-13.md` and mockups in `research/command-mockups/`.
   Approved by Geoff on 2026-11-13 (packet `20261113-224909-04cfc7`), his rulings written into the
-  design. Handed to `conductor-cairn-cms` the same day; it runs beside theme-garden G3 and starts once
-  setup-tooling pass 3 has closed. The conductor prompt, four planner prompts, and the round's process
-  log (`research/tui-language-round-log.md`) sit beside it. The installer's screens are the round after, once
-  theme-garden G3 has merged. Pass 3 `commands` was planned 2026-11-14 on cairn-cms branch
-  `tui-language-3` (`docs/internal/plans/2026-11-14-tui-language-3-commands-plan.md`, at `d2c827575`)
-  and its executor launched as `cairn-cms-tui-language-3`.
+  design. Finished 2026-11-15: all four passes merged (cairn-cms #245, #247, #249, #252), and the round
+  report is `reports/tui-language-report.md`, with the process log at `research/tui-language-round-log.md`
+  and screenshots in `research/tui-language-{1,2,3}-shots/`. The installer's screens are the round
+  after, once theme-garden G3 has merged, built on the package this round finished.
 - 2026-11-08: proposed, from the setup brainstorm.

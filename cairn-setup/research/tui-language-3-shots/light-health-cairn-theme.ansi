@@ -1,0 +1,26 @@
+[m  [22;1;38:5:124mCRITICAL[22;39m  [22;1mMy Site[22m  [38:5:241m1 failing · 2 could not run · 1 held · 5 passing
+[m  [38:5:241mchecked 20s ago (2026-11-15 18:23 UTC), in 20.0s
+
+[m  [22;1mfailing
+[m  [38:5:124m■[39m https-forced    [38:5:240mAlways Use HTTPS and HSTS are both off for the
+[m                    [38:5:240mzone[38:5:241m  edge.https-not-forced
+[m                  [38:5:61m→[39m [38:5:240mTurn on Always Use HTTPS for the zone under SSL/TLS, Edge
+[m                    [38:5:240mCertificates.
+[m                    ]8;;https://cairn.pub/docs/admin/is-it-working#force-https-at-the-edge\[4mcairn.pub/docs/admin/is-it-working#force-https-at-the-edge]8;;\
+
+[m  [22;1mcould not run
+[m  [38:5:94m?[39m delegation      [38:5:240mthe zone is waiting for the domain to be delegated to it
+[m  [38:5:94m?[39m email           [38:5:240mthe provider did not answer in time
+
+[m  [22;1mheld
+[m  [38:5:94m◌[39m serving         [38:5:240mthe hostname answers, but /admin is not cairn's sign-in page
+[m                    [38:5:241mheld until 2026-12-15, 29 days left
+[m                  [38:5:61m→[39m [38:5:240mConfirm this hostname serves the cairn site, not another
+[m                    [38:5:240mWorker or origin.
+
+[m  [38:5:241m●[39m 5 passing       [38:5:240mcreds · deploy · publish-path · engine · errors
+[m                    [38:5:241mCAIRN_CF_READ_TOKEN read from the keyring
+[m                    [38:5:241mCAIRN_GH_READ_TOKEN read from the keyring, expires
+[m                    [38:5:241m2027-02-13, in 89 days
+
+[m  [22;1;38:5:124mCRITICAL[22;39m  [22;1mMy Site[22m  [38:5:241m1 failing · 2 could not run · 1 held · 5 passing
