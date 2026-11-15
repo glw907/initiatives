@@ -464,7 +464,7 @@ Launch checks, read on 2026-11-15:
 | Usage | `claude -p "/usage" --model haiku` | `Current week (all models): 38% used` |
 | Live sessions | `claude agents --json` | `conductor-pennant` busy, `cairn-cms-pennant-3` busy, `cairn-cms-pennant-3-plan` idle, no `foundation` row |
 | Open pull requests | `gh pr list` | #251 `pennant-1`, #253 `pennant-2`, #254 `pennant-3` (draft) |
-| Launch flags | `claude --help` | Lists `--bg`, `--model`, `--effort`, and `--name`, and no `--advisor`. The conductor probes the line the day it launches |
+| Launch flags | `claude --help` | Lists `--bg`, `--model`, `--effort`, and `--name`, and no `--advisor`, which is accepted all the same: Pennant's planners launched with the same line on 2026-11-15. The conductor probes the listed flags the day it launches |
 | Main checkout | `claude-worktree-busy /var/home/glw907/Projects/cairn-cms` | busy, with Pennant's conductor in it |
 | Start line 1 | read of `docs/STATUS.md` | Pennant is running. Not met |
 | Start line 4 | `grep -n "^Held:" specs/2026-11-14-events-design.md` | Line 452. Met |

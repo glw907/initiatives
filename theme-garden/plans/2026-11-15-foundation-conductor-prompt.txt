@@ -26,7 +26,7 @@ Each planner launches its own executor, named cairn-cms-foundation-<n>. Cut pass
 Before the first launch, on top of the checks in `round-run.md` "The order table":
 1. The design's "Rulings" section carries its `Ruled:` line.
 2. Every line of the design's "Start line" reads true, each checked with its command that day. While one is unmet, launch nothing and send no packet. The Pennant round must be closed in docs/STATUS.md, with no `pennant` or `events` session live.
-3. Probe the launch line that day: `claude --help` must show each flag the line uses. If one is missing, launch nothing and say so in a `decide` packet.
+3. Probe the launch line that day: `claude --help` must show `--bg`, `--model`, `--effort`, and `--name`. `--advisor` isn't in that list and is accepted: `planner.md` "Launch" carries it, and the Pennant round's planners launched with this same line on 2026-11-15. If a listed flag is missing, or pass 1's planner launch fails on a flag, launch nothing more and say so in a `decide` packet.
 4. Never edit docs/STATUS.md while another conductor is live in cairn-cms (`claude agents --json`); send your STATUS lines to it by message and write them yourself once it is gone.
 5. Run `claude-worktree-busy` on this round's worktrees only. If a live pass in another round has a path from this round's pass table open, hold and say so in the report.
 6. Pull the main checkout with `git pull --ff-only` only when no live session has an uncommitted change in it; otherwise cut each worktree from `origin/main`.
