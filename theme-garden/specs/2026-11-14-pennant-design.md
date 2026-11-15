@@ -148,7 +148,10 @@ Sections 3, 4, and 6 are the page's body, which an editor writes. The news list 
 the route and sits where the body's last rule line is (call 7).
 
 The theme prints no caption and no name on a photo. The organization set's footer menu carries
-a "Safeguarding and privacy" link, and its page says photos of children appear only with a
+a "Safeguarding and privacy" link and a "Contact" link, and the header's menu carries
+"Contact" too when it holds fewer than five links. The contact page is an ordinary page: who to
+write to, where and when the club meets, and how soon a volunteer answers. The safeguarding
+page says photos of children appear only with a
 parent's written consent and never beside a full name. The FA's "Photographing and Filming
 Children", Volleyball England's "Use of Photography", and the NSPCC Child Protection in Sport
 Unit all state that practice.
@@ -279,7 +282,7 @@ the card image 720x480 WebP under 100 KB; a set image 400 KB; an archive 8 MiB; 
 | --- | --- | --- | --- | --- | --- | --- |
 | `pennant-1` cards | The `cards` block in the template and showcase, laid out and plainly styled by the chassis, in the conformance page and the packaged skill | `templates/waymark/src/chassis/**`, `examples/showcase/src/chassis/**`, `examples/showcase/src/routes/(site)/styleguide/`, `examples/showcase/e2e/**`, `scripts/theme/conformance/**`, `scripts/build/starter-overlay/**`, `skills/cairn-styling-public-pages/**`, `skills/cairn-extending-a-site/**`, `templates/waymark/.claude/**`, `docs/**`, `MIGRATION-NOTES.md`, `CHANGELOG.md`, `docs/internal/engine-rulings.md` | ordinary | 110 | none | 2, 3, 4 |
 | `pennant-2` home | A page as the home page, the archive's page one, the newest three posts, the pages `description` and `image` fields, the `actions` menu in the template's config | `templates/waymark/src/routes/**`, `templates/waymark/src/site/{cairn.config.ts,site.config.yaml}`, the same under `examples/showcase/`, `examples/showcase/e2e/**`, `themes/waymark/**`, `schema/cairn-theme-contract-1.json`, `docs/admin/**`, `docs/editors/**`, `MIGRATION-NOTES.md`, `CHANGELOG.md`, `docs/internal/engine-rulings.md` | ordinary, `live-account` | 150 | 1 | 1, 3, 4 |
-| `pennant-3` set | The organization set from the society sheet; the publish job picks a theme's set by kind, sets the demo's origin, and proves each demo in turn | `sets/organization/**`, `scripts/catalog/{publish,demo,reference-check}.mjs` and their tests, `docs/internal/theme-catalog.md`, `BACKLOG.md` | ordinary, `live-account` | 110 | 2 | 1, 2, 4 |
+| `pennant-3` set | The organization set from the society sheet; the publish job picks a theme's set by kind, sets the demo's origin, and proves each demo in turn | `sets/organization/**`, `scripts/catalog/{publish,demo,reference-check}.mjs` and their tests, `docs/internal/theme-catalog.md`, `BACKLOG.md` | ordinary, `live-account` | 120 | 2 | 1, 2, 4 |
 | `pennant-4` theme | `themes/pennant/` with the `colors` option, checked for contrast in all ten states, in the catalog with its demo | `themes/pennant/**`, `scripts/theme/{build-tokens,check-rules,check-render,lay-in}.mjs` and their tests, `scripts/theme/fixtures/**`, `sets/organization/**`, `CHANGELOG.md`, `BACKLOG.md` | ordinary, `live-account` | 260 | 3 | 1, 2, 3 |
 
 `docs/STATUS.md` is the conductor's alone. `.github/workflows/catalog.yml` is not edited. A
@@ -352,7 +355,8 @@ repo's docs rules.
 
 1. `sets/organization/cairn-set.json` validates against `schema/cairn-set-1.schema.json`. A
    test asserts the set holds a `home` page with a description, an `actions` menu of two
-   links, three posts, a safeguarding page linked from the footer menu, and at least four map
+   links, three posts, a safeguarding page linked from the footer menu, a contact page linked
+   from the footer menu with no phone number and no person's name on it, and at least four map
    images, each with its source and license in the manifest.
 2. Every invented name in the set has a recorded search that found no real match, listed in
    the pull request.
@@ -422,10 +426,10 @@ Each was probed at `ef9e37206` or `47271e397` on 2026-11-14, or is quoted.
 | --- | --- | --- | --- | --- |
 | 1 cards | `plans/2026-11-14-pennant-1-planner-prompt.txt` | none | 110 | no |
 | 2 home | `plans/2026-11-14-pennant-2-planner-prompt.txt` | 1 | 150 | by his ruling |
-| 3 set | `plans/2026-11-14-pennant-3-planner-prompt.txt` | 2 | 110 | by his ruling |
+| 3 set | `plans/2026-11-14-pennant-3-planner-prompt.txt` | 2 | 120 | by his ruling |
 | 4 theme | `plans/2026-11-14-pennant-4-planner-prompt.txt` | 3 | 260 | yes |
 
-The merge order is the same. The chain is 630 path minutes, and no launch starts past 1,260.
+The merge order is the same. The chain is 640 path minutes, and no launch starts past 1,280.
 Pass 4 waits for Geoff whatever its review says, because merging it publishes a release that
 can't be withdrawn. Its close packet carries the grader's renders beside the mockup. The usage
 ceiling is 85 percent of the weekly allowance.
@@ -517,6 +521,12 @@ Geoff ruled one more thing on 2026-11-15, in packet `20261115-043946-a5b754` ("M
   so a later round adds an events list beside the posts without changing what a theme already
   reads.
 
+Geoff ruled again on 2026-11-15, in packet `20261115-182911-58b350` ("A page with the club's
+address and meeting details"):
+
+- Ruled: the organization set holds a contact page, with no form. Pass 3 builds it and grows
+  from 110 to 120 path minutes.
+
 ## The society sheet
 
 The catalog design says Geoff reads this before any set is written, because every set repeats
@@ -558,7 +568,7 @@ runs as a separate session and holds nothing here.
 
 ## Estimate
 
-630 path minutes, set against the theme-garden passes' scores: G1 and G2 ran near their plans,
+640 path minutes, set against the theme-garden passes' scores: G1 and G2 ran near their plans,
 and the catalog pass planned 240. Pass 4 is the largest because the grader reads 26 home page
 renders and 20 page-type renders, and the fix rounds follow them.
 

@@ -10,10 +10,10 @@ Order table. Passes run one at a time, in this order, and merge in this order.
 | --- | --- | --- | --- | --- |
 | 1 `cards` | plans/2026-11-14-pennant-1-planner-prompt.txt | none | 110 | no |
 | 2 `home` | plans/2026-11-14-pennant-2-planner-prompt.txt | 1 | 150 | by his ruling |
-| 3 `set` | plans/2026-11-14-pennant-3-planner-prompt.txt | 2 | 110 | by his ruling |
+| 3 `set` | plans/2026-11-14-pennant-3-planner-prompt.txt | 2 | 120 | by his ruling |
 | 4 `theme` | plans/2026-11-14-pennant-4-planner-prompt.txt | 3 | 260 | yes |
 
-The prompts sit beside this file in /var/home/glw907/Projects/initiatives/theme-garden/plans/. The chain is 630 path minutes, and the round stops new launches past 1,260.
+The prompts sit beside this file in /var/home/glw907/Projects/initiatives/theme-garden/plans/. The chain is 640 path minutes, and the round stops new launches past 1,280.
 
 Planner launch, from /var/home/glw907/Projects/cairn-cms, after you cut the worktree `.claude/worktrees/pennant-<n>` on branch `pennant-<n>`:
 

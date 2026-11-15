@@ -4,7 +4,7 @@ Goal: write and review the plan for this pass, then launch its executor. Write n
 
 Outcome: `sets/organization/`, written from the society sheet as a member club's site; the publish job picks a theme's set by its first kind, builds each demo on its own origin, and proves each demo in turn on the one proving Worker.
 
-Depends on: pass 2, merged or with its whole-branch review accepted. Planned path: 110 minutes. Class: ordinary, `live-account`. A plan whose path comes out over twice that parks, as `round.md` "Parking at planning" says.
+Depends on: pass 2, merged or with its whole-branch review accepted. Planned path: 120 minutes. Class: ordinary, `live-account`. A plan whose path comes out over twice that parks, as `round.md` "Parking at planning" says.
 
 Read, in this order:
 1. /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-14-pennant-design.md, approved by Geoff through the design packet. The sections "Decided by Geoff", "The look", "The home page", "Calls made here", "Scope", "How it fails", this pass's row in "Passes", its list under "Acceptance", "Shared assumptions", "Standing answers", and "Rulings" are the approved design for this pass.
