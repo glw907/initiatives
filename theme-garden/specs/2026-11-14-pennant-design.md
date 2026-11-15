@@ -1,7 +1,7 @@
 # Pennant, a club theme for the catalog
 
 Initiative: theme-garden. Round id: `pennant`. Repo: cairn-cms, read at `47271e397`.
-Status: draft for Geoff's approval. Nothing is built before he approves.
+Status: approved by Geoff (2026-11-15), packet `20261115-041501-ead5c5`.
 
 ## Brief
 
@@ -500,8 +500,13 @@ The twelve in `round-run.md` hold. The round adds these.
 
 ## Rulings
 
-Filled from Geoff's answers to the packet: the card block, the catalog description, the society
-sheet, whether passes 2 and 3 land on review, and whether the round runs beside `tui-language`.
+Geoff approved the design packet `20261115-041501-ead5c5` on 2026-11-15 (04:19 UTC) with no notes.
+
+- Ruled: the card block. Keep it, as one `cards` block.
+- Ruled: the catalog description. "A two-color club and team look that's easy to recolor."
+- Ruled: releases before the gate. Passes 2 and 3 land on review.
+- Ruled: the round runs beside `tui-language`, under `conductor-pennant`.
+- Ruled: the society sheet. Use it as written.
 
 ## The society sheet
 
