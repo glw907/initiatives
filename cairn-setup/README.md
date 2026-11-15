@@ -55,5 +55,7 @@ existed.
   design. Handed to `conductor-cairn-cms` the same day; it runs beside theme-garden G3 and starts once
   setup-tooling pass 3 has closed. The conductor prompt, four planner prompts, and the round's process
   log (`research/tui-language-round-log.md`) sit beside it. The installer's screens are the round after, once
-  theme-garden G3 has merged.
+  theme-garden G3 has merged. Pass 3 `commands` was planned 2026-11-14 on cairn-cms branch
+  `tui-language-3` (`docs/internal/plans/2026-11-14-tui-language-3-commands-plan.md`, at `d2c827575`)
+  and its executor launched as `cairn-cms-tui-language-3`.
 - 2026-11-08: proposed, from the setup brainstorm.
