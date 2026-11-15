@@ -449,6 +449,8 @@ Each `Ruled:` line quotes Geoff's answer in queue document `20261115-055827-bbcf
 5. Events before Survey, or after.
    Ruled: "Events first, then Survey".
 
+Held: passes 2 and 3 launch nothing until a later `Ruled:` line here lifts the hold. Geoff, in chat, 2026-11-15: "yes, hold events passes 2 and 3". The reason is the redesign of where themes, kinds, options, and starter kits live in the engine, which may move the events code out of the organization set and may give events to more kinds. Pass 1 (#250) is merged and stands.
+
 ## Backlog verdicts
 
 A scoped sweep read 21 open items at `4ebfb0e9e`. None folds: no item lives in lines the round
