@@ -1,6 +1,6 @@
 # Events for organization sites
 
-Initiative: theme-garden. Round: `events`. Status: draft, sent to Geoff 2026-11-14.
+Initiative: theme-garden. Round: `events`. Status: approved by Geoff (2026-11-14, queue document `20261115-055827-bbcf02`).
 Read against cairn-cms at `4ebfb0e9e`, before any Pennant pass merged.
 
 ## Brief
@@ -436,13 +436,18 @@ The twelve in `round-run.md` hold. This design adds:
 
 ## Rulings
 
-Each gains a `Ruled:` line from the packet's answer.
+Each `Ruled:` line quotes Geoff's answer in queue document `20261115-055827-bbcf02`, 2026-11-14.
 
 1. The look in `events-1.html`.
+   Ruled: "Build to the mock-up".
 2. The cap at two repeat patterns.
+   Ruled: "Two, as a recorded ruling". A third pattern needs Geoff to reopen it.
 3. The reversal of `ical-builder` and the no-events ruling, in this narrow form.
+   Ruled: yes, "Reverse it in this narrow form". The engine gains the feed builder and nothing else.
 4. How long a cancelled date stays on the lists.
+   Ruled: "Show it struck through until the day passes".
 5. Events before Survey, or after.
+   Ruled: "Events first, then Survey".
 
 ## Backlog verdicts
 
