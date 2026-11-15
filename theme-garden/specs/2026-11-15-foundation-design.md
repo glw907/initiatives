@@ -553,6 +553,14 @@ round's report is read.
 - **Events.** The events round's passes 2 and 3 are built as the events layer, on the calendar
   helper pass 1 already merged. A theme that declares events styles them. Another theme shows
   the plain view.
+- **The events round's held passes are retired there.** Geoff, in chat, 2026-11-15: "yes, retire
+  them in round two's design". Round two's design document retires `events-2` and `events-3`,
+  so one approval closes the old plan and opens the new one. Until then the `Held:` line in
+  `specs/2026-11-14-events-design.md` keeps them from launching. Three of that design's calls
+  don't carry over: a set that carries code (the `code` list in `cairn-set.json`), the
+  `src/site/set.ts` import point, and events views that belong to the set. Events become
+  `features/events/`, the sample events stay in the organization set as content, and Pennant's
+  manifest declares that it styles events. The design's other calls and its five rulings stand.
 - **`cairn new`.** Kind first, then the look from the themes that declare it, then the form and
   the links. Geoff's decisions and his three rulings from the approved design stand.
 - **Docs.** The pages on starters, writing a theme, and the catalog, with the two fresh-reader
