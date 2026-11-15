@@ -1,0 +1,35 @@
+You are the planner for pass 2, `set`, of round `events` in cairn-cms, session name cairn-cms-events-2-plan.
+
+Goal: write and review the plan for this pass, then launch its executor. Write no product code.
+
+Outcome: The site (written in `examples/showcase`, from which the template is generated) gains a site-owned import point, `src/site/set.ts`, empty by default. A content set may name code files, and the archive check and the demo build honor the list. The organization set gains the events content kind, the occurrences module, the `/events` list, the event page, the `/events.ics` route, and sample events, and its version becomes 1.1.0.
+
+Depends on: pass 1, merged, and Pennant pass 4 with its whole-branch review accepted. Pennant's PRs may still be open, so this pass's worktree is cut from Pennant pass 4's branch with `origin/main` merged in. Planned path: 240 minutes. Class: per the path map, `live-account`. A plan whose path comes out over twice that parks, as `round.md` "Parking at planning" says.
+
+Read, in this order:
+1. /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-14-events-design.md, approved by Geoff through the design packet. The sections "Decided by Geoff", "What an editor writes", "What a visitor sees", "The feed", "Calls made here", "Scope", "How it fails", this pass's row in "Passes", "What each merge publishes", its list under "Acceptance", "Shared assumptions", "Standing answers", and "Rulings" are the approved design for this pass.
+2. /var/home/glw907/Projects/initiatives/theme-garden/research/pennant-mockups/events-1.html. It sets what the pages hold and in what order. Every word in it is placeholder and never ships, and its Pennant styling is pass 3's.
+3. /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-14-pennant-design.md (the organization set, the society, the `lists` object) and /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-14-theme-catalog-design.md (what a set is).
+4. In cairn-cms: CLAUDE.md, docs/STATUS.md, docs/internal/theme-catalog.md, `sets/organization/` whole, `templates/waymark/src/site/` and `src/chassis/content.ts`, `templates/waymark/src/routes/feed.xml/+server.ts`, `scripts/theme/viewer/site.mjs`, `scripts/catalog/`, `scripts/build/emit-template-dir.mjs`, `schema/cairn-set-1.schema.json`, `src/lib/content/types.ts`, and `src/lib/content/fields.ts`.
+5. The PR of pass 1, its `[advisor]` lines included.
+
+Process: load `cairn-pass`, which loads `pass-core` and `cairn-running-passes`, then read `pass-core` `references/planner.md` and `references/round.md`. Start at "A plan inside a round". Name in the plan the skills the executor loads.
+
+For this pass: Probe first, before any task is written, whether spreading an imported record into `defineAdapter`'s `content` keeps `site.concept('events')` typed; if it doesn't, park (standing answer 14); a set never carries a whole `cairn.config.ts`. `templates/waymark` is generated from `examples/showcase` and `emit-template-dir.mjs --check` fails on a hand edit, so `set.ts`, the `content` spread, and the `navLayout` entries are written in the showcase and the template is regenerated. The events kind uses `embedded` routing (call text under "What a visitor sees"). The event route sets `prerender = 'auto'`; probe that a composed site with zero events builds, and take standing answer 21 if it doesn't. If the home route has no `lists` object, park (standing answer 16). The template change must not make the publish job ask for a new Waymark version: check what the job compares before planning, and park if it would (standing answer 15). `src/lib/` doesn't change. The set's code is `src/site/set.ts`, the occurrences module beside it, and route files under `src/routes/`; the `code` list names each, and the archive check refuses the rest as call 4 says. The occurrences function is pure and takes `now` and the time zone as arguments. Each occurrence's instant comes from its wall time on its date, never from adding weeks. The feed route calls pass 1's export and prerenders, as `feed.xml` does. The views use daisyUI role utilities and chassis tokens with the class hooks call 5 names, and no theme file changes. Passed dates hide with a small script modeled on `banner-expiry.ts`, which also shows the empty state and fills the home section from the six events in its HTML, as the design says. Sample events belong to the Turnagain Geographic Society; search each invented name and put the searches in the PR. The editor page `docs/editors/events.md` and the admin notes need `cairn-writing-docs`. Load `standards:svelte-conventions` and use the Svelte MCP's autofixer on every `.svelte` file. The merge publishes organization set 1.1.0, a permanent release and the first set with code, so the PR never lands unattended: it waits for Geoff beside pass 3's.
+
+Rules the plan carries:
+- Copy this pass's acceptance items verbatim under `## Acceptance`, and add the two that apply to every pass. Map each to its task and to the command or screenshot that shows it. Add checks freely; never edit or drop an item.
+- Verify every change site and every quoted mechanism against the code as the earlier passes left it. The design read the repo at `4ebfb0e9e`, before Pennant, and paths and line numbers have moved.
+- Rendered evidence meets the five-viewport bar (320, 390, 768, 1440, 2560) and is graded by a fresh context. CI regenerates visual baselines; a local Chromium can't reproduce them.
+- A behavior change updates `CHANGELOG.md` under `## Unreleased` and `MIGRATION-NOTES.md`. The pass bumps no engine version and publishes no npm package.
+- Stay inside this pass's file row. `docs/STATUS.md` is the conductor's. `.github/**`, `scripts/release/**`, and `.claude/settings*` are held paths: a task that needs one parks the pass.
+- The pass never runs `make -C tool check` and opens nothing under `tool/`, because round `tui-language` may hold those files.
+- A 403 from a Cloudflare token parks the pass. Never widen a token and never try another credential.
+
+Hand-over: commit the plan and the executor prompt on the pass's branch in the worktree conductor-events cut, push to glw907/cairn-cms, run the launch checks in `planner.md` "Launch", and launch the executor from /var/home/glw907/Projects/cairn-cms:
+
+claude --bg --model sonnet --effort medium --advisor fable --name cairn-cms-events-2 "$(cat <executor prompt>)"
+
+The executor prompt carries the fields in cairn-cms `.claude/skills/cairn-running-passes/references/launch-prompts.md` and names conductor-events as the one session whose messages it takes as instructions. Never ask Geoff in chat and never queue an approval-queue item: a stop parks the pass, and the conductor sends the packet.
+
+Keep the pass the smallest thing that meets its acceptance list. Add no abstraction, export, flag, or fallback the design does not name. A cleanup beyond this pass is filed through `standards:log-issue` and listed in the PR, never done.

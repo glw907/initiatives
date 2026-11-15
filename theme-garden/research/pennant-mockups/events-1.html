@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en" data-set="fireweed" data-mode="light" data-tint="off" data-photos="on" data-news="on">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pennant events</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@600;700&family=Big+Shoulders+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+[data-set="fireweed"] { --school-1: oklch(52% 0.21 357); --on-1: oklch(99% 0.003 357); --school-2: oklch(25% 0.035 175); --on-2: oklch(96% 0.008 175); }
+[data-set="navy"]     { --school-1: oklch(30% 0.09 260);  --on-1: oklch(98% 0.005 260); --school-2: oklch(80% 0.15 85);   --on-2: oklch(22% 0.04 260); }
+[data-set="scarlet"]  { --school-1: oklch(52% 0.22 27);   --on-1: oklch(99% 0.003 27);  --school-2: oklch(27% 0.01 260);  --on-2: oklch(97% 0.003 260); }
+[data-set="purple"]   { --school-1: oklch(38% 0.16 300);  --on-1: oklch(98% 0.005 300); --school-2: oklch(82% 0.012 280); --on-2: oklch(22% 0.05 300); }
+[data-set="orange"]   { --school-1: oklch(70% 0.18 52);   --on-1: oklch(18% 0.03 52);   --school-2: oklch(40% 0.17 262);  --on-2: oklch(98% 0.005 262); }
+:root {
+  --p: var(--school-1); --pc: var(--on-1); --s: var(--school-2); --sc: var(--on-2);
+  --n: oklch(from var(--school-1) 21% 0.035 h); --nc: oklch(from var(--school-1) 94% 0.01 h);
+  --font-display: 'Big Shoulders Display', sans-serif;
+  --font-head: 'Barlow Semi Condensed', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+  --r-box: 10px; --r-field: 7px;
+}
+[data-mode="light"] {
+  --b1: oklch(from var(--school-1) 99% 0.004 h); --b2: oklch(from var(--school-1) 96.5% 0.008 h);
+  --b3: oklch(from var(--school-1) 90% 0.012 h); --bc: oklch(from var(--school-1) 22% 0.03 h);
+  --muted: oklch(from var(--school-1) 44% 0.02 h); --link: oklch(from var(--school-1) min(l, 0.5) c h);
+}
+[data-mode="dark"] {
+  --b1: oklch(from var(--school-1) 17% 0.02 h); --b2: oklch(from var(--school-1) 21% 0.024 h);
+  --b3: oklch(from var(--school-1) 30% 0.028 h); --bc: oklch(from var(--school-1) 93% 0.008 h);
+  --muted: oklch(from var(--school-1) 72% 0.02 h); --link: oklch(from var(--school-1) max(l, 0.76) c h);
+}
+* { box-sizing: border-box; }
+html { background: #e9e9ec; color: #1c1c22; font: 16px/1.5 system-ui, sans-serif; }
+[data-mode="dark"] { background: #101014; color: #e8e8ee; }
+body { margin: 0; padding: 0 16px 80px; }
+.bar { position: sticky; top: 0; z-index: 10; margin: 0 -16px; padding: 12px 20px; display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; background: #fff; border-bottom: 1px solid #d5d5db; }
+[data-mode="dark"] .bar { background: #1a1a20; border-color: #33333c; }
+.bar strong { font-size: 0.9rem; }
+.bar .group { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.bar button { font: inherit; font-size: 0.85rem; padding: 5px 10px 5px 6px; border: 1px solid #c4c4cc; border-radius: 6px; background: transparent; color: inherit; cursor: pointer; display: inline-flex; gap: 7px; align-items: center; }
+.bar button[aria-pressed="true"] { border-color: currentColor; box-shadow: inset 0 0 0 1px currentColor; }
+.bar button:focus-visible { outline: 2px solid #3b6cf6; outline-offset: 2px; }
+.bar .plain { padding-left: 10px; }
+.sw { display: inline-flex; width: 26px; height: 16px; border-radius: 3px; overflow: hidden; border: 1px solid rgb(0 0 0 / 0.25); }
+.sw i { flex: 1; }
+.intro { max-width: 1240px; margin: 26px auto 18px; }
+.intro h1 { font-size: 1.3rem; margin: 0 0 6px; }
+.intro p { margin: 0; max-width: 76ch; }
+
+.mock { max-width: 1240px; margin: 0 auto; background: var(--b1); color: var(--bc); border: 1px solid rgb(0 0 0 / 0.18); border-radius: 12px; overflow: hidden; font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.55; }
+:where(.mock) a { color: inherit; text-decoration: none; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+.d { font-family: var(--font-display); text-transform: uppercase; }
+
+/* photo frame: every photograph on the site sits in one of these */
+.ph { position: relative; overflow: hidden; background: var(--b3); margin: 0; border-radius: var(--r-box); }
+.ph img { display: block; width: 100%; height: 100%; object-fit: cover; }
+[data-tint="on"] .ph { background: var(--p); }
+[data-tint="on"] .ph img { filter: grayscale(1) contrast(1.15); mix-blend-mode: screen; }
+[data-tint="on"][data-set="orange"] .ph img { mix-blend-mode: multiply; }
+[data-photos="off"] .ph img { display: none; }
+
+.crest { display: grid; place-items: center; flex: none; width: 2.1em; height: 2.35em; font-size: 1.45rem; background: var(--s); color: var(--sc); font-family: var(--font-display); font-weight: 800; clip-path: polygon(0 0, 100% 0, 100% 68%, 50% 100%, 0 68%); padding-bottom: 0.3em; }
+.crest span { font-size: 1em; }
+
+.head { background: var(--p); color: var(--pc); border-bottom: 5px solid var(--s); }
+.head .wrap { display: flex; align-items: center; gap: 16px; padding-block: 12px; flex-wrap: wrap; }
+.name { font-weight: 800; font-size: 1.75rem; line-height: 1; letter-spacing: 0.02em; margin-right: auto; }
+.nav { display: flex; flex-wrap: wrap; gap: 2px; align-items: center; }
+.nav a { font-family: var(--font-head); font-weight: 600; font-size: 1.06rem; padding: 6px 12px; border-radius: var(--r-field); }
+.nav a[aria-current] { background: oklch(from var(--pc) l c h / 0.16); }
+.nav .go { background: var(--s); color: var(--sc); margin-left: 8px; padding-inline: 16px; }
+.menu { display: none; }
+
+/* the announcement banner: one line, shown until its end date */
+.notice { background: var(--b2); border-bottom: 1px solid var(--b3); }
+.notice .wrap { display: flex; gap: 12px; align-items: baseline; padding-block: 10px; flex-wrap: wrap; font-size: 1rem; }
+.notice b { font-family: var(--font-head); font-weight: 700; font-size: 0.92rem; background: var(--p); color: var(--pc); padding: 1px 10px; border-radius: 99px; }
+.notice a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; font-weight: 500; }
+
+/* who we are, and the two things a visitor can do */
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: center; padding-block: 48px 52px; }
+.hero h1 { font-family: var(--font-head); font-weight: 700; font-size: clamp(1.9rem, 3.3vw, 2.65rem); line-height: 1.1; margin: 0 0 14px; text-wrap: balance; }
+.hero p { margin: 0 0 24px; font-size: 1.15rem; max-width: 46ch; color: var(--muted); }
+.acts { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { display: inline-block; font-family: var(--font-head); font-weight: 700; font-size: 1.1rem; padding: 0.55em 1.3em; border-radius: var(--r-field); border: 2px solid var(--p); background: var(--p); color: var(--pc); }
+.btn.quiet { background: transparent; color: var(--bc); border-color: var(--b3); }
+.hero .ph { aspect-ratio: 4 / 3; background: var(--p); display: grid; place-items: center; }
+.hero .ph img { position: absolute; inset: 0; }
+.hero .ph .crest { font-size: 5.4rem; }
+.hero .ph::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(115deg, transparent 0 46px, oklch(from var(--pc) l c h / 0.07) 46px 92px); }
+[data-photos="off"] .hero .ph { aspect-ratio: 16 / 10; }
+
+section { padding-block: 0 56px; }
+.sec { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin: 0 0 20px; }
+.sec h2 { font-weight: 800; font-size: 1.7rem; line-height: 1; letter-spacing: 0.02em; margin: 0; padding-bottom: 8px; border-bottom: 4px solid var(--s); }
+[data-set="purple"][data-mode="light"] .sec h2, [data-set="navy"][data-mode="light"] .sec h2 { border-color: oklch(from var(--s) calc(l - 0.12) c h); }
+.sec a { font-size: 0.98rem; font-weight: 500; color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+
+/* what we do: one card per program, each with its standing day and time */
+.cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.card { background: var(--b1); border: 1px solid var(--b3); border-radius: var(--r-box); overflow: hidden; display: flex; flex-direction: column; }
+.card .ph { aspect-ratio: 3 / 2; border-radius: 0; }
+[data-photos="off"] .card .ph { aspect-ratio: auto; height: 8px; background: var(--p); }
+.card div { padding: 16px 18px 18px; }
+.card h3 { font-family: var(--font-head); font-weight: 700; font-size: 1.4rem; line-height: 1.15; margin: 0 0 2px; }
+.card .who { color: var(--link); font-weight: 600; font-size: 0.98rem; margin: 0 0 8px; }
+.card p { margin: 0; color: var(--muted); font-size: 1rem; }
+.card .meets { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--b3); color: var(--bc); font-weight: 500; }
+
+/* where and when: the facts that stay true all season */
+.facts { background: var(--b2); border-block: 1px solid var(--b3); padding-block: 30px; margin-bottom: 56px; }
+.facts dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin: 0; }
+.facts dt { font-family: var(--font-head); font-weight: 700; font-size: 1.15rem; margin-bottom: 2px; }
+.facts dd { margin: 0; color: var(--muted); }
+.facts dd a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+
+/* news: every item dated, the whole section absent when there are no posts */
+[data-news="off"] .news { display: none; }
+.post { display: grid; grid-template-columns: 92px minmax(0, 1fr) 150px; gap: 22px; padding: 16px 0; border-top: 1px solid var(--b3); align-items: start; }
+.post:last-child { border-bottom: 1px solid var(--b3); }
+.post time { font-family: var(--font-head); font-weight: 700; font-size: 1.05rem; color: var(--link); line-height: 1.35; }
+.post time small { display: block; font-family: var(--font-body); font-weight: 400; font-size: 0.88rem; color: var(--muted); }
+.post h3 { font-family: var(--font-head); font-weight: 700; font-size: 1.35rem; line-height: 1.2; margin: 0 0 4px; }
+.post p { margin: 0; color: var(--muted); }
+.post .ph { aspect-ratio: 3 / 2; }
+[data-photos="off"] .post { grid-template-columns: 92px minmax(0, 1fr); }
+[data-photos="off"] .post .ph { display: none; }
+
+.logos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.logos span { display: grid; place-items: center; text-align: center; min-height: 84px; padding: 10px 14px; border: 1px solid var(--b3); border-radius: var(--r-box); font-family: var(--font-head); font-weight: 700; font-size: 1.08rem; line-height: 1.15; color: var(--muted); }
+
+.foot { background: var(--n); color: var(--nc); padding: 26px 0; font-size: 0.95rem; }
+.foot .wrap { display: flex; justify-content: space-between; gap: 12px 28px; flex-wrap: wrap; }
+.foot a { text-decoration: underline; text-underline-offset: 3px; }
+
+.key { max-width: 1240px; margin: 26px auto 0; font-size: 0.95rem; }
+.key h2 { font-size: 1.05rem; margin: 0 0 6px; }
+.key ol { margin: 0; padding-left: 1.3em; max-width: 80ch; }
+.key li { margin-bottom: 4px; }
+
+@media (max-width: 760px) {
+  .wrap { padding: 0 18px; }
+  .name { font-size: 1.4rem; }
+  .nav a:not(.go) { display: none; }
+  .menu { display: inline-block; font-family: var(--font-head); font-weight: 600; padding: 6px 12px; border-radius: var(--r-field); border: 1px solid oklch(from var(--pc) l c h / 0.4); }
+  .hero .wrap { grid-template-columns: 1fr; gap: 26px; padding-block: 30px 38px; }
+  .hero .ph { order: -1; aspect-ratio: 16 / 10; }
+  [data-photos="off"] .hero .ph { aspect-ratio: 16 / 7; }
+  [data-photos="off"] .hero .ph .crest { font-size: 3.4rem; }
+  .cards, .facts dl { grid-template-columns: 1fr; gap: 18px; }
+  .post { grid-template-columns: minmax(0, 1fr) 96px; gap: 6px 14px; }
+  .post time { grid-column: 1 / -1; }
+  .post time small { display: inline; margin-left: 6px; }
+  [data-photos="off"] .post { grid-template-columns: 1fr; }
+  .logos { grid-template-columns: 1fr 1fr; }
+  section { padding-bottom: 42px; }
+  .facts { margin-bottom: 42px; }
+}
+
+/* events */
+.ev { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 22px; padding: 16px 0; border-top: 1px solid var(--b3); align-items: start; }
+.ev:last-of-type { border-bottom: 1px solid var(--b3); }
+.ev time { font-family: var(--font-head); font-weight: 700; font-size: 1.05rem; color: var(--link); line-height: 1.35; }
+.ev time small { display: block; font-family: var(--font-body); font-weight: 400; font-size: 0.88rem; color: var(--muted); }
+.ev h3 { font-family: var(--font-head); font-weight: 700; font-size: 1.35rem; line-height: 1.2; margin: 0 0 4px; }
+.ev p { margin: 0; color: var(--muted); }
+.ev .rule { color: var(--bc); font-weight: 500; }
+.ev .chg { margin-top: 6px; padding: 6px 12px; border-left: 4px solid var(--s); background: var(--b2); color: var(--bc); border-radius: 0 var(--r-field) var(--r-field) 0; }
+[data-set="purple"][data-mode="light"] .ev .chg, [data-set="navy"][data-mode="light"] .ev .chg { border-color: oklch(from var(--s) calc(l - 0.12) c h); }
+.ev.off h3 { text-decoration: line-through; text-decoration-thickness: 2px; color: var(--muted); }
+.tag { display: inline-block; font-family: var(--font-head); font-weight: 700; font-size: 0.92rem; background: var(--bc); color: var(--b1); padding: 1px 10px; border-radius: 99px; margin-right: 8px; vertical-align: 2px; }
+.month { font-family: var(--font-head); font-weight: 700; font-size: 1.2rem; margin: 30px 0 8px; }
+.month:first-of-type { margin-top: 0; }
+.sub { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; background: var(--b2); border: 1px solid var(--b3); border-radius: var(--r-box); padding: 14px 18px; margin-bottom: 28px; }
+.sub strong { font-family: var(--font-head); font-size: 1.15rem; margin-right: 6px; }
+.sub .btn { font-size: 1rem; padding: 0.4em 1em; }
+.sub span { color: var(--muted); font-size: 0.98rem; flex-basis: 100%; }
+.pagehead { padding-block: 40px 26px; }
+.pagehead h1 { font-weight: 800; font-size: clamp(2.2rem, 4vw, 3rem); line-height: 1; letter-spacing: 0.02em; margin: 0 0 10px; }
+.pagehead p { margin: 0; color: var(--muted); font-size: 1.15rem; max-width: 56ch; }
+.one { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 44px; align-items: start; }
+.one h1 { font-family: var(--font-head); font-weight: 700; font-size: clamp(1.9rem, 3.3vw, 2.65rem); line-height: 1.1; margin: 0 0 10px; }
+.one .rule { font-size: 1.25rem; font-weight: 500; margin: 0 0 18px; }
+.one .body p { margin: 0 0 14px; }
+.box { background: var(--b2); border: 1px solid var(--b3); border-radius: var(--r-box); padding: 18px 20px; }
+.box dt { font-family: var(--font-head); font-weight: 700; font-size: 1.05rem; }
+.box dd { margin: 0 0 12px; color: var(--muted); }
+.box dd:last-child { margin-bottom: 0; }
+.box .btn { margin-top: 6px; font-size: 1rem; }
+.label { max-width: 1240px; margin: 44px auto 12px; }
+.label h2 { font-size: 1.15rem; margin: 0 0 4px; }
+.label p { margin: 0; max-width: 76ch; }
+/* editor sketch: neutral, not the theme */
+.form { max-width: 760px; margin: 0 auto 0 max(0px, calc((100% - 1240px) / 2)); background: #fff; color: #1c1c22; border: 1px solid #c9c9d1; border-radius: 10px; padding: 22px 24px; font: 15px/1.45 system-ui, sans-serif; }
+[data-mode="dark"] .form { background: #1a1a20; color: #e8e8ee; border-color: #3a3a44; }
+.form label, .form legend { display: block; font-weight: 600; margin: 14px 0 4px; padding: 0; }
+.form .row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.form input[type=text], .form select { width: 100%; font: inherit; padding: 7px 9px; border: 1px solid #b9b9c2; border-radius: 6px; background: transparent; color: inherit; }
+.form fieldset { border: 1px solid #c9c9d1; border-radius: 8px; margin: 18px 0 0; padding: 4px 16px 16px; }
+[data-mode="dark"] .form fieldset { border-color: #3a3a44; }
+.form .days { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.form .days label { display: inline-flex; gap: 5px; font-weight: 400; margin: 0; }
+.form .item { border: 1px solid #c9c9d1; border-radius: 6px; padding: 8px 12px; margin-top: 8px; display: flex; justify-content: space-between; gap: 12px; }
+[data-mode="dark"] .form .item { border-color: #3a3a44; }
+.form .item span:last-child { opacity: 0.6; }
+.form .add { margin-top: 10px; font: inherit; padding: 6px 12px; border: 1px solid #b9b9c2; border-radius: 6px; background: transparent; color: inherit; }
+.form .hint { font-size: 13px; opacity: 0.72; margin: 3px 0 0; }
+@media (max-width: 760px) {
+  .ev { grid-template-columns: 1fr; gap: 4px; }
+  .ev time small { display: inline; margin-left: 6px; }
+  .one { grid-template-columns: 1fr; gap: 24px; }
+  .form .row { grid-template-columns: 1fr; gap: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <strong>Club colors</strong>
+  <div class="group" id="sets">
+    <button data-set="fireweed" aria-pressed="true"><span class="sw"><i style="background:oklch(52% 0.21 357)"></i><i style="background:oklch(25% 0.035 175)"></i></span>Fireweed and spruce</button>
+    <button data-set="navy" aria-pressed="false"><span class="sw"><i style="background:oklch(30% 0.09 260)"></i><i style="background:oklch(80% 0.15 85)"></i></span>Navy and gold</button>
+    <button data-set="scarlet" aria-pressed="false"><span class="sw"><i style="background:oklch(52% 0.22 27)"></i><i style="background:oklch(27% 0.01 260)"></i></span>Scarlet and charcoal</button>
+    <button data-set="purple" aria-pressed="false"><span class="sw"><i style="background:oklch(38% 0.16 300)"></i><i style="background:oklch(82% 0.012 280)"></i></span>Purple and silver</button>
+    <button data-set="orange" aria-pressed="false"><span class="sw"><i style="background:oklch(70% 0.18 52)"></i><i style="background:oklch(40% 0.17 262)"></i></span>Orange and royal</button>
+  </div>
+  <div class="group">
+    <button class="plain" id="mode" aria-pressed="false">Dark mode</button>
+  </div>
+</div>
+
+<div class="intro">
+  <h1>Events in Pennant</h1>
+  <p>Four views: the "Coming up" section on the home page, the events page, one repeating event's page, and the form an editor fills in. The club and its wording are placeholders. Today in these views is Saturday, November 14.</p>
+</div>
+
+<div class="label"><h2>1. The home page section</h2><p>It sits between "where and when" and the news. A repeating event appears once, at its next date. The section is absent when nothing is coming up.</p></div>
+<div class="mock">
+  <div class="head"><div class="wrap">
+    <div class="crest">RN</div>
+    <div class="name d">Ridgeline Nordic</div>
+    <nav class="nav"><a href="#">Home</a><a href="#">About</a><a href="#">Programs</a><a href="#">Events</a><a href="#">News</a><span class="menu">Menu</span><a class="go" href="#">Join</a></nav>
+  </div></div>
+
+  <section style="padding-top:44px"><div class="wrap">
+    <div class="sec"><h2 class="d">Coming up</h2><a href="#">All events</a></div>
+    <article class="ev"><time>Nov 17<small>Tue, 5:30 pm</small></time><div><h3><a href="#">Junior Nordic practice</a></h3><p class="rule">Tuesdays and Thursdays at 5:30, through March 25</p><p class="chg">No practice Thursday, November 26.</p></div></article>
+    <article class="ev"><time>Dec 5<small>Sat, 10:00 am</small></time><div><h3><a href="#">Early-season time trial</a></h3><p>Hillside stadium. A 5 km classic course for every age group.</p></div></article>
+    <article class="ev"><time>Dec 15<small>Tue, 7:00 pm</small></time><div><h3><a href="#">Board meeting</a></h3><p class="rule">Second Monday of each month at 7:00</p><p class="chg">Moved from Monday, December 14.</p></div></article>
+    <article class="ev"><time>Jan 9<small>Sat, 9:00 am</small></time><div><h3><a href="#">Learn to skate ski</a></h3><p>Four Saturdays, January 9 to 30. Sign-up closes January 2.</p></div></article>
+  </div></section>
+  <div class="foot"><div class="wrap"><span>© 2026 Ridgeline Nordic Ski Club, a volunteer-run nonprofit</span><span><a href="#">Contact</a> &nbsp; <a href="#">Policies</a></span></div></div>
+</div>
+
+<div class="label"><h2>2. The events page</h2><p>One list in date order. A repeating event shows its pattern as a sentence, with any coming change under it. A cancelled date stays on the page, struck through, until the day has passed.</p></div>
+<div class="mock">
+  <div class="head"><div class="wrap">
+    <div class="crest">RN</div>
+    <div class="name d">Ridgeline Nordic</div>
+    <nav class="nav"><a href="#">Home</a><a href="#">About</a><a href="#">Programs</a><a href="#" aria-current="page">Events</a><a href="#">News</a><span class="menu">Menu</span><a class="go" href="#">Join</a></nav>
+  </div></div>
+
+  <div class="wrap pagehead"><h1 class="d">Events</h1><p>Practices, races, meetings, and courses for the 2026 to 2027 season.</p></div>
+  <section><div class="wrap">
+    <div class="sub"><strong>Add these to your calendar</strong><a class="btn" href="#">Apple or Outlook</a><a class="btn quiet" href="#">Google Calendar</a><a class="btn quiet" href="#">Copy the address</a><span>Your calendar then follows this page. A change here can take a day to reach it.</span></div>
+
+    <h2 class="month">November</h2>
+    <article class="ev"><time>Nov 17<small>Tue, 5:30 pm</small></time><div><h3><a href="#">Junior Nordic practice</a></h3><p class="rule">Tuesdays and Thursdays at 5:30, through March 25</p><p>Hillside trails, from the lot at 2400 Abbott Road.</p><p class="chg">No practice Thursday, November 26.</p></div></article>
+    <article class="ev"><time>Nov 18<small>Wed, 6:30 pm</small></time><div><h3><a href="#">Masters technique night</a></h3><p class="rule">Wednesdays at 6:30, through March 24</p><p>Hillside trails, from the lot at 2400 Abbott Road.</p><p class="chg">Wednesday, December 2 meets at the stadium lot.</p></div></article>
+    <article class="ev off"><time>Nov 21<small>Sat, 10:00 am</small></time><div><h3>Trail work day</h3><p><span class="tag">Cancelled</span>Not enough snow cover to move the fencing. A new date will be posted.</p></div></article>
+
+    <h2 class="month">December</h2>
+    <article class="ev"><time>Dec 5<small>Sat, 10:00 am</small></time><div><h3><a href="#">Early-season time trial</a></h3><p>Hillside stadium. A 5 km classic course for every age group.</p></div></article>
+    <article class="ev"><time>Dec 15<small>Tue, 7:00 pm</small></time><div><h3><a href="#">Board meeting</a></h3><p class="rule">Second Monday of each month at 7:00</p><p>Foothills Credit Union community room. Members are welcome.</p><p class="chg">Moved from Monday, December 14.</p></div></article>
+
+    <h2 class="month">January</h2>
+    <article class="ev"><time>Jan 9<small>Sat, 9:00 am</small></time><div><h3><a href="#">Learn to skate ski</a></h3><p>Four Saturdays, January 9 to 30. Sign-up closes January 2.</p></div></article>
+  </div></section>
+  <div class="foot"><div class="wrap"><span>© 2026 Ridgeline Nordic Ski Club, a volunteer-run nonprofit</span><span><a href="#">Contact</a> &nbsp; <a href="#">Policies</a></span></div></div>
+</div>
+
+<div class="label"><h2>3. One repeating event</h2><p>The page states the pattern, the next date, and each change. It never lists forty dates.</p></div>
+<div class="mock">
+  <div class="head"><div class="wrap">
+    <div class="crest">RN</div>
+    <div class="name d">Ridgeline Nordic</div>
+    <nav class="nav"><a href="#">Home</a><a href="#">About</a><a href="#">Programs</a><a href="#" aria-current="page">Events</a><a href="#">News</a><span class="menu">Menu</span><a class="go" href="#">Join</a></nav>
+  </div></div>
+
+  <section style="padding-top:44px"><div class="wrap one">
+    <div>
+      <h1>Junior Nordic practice</h1>
+      <p class="rule">Tuesdays and Thursdays at 5:30, through March 25</p>
+      <div class="body"><p>Games and skills on snow with volunteer coaches, for ages 6 to 13. Dress for an hour outside and bring a water bottle. Skiers are grouped by experience on the first day.</p><p>We ski in anything warmer than minus 10 Fahrenheit. A cancelled day appears on this page and in your calendar.</p></div>
+    </div>
+    <dl class="box">
+      <dt>Next</dt><dd>Tuesday, November 17, 5:30 to 6:30 pm</dd>
+      <dt>Where</dt><dd>Hillside trails, from the lot at 2400 Abbott Road</dd>
+      <dt>Changes</dt><dd>No practice Thursday, November 26.<br>Thursday, December 17 ends at 6:00 for the holiday potluck.</dd>
+      <dd><a class="btn" href="#">Add to your calendar</a></dd>
+    </dl>
+  </div></section>
+  <div class="foot"><div class="wrap"><span>© 2026 Ridgeline Nordic Ski Club, a volunteer-run nonprofit</span><span><a href="#">Contact</a> &nbsp; <a href="#">Policies</a></span></div></div>
+</div>
+
+<div class="label"><h2>4. What an editor fills in</h2><p>A sketch of the fields, not the admin's real look. "Repeats" starts at "No", and the fields under it appear only when it is set. Each change is one row.</p></div>
+<div class="form">
+  <label>Title</label><input type="text" value="Junior Nordic practice">
+  <div class="row">
+    <div><label>Date</label><input type="text" value="2026-11-17"><p class="hint">The first date.</p></div>
+    <div><label>Starts</label><input type="text" value="17:30"></div>
+    <div><label>Ends</label><input type="text" value="18:30"></div>
+  </div>
+  <label>Place</label><input type="text" value="Hillside trails, from the lot at 2400 Abbott Road">
+  <fieldset><legend>Repeats</legend>
+    <div class="row">
+      <div><label>How often</label><select><option>Every week</option><option>Every month</option><option>No</option></select></div>
+      <div><label>Until</label><input type="text" value="2027-03-25"><p class="hint">Required. At most one year.</p></div>
+    </div>
+    <label>On</label>
+    <div class="days"><label><input type="checkbox">Mon</label><label><input type="checkbox" checked>Tue</label><label><input type="checkbox">Wed</label><label><input type="checkbox" checked>Thu</label><label><input type="checkbox">Fri</label><label><input type="checkbox">Sat</label><label><input type="checkbox">Sun</label></div>
+    <p class="hint">"Every month" asks for a week (first to fourth, or last) and one weekday instead.</p>
+  </fieldset>
+  <fieldset><legend>Changes</legend>
+    <div class="item"><span>2026-11-26, cancelled</span><span>Edit · Remove</span></div>
+    <div class="item"><span>2026-12-17, ends 18:00, "Ends at 6:00 for the holiday potluck."</span><span>Edit · Remove</span></div>
+    <button class="add" type="button">Add a change</button>
+    <p class="hint">A change names one date of the series, then cancels it or gives it a new date, time, place, or note.</p>
+  </fieldset>
+</div>
+
+<script>
+const root = document.documentElement;
+document.getElementById('sets').addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  root.dataset.set = b.dataset.set;
+  for (const x of e.currentTarget.children) x.setAttribute('aria-pressed', String(x === b));
+});
+const mode = document.getElementById('mode');
+mode.addEventListener('click', () => {
+  const next = mode.getAttribute('aria-pressed') !== 'true';
+  root.dataset.mode = next ? 'dark' : 'light'; mode.setAttribute('aria-pressed', String(next));
+});
+const q = new URLSearchParams(location.search);
+if (q.get('set')) document.querySelector(`#sets [data-set="${q.get('set')}"]`)?.click();
+if (q.get('mode') === 'dark') mode.click();
+</script>
+</body>
+</html>

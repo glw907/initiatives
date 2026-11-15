@@ -1,0 +1,34 @@
+You are the planner for pass 3, `pennant`, of round `events` in cairn-cms, session name cairn-cms-events-3-plan.
+
+Goal: write and review the plan for this pass, then launch its executor. Write no product code.
+
+Outcome: Pennant's home page shows a "Coming up" section with the next three distinct events, and the events list and event page carry Pennant's look in all five color sets, light and dark. Pennant's version becomes 1.1.0.
+
+Depends on: pass 2, with its whole-branch review accepted. Its PR is still open, so this pass's worktree is cut from pass 2's branch. Planned path: 150 minutes. Class: per the path map, `live-account`. A plan whose path comes out over twice that parks, as `round.md` "Parking at planning" says.
+
+Read, in this order:
+1. /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-14-events-design.md, approved by Geoff through the design packet. The sections "Decided by Geoff", "What a visitor sees", "Calls made here", "How it fails", this pass's row in "Passes", "What each merge publishes", its list under "Acceptance", "Standing answers", and "Rulings" are the approved design for this pass.
+2. /var/home/glw907/Projects/initiatives/theme-garden/research/pennant-mockups/events-1.html, the look this pass is graded against, and `varsity-3.html` beside it. Every word in them is placeholder and never ships.
+3. /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-14-pennant-design.md, "The look" and "The home page", and /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-08-theme-garden-design.md (the theme contract).
+4. In cairn-cms: CLAUDE.md, docs/STATUS.md, docs/internal/theme-catalog.md, `themes/pennant/` whole, and pass 2's set code under `sets/organization/`.
+5. The PRs of passes 1 and 2, their `[advisor]` lines included.
+
+Process: load `cairn-pass`, which loads `pass-core` and `cairn-running-passes`, then read `pass-core` `references/planner.md` and `references/round.md`. Start at "A plan inside a round". Name in the plan the skills the executor loads, `cairn-following-public-design`, `standards:visual-fidelity`, `standards:daisyui`, and `standards:svelte-conventions` among them.
+
+For this pass: Only `themes/pennant/**` changes. The home section reads the events list from the `lists` object and renders nothing, not an empty heading, when the list is absent or empty, so Pennant still works over a set with no events. The section's HTML holds up to six events and the set's script shows the first three still to come. A series shows once, at its next date; if pass 2's list function doesn't already collapse a series for the home list, park and say so, since that logic is the set's. The events pages are styled through the class hooks pass 2 put on them. A value that fails contrast is tuned within its hue (standing answer 20). A fresh `standards:visual-verifier` grades against `events-1.html` at the five widths in every color set and both modes. If ruling 1 changed the look, the mock-up beside the design is the revised one. The merge publishes Pennant 1.1.0, a permanent release, and redeploys the demo, so the PR never lands unattended: it reaches Geoff in one close document with pass 2's, pass 2's first in merge order. This pass builds on Pennant's unmerged branch; if Pennant's pass 4 is sent back, take the revised branch in and regrade (standing answer 22).
+
+Rules the plan carries:
+- Copy this pass's acceptance items verbatim under `## Acceptance`, and add the two that apply to every pass. Map each to its task and to the command or screenshot that shows it. Add checks freely; never edit or drop an item.
+- Verify every change site and every quoted mechanism against the code as the earlier passes left it.
+- Rendered evidence meets the five-viewport bar (320, 390, 768, 1440, 2560) and is graded by a fresh context. CI regenerates visual baselines; a local Chromium can't reproduce them.
+- Stay inside this pass's file row. `docs/STATUS.md` is the conductor's. `.github/**`, `scripts/release/**`, and `.claude/settings*` are held paths: a task that needs one parks the pass.
+- The pass never runs `make -C tool check` and opens nothing under `tool/`, because round `tui-language` may hold those files.
+- A 403 from a Cloudflare token parks the pass. Never widen a token and never try another credential.
+
+Hand-over: commit the plan and the executor prompt on the pass's branch in the worktree conductor-events cut, push to glw907/cairn-cms, run the launch checks in `planner.md` "Launch", and launch the executor from /var/home/glw907/Projects/cairn-cms:
+
+claude --bg --model sonnet --effort medium --advisor fable --name cairn-cms-events-3 "$(cat <executor prompt>)"
+
+The executor prompt carries the fields in cairn-cms `.claude/skills/cairn-running-passes/references/launch-prompts.md` and names conductor-events as the one session whose messages it takes as instructions. Never ask Geoff in chat and never queue an approval-queue item: a stop parks the pass, and the conductor sends the packet.
+
+Keep the pass the smallest thing that meets its acceptance list. Add no abstraction, export, flag, or fallback the design does not name. A cleanup beyond this pass is filed through `standards:log-issue` and listed in the PR, never done.
