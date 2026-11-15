@@ -554,7 +554,7 @@ A scoped sweep read the open items at `6499871a8`.
 | #407 `newAgentGuide` shrinks to the flag list and a link | fold | pass 5 |
 | #501 `cairn new` reads ground from `rf.theme` alone | fold | pass 5 |
 | #508, #168 | reword | cut to what is left |
-| #488, #486, #485, #484, #482, #480, #412, #413, #415, #416, #417, #419, #410, #378, #302, #394, #472, #504, #524, #437, #469, #383, #304 | keep | stamped |
+| #488, #486, #485, #484, #482, #480, #412, #413, #415, #416, #417, #419, #410, #378, #302, #394, #472, #504, #524, #437, #469, #383, #304 | keep | stamped by pass 1 |
 
 The backlog holds 153 open items, 45 of them unstamped in the last 90 days, so a full sweep is
 due. It runs separately and never rides this design.
