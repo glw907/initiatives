@@ -1,0 +1,35 @@
+You are the planner for pass 3, `links`, of round `site-basics` in cairn-cms, session name cairn-cms-site-basics-3-plan.
+
+Goal: write and review the plan for this pass, then launch its executor. Write no product code.
+
+Outcome: Social links from `settings.json` show in Waymark's and Pennant's footers. Topic pages follow their switch. Every public page carries link-preview tags. Backlog #483 and #388 are closed.
+
+Depends on: pass 2, with its whole-branch review accepted. The worktree is cut from pass 2's branch. Planned path: 90 minutes. Class: per the path map, `live-account`, because the merge publishes two themes and redeploys both demos. A plan whose path comes out over twice that parks, as `round.md` "Parking at planning" says.
+
+Read, in this order:
+1. /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-15-site-basics-design.md, approved by Geoff through the design packet. The sections "Decided by Geoff", "The feature list for each kind", "What an owner is asked", "What a visitor sees", "Calls made here", "How it fails", this pass's row in "Passes", "What each merge publishes", its list under "Acceptance", "Shared assumptions", "Standing answers", and "Rulings" are the approved design for this pass.
+2. /var/home/glw907/Projects/initiatives/theme-garden/research/site-basics-mockups/basics-1.html, which shows placement and wording. Its colors and type are placeholder, and so is every word about the made-up club.
+3. /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-14-theme-catalog-design.md and /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-14-events-design.md ("Calls made here", for how a set carries code).
+4. In cairn-cms: CLAUDE.md, docs/STATUS.md, docs/internal/theme-catalog.md, docs/internal/engine-rulings.md (its `## ` index, then any entry this pass comes near), and the files in this pass's row as the earlier passes left them.
+5. The PRs of the earlier passes in this round, their `[advisor]` lines included.
+
+Process: load `cairn-pass`, which loads `pass-core` and `cairn-running-passes`, then read `pass-core` `references/planner.md` and `references/round.md`. Start at "A plan inside a round". Name in the plan the skills the executor loads, `cairn-following-public-design`, `standards:visual-fidelity`, `standards:daisyui`, `standards:svelte-conventions`, and `cairn-writing-docs` among them.
+
+For this pass: The template supplies one social-links component with icons for the ten named networks; each theme's footer places it and adds no icon of its own. Take icons from the icon set the template already uses where it has them, and record the source and license of any other. Find where topic pages are served today before planning: the survey of the routes at design time saw vocabulary read in the home page and the archive and no dedicated topic route. Each theme change raises that theme's version. A fresh `standards:visual-verifier` grades both footers at the five widths in light and dark, in every Pennant color set. If ruling 1 chose a search box in the header, this pass adds it to both themes' headers and drops the menu link, and its path is 120 minutes. No blog set exists yet: #388's vocabulary change goes in the showcase's starter content. The merge publishes Waymark, Pennant, and the organization set, so it never lands unattended.
+
+Rules the plan carries:
+- Copy this pass's acceptance items verbatim under `## Acceptance`, and add the two that apply to every pass. Map each to its task and to the command or screenshot that shows it. Add checks freely; never edit or drop an item.
+- Verify every change site and every quoted mechanism against the code as the earlier passes left it. The design was read against `6499871a8`, before Pennant and events merged.
+- Rendered evidence meets the five-viewport bar (320, 390, 768, 1440, 2560) and is graded by a fresh context. CI regenerates visual baselines; a local Chromium can't reproduce them.
+- Stay inside this pass's file row. `docs/STATUS.md` is the conductor's. `.github/**`, `scripts/release/**`, and `.claude/settings*` are held paths: a task that needs one parks the pass.
+- No file under the engine's `src/lib/**` changes. A task that needs one parks the pass (standing answer 14).
+- A change under `themes/<id>/` or `sets/<kind>/` raises that theme's or set's version, and the PR body says which versions the merge publishes.
+- A 403 from a Cloudflare token parks the pass. Never widen a token and never try another credential.
+
+Hand-over: commit the plan and the executor prompt on the pass's branch in the worktree conductor-site-basics cut, push to glw907/cairn-cms, run the launch checks in `planner.md` "Launch", and launch the executor from /var/home/glw907/Projects/cairn-cms:
+
+claude --bg --model sonnet --effort medium --advisor fable --name cairn-cms-site-basics-3 "$(cat <executor prompt>)"
+
+The executor prompt carries the fields in cairn-cms `.claude/skills/cairn-running-passes/references/launch-prompts.md` and names conductor-site-basics as the one session whose messages it takes as instructions. Never ask Geoff in chat and never queue an approval-queue item: a stop parks the pass, and the conductor sends the packet.
+
+Keep the pass the smallest thing that meets its acceptance list. Add no abstraction, export, flag, or fallback the design does not name. A cleanup beyond this pass is filed through `standards:log-issue` and listed in the PR, never done.

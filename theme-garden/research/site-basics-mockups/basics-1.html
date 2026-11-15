@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Site basics, first mock-up</title>
+<style>
+  :root {
+    --paper: #fbfaf7; --panel: #f1efe9; --ink: #1d2327; --soft: #566068; --line: #d9d5cb;
+    --accent: #1f5f8b; --accent-ink: #ffffff; --bad: #a3271f; --ok: #1e6b45; --mark: #fff1b8;
+    --measure: 42rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #15191c; --panel: #1d2226; --ink: #e9e6df; --soft: #a3acb3; --line: #333a40;
+      --accent: #7fbbe3; --accent-ink: #10181e; --bad: #f08a80; --ok: #7fd0a4; --mark: #5a4a12;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+    font: 17px/1.6 "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif; }
+  a { color: var(--accent); }
+  .wrap { max-width: var(--measure); margin: 0 auto; padding: 0 16px; }
+  .note { background: var(--panel); border-bottom: 1px solid var(--line); font-size: 14px; color: var(--soft); }
+  .note .wrap { padding-top: 10px; padding-bottom: 10px; }
+  .view { border-bottom: 6px solid var(--panel); padding-bottom: 8px; }
+  .view-name { font-size: 13px; color: var(--soft); padding: 18px 16px 0; }
+  header.site { border-bottom: 1px solid var(--line); }
+  header.site .wrap { display: flex; flex-wrap: wrap; gap: 6px 22px; align-items: baseline; padding-top: 14px; padding-bottom: 14px; }
+  .brand { font-weight: 700; font-size: 19px; color: var(--ink); text-decoration: none; margin-right: auto; }
+  nav a { color: var(--ink); text-decoration: none; font-size: 15px; margin-left: 0; margin-right: 16px; }
+  nav a:last-child { margin-right: 0; }
+  nav a[aria-current] { color: var(--accent); text-decoration: underline; text-underline-offset: 5px; }
+  main { padding: 34px 0 44px; }
+  h1 { font-size: 34px; line-height: 1.15; margin: 0 0 14px; letter-spacing: -0.01em; }
+  p { margin: 0 0 16px; }
+  form { margin-top: 26px; display: grid; gap: 18px; }
+  label { display: grid; gap: 6px; font-weight: 600; font-size: 15px; }
+  label .hint { font-weight: 400; color: var(--soft); font-size: 14px; }
+  input, select, textarea { font: inherit; color: var(--ink); background: var(--paper);
+    border: 1px solid var(--soft); border-radius: 6px; padding: 10px 12px; width: 100%; }
+  textarea { min-height: 9.5rem; resize: vertical; }
+  input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible {
+    outline: 3px solid var(--accent); outline-offset: 2px; }
+  .bad input { border-color: var(--bad); }
+  .err { color: var(--bad); font-weight: 400; font-size: 14px; }
+  .check { border: 1px dashed var(--line); border-radius: 6px; padding: 14px; color: var(--soft); font-size: 14px; width: 300px; max-width: 100%; }
+  button { font: inherit; font-weight: 600; background: var(--accent); color: var(--accent-ink);
+    border: 0; border-radius: 6px; padding: 11px 20px; cursor: pointer; justify-self: start; }
+  .fine { font-size: 14px; color: var(--soft); margin: 0; }
+  .sent { border-left: 4px solid var(--ok); background: var(--panel); padding: 14px 16px; margin-top: 24px; }
+  .results { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 22px; }
+  .results a { font-weight: 600; font-size: 19px; }
+  .results p { margin: 4px 0 0; color: var(--soft); font-size: 15px; }
+  mark { background: var(--mark); color: inherit; padding: 0 2px; border-radius: 2px; }
+  .count { color: var(--soft); font-size: 15px; margin-top: 14px; }
+  .search { display: flex; gap: 10px; margin-top: 20px; }
+  .search button { flex: none; }
+  .more { background: transparent; color: var(--accent); border: 1px solid var(--accent); margin-top: 26px; }
+  footer.site { background: var(--panel); border-top: 1px solid var(--line); font-size: 15px; }
+  footer.site .wrap { padding-top: 26px; padding-bottom: 26px; display: grid; gap: 14px; }
+  footer nav a { color: var(--ink); }
+  .social { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 4px; padding: 0; margin: 0 0 0 -10px; align-items: center; }
+  .social a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px;
+    color: var(--ink); border-radius: 6px; padding: 0 10px; }
+  .social a:hover { color: var(--accent); }
+  .social svg { width: 22px; height: 22px; fill: currentColor; }
+  .social .text { text-decoration: underline; text-underline-offset: 4px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .copy { color: var(--soft); margin: 0; }
+</style>
+</head>
+<body>
+
+<div class="note"><div class="wrap">Mock-up for the site basics design. It shows where things sit and what they say. Colors and type come from each theme, and every word here is placeholder for a made-up ski club.</div></div>
+
+<!-- View 1: contact page, form on, one field in error, two subjects -->
+<section class="view">
+  <div class="wrap view-name">1. The contact page with the form on. This club set two subjects, so the picker shows. A site with one recipient has no picker.</div>
+  <header class="site"><div class="wrap">
+    <a class="brand" href="#">Ridgeline Nordic</a>
+    <nav aria-label="Main"><a href="#">News</a><a href="#">Events</a><a href="#">About</a><a href="#" aria-current="page">Contact</a><a href="#">Search</a></nav>
+  </div></header>
+  <main><div class="wrap">
+    <h1>Contact</h1>
+    <p>Write to us about lessons, membership, or the trail report. A volunteer reads every message and answers within a few days.</p>
+    <form onsubmit="return false">
+      <label>Your name <input type="text" value="Sam Okafor" autocomplete="name"></label>
+      <label class="bad">Your email
+        <input type="email" value="sam@" autocomplete="email" aria-invalid="true" aria-describedby="e1">
+        <span class="err" id="e1">Enter an email address we can reply to, like name@example.com.</span>
+      </label>
+      <label>What is it about?
+        <select><option>General question</option><option>Membership</option></select>
+      </label>
+      <label>Message <textarea>Do the Tuesday lessons run through March?</textarea></label>
+      <div class="check">Cloudflare's check appears here. Most visitors see a tick and nothing to solve.</div>
+      <button type="submit">Send message</button>
+      <p class="fine">We use your name and email only to answer you. <a href="#">How we handle your message</a></p>
+    </form>
+  </div></main>
+</section>
+
+<!-- View 2: after sending -->
+<section class="view">
+  <div class="wrap view-name">2. After a message is sent. The form is gone and this line stands in its place.</div>
+  <main><div class="wrap">
+    <h1>Contact</h1>
+    <p>Write to us about lessons, membership, or the trail report. A volunteer reads every message and answers within a few days.</p>
+    <p class="sent" role="status">Your message was sent. We answer at the address you gave.</p>
+  </div></main>
+</section>
+
+<!-- View 3: form on but setup missing -->
+<section class="view">
+  <div class="wrap view-name">3. The form is switched on but its setup is missing. The page shows the editor's text and no form, and never prints an address. The site's log says which part is missing.</div>
+  <main><div class="wrap">
+    <h1>Contact</h1>
+    <p>Write to us about lessons, membership, or the trail report. A volunteer reads every message and answers within a few days.</p>
+  </div></main>
+</section>
+
+<!-- View 4: search page -->
+<section class="view">
+  <div class="wrap view-name">4. The search page, reached from the menu.</div>
+  <main><div class="wrap">
+    <h1>Search</h1>
+    <form class="search" role="search" onsubmit="return false" style="display:flex">
+      <label class="sr" for="q">Search this site</label>
+      <input id="q" type="search" value="wax">
+      <button type="submit">Search</button>
+    </form>
+    <p class="count" role="status">3 results for "wax"</p>
+    <ul class="results">
+      <li><a href="#">Wax clinic moves to the warming hut</a><p>Bring your own skis and a scraper. We cover glide <mark>wax</mark> first, then kick <mark>wax</mark> for classic skis.</p></li>
+      <li><a href="#">What to bring to your first lesson</a><p>Rental skis come with <mark>wax</mark> already on. Dress in layers and bring water.</p></li>
+      <li><a href="#">Trail report, second week of January</a><p>Cold snow all week. Blue <mark>wax</mark> held from the stadium to the upper loop.</p></li>
+    </ul>
+    <p class="count" style="margin-top:34px">With nothing found, the page says: No results for "waxx". Check the spelling or try a shorter word.</p>
+  </div></main>
+</section>
+
+<!-- View 5: footer with social links -->
+<section class="view">
+  <div class="wrap view-name">5. Social links in the footer. Each named network gets its icon. A link added as "other" shows as text.</div>
+  <footer class="site"><div class="wrap">
+    <nav aria-label="Footer"><a href="#">Contact</a> <a href="#">Safeguarding and privacy</a></nav>
+    <ul class="social" aria-label="Elsewhere">
+      <li><a href="#" rel="me"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.9c0-.9.3-1.5 1.6-1.5h1.6V4.5c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.4H8v3.2h2.6v8z"/></svg><span class="sr">Facebook</span></a></li>
+      <li><a href="#" rel="me"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 3h9A4.5 4.5 0 0 1 21 7.5v9a4.5 4.5 0 0 1-4.5 4.5h-9A4.5 4.5 0 0 1 3 16.500v-9A4.5 4.5 0 0 1 7.500 3zm0 2A2.5 2.500 0 0 0 5 7.500v9A2.500 2.500 0 0 0 7.500 19h9a2.500 2.500 0 0 0 2.500-2.500v-9A2.500 2.500 0 0 0 16.500 5zM12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm4.600-3.100a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg><span class="sr">Instagram</span></a></li>
+      <li><a href="#" rel="me"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.600 7.200a2.700 2.700 0 0 0-1.900-1.900C18 4.800 12 4.800 12 4.800s-6 0-7.700.500A2.700 2.700 0 0 0 2.400 7.200C2 8.900 2 12 2 12s0 3.100.400 4.800a2.700 2.700 0 0 0 1.900 1.900c1.700.500 7.700.500 7.700.500s6 0 7.700-.500a2.700 2.700 0 0 0 1.900-1.900c.400-1.700.400-4.800.400-4.800s0-3.100-.400-4.800zM10 15.200V8.800l5.300 3.200z"/></svg><span class="sr">YouTube</span></a></li>
+      <li><a class="text" href="#" rel="me">Trail cam</a></li>
+    </ul>
+    <p class="copy">Ridgeline Nordic, a made-up club for this mock-up.</p>
+  </div></footer>
+</section>
+
+</body>
+</html>
