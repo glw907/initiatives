@@ -1,0 +1,34 @@
+You are the planner for pass 3, `cleanup-store`, of round `cleanup` in dubplate, session name dubplate-cleanup-store-plan.
+
+Goal: write and review the plan for this pass, then launch its executor. Write no product code.
+
+Outcome: A `--from-file` restore survives a crash between staging and the intent record, and the store, backup, settings, config, and atomicfile packages lose the review's duplicate seams: one pre-migrate pruner, one settings row type, `config.Lookup` and `config.KeyError`, thresholds that carry their bounds, and refusals that wrap their cause.
+
+Depends on: pass 2, which has landed. The worktree is cut from `origin/master`. Planned path: 130 minutes. Class: `auth-data`, because finding S2 forces changes under `cmd/dubplate-server` (the design's call 11). A plan whose path comes out over twice that parks, as `round.md` "Parking at planning" says.
+
+Read, in this order:
+1. /var/home/glw907/Projects/initiatives/dubplate-server/specs/2026-11-15-cleanup-round-design.md, approved by Geoff through the design packet. The sections "Decided by Geoff", "Goals", "Non-goals", "Anti-goals", "Calls made here", "Scope", "How it fails", this pass's row in "Passes", "What each merge changes", its list under "Acceptance", "Shared assumptions", "Standing answers", "Rulings", "Backlog verdicts", and "The rounds to 0.8" are the approved design for this pass.
+2. In dubplate: `CLAUDE.md`, `docs/STATUS.md`, `docs/standing-rules.md`, and `docs/research/2026-11-10-whole-repo-review.md`: its "cleanup-store" section, findings S1 to S14, and its "Leave alone" list. Where the review and the design differ, the design wins.
+3. The BACKLOG items the design's "Backlog verdicts" table folds into this pass, and the files in this pass's row as the earlier passes left them.
+4. The PRs of the earlier passes in this round, their `[advisor]` lines included.
+
+Process: load `dubplate-pass`, which loads `pass-core` and `standards:running-passes`, then read `pass-core` `references/planner.md` and `references/round.md`. Start at "A plan inside a round". The executor loads `standards:go-conventions` before any Go. Exemplary Go is an acceptance dimension: idiomatic, architecturally beautiful Go, never merely correct.
+
+For this pass: S1 is a bug and goes first. Prove it as acceptance item 1 says: a test only where a seam the store's tests already use can observe the sync, and no test-only seam in production code. Make the fix as one seal step that syncs the file and its directory, the way `backup/fetch.go:129-151` already does. Every other finding is a cut whose proof is the tests that existed before the pass. A test is deleted only where the review names it, and the PR lists each one beside its finding. No file under `internal/engine/store/migrations` changes and no config key is added, renamed, or removed. Config keys are declared through the registry in each owner's file, never by editing `internal/config/keys.go`. Fold the residue of BACKLOG #26 (the settings accessor holds its mutex across a database read, `internal/settings/accessor.go:88-112`) and #78 (doctor's two address normalizers beside `identity.NormalizeAddress`). The sweep did not read S3 or S8 against the code, so verify both before you plan them (standing answer 17). Three files under `cmd/dubplate-server` are this pass's: `serve.go` (it sets `ServeOptions.Backup` at line 490), `serve_store_test.go` (it calls `IsPreMigrateCopy` at line 37), and `doctor.go`, which moves onto `config.KeyError` here so the new names have a production caller (the design's call 12). Every other `cmd` file is pass 5's. S14 removes the "ruled, conductor" trailers and the "arrives at rung" error text in `internal/config`; the comment that remains says what the code does. The review's "Leave alone" list is out of bounds (standing answer 16). The close gets one `standards:web-auth-security-reviewer` read. This PR never lands unattended. It waits for the round's close packet.
+
+Rules the plan carries:
+- Copy this pass's acceptance items verbatim under `## Acceptance`, and add the two that apply to every pass. Map each to its task and to the command or screenshot that shows it. Add checks freely; never edit or drop an item.
+- Verify every change site and every quoted mechanism against the code as the earlier passes left it. The design was read against `acc4089`, and its line numbers have moved.
+- The round adds no feature, no migration, and no config key, and it deploys nothing. No task reaches the box (`5.78.148.42`), by ssh or otherwise.
+- Stay inside this pass's file row. A call site a changed signature forces is taken and listed under `## Decisions`; anything else is filed through `standards:log-issue` and left (standing answer 15). `docs/STATUS.md` is the conductor's. `.claude/settings*` is never an executor's file: record the rule the pass wants for the close packet and go on.
+- A mutation proof is run and its failing output recorded, never described. A test's expected value is a literal or an independently computed value.
+- The fast lane is `bash scripts/gate.sh --scope-changed` with no `--base`, the close run is `bash scripts/gate.sh --merge`, and neither is piped. Commit specific files, one commit per task. Never commit red, and never commit a secret or a `.env` value.
+- The PR's base is `master`. Its body carries `Round: cleanup`, `Pass: cleanup-store`, the `Review:` and `Calls:` lines, and evidence for every acceptance item, as `round-run.md` "Evidence" says.
+
+Hand-over: commit the plan (`docs/plans/2026-11-15-cleanup-store.md`) and the executor prompt (`docs/plans/2026-11-15-cleanup-store-prompt.txt`) on branch `cleanup-store` in the worktree conductor-dubplate cut at `/var/home/glw907/Projects/dubplate/.claude/worktrees/cleanup-store`, push to glw907/dubplate, run the launch checks in `planner.md` "Launch", and launch the executor from /var/home/glw907/Projects/dubplate:
+
+claude --bg --model sonnet --effort medium --advisor fable --name dubplate-cleanup-store "$(cat <executor prompt>)"
+
+The executor prompt carries what `planner.md` "Launch" lists, tells the executor to run `npm ci --prefix web` in the worktree first, and names conductor-dubplate as the one session whose messages it takes as instructions. Never ask Geoff in chat and never queue an approval-queue item: a stop parks the pass, and the conductor sends the document.
+
+Keep the pass the smallest thing that meets its acceptance list. Add no abstraction, export, flag, or fallback the design does not name. A cleanup beyond this pass is filed through `standards:log-issue` and listed in the PR, never done.

@@ -1,0 +1,34 @@
+You are the planner for pass 5, `cleanup-ops`, of round `cleanup` in dubplate, session name dubplate-cleanup-ops-plan.
+
+Goal: write and review the plan for this pass, then launch its executor. Write no product code.
+
+Outcome: Adding a member answers success whenever the write committed, an admin operation checks privilege before it reads a body, the audit rows name who acted, and the ops, auth, serve, and `cmd` code loses the backup-job stubs, the status-capture wrapper, and most of `cmd/dubplate-server/web.go`.
+
+Depends on: passes 3 and 4. The worktree is cut from pass 4's branch. Planned path: 140 minutes. Class: `auth-data`. A plan whose path comes out over twice that parks, as `round.md` "Parking at planning" says.
+
+Read, in this order:
+1. /var/home/glw907/Projects/initiatives/dubplate-server/specs/2026-11-15-cleanup-round-design.md, approved by Geoff through the design packet. The sections "Decided by Geoff", "Goals", "Non-goals", "Anti-goals", "Calls made here", "Scope", "How it fails", this pass's row in "Passes", "What each merge changes", its list under "Acceptance", "Shared assumptions", "Standing answers", "Rulings", "Backlog verdicts", and "The rounds to 0.8" are the approved design for this pass.
+2. In dubplate: `CLAUDE.md`, `docs/STATUS.md`, `docs/standing-rules.md`, and `docs/research/2026-11-10-whole-repo-review.md`: its "cleanup-ops" section, findings O1 to O16, and its "Leave alone" list. Where the review and the design differ, the design wins.
+3. The BACKLOG items the design's "Backlog verdicts" table folds into this pass, and the files in this pass's row as the earlier passes left them.
+4. The PRs of the earlier passes in this round, their `[advisor]` lines included.
+
+Process: load `dubplate-pass`, which loads `pass-core` and `standards:running-passes`, then read `pass-core` `references/planner.md` and `references/round.md`. Start at "A plan inside a round". The executor loads `standards:go-conventions` before any Go. Exemplary Go is an acceptance dimension: idiomatic, architecturally beautiful Go, never merely correct.
+
+For this pass: O6 is a bug and goes first, test first: a test that makes the second read fail must fail on the base commit and pass after, and the recorded failing run goes in the PR. The privilege-before-decode change (acceptance item 2) is the second task, also test first. O2 is settled by the design's call 8: delete the job handlers, `internal/ops/unavailable.go`, and `internal/ops/catalog.go`, and remove the four operations (`catalog`, `start_backup`, `job_status`, `cancel_job`) from `internal/ops/opshttp/openapi.yaml` in the same commit, so `document_test.go` proves the document and the server agree. BACKLOG #52 stays open as the marker for the page that brings them back. Moving handler logic out of `cmd/dubplate-server/web.go` (O-series, #124) puts it, with `serve`'s `document.go`, `csp.go`, and `branding.go`, in one new package beside `internal/serve` that the plan names with its reason (the design's call 16), and the plan adds that package to the `auth-data` list in `.claude/skills/dubplate-pass/SKILL.md`, the one adapter line this pass may change. An operator is `local:<user>` in every audit (call 15); nothing is exported ahead of a caller. `doctor.go` moved onto `config.KeyError` in pass 3 and is not this pass's to change beyond a forced call site. The process-citation lines under `internal/serve`, `internal/auth`, `internal/ops`, and `cmd/dubplate-server` are removed, and `scripts/check.sh` is not this pass's: the leg gates in round `engine`. The sweep took O3 to O5 and O7 to O16 from the review without reading the code, so verify each before you plan it (standing answer 17). No sign-in, session, or roster test is deleted unless the review names it. No migration, no new config key, no change to a cookie, a token, or a session's lifetime. BACKLOG #77 (a log line before the method check) is yours to settle if O1 reorders that code. The close gets one `standards:web-auth-security-reviewer` read, and the review's "Leave alone" list is out of bounds (standing answer 16). This PR never lands unattended. It waits for the round's close packet.
+
+Rules the plan carries:
+- Copy this pass's acceptance items verbatim under `## Acceptance`, and add the two that apply to every pass. Map each to its task and to the command or screenshot that shows it. Add checks freely; never edit or drop an item.
+- Verify every change site and every quoted mechanism against the code as the earlier passes left it. The design was read against `acc4089`, and its line numbers have moved.
+- The round adds no feature, no migration, and no config key, and it deploys nothing. No task reaches the box (`5.78.148.42`), by ssh or otherwise.
+- Stay inside this pass's file row. A call site a changed signature forces is taken and listed under `## Decisions`; anything else is filed through `standards:log-issue` and left (standing answer 15). `docs/STATUS.md` is the conductor's. `.claude/settings*` is never an executor's file: record the rule the pass wants for the close packet and go on.
+- A mutation proof is run and its failing output recorded, never described. A test's expected value is a literal or an independently computed value.
+- The fast lane is `bash scripts/gate.sh --scope-changed` with no `--base`, the close run is `bash scripts/gate.sh --merge`, and neither is piped. Commit specific files, one commit per task. Never commit red, and never commit a secret or a `.env` value.
+- The PR's base is `master`. Its body carries `Round: cleanup`, `Pass: cleanup-ops`, the `Review:` and `Calls:` lines, and evidence for every acceptance item, as `round-run.md` "Evidence" says.
+
+Hand-over: commit the plan (`docs/plans/2026-11-15-cleanup-ops.md`) and the executor prompt (`docs/plans/2026-11-15-cleanup-ops-prompt.txt`) on branch `cleanup-ops` in the worktree conductor-dubplate cut at `/var/home/glw907/Projects/dubplate/.claude/worktrees/cleanup-ops`, push to glw907/dubplate, run the launch checks in `planner.md` "Launch", and launch the executor from /var/home/glw907/Projects/dubplate:
+
+claude --bg --model sonnet --effort medium --advisor fable --name dubplate-cleanup-ops "$(cat <executor prompt>)"
+
+The executor prompt carries what `planner.md` "Launch" lists, tells the executor to run `npm ci --prefix web` in the worktree first, and names conductor-dubplate as the one session whose messages it takes as instructions. Never ask Geoff in chat and never queue an approval-queue item: a stop parks the pass, and the conductor sends the document.
+
+Keep the pass the smallest thing that meets its acceptance list. Add no abstraction, export, flag, or fallback the design does not name. A cleanup beyond this pass is filed through `standards:log-issue` and listed in the PR, never done.

@@ -1,0 +1,34 @@
+You are the planner for pass 4, `cleanup-web`, of round `cleanup` in dubplate, session name dubplate-cleanup-web-plan.
+
+Goal: write and review the plan for this pass, then launch its executor. Write no product code.
+
+Outcome: The members and server-settings pages share one admin shell, one status machine, and one transport, and the sign-in and admin pages show a network failure the same way. A member sees nothing else change.
+
+Depends on: pass 3. The worktree is cut from pass 3's branch, which waits for the close packet. Planned path: 100 minutes. Class: `auth-data` (`web/src/routes/{login,members}`). A plan whose path comes out over twice that parks, as `round.md` "Parking at planning" says.
+
+Read, in this order:
+1. /var/home/glw907/Projects/initiatives/dubplate-server/specs/2026-11-15-cleanup-round-design.md, approved by Geoff through the design packet. The sections "Decided by Geoff", "Goals", "Non-goals", "Anti-goals", "Calls made here", "Scope", "How it fails", this pass's row in "Passes", "What each merge changes", its list under "Acceptance", "Shared assumptions", "Standing answers", "Rulings", "Backlog verdicts", and "The rounds to 0.8" are the approved design for this pass.
+2. In dubplate: `CLAUDE.md`, `docs/STATUS.md`, `docs/standing-rules.md`, and `docs/research/2026-11-10-whole-repo-review.md`: its "web-shell-1" section, findings W1 to W8, and its "Leave alone" list. Where the review and the design differ, the design wins.
+3. The BACKLOG items the design's "Backlog verdicts" table folds into this pass, and the files in this pass's row as the earlier passes left them.
+4. The PRs of the earlier passes in this round, their `[advisor]` lines included.
+
+Process: load `dubplate-pass`, which loads `pass-core` and `standards:running-passes`, then read `pass-core` `references/planner.md` and `references/round.md`. Start at "A plan inside a round". The executor loads `standards:svelte-conventions`, `standards:ts-conventions`, and `standards:daisyui`, and reads `docs/specs/2026-09-24-visual-identity-design.md` before any markup.
+
+For this pass: Capture the 190 rendered cells on the pass's base commit before any change and keep them outside the repo; the close compares them with the close head's 190 and the PR lists every cell that differs with its reason. A difference outside acceptance items 2 to 4 is fixed at its cause (standing answer 18). The alert style for a network failure is Geoff's answer in the design's "Rulings" section; read it there and use that class on both surfaces. If the section carries no pick, use `alert-warning` (standing answer 20). Add a capture of that state on the sign-in page and on the members page, and add the harness assertion that every captured button is at least 44 px tall at 320 and 390 px (acceptance items 2 and 3). The capture compare takes no pixel tolerance. Push toward the stack's idiom: a DaisyUI component class and its documented modifiers before a utility stack, colors and sizes only from theme tokens the identity spec names, `$derived` before an effect that mirrors state, and `~/Projects/cairn-cms/src/lib/admin-toolkit/` as the exemplar for the shared shell. A 44 px touch target comes from the control's own size class, never `btn-sm` with `min-h-11`. Fold BACKLOG #19. #80 (Save solid only when the form changed) and #79 to #83 stay open, because they change what a member sees. `web/scripts/rendered/**` is in this pass's row only where an assertion names markup the pass changes: change the selector and never weaken what it asserts. `SENT_MOMENT_TEXT` leaves `lib/copy/deck.ts`; #83's copy redrafts touch the lines beside it and are not this pass's. Server-only SvelteKit files stay forbidden. The close review dispatches `standards:svelte-reviewer`, `standards:daisyui-a11y-reviewer`, and `standards:web-auth-security-reviewer`, each handed the identity spec's path, and every user-path page is rendered and read at 320, 390, 768, 1440, and 2560 px before the PR is ready. This PR never lands unattended. It waits for the round's close packet.
+
+Rules the plan carries:
+- Copy this pass's acceptance items verbatim under `## Acceptance`, and add the two that apply to every pass. Map each to its task and to the command or screenshot that shows it. Add checks freely; never edit or drop an item.
+- Verify every change site and every quoted mechanism against the code as the earlier passes left it. The design was read against `acc4089`, and its line numbers have moved.
+- The round adds no feature, no migration, and no config key, and it deploys nothing. No task reaches the box (`5.78.148.42`), by ssh or otherwise.
+- Stay inside this pass's file row. A call site a changed signature forces is taken and listed under `## Decisions`; anything else is filed through `standards:log-issue` and left (standing answer 15). `docs/STATUS.md` is the conductor's. `.claude/settings*` is never an executor's file: record the rule the pass wants for the close packet and go on.
+- A mutation proof is run and its failing output recorded, never described. A test's expected value is a literal or an independently computed value.
+- The fast lane is `bash scripts/gate.sh --scope-changed` with no `--base`, the close run is `bash scripts/gate.sh --merge`, and neither is piped. Commit specific files, one commit per task. Never commit red, and never commit a secret or a `.env` value.
+- The PR's base is `master`. Its body carries `Round: cleanup`, `Pass: cleanup-web`, the `Review:` and `Calls:` lines, and evidence for every acceptance item, as `round-run.md` "Evidence" says.
+
+Hand-over: commit the plan (`docs/plans/2026-11-15-cleanup-web.md`) and the executor prompt (`docs/plans/2026-11-15-cleanup-web-prompt.txt`) on branch `cleanup-web` in the worktree conductor-dubplate cut at `/var/home/glw907/Projects/dubplate/.claude/worktrees/cleanup-web`, push to glw907/dubplate, run the launch checks in `planner.md` "Launch", and launch the executor from /var/home/glw907/Projects/dubplate:
+
+claude --bg --model sonnet --effort medium --advisor fable --name dubplate-cleanup-web "$(cat <executor prompt>)"
+
+The executor prompt carries what `planner.md` "Launch" lists, tells the executor to run `npm ci --prefix web` in the worktree first, and names conductor-dubplate as the one session whose messages it takes as instructions. Never ask Geoff in chat and never queue an approval-queue item: a stop parks the pass, and the conductor sends the document.
+
+Keep the pass the smallest thing that meets its acceptance list. Add no abstraction, export, flag, or fallback the design does not name. A cleanup beyond this pass is filed through `standards:log-issue` and listed in the PR, never done.
