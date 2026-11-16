@@ -2,9 +2,9 @@
 kind: report
 ---
 
-# Round cleanup has started: pass 1 is planning
+# Round cleanup: pass 1 has landed, pass 2 is planning
 
-Geoff approved starting the round on 2026-11-16 (document `20261116-042624-28c2c2`). Every start-line check read true: dubplate level with its remote on `master`, no open PR, no other dubplate session, weekly usage at 50 percent. Pass 1 (`cleanup-ci`) is planning from `origin/master`. Nothing waits for Geoff yet. Nothing has deployed and the box is unchanged.
+Geoff approved starting the round on 2026-11-16 (document `20261116-042624-28c2c2`). Pass 1 (`cleanup-ci`, PR #12) landed as `73bae3b` with its check green and a clean whole-branch review. Pass 2 (`cleanup-gate`) is planning from `origin/master`. Nothing waits for Geoff yet. Nothing has deployed and the box is unchanged.
 Resume from: /var/home/glw907/Projects/initiatives/dubplate-server/plans/2026-11-15-cleanup-conductor-prompt.txt
 
 ## What waits for Geoff
@@ -13,16 +13,16 @@ Nothing now. The close packet will come after pass 5's review and will hold pass
 
 ## What behaves differently now
 
-Nothing has landed.
+Every pull request to dubplate runs `scripts/check.sh` as a check on GitHub, with all ten legs, a read-only token, and every action pinned by commit id. Two throwaway commits showed it goes red. Dependencies moved to their newest minors and patches. BACKLOG, `CLAUDE.md`, the standing rules, and the `dubplate-pass` adapter describe rounds, with 23 kept items stamped as swept.
 
 ## What went wrong
 
-Nothing yet.
+Planning misses: one `[stale-fact]`, BACKLOG #26's identity comment item, which the code had already fixed. Flagged choices: `modernc.org/sqlite` held at v1.60.1 because v1.61 breaks a store deadline test, and two major bumps held for Geoff. The Go proof of a failing check took three tries because two breaks stopped at `gofmt`.
 
 ## What it cost
 
-Planned: 600 path minutes across five passes. Taken: none yet. Weekly usage before the first launch: 50 percent.
+Planned: 600 path minutes across five passes. Pass 1 planned 182 and took about 80. Weekly usage: 50 percent before the first launch, 53 percent before pass 2.
 
 ## What is left for later
 
-Nothing filed yet. Round `engine` is next and has no design yet.
+Filed by pass 1: the held `sqlite` bump (#129), the held TypeScript 7 and `@types/node` 26 majors (#130, #131), the held PyPI pins (#132), a timing-dependent `TestBusyTimeout` failure on the runner (#133), and stale wording in `scripts/check.sh` (#134). Round `engine` is next and has no design yet.
