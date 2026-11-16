@@ -75,3 +75,5 @@ the site is built.
   `reference/g3/`); its plan (`plans/2026-11-09-theme-garden-3-plan.md`, 940 path minutes) is handed
   to `conductor-cairn-cms`, which launches it after setup-tooling pass 3's T3.5 sweep. Geoff's one
   read comes in the end packet. glw907/survey#10 is closed.
+  Round `pennant` merged 2026-11-16 (cairn-cms #251, #253, #254, #255): Waymark 1.2.0 and Pennant 1.0.0
+  are in the catalog, and demo-pennant.cairn.pub is live. Survey (G3) is next.

@@ -1,0 +1,2 @@
+Draft, not sent. Round events: pass 1 (feed) merged 2026-11-15 as cairn-cms PR #250 (buildICalendarResponse in /delivery; review accept, 0 findings; CI green). Weekly usage 27% at launch. Passes 2 and 3 hold: start lines 4 and 5 unmet (Pennant at pass 1). Waiting on a message from conductor-pennant.
+Resume from: /var/home/glw907/Projects/initiatives/theme-garden/plans/2026-11-14-events-conductor-prompt.txt
