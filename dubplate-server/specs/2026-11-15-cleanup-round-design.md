@@ -400,6 +400,23 @@ round-based development pattern is complete. The conductor launched on the appro
 before it cut a worktree or launched a planner. No session launches this round until Geoff says to,
 and the design and prompts are read against the changed pattern first.
 
+Ruled: on 2026-11-16 Geoff approved, through the Approval Queue, document `20261116-163931-082d9d`
+("Let a round keep working while one pass waits for your answer?"), with the pick "The running
+round takes it now". For this round the ruling below replaces standing answer 5 of `round-run.md`,
+and the rest of this design stands. It is copied from that page's section "The ruling the
+`dubplate` conductor would follow".
+
+- Pass 3 only comes after pass 2. Pass 4 only comes after pass 3, and builds on pass 2. Pass 5 builds
+  on passes 3 and 4.
+- When pass 2 or pass 3 parks, send the `decide` document as today, then launch the next pass that
+  doesn't build on the parked one. Cut it from `origin/master`, the default branch of that repo, or
+  from the branch of an earlier pass that is waiting for the close document.
+- When Geoff answers, finish the pass in flight and then relaunch the parked pass. Its executor
+  merges `origin/master` into its branch first.
+- Before the close document goes, the executor of the pass that ran ahead merges the resumed pass's
+  branch into its branch and runs the gate again.
+- The close document lists the pull requests in the designed order.
+
 ## Backlog verdicts
 
 A scoped sweep read every open item that names a file in the five passes against `acc4089`. Approving
