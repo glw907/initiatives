@@ -389,8 +389,11 @@ The twelve in `round-run.md` hold. This design adds:
 
 ## Rulings
 
-None yet. Geoff's approve adds the `Ruled:` line, and his answer on the network-failure alert goes
-here.
+Ruled: approved by Geoff on 2026-11-16 through the Approval Queue, document `20261116-000308-88f4d3`.
+
+- The round list: "Use these eight rounds, in this order".
+- The network-failure alert: "Warning on every page". Pass 4 uses `alert-warning` on the sign-in page
+  and the admin pages.
 
 ## Backlog verdicts
 
