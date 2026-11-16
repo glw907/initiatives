@@ -395,6 +395,11 @@ Ruled: approved by Geoff on 2026-11-16 through the Approval Queue, document `202
 - The network-failure alert: "Warning on every page". Pass 4 uses `alert-warning` on the sign-in page
   and the admin pages.
 
+Held: on 2026-11-15, after the approval, Geoff said to hold the round until his work on the
+round-based development pattern is complete. The conductor launched on the approve was stopped
+before it cut a worktree or launched a planner. No session launches this round until Geoff says to,
+and the design and prompts are read against the changed pattern first.
+
 ## Backlog verdicts
 
 A scoped sweep read every open item that names a file in the five passes against `acc4089`. Approving
