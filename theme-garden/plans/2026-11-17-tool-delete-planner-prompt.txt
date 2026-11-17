@@ -1,0 +1,43 @@
+You are the planner for the one pass `tool-delete` in cairn-cms, session name cairn-cms-tool-delete-plan. It is a one-pass round: no conductor, no round id, no order table.
+
+Goal: write and review the plan for this pass, then launch its executor. Write no product code.
+
+Outcome: one pull request removes the Go tool from cairn-cms with everything that exists only to build, test, publish, or check it: `tool/**`, `packages/create-cairn-site/**`, three workflows, the platform-package script, and the checks whose only subject is Go. The engine's gate and CI then run with no Go lane. After the merge the repo has no `cairn` command, and every page and skill that names one opens with the design's one-sentence note. The pass publishes nothing and changes no version.
+
+Depends on: none. The worktree is cut from `origin/main`. Planned work: 300 minutes; planned path: 460 minutes. Class: `auth-data`, with `runner` paths, and not `live-account`. A plan whose path comes out over 920 minutes parks, as `round.md` "Parking at planning" says, and in a one-pass round you send the `decide` document yourself through `approval-packet`.
+
+Read, in this order:
+1. /var/home/glw907/Projects/initiatives/theme-garden/specs/2026-11-17-tool-deletion-design.md, approved by Geoff in queue document `20261117-185742-aee396` (2026-11-17, 19:05 UTC). Every section is the approved design for this pass. "Files" is the file list, "Acceptance" holds the 18 items, "Standing answers" holds answers 13 to 26, and "Backlog verdicts" holds the 90 verdicts. "Review" records what two fresh readers found and what was done with each; the replies are in `2026-11-17-tool-deletion-review-mechanics.md` beside it.
+2. The queue page Geoff read: /var/home/glw907/.local/state/approval-queue/store/20261117-185742-aee396/v1.md. Its "Calls I made" section is what he approved in plain words.
+3. Three rulings the design rests on, each at /var/home/glw907/.local/state/approval-queue/store/<id>/v1.md: `20261117-173947-69f637` (the Go tool is retired), `20261117-182509-a29435` (build straight to the target; a pass may remove a check together with the code it guards), and `20261117-182825-8b4207` (every other unmerged cairn pass is stopped; pull request #259 stays open and unmerged).
+4. In cairn-cms: CLAUDE.md, docs/STATUS.md, and the files in the design's "Files" section as `origin/main` holds them.
+
+Process: load `cairn-pass`, which loads `pass-core` and `cairn-running-passes`, then read `pass-core` `references/planner.md`, `references/round.md`, `references/round-run.md`, and `references/ready.md`. Start at `SKILL.md` "Lifecycle" step 4: the design is approved, and no spec is written. Follow the four "Planner rules" in `round.md`. Get one `standards:plan-reviewer` read before code, save its reply beside the plan, and fold it per `standards:spec-plan-review`. Name in the plan the skills the executor loads, `cairn-running-passes` and `cairn-writing-docs` among them.
+
+For this pass:
+- The design read cairn-cms at `79d326bed`. Fetch, and where `origin/main` has moved, plan against the files as merged (standing answer 14).
+- Derive the file list again from recorded searches, as `round.md` planner rule 2 requires, and run the search in `ready.md` "A retired form". The design's list came from one inventory and the designer's searches. A hit outside the list is handled by standing answer 15.
+- The deletion of `tool/`, the launcher, and the three workflows lands in one first commit together with the edits to `gate-tier.mjs`, `gate-table.json`, and their tests, so no later fast-lane range selects the tool's gate (standing answer 25).
+- Never run `make -C tool check`, before or after the deletion (standing answer 22). Nothing under `tool/` is kept, copied, or stubbed (standing answer 16).
+- The pass rewrites no doc page. Each page or skill that names a `cairn` command gets the note right under its title, and the two sentences that tell a reader to install the Go binary come out (standing answer 17). The note's exact sentence is in the design's "Files" section. Files a person reads follow the repo's docs rules through `cairn-writing-docs`.
+- The pass edits held paths: seven workflow files, `ci-green.json`, and two release scripts. Geoff's approval of the design covers those edits, as the queue page's "Held files" call says. `.claude/settings*` is never edited: the stale permission line at `.claude/settings.json:20` stays and is listed in the `merge` document under "Found, not done" with the two workstation lines the design names (standing answer 18).
+- Pull request #259 stays open and is never rebased, closed, or merged by this pass. Branches, worktrees, and pull requests of stopped passes are left as they are (standing answer 21).
+- The pass lands the design's backlog verdicts in `BACKLOG.md` on the pass branch and moves the 26 misplaced open items above `## Done`. Thirteen ids are each used by two items, so edit by the line the design gives.
+- No live admin smoke runs (standing answer 19), and the pull request says so under `## Decisions`.
+- At close: one whole-branch `standards:diff-reviewer` read and one `standards:web-auth-security-reviewer` read whose question is what the deletion strands (design, "Risk class and reviews"). The pass removes nothing on GitHub (standing answer 20).
+- The executor writes `docs/STATUS.md` and closes the pass itself. Its pull request goes to Geoff as a `merge` document through `approval-packet`, with evidence for each of the 18 acceptance items, and it merges on the approve through `approval-queue merge`. The document's first paragraph says plainly whether the closing reviewers accepted, whether every check on the head commit is green, and whether the page asks anything beyond the approved design. Anything Geoff must decide goes on the page as a question.
+
+Rules the plan carries:
+- Copy the design's 18 acceptance items verbatim under `## Acceptance`. Map each to its task and to the command that shows it. Add checks freely; never edit or drop an item.
+- The plan's `## Pre-flight` holds no step for Geoff. If your planning finds one, that is a planning miss and holds the launch for a pre-launch packet (`planner.md` "Pre-flight").
+- Every stop the plan writes has a standing answer or goes through `advisor.md`. No stop says "ask Geoff".
+- The usage stop of 85 percent is lifted until the reset on November 20 (standing answer 23).
+- Run one heavy build at a time, and none while `ps` shows a `vite build` or `vitest` from another session.
+
+Start line and hand-over: this prompt is launched only when no session named `conductor-*` has its working folder in cairn-cms and no session is named `cairn-cms-tool-delete*`. Check both again yourself with `claude agents --json`, and run `claude-worktree-busy` on the main checkout before you cut anything. Cut the pass's worktree under `.claude/worktrees/` from `origin/main` as `cairn-running-passes` "Set up a worktree" says, and work in it by path. Commit the plan and the executor prompt on the pass's branch and push to glw907/cairn-cms. In /var/home/glw907/Projects/initiatives, commit the design, its review-mechanics file, this prompt, and the initiative record's line for the pass (initiative `theme-garden`), path-limited and only while `claude agents --json` lists no session whose name starts `conductor-`. Then run the launch checks in `planner.md` "Launch" and launch the executor from /var/home/glw907/Projects/cairn-cms:
+
+claude --bg --model sonnet --effort medium --advisor fable --name cairn-cms-tool-delete "$(cat <executor prompt>)"
+
+The executor prompt carries the fields in cairn-cms `.claude/skills/cairn-running-passes/references/launch-prompts.md`, with no conductor line. After the launch, read the job's `state.json` as `planner.md` says.
+
+Keep the pass the smallest thing that meets its acceptance list. Add no abstraction, check, or fallback the design does not name. What the new `cairn` command needs is the route design's business and is recorded in /var/home/glw907/.local/state/desk/handover/2026-11-17-cairn-command-design.md; this pass builds none of it. A cleanup beyond this pass is filed through `standards:log-issue` and listed in the pull request, never done.
