@@ -1,5 +1,10 @@
 # Foundation: one structure for kinds, themes, features, and starters
 
+Replaced in part on 2026-11-17. Passes 1 to 3 of this round landed. Passes 4 to 7 are stopped
+(`20261117-182825-8b4207`), and their work moves to the route in `specs/2026-11-17-route-rounds.md`,
+which Geoff approved in queue document `20261117-210356-a03b21`. This file is kept as the source of
+its findings.
+
 Initiative: theme-garden. Round: `foundation`. Status: draft, waiting for Geoff's approval.
 Read against cairn-cms at `6499871a8`.
 

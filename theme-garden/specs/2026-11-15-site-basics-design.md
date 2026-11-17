@@ -1,5 +1,9 @@
 # Site basics: what every new cairn site starts with
 
+Replaced on 2026-11-17. Round `site-basics` is stopped (`20261117-182825-8b4207`), and its work
+moves to the route in `specs/2026-11-17-route-rounds.md`, which Geoff approved in queue document
+`20261117-210356-a03b21`. This file is kept as the source of its findings.
+
 Initiative: theme-garden. Round: `site-basics`. Status: draft, waiting for Geoff's approval.
 Read against cairn-cms at `6499871a8`.
 

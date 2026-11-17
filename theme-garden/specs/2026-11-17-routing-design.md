@@ -6,6 +6,10 @@ sendback: I answer each note and return the revised design. The designs you appr
 
 # Approve the engine's fourth routing value, for content whose pages a site's code serves?
 
+Moved on 2026-11-17. This design holds, without its edits to the template's routes. Its pass no
+longer runs as foundation pass 7. It is pass `stock-2` of the route in
+`specs/2026-11-17-route-rounds.md`, which Geoff approved in queue document `20261117-210356-a03b21`.
+
 You held events until the engine has a routing value for content whose pages a site's code serves. This page is the design of that value and of the one engine pass that builds it. Under the value the engine knows the address of every event. It lists each one in the sitemap and offers it to the link picker, to `cairn:` links, and to the menu editor, and its catch-all route leaves the page to the site's route. I ran the code behind each claim, and the results are under "What I ran". Two findings differ from the page you approved. The pass is 200 design minutes where that page guessed 120, and the value replaces the `paths` key for events only. That key is a feature's list of the addresses it serves itself, and the contact page still needs it. Four questions are yours: the value's name, where the pass runs, whether the edit screen shows a full address for every kind, and the limits. With the recommended answers the pass joins the foundation round as its seventh pass and runs while pass 4 is on hold. Nothing launches on approve. The foundation conductor starts the pass after it has read pass 3, which is running now.
 
 ## What the value does

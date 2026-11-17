@@ -1,5 +1,10 @@
 # Round two: the starter features, built as layers
 
+Replaced on 2026-11-17. Rounds `site-events` and `site-basics` are stopped
+(`20261117-182825-8b4207`), and their work moves to the route in `specs/2026-11-17-route-rounds.md`,
+which Geoff approved in queue document `20261117-210356-a03b21`. This file is kept as the source of
+its findings.
+
 Initiative: theme-garden. Rounds: `site-events`, then `site-basics`. Status: approved by
 Geoff, 2026-11-15. Read against cairn-cms at `6499871a8`, and against the foundation design
 (`specs/2026-11-15-foundation-design.md`), which this design builds on.

@@ -81,3 +81,13 @@ the site is built.
   one PR, per `specs/2026-11-17-tool-deletion-design.md` (queue id `20261117-185742-aee396`, review
   beside it). The plan, its review, and the executor prompt are on cairn-cms branch `tool-delete`
   (`docs/internal/plans/2026-11-17-tool-delete-*`); the executor is `cairn-cms-tool-delete`.
+  The route to cairn's target version is approved (Geoff, 2026-11-17, queue id
+  `20261117-210356-a03b21`): `specs/2026-11-17-route-target.md` describes the repo it ends at, and
+  `specs/2026-11-17-route-rounds.md` gives its 16 rounds and 45 passes. It replaces the stopped
+  foundation passes 4 to 7 and the structure, `site-events`, and `site-basics` rounds, whose designs
+  each say so under their titles. The prompts are
+  `plans/2026-11-17-route-<round>-conductor-prompt.txt` and
+  `plans/2026-11-17-route-<pass>-planner-prompt.txt`, and `plans/2026-11-17-route-start-lines.md`
+  holds every round's start line and launch command. Rounds run one at a time and wait for the
+  revised desk (`20261117-210640-4135d8`). Round 1, `checks`, starts after `tool-delete` merges and
+  closes. Nothing has launched.
