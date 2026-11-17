@@ -17,6 +17,10 @@ The group's system is not live until the server launches. Geoff's 2026-09-02 rul
 
 - The TUI, the local binary, and packaging before launch. They follow it.
 
+## Status
+
+Round `cleanup` merged on 2026-11-17 (report: `reports/cleanup-report.md`). Round `engine` is next and has no design yet.
+
 ## Where the work lives
 
 - `dubplate`: the code, its specs and plans, and its BACKLOG. The ROADMAP's "Path to 0.8" order moves to the repo's backlog and STATUS with this pass.
