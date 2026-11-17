@@ -77,3 +77,7 @@ the site is built.
   read comes in the end packet. glw907/survey#10 is closed.
   Round `pennant` merged 2026-11-16 (cairn-cms #251, #253, #254, #255): Waymark 1.2.0 and Pennant 1.0.0
   are in the catalog, and demo-pennant.cairn.pub is live. Survey (G3) is next.
+  Round `tool-delete`, one pass, is planned (2026-11-17): it removes the Go tool from cairn-cms in
+  one PR, per `specs/2026-11-17-tool-deletion-design.md` (queue id `20261117-185742-aee396`, review
+  beside it). The plan, its review, and the executor prompt are on cairn-cms branch `tool-delete`
+  (`docs/internal/plans/2026-11-17-tool-delete-*`); the executor is `cairn-cms-tool-delete`.
