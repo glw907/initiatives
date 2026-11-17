@@ -1,0 +1,10 @@
+id: cc-desk
+title: cc-desk
+summary: Replaces the approval queue and the desk with a status page that only reads, a terminal desk for decisions, and a forecast of the next decision session.
+status: active
+owner: glw907
+created: 2026-11-17
+repos:
+  - cc-desk
+  - workstation
+  - approval-queue
