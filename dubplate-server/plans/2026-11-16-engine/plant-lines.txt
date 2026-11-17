@@ -1,0 +1,38 @@
+// ruled, conductor: keep the seam
+// see Resolution R4
+// built in rung 3
+// lands with Task 5
+// the seam is fixed (C12)
+// docs/plans/2026-09-04-example.md:818
+// _salvage/old/file.go:12
+// Ruled, 2026-09-08
+// per R-5b4
+// contract 7
+// contract C19
+// the rung-3 fix
+// decided in 3b
+// pass 3 moved this
+// this pass adds the seat
+// a later pass wires it
+// Ruling D
+// fold B
+// R11 covers it
+// see R-M
+// one of C7's refusal shapes
+// refusal 3 of C7
+// the bypass (m6)
+// the guard (review m5)
+// the route table (spec:938-944)
+// the rung 3 spec, :288
+// folded by the conductor
+// see HISTORY
+// a Resolution settled this
+// the mechanics study
+// contract V7
+// ruling 9 refuses it
+// the ruling-E ledger
+// owner ruling 2026-09-07
+// always zero (P6)
+// neither is a failure (fold, B1)
+// the plan's one exception
+// the day Geoff rules

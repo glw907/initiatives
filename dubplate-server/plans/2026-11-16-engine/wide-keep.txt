@@ -1,0 +1,23 @@
+internal/config/config.go:14://  2. Reserved for a rung: a name the wall recognizes as belonging to
+internal/config/config.go:47:// accepts both without parsing their values. A behavior tunable a rung
+internal/config/config.go:49:// of use. A store-homed key a rung registers as a [Setting] lives in
+internal/config/config.go:116:// its fields as IdentitySource once a rung declares one, and that
+internal/config/config.go:193:// rows the registry [Load] read declared, as Load resolved it. A rung
+internal/config/config.go:277:// UTF-8, or holds a C0, DEL, or C1 control character or a
+internal/config/config.go:327:// owns: a reserved name errors naming its class and rung, a superseded
+internal/config/config.go:436:// before its rung, and every unrecognized DUBPLATE_* key.
+internal/config/config.go:439:// rung that registers an owned-now wall row or an identity source from
+internal/config/config.go:454:// fields; every owned-now row any rung registered is required
+internal/config/keys.go:101:// load error naming the class and Rung, distinct from an unrecognized
+internal/config/keys.go:110:// capability not yet built, keyed to the rung that claims it. A name
+internal/config/registry.go:11:// Registry holds every declaration a rung contributes to the config
+internal/config/registry.go:16:// declarations; a rung whose package exists registers its own from
+internal/config/registry.go:95:// collision check shares this one message shape, so a rung reading
+internal/config/registry.go:189:// never sorted: doctor prints them in table order, which is not rung
+internal/config/registry.go:323:// claimed as this family's key: the rung declaring the first
+internal/config/registry.go:408:// rung registers the selector as a wall row, and the wall must not
+internal/config/thresholds.go:23:// String returns k's name, or "ThresholdKind(N)" for a kind no rung
+internal/config/thresholds.go:41:// errUnnamedKind marks a parse under a kind no rung has named.
+internal/config/thresholds.go:79:// caller reports on a parse error. Rungs register thresholds as they
+internal/engine/tagio/read.go:339:// readQ8 projects the two R128 members, which are Q8 fixed point on
+internal/harness/conform/case.go:157:// exactly, because the ladder's medium rung is decided by the minimum

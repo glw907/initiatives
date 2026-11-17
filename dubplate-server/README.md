@@ -19,7 +19,7 @@ The group's system is not live until the server launches. Geoff's 2026-09-02 rul
 
 ## Status
 
-Round `cleanup` merged on 2026-11-17 (report: `reports/cleanup-report.md`). Round `engine` is next and has no design yet.
+Round `cleanup` merged on 2026-11-17 (report: `reports/cleanup-report.md`). Round `engine` is one pass, launched on 2026-11-17 as session `dubplate-engine` on dubplate's branch `engine`.
 
 ## Where the work lives
 
@@ -28,3 +28,4 @@ Round `cleanup` merged on 2026-11-17 (report: `reports/cleanup-report.md`). Roun
 ## Records
 
 - The dubplate Go rewrite, uploader, and music VPS docs move into `dubplate`'s own `docs/` under the migration map.
+- Round `engine`: the design is `specs/2026-11-16-engine-round-design.md`, approved by Geoff on 2026-11-17 (queue document `20261117-063854-e44c48`). The pass plan is `docs/plans/2026-11-16-engine.md` in `dubplate`, and the planner's working files are in `plans/2026-11-16-engine/`.

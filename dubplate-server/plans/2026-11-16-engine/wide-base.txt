@@ -1,0 +1,364 @@
+cmd/dubplate-server/auth.go:99:// history (review m5). It is [magicLinkExpirySetting]'s registered
+cmd/dubplate-server/auth.go:110:// duration cannot mean "never" or "immediately" here (review m5). The
+cmd/dubplate-server/auth.go:170:// Fork 3's four rate limits (R28) each take a floor of one, since zero
+cmd/dubplate-server/auth.go:173:// group without admitting a rate that defeats R28's own reasoning, as
+cmd/dubplate-server/auth.go:233:// amplification bound (M5) meaningful, because a cap large enough to
+cmd/dubplate-server/auth.go:345:// URL's shape, DUBPLATE_SMTP_FROM (spec:1289), the SMTP port bound,
+cmd/dubplate-server/auth.go:409:// inject one (spec:1289). The check runs at load rather than at send,
+cmd/dubplate-server/auth.go:410:// because R9 turns every failed send into a failed login, and a typo
+cmd/dubplate-server/auth.go:424:// public origin must meet (review m7): it parses; it carries no
+cmd/dubplate-server/auth.go:428:// or suffix (review m4): the owned serve prefix is what sets where
+cmd/dubplate-server/auth.go:438:// conductor 2026-09-12). The comparison reads the parsed hostname
+cmd/dubplate-server/backup.go:409:// addresses included after 6d, unencrypted at the provider.
+cmd/dubplate-server/doctor.go:30:// every row from reg so no rung hard-codes a count. That table is the
+cmd/dubplate-server/doctor.go:178:// per orphan the store holds under a key no rung still
+cmd/dubplate-server/doctor.go:516:// R31's retention-vs-expiry comparison, is invisible to Parse* and
+cmd/dubplate-server/doctor.go:575:// because a relational refusal, such as R31's retention-vs-expiry
+cmd/dubplate-server/intake.go:37:// The retired names the staging row replaces. Rung 7's intake class
+cmd/dubplate-server/intake.go:38:// reserved the first two; this rung stages in one directory and keeps
+cmd/dubplate-server/store.go:20:// inspect mode's only production reader at this rung, doctor and
+cmd/harness/capture.go:39:// 10s default (mechanics study Q5), generous enough for the maximal
+cmd/harness/capture.go:138:// transl-tracklisting relation with the same inc= (mechanics study
+cmd/harness/capture.go:308:// (mechanics study Q5, item 7): beets fetches and merges that release
+cmd/harness/main.go:2:// conformance corpus's capture-derive loop (rung 2's cassette
+cmd/harness/seeditems.go:19:// B1 in the rung 2c plan review). --overrides applies the same
+cmd/harness/seeditems.go:25:// confirmation channel for Task 3's fact-verified axes
+internal/auth/epoch.go:51:// The address is the record's deliberate key (R4): every other record
+internal/auth/epoch.go:54:// the only identity this rung has for one. Rung 6's re-key onto a
+internal/auth/epoch.go:56:// (R34); until then, the address is what Bump, Read, and both refusal
+internal/auth/epoch.go:96:// Each subscriber runs under a recover and a deadline (review m14): a
+internal/auth/epoch.go:124:// forever (review m14).
+internal/auth/nonce.go:80:// rather than a routine outcome (review m8).
+internal/auth/nonce.go:89:// (m5), and sweeps it once at now before returning. The caller runs
+internal/auth/nonce.go:288:// retention alone (m5): a readable record's own life is at least
+internal/auth/roster.go:28:// arbitrary text into what R3 requires as a stable principal.
+internal/auth/roster.go:310:// (spec:1161-1163). A tombstoned row is ErrMemberNotFound. A store
+internal/auth/session.go:121:// carries an expiry [VerifySession] will refuse anyway (review m2). The
+internal/auth/session.go:162:// Both Expires and MaxAge carry the same instant (review m1): Expires
+internal/auth/session.go:187:// the browser recognizes it as the same cookie to delete (review m9).
+internal/auth/store.go:57:// a listing of how many links are outstanding (review m3).
+internal/auth/store.go:107:// (review m12). Callers pass [nonceSubdir] or [epochSubdir] as kind.
+internal/config/config.go:10://     DUBPLATE_SITE_NAME, DUBPLATE_ADMIN_EMAIL, and, from rung 5,
+internal/config/config.go:14://  2. Reserved for a rung: a name the wall recognizes as belonging to
+internal/config/config.go:17://     classes are pipeline (rung 9), monitoring (rung 9), and
+internal/config/config.go:18://     decision and review queues (rung 13). See
+internal/config/config.go:47:// accepts both without parsing their values. A behavior tunable a rung
+internal/config/config.go:49:// of use. A store-homed key a rung registers as a [Setting] lives in
+internal/config/config.go:57:// [Load]. [NewRegistry] returns a registry already seeded with rung 1's
+internal/config/config.go:58:// own rows; rung 1 registers no threshold, identity source, or setting.
+internal/config/config.go:115:// Rung 1 carries the owned wall only; the active identity source joins
+internal/config/config.go:116:// its fields as IdentitySource once a rung declares one, and that
+internal/config/config.go:123:// second field (Resolution R5).
+internal/config/config.go:151:// the four rung 1 rows included.
+internal/config/config.go:193:// rows the registry [Load] read declared, as Load resolved it. A rung
+internal/config/config.go:277:// UTF-8, or holds a C0, DEL, or C1 control character or a
+internal/config/config.go:327:// owns: a reserved name errors naming its class and rung, a superseded
+internal/config/config.go:436:// before its rung, and every unrecognized DUBPLATE_* key.
+internal/config/config.go:439:// rung that registers an owned-now wall row or an identity source from
+internal/config/config.go:441:// (Resolution R-5b4).
+internal/config/config.go:453:// The four rows above are rung 1's own and resolve into named
+internal/config/config.go:454:// fields; every owned-now row any rung registered is required
+internal/config/config.go:465:// integration class needs no second branch (Resolution R5). Enabled
+internal/config/keys.go:66:// derived"). Rung 5's own owned-now row, DUBPLATE_IDENTITY_SOURCE, is
+internal/config/keys.go:68:// rung 1b registry contract: this package names no rung-specific key.
+internal/config/keys.go:101:// load error naming the class and Rung, distinct from an unrecognized
+internal/config/keys.go:110:// capability not yet built, keyed to the rung that claims it. A name
+internal/config/keys.go:116:// rung 9) own the directories a session moves through once
+internal/config/registry.go:11:// Registry holds every declaration a rung contributes to the config
+internal/config/registry.go:15:// [NewRegistry] returns a fresh value already carrying rung 1's own
+internal/config/registry.go:16:// declarations; a rung whose package exists registers its own from
+internal/config/registry.go:21:// that imports this package alone still sees rung 1's own rows, the
+internal/config/registry.go:22:// reason rung 1 gave for Threshold registration, carried forward to
+internal/config/registry.go:52:// NewRegistry returns a Registry seeded with rung 1's own
+internal/config/registry.go:55:// that is rung 1's own package. Seeding here, rather than leaving the
+internal/config/registry.go:57:// test or a wiring mistake constructs without registering rung 1's
+internal/config/registry.go:95:// collision check shares this one message shape, so a rung reading
+internal/config/registry.go:102:// class 3, Resolution R16: every family's keys share one flat
+internal/config/registry.go:189:// never sorted: doctor prints them in table order, which is not rung
+internal/config/registry.go:190:// order, and that order is the contract (Resolution R15).
+internal/config/registry.go:197:// a flag rather than blocked until a rung lands (Resolution R2). class
+internal/config/registry.go:248:// environment-shaped parse failure (Resolution R11). A threshold
+internal/config/registry.go:249:// without a description or a sensitive mark panics naming it. This task builds
+internal/config/registry.go:250:// the check's seat only: rung 1 registers no thresholds, and the kind
+internal/config/registry.go:251:// that motivates the check's own test lands with Task 5.
+internal/config/registry.go:267:// is iota's zero (Resolution R11), so a float threshold with no
+internal/config/registry.go:308:// (Resolution R-5b5). The rung that builds a source declares it from
+internal/config/registry.go:323:// claimed as this family's key: the rung declaring the first
+internal/config/registry.go:408:// rung registers the selector as a wall row, and the wall must not
+internal/config/registry.go:500:// and order is meaningless for one (Resolution R8).
+internal/config/thresholds.go:23:// String returns k's name, or "ThresholdKind(N)" for a kind no rung
+internal/config/thresholds.go:41:// errUnnamedKind marks a parse under a kind no rung has named.
+internal/config/thresholds.go:79:// caller reports on a parse error. Rungs register thresholds as they
+internal/engine/matcher/album_artist.go:11:// the component in contract 8's fixed order.
+internal/engine/matcher/album_country.go:17:// reproduces that anchor explicitly (contract 7), so this is the
+internal/engine/matcher/album_data_source.go:7:// carries its own fire condition (contract 6's three-way test) inside
+internal/engine/matcher/album_extras.go:17:// component orders anything; sorting the extras for display is 3d's
+internal/engine/matcher/album_extras.go:18:// job (contract 8's own text: "extras count, never contribute
+internal/engine/matcher/album_extras.go:19:// contents, sort orders are 3d's").
+internal/engine/matcher/album_media.go:18:// explicitly (contract 7), so this is one of the two places (with
+internal/engine/matcher/album_mediums.go:9:// (contract 6: one 1.0 penalty per unit, not a ratio).
+internal/engine/matcher/album_tracks.go:9:// 528-530); computing it is 3d's assignment work, and a component
+internal/engine/matcher/album_year.go:7:// explicit parameter rather than a clock read (contract 9) because
+internal/engine/matcher/candidate.go:49:// Resolution R6. It carries exactly the thirteen scalar AlbumInfo
+internal/engine/matcher/candidate.go:64:// there; 3b's guard 2 settled that no rung 3 source produces
+internal/engine/matcher/info.go:6:// applied field, no path, and does no tag I/O: rung 3 computes no
+internal/engine/matcher/info.go:7:// applied field and writes no file. 3b's translation layer populates an
+internal/engine/matcher/info.go:21:// component is skipped entirely (contract 8).
+internal/engine/matcher/info.go:118:// library/models.py:66-70; contract 10's m6 note). The outcomes are
+internal/engine/matcher/info.go:186:// (the cross-check against a real committed case is Task 6's); its own
+internal/engine/matcher/info.go:222:// for a field whose declared type is bool (contract 10).
+internal/engine/matcher/likelies.go:9:// the plurality value across items (contract 11: ties break by
+internal/engine/matcher/likelies.go:97:// value's first-seen index (contract 11) rather than by Go's randomized
+internal/engine/matcher/penalty.go:18:// port must not lose it (contract 5, and the pass's determinism rule).
+internal/engine/matcher/penalty.go:67:// the sum of its penalties times the key's weight (contract 5).
+internal/engine/matcher/penalty.go:78:// (contract 5). The count is of penalties actually added, not of
+internal/engine/matcher/penalty.go:92:// penalty, and 0.0 when MaxDistance is zero (contract 5). The zero-max
+internal/engine/matcher/penalty.go:359:// (contract 7), so this type exists rather than a bare *regexp.Regexp:
+internal/engine/matcher/penalty.go:414:// source_weight is set (3a's carry to 3c).
+internal/engine/matcher/score.go:18:// albumComponents is distance()'s fixed album-level order (contract 8),
+internal/engine/matcher/score.go:55:// evalDate is a parameter, never a clock read (contract 9): the year
+internal/engine/matcher/strdist.go:21:// step (contract 1). The lowercase happens here and again inside
+internal/engine/matcher/strdist.go:174:// only "^" in the table is beets' own in "^the " (contract 7). The
+internal/engine/matcher/track_artist.go:38:// config read: the assignment solve (3d) calls track_distance with
+internal/engine/matcher/track_artist.go:41:// (match.py's Track assignment). 3a does not build the solve; this
+internal/engine/matcher/track_data_source.go:5:// carries its own fire condition (contract 6's three-way test) inside
+internal/engine/matcher/track.go:5:// fires it (contract 8: which components fire, and in what order,
+internal/engine/matcher/track.go:15:// trackComponents is track_distance's fixed order (contract 8:
+internal/engine/matcher/track.go:37:// sites for this function disagree on it: the assignment solve (3d)
+internal/engine/matcher/track.go:42:// distance should still catch a mismatched one. 3a does not build the
+internal/engine/matcher/track.go:44:// rather than rediscovered by 3d's tie-mirroring work.
+internal/engine/matcher/tunables.go:32:// proves it (Ruling D: every default equals pinned beets' shipped
+internal/engine/matcher/tunables.go:50:// Four fields are the operator-facing subset a later rung 3 pass
+internal/engine/matcher/tunables.go:51:// registers on internal/config's wall once rung 1b's registry lands:
+internal/engine/matcher/tunables.go:60:// component; Required and Ignored in 3d).
+internal/engine/matcher/tunables.go:64:// asymmetry that makes the proximity flag possible (contract 3).
+internal/engine/matcher/tunables.go:70:// unlike StrongRecThresh's strict form (contract 3). Default 0.25
+internal/engine/matcher/tunables.go:76:// the other half of the proximity flag (contract 3). Default 0.25
+internal/engine/matcher/tunables.go:90:// header). The mechanics study's Q4 says nineteen; the venv and
+internal/engine/matcher/tunables.go:92:// (m2), so twenty is what this field ships.
+internal/engine/matcher/tunables.go:102:// nonempty value; coverage is 3d's table-driven unit tests, not a
+internal/engine/matcher/tunables.go:109:// nonempty value; coverage is 3d's table-driven unit tests, not a
+internal/engine/matcher/tunables.go:167:// (3a's carry to 3c, closed here). Default 0.5.
+internal/engine/matcher/tunables.go:198:// would be an improvement riding the port, forbidden by Ruling D;
+internal/engine/matcher/tunables.go:265:// test (Task 7), not a corpus fixture.
+internal/engine/matcher/tunables.go:327:// penalty (metadata_plugins.py:184-197, Resolution R15): read back
+internal/engine/matcher/tunables.go:336:// unanchored, over the whole string (contract 7: SD_PATTERNS never
+internal/engine/matcher/tunables.go:475:// but carry different legal sets (fold M-d): as_choice({"skip":
+internal/engine/matcher/verdict.go:76:// raises on (fold M-d).
+internal/engine/matcher/verdict.go:142:// NOT walked in full: 3d does not own eager validation of every
+internal/engine/musicbrainz/alias.go:16:// languages default (Ruling D).
+internal/engine/musicbrainz/alias.go:68:// is rung 8's applied-field territory.
+internal/engine/musicbrainz/client.go:29:// committed-request producer would make Task 7's grading a
+internal/engine/musicbrainz/client.go:34:// defaultTimeout is 30s rather than beets' own 10s (R13 divergence 1),
+internal/engine/musicbrainz/client.go:44:// retryableStatuses is urllib3's status_forcelist (C12): 429, 500,
+internal/engine/musicbrainz/client.go:62:// which is the fourth member of the case-mapping-and-regex family 3b's
+internal/engine/musicbrainz/client.go:63:// guard 11 opened (R14): no committed mb_albumid is non-ASCII, so
+internal/engine/musicbrainz/client.go:100:// own retry policy with R13's three named divergences, an injected
+internal/engine/musicbrainz/client.go:115:// file (R2, fold m10).
+internal/engine/musicbrainz/client.go:178:// sixteen-element include set joined with a literal "+" (C3), encoded
+internal/engine/musicbrainz/client.go:180:// byte for byte with no adapter (C18).
+internal/engine/musicbrainz/client.go:190:// at all (C4).
+internal/engine/musicbrainz/client.go:235:// releases: the per-id fan-out and the candidate ordering are 3d's.
+internal/engine/musicbrainz/client.go:240:// offset and releases (contract C19). Decoding into a bare array fails
+internal/engine/musicbrainz/client.go:247:// instead, because swallowing it here would make Task 7's zero-miss
+internal/engine/musicbrainz/client.go:252:// which is 3d's flow.
+internal/engine/musicbrainz/client.go:282:// caller (3d) maps it to "no candidate", reproducing album_for_id's
+internal/engine/musicbrainz/client.go:287:// candidate list (C13, C15). The shapes differ; the outcome for the
+internal/engine/musicbrainz/client.go:291:// one escapes, closing 3b's MergePseudoRelease aliasing carry by
+internal/engine/musicbrainz/client.go:293:// reader (docs/HISTORY.md:265-272).
+internal/engine/musicbrainz/client.go:393:// Retry-After header wins over the computed backoff (C12), and an
+internal/engine/musicbrainz/client.go:395:// untouched (R13 divergence 3): reducing an HTTP date to a duration
+internal/engine/musicbrainz/client.go:411:// backoff is urllib3's own schedule (C12, urllib3/util/retry.py:309-326):
+internal/engine/musicbrainz/credit.go:18:// beets computes it at musicbrainz.py:337, but R6 puts it in rung 8's
+internal/engine/musicbrainz/credit.go:21:// 3a's close had to remove (fold, M-i).
+internal/engine/musicbrainz/credit.go:25:// which R8 keeps out of Tunables, so producing the string would need a
+internal/engine/musicbrainz/limiter.go:53:// before the 0.25s RateLimitAdapter floor (contract C20). The repo's
+internal/engine/musicbrainz/pseudo.go:17:// The FETCH of that release is 3c's client work; 3b exports the
+internal/engine/musicbrainz/pseudo.go:18:// predicate so 3c calls it, and merges over two already-built AlbumInfo
+internal/engine/musicbrainz/query.go:70:// (autotag/match.py:443-446), and no rung 3 caller has any, so modelling
+internal/engine/musicbrainz/query.go:71:// the override now would be a dead parameter. 3d's flow or a later
+internal/engine/musicbrainz/query.go:106:// and no consumer outside it exists at rung 3; 3d's flow exports it the
+internal/engine/musicbrainz/release.go:11:// this package wraps, so a caller (3c's client) branches once on "this
+internal/engine/musicbrainz/release.go:18:// barcode, the release-group type fields), so nothing in 3b reads them;
+internal/engine/musicbrainz/release.go:20:// rung 8 should not re-derive it. That is the deliberate counterpart to
+internal/engine/musicbrainz/release.go:167:// (ErrMalformedRelease's doc comment above), and 3c's client is the
+internal/engine/musicbrainz/tracks.go:18:// that path, so it stays here rather than widening the vocabulary (R2).
+internal/engine/musicbrainz/tracks.go:22:// literal every AlbumInfo and TrackInfo share, which Task 6's
+internal/engine/musicbrainz/tracks.go:129:// which this port maps to "" (R1's zero-value mapping), and which is
+internal/engine/musicbrainz/translate.go:24:// layer's (3a contract 9), and internal/harness/conform's widened
+internal/engine/musicbrainz/translate.go:39:// client (3c) has not issued.
+internal/engine/tag/doc.go:6:// matcher and the flow interleaves I/O with scoring (Resolution R18).
+internal/engine/tag/doc.go:8:// It sits beside rung 8's planned internal/engine/tagio, and the
+internal/engine/tagio/container.go:18:// package preserves without decoding (C10); 127 is never a legal
+internal/engine/tagio/container.go:45:// not the FLAC signature. Rung 7's allowlist gate branches on it
+internal/engine/tagio/container.go:46:// (C14).
+internal/engine/tagio/container.go:51:// write unchanged (C10).
+internal/engine/tagio/container.go:92:// (spec:688-690).
+internal/engine/tagio/container.go:101:// numbers rather than as bytes (C15).
+internal/engine/tagio/container.go:122:// payload slice is read (C7a).
+internal/engine/tagio/container.go:125:// of C7's refusal shapes returns [ErrMalformedContainer], and the
+internal/engine/tagio/container.go:131:// nothing to hand it for those inputs (ruled, conductor 2026-09-08,
+internal/engine/tagio/container.go:228:// (refusal 3 and refusal 4 of C7 share this one mechanism).
+internal/engine/tagio/container.go:335:// anywhere else, or no block carrying it at all, is refusal 3 of C7.
+internal/engine/tagio/deviations.go:5:// mediafile 0.17.0's own behavior, so rung 15's launch gate reads a
+internal/engine/tagio/deviations.go:34://     U+007E, RFC 9639 section 8.6's own bound (C7). A name that
+internal/engine/tagio/deviations.go:36://     tagger emits, so the corpus never exercises the gap; Task 3's
+internal/engine/tagio/deviations.go:55://     list field holding no values writes no comment at all (C2), so
+internal/engine/tagio/deviations.go:66://     (rung 9's retag verb) at the cost of eight times mutagen's own
+internal/engine/tagio/deviations.go:70://     VORBIS_COMMENT block keeps its loaded vendor exactly (R9); a
+internal/engine/tagio/deviations.go:94://  8. APNG discrimination is not reproduced (R3). Pinned filetype
+internal/engine/tagio/deviations.go:104://  9. A CR2-prefixed blob is refused rather than sniffed (R2). Pinned
+internal/engine/tagio/deviations.go:128://     refusal reaches rung 7's intake gate as a rejection rather than
+internal/engine/tagio/doc.go:22:// of the 69 writable keys the tag projection carries (R12). A caller
+internal/engine/tagio/encode.go:17:// only. Task 7 applies a KeyWrite's Deletes before its Writes, in the
+internal/engine/tagio/encode.go:19:// colliding pairs the plural's own way (C3).
+internal/engine/tagio/encode.go:27:// C2's four states and the package contract's serialization list
+internal/engine/tagio/encode.go:201:// (as opposed to a delete) touches (C4).
+internal/engine/tagio/encode.go:213:// unchanged, one comment per style (C4). A one-element caller (a
+internal/engine/tagio/encode.go:230:// holding the value unchanged (C2, C4). This also covers the five
+internal/engine/tagio/encode.go:246:// writes nothing at all (C2).
+internal/engine/tagio/encode.go:264:// empty state (C2): the only two reachable states are nil (absent)
+internal/engine/tagio/encode.go:329:// read-modify-write update (Task 8's deviation note).
+internal/engine/tagio/picture.go:145:// Recognized media types this package sniffs on write (P7, R2),
+internal/engine/tagio/picture.go:167:// here, which is R2's stated deviation, recorded in deviations.go: the
+internal/engine/tagio/picture.go:170:// written with a guessed or empty media type (R2); no caller branches
+internal/engine/tagio/picture.go:171:// on this case yet, so it carries no new sentinel (C14).
+internal/engine/tagio/picture.go:234:// pictures returns nil, nil: Write never calls this for R1's
+internal/engine/tagio/read.go:15:// caller branching on either (C14) branches on the same error
+internal/engine/tagio/read.go:51:// mediafile 0.17.0's field descriptors read them (C6).
+internal/engine/tagio/read.go:61:// carries them (C5).
+internal/engine/tagio/read.go:66:// bytes and both project to a nil slice (C2, measured). An absent key
+internal/engine/tagio/read.go:247:// 9639 section 8.6 requires of every field-name evaluation (C8), so a
+internal/engine/tagio/read.go:339:// readQ8 projects the two R128 members, which are Q8 fixed point on
+internal/engine/tagio/seam.go:45:// nothing to hand it for those inputs (ruled, conductor 2026-09-08,
+internal/engine/tagio/seam.go:64:// ordered by each Format's own value, so rung 7 can bound its
+internal/engine/tagio/tagset.go:12:// from corpus/README.md:2381 onward, the handoff section C1 names as
+internal/engine/tagio/tagset.go:91:// section key for key (C1). No consumer's type appears here (ruling
+internal/engine/tagio/tagset.go:100:// list field's empty value writes no comment at all (C2). A string
+internal/engine/tagio/tagset.go:117:// (its Field constant's value), with no omitempty (R11): the
+internal/engine/tagio/tagset.go:202:// absent (C2).
+internal/engine/tagio/tagset.go:210:// that means absent (C2). go-conventions prefers a nil slice by
+internal/engine/tagio/tagset.go:231:// the mediafile line the row was read from (C16).
+internal/engine/tagio/tagset.go:239:// fixed order MediaFile.sorted_fields() writes them (C3): lexicographic
+internal/engine/tagio/tagset.go:250:// (spec:401-410, INV surprise 4).
+internal/engine/tagio/tagset.go:329:// write order (C3). It walks mapping rather than a map, so calling it
+internal/engine/tagio/tagset.go:342:// MediaFile.sorted_fields() write order (C3). Each call clones the
+internal/engine/tagio/write.go:25:// wrote it (C9, R9).
+internal/engine/tagio/write.go:53:// place and in order (C8). pictures carries R1's three caller states:
+internal/engine/tagio/write.go:61:// image format, before path is ever opened for writing (C7, C14), so
+internal/engine/tagio/write.go:65:// always appends (C10, C11). mode is the file's mode after the write,
+internal/engine/tagio/write.go:68:// (C13), so a crash or a concurrent reader never observes a partial
+internal/engine/tagio/write.go:102:// whatever comments c already carries (C8), keeping its loaded vendor;
+internal/engine/tagio/write.go:103:// and PICTURE, whose fate depends on replacePictures (P8, R1). A
+internal/engine/tagio/write.go:105:// with a fresh vendor, immediately after STREAMINFO (C9a): hasComment
+internal/engine/tagio/write.go:112:// (R1's nil-vs-non-nil-empty distinction is Write's to make, not
+internal/engine/tagio/write.go:174:// is also what resolves the three colliding pairs (C3): the plural
+internal/engine/tagio/write.go:238:// developmentVendorMarker (R9).
+internal/engine/tagio/write.go:249:// carries it (C11): PADDING is always the last block a write emits,
+internal/engine/tagio/write.go:305:// the audio is untouched (C12) and the region's cost stays fixed
+internal/engine/tagio/write.go:306:// regardless of the file's size (C13).
+internal/engine/tag/tag.go:16:// branches on it: rung 9's pipeline reports "no match" differently from
+internal/engine/tag/tag.go:36:// a recorded non-port (3c's close): no committed profile sets them and
+internal/engine/tag/tag.go:37:// the automatic album-match path is rung 3's whole scope, so they never
+internal/engine/tag/tag.go:122:// no-consensus branch it feeds (3c carry 13c).
+internal/harness/analysis/adjudication.go:66:// AppliedField is R7's schema addition: a writer-conformance
+internal/harness/analysis/adjudication.go:67:// divergence rung 8's conformance instrument stages, never
+internal/harness/analysis/adjudication.go:71:// conductor into corpus/analysis/adjudications.json by hand, then
+internal/harness/analysis/adjudication.go:72:// adjudicated by the owner like any other row, and it blocks rung
+internal/harness/analysis/adjudication.go:88:// AppliedField is R7's writer-conformance divergence block: one item's
+internal/harness/analysis/claims.go:85:// about a case (the mechanics study, Q2).
+internal/harness/analysis/component.go:22:// list is what a rung 3 reader can rely on being able to consume.
+internal/harness/analysis/component.go:41:// Its consumer is rung 3, the Go matcher, which will compare its own
+internal/harness/analysis/component.go:42:// primitives against these observed outputs. Nothing at rung 2 can do
+internal/harness/analysis/component.go:54:// two strings and a float for string_dist), and rung 3 is what gives
+internal/harness/analysis/file_tags.go:30:// cases plus seven real-catalog cases, per rung 2 pass 2d's Task 2. The
+internal/harness/analysis/file_tags.go:33:// a committed case (pass 2c's Task 4 found the decoy never surfaced in
+internal/harness/analysis/file_tags.go:37:// a conductor ruling recorded in corpus/README.md's file-tags section,
+internal/harness/analysis/file_tags.go:59:// Its consumer is rung 8, pure-Go FLAC tag writing: WritableFields is
+internal/harness/analysis/file_tags.go:62:// subject. Nothing at rung 2 can compare against a Go writer, so the
+internal/harness/analysis/proximity.go:19:// The mechanics study's epsilon-regime finding is the source.
+internal/harness/analysis/ties.go:74:// the two committed pinned rows were authored by an agent (rung 3
+internal/harness/cassette/cassette.go:43:// items in pinned order; no file references at 2a
+internal/harness/cassette/cassette.go:52:// against nothing (rung 3 spec, the B2 fold). Every committed case's
+internal/harness/cassette/cassette.go:119:// pass 2d's sixth pin: the file-tags ledger's write/read-back layer
+internal/harness/conform/case.go:80:// (rung 3 spec, :292). Growth is a hard failure, never a pending row.
+internal/harness/conform/case.go:86:// arithmetic drift stays visible (rung 3 spec, :141).
+internal/harness/conform/case.go:95:// rather than as passing until Geoff rules their disposition (rung 3
+internal/harness/conform/case.go:129:// cases with no gradable corrected verdict: an oracle-wrong class with no expressible rung-3 fix, or a no-correct-answer disposition
+internal/harness/conform/case.go:157:// exactly, because the ladder's medium rung is decided by the minimum
+internal/harness/conform/case.go:160:// fold B2; the ruling is recorded at the rung 4 spec's conductor fold
+internal/harness/conform/case.go:161:// and at 3d's HISTORY entry, and rung 4's second scoring mode tracks
+internal/harness/conform/case.go:180:// Misses or a non-empty Unused fails naming both. 3c graded request
+internal/harness/conform/case.go:183:// this pass owns. The rule does not reach ModeDefault, where a
+internal/harness/conform/case.go:304:// contribution both modes report (Task 8): 1 when this case's
+internal/harness/conform/case.go:306:// it is a probe case with no expressible rung-3 corrected
+internal/harness/conform/case.go:307:// expectation (Resolution R1), and verdictMoved when ModeDefault's
+internal/harness/conform/case.go:458:// silently (Resolution R15, rung 3 spec :311). It consults
+internal/harness/conform/case.go:531:// fold B2, Resolution R2/R9). It never drives tag.Album: instead it
+internal/harness/conform/case.go:549:// rung-3 fix (Resolution R1) either; every other case is compared
+internal/harness/conform/case.go:551:// difference is a VerdictMoves entry rather than a failure (Resolution
+internal/harness/conform/case.go:552:// R9).
+internal/harness/conform/case.go:644:// (Resolution R1). Honors the same GradeVerdict escape
+internal/harness/conform/case.go:668:// cases with no defect_free block (Resolution R1): no rung-3
+internal/harness/conform/case.go:676:// VerdictMoves entry and fails nothing (Resolution R9).
+internal/harness/conform/case.go:848:// verdict (rung 3 spec, :288).
+internal/harness/conform/case.go:875:// hypothesis's compat switch is off (rung 3 spec, :295).
+internal/harness/conform/case.go:880:// ledgers. It is the Go form of the rung 3 spec's disposition table
+internal/harness/conform/case.go:991:// bug-assignment-rejection-gap, no-correct-answer) have no fix a rung-3
+internal/harness/conform/component.go:49:// the committed row beyond the 1e-12 fallback (contract 12).
+internal/harness/conform/component.go:53:// report, not a failure (contract 12).
+internal/harness/conform/component.go:68:// fallback (contract 12's own reporting duty).
+internal/harness/conform/component.go:352:// one-element slice, mirroring beets' own scalar wrap (contract 6a);
+internal/harness/conform/component.go:379:// ({"regex", "ignorecase"}, fold M-e) becomes a matcher.PatternOption,
+internal/harness/conform/component.go:380:// anchored at position 0 per contract 7; anything else is a literal
+internal/harness/conform/component.go:569:// penalty field or Tunables.DataSourceMismatchPenalty (3a's carry,
+internal/harness/conform/component.go:570:// closed by rung 3 pass 3c), so tunablesWithOverrides' shipped default
+internal/harness/conform/component.go:803:// near miss when any check matched only within it (contract 12).
+internal/harness/conform/component.go:825:// (contract 12). A row that passes only via the tolerance is not
+internal/harness/conform/defaults.go:21:// immediately rather than waiting on 3d's profile-merge runner.
+internal/harness/conform/defaults.go:63:// that order (rung 3 spec, the M1 fold), with import.quiet forced true.
+internal/harness/conform/doc.go:1:// Package conform is rung 3's tier 0: the typed decoder for
+internal/harness/conform/doc.go:17:// This package births internal/harness/conform: rung 3, pass 3a's own
+internal/harness/conform/doc.go:19:// (docs/plans/2026-09-04-rung-3a-scoring-core.md, Task 6).
+internal/harness/conform/doc.go:24:// Rung 3, pass 3c adds a second tier: request.go grades request
+internal/harness/conform/doc.go:35:// Rung 3, pass 3d adds tier 1: case.go replays every committed case
+internal/harness/conform/request.go:66:// _add_candidate, which are 3d's; this sweep reads each case's log to
+internal/harness/conform/request.go:69:// request's bytes comes from the expectation it is graded against. 3d
+internal/harness/conform/request.go:194:// fetches by id, in log order and with duplicates dropped: R1's seam
+internal/harness/conform/testdata/arch/time-now-violation/bad.go:4:// evaluation date is a parameter, contract 9). This file is never
+internal/harness/conform/translate.go:25:// alternate request is 3c's client work; this guard exists so a corpus
+internal/harness/conform/translate.go:58:// fieldNullability is the twenty-one-field nullability policy (R1,
+internal/harness/conform/translate.go:59:// R11): every scalar matcher.AlbumInfo and matcher.TrackInfo carries,
+internal/harness/conform/translate.go:323:// client, no network: the stub is 3c's business, and reading a
+internal/harness/mbrequest/mbrequest.go:3:// maximal inc= set beets itself requests (mechanics study Q5), and the
+internal/harness/mbrequest/mbrequest.go:18:// mirroring beets' own RELEASE_INCLUDES (mechanics study Q5) so a
+internal/harness/oracle/reconcile.go:18:// sit directly in the distance path (the mechanics study, Q1.4), so a
+internal/harness/oracle/reconcile.go:20:// to show for it. mediafile is pass 2d's sixth pin: it is the
+internal/harness/stub/stub.go:13:// so the second map is inert for every derivation this pass can run:
+internal/harness/stub/stub.go:59:// subset rather than escaping the harness (rung 3 spec, the B2 fold).
+internal/harness/stub/stub.go:204:// legally orphans search captures into Extra (rung 3 spec, :265), so
+internal/harness/stub/stub.go:238:// Duplicated here rather than called from cassette because Task 1's
+internal/harness/synth/seeditems.go:106:// item set needs plus the structural facts Task 3's fact-verified axes
+internal/harness/synth/seeditems.go:217:// carries that Task 3's fact-verified axes (reissue/remaster,
+internal/harness/synth/spec.go:4:// against it. It is the tool the case-authoring tasks (rung 2, pass
+internal/harness/synth/spec.go:5:// 2b, Tasks 4 through 13) call to generate every structural-stratum
+internal/intake/submission.go:33:// states is every state this pass emits, in journey order.
+internal/intake/submission.go:302:// no CHECK, so a later rung adds a state without a table rebuild, and
+internal/serve/bindaddrs.go:28:// which is exactly what C8 says [Listen] never does: a shell that
+internal/serve/bindaddrs.go:34:// The grammar lives here rather than in the config declaration (R-B):
+internal/serve/freebind_linux.go:21:// is 5d's doctor row, not this package's concern.
+internal/serve/freebind_other.go:11:// ./...). Every deployment target is Linux, so the boot property R20
+internal/serve/serve.go:295:// the mechanism the fourth order assertion reads (spec:938-944).
+internal/serve/server.go:14:// Named timeouts and MaxHeaderBytes for the http.Server C6 constructs
+internal/serve/server.go:15:// (R-H, R-V). Each carries the reason it is sized the way it is, so the
+internal/serve/server.go:42:// maxHeaderBytes (R-H) is set explicitly rather than inherited from
+internal/serve/server.go:51:// (5d's concern, not this package's) is the real backstop, so this
+internal/serve/server.go:67:// newHTTPServer builds the http.Server C6 constructs over handler,
+internal/serve/strip.go:49://     pairing with TRUSTED_REVERSE_PROXY_NETWORKS is the shape R27
+internal/serve/strip.go:133:// read 2026-09-08). R-R extends the rule to the whole X-Forwarded-*
+internal/serve/strip.go:163:// rung that finds a citation.
+internal/serve/strip.go:177:// group3KeepSet is R-S's carve-out: canonical header names
+internal/serve/strip.go:180:// headers a client has no business declaring hop-by-hop, and 5b's
+internal/serve/strip.go:399:// (R27's carve-out), read through [TrustedProxyConfig] rather
+internal/serve/strip.go:418:// own Connection header lists, with two carve-outs (R-O). A listed
+internal/serve/strip.go:422:// group3KeepSet is never removed by this rule (R-S), whatever
