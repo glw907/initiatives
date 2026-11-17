@@ -11,11 +11,12 @@ Order table. Passes run one at a time, in this order, and merge in this order.
 | 1 `definitions` | plans/2026-11-15-foundation-1-planner-prompt.txt | none | 80 | no |
 | 2 `menus` | plans/2026-11-15-foundation-2-planner-prompt.txt | 1 | 120 | no |
 | 3 `record` | plans/2026-11-15-foundation-3-planner-prompt.txt | 2 | 110 | no |
-| 4 `composer` | plans/2026-11-15-foundation-4-planner-prompt.txt | 3 | 200 | yes |
+| 4 `composer` | plans/2026-11-15-foundation-4-planner-prompt.txt | 3 | 240 | yes |
 | 5 `chassis` | plans/2026-11-15-foundation-5-planner-prompt.txt | 4 | 90 | yes |
-| 6 `add` | plans/2026-11-15-foundation-6-planner-prompt.txt | 5 | 90 | yes |
+| 6 `add` | plans/2026-11-15-foundation-6-planner-prompt.txt | 5 | 120 | yes |
+| 7 `routing` | plans/2026-11-17-foundation-7-planner-prompt.txt | none | 200 | no |
 
-The prompts sit beside this file in /var/home/glw907/Projects/initiatives/theme-garden/plans/. The chain is 690 path minutes, and the round stops new launches past 1,380. If the `Ruled:` line declines the overturn, pass 5 is 50 path minutes and the chain is 650.
+The prompts sit beside this file in /var/home/glw907/Projects/initiatives/theme-garden/plans/. Pass 7 runs next after the pass in flight when this row arrives, ahead of pass 4 while pass 4 is on hold. Its worktree is cut from `origin/main`. The chain is 960 path minutes, and the round stops new launches past 1,920. If the `Ruled:` line declines the overturn, pass 5 is 50 path minutes and the chain is 650.
 
 Planner launch, from /var/home/glw907/Projects/cairn-cms, after you cut the worktree `.claude/worktrees/foundation-<n>` on branch `foundation-<n>`:
 

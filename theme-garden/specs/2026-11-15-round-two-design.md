@@ -194,9 +194,11 @@ These are Claude's calls. Geoff can overrule any of them in the approval.
   those three and `events`.
 - **What a feature tells the site.** The foundation design gives a feature's module three keys:
   `concepts`, `navLayout`, and `accessMap`. This design adds three, typed in the base layer's
-  site code and gathered by the generated `src/site/features.ts`. `paths` lists the addresses
-  the feature serves itself, and the base's catch-all route leaves them out of the pages it
-  prerenders and out of the markdown twins. `homeSections` lists components a theme's home page
+  site code and gathered by the generated `src/site/features.ts`. `paths` lists single
+  addresses the feature serves itself that belong to a kind the catch-all serves, such as
+  `/contact`, and the base's catch-all route leaves them out of the pages it prerenders and out
+  of the markdown twins. A feature that serves every page of a kind sets that kind's routing to
+  `custom` and needs no `paths` entry. `homeSections` lists components a theme's home page
   shows after the theme's content. `tagHref` turns a topic into its address. A theme reads all
   three from the generated file and never names a feature. `site-events-1` adds
   `homeSections`, `site-basics-2` adds `paths`, and `site-basics-3` adds `tagHref`. If the
@@ -228,7 +230,8 @@ These are Claude's calls. Geoff can overrule any of them in the approval.
   the planner reads the same file under `features/events/`.
 - **An events link in the menu.** The events layer adds no menu link. The organization set's
   primary menu holds one, and a developer who runs `cairn add events` on another kind is told
-  the address to link.
+  the address to link. The menu editor's list of pages offers `/events` typed by hand and each
+  event by name.
 - **The search link.** Geoff ruled for a "Search" link in the menu. It is an entry in each set's
   primary menu where the kind's default has search on. `cairn add search` prints the address and
   the developer adds the link on the menu screen. Nothing injects a link at run time.
@@ -430,6 +433,12 @@ runnable today.
   Today: `git cat-file -e origin/main:docs/editors/events.md` exits 128.
 - The admin docs say how to schedule the daily rebuild and where the zone constant is, and each
   command on the page is run in the PR's evidence.
+- The sitemap of the built showcase lists the address of each event entry.
+- The editor's link picker lists an event, and a `cairn:` link to an event in a page's body
+  resolves in the built page.
+- The menu editor's list of pages offers an event at its full address.
+- The events kind's routing is `custom`, the feature holds no `paths` entry, and the base's
+  catch-all route file holds no filter for events.
 
 `site-events-2`, look:
 
@@ -616,7 +625,7 @@ runnable today.
 | A layer can contribute `wrangler.jsonc` variables and a binding by key | The foundation design, "Composition", which merges `package.json` by key | Unproven for `wrangler.jsonc` |
 | Pagefind indexes what `adapter-cloudflare` builds | Pagefind's docs: it reads a folder of built HTML | Unproven for `.svelte-kit/cloudflare` |
 | The tool's sign-in can ask for a Turnstile scope | Not probed | Unproven |
-| The catch-all route can leave out a feature's address | `createPublicRoutes().entries()` returns every entry's path (`src/lib/delivery/public-routes.ts` line 253), and the route file calls it at line 10 | Unproven. The base's route file must filter by `paths` in site code |
+| The catch-all route can leave out one address of a kind it serves | `createPublicRoutes().entries()` returns the path of every entry the catch-all serves, and the route file calls it | Proven for a whole kind by the routing pass. Unproven for one address: the base's route file must filter by `paths` in site code, and `site-basics-2` proves it |
 | One rate-limit binding carries one limit | `src/lib/cloudflare/rate-limit.ts` line 61 | `resolveRateLimit(binding, keys)` checks each key against the one binding, so two limits need two bindings |
 | `cairn new` reads no kind today | `tool/cmd/cairn/new.go` and `tool/internal/setup/scaffold/catalog.go`, read 2026-11-15 | It reads themes from the packed catalog only |
 
@@ -653,7 +662,7 @@ merge order is the pass order. Geoff sees one `merge` document for each round: b
 `site-events` together, and passes 1 to 4 of `site-basics` together when pass 4's review is
 accepted. Pass 5 lands after that document is answered.
 
-`site-events` is 390 path minutes and stops new launches past 780. `site-basics` is 630 and
+`site-events` is 420 path minutes and stops new launches past 840. `site-basics` is 630 and
 stops past 1,260. The usage ceiling for each is 85 percent of the weekly allowance.
 
 Events go first because that work was approved first, a merged helper waits on it, and Geoff
@@ -662,7 +671,7 @@ describes `cairn new` and every feature as built. Ruling 1 lets Geoff reverse th
 
 ## Start line
 
-`site-events` launches when each of these reads true. Lines 1, 2, and 4 aren't true today.
+`site-events` launches when each of these reads true. Lines 1, 2, 4, and 5 aren't true today.
 
 1. `docs/STATUS.md` on `origin/main` holds a line that reports round `foundation` closed.
 2. `claude agents --json` holds no row named `cairn-cms-foundation-*`, `cairn-cms-pennant-*`,
@@ -670,6 +679,7 @@ describes `cairn new` and every feature as built. Ruling 1 lets Geoff reverse th
 3. This design's document in the Approval Queue is answered "approve".
 4. `definitions/features.json`, `starter/compose.mjs`, and `themes/pennant/cairn-theme.json`
    exist on `origin/main`.
+5. `git show origin/main:src/lib/content/types.ts` holds the routing value `'custom'`.
 
 `site-basics` launches when each of these reads true. None but line 3 can be true before
 `site-events` closes.
@@ -752,6 +762,13 @@ line quotes his answer there.
 2. Whether the site-basics design's three rulings and the events design's five rulings stand as
    quoted under "Decided by Geoff".
    Ruled: "They stand as quoted".
+
+Geoff approved the routing design, `specs/2026-11-17-routing-design.md`, in queue document
+`20261117-080523-be1fbe`, 2026-11-17. It gives the events kind `custom` routing, and that document
+lists each change it makes here: the `paths` sentence and the menu editor's sentence under "Calls
+made here", four acceptance items of `site-events-1`, the catch-all row of "Shared assumptions",
+the minutes of `site-events`, and line 5 of its start line. The correction in queue document
+`20261117-062058-a38126` that moved the catch-all's filter to `site-events-1` is withdrawn.
 
 ## Backlog verdicts
 

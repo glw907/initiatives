@@ -8,10 +8,10 @@ Order table. Passes run one at a time, in this order, and merge in this order.
 
 | Pass | Planner prompt | Depends on | Path minutes | Waits for Geoff |
 | --- | --- | --- | --- | --- |
-| 1 `layer` | plans/2026-11-15-site-events-1-planner-prompt.txt | none | 240 | yes |
+| 1 `layer` | plans/2026-11-15-site-events-1-planner-prompt.txt | none | 270 | yes |
 | 2 `look` | plans/2026-11-15-site-events-2-planner-prompt.txt | 1 | 150 | yes |
 
-The prompts sit beside this file in /var/home/glw907/Projects/initiatives/theme-garden/plans/. The chain is 390 path minutes, and the round stops new launches past 780.
+The prompts sit beside this file in /var/home/glw907/Projects/initiatives/theme-garden/plans/. The chain is 420 path minutes, and the round stops new launches past 840.
 
 Planner launch, from /var/home/glw907/Projects/cairn-cms, after you cut the worktree `.claude/worktrees/site-events-<n>` on branch `site-events-<n>`:
 
@@ -21,7 +21,7 @@ Each planner launches its own executor, named cairn-cms-site-events-<n>. Cut pas
 
 Before the first launch, on top of the checks in `round-run.md` "The order table":
 1. The design's "Rulings" section carries its `Ruled:` lines.
-2. Every line of the design's "Start line" for this round reads true, each checked with its command that day. While one is unmet, launch nothing and send no packet. The foundation round must be closed in docs/STATUS.md, with no `foundation` or `pennant` session live, and `definitions/features.json`, `starter/compose.mjs`, and `themes/pennant/cairn-theme.json` on `origin/main`.
+2. Every line of the design's "Start line" for this round reads true, each checked with its command that day. While one is unmet, launch nothing and send no packet. The foundation round must be closed in docs/STATUS.md, with no `foundation` or `pennant` session live, and `definitions/features.json`, `starter/compose.mjs`, and `themes/pennant/cairn-theme.json` on `origin/main`. The routing value must be on `origin/main`, as line 5 of the start line says.
 3. Probe the launch line that day: `claude --help` must show `--bg`, `--model`, `--effort`, and `--name`. `--advisor` isn't in that list and is accepted: `planner.md` "Launch" carries it. If a listed flag is missing, or pass 1's planner launch fails on a flag, launch nothing more and say so in a `decide` packet.
 4. Never edit docs/STATUS.md while another conductor is live in cairn-cms (`claude agents --json`); send your STATUS lines to it by message and write them yourself once it is gone.
 5. Run `claude-worktree-busy` on this round's worktrees only. If a live pass in another round has a path from this round's pass table open, hold and say so in the report.

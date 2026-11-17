@@ -136,9 +136,11 @@ empty state, which is in the HTML from the build. The home section's HTML holds 
 the script shows the first three whose day hasn't passed and hides the whole section when none is
 left.
 
-The events kind uses `embedded` routing, so the engine's catch-all route and the sitemap leave it
-alone and the set's `/events/[slug]` route is the only page for an event. The admin then calls an
-event's identifier its name. Event pages are absent from the sitemap in this round.
+The events kind uses `custom` routing. The engine knows each event's address, lists it in the
+sitemap, and offers it to the link picker, to `cairn:` links, and to the menu editor. Its
+catch-all route leaves the page to the feature's `/events/[slug]` route, whose loader is
+`conceptEntryLoad('events', event)`. The admin calls an event's identifier its address. An event
+page has no markdown twin.
 
 The mock-up is `research/pennant-mockups/events-1.html`. Its wording is placeholder.
 
@@ -449,6 +451,10 @@ Each `Ruled:` line quotes Geoff's answer in queue document `20261115-055827-bbcf
 5. Events before Survey, or after.
    Ruled: "Events first, then Survey".
 
+Geoff approved the routing design, `specs/2026-11-17-routing-design.md`, in queue document
+`20261117-080523-be1fbe`, 2026-11-17. The events kind's routing is `custom`, where this design
+chose `embedded`, and event pages are in the sitemap.
+
 Held: passes 2 and 3 launch nothing until a later `Ruled:` line here lifts the hold. Geoff, in chat, 2026-11-15: "yes, hold events passes 2 and 3". The reason is the redesign of where themes, kinds, options, and starter kits live in the engine, which may move the events code out of the organization set and may give events to more kinds. Pass 1 (#250) is merged and stands.
 
 ## Backlog verdicts
@@ -482,7 +488,6 @@ on Pennant's plan sizes for like work and are checked against Pennant's scores w
 
 - #487, start a new entry from an existing one.
 - `cairn new` reading the hosted catalog and installing a set's code.
-- Event pages in the sitemap.
 - An engine release carrying the builder, cut when a customer site needs it.
 - ecxc-ski's and the sailing club's moves to the shared pieces, each a site pass with its own
   consultation.
