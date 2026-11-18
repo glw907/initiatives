@@ -1,15 +1,17 @@
-# The Sessions round's first pass waits for Geoff's approval, and the second is ready behind it
+# The Sessions round's first pass waits for Geoff's approval, and two more are ready behind it
 
 The first pass is finished as [pull request 8](https://github.com/glw907/cc-desk/pull/8). It
 teaches the `cc-desk` command to record each background session and decide what it needs next.
 The second pass, [pull request 10](https://github.com/glw907/cc-desk/pull/10), makes the command
-start, end, and restart those sessions. Both passed their reviews with no open finding, and their
-automated checks passed. Pull request 8 can't land until Geoff approves it and answers its one
-question: what a session should do after it hits the usage limit for one model. Pull request 10
-asks nothing, and it lands right after pull request 8, because it carries pull request 8's
-changes. To answer, Geoff replies in this terminal session with "approve 8" and the number of his
-choice. Meanwhile the third pass, which records a session's permission prompts so Geoff can answer
-them from a desk session, has started from the second pass's branch.
+start, end, and restart those sessions. The third,
+[pull request 12](https://github.com/glw907/cc-desk/pull/12), records a session's permission
+prompts so Geoff can answer them from a desk session. All three passed their reviews with no
+open finding, and their automated checks passed. Pull request 8 can't land until Geoff approves
+it and answers its one question: what a session should do after it hits the usage limit for one
+model. Pull requests 10 and 12 ask nothing, and they land in order right after pull request 8,
+because each carries the ones before it. To answer, Geoff replies in this terminal session with
+"approve 8" and the number of his choice. Meanwhile the fourth pass, which lets the command merge
+a clean pull request and send back any other, has started from the third pass's branch.
 
 ## What waits for Geoff
 
@@ -31,22 +33,30 @@ through the same rule and adds no other rule, so whatever Geoff picks covers it 
 
 ## What landed
 
-Nothing yet. Pull request 8 is ready and waits for that answer, and pull request 10 waits on it. When a session needs Geoff, the
+Nothing yet. Pull request 8 is ready and waits for that answer, and pull requests 10 and 12 wait
+on it. When a session needs Geoff, the
 check names it under "Needs you now" on the status page, with the reason. It records five new
 reasons, such as an expired sign-in or a permission prompt. With pull request 10, a session that
 vanishes is started again in the same worktree, at most twice, before it shows under "Needs you
-now". Every test runs against stand-ins, so nothing in either pass starts a real session.
+now". With pull request 12, a yes or no to a permission prompt ends the session, adds the rule on a
+yes, and restarts it. Every test runs against stand-ins, so nothing in these passes starts a real
+session.
 
 ## What went wrong
 
-The plan file failed the spelling check in the repo's gate on five words. The pass added them to
+The third pass changed one of its acceptance checks. The check asked for a hook input
+recorded from a real session. No session could record one safely, so the test uses the example
+in Claude Code's hooks reference instead. The fifth pass records a real one.
+
+The first pass's plan file failed the spelling check in the repo's gate on five words. The pass added them to
 the word list and noted that the plan should have run the gate on itself.
 
 ## What it cost
 
 The first pass planned 90 minutes and took about 70, from its planner's start at 00:23 to a
-ready pull request at 01:32. The second planned 90 and took about 70, from 01:35 to 02:44.
-Weekly usage went from 92 percent to 95 percent. No new pass
+ready pull request at 01:32. The second planned 90 and took about 70, from 01:35 to 02:44. The third
+planned 60 and took about 60, from 02:46 to 03:48. Weekly usage went from 92 percent to 96
+percent. No new pass
 starts once it reaches 100 percent.
 
 ## What is left for later
@@ -60,3 +70,4 @@ The first two passes filed these follow-ups in `docs/follow-ups/` on their branc
 - `building-pass-without-checkout-needs-entry.md` asks that a pass with no recorded checkout
   show under "Needs you now".
 - `launch-review-notes.md` holds the second pass's review notes that weren't folded.
+- `hook-input-from-a-real-session.md` asks the fifth pass to record a real hook input.
