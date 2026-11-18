@@ -1,4 +1,6 @@
-# The Sessions round is built, and its five pull requests wait for Geoff's approval
+# The Sessions round has landed all five pull requests
+
+All five pull requests landed on 2026-11-18, after Geoff approved every call as recommended. Pull requests 8 and 14 each gained a page type at landing to match the Go snapshot, and their bodies say so under "Fixed at landing". The rest of this report is as written before the approval.
 
 The Sessions round teaches the `cc-desk` command to run background sessions without Geoff
 watching them. Its core is the check, a command that reads every session's state and acts on it. All five of its passes are finished, and none has landed yet.

@@ -1,4 +1,6 @@
-# The Page round is built, and its five pull requests wait for Geoff's approval
+# The Page round has landed all five pull requests
+
+All five pull requests landed on 2026-11-18, after Geoff approved every call as recommended. The page now serves main's build at http://127.0.0.1:7908/. The rest of this report is as written before the approval.
 
 The Page round builds cc-desk's status page, a local web page that shows what every session is
 doing. All five of its passes are finished, and none has landed yet.
