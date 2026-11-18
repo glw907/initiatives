@@ -1,17 +1,19 @@
-# The Sessions round's first pass waits for Geoff's approval, and two more are ready behind it
+# The Sessions round's first pass waits for Geoff's approval, and three more are ready behind it
 
 The first pass is finished as [pull request 8](https://github.com/glw907/cc-desk/pull/8). It
 teaches the `cc-desk` command to record each background session and decide what it needs next.
 The second pass, [pull request 10](https://github.com/glw907/cc-desk/pull/10), makes the command
 start, end, and restart those sessions. The third,
 [pull request 12](https://github.com/glw907/cc-desk/pull/12), records a session's permission
-prompts so Geoff can answer them from a desk session. All three passed their reviews with no
-open finding, and their automated checks passed. Pull request 8 can't land until Geoff approves
-it and answers its one question: what a session should do after it hits the usage limit for one
-model. Pull requests 10 and 12 ask nothing, and they land in order right after pull request 8,
-because each carries the ones before it. To answer, Geoff replies in this terminal session with
-"approve 8" and the number of his choice. Meanwhile the fourth pass, which lets the command merge
-a clean pull request and send back any other, has started from the third pass's branch.
+prompts so Geoff can answer them from a desk session. The fourth,
+[pull request 14](https://github.com/glw907/cc-desk/pull/14), merges a clean pull request and
+sends a failed one back to its session. All four passed their reviews with no open finding, and
+their automated checks passed. Pull request 8 can't land until Geoff approves it and answers its
+one question: what a session should do after it hits the usage limit for one model. Pull
+requests 10, 12, and 14 ask nothing, and they land in order right after pull request 8, because
+each carries the ones before it. To answer, Geoff replies in this terminal session with "approve
+8" and the number of his choice. Meanwhile the fifth and last pass, which adds the timer and runs
+one real pass in a scratch repo, has started from the fourth pass's branch.
 
 ## What waits for Geoff
 
@@ -33,13 +35,16 @@ through the same rule and adds no other rule, so whatever Geoff picks covers it 
 
 ## What landed
 
-Nothing yet. Pull request 8 is ready and waits for that answer, and pull requests 10 and 12 wait
-on it. When a session needs Geoff, the
+Nothing yet. Pull request 8 is ready and waits for that answer, and pull requests 10, 12, and
+14 wait on it. When a session needs Geoff, the
 check names it under "Needs you now" on the status page, with the reason. It records five new
 reasons, such as an expired sign-in or a permission prompt. With pull request 10, a session that
 vanishes is started again in the same worktree, at most twice, before it shows under "Needs you
 now". With pull request 12, a yes or no to a permission prompt ends the session, adds the rule on a
-yes, and restarts it. Every test runs against stand-ins, so nothing in these passes starts a real
+yes, and restarts it. With pull request 14, a pull request whose check passes and whose review accepts it
+merges, and its worktree and branch are removed with no force flag. A failed one goes back to
+its session at most twice, and a third failure becomes a question. Every test runs against
+stand-ins, so nothing in these passes starts a real
 session.
 
 ## What went wrong
@@ -48,6 +53,11 @@ The third pass changed one of its acceptance checks. The check asked for a hook 
 recorded from a real session. No session could record one safely, so the test uses the example
 in Claude Code's hooks reference instead. The fifth pass records a real one.
 
+The fourth pass's first review sent it back once. A session sent back to fix its pull request
+ignored the usage hold, so it could restart while weekly usage was over the line. The executor
+fixed that, and a second review accepted the fix. The plan also left three of its tests without
+the session rows they need, which the planner caught after launch and the executor added.
+
 The first pass's plan file failed the spelling check in the repo's gate on five words. The pass added them to
 the word list and noted that the plan should have run the gate on itself.
 
@@ -55,8 +65,8 @@ the word list and noted that the plan should have run the gate on itself.
 
 The first pass planned 90 minutes and took about 70, from its planner's start at 00:23 to a
 ready pull request at 01:32. The second planned 90 and took about 70, from 01:35 to 02:44. The third
-planned 60 and took about 60, from 02:46 to 03:48. Weekly usage went from 92 percent to 96
-percent. No new pass
+planned 60 and took about 60, from 02:46 to 03:48. The fourth planned 60 and took about 65,
+from 03:49 to 04:52. Weekly usage went from 92 percent to 98 percent. No new pass
 starts once it reaches 100 percent.
 
 ## What is left for later
@@ -71,3 +81,6 @@ The first two passes filed these follow-ups in `docs/follow-ups/` on their branc
   show under "Needs you now".
 - `launch-review-notes.md` holds the second pass's review notes that weren't folded.
 - `hook-input-from-a-real-session.md` asks the fifth pass to record a real hook input.
+- The fourth pass filed five: `cleanup-of-a-release-marked-done.md`, `merge-call-fails-for-good.md`,
+  `merge-question-answer.md`, `pull-request-closed-without-merge.md`, and
+  `ready-verb-service-start.md`.
