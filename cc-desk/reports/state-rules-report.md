@@ -1,10 +1,11 @@
-# The start rules have landed, and the last pass is in planning
+# The State and rules round has landed all four passes
 
-Three of the round's four passes have landed. The `cc-desk` command keeps the state files,
-forecasts the next session with Geoff, and starts, holds, or refuses a pass by the rules, naming
-each broken rule. Geoff answered the third pass's one question: a stopped pass that resumes skips
-the limit of two passes building at once, as built. The fourth pass, which records rulings, is
-in planning. Weekly usage read 90 percent, under the 100 percent stop.
+All four passes have landed, as pull requests 3 to 6. The `cc-desk` command now keeps the state
+files and forecasts the next session with Geoff. It starts, holds, or refuses a pass by the rules,
+naming each broken rule. It records a ruling as one line holding Geoff's exact words, and only from
+a registered desk process with a terminal. The round took about 191 minutes of its planned 315.
+Geoff answered two questions, and no pass stopped. Weekly usage went from 88 percent to 91 percent,
+under the 100 percent stop.
 
 ## What landed
 
@@ -42,15 +43,22 @@ The live usage check ran on the workstation, outside CI, in an empty state folde
 printed `90% used, resets Nov 20, 10:59pm (America/Anchorage)`. The saved raw result read 90
 percent, a cost of `0`, and `0` model turns.
 
-The pass still to land:
+[Add the rulings and the desk guard](https://github.com/glw907/cc-desk/pull/6) landed with its
+review at `accept`, no open finding, and the `gate` check passing. As the round's last pass, it
+also showed done items 1 to 8 of the design passing on its branch. Its evidence:
 
-| Pass | What it builds | Planned minutes | State |
-| --- | --- | --- | --- |
-| 4 | A ruling is recorded only from a desk session, and it frees what waited | 60 | Planning |
+| Item | Evidence |
+| --- | --- |
+| Ruling | `TestRuling` passed, with six cases: an answer that frees the waiting pass, a held guess, a missed guess, and three refusals |
+| Two writers | `TestTwoWriters` passed in 15.29 seconds, with twenty verbs launched at once |
+| The gate | `bash scripts/gate.sh` ended `gate: ok`, and the `gate` check passed in 46 seconds |
+
+Its live usage check printed `91% used, resets Nov 20, 11pm (America/Anchorage)`, with a cost of
+`0` and `0` model turns.
 
 ## What went wrong
 
-No pass has stopped, and no command was refused.
+No pass stopped, and no command was refused.
 
 Geoff ruled on one question from the third pass. The design says "Passes already building carry
 on," and the pass read that as letting a stopped pass resume past both limits. Only building
@@ -66,8 +74,8 @@ time. Geoff answered "Those both work," so the built reading stands. He added th
 how a state or label reads should be settled from Survey's writing standard, not brought to him.
 The conductor passed that to the second pass and passes it to the later planners.
 
-The passes made fifteen `[advisor]` choices: one in the first pass, seven in the second, and
-seven in the third. Geoff ruled on two. The rest are method choices.
+The passes made twenty `[advisor]` choices: one in the first pass, seven each in the second and
+third, and five in the fourth. Geoff ruled on two. The rest are method choices.
 
 The first pass had three planning misses:
 
@@ -91,6 +99,12 @@ The third pass had two planning misses. `[file-list]`: three files the plan's li
 them by branch. Its pull request body first named each acceptance item by its label only, and the
 conductor had the executor copy each item in full.
 
+The fourth pass had two planning misses. `[file-list]`: the plan's list left out
+`e2e/standin_test.go`, which task 7 changed. `[mechanism]`: the planner sent its notes for the
+executor to a session named `conductor-cc-desk`, and no session had that name, so the conductor
+read them from the planner's last message and passed them on. The planner also raised the pass
+from the round plan's 60 minutes to 115 after its plan review. It took about 46.
+
 ## What it cost
 
 | Pass | Planned minutes | Minutes taken |
@@ -98,14 +112,16 @@ conductor had the executor copy each item in full.
 | 1 | 90 | 40 |
 | 2 | 75 | 44 |
 | 3 | 90 | 54 to a ready pull request, landed after Geoff's ruling |
+| 4 | 60 | 46 |
+| Round | 315 | 191 |
 
-Minutes run from the planner's launch to the merge. The chain is planned at 315 minutes, and the
-round starts nothing new past 630. Weekly usage read 88 percent before the first launch and 89
-percent after the second pass, and 90 percent after the third.
+Minutes run from the planner's launch to the merge. The round's total runs from the conductor's
+start to the last merge. Weekly usage read 88 percent before the first launch, 89 percent after
+the second pass, 90 percent after the third, and 91 percent after the fourth.
 
 ## What is left for later
 
-The passes filed six follow-ups under `docs/follow-ups/` in cc-desk:
+The passes filed eight follow-ups under `docs/follow-ups/` in cc-desk:
 
 - The reader should refuse a key in the wrong case or a key given twice (`strict-reader-key-case.md`).
 - The snapshot should show a pass's stop times (`snapshot-stop-times.md`).
@@ -113,12 +129,19 @@ The passes filed six follow-ups under `docs/follow-ups/` in cc-desk:
 - A written question that no pass rests on gets a forecast line with no time, while the snapshot
   shows one (`orphan-question-forecast.md`). Its two fixes differ in what "Ready now" means, so it
   needs Geoff's choice when it is taken up. It holds no pass in this round.
-- A resumed stopped pass can leave three passes building (`resume-skips-the-limits.md`). Geoff kept the rule as built,
-  so the file is a record, not open work.
+- A resumed stopped pass can leave three passes building (`resume-skips-the-limits.md`).
+  Geoff kept the rule as built, so the file is a record, not open work.
 - A failed usage reading, once cached, holds every start for up to five minutes, and a guess
   given on a resume is dropped without a word (`reading-errors-and-guess-on-resume.md`). The first
   trades retry cost against waiting time, so it needs Geoff's choice when it is taken up.
+- A retry after a crash between the ruling write and the release write leaves a ruling that
+  answers nothing (`orphan-ruling-after-a-crash.md`).
+- A desk that lives through a clock step of more than 2 seconds fails the guard's start-time test
+  (`desk-start-time-after-a-clock-step.md`). Storing the raw start ticks with the boot id fixes
+  it, in the Desk round.
 
 One rule waits for a home. Geoff's guidance to settle wording calls from Survey's writing standard
 belongs in `pass-core`'s advisor reference, which sorts the calls that reach him. Changing it takes a
 separate pass.
+
+The next action is to design the Sessions round and the Page round, which can run side by side.
