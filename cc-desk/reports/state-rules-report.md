@@ -1,10 +1,12 @@
-# The cc-desk command now forecasts the next session, and the third pass is starting
+# The start rules are built and wait on one question for Geoff, and the last pass is starting
 
-Two of the round's four passes have landed. The `cc-desk` command keeps the state files, and its
-snapshot now carries each release's pace and the time of the next session with Geoff. Each pass
-event also appends a forecast line. A planner session is writing the plan for the third pass,
-which adds the rules that start, hold, or refuse a pass and the usage read. Weekly usage read 89
-percent, under the 100 percent stop. Nothing waits for Geoff.
+Three of the round's four passes are built, and two have landed. The `cc-desk` command keeps the
+state files and forecasts the next session with Geoff. The third pass, ready as pull request 5,
+makes a start follow the rules: it starts, waits on a limit, or is refused with each broken rule
+named. That pull request waits for Geoff on one question: should a stopped pass that resumes skip
+the limit of two passes building at once? The recommendation is yes, as built. The fourth pass,
+which records rulings, is starting from the third pass's branch. Weekly usage read 90 percent,
+under the 100 percent stop.
 
 ## What landed
 
@@ -28,16 +30,38 @@ review at `accept` and no open finding. Its evidence:
 | The next session matches every row of the design's worked table, with the rough mark, the variant, and the round not designed yet | `TestEstimate` passed, with six cases and literal times |
 | The gate passes | `bash scripts/gate.sh` ended `gate: ok`, and the `gate` check passed on the last commit |
 
-The passes still to land, in order:
+[Add the start rules and the usage read](https://github.com/glw907/cc-desk/pull/5) is ready, with
+its review at `accept`, no open finding, and the `gate` check passing. It waits for Geoff's answer
+to its one call. Its evidence:
+
+| Item | Evidence |
+| --- | --- |
+| Waiting order | `TestWaitingOrder` passed, with five cases |
+| Limits | `TestLimits` passed, with six cases, the 99 and 100 percent readings among them |
+| The usage reader | `TestParse` and `TestUsageReader` passed, and the live check below |
+| The gate | `bash scripts/gate.sh` ended `gate: ok`, and the `gate` check passed on the last commit |
+
+The live usage check ran on the workstation, outside CI, in an empty state folder. `cc-desk usage`
+printed `90% used, resets Nov 20, 10:59pm (America/Anchorage)`. The saved raw result read 90
+percent, a cost of `0`, and `0` model turns.
+
+The pass still to land:
 
 | Pass | What it builds | Planned minutes | State |
 | --- | --- | --- | --- |
-| 3 | A start is started, held, or refused by the rules, and the command reads usage | 90 | Planning |
-| 4 | A ruling is recorded only from a desk session, and it frees what waited | 60 | Waiting on pass 3 |
+| 4 | A ruling is recorded only from a desk session, and it frees what waited | 60 | Planning, from pass 3's branch |
 
 ## What went wrong
 
 No pass has stopped, and no command was refused.
+
+One question waits for Geoff, from the third pass. The design says "Passes already building carry
+on," and the pass reads that as letting a stopped pass resume past both limits. Only building
+passes count toward the limit of two, so a resume can leave three building. The recommendation is
+to keep it: a stopped pass still holds its worktree and its session, and making it wait costs
+more than one extra session. Changing it means one rule and its tests. The question is in
+`docs/follow-ups/resume-skips-the-limits.md`, and pull request 5 waits on it, with the fourth pass
+behind it.
 
 Geoff took one call, from the second pass's plan. A round that needs him, with no design and no
 work left, fit none of the design's four session states. The pass read it as "Ready now" with no
@@ -45,8 +69,8 @@ time. Geoff answered "Those both work," so the built reading stands. He added th
 how a state or label reads should be settled from Survey's writing standard, not brought to him.
 The conductor passed that to the second pass and passes it to the later planners.
 
-The passes made eight `[advisor]` choices: one in the first pass, and seven new ones in the
-second. All but the one Geoff ruled on are method choices.
+The passes made fifteen `[advisor]` choices: one in the first pass, seven in the second, and
+seven in the third. Geoff ruled on one, and one waits for him. The rest are method choices.
 
 The first pass had three planning misses:
 
@@ -65,20 +89,26 @@ The second pass had three planning misses, written with no tag. By their content
 plan's ruling line went in before Vale read it, which turned one commit's check red), and a
 `[design-gap]` miss (a question that no pass rests on, below).
 
+The third pass had two planning misses. `[file-list]`: three files the plan's list didn't name.
+`[mechanism]`: the plan's CI watch listed runs by commit, which returns nothing, so it should list
+them by branch. Its pull request body first named each acceptance item by its label only, and the
+conductor had the executor copy each item in full.
+
 ## What it cost
 
 | Pass | Planned minutes | Minutes taken |
 | --- | --- | --- |
 | 1 | 90 | 40 |
 | 2 | 75 | 44 |
+| 3 | 90 | 54, to a ready pull request |
 
 Minutes run from the planner's launch to the merge. The chain is planned at 315 minutes, and the
 round starts nothing new past 630. Weekly usage read 88 percent before the first launch and 89
-percent after the second pass.
+percent after the second pass, and 90 percent after the third.
 
 ## What is left for later
 
-The passes filed four follow-ups under `docs/follow-ups/` in cc-desk:
+The passes filed six follow-ups under `docs/follow-ups/` in cc-desk:
 
 - The reader should refuse a key in the wrong case or a key given twice (`strict-reader-key-case.md`).
 - The snapshot should show a pass's stop times (`snapshot-stop-times.md`).
@@ -86,6 +116,11 @@ The passes filed four follow-ups under `docs/follow-ups/` in cc-desk:
 - A written question that no pass rests on gets a forecast line with no time, while the snapshot
   shows one (`orphan-question-forecast.md`). Its two fixes differ in what "Ready now" means, so it
   needs Geoff's choice when it is taken up. It holds no pass in this round.
+- A resumed stopped pass can leave three passes building (`resume-skips-the-limits.md`). This is
+  the question pull request 5 waits on.
+- A failed usage reading, once cached, holds every start for up to five minutes, and a guess
+  given on a resume is dropped without a word (`reading-errors-and-guess-on-resume.md`). The first
+  trades retry cost against waiting time, so it needs Geoff's choice when it is taken up.
 
 One rule waits for a home. Geoff's guidance to settle wording calls from Survey's writing standard
 belongs in `pass-core`'s advisor reference, which sorts the calls that reach him. Changing it takes a
