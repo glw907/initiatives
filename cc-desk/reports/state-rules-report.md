@@ -101,8 +101,9 @@ conductor had the executor copy each item in full.
 
 The fourth pass had two planning misses. `[file-list]`: the plan's list left out
 `e2e/standin_test.go`, which task 7 changed. `[mechanism]`: the planner sent its notes for the
-executor to a session named `conductor-cc-desk`, and no session had that name, so the conductor
-read them from the planner's last message and passed them on. The planner also raised the pass
+executor to a session named `conductor-cc-desk`. Geoff's terminal session runs this round's
+conductor under another name, so the conductor read the notes from the planner's last message
+and passed them on. Planner prompts should name the conductor's real session. The planner also raised the pass
 from the round plan's 60 minutes to 115 after its plan review. It took about 46.
 
 ## What it cost
