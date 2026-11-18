@@ -1,12 +1,10 @@
-# The start rules are built and wait on one question for Geoff, and the last pass is starting
+# The start rules have landed, and the last pass is in planning
 
-Three of the round's four passes are built, and two have landed. The `cc-desk` command keeps the
-state files and forecasts the next session with Geoff. The third pass, ready as pull request 5,
-makes a start follow the rules: it starts, waits on a limit, or is refused with each broken rule
-named. That pull request waits for Geoff on one question: should a stopped pass that resumes skip
-the limit of two passes building at once? The recommendation is yes, as built. The fourth pass,
-which records rulings, is starting from the third pass's branch. Weekly usage read 90 percent,
-under the 100 percent stop.
+Three of the round's four passes have landed. The `cc-desk` command keeps the state files,
+forecasts the next session with Geoff, and starts, holds, or refuses a pass by the rules, naming
+each broken rule. Geoff answered the third pass's one question: a stopped pass that resumes skips
+the limit of two passes building at once, as built. The fourth pass, which records rulings, is
+in planning. Weekly usage read 90 percent, under the 100 percent stop.
 
 ## What landed
 
@@ -30,9 +28,8 @@ review at `accept` and no open finding. Its evidence:
 | The next session matches every row of the design's worked table, with the rough mark, the variant, and the round not designed yet | `TestEstimate` passed, with six cases and literal times |
 | The gate passes | `bash scripts/gate.sh` ended `gate: ok`, and the `gate` check passed on the last commit |
 
-[Add the start rules and the usage read](https://github.com/glw907/cc-desk/pull/5) is ready, with
-its review at `accept`, no open finding, and the `gate` check passing. It waits for Geoff's answer
-to its one call. Its evidence:
+[Add the start rules and the usage read](https://github.com/glw907/cc-desk/pull/5) landed with its
+review at `accept`, no open finding, and the `gate` check passing. Its evidence:
 
 | Item | Evidence |
 | --- | --- |
@@ -49,19 +46,19 @@ The pass still to land:
 
 | Pass | What it builds | Planned minutes | State |
 | --- | --- | --- | --- |
-| 4 | A ruling is recorded only from a desk session, and it frees what waited | 60 | Planning, from pass 3's branch |
+| 4 | A ruling is recorded only from a desk session, and it frees what waited | 60 | Planning |
 
 ## What went wrong
 
 No pass has stopped, and no command was refused.
 
-One question waits for Geoff, from the third pass. The design says "Passes already building carry
-on," and the pass reads that as letting a stopped pass resume past both limits. Only building
-passes count toward the limit of two, so a resume can leave three building. The recommendation is
-to keep it: a stopped pass still holds its worktree and its session, and making it wait costs
-more than one extra session. Changing it means one rule and its tests. The question is in
-`docs/follow-ups/resume-skips-the-limits.md`, and pull request 5 waits on it, with the fourth pass
-behind it.
+Geoff ruled on one question from the third pass. The design says "Passes already building carry
+on," and the pass read that as letting a stopped pass resume past both limits. Only building
+passes count toward the limit of two, so a resume can leave three building. A stopped pass still
+holds its worktree and its session, so making it wait costs more than one extra session. Geoff
+answered "Yes as built," and pull request 5 landed after the ruling was recorded in its plan. The
+design's wording is an `[owner-call]` miss: it should have said whether a stopped pass counts as
+building.
 
 Geoff took one call, from the second pass's plan. A round that needs him, with no design and no
 work left, fit none of the design's four session states. The pass read it as "Ready now" with no
@@ -70,7 +67,7 @@ how a state or label reads should be settled from Survey's writing standard, not
 The conductor passed that to the second pass and passes it to the later planners.
 
 The passes made fifteen `[advisor]` choices: one in the first pass, seven in the second, and
-seven in the third. Geoff ruled on one, and one waits for him. The rest are method choices.
+seven in the third. Geoff ruled on two. The rest are method choices.
 
 The first pass had three planning misses:
 
@@ -100,7 +97,7 @@ conductor had the executor copy each item in full.
 | --- | --- | --- |
 | 1 | 90 | 40 |
 | 2 | 75 | 44 |
-| 3 | 90 | 54, to a ready pull request |
+| 3 | 90 | 54 to a ready pull request, landed after Geoff's ruling |
 
 Minutes run from the planner's launch to the merge. The chain is planned at 315 minutes, and the
 round starts nothing new past 630. Weekly usage read 88 percent before the first launch and 89
@@ -116,8 +113,8 @@ The passes filed six follow-ups under `docs/follow-ups/` in cc-desk:
 - A written question that no pass rests on gets a forecast line with no time, while the snapshot
   shows one (`orphan-question-forecast.md`). Its two fixes differ in what "Ready now" means, so it
   needs Geoff's choice when it is taken up. It holds no pass in this round.
-- A resumed stopped pass can leave three passes building (`resume-skips-the-limits.md`). This is
-  the question pull request 5 waits on.
+- A resumed stopped pass can leave three passes building (`resume-skips-the-limits.md`). Geoff kept the rule as built,
+  so the file is a record, not open work.
 - A failed usage reading, once cached, holds every start for up to five minutes, and a guess
   given on a resume is dropped without a word (`reading-errors-and-guess-on-resume.md`). The first
   trades retry cost against waiting time, so it needs Geoff's choice when it is taken up.
