@@ -36,7 +36,7 @@ Pass 4 had two planning misses: `[mechanism]` the plan named an old shape for Ki
 | --- | --- | --- |
 | 1, the records | 120 | 107 |
 | 2, the skills | 75, raised to 105 by Geoff | building |
-| 4, the page | 90 (plan path 170) | 145 |
+| 4, the page | 90 (plan path 170) | about 90, planning included |
 
 Weekly usage before the round: 5 percent, with the reset on Nov 20 at 11 pm Alaska time.
 
