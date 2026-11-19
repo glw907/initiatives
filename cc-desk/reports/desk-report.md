@@ -2,7 +2,7 @@
 
 The Desk and skills round builds the desk session that `cc-desk` opens, the two skills, the
 page's report pages, and the check's repairs, then rehearses one run with nobody tending it.
-Its first pass, which widens the records, landed as pull request 17. The page pass landed as pull request 19 and the skills pass as pull request 18. The desk pass is being planned. Nothing waits for Geoff yet.
+Its first pass, which widens the records, landed as pull request 17. The page pass landed as pull request 19 and the skills pass as pull request 18. The desk pass is building. Nothing waits for Geoff yet.
 
 ## What waits for Geoff
 
@@ -32,7 +32,11 @@ Pass 2 parked at planning: its plan priced 170 minutes against 75, past twice th
 
 Pass 4 had two planning misses: `[mechanism]` the plan named an old shape for Kit's route matchers, and `[check]` its bundle check matched comment text. Its first body left out the gate check's exact wording and the gate's output, and its misses had no tags. The conductor sent it back once for a body fix, as it had with pass 1. The pass made no calls for Geoff and had no red CI run.
 
-Pass 2's closing review escalated one point: the skills and the guide state behaviors that only pass 3 builds. The executor kept them, with a caveat line and `docs/follow-ups/desk-skills-review-notes.md` listing each claim for pass 3. A review short of accept can't land on its own, so the conductor asked Geoff at 15:56. He answered "Land it (Recommended)", and the pass landed at 18:07. The two hours of waiting held up pass 3. Pass 2 also had two `[file-list]` misses: the CI workflow wasn't in task 3's file list, and the review-notes follow-up was new at close.
+Pass 2's closing review escalated one point: the skills and the guide state behaviors that only pass 3 builds. The executor kept them, with a caveat line and `docs/follow-ups/desk-skills-review-notes.md` listing each claim for pass 3. A review short of accept can't land on its own, so the conductor asked Geoff at 15:56. He answered "Land it (Recommended)", and the pass landed at 18:07. The two hours of waiting held up pass 3. Pass 3 parked at planning: its plan priced 255 minutes against 100. The planner priced every clause of done items 3 to 5, and a plan review found six places where the code doesn't work as the plan first said, which raised the count from 210. Geoff answered at about 19:05: "Raise to 140 (Recommended)". The ruling is under `## Rulings` in the pass's plan. This is an `[estimate]` planning miss.
+
+After PR 18, Geoff gave two standing answers so later stops don't wait on him: 26 lets a review that escalates land when the advisor settled each point, and 27 approves ahead of time the tag, dotfiles, install, and real-release steps. Both are in the round plan at `81afc1d`.
+
+Pass 2 also had two `[file-list]` misses: the CI workflow wasn't in task 3's file list, and the review-notes follow-up was new at close.
 
 ## What it cost
 
@@ -40,7 +44,7 @@ Pass 2's closing review escalated one point: the skills and the guide state beha
 | --- | --- | --- |
 | 1, the records | 120 | 107 |
 | 2, the skills | 75, raised to 105 by Geoff | about 140 to ready, planning included, then about 130 waiting for Geoff |
-| 3, the desk | 100 | in planning |
+| 3, the desk | 100, raised to 140 by Geoff (plan path 255) | building |
 | 4, the page | 90 (plan path 170) | about 90, planning included |
 
 Weekly usage before the round: 5 percent, and 8 percent after three passes, with the reset on Nov 20 at 11 pm Alaska time.
