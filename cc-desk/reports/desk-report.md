@@ -1,8 +1,8 @@
-# The Desk and skills round has landed three of its six passes
+# The Desk and skills round has landed four of its six passes
 
 The Desk and skills round builds the desk session that `cc-desk` opens, the two skills, the
 page's report pages, and the check's repairs, then rehearses one run with nobody tending it.
-Its first pass, which widens the records, landed as pull request 17. The page pass landed as pull request 19 and the skills pass as pull request 18. The desk pass is building. Nothing waits for Geoff yet.
+Its first pass, which widens the records, landed as pull request 17. The page pass landed as pull request 19, the skills pass as pull request 18, and the desk pass as pull request 20. The check's repairs, pass 5, is planning. Nothing waits for Geoff yet.
 
 ## What waits for Geoff
 
@@ -15,6 +15,8 @@ Nothing yet.
 [Pull request 19](https://github.com/glw907/cc-desk/pull/19) makes the status page show reports to read, each with one "Mark as read" form, and a waiting round's design. It also shows what each check chose and each pass's permission prompts and refused commands. The page's unit can write to the state folder and nothing else. Until the binary is installed from main after pass 5, a click on "Mark as read" fails, because the installed binary has no `report` verb.
 
 [Pull request 18](https://github.com/glw907/cc-desk/pull/18) adds the two skills, `cc-desk` for the desk session and `cc-desk-work` for every session cc-desk launches, and `docs/guide.md`. The three launch prompts now name `cc-desk-work` in place of the Approval Queue rules. Live sessions given the desk skill opened correctly on all three test cases. The skills describe the desk that pass 3 builds, so the guide carries a caveat line until pass 3 proves each claim.
+
+[Pull request 20](https://github.com/glw907/cc-desk/pull/20) makes `cc-desk` open the desk: an Opus session at high effort, on the brief, with no permission prompt. A typed answer there becomes a ruling, a replacement before a pass starts takes effect, and a merge answer is carried out by the check. A replaced pass whose session had already finished now relaunches; the live run found that gap. It was proven live in the scratch repo.
 
 ## What went wrong
 
@@ -40,6 +42,8 @@ Both estimate stops were preventable, as Geoff pointed out. The three stops cost
 
 A Fable review of the failures (kept with the round's records) disagrees with the conductor on the first cause. In nine PRs with both figures, plan paths added to 1,405 minutes and measured time to 355, so the round's estimates were near the truth and the plan paths were the wrong number to stop on. It traces the stops to `round.md` "Parking at planning", to the landing test reading the review's word in place of open findings and calls, and to the round plan replacing "starts once that pass's PR is ready, whatever its verdict". It also finds that cc-desk as built would repeat them: `pass ready` has no line for an `escalate` verdict, a merge question holds every pass behind it, and standing answers have no record.
 
+Pass 3 had five planning misses besides its estimate: three `[mechanism]` (the start tests' file, a finished session's relaunch, and the branch the merge fixture pushes), one `[stale-fact]` (the link handler refuses when `cc-desk` is not on `PATH`), and one `[ambiguous]`. Auto mode refused one `rm` of a file in the real state folder during cleanup, and the file was left alone. Its first review read `fix`, and a fresh read accepted the folded branch.
+
 Pass 2 also had two `[file-list]` misses: the CI workflow wasn't in task 3's file list, and the review-notes follow-up was new at close.
 
 ## What it cost
@@ -48,14 +52,15 @@ Pass 2 also had two `[file-list]` misses: the CI workflow wasn't in task 3's fil
 | --- | --- | --- |
 | 1, the records | 120 | 107 |
 | 2, the skills | 75, raised to 105 by Geoff | about 140 to ready, planning included, then about 130 waiting for Geoff |
-| 3, the desk | 100, raised to 140 by Geoff (plan path 255) | building |
+| 3, the desk | 100, raised to 140 by Geoff (plan path 255) | about 144 to ready, then landed at once |
 | 4, the page | 90 (plan path 170) | about 90, planning included |
 
-Weekly usage before the round: 5 percent, and 8 percent after three passes, with the reset on Nov 20 at 11 pm Alaska time.
+Weekly usage before the round: 5 percent, 8 percent after three passes, and 10 percent after four, with the reset on Nov 20 at 11 pm Alaska time.
 
 ## What is left for later
 
 - `designed-round-with-no-questions-reads-nothing.md`, from pass 1.
 - `desk-fixture-connection-dropped.md`, new from pass 4, and `blocked-session-reads-as-unreadable-stop.md`, reworded by pass 4.
 - `desk-skills-review-notes.md`, new from pass 2, for pass 3 to clear.
+- From pass 3: `desk-open-review-notes.md`, `closed-pass-leaves-its-worktree.md`, `close-answer-failed-stop-can-be-replaced.md`, and `exec-failure-after-register-leaves-entry.md`.
 - `round-estimates-priced-from-evidence.md`, from the conductor, for the Move design.
