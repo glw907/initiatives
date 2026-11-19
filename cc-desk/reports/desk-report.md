@@ -36,6 +36,8 @@ Pass 2's closing review escalated one point: the skills and the guide state beha
 
 After PR 18, Geoff gave two standing answers so later stops don't wait on him: 26 lets a review that escalates land when the advisor settled each point, and 27 approves ahead of time the tag, dotfiles, install, and real-release steps. Both are in the round plan at `81afc1d`.
 
+Both estimate stops were preventable, as Geoff pointed out. The round plan priced each pass from its outline, and every planner that priced the evidence clause by clause came out about twice as high (pass 1: 120 against 209; pass 2: 75 against 170; pass 4: 90 against 170; pass 3: 100 against 255). Pass 1's path showed the pattern before passes 2 and 3 were planned, and the conductor didn't ask for a standing answer then. Pass 2's review escalation was foreseeable too, since the design orders the skills before the desk they describe. Geoff then gave standing answer 28: the conductor raises an estimate itself when the plan parks only over its estimate and its scope matches the design. `docs/follow-ups/round-estimates-priced-from-evidence.md` (at `af5ea47`) proposes the fix in cc-desk itself, an estimate rule on the release and a miss signal in the brief after a round's first pass, and in `pass-core`'s round and planner references.
+
 Pass 2 also had two `[file-list]` misses: the CI workflow wasn't in task 3's file list, and the review-notes follow-up was new at close.
 
 ## What it cost
@@ -54,3 +56,4 @@ Weekly usage before the round: 5 percent, and 8 percent after three passes, with
 - `designed-round-with-no-questions-reads-nothing.md`, from pass 1.
 - `desk-fixture-connection-dropped.md`, new from pass 4, and `blocked-session-reads-as-unreadable-stop.md`, reworded by pass 4.
 - `desk-skills-review-notes.md`, new from pass 2, for pass 3 to clear.
+- `round-estimates-priced-from-evidence.md`, from the conductor, for the Move design.
