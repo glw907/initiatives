@@ -2,13 +2,32 @@
 kind: report
 ---
 
-# Round structure: pass 1 is launching, nothing has landed
+# Round structure: pass 1 of 3 has landed, nothing deployed
 
-Round `structure` is at its first launch on 2026-11-20. Every start-line state holds. Start-line state 4 failed for a short time, because `dubplate-d7` (Geoff's interactive terminal) sat idle in the main checkout and `claude-worktree-busy` exited 1. It released the checkout, the check now exits 0, and `conductor-dubplate` launches the planner for pass 1, `structure-base`. Nothing waits for Geoff. Nothing deployed, and the dubplate server is unchanged.
+Pass 1, `structure-base`, merged on 2026-11-20 as PR #18 (`5d1e6e9`) on checks and review, under Geoff's pick of "Merge on checks and review". `_salvage` is gone, the store lives at `internal/store`, one package parses ids, the time and query helpers each exist once, no code under `internal` reads the clock outside tests and the harness, and a store test names the owner of all 19 tables. A member sees nothing different. Pass 2, `structure-keys`, launches next. Nothing waits for Geoff. Nothing deployed, and the dubplate server is unchanged.
+
+## Pass 1: `structure-base`, PR #18
+
+Review `accept, open findings 0` after one fix round (two reads that wrapped an error with an extra prefix, fixed and re-read), `Calls: none`, security read `accept` with Low findings only, CI `success` on `4d4e8ff`. I compared the two proof sets myself, with fresh detached builds at the proof base `58a10c5` and at the head. All eight lines are identical between base and head, and they equal the `e03e574` values in the plan README:
+
+```
+empty environment:                 lines=78   sha256=5233cf78193226dec7e293c34b63b676691fb573bee263b2dc294f0667731ea3
+complete environment, no store:    lines=77   sha256=d98236213a4019e7cf1c167a0128bfa4628f440c8d3d91b439ef58b6964a73fa
+a retired setting name:            lines=74   sha256=29cec9c8b52a94066b6d209f144f417a9fd157e76ea6febfc678c916024113fc
+refused values:                    lines=1867 sha256=e06b84f9a762f3baeab228ed42e3dc3a766641855cba5c1848429b858e445596
+a store with one admin:            lines=183  sha256=968d704237a02f5d0fc090c06727f7283614d0f2892ea6ddeb264c760a1a20ab
+help text, every command:          lines=225  sha256=c09227a87aebb58c7c933b530857ae8eff92e29122b69aac8d44575809d9c6a3
+everything:                        lines=2510 sha256=7b996b4391ddca9ca2cfcb54a2de399ce88f22fa5a5d201018dfd92e346b4b06
+registry dump: 56 lines, sha256 b8a59fba160781e6fd33c513d9a844266c20a9af401fd1e6f18e61e2b1365842
+```
+
+Other acceptance evidence is in the PR body. No test name left: 1,882 names at the proof base, 1,906 at head, `comm -23` prints none. The migration hash is `ffc4e9db` at both paths. `git ls-files _salvage` prints 0 and `6b8f300bce37` holds all 128 files. One check read differently from the design: `^func micros\(` prints 0 because the helper is exported as `Micros`, so the PR adds a `(micros|Micros)` check that prints one line. `@types/node` 26 landed in the sweep on Geoff's 2026-11-20 ruling and closed #131. TypeScript 7 stayed held, since the peer ranges exclude it.
+
+The executor ended blocked on two found items and asked for a ruling. I ruled both kept as written and filed them: #170 (the "must not be nil" function fields) and #171 (`EarliestAdmin` refuses an id that is not 16 bytes). Both are method calls. No design sentence or order a person reads changed.
 
 ## What waits
 
-Passes 2 and 3 wait for the pass before each, in order. `dubplate-d7` also relayed an agreement with `conductor-cc-desk`: cc-desk and dubplate together keep no more than four building sessions on this workstation, and neither starts a new session past 85 percent of weekly usage until the reset. This conductor treats it as a courtesy from a peer, which can't change the design. Usage is 17 percent, so it binds nothing today.
+Pass 2 launches now and pass 3 follows it, in order. `dubplate-d7` also relayed an agreement with `conductor-cc-desk`: cc-desk and dubplate together keep no more than four building sessions on this workstation, and neither starts a new session past 85 percent of weekly usage until the reset. This conductor treats it as a courtesy from a peer, which can't change the design. Usage is 17 percent, so it binds nothing today.
 
 ## Checks run before the first launch
 
@@ -30,8 +49,12 @@ PR #17 was reviewed `accept, open findings 0` after three review rounds and `Cal
 
 ## What it cost
 
-Nothing planned has run: 0 of 1,090 path minutes. Usage was 17 percent before the first launch.
+| Pass | Planned path minutes | Taken | Fix rounds | Reds |
+| --- | --- | --- | --- | --- |
+| 1 `structure-base` | 505 (design 390) | about 142 | 1 | 0 |
+
+Planning misses for pass 1: `[mechanism]` the design's `^func micros\(` check misses an exported helper; `[stale-fact]` one figure in T3; `[file-list]` the `docs/standing-rules.md` clauses, the class map, and a `deploy.sh` comment. The planned 505 stays under the 780-minute parking line. Weekly usage read 17 percent before the first launch and 22 percent before pass 2.
 
 ## What is left for later
 
-The design's "Later" list is unchanged: one answer for an id of all zeros, one registration line for `serve`, one file-ownership check, the wording of three reserved `doctor` rows, and the single clean migration file at `launch`.
+Backlog #170 and #171 are filed. The design's "Later" list is unchanged: one answer for an id of all zeros, one registration line for `serve`, one file-ownership check, the wording of three reserved `doctor` rows, and the single clean migration file at `launch`.
