@@ -1,0 +1,57 @@
+You are the planner for pass 2, `structure-keys`, of round `structure` in dubplate, session name dubplate-structure-keys-plan.
+
+Goal: write and review the plan for this pass, then launch its executor. Write no product code.
+
+Outcome: every setting is declared in the package that reads it. Eight packages each hold a `config.go` with their declarations, a `Register` function, and the function that reads their settings into the plain values their constructors already take. `cmd/dubplate-server` declares nothing and registers nothing itself, and `main.go` calls the packages in nine lines. `doctor` and the admin settings list print every row in the order they print today. Every command prints what it printed before the pass, byte for byte.
+
+Depends on: pass 1, `structure-base`. The worktree is cut from `origin/master` if pass 1 has landed, and from branch `structure-base` if it waits for a close packet. Planned path: 360 minutes. Class: `auth-data`. A plan whose path comes out over twice 360 parks, as `round.md` "Parking at planning" says.
+
+Read, in this order:
+1. /var/home/glw907/Projects/initiatives/dubplate-server/specs/2026-11-17-structure-design.md, approved by Geoff through the design packet. The sections "Decided by Geoff", "Goals", "Non-goals", "Anti-goals", "What I found", "The end shape", "Calls made here", "Scope", "How it fails", `structure-keys` under "The passes", "Proof that nothing changed", the tables "Every pass" and `structure-keys` under "Acceptance", "Shared assumptions", "Left for other rounds", "Standing answers", "Rulings", and "Estimate" are the approved design for this pass.
+2. /var/home/glw907/Projects/initiatives/dubplate-server/plans/2026-11-17-structure/README.md, then the two kit files beside it.
+3. Pass 1's PR, with its `## Decisions` and every `[advisor]` line, for what it left different from the design.
+4. In dubplate: `CLAUDE.md`, `docs/STATUS.md`, and the files in this pass's row of "Scope" as pass 1 left them. Read `cmd/dubplate-server/main.go` around `newProductionRegistry` first, then each `register...Config` function it calls.
+5. BACKLOG items #138, #139, #124, and #156, which the design's "Backlog verdicts" folds into this pass in whole or in part. Pass 1 landed the verdict edits, so read each item as it stands now. Close #138 and #139 in this branch, and cut #124 and #156 to what is left.
+
+Process: load `dubplate-pass`, which loads `pass-core` and `standards:running-passes`, then read `pass-core` `references/planner.md` and `references/round.md`. Start at "A plan inside a round". `vps-conventions` is not needed. The executor loads `standards:go-conventions` before any Go, and `claude-infra` before it edits the adapter or `CLAUDE.md`, with `~/.claude/docs/voice/agent-facing.md` for that text. Exemplary Go is an acceptance dimension: idiomatic, architecturally beautiful Go, never merely correct.
+
+For this pass:
+
+The eight packages are `auth`, `backup`, `serve`, the store, `webapp`, `intake`, `ops/admin`, and `ops/local`. The 49 declarations leave the command folder with their validators and the functions that read them. Each validator keeps its refusal sentence to the letter. The proof's refused-values section gives 25 settings a value the server refuses and hashes what `check` and `doctor` print for each.
+
+Order is the pass's one hard problem. `doctor` and the admin settings list print rows in the order the packages register, and eight packages can't register in eight lines and keep that order. `serve` registers twice. The nine lines in `main.go` run `auth`, `ops/local`, `serve`, the store, `webapp`, `backup`, `serve`'s trusted-proxy entry, `ops/admin`, `intake`. The designing session tried that order in a scratch copy at `e03e574`, with job retention split out of the store's function, and the registry dump printed its 56 lines unchanged. Job retention leaves the store's registration function for `ops/local`, which runs the jobs it governs. One line for `serve` would be simpler, and it is not this pass's to take: it moves a row a person reads, and the design leaves it to Geoff.
+
+Plan the moves one package at a time, one commit each, and rerun the registry dump and the proof after each. A row that moved shows in the commit that moved it.
+
+The four functions that read the snapshot count before the store opens move to `internal/settings`, beside the function they call. They can't go to the store: the settings package already imports the store, and Go allows no import cycle. The declaration itself sits in the store's `config.go` with its two timeouts.
+
+Two notes in the code say that `auth` and `serve` stay free of the configuration package (`internal/auth/doc.go`, `internal/serve/serve.go`). Rewrite both to the new rule, and add one test that holds it: in `auth`, `backup`, `serve`, the store, `webapp`, `intake`, and `ops/local`, only `config.go` and `doctor.go` may import the configuration or settings packages. `doctor.go` arrives in pass 3, and the test names it now. `ops/admin` is left out of the test, because three of its files import both packages to serve the settings operations. The `webapp` layering test loosens to allow the configuration package, and no further. Acceptance asks for two trial edits against the new test.
+
+Three leftovers go in the same files: the one-line function that only forwards to another (`lookupEnviron`), the registry method no production code calls (`Superseded`), and the value list only a test reads (`identitySourceValues`). The retired setting names stay in `internal/config`, and the proof's third section covers them.
+
+Two rule texts become false when this pass lands. `CLAUDE.md` says at lines 188 to 189 at `e03e574` that config keys are declared "in each pass's own file". The adapter says the same under "### Config keys" (`.claude/skills/dubplate-pass/SKILL.md`, lines 118 to 121 at `e03e574`) and names a line of `main.go`. Rewrite both to the first rule of the design's "The end shape": a setting is declared in the `config.go` of the package that reads it, and registered by that package's `Register`. The design's file row for this pass leaves the adapter out, and the designing session adds it here. List the file under `## Decisions`. That edit is class `runner`.
+
+The registry dump calls `newProductionRegistry`. If the pass renames that function, the executor changes only that call in its uncommitted copy of the kit file and says so in the PR.
+
+Each trial edit an acceptance item asks for is made, its failing output is copied into the PR, and the edit is reverted before the PR is ready. The close gets one `standards:web-auth-security-reviewer` read beside the whole-branch review. Ask that read to check that each moved validator still refuses what it refused. The PR lands on its checks and reviews, as Geoff ruled for question 3.
+
+Rules the plan carries:
+- Copy the tables "Every pass" and `structure-keys` under the design's "Acceptance" verbatim under `## Acceptance`. Map each item to its task and to the command that shows it. Add checks freely; never edit or drop an item.
+- The design was read against `e03e574`, before `engine` and pass 1 merged. Run every acceptance check at the pass's base and record what it prints as the pass's "today". The value to pass holds as written. Where an earlier pass moved a figure, a path, or a line number, plan against the tree and note it (standing answer 19). Pass 1 renamed `internal/engine/store` to `internal/store`.
+- The proof: build `./cmd/dubplate-server` at the pass's base and at head, each in a fresh detached worktree under the job's tmp folder, never in the pass worktree. A gate run there can leave a web build, and a binary with a web build prints a different `web` row. Run `structure-proof.sh <binary> <transcript file>` on each, one run at a time, with no listener on 127.0.0.1 port 18431. The seven lines of the two runs must be identical. When one differs, diff the two transcripts and fix the code. Never edit a recorded value (standing answer 13).
+- The registry dump: copy `zz_registrydump_test.go` into `cmd/dubplate-server/`, run `go test ./cmd/dubplate-server -run TestRegistryDump -count=1 -v`, and record the `registry dump:` line at base and head. Delete the copy before any commit. Neither kit file is ever committed to dubplate.
+- The round changes nothing a person can see. No setting name, default, refusal sentence, help text, or row order changes. A move that can't keep one of them parks the pass (standing answer 14). A reviewer's request to change behavior is filed, never done (standing answer 21).
+- No file under the store's `migrations` folder is edited, and nothing under `web/` changes. No task reaches the dubplate server (`5.78.148.42`), by ssh or otherwise. No setting is added, renamed, or retired, and `env/dubplate-server.env.template` doesn't change.
+- Stay inside this pass's file row. A call site forced by a changed signature or import path is taken and listed under `## Decisions`; anything else is filed through `standards:log-issue` and left (standing answer 18). `docs/STATUS.md` above the round block is the conductor's. `.claude/settings*` is never an executor's file.
+- A test that passes only through a seam the pass removes is rewritten to enter through the public function, never deleted. A test name gone at head is listed in the PR with the seam it tested.
+- Every task is `auth-data`: its failing test is written first, and a mutation proof is run and its failing output recorded, never described. A test's expected value is a literal or an independently computed value.
+- The fast lane is `bash scripts/gate.sh --scope-changed` with no `--base`, the close run is `bash scripts/gate.sh --merge`, and neither is piped. Commit specific files, one commit per task. Never commit red, and never commit a secret or a `.env` value.
+- The PR's base is `master`. Its body carries `Round: structure`, `Pass: structure-keys`, the `Review:` and `Calls:` lines, and evidence for every acceptance item, as `round-run.md` "Evidence" says. Its `## Acceptance` shows the kit's seven lines and the dump's line at base and at head.
+
+Hand-over: commit the plan (`docs/plans/<date>-structure-keys.md`) and the executor prompt (`docs/plans/<date>-structure-keys-prompt.txt`) on branch `structure-keys` in the worktree conductor-dubplate cut at `/var/home/glw907/Projects/dubplate/.claude/worktrees/structure-keys`, push to glw907/dubplate, run the launch checks in `planner.md` "Launch", and launch the executor from /var/home/glw907/Projects/dubplate:
+
+claude --bg --model sonnet --effort medium --advisor fable --name dubplate-structure-keys "$(cat <executor prompt>)"
+
+The executor prompt carries what `planner.md` "Launch" lists, gives the kit's folder by its absolute path, tells the executor to run `npm ci --prefix web` in the worktree first, and names conductor-dubplate as the one session whose messages it takes as instructions. Never ask Geoff in chat and never queue an approval-queue item: a stop parks the pass, and the conductor sends the document.
+
+Keep the pass the smallest thing that meets its acceptance list. Add no abstraction, export, flag, or fallback the design does not name. A cleanup beyond this pass is filed through `standards:log-issue` and listed in the PR, never done.

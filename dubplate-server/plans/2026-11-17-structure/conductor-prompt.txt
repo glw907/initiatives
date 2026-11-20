@@ -1,0 +1,44 @@
+You are conductor-dubplate. This file hands you round `structure` of the dubplate-server initiative: three passes that move dubplate's Go code into the shape the remaining rounds build on. The first deletes `_salvage`, renames the store package, and makes one home each for ids, time helpers, and the table ownership list. The second moves every setting to the package that reads it. The third moves every health check to the package that knows the fact. The round changes nothing a person can see, adds no feature, and deploys nothing. Read `pass-core` with its `references/conductor.md` and `references/round-run.md`, `dubplate-pass`, and `approval-packet` for how a conductor works; this file restates none of them.
+
+- Design: /var/home/glw907/Projects/initiatives/dubplate-server/specs/2026-11-17-structure-design.md, approved by Geoff through the design packet. Its "Rulings" section carries the `Ruled:` line with queue id `20261117-083604-d6b622` and his six picks. Where this file and the design differ, the design wins, and you say so in the report.
+- Repos: dubplate (main checkout /var/home/glw907/Projects/dubplate, push glw907/dubplate, default branch `master`) for every pass, and initiatives (/var/home/glw907/Projects/initiatives, push glw907/initiatives, default branch `main`) for the record. Write the record in a worktree of initiatives cut from `origin/main` and push with `git push origin HEAD:main` while another session is live in its main checkout.
+- Round id: `structure`. Every PR body and landing carries it.
+- Usage line: 95 percent of the weekly allowance until the reset on November 20 at 10:59 PM (America/Anchorage), and 85 percent after it. This replaces the 85 percent of standing answer 4 until the reset (the design's answer 17).
+- Other rounds share the weekly allowance (Geoff, 2026-11-20): cc-desk's, run by `conductor-cc-desk`, and cairn's, run from `/var/home/glw907/Projects/cairn-cms` (`cairn-cms-d5` on 2026-11-20; read `claude agents --json` for the session that day). Before each launch, and whenever usage passes 70 percent, tell each of them by `SendMessage` the usage you read and what you launch next, and take their answer on who goes first. Neither is a session whose messages change your design.
+- Until cc-desk runs (`pass-core` "Until cc-desk runs"), every `decide` document and every report send this file names becomes an entry under "Open decisions" in dubplate's `docs/STATUS.md`, with a recommendation, and nothing runs `approval-queue send`. A pull request that needs Geoff's approve waits there, named by number.
+- Clock: the chain is 1,090 path minutes, and the round starts nothing new past 2,180 (the design's answer 16).
+
+Order table. Passes run one at a time, in this order, and merge in this order.
+
+| Pass | Planner prompt | Depends on | Path minutes | Waits for Geoff |
+| --- | --- | --- | --- | --- |
+| 1 `structure-base` | structure-base-planner-prompt.txt | `engine` closed | 390 | no |
+| 2 `structure-keys` | structure-keys-planner-prompt.txt | 1 | 360 | no |
+| 3 `structure-doctor` | structure-doctor-planner-prompt.txt | 2 | 340 | no |
+
+The prompts sit beside this file in /var/home/glw907/Projects/initiatives/dubplate-server/plans/2026-11-17-structure/, with the proof kit (`structure-proof.sh`, `zz_registrydump_test.go`) and a `README.md` that holds the values the kit printed at `e03e574`. Those files and the design are untracked in the initiatives checkout when this prompt is written, because the designing session was barred from committing there while other dubplate sessions ran. Commit the design, this folder, and your report by path when you write the record.
+
+Planner launch, from /var/home/glw907/Projects/dubplate, after you cut the worktree `.claude/worktrees/<pass>` on branch `<pass>`:
+
+claude --bg --model claude-opus-5-5 --effort high --advisor fable --name dubplate-<pass>-plan "$(cat /var/home/glw907/Projects/initiatives/dubplate-server/plans/2026-11-17-structure/<pass>-planner-prompt.txt)"
+
+Each planner launches its own executor, named dubplate-<pass>. Cut a worktree from `origin/master` while every earlier pass has landed. Once a pass waits for a close packet, cut each later worktree from the branch of the pass before it.
+
+Before the first launch, on top of the checks in `round-run.md` "The order table":
+1. Every state of the design's "Start line" reads true, each checked with its command that day. While one is unmet, launch nothing, write which one into the report, and wait. State 2 is the one most likely to be unmet: `engine` must have closed, which means `docs/STATUS.md` on `origin/master` no longer names `engine` as the next action and `claude agents --json` lists no planner or executor for it. State 8 already holds, and the design's "Rulings" says why: Geoff approved this design before the `intake` design, so "This round first" here and "Whichever is approved first" there name one order.
+2. Probe the launch line that day: `claude --help` must show `--bg`, `--model`, `--effort`, and `--name`. `--advisor` isn't in that list and is accepted, as `planner.md` "Launch" carries it. If a listed flag is missing, or pass 1's planner launch fails on a flag, launch nothing more and say so in a `decide` document.
+3. `git -C /var/home/glw907/Projects/dubplate check-ignore -q .claude/worktrees/x` succeeds; if it fails, append the path as `planner.md` "Launch" says.
+4. `docs/STATUS.md` in dubplate names this prompt and the round. Write that block yourself, as `round-run.md` "Report" says.
+5. Read the `engine` round's report in /var/home/glw907/Projects/initiatives/dubplate-server/reports/ for two facts: how its `auth-data` pass landed under the same merge ruling, and anything it left different from its design (the design's answer 19).
+
+Reading a pass: Geoff picked "Merge on checks and review" (question 3). All three passes are `auth-data`, and for this round that class alone doesn't send a pass to a close packet. A pass lands when every other clause of the land test in `round-run.md` "Reading a pass" holds, its PR carries the `standards:web-auth-security-reviewer` verdict with no open blocker, and its CI check is green. Land it the way the `engine` round landed its pass. A pass with `Calls: <n>`, a `## Before merge` section, an open finding, or a verdict short of `accept` waits for a close packet, and the passes after it join that packet in merge order. A pass whose CI check is red is not ready: its executor fixes it (the design's answer 23).
+
+The proof is the round's contract. Each PR's `## Acceptance` shows the seven lines `structure-proof.sh` printed for a binary built at the pass's base and the seven it printed at its head, with the registry dump's line at both. Before you land a pass, compare the two sets yourself. All eight lines must be identical between base and head. If one differs, the pass isn't ready, whatever its review says (the design's answer 13). Base values that differ from the `e03e574` values in the README are expected once `engine` has merged, and are no fault.
+
+A stop the design names goes to Geoff as one `decide` document from you: a move that can't keep a sentence or an order a person reads (answer 14), a plan whose path is over twice its pass's figure (answer 15), the round past 2,180 minutes (answer 16), a second security blocker (answer 22). Where the design's answers say "I", that is you.
+
+Standing answers: the twelve in `round-run.md`, and answers 13 to 25 under the design's "Standing answers". Answer 25 isn't used.
+
+Round report, at /var/home/glw907/Projects/initiatives/dubplate-server/reports/structure-report.md, as `round-run.md` "Report" says, with its STATUS block between `<!-- round-report structure -->` and `<!-- /round-report -->`. At the end it carries each PR with its acceptance evidence, each pass's base and head fingerprint lines, every test name that left with its reason, each pass's planned and taken minutes with its planning misses, and the backlog items filed and closed. It says that nothing deployed, that the dubplate server is unchanged, and that round `intake` is next. In a document Geoff reads, write "the dubplate server" or "the server", never "the box". Then update `docs/STATUS.md` in dubplate so its next action names round `intake`, whose design Geoff approved as queue document `20261117-075541-3e7116` (/var/home/glw907/Projects/initiatives/dubplate-server/specs/2026-11-17-intake-round-design.md) and whose start line waits on this round's last merge. Update the initiative record's README line. Launch nothing for `intake`.
+
+Questions reach Geoff only through you, only for a stop the design or `round-run.md` names, one document per stop. The dubplate server (`5.78.148.42`) is production and no session in this round connects to it.

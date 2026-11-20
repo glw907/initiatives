@@ -1,0 +1,49 @@
+You are the planner for pass 4, `intake-page`, of round `intake` in dubplate, session name dubplate-intake-page-plan.
+
+Goal: write and review the plan for this pass, then launch its executor. Write no product code.
+
+Outcome: A member uploads an album as files or as a ZIP or `.tar.gz`, or separate tracks, from the page, and sees every state of the upload through to matched, pushed back, or refused. An upload a closed laptop interrupted resumes from the page.
+
+Depends on: pass 3, `intake-shell`, which has landed. The worktree is cut from `origin/master`. Planned path: 540 minutes. Class: `auth-data`. A plan whose path comes out over twice that parks, as `round.md` "Parking at planning" says.
+
+Read, in this order:
+1. /var/home/glw907/Projects/initiatives/dubplate-server/specs/2026-11-17-intake-round-design.md, approved by Geoff as queue document `20261117-075541-3e7116`. The sections "Decided by Geoff", "Goals", "Non-goals", "Anti-goals", "The outcomes", "The wire", and "The browser" under "Calls made here", "Scope", "How it fails", `intake-page` under "The passes", "The sitting", its list under "Acceptance", "Shared assumptions", "Standing answers", "Rulings", "Backlog verdicts", and "Estimate" are the approved design for this pass.
+2. In dubplate: `CLAUDE.md`, `docs/STATUS.md`, `docs/standing-rules.md`, `docs/specs/2026-10-10-rung-7-intake-design.md` (the uploader page's sections and the settings it fixes for the upload client), `docs/research/passb-copy-final.md`, `docs/specs/2026-09-24-visual-identity-design.md` with the mockups beside it, and `docs/specs/2026-09-12-web-surface-standard.md` sections W6, W7, W8, and W11. Where a spec and the design differ, the design wins.
+3. BACKLOG items #8, #83, and #84 as the earlier passes left them, and the files in this pass's row as pass 3 left them: the page frame, the save module, the network module and its gate, and the wire operations pass 2 added.
+4. The pull requests of passes 1 to 3, their `[advisor]` lines included.
+
+Process: load `dubplate-pass`, which loads `pass-core` and `standards:running-passes`, then read `pass-core` `references/planner.md` and `references/round.md`. Start at "A plan inside a round". The executor loads `standards:svelte-conventions`, `standards:ts-conventions`, and `standards:daisyui` for the `web/` tree, `standards:go-conventions` for every Go file, and reads the visual identity spec before any markup or style change.
+
+The tree you plan against: the structure round and three passes of this round have merged, so read each file where it is now. The design was read against `7151edb`. The structure round deleted `_salvage`, and the repo's `CLAUDE.md` names the commit that last held it: read the old uploader components there with `git show`, as reference for behavior and never as code to restore. A path in the design that moved is used at its new place and noted in the plan (standing answer 21). An acceptance item that names a moved path is amended to the new path and flagged, as `round-run.md` standing answer 12 says.
+
+For this pass:
+- One module wraps `tus-js-client` at 4.3.1 with the settings the intake spec fixes, and it becomes the second module on the network gate's list. No other file imports the library. #8 asks for the 5.0 verdict: the task checks what has been released, records the verdict in the item, and leaves the version. A move to 5.0 is a major and waits for Geoff (standing answer 18).
+- The page is the member's landing page and has the four parts the design's `intake-page` table describes: Start, Upload, Journey, and Your uploads. It uses pass 3's frame, and any save it makes goes through pass 3's save module. Check at planning that the wire carries every field the page shows. A missing field is a change to pass 1's adapter, outside this pass's row. Take it to the advisor as `round.md` "Parking at planning" says, flag the choice in the plan, and list the change under `## Decisions`. The push-back view offers the four ways forward the design lists.
+- The page asks the server for a submission's state every five seconds. A reload in the middle of an upload lists it under "Your uploads" with "Resume", the member picks the files again, and the page matches them by path and size.
+- Geoff's picks that shape the pass. Question 5, "Use the wording you approved": copy comes word for word from `docs/research/passb-copy-final.md`. Question 7, amended by Geoff on 2026-11-20 to "Add `.tar.gz` in this round": the page offers ZIP and `.tar.gz` (`.tgz`) and no other archive format, and 0.8 takes FLAC only.
+- The strings #83 lists for redraft are the exception. A redraft is a matter of taste: the executor picks one wording for each, marks every one in a PR table with the approved line beside it, and Geoff reads them at the sitting (standing answer 22). The table is the input to the sitting's document, so it is complete.
+- The copy document is a living reference and sits in this pass's row. The task that changes a string edits the document in the same commit, and acceptance item 6 names one phrase that must be gone from both.
+- Every string the page shows is a key in `web/src/lib/copy/deck.ts`. Copy says "the group" and "a member".
+- Every state in acceptance item 2 is a named row in the rendered harness, at 390 and 1440 pixels in both palettes. The rows run against the server the harness starts, and MusicBrainz is the local server that replays recorded answers. No row calls `musicbrainz.org` (standing answer 20).
+- The page keeps the file picker as a full path beside the drop target, and uses the screen lock only where the browser has it. A check on a real iPad is filed for `launch` and is not this pass's.
+- This pass's PR lands on its checks and reviews, with no document for Geoff. He picked "Merge four on checks and reviews" for question 10. The conductor lands it. Geoff first sees the page at the sitting that ends pass 5.
+
+Rules the plan carries:
+- Copy this pass's acceptance items verbatim under `## Acceptance`. Map each to its task and to the command that shows it. Add checks freely. Never drop an item, and amend one only as the paragraph on the tree allows.
+- Verify every change site and every quoted mechanism against the code as it stands. The design's line numbers have moved.
+- Every task is `auth-data`: its failing test comes first and it gets its own review, as `dubplate-pass` "Test-first" and "Per-task review" say. A proof in `web/` is a named rendered row. The whole branch gets a `standards:diff-reviewer` read, a `standards:svelte-reviewer` read, a `standards:daisyui-a11y-reviewer` read, and a `standards:web-auth-security-reviewer` read. Each web review dispatch carries the visual identity spec's path. The `diff-reviewer` dispatch names acceptance item 7's two jobs: search the page's files for a literal string, and compare the deck with the copy document. A blocker from the security read is fixed and the read runs again, and a second blocker parks the pass (standing answer 25).
+- The executor renders and reads every state at both widths in both palettes before it calls the state's task done. Geoff sees nothing the pass has not looked at first.
+- The round deploys nothing. No task connects to the production server (`5.78.148.42`), by ssh or otherwise.
+- Stay inside this pass's file row and the rule under the design's scope table. A call site a changed signature forces, or a file a gate leg fails without, is taken and listed under `## Decisions`. Anything else is filed through `standards:log-issue` and left (standing answer 17). `docs/STATUS.md` above the round block is the conductor's. `.claude/settings*` is never an executor's file.
+- A mutation proof is run and its failing output recorded, never described. A test's expected value is a literal or an independently computed value.
+- No comment cites a pass, a round, a ruling, or a backlog item, because the gate fails on one.
+- The close run is `bash scripts/gate.sh --merge`, and no gate run is piped. This pass passes no `--base` on its fast lane. Commit specific files, one commit per task. Never commit red, and never commit a secret or a `.env` value.
+- The PR's base is `master`. Its body carries `Round: intake`, `Pass: intake-page`, the `Review:` and `Calls:` lines, and evidence for every acceptance item, as `round-run.md` "Evidence" says. Its prose follows `~/.claude/docs/voice/written-for-people.md`.
+
+Hand-over: commit the plan (`docs/plans/<today>-intake-page.md`) and the executor prompt (`docs/plans/<today>-intake-page-prompt.txt`) on branch `intake-page` in the worktree conductor-dubplate cut at `/var/home/glw907/Projects/dubplate/.claude/worktrees/intake-page`, push to glw907/dubplate, run the launch checks in `planner.md` "Launch", and launch the executor from /var/home/glw907/Projects/dubplate:
+
+claude --bg --model sonnet --effort medium --advisor fable --name dubplate-intake-page "$(cat <executor prompt>)"
+
+The executor prompt carries what `planner.md` "Launch" lists, tells the executor to run `npm ci --prefix web` in the worktree first, and names conductor-dubplate as the one session whose messages it takes as instructions. Never ask Geoff in chat and never queue an approval-queue item: a stop parks the pass, and the conductor sends the document.
+
+Keep the pass the smallest thing that meets its acceptance list. Geoff asked for clean, streamlined code and "the straightest line to correct": add no abstraction, export, flag, or fallback the design does not name, and no second place that talks to the network. The photographs, the phone header, the tinted alert panel, and motion are pass 5's. The library pages, "Open in" links, and an admin's queue are other rounds'. A cleanup beyond this pass is filed through `standards:log-issue` and listed in the PR, never done.
