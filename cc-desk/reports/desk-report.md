@@ -1,27 +1,28 @@
-# The desk round's skills are tagged and installed, and its last pass is running
+# The desk round's last pass waits on GitHub billing, and the Move design is ready
 
 The Desk and skills round builds the desk session that `cc-desk` opens, the two skills, the
 page's report pages, and the check's repairs, then rehearses one run with nobody tending it.
 Five of its six passes have landed: the records (pull request 17), the skills (18), the page
-(19), the desk (20), and the check's repairs (21). Geoff stopped the round after pass 5 and
-asked for the last pass, the run nobody tends, in a fresh session. That session has tagged the
-skills as `v0.1.0`, installed them on the workstation, and launched pass 6. Pass 5 cost the round the most waiting: about 10.5
-hours parked overnight on its estimate, and several shorter waits on sessions nobody was
-reading. Every one of them is a row in the lessons ledger, which the next release, 1.1,
-answers row by row.
+(19), the desk (20), and the check's repairs (21). A fresh conductor tagged the skills as
+`v0.1.0`, installed them, and ran pass 6. Pass 6 built everything but its rehearsal and then
+stopped, because GitHub Actions has started no job on the account since 09:12 UTC on
+2026-11-20. Overnight, a design session also wrote the Move round, which puts cairn and
+`dubplate` under cc-desk.
 
 ## What waits for Geoff
 
-One question, under "Open decisions" in `docs/STATUS.md` in the cc-desk repo. No standing answer
-covers four stops pass 6 could reach: its executor spends twice its plan's path, its pull
-request flags a call for Geoff, a third live run meets a permission prompt it didn't set up, or
-a fix needs a setting changed. The conductor recommends relaunching a spent executor once and
-landing a pull request whose calls all stay inside the design, each named here. Until Geoff
-answers, any of the four waits for him.
-
-After the round, Geoff's sitting runs the real release. Then two designs can start side by side
-(standing answer 37): the 1.1 design, which answers the lessons ledger, and the Move design,
-which puts cairn and `dubplate` under cc-desk.
+1. The GitHub billing block, at <https://github.com/settings/billing>. Every run ends in seconds
+   with "The job was not started because recent account payments have failed or your spending
+   limit needs to be increased." Nothing can merge until it clears. The conductor watches
+   Actions, and once a job runs it reruns pass 6's blocked run, relaunches the executor at the
+   rehearsal, lands the pass, and sets up the real release.
+2. Your sitting, once pass 6 lands: five steps at the terminal that end with one question
+   waiting for cc-desk on the page.
+3. The Move design, `docs/specs/2026-11-19-move-design.md` in the cc-desk repo, with its round
+   plan and prompts. Approve it after the sitting and answer its five questions, each with a
+   recommendation: land cairn pull request 260 first, stop new work at 85 percent usage, give
+   cairn and `dubplate` one building slot each, run `dubplate`'s structure round first, and keep
+   its standing answers 40 to 46 as written. The 1.1 design runs beside it.
 
 ## What behaves differently now
 
@@ -52,6 +53,27 @@ with no finding, and it landed with `approval-queue land`. The conductor then in
 binary, the timer, the page, and the link handler from `main`. `claude-tooling-sync verify`
 exits 0 and lists both skills, both read under `~/.claude/skills/`, and the page answers at
 <http://127.0.0.1:7908/>. Auto mode refused none of these steps.
+
+Pass 6 (`desk-run`, [draft pull request 22](https://github.com/glw907/cc-desk/pull/22)) adds
+`cc-desk release done <project>`, which ends a release, and `cc-desk session end`, which stops a
+record's open session through the binary. Each report now carries its release's name. The pass
+also adds the shared live library, a script that rehearses a whole release in the scratch repo,
+and one that checks recovery after a session dies. Its kill probe
+(`docs/research/2026-11-20-kill-probe.md`) found that a lone `kill` doesn't end a pass: Claude
+Code's supervisor brings the session back within 11 seconds, so every death in the live checks
+goes through `session end`. The whole-branch review is folded, and the local gate passes on its
+last commit, `a77f251`. The rehearsal, the recovery checks, and the real release wait on CI. The
+timer runs the branch's build, which the state folder's `releases/done/` needs, so `main`'s
+`v0.1.0` build stays uninstalled until the pass lands.
+
+The Move design session, launched beside pass 6 under standing answer 39, pushed its design,
+round plan, five planner prompts, and conductor prompt to cc-desk's `main` at `aa2b88f`. It
+copies cairn's route into cairn-cms and `dubplate`'s designs and kept drafts into `dubplate`, so
+each round's design sits in its own repo. It writes the two release files with a test, and
+builds design writers that start on the timer. Five passes are planned at 535 minutes, 310 on
+the longest line. The conductor's read found one gap: the start line's busy check on cairn-cms
+would always name the blocked `cairn-cms-tool-delete` session and refuse. The line now expects
+that hit (`6ca3420`).
 
 ## What went wrong
 
@@ -115,6 +137,18 @@ The round changed conductors after pull request 20: Geoff asked for a fresh sess
 first had grown long and missed stalls, and the second took over at about 19:05 with a written
 hand-over.
 
+Pass 6 stopped three times, each a ledger row:
+
+| Stop | Waited | What happened |
+| --- | --- | --- |
+| Its estimate | none | The plan priced 675 minutes against 90 and parked over its 180-minute line. Its scope matched the design and nothing was trimmed, so the conductor raised it under standing answer 35. |
+| The launch check | a few minutes | The hook refused the executor's launch because the plan's Pre-flight list had no `Evidence:` line. The conductor added one and relaunched. It had also committed the raise in the planner's worktree while the planner was still editing, which touched only the conductor's lines. |
+| GitHub billing | until Geoff clears it | Actions stopped starting jobs at 09:12 UTC. The executor did every task that needs no CI, then wrote its stop at 10:49 and ended. |
+
+Geoff gave two standing answers in the steps after pass 5. Answer 38 lets pass 6 run overnight,
+relaunching once past twice its path and landing calls inside its design. Answer 39 moved the
+Move design ahead of the sitting: "Do we even need to wait for the rehearsal?"
+
 ## What it cost
 
 | Pass | Planned minutes | Taken minutes |
@@ -124,8 +158,9 @@ hand-over.
 | 3, the desk | 100, raised to 140 by Geoff (plan path 255) | about 144 to ready, then landed at once |
 | 4, the page | 90 (plan path 170) | about 90, planning included |
 | 5, the check's repairs | 100, raised to 175 by Geoff (plan path 315), then allowed past its 350-minute stop | about 425 working: 50 planning and 375 over six executor runs, across about 12 hours of clock after Geoff's answer to the park |
+| 6, the run nobody tends | 90, raised to 675 under answer 35 | about 85 of executor time before the billing stop, the rehearsal not yet run |
 
-Weekly usage before the round: 5 percent, 8 percent after three passes, 10 percent after four, and 13 percent after five and at pass 6's launch, with the reset on Nov 20 at 11 PM Alaska time.
+Weekly usage before the round: 5 percent, 8 percent after three passes, 10 percent after four, 13 percent after five, and 16 percent at pass 6's stop, with the reset on Nov 20 at 11 PM Alaska time.
 
 ## What is left for later
 
