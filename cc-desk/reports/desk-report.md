@@ -1,21 +1,27 @@
-# The check's repairs have landed, and the desk round's last pass waits for a fresh session
+# The desk round's skills are tagged and installed, and its last pass is running
 
 The Desk and skills round builds the desk session that `cc-desk` opens, the two skills, the
 page's report pages, and the check's repairs, then rehearses one run with nobody tending it.
 Five of its six passes have landed: the records (pull request 17), the skills (18), the page
 (19), the desk (20), and the check's repairs (21). Geoff stopped the round after pass 5 and
-asked for the last pass, the run nobody tends, in a fresh session. That session tags the
-skills and installs them before it runs pass 6. Pass 5 cost the round the most waiting: about 10.5
+asked for the last pass, the run nobody tends, in a fresh session. That session has tagged the
+skills as `v0.1.0`, installed them on the workstation, and launched pass 6. Pass 5 cost the round the most waiting: about 10.5
 hours parked overnight on its estimate, and several shorter waits on sessions nobody was
 reading. Every one of them is a row in the lessons ledger, which the next release, 1.1,
 answers row by row.
 
 ## What waits for Geoff
 
-One step: the fresh conductor that tags the skills and runs pass 6 starts at Geoff's word, given
-in any terminal session. Its launch line is under "Next action" in `docs/STATUS.md` in the
-cc-desk repo. Nothing runs until then. The 1.1 design comes after the round lands, and after it
-the Move round, which puts cairn and `dubplate` under cc-desk.
+One question, under "Open decisions" in `docs/STATUS.md` in the cc-desk repo. No standing answer
+covers four stops pass 6 could reach: its executor spends twice its plan's path, its pull
+request flags a call for Geoff, a third live run meets a permission prompt it didn't set up, or
+a fix needs a setting changed. The conductor recommends relaunching a spent executor once and
+landing a pull request whose calls all stay inside the design, each named here. Until Geoff
+answers, any of the four waits for him.
+
+After the round, Geoff's sitting runs the real release. Then two designs can start side by side
+(standing answer 37): the 1.1 design, which answers the lessons ledger, and the Move design,
+which puts cairn and `dubplate` under cc-desk.
 
 ## What behaves differently now
 
@@ -36,6 +42,16 @@ the check starts one. `pass ready` also takes a third verdict, escalate, with a 
 for Geoff, and the check merges only when that count is 0. Its fifth live run, on the last
 change to the code, passed all 70 checks, and a listing each minute for 10 minutes showed the
 merged session gone.
+
+The fresh conductor, `conductor-cc-desk`, did the steps after pass 5. Its read of both skills
+against the design found no line to fix, so no fix landed under standing answer 32. It tagged
+`main` as `v0.1.0` at `013f7ef` and pushed the tag. [Workstation pull request
+251](https://github.com/glw907/workstation/pull/251) adds the two skills to the vendored-skills
+manifest at that tag and nothing else, as answer 34 asks. A whole-branch review accepted it
+with no finding, and it landed with `approval-queue land`. The conductor then installed the
+binary, the timer, the page, and the link handler from `main`. `claude-tooling-sync verify`
+exits 0 and lists both skills, both read under `~/.claude/skills/`, and the page answers at
+<http://127.0.0.1:7908/>. Auto mode refused none of these steps.
 
 ## What went wrong
 
@@ -84,6 +100,17 @@ ledger, before Move, and keeps the `pass-core` edits out of the PR that installs
 Answer 35 raises pass 6's estimate to its plan's figure when the plan stops only over its
 estimate. Answer 36 stops this round after pass 5 and leaves pass 6 to a fresh conductor.
 
+Two misses came in the steps after pass 5. `claude-tooling-sync update-skills` rewrote the
+manifest's one em dash as an escape, and the conductor reverted that line by hand. And the real
+state folder still held everything pass 5's live runs left there: 14 scratch rounds, 15 stopped
+sessions under "needs you now", and 6 unread reports, all on the page. Both are ledger rows, and
+pass 6's launch prompt tells its planner to clear the scratch state.
+
+Geoff gave standing answer 37 during the steps after pass 5: "I'd like to start the work on both
+cairn and dubplate once we hit the cc-desk version 1.0. We can work on cc-desk 1.1 concurrently
+with those efforts." The conductor reads 1.0 as this round finished, with Geoff's sitting
+passing done item 10, and rewrote both design prompts to run side by side.
+
 The round changed conductors after pull request 20: Geoff asked for a fresh session because the
 first had grown long and missed stalls, and the second took over at about 19:05 with a written
 hand-over.
@@ -98,7 +125,7 @@ hand-over.
 | 4, the page | 90 (plan path 170) | about 90, planning included |
 | 5, the check's repairs | 100, raised to 175 by Geoff (plan path 315), then allowed past its 350-minute stop | about 425 working: 50 planning and 375 over six executor runs, across about 12 hours of clock after Geoff's answer to the park |
 
-Weekly usage before the round: 5 percent, 8 percent after three passes, 10 percent after four, and 13 percent after five, with the reset on Nov 20 at 11 PM Alaska time.
+Weekly usage before the round: 5 percent, 8 percent after three passes, 10 percent after four, and 13 percent after five and at pass 6's launch, with the reset on Nov 20 at 11 PM Alaska time.
 
 ## What is left for later
 
