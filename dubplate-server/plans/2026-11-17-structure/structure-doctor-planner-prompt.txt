@@ -53,3 +53,5 @@ claude --bg --model sonnet --effort medium --advisor fable --name dubplate-struc
 The executor prompt carries what `planner.md` "Launch" lists, gives the kit's folder by its absolute path, tells the executor to run `npm ci --prefix web` in the worktree first, and names conductor-dubplate as the one session whose messages it takes as instructions. Never ask Geoff in chat and never queue an approval-queue item: a stop parks the pass, and the conductor sends the document.
 
 Keep the pass the smallest thing that meets its acceptance list. Add no abstraction, export, flag, or fallback the design does not name. A cleanup beyond this pass is filed through `standards:log-issue` and listed in the PR, never done.
+
+Ruling from the conductor, 2026-11-20: CLAUDE.md is in this pass's file row. This pass writes design rule 4 (a health check lives in the package that knows the fact, in its doctor.go; the doctor command gains one line that places the row) into the repo CLAUDE.md beside the rules structure-keys wrote (1, 2, 3, 5), once it is true.
