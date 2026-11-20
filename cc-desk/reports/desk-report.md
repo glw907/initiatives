@@ -1,26 +1,45 @@
-# The Desk and skills round has landed four of its six passes
+# The check's repairs have landed, and the desk round's last pass waits for a fresh session
 
 The Desk and skills round builds the desk session that `cc-desk` opens, the two skills, the
 page's report pages, and the check's repairs, then rehearses one run with nobody tending it.
-Its first pass, which widens the records, landed as pull request 17. The page pass landed as pull request 19, the skills pass as pull request 18, and the desk pass as pull request 20. The check's repairs, pass 5, is planning. Nothing waits for Geoff yet.
+Five of its six passes have landed: the records (pull request 17), the skills (18), the page
+(19), the desk (20), and the check's repairs (21). Geoff stopped the round after pass 5 and
+asked for the last pass, the run nobody tends, in a fresh session. That session tags the
+skills and installs them before it runs pass 6. Pass 5 cost the round the most waiting: about 10.5
+hours parked overnight on its estimate, and several shorter waits on sessions nobody was
+reading. Every one of them is a row in the lessons ledger, which the next release, 1.1,
+answers row by row.
 
 ## What waits for Geoff
 
-Nothing yet.
+One step: the fresh conductor that tags the skills and runs pass 6 starts at Geoff's word, given
+in any terminal session. Its launch line is under "Next action" in `docs/STATUS.md` in the
+cc-desk repo. Nothing runs until then. The 1.1 design comes after the round lands, and after it
+the Move round, which puts cairn and `dubplate` under cc-desk.
 
 ## What behaves differently now
 
 [Pull request 17](https://github.com/glw907/cc-desk/pull/17) gives questions, rulings, reports, rounds, and stops the fields the desk and the page show. The check keeps a log, and the new `brief` verb prints what waits, ordered by the planned minutes each question holds up. The new verbs are `brief`, `report add`, `report read`, `question add`, and `ruling record --replaces`.
 
-[Pull request 19](https://github.com/glw907/cc-desk/pull/19) makes the status page show reports to read, each with one "Mark as read" form, and a waiting round's design. It also shows what each check chose and each pass's permission prompts and refused commands. The page's unit can write to the state folder and nothing else. Until the binary is installed from main after pass 5, a click on "Mark as read" fails, because the installed binary has no `report` verb.
+[Pull request 19](https://github.com/glw907/cc-desk/pull/19) makes the status page show reports to read, each with one "Mark as read" form, and a waiting round's design. It also shows what each check chose and each pass's permission prompts and refused commands. The page's unit can write to the state folder and nothing else. The binary installed from main after pass 5 has the `report` verb that "Mark as read" calls.
 
 [Pull request 18](https://github.com/glw907/cc-desk/pull/18) adds the two skills, `cc-desk` for the desk session and `cc-desk-work` for every session cc-desk launches, and `docs/guide.md`. The three launch prompts now name `cc-desk-work` in place of the Approval Queue rules. Live sessions given the desk skill opened correctly on all three test cases. The skills describe the desk that pass 3 builds, so the guide carries a caveat line until pass 3 proves each claim.
 
 [Pull request 20](https://github.com/glw907/cc-desk/pull/20) makes `cc-desk` open the desk: an Opus session at high effort, on the brief, with no permission prompt. A typed answer there becomes a ruling, a replacement before a pass starts takes effect, and a merge answer is carried out by the check. A replaced pass whose session had already finished now relaunches; the live run found that gap. It was proven live in the scratch repo.
 
+[Pull request 21](https://github.com/glw907/cc-desk/pull/21) makes the check's five repairs.
+A session cc-desk launches now records each command auto mode refuses, with the reason. A usage
+stop waits for the reset time it names. After a merge the check stops the pass's session and
+logs the stop. The merge call, the fetch, and the pull each give up at 60 seconds, and three
+failed merge calls in a row become a question. When a report falls due and no conductor runs,
+the check starts one. `pass ready` also takes a third verdict, escalate, with a count of calls
+for Geoff, and the check merges only when that count is 0. Its fifth live run, on the last
+change to the code, passed all 70 checks, and a listing each minute for 10 minutes showed the
+merged session gone.
+
 ## What went wrong
 
-Nothing yet. One judgment at the start: `claude-worktree-busy` on the main checkout exited 1
+One judgment at the start: `claude-worktree-busy` on the main checkout exited 1
 on the interactive session that launched this conductor. That session ran only a watch for the
 first planner, so the conductor didn't count it as a stop.
 
@@ -34,9 +53,9 @@ Pass 2 parked at planning: its plan priced 170 minutes against 75, past twice th
 
 Pass 4 had two planning misses: `[mechanism]` the plan named an old shape for Kit's route matchers, and `[check]` its bundle check matched comment text. Its first body left out the gate check's exact wording and the gate's output, and its misses had no tags. The conductor sent it back once for a body fix, as it had with pass 1. The pass made no calls for Geoff and had no red CI run.
 
-Pass 2's closing review escalated one point: the skills and the guide state behaviors that only pass 3 builds. The executor kept them, with a caveat line and `docs/follow-ups/desk-skills-review-notes.md` listing each claim for pass 3. A review short of accept can't land on its own, so the conductor asked Geoff at 15:56. He answered "Land it (Recommended)", and the pass landed at 18:07. The two hours of waiting held up pass 3. Pass 3 parked at planning: its plan priced 255 minutes against 100. The planner priced every clause of done items 3 to 5, and a plan review found six places where the code doesn't work as the plan first said, which raised the count from 210. The conductor asked at about 19:05, and Geoff's answer came just before the ruling's commit at 20:50: "Raise to 140 (Recommended)". The ruling is under `## Rulings` in the pass's plan. This is an `[estimate]` planning miss.
+Pass 2's closing review escalated one point: the skills and the guide state behaviors that only pass 3 builds. The executor kept them, with a caveat line and `docs/follow-ups/desk-skills-review-notes.md` listing each claim for pass 3. A review short of accept can't land without a call, so the conductor asked Geoff at 15:56. He answered "Land it (Recommended)", and the pass landed at 18:07. The two hours of waiting held up pass 3. Pass 3 parked at planning: its plan priced 255 minutes against 100. The planner priced every clause of done items 3 to 5, and a plan review found six places where the code doesn't work as the plan first said, which raised the count from 210. The conductor asked at about 19:05, and Geoff's answer came just before the ruling's commit at 20:50: "Raise to 140 (Recommended)". The ruling is under `## Rulings` in the pass's plan. This is an `[estimate]` planning miss.
 
-After PR 18, Geoff gave two standing answers so later stops don't wait on him: 26 lets a review that escalates land when the advisor settled each point, and 27 approves ahead of time the tag, dotfiles, install, and real-release steps. Both are in the round plan at `81afc1d`.
+After PR 18, Geoff gave two standing answers, rulings given ahead of time and numbered in the round plan, so later stops don't wait on him: 26 lets a review that escalates land when the advisor settled each point, and 27 approves ahead of time the tag, the `~/.dotfiles` PR, the install, and the real release. Both are in the round plan at `81afc1d`.
 
 Both estimate stops were preventable, as Geoff pointed out. The three stops cost about 58, 131, and 120 minutes of the round's clock. The round plan priced each pass from its outline, and every planner that priced the evidence clause by clause came out about twice as high (pass 1: 120 against 209; pass 2: 75 against 170; pass 4: 90 against 170; pass 3: 100 against 255). Pass 1's path showed the pattern before passes 2 and 3 were planned, and the conductor didn't ask for a standing answer then. Pass 2's review escalation was foreseeable too, since the design orders the skills before the desk they describe. Geoff then gave standing answer 28: the conductor raises an estimate itself when the plan parks only over its estimate and its scope matches the design. `docs/follow-ups/round-estimates-priced-from-evidence.md` (at `af5ea47`) proposes the fix in cc-desk itself, an estimate rule on the release and a miss signal in the brief after a round's first pass, and in `pass-core`'s round and planner references.
 
@@ -46,6 +65,29 @@ Pass 3 had five planning misses besides its estimate: three `[mechanism]` (the s
 
 Pass 2 also had two `[file-list]` misses: the CI workflow wasn't in task 3's file list, and the review-notes follow-up was new at close.
 
+Pass 5 stopped for Geoff or for the conductor seven times:
+
+| Stop | Waited | What happened |
+| --- | --- | --- |
+| Its estimate, past the clock | about 10.5 hours | The plan priced 315 minutes against 100 and parked at about 00:00. Standing answer 28 lets the conductor raise an estimate itself, but only when the raised estimate still fits the round's clock, and this one didn't. Earlier the conductor had asked Geoff whether pass 6 could start past the clock, which became answer 31, and didn't check whether answer 28 would hold for pass 5. Geoff answered at 10:39: "Raise to 175, go (Recommended)". |
+| A leftover live session | about 85 minutes unseen | A blocked scratch session from the pass's earlier probe kept its live script from starting. The conductor watched only for a ready pull request and didn't see the blocked executor until Geoff asked how the round was going. Geoff chose "Yes, and from now on", which became standing answer 33. |
+| Idle waits between its four live runs | about 20 and 35 minutes | The live script left the sessions it launched running after a failed check, which held the next run for about 20 minutes. Later an executor wrote its stop and then waited on CI instead of ending, and nobody read the stop for about 35 minutes. |
+| The escalated review | about 45 minutes and a question | Live run 4 showed that a finished session stays listed as done after `claude stop`. The executor changed one of the three stop paths and its test, and left the plan and the other two paths on the old rule. The pass had reached its stop, twice its 175 minutes. Geoff ruled "Fix it now, go past 350 (Recommended)", and the fix put one rule in one helper for all three. |
+| A question from the conductor | about 100 minutes | The second conductor asked Geoff about pass 6's estimate with a question that held its turn. The fix executor finished 2 minutes later, and its review waited for his answer. He chose "Raise to the plan's path (Recommended)", now standing answer 35. |
+| The live rerun | about 55 minutes | The next review found that the fix changed code on the paths the live run tests, after run 4. The executor ran the whole script again (run 5), and it passed. |
+| The last review | about 40 minutes | The read of the final commit escalated one point. The 10-minute listing ran 16 to 25 minutes after the merge, because the script restarted its reader and erased the reads taken from the merge. The design asks for a listing each minute for 10 minutes and doesn't fix its start, so a Fable read chose to land. Pull request 21 landed under standing answer 26 at 07:40 UTC, with the fix handed to pass 6, whose own check reads from the merge. |
+
+Six standing answers came during pass 5. Answer 31 lets pass 6 start past the conductor's clock.
+Answer 32 fixes a skill line the design doesn't back before the tag. Answer 33 lets the
+conductor stop leftover scratch sessions. Answer 34 puts a 1.1 round, which answers the lessons
+ledger, before Move, and keeps the `pass-core` edits out of the PR that installs the skills.
+Answer 35 raises pass 6's estimate to its plan's figure when the plan stops only over its
+estimate. Answer 36 stops this round after pass 5 and leaves pass 6 to a fresh conductor.
+
+The round changed conductors after pull request 20: Geoff asked for a fresh session because the
+first had grown long and missed stalls, and the second took over at about 19:05 with a written
+hand-over.
+
 ## What it cost
 
 | Pass | Planned minutes | Taken minutes |
@@ -54,8 +96,9 @@ Pass 2 also had two `[file-list]` misses: the CI workflow wasn't in task 3's fil
 | 2, the skills | 75, raised to 105 by Geoff | about 140 to ready, planning included, then about 130 waiting for Geoff |
 | 3, the desk | 100, raised to 140 by Geoff (plan path 255) | about 144 to ready, then landed at once |
 | 4, the page | 90 (plan path 170) | about 90, planning included |
+| 5, the check's repairs | 100, raised to 175 by Geoff (plan path 315), then allowed past its 350-minute stop | about 425 working: 50 planning and 375 over six executor runs, across about 12 hours of clock after Geoff's answer to the park |
 
-Weekly usage before the round: 5 percent, 8 percent after three passes, and 10 percent after four, with the reset on Nov 20 at 11 pm Alaska time.
+Weekly usage before the round: 5 percent, 8 percent after three passes, 10 percent after four, and 13 percent after five, with the reset on Nov 20 at 11 PM Alaska time.
 
 ## What is left for later
 
@@ -63,4 +106,8 @@ Weekly usage before the round: 5 percent, 8 percent after three passes, and 10 p
 - `desk-fixture-connection-dropped.md`, new from pass 4, and `blocked-session-reads-as-unreadable-stop.md`, reworded by pass 4.
 - `desk-skills-review-notes.md`, new from pass 2, for pass 3 to clear.
 - From pass 3: `desk-open-review-notes.md`, `closed-pass-leaves-its-worktree.md`, `close-answer-failed-stop-can-be-replaced.md`, and `exec-failure-after-register-leaves-entry.md`.
-- `round-estimates-priced-from-evidence.md`, from the conductor, for the Move design.
+- `round-estimates-priced-from-evidence.md`, from the conductor, now for the 1.1 design.
+- From pass 5: `conductor-worktree-removal-gaps.md`, `live-scripts-start-a-conductor.md`, and
+  `live-abort-waits-on-stopped-sessions.md`.
+- The lessons ledger, `docs/follow-ups/desk-round-lessons.md`, which the 1.1 design answers row
+  by row.
