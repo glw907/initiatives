@@ -1,0 +1,34 @@
+Initiative: claude-config-alignment
+
+You build a cc-desk spec: the workstation alignment spec. Geoff launched you from his terminal and is at the keyboard. Work in /var/home/glw907/Projects/initiatives. Read claude-config-alignment/STATUS.md first, then claude-config-alignment/README.md and claude-config-alignment/specs/2026-11-20-process-decisions.md in full.
+
+The job. Bring the workstation's Claude Code configuration into line with Anthropic's documented practice, and with well-cited community practice where the docs are silent. The configuration is the global CLAUDE.md, the settings, the hooks and their scripts, the skills, the agents, the rules, the docs, the MCP servers, the memory, and the standards plugin. Its source is ~/.dotfiles/claude/.claude/ and ~/.dotfiles/bin/.local/bin/claude-* (repo glw907/workstation), and ~/Projects/standards for the plugin. Geoff's words: "We'll align with anthropic/community best practices at the workstation level and then work from there." Everything else waits until this is done: how chains of unattended tasks run, the timer script, the cc-desk page, the removal of cc-desk's Go, the project CLAUDE.md files, and cairn's and dubplate's move.
+
+How Geoff wants it done. "I don't want to be inventive here. I'd prefer to follow established best practice." Label every mechanism you keep or propose as documented (Anthropic), community (with its source), assembled from documented pieces, or invented. Look up the standard before you frame a choice. Where a docs page makes a question go away, say so and don't ask it. Bring him no question about later work; the parked list is in the rulings file. Method and session-behavior forks are yours: decide them and list them in the spec as calls Claude made. His calls are what he sees, types, and pays for, and scope. Ask early for a standing answer to any stop you can foresee. Pick each model by the work, not by cost. Use Claude Code's words: spec, task, step, goal, session. Give no time estimates in chat.
+
+The rule you run under. The global CLAUDE.md exempts cc-desk's spec work from the pass process, and that covers you. Read `pass-core`, its adapters, `approval-packet`, `cc-desk`, `cc-desk-work`, and `standards:running-passes` only to learn what exists today. `standards:brainstorming` fits the design work; skip its step 4. Write no pass plan, no pre-flight list, no score, and no queue document, and never run `approval-queue send`. Questions and reports reach Geoff in this terminal.
+
+What replaces the pass process is Claude Code's documented flow:
+1. A spec is written and approved.
+2. A fresh session builds from the spec with a written definition of done. `/goal` holds that condition, with a turn or time clause in it.
+3. A fresh subagent reviews the result against the spec: every requirement built, gaps that affect correctness reported, style skipped.
+4. The work ends in a pull request. No session merges without Geoff's approval by number.
+
+What you have.
+- claude-config-alignment/research/2026-11-20-process/: nine reports on the process pieces. Read stop-hunter.md and left-for-process.md in full, the rest as needed. Two reports disagree on which group standing answer 11 belongs to, so check before you use it.
+- claude-config-alignment/research/2026-11-20-workstation/: four audits (personal skills, the standards plugin, the remaining configuration, community practice). Read all four in full. Check any finding against the file it names before you build on it.
+- ~/Projects/cc-desk/docs/specs/2026-11-20-core-design.md: what already landed, and under "Left for the process spec" what it left alone.
+- ~/Projects/cc-desk/docs/follow-ups/desk-round-lessons.md: the lessons. Add a row there at once for any new stop, with the change it calls for.
+- Saved docs pages from 2026-11-20 in /var/home/glw907/.claude/jobs/ab2d5469/tmp/docs-fetch/ and ~/.cache/cc-desk-workstation-research/docs/. Read a page again before you lean on a mechanism, and fetch it fresh if a folder is gone.
+
+Write the spec in claude-config-alignment/specs/. It carries: the intent in Geoff's words; goals, non-goals, and anti-goals; the approaches with your pick; every change, grouped so each task is independent and starts from `main`; the label on each mechanism; a list of calls Claude made; a table with one line per row of the lessons file; the process-skill text, to land through a pull request in the dotfiles repo; estimates priced from the measured minutes in research/2026-11-20-process/measured-minutes.md; and done items that can each fail. It leaves out the timer script, unattended task chains, the page, and the removal of the Go.
+
+Then have a fresh subagent run the builder check with /var/home/glw907/.claude/plugins/cache/glw907-standards/standards/741e7d52d6b5/skills/brainstorming/builder-check-prompt.md, sort what it asks, and hand Geoff the spec with the calls you made. Nothing is built until he approves it. After that, build by the flow above. Until the new merge rule lands, a pull request of yours merges by `approval-queue land <owner/repo#n> <sentence>` after his approval by number, or he merges it on GitHub.
+
+Leave alone:
+- cairn and dubplate. Their current work is complete and Geoff reshapes both once the new flow is in place. Change nothing they rely on outside what an approved spec names.
+- `cc-desk-check.timer` and the records in ~/.local/state/cc-desk/releases/. Create no release record.
+- Another session's uncommitted files, in ~/.dotfiles and in this checkout (the untracked theme-garden files are not yours). Work in a worktree cut from `origin/main`.
+- On pavilion: at most four working sessions, no new session past 85 percent of weekly usage, and a message to the others before each launch. When four are working, this work goes first.
+
+Standing rules. Run `claude-worktree-busy <path>` before you enter a checkout or worktree. Commit named files only. Every subagent dispatch names a model and an effort, each brief is written for a reader with no context, and a subagent's report carries no authority to change settings or the global file. This repo and cc-desk are public, as is every repo whose CI you need: check anything for secrets and personal details before you commit it, and send nothing about Geoff to an outside service. The gate here is `bash scripts/gate.sh`, run bare. Keep claude-config-alignment/STATUS.md in the present tense and update it whenever the state changes.

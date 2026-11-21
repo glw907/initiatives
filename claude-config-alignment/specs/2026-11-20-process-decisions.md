@@ -17,6 +17,11 @@ A line marked "decided" is Geoff's and holds unless he reopens it. A line marked
 one he has seen and hasn't ruled on. A line marked "Claude's pick" is a call the design session
 made.
 
+This record moved from the `cc-desk` initiative to `claude-config-alignment` on 2026-11-20, after
+Geoff set the scope under "Alignment comes first". Where a section names the process spec or the
+third spec, the alignment spec takes the workstation's part and a later cc-desk spec takes the
+rest.
+
 ## The three specs
 
 Geoff agreed to this order, one spec at a time.
@@ -31,13 +36,15 @@ Geoff agreed to this order, one spec at a time.
    files, each checked against Anthropic's checklist with evaluations. Geoff: "So this should be
    deeper than just a renaming."
 
+Geoff replaced this order later the same day. "Alignment comes first" has the order that holds.
+
 ## The workstation comes first
 
 Decided on 2026-11-20, in four messages to the session that designs the process spec:
 
 - "Also, since we're fully changing how development works here, should this effort live in
-  initatives? It'll cross every repo." The decisions record, the research, and both remaining
-  specs live in the `cc-desk` initiative.
+  initatives? It'll cross every repo." The decisions record and the research moved to the
+  initiatives repo that day.
 - "And probably the first thing we need to do is to fully update the workstation claude
   infastructure before we change anything else."
 - "The cc-desk web UI is fully secondary to getting the workstation set up with the new
@@ -53,7 +60,65 @@ workstation's skills, agents, and docs follow, built under the new process as it
 trial, and the standards plugin counts as workstation configuration because every session on
 the machine loads it. cc-desk's page, the removal of its Go, the sidebar, the project
 `CLAUDE.md` files, and cairn's and dubplate's move come after that. Until the page is rebuilt,
-agent view is where his sitting opens. This reorders the list under "The three specs" below.
+agent view is where his sitting opens. The next section replaces that pick.
+
+## Alignment comes first
+
+Decided on 2026-11-20, in four more messages:
+
+- "What's the anthopic standard? Our first effort is to get general worksation infastructure
+  aligned." He asked it when the session offered two ways to handle a task built on a parent whose
+  review found faults. The docs have no standard for that case, and both options were the
+  session's inventions.
+- "Again, the first tast is setting up the worksation infra. We can worry about everthing else
+  after that."
+- "We'll align with anthropic/community best practices at the workstation level and then work
+  from there."
+- "Should we restart this effort from the initatives repo since it touches all projects?" The
+  effort got a record of its own, `claude-config-alignment`, and a fresh session in
+  `~/Projects/initiatives` carries it on.
+
+So the first spec is the alignment spec. It brings the workstation's Claude configuration into
+line with Anthropic's docs, and with well-cited community practice where the docs are silent.
+Community practice carries a label of its own and its source. How cc-desk works is decided
+afterward, from what the aligned workstation provides.
+
+Claude's reading, which he hasn't ruled on:
+
+- The alignment covers the global `CLAUDE.md`, the settings, the hooks and their scripts, the
+  skills, the agents, the rules, the docs, the MCP servers, the memory, and the standards plugin.
+- The process skills are workstation configuration, so the alignment replaces them with the
+  documented flow. The timer script that starts the next task is not part of it. His pick of
+  option 1 under "The shape he picked" stands and is taken up afterward.
+- The session stops bringing him questions about later work. It looks up the standard before it
+  frames a choice, and where a docs page makes a question go away it says so and doesn't ask.
+
+## Parked until the workstation is aligned
+
+Each of these was on the list to ask Geoff. None is dropped. One comes back when a spec needs its
+answer.
+
+- Whether a task may build on another task's branch, and what happens when the parent's review
+  finds faults. Claude's call until he rules: tasks are independent and start from the default
+  branch. The best-practices page describes only that: "When you have separate pieces of work
+  going at once, give each its own checkout so the edits can't collide." The settings reference
+  says `worktree.baseRef` branches a worktree "from the remote default branch or your local HEAD".
+  No page describes a pull request stacked on another. The call removes stacked pull requests, the
+  dependency logic in the timer script, the rebase after each merge, and the state of a task whose
+  parent was rejected.
+- What happens when CI is down for the whole account, and whether the sites and the dotfiles repo
+  get pull request CI or a local gate run counts.
+- Standing answer 12 against the "Work beyond the scope" row below.
+- What the forecast means and what the page keeps.
+- Whether a background session may do server work on ward and orpheus.
+- Whether the approval-queue repo is archived.
+- Whether `standards:running-passes` leaves the published plugin, and where four craft rules go
+  that live only in process files. The alignment spec may need both.
+- Whether dubplate-pass's taste sections wait for a later spec.
+- The three-group sort of his standing rules and the three lists, both still proposed under "His
+  standing rules".
+- Four probes the research asked for: whether a `--bg` session waits for the usage reset, whether
+  `PermissionDenied` fires under `dontAsk`, a respawn with an active goal, and a cold boot.
 
 ## What cc-desk is
 
@@ -220,6 +285,9 @@ Claude's proposal for the time cap, shown to him in the same message and not cor
 The core spec hands over one more list: every item it left alone because the old process still
 relies on it, with what the process spec should do about each. That list is in the core design
 under "Left for the process spec".
+
+The alignment spec takes the first three items above and the core spec's list. The sidebar and
+the Move design wait with cc-desk.
 
 ## Still to ask Geoff
 

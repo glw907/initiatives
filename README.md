@@ -66,7 +66,7 @@ A product never ends, and an initiative does, so only a bounded effort gets a re
 | cairn | cairn-cms, cairn-pub, cairn-themes | cairn-docs-standard, cairn-pub-rebuild |
 | Docs system | drafter, workstation | docs-system, cairn-docs-standard |
 | Club site | aksailingclub-org, aksailingclub-legacy | asc-cutover |
-| Workstation | workstation, initiatives | repo-organization, approval-queue, monthly-model-review, workstation-secrets, shared-standards, dev-speed |
+| Workstation | workstation, initiatives, standards | repo-organization, approval-queue, monthly-model-review, workstation-secrets, shared-standards, dev-speed, claude-config-alignment |
 
 ## Index
 
@@ -81,6 +81,7 @@ A product never ends, and an initiative does, so only a bounded effort gets a re
 | [Cairn.pub rebuild](cairn-pub-rebuild/README.md) | proposed | cairn-pub | Would rebuild cairn.pub on the current cairn as the site the docs system publishes to. |
 | [cairn site setup](cairn-setup/README.md) | proposed | cairn-cms, cairn-pub | Replaces create-cairn-site's wizard with cairn new, a Go setup command with one browser approval chain, an agent lane, a setup skill, and a standard starter set. |
 | [cc-desk](cc-desk/README.md) | active | cc-desk, workstation, approval-queue | Replaces the approval queue and the desk with a status page that only reads, a terminal desk for decisions, and a forecast of the next decision session. |
+| [Claude configuration alignment](claude-config-alignment/README.md) | proposed | workstation, standards | Brings the workstation's Claude Code configuration into line with Anthropic's documented practice and well-cited community practice, before anything else about how work runs here changes. |
 | [Credential and mail hygiene](credential-hygiene/README.md) | active | workstation, household-it | Reorganizes Proton Pass into vaults by who may read them, gives Claude one consistent way in, and moves technical mail to a mailbox Claude can read, so the personal mailbox carries personal mail only. |
 | [Development speed](dev-speed/README.md) | active | workstation, cairn-cms, aksailingclub-org, poplar, cairn-pub | Cuts the time a change takes from approved design to merged on every project on this workstation, with every quality gate still running. |
 | [Docs system](docs-system/README.md) | active | drafter, workstation | Builds the pipeline, outline standard, and Claude infrastructure that handle docs for every project. |
