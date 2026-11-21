@@ -29,10 +29,11 @@
 - The second task, "The process skill", is running as the background session
   `alignment-process-skill` in `~/.dotfiles`, launched on 2026-11-21 with a time clause of 140
   minutes.
-- The third task, "The switch", is built on the branch `alignment-switch` and open as draft pull
+- The third task, "The switch", is built on the branch `alignment-switch` and open as pull
   request 259 in `glw907/workstation`. The workstation gate passes on it. Its first review found
   merge spellings the `ask` rules miss, such as `gh -R owner/repo pr merge 5`. The guard now
-  sends those to a permission prompt, the spec says so, and a second review is running.
+  sends those to a permission prompt, and the spec says so. The second review accepted commit
+  `d4ee9b6` with no open finding. The pull request waits for 258 to merge first.
 
 ## Next action
 
