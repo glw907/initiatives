@@ -406,15 +406,15 @@ left first, nothing would stand between a session and a merge.
 | `claude/.claude/settings.json` `autoMode.allow` | Remove the `approval-queue merge` and `land` entry. In the entry for `CLAUDE.md`, docs, skill, and agent files, replace "that approval is the merge authorization for this classifier" with "Geoff's answer to the merge prompt authorizes the merge". |
 | `claude/.claude/settings.json` `autoMode.environment` | Drop "including the approval queue on 127.0.0.1:7907" |
 | `claude/.claude/settings.json` hooks | Remove the line that runs `claude-launch-guard`. The script stays until the last task. |
-| `bin/.local/bin/claude-merge-guard`, `tests/test_claude_merge_guard.py` | Remove the half that denies `gh pr merge`, with its `REASON` text and the tests that pin it. The force-push and staging halves stay. |
+| `bin/.local/bin/claude-merge-guard`, `tests/test_claude_merge_guard.py` | The half that denies `gh pr merge` answers `"ask"` in place of `"deny"`, with a new reason text. Its tests pin `"ask"` for every spelling they pinned `"deny"` for. The force-push and staging halves stay. |
 | `claude/.claude/CLAUDE.md` | Replace with the companion text |
 | `claude/.claude/skills/pass-core/SKILL.md` | Reword the fourth rule of "Until cc-desk runs" and the merge sentence in "Close" to say the session Geoff is talking to merges with `gh pr merge` behind the prompt |
 
 This pull request merges by `approval-queue land`, the last one that does. After the merge,
 Geoff's session runs `claude-worktree-busy ~/.dotfiles`, pulls, and runs `claude-tooling-sync
-apply` and `verify` at once. The pull changes the guard's script, and only the apply turns the
-`ask` rule on. Between the two, only the classifier would judge a merge command, and Geoff's
-session runs none until the apply has finished. It then runs `gh pr merge --help` and corrects
+apply` and `verify` at once. The pull changes the guard's script, which sends a merge to a
+prompt from then on, and the apply turns the `ask` rules on. Geoff's session runs no merge
+command until the apply has finished. It then runs `gh pr merge --help` and corrects
 the merge command in the skill text if a flag differs, posts `claude auto-mode critique` and
 `claude auto-mode config`, and runs one `gitleaks git` scan.
 
@@ -443,8 +443,8 @@ Done items:
   claude-launch-guard` prints 0. Today it prints 1.
 - `grep -c 'approval-queue land' ~/.claude/skills/pass-core/SKILL.md` prints 0. Today it
   prints 1.
-- `bash scripts/gate.sh` exits 0 with the guard's remaining tests in it, and one of them shows
-  a force-push to `main` still refused.
+- `bash scripts/gate.sh` exits 0 with the guard's tests in it. One shows a force-push to `main`
+  still refused, and one shows `gh -R owner/repo pr merge 5` answered with `"ask"`.
 
 ### Side by side
 
@@ -941,8 +941,12 @@ Method and session-behavior calls are Claude's. Each is listed so Geoff can over
 - The limit of four working sessions on pavilion carries into the skill until the later work on
   task chains replaces it. The 85 percent check is dropped, as Geoff ruled.
 - Two `ask` rules cover the merge forms a session usually writes. The docs say a rule "isn't a
-  security boundary around the program", and auto mode's classifier judges any other form. A
-  wider pattern would also prompt on searches that contain the word "merge".
+  security boundary around the program" and name a `PreToolUse` hook for reading the whole
+  command. The guard is that hook: it keeps its merge check and answers `"ask"`, so
+  `gh -R <repo> pr merge`, `/usr/bin/gh pr merge`, and `sudo gh pr merge` also stop at a prompt.
+  The approved spec left those forms to auto mode's classifier. The switch's review found that
+  `gh` accepts them, and this call changed on 2026-11-21. A wider `ask` pattern would also
+  prompt on searches that contain the word "merge".
 - `go-ship` falls back to the bundled `/simplify`. The other choice was to declare a dependency
   on a plugin the workstation no longer installs.
 - The reviewers keep Bash, and their descriptions say what is true. `claude-sudo-clear` stays in
@@ -978,7 +982,7 @@ Method and session-behavior calls are Claude's. Each is listed so Geoff can over
 | One simple loop for a solo developer, with no planner, executor, and reviewer roles | Community | `research/2026-11-20-workstation/community-practice.md`, which names each source |
 | A draft pull request that carries the "couldn't finish" note | Assembled from documented pieces | Agent view page: Claude opens a draft pull request |
 | The `task-score` comment and `task-report` | Invented | Kept because Geoff asked for estimates priced from measured minutes, and no documented hook carries a clock field |
-| `claude-git-guard` (force-push and staging) | Assembled from documented pieces | Hooks page: a `PreToolUse` hook can deny a call |
+| `claude-git-guard` (merge prompt, force-push, and staging) | Assembled from documented pieces | Hooks page: a `PreToolUse` hook can deny a call or answer `"ask"`, which "sends the tool call to the permission prompt" in auto mode |
 | `claude-context-budget`, `check-claude-refs.py`, `claude-worktree-busy`, `claude-memory-write-check` | Invented | Each is stricter or wider than its native counterpart, as `config-audit.md` section 3 shows |
 | The limit of four working sessions | Invented | Geoff's standing rule for pavilion, until the later work replaces it |
 
