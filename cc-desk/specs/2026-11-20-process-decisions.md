@@ -31,6 +31,27 @@ Geoff agreed to this order, one spec at a time.
    files, each checked against Anthropic's checklist with evaluations. Geoff: "So this should be
    deeper than just a renaming."
 
+## The workstation comes first
+
+Decided on 2026-11-20, in three messages to the session that designs the process spec:
+
+- "Also, since we're fully changing how development works here, should this effort live in
+  initatives? It'll cross every repo." The decisions record, the research, and both remaining
+  specs live in the `cc-desk` initiative.
+- "And probably the first thing we need to do is to fully update the workstation claude
+  infastructure before we change anything else."
+- "The cc-desk web UI is fully secondary to getting the workstation set up with the new
+  standard."
+
+Claude's pick, played back to him and open to his correction: the whole workstation
+configuration reaches the new standard before any repo changes. The process pieces land first
+(process skills, hooks, per-launch settings, the timer script, the merge rule). The rest of the
+workstation's skills, agents, and docs follow, built under the new process as its longer
+trial, and the standards plugin counts as workstation configuration because every session on
+the machine loads it. cc-desk's page, the removal of its Go, the sidebar, the project
+`CLAUDE.md` files, and cairn's and dubplate's move come after that. Until the page is rebuilt,
+agent view is where his sitting opens. This reorders the list under "The three specs" below.
+
 ## What cc-desk is
 
 All decided.
