@@ -1,7 +1,9 @@
 # Claude configuration alignment
 
 Status: proposed (2026-11-20). Geoff set the scope in the terminal. The goals and non-goals below
-are Claude's reading of his words, and he hasn't yet read them.
+are Claude's reading of his words.
+
+Status: active (2026-11-20). Geoff approved the record as pull request 180.
 
 ## Summary
 

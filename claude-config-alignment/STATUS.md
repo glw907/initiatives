@@ -14,7 +14,7 @@
   outside the process, the `standards` plugin, the remaining configuration, and community
   practice. Each was scanned for secrets and personal details. Their findings are subagents'
   reports, and only a handful were checked against the files.
-- This record is proposed. Geoff hasn't read its goals and non-goals.
+- Geoff approved this record as pull request 180 on 2026-11-20, and it is active.
 
 ## Next action
 
@@ -23,7 +23,6 @@ A fresh session in `~/Projects/initiatives` writes the alignment spec from the r
 
 ## Open decisions
 
-- Geoff confirms or corrects the record's goals and non-goals.
 - The skills audit found two values in one skill that may not belong in a public repo. Geoff was
   told on 2026-11-20 and hasn't said whether they come out ahead of the spec.
 - The parked questions are listed in the rulings file under "Parked until the workstation is
