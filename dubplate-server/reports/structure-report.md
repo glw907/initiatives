@@ -2,9 +2,9 @@
 kind: report
 ---
 
-# Round structure: pass 1 of 3 has landed, nothing deployed
+# Round structure: passes 1 and 2 of 3 have landed, nothing deployed
 
-Pass 1, `structure-base`, merged on 2026-11-20 as PR #18 (`5d1e6e9`) on checks and review, under Geoff's pick of "Merge on checks and review". `_salvage` is gone, the store lives at `internal/store`, one package parses ids, the time and query helpers each exist once, no code under `internal` reads the clock outside tests and the harness, and a store test names the owner of all 19 tables. A member sees nothing different. Pass 2, `structure-keys`, launches next. Nothing waits for Geoff. Nothing deployed, and the dubplate server is unchanged.
+Pass 1, `structure-base`, merged on 2026-11-20 as PR #18 (`5d1e6e9`) on checks and review, under Geoff's pick of "Merge on checks and review". `_salvage` is gone, the store lives at `internal/store`, one package parses ids, the time and query helpers each exist once, no code under `internal` reads the clock outside tests and the harness, and a store test names the owner of all 19 tables. A member sees nothing different. Pass 2, `structure-keys`, merged as PR #19 (`c286e3d`) the same way: every setting is declared in the package that reads it, `cmd/dubplate-server` declares and registers nothing, and one import test holds configuration to `config.go` and `doctor.go`. Pass 3, `structure-doctor`, launches next. Nothing waits for Geoff. Nothing deployed, and the dubplate server is unchanged.
 
 ## Pass 1: `structure-base`, PR #18
 
@@ -25,9 +25,15 @@ Other acceptance evidence is in the PR body. No test name left: 1,882 names at t
 
 The executor ended blocked on two found items and asked for a ruling. I ruled both kept as written and filed them: #170 (the "must not be nil" function fields) and #171 (`EarliestAdmin` refuses an id that is not 16 bytes). Both are method calls. No design sentence or order a person reads changed.
 
+## Pass 2: `structure-keys`, PR #19
+
+Whole-branch review `fix` on one blocker (`SettingReadError` exported with no outside caller), unexported in `79face1` and re-read `accept`. Security read `accept`, low notes only. `Calls: none`, no `## Before merge`, CI `success`. I built fresh detached binaries at the proof base `5d1e6e9` and at head `23e2d7b` and ran the kit on both. All eight lines are identical to each other and to the pass 1 lines above, registry dump included (56 lines, `b8a59fba`). The command folder declares 0 settings (52 before) and registers 0 itself (29 before), and `main.go` has the nine `Register` lines. One test name left: `TestResolveServeConfig` became `TestResolveConfig` in `internal/serve/config_test.go`, since the function moved to `serve.ResolveConfig`. 15 names were added (1,906 to 1,921).
+
+I ruled on one planner question: the design's five `CLAUDE.md` rules had no pass, so `structure-keys` wrote rules 1, 2, 3 and 5, and `structure-doctor` writes rule 4, which is untrue until it lands. Found items: BACKLOG #172 (four comments still name `cmd/dubplate-server/auth.go`), the exported setting variables are reassignable (security, low), and the ownership rule does not name `tableOwners`.
+
 ## What waits
 
-Pass 2 launches now and pass 3 follows it, in order. `dubplate-d7` also relayed an agreement with `conductor-cc-desk`: cc-desk and dubplate together keep no more than four building sessions on this workstation, and neither starts a new session past 85 percent of weekly usage until the reset. This conductor treats it as a courtesy from a peer, which can't change the design. Usage is 17 percent, so it binds nothing today.
+Pass 3 launches now. `dubplate-d7` also relayed an agreement with `conductor-cc-desk`: cc-desk and dubplate together keep no more than four building sessions on this workstation, and neither starts a new session past 85 percent of weekly usage until the reset. This conductor treats it as a courtesy from a peer, which can't change the design. Usage is 17 percent, so it binds nothing today.
 
 ## Checks run before the first launch
 
@@ -52,9 +58,10 @@ PR #17 was reviewed `accept, open findings 0` after three review rounds and `Cal
 | Pass | Planned path minutes | Taken | Fix rounds | Reds |
 | --- | --- | --- | --- | --- |
 | 1 `structure-base` | 505 (design 390) | about 142 | 1 | 0 |
+| 2 `structure-keys` | 480 (design 360) | about 110 | 2 | 0 |
 
 Planning misses for pass 1: `[mechanism]` the design's `^func micros\(` check misses an exported helper; `[stale-fact]` one figure in T3; `[file-list]` the `docs/standing-rules.md` clauses, the class map, and a `deploy.sh` comment. The planned 505 stays under the 780-minute parking line. Weekly usage read 17 percent before the first launch and 22 percent before pass 2.
 
 ## What is left for later
 
-Backlog #170 and #171 are filed. The design's "Later" list is unchanged: one answer for an id of all zeros, one registration line for `serve`, one file-ownership check, the wording of three reserved `doctor` rows, and the single clean migration file at `launch`.
+Backlog #170, #171 and #172 are filed. The design's "Later" list is unchanged: one answer for an id of all zeros, one registration line for `serve`, one file-ownership check, the wording of three reserved `doctor` rows, and the single clean migration file at `launch`.
