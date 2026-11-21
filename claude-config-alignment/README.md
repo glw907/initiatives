@@ -70,4 +70,5 @@ and its page work resumes after this initiative.
 - Research on the rest of the configuration (2026-11-20): `research/2026-11-20-workstation/`,
   four reports.
 - Launch prompt for the session that writes the spec: `plans/2026-11-20-alignment-spec-prompt.txt`.
-- The alignment spec is written in `specs/`, beside the rulings.
+- The alignment spec (2026-11-20): `specs/2026-11-20-alignment-spec.md`, with three text files
+  beside it for the new global file, the process skill, and its reference.
