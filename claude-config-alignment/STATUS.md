@@ -15,15 +15,23 @@
   practice. Each was scanned for secrets and personal details. Their findings are subagents'
   reports, and only a handful were checked against the files.
 - Geoff approved this record as pull request 180 on 2026-11-20, and it is active.
+- The alignment spec is written: `specs/2026-11-20-alignment-spec.md`, with three text files
+  beside it that hold the new global `CLAUDE.md`, the new process skill, and its reference. Three
+  subagents checked the audits against the files they name before the spec used them. A builder
+  check and two readers with no context read the spec, and their findings are in it.
+- Geoff approved the spec on 2026-11-21 ("Approved."). He changed no recommendation, so the six
+  under "What Geoff decides" stand as written. The spec is pull request 181 here.
+- The session that wrote the spec is building the first task, "Groundwork": one settings pull
+  request in `glw907/workstation`, then a probe of how a build session runs.
 
 ## Next action
 
-A fresh session in `~/Projects/initiatives` writes the alignment spec from the research, by
-`plans/2026-11-20-alignment-spec-prompt.txt`. Nothing else has to finish first.
+Geoff approves the Groundwork pull request by number. His session merges it, applies the
+settings, runs the probe, and then launches the process skill's task.
 
 ## Open decisions
 
-- The skills audit found two values in one skill that may not belong in a public repo. Geoff was
-  told on 2026-11-20 and hasn't said whether they come out ahead of the spec.
+- The rulings file owes Geoff one question about where cc-desk's scheduled check-ins come
+  against the rewrite of Move. It is about later work and is not asked until that work starts.
 - The parked questions are listed in the rulings file under "Parked until the workstation is
   aligned". None is asked until a spec needs its answer.
