@@ -170,6 +170,9 @@ and design work uses the word in another sense.
   `glw907/workstation`), `~/Projects/standards`, and `~/Projects/survey`. All three are public.
 - Settings reach the live file only through `claude-tooling-sync apply`. Hook scripts, the global
   file, skills, and rules are links, so they change the moment the main checkout pulls.
+- `apply` writes each tracked top-level key over the live one and removes nothing. A top-level
+  key that the tracked file drops stays in `~/.claude/settings.json` until someone deletes it
+  there. Groundwork found this on 2026-11-21.
 - A hook's line in the settings is changed before its script is removed or renamed. A new script
   is in place, with `stow -R bin` run, before a settings line names it.
 - Another session has uncommitted work in `~/.dotfiles`: one file under `docs/bluefin-admin/`
@@ -231,7 +234,12 @@ and stays out of the session's goal. After each merge, Geoff's session does thes
 1. It runs `claude-worktree-busy` on the repo's main checkout and pulls.
 2. It runs `stow -R bin` when the pull request added, renamed, or removed a script.
 3. It runs `claude-tooling-sync apply` and `verify` when the pull request changed the settings.
+   It then deletes from `~/.claude/settings.json` each top-level key the pull request removed.
 4. It checks the after-merge items and posts each result on the pull request.
+5. It runs `claude rm <id>` on the task's session, which removes the worktree, and then deletes
+   the branches. `claude rm` refuses while a commit is on no remote, so it comes before the
+   remote branch goes. Claude Code names the worktree's branch `worktree-<session name>`, and a
+   session that makes a branch of its own leaves both to delete.
 
 Until the task called [The switch](#the-switch) lands, a pull request merges by
 `approval-queue land <owner/repo#n> <sentence>` after Geoff's approval by number, or he merges it
@@ -335,6 +343,9 @@ the session says about itself. The probe passes when all of these show:
 Geoff's session then closes the probe's pull request and deletes its branch and session. If the
 probe fails on any point, [When something goes wrong](#when-something-goes-wrong) says what
 happens next.
+
+Groundwork merged on 2026-11-21 as pull request 256 in `glw907/workstation`. The probe passed on
+all five points, and the pull request quotes the transcript lines.
 
 Done items:
 

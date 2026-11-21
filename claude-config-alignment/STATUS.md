@@ -20,14 +20,21 @@
   subagents checked the audits against the files they name before the spec used them. A builder
   check and two readers with no context read the spec, and their findings are in it.
 - Geoff approved the spec on 2026-11-21 ("Approved."). He changed no recommendation, so the six
-  under "What Geoff decides" stand as written. The spec is pull request 181 here.
-- The session that wrote the spec is building the first task, "Groundwork": one settings pull
-  request in `glw907/workstation`, then a probe of how a build session runs.
+  under "What Geoff decides" stand as written. The spec merged as pull request 181 here.
+- The first task, "Groundwork", is done. It merged as pull request 256 in `glw907/workstation`
+  on 2026-11-21, and the settings are live. The probe passed on all five points: a background
+  session under `/goal` edited a skill file, committed, pushed, and opened a draft pull request
+  with no prompt, and a command behind an `ask` rule was refused. The evidence is on pull
+  request 256.
+- The second task, "The process skill", is running as the background session
+  `alignment-process-skill` in `~/.dotfiles`, launched on 2026-11-21 with a time clause of 140
+  minutes.
 
 ## Next action
 
-Geoff approves the Groundwork pull request by number. His session merges it, applies the
-settings, runs the probe, and then launches the process skill's task.
+The process skill's session ends with a pull request in `glw907/workstation`. Geoff's session
+then builds "The switch" and opens its pull request, and Geoff approves both by number in one
+sitting.
 
 ## Open decisions
 
