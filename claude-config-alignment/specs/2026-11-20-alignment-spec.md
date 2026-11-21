@@ -1,6 +1,7 @@
 # Workstation alignment spec
 
-Status: waiting for Geoff's approval (2026-11-21). Nothing is built until he approves it.
+Status: approved by Geoff on 2026-11-21 ("Approved."). He changed no recommendation, so each of
+the six stands as written.
 
 This spec brings the workstation's Claude Code configuration into line with Anthropic's docs. It
 replaces the pass process with Claude Code's documented flow, in one new skill. It fixes what four
