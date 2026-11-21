@@ -142,8 +142,6 @@ Proposed, and not yet ruled on:
 - The rules sort into three groups. Rules about the old process go away. Rules about what he
   wants become a documented control. Rules of taste and rules about the machine are checked in
   the third spec.
-- Budget caps ask nothing: no new task past twice its planned minutes, and none at 85 percent
-  of weekly usage.
 - He gets three lists he can overrule line by line: the lessons, his standing rules, and the
   infrastructure.
 
@@ -181,6 +179,31 @@ since our first goal is to get the workstation claude infastructure in order."
   of `claude-merge-guard`.
 - His condition stands for every part: a piece that no Anthropic page describes is labeled
   assembled or invented in the spec, and he sees the label before he approves.
+
+## The budget caps
+
+Decided on 2026-11-20: "yes, drop the 85 percent check". He was asked whether his words of
+2026-11-18, that usage isn't a limit for him, still held well enough to drop it.
+
+- The new process reads no usage figure before a launch. A session that reaches the usage
+  limit pauses and resumes at the reset. That is documented for an interactive session.
+  Whether a `--bg` session waits the same way is a probe the spec owes, and the check comes
+  back if it doesn't.
+- The cost he accepted: if the week runs out, the session at his sitting pauses with the
+  background ones until the reset, or until he resets usage himself.
+- The rule that today's sessions on pavilion share (four working sessions, none past 85
+  percent) is separate. It holds until the new process replaces it.
+
+Claude's proposal for the time cap, shown to him in the same message and not corrected:
+
+- Each task's goal carries a time clause at twice its planned minutes. The goal page documents
+  "a turn or time clause in the condition". The checker model judges the clause, so it is not
+  a hard timer.
+- At the cap the session ends, writes what is left into its pull request, and asks nothing.
+- The timer script does not call `claude stop` on a deadline (assembled) unless the trial run
+  shows a session running past its clause.
+- No spec has a cap. The old round cap stopped tasks that had nothing to do with the one
+  running long.
 
 ## What the process spec owes
 
