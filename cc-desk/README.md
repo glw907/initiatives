@@ -2,6 +2,8 @@
 
 Status: active (2026-11-17), design approved.
 
+Status: active (2026-11-20), the page and the removal of the Go wait for `claude-config-alignment`.
+
 ## Summary
 
 cc-desk shows what Claude Code is building, forecasts when the work will next need Geoff, and
@@ -39,6 +41,5 @@ when the work is done. The `approval-queue` initiative is this one's predecessor
 
 - Design: `~/Projects/cc-desk/docs/specs/2026-11-17-cc-desk-design.md`
 - Plans: `~/Projects/cc-desk/docs/plans/`
-- Process decisions (2026-11-20): `specs/2026-11-20-process-decisions.md`. Geoff's rulings for
-  the spec that replaces the pass process. The spec is written beside it.
-- Process research (2026-11-20): `research/2026-11-20-process/`, nine reports.
+- The process rulings and the process research of 2026-11-20 moved to `claude-config-alignment`
+  on 2026-11-20, when Geoff put the workstation's alignment ahead of the page.

@@ -1,0 +1,9 @@
+id: claude-config-alignment
+title: Claude configuration alignment
+summary: Brings the workstation's Claude Code configuration into line with Anthropic's documented practice and well-cited community practice, before anything else about how work runs here changes.
+status: proposed
+owner: glw907
+created: 2026-11-20
+repos:
+  - workstation
+  - standards
