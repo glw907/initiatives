@@ -66,6 +66,6 @@ and its page work resumes after this initiative.
   Claude made marked as Claude's.
 - Research on the process pieces (2026-11-20): `research/2026-11-20-process/`, nine reports.
 - Research on the rest of the configuration (2026-11-20): `research/2026-11-20-workstation/`,
-  four audits, added as each one finishes.
+  four reports.
 - Launch prompt for the session that writes the spec: `plans/2026-11-20-alignment-spec-prompt.txt`.
 - The alignment spec is written in `specs/`, beside the rulings.

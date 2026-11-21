@@ -10,19 +10,21 @@
   permission rules, the auto-mode entries, and the hook registrations. It merged as pull request
   255 in `glw907/workstation` on 2026-11-20.
 - The process pieces are inventoried in `research/2026-11-20-process/`, nine reports.
-- Four audits of the rest are running in the session that worked from `~/Projects/cc-desk`: the
-  13 personal skills outside the process, the `standards` plugin, the remaining configuration, and
-  community practice. Each lands in `research/2026-11-20-workstation/` once it is checked for
-  secrets and personal details.
+- The rest is audited in `research/2026-11-20-workstation/`, four reports: the 13 personal skills
+  outside the process, the `standards` plugin, the remaining configuration, and community
+  practice. Each was scanned for secrets and personal details. Their findings are subagents'
+  reports, and only a handful were checked against the files.
 - This record is proposed. Geoff hasn't read its goals and non-goals.
 
 ## Next action
 
 A fresh session in `~/Projects/initiatives` writes the alignment spec from the research, by
-`plans/2026-11-20-alignment-spec-prompt.txt`. It starts once the four audits are committed.
+`plans/2026-11-20-alignment-spec-prompt.txt`. Nothing else has to finish first.
 
 ## Open decisions
 
 - Geoff confirms or corrects the record's goals and non-goals.
+- The skills audit found two values in one skill that may not belong in a public repo. Geoff was
+  told on 2026-11-20 and hasn't said whether they come out ahead of the spec.
 - The parked questions are listed in the rulings file under "Parked until the workstation is
   aligned". None is asked until a spec needs its answer.
