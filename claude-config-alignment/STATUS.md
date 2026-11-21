@@ -36,9 +36,11 @@
 
 ## Next action
 
-The process skill's session ends with a pull request in `glw907/workstation`. Geoff then
-approves that pull request and pull request 259 by number in one sitting. His session merges the
-process skill's first and the switch's second, and runs each one's after-merge steps.
+The process skill's session is building draft pull request 258 in `glw907/workstation`. On
+2026-11-21 Geoff approved pull requests 258 and 259 ahead of time: "I'm pre-approving both." His
+session merges each one only after its review accepts with no open finding and its done items
+hold. It merges 258 first and 259 second, and runs each one's after-merge steps. A finding that
+changes what either pull request does goes back to Geoff first.
 
 ## Open decisions
 
