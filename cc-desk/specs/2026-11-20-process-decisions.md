@@ -33,7 +33,7 @@ Geoff agreed to this order, one spec at a time.
 
 ## The workstation comes first
 
-Decided on 2026-11-20, in three messages to the session that designs the process spec:
+Decided on 2026-11-20, in four messages to the session that designs the process spec:
 
 - "Also, since we're fully changing how development works here, should this effort live in
   initatives? It'll cross every repo." The decisions record, the research, and both remaining
@@ -42,9 +42,12 @@ Decided on 2026-11-20, in three messages to the session that designs the process
   infastructure before we change anything else."
 - "The cc-desk web UI is fully secondary to getting the workstation set up with the new
   standard."
+- "The first goal is workstation-wide correct claude infastructure. Once that's complete we can
+  work on the web status interface."
 
-Claude's pick, played back to him and open to his correction: the whole workstation
-configuration reaches the new standard before any repo changes. The process pieces land first
+So the whole workstation configuration reaches the new standard before the page is touched.
+What follows inside that goal is Claude's pick, played back to him and open to his
+correction. The process pieces land first
 (process skills, hooks, per-launch settings, the timer script, the merge rule). The rest of the
 workstation's skills, agents, and docs follow, built under the new process as its longer
 trial, and the standards plugin counts as workstation configuration because every session on
