@@ -2,9 +2,9 @@
 kind: report
 ---
 
-# Round structure: passes 1 and 2 of 3 have landed, nothing deployed
+# Round structure: paused after passes 1 and 2 of 3, nothing deployed
 
-Pass 1, `structure-base`, merged on 2026-11-20 as PR #18 (`5d1e6e9`) on checks and review, under Geoff's pick of "Merge on checks and review". `_salvage` is gone, the store lives at `internal/store`, one package parses ids, the time and query helpers each exist once, no code under `internal` reads the clock outside tests and the harness, and a store test names the owner of all 19 tables. A member sees nothing different. Pass 2, `structure-keys`, merged as PR #19 (`c286e3d`) the same way: every setting is declared in the package that reads it, `cmd/dubplate-server` declares and registers nothing, and one import test holds configuration to `config.go` and `doctor.go`. Pass 3, `structure-doctor`, launches next. Nothing waits for Geoff. Nothing deployed, and the dubplate server is unchanged.
+Pass 1, `structure-base`, merged on 2026-11-20 as PR #18 (`5d1e6e9`) on checks and review, under Geoff's pick of "Merge on checks and review". `_salvage` is gone, the store lives at `internal/store`, one package parses ids, the time and query helpers each exist once, no code under `internal` reads the clock outside tests and the harness, and a store test names the owner of all 19 tables. A member sees nothing different. Pass 2, `structure-keys`, merged as PR #19 (`c286e3d`) the same way: every setting is declared in the package that reads it, `cmd/dubplate-server` declares and registers nothing, and one import test holds configuration to `config.go` and `doctor.go`. Geoff paused the round on 2026-11-20 before pass 3, `structure-doctor`, was planned. Its planner was stopped with nothing committed, and its worktree and branch are removed. Nothing waits for Geoff. Nothing deployed, and the dubplate server is unchanged.
 
 ## Pass 1: `structure-base`, PR #18
 
@@ -33,7 +33,7 @@ I ruled on one planner question: the design's five `CLAUDE.md` rules had no pass
 
 ## What waits
 
-Pass 3 launches now. `dubplate-d7` also relayed an agreement with `conductor-cc-desk`: cc-desk and dubplate together keep no more than four building sessions on this workstation, and neither starts a new session past 85 percent of weekly usage until the reset. This conductor treats it as a courtesy from a peer, which can't change the design. Usage is 17 percent, so it binds nothing today.
+Pass 3 waits for a resume. Cut `.claude/worktrees/structure-doctor` from `origin/master`, launch `dubplate-structure-doctor-plan` from `structure-doctor-planner-prompt.txt`, and run the same proof comparison before landing. The planner prompt already carries the ruling that this pass writes `CLAUDE.md` rule 4. The final report, the intake STATUS update, and the initiative README line are still to do. `dubplate-d7` also relayed an agreement with `conductor-cc-desk`: cc-desk and dubplate together keep no more than four building sessions on this workstation, and neither starts a new session past 85 percent of weekly usage until the reset. This conductor treats it as a courtesy from a peer, which can't change the design. Usage is 17 percent, so it binds nothing today.
 
 ## Checks run before the first launch
 
