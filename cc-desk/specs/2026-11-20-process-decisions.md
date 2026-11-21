@@ -164,6 +164,24 @@ names are documented, and the mapping below is assembled.
 These replace the earlier proposal ("Ready to merge", "Read before merging", "Couldn't finish",
 "Held for you").
 
+## How a pull request merges
+
+Decided on 2026-11-20: "yes, take the ask rule, so long as it follows anthropic standards,
+since our first goal is to get the workstation claude infastructure in order."
+
+- The session Geoff is talking to runs `gh pr merge` for the pull requests he names, and an
+  `ask` rule stops it at a permission prompt each time. He confirms once per pull request.
+  Documented: the permissions page says an `ask` rule prompts "even in `auto` mode and without
+  a time limit", and the probe of 2026-11-18 in cc-desk's `docs/research/` saw it.
+- Background sessions run in `dontAsk` mode, which denies every call that would prompt, so none
+  of them merges. Documented.
+- The docs say a rule matches the command text and "isn't a security boundary around the
+  program", so the REST form of a merge gets a rule of its own.
+- This retires `approval-queue land`, its allow rule, its auto-mode entry, and the merge half
+  of `claude-merge-guard`.
+- His condition stands for every part: a piece that no Anthropic page describes is labeled
+  assembled or invented in the spec, and he sees the label before he approves.
+
 ## What the process spec owes
 
 - A table with one line for every row in
