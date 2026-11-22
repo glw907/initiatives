@@ -172,11 +172,21 @@
 Every task of the alignment spec and of the brainstorming spec has merged. The launch prompt
 `plans/2026-11-21-side-by-side-prompt.txt` is finished, and no task session is running.
 
-Geoff said on 2026-11-22 to go ahead with the spec-writing evaluation ("Yup, let's do it."). A
-fresh session writes its spec from the launch prompt at
-`plans/2026-11-22-spec-writing-evaluation-prompt.txt`, starting with a brainstorm, and brings
-the spec to Geoff for approval. Nothing is built before that. He also has the notes the last
-three pull requests left, listed under "Open decisions".
+The spec for the spec-writing test is written and waits for Geoff's approval:
+`specs/2026-11-22-spec-writing-test-spec.md`. Nothing is built. It asks him two questions: how
+long a spec for a one-task change may be (1,200 words is recommended), and whether the spend
+is all right (about 110 dollars planned, 170 at most). Its trial runs are in
+`research/2026-11-22-spec-writing-test/`. The session that wrote it works from the launch prompt
+at `plans/2026-11-22-spec-writing-evaluation-prompt.txt`.
+
+Once he approves, his session launches the spec's first task in `~/.dotfiles` after the checks
+under the spec's "Before launch". On 2026-11-22 `claude-worktree-busy ~/.dotfiles` exits 1,
+since another session has uncommitted files there, and no task launches until that clears. The
+spec's second task waits for the first to merge. Approval also covers two backlog edits in the
+workstation repo, which his session lands when the checkout is free: item 113 gains a stamp and
+item 94 moves to Done.
+
+He also has the notes the last three pull requests left, listed under "Open decisions".
 
 ## Open decisions
 
@@ -186,8 +196,12 @@ three pull requests left, listed under "Open decisions".
   aligned". None is asked until a spec needs its answer.
 - Geoff ruled on 2026-11-21 that spec writing is tested after the workstation is aligned:
   "Let's follow best practices and test once we have the environment fully set up." The
-  environment is now set up, and on 2026-11-22 he said to go ahead. The spec for that
-  evaluation is the next piece of work.
+  environment is now set up, and on 2026-11-22 he said to go ahead. The spec for that test
+  waits for his approval, with its two questions.
+- Geoff ruled on 2026-11-22, while the spec was designed: the test covers the written spec
+  and leaves out the design conversation; specs are written on Fable at `high` ("Let's go with
+  the Anthropic recomendation."); no run compares against a session with no guide; and a long
+  spec for a small change is a failure ("Yes, that's too long for a small change").
 - Pull request 23 left three optional review notes. `.gitignore:4` matches session files only
   at the top of a case folder, `scripts/run-evals.sh` works only from the repo root, and
   `BACKLOG.md` lost its `## Low` heading.
