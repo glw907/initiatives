@@ -116,7 +116,10 @@
   The `/home` store's folder is gone. A print-mode session started from `/home/glw907` and one
   from `/var/home/glw907` each named `~/.claude/projects/-var-home-glw907/memory/`. The search
   for the retired words over the store prints nothing.
-- The `~/.dotfiles` main checkout is level with `origin/main` at `f37b3b9`, and the gate
+- Geoff ruled on 2026-11-21 to drop the `paths:` key from `vps-conventions` ("you can drop the
+  vps-conventions"). Commit `7f5cbdf` in `glw907/workstation` removes its four lines, and the
+  skill is back in a session's list. That closes the blocking finding on pull request 263.
+- The `~/.dotfiles` main checkout is level with `origin/main` at `7f5cbdf`, and the gate
   passed on that commit. The busy check exits 0 there. Two uncommitted files from another
   session are still there: `google-workspace.md` under `claude/.claude/docs/bluefin-admin/` and
   `bin/.local/bin/sheet-revision`.
@@ -173,7 +176,5 @@ with him.
   says "the approval queue" in four places (its backlog item 10), the workstation still holds
   `~/.claude/docs/voice/approval-brief.md`, and the survey skill's description ends on a clause
   that addresses Claude.
-- Geoff has an open question on the `paths:` key in `vps-conventions`: drop it, keep it, or
-  widen it. His session recommends dropping it, which is four lines and a direct change.
 - "The plugin" added `BACKLOG.md` and `.claude/project-tracking.json` to the public `standards`
   repo, outside its task's table. They stay unless Geoff objects.
