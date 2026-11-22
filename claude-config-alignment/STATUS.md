@@ -176,12 +176,14 @@ The spec for the spec-writing test is written and waits for Geoff's approval:
 `specs/2026-11-22-spec-writing-test-spec.md`. Nothing is built. It asks him two questions: how
 long a spec for a one-task change may be (1,200 words is recommended), and whether the spend
 is all right (about 110 dollars planned, 170 at most). Its trial runs are in
-`research/2026-11-22-spec-writing-test/`. The session that wrote it works from the launch prompt
-at `plans/2026-11-22-spec-writing-evaluation-prompt.txt`.
+`research/2026-11-22-spec-writing-test/`. The launch prompt
+`plans/2026-11-22-spec-writing-evaluation-prompt.txt` is finished. A fresh session takes his
+approval and launches the tasks from `plans/2026-11-22-spec-writing-test-build-prompt.txt`.
 
 Once he approves, his session launches the spec's first task in `~/.dotfiles` after the checks
-under the spec's "Before launch". On 2026-11-22 `claude-worktree-busy ~/.dotfiles` exits 1,
-since another session has uncommitted files there, and no task launches until that clears. The
+under the spec's "Before launch". On 2026-11-22 `claude-worktree-busy ~/.dotfiles` exits 1.
+The session `dotfiles-5e` sits idle there with three uncommitted files, and no task launches
+until that clears. The
 spec's second task waits for the first to merge. Approval also covers two backlog edits in the
 workstation repo, which his session lands when the checkout is free: item 113 gains a stamp and
 item 94 moves to Done.

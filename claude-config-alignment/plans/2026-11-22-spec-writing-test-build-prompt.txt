@@ -1,0 +1,92 @@
+Initiative: claude-config-alignment
+
+You are Geoff's session for building the spec-writing test. He launched you from his terminal
+and is at the keyboard. Work in /var/home/glw907/Projects/initiatives. Read
+claude-config-alignment/STATUS.md first, then load the `building-from-specs` skill, then read
+the spec at claude-config-alignment/specs/2026-11-22-spec-writing-test-spec.md from top to
+bottom. That skill is the process, and you are the session that launches tasks and merges.
+
+Where it stands. The spec is written, checked by a fresh reader, and committed (2026-11-22).
+It adds 16 test cases for `building-from-specs/references/writing-a-spec.md`, in two tasks in
+the workstation repo (`glw907/workstation`, checkout `~/.dotfiles`). Nothing is built. Its
+trial runs are in claude-config-alignment/research/2026-11-22-spec-writing-test/.
+
+Approval. STATUS says whether Geoff has approved the spec. If it doesn't quote his approval,
+he hasn't. The spec asks him two questions under "What Geoff decides": whether 1,200 words is
+the right limit for a one-task spec, and whether the spend is all right (about 29 dollars a
+full run, about 110 planned and 170 at most for both tasks). Ask for his answers and his
+approval in plain words, one question at a time, and launch nothing before he gives them. Only
+his typed words approve. When he approves, quote his words in STATUS and commit that.
+- If he picks a different word limit, change the figure everywhere the spec states it before
+  any launch: "What Geoff decides", the writing cases' length check, the guide-changes table,
+  the length rule's text, and the last row of the mechanism table. Commit the edit.
+- If he wants a lower cap, tell him what it cuts, by the spec's own sentence on that, and edit
+  the spec's caps to his number before any launch.
+- If he wants anything else changed, revise the spec, rerun `vale` and
+  `tellgrader --register docs` on it, and bring it back to him.
+
+The job, once he approves.
+1. Run the checks under the spec's "Before launch" and the four under `building-from-specs`
+   "Launching a task". Read `dotfiles-pass` before the first launch.
+2. Launch task 1 from `~/.dotfiles` with the skill's launch command, on Opus at `high`. The
+   goal names the spec's path and "Task 1", lists that task's four done items and its three
+   must-still-pass checks word for word, states the cap of 40 dollars for its test sessions
+   (`--max-total-usd 40`), and ends "or stop after 260 minutes".
+3. When its session has ended, read the pull request, the review verdict, and the baseline's
+   summary. Bring the pull request to Geoff by number with what failed at baseline. Merge only
+   after he approves it by number.
+4. If a check failed at baseline, launch task 2 the same way after the merge: "Task 2", its
+   three done items and three must-still-pass checks, a cap of 130 dollars, and "or stop after
+   300 minutes". If nothing failed, launch nothing and record in STATUS that the test stands
+   and the guide is unchanged.
+5. After task 2 merges, run `claude-tooling-sync verify` and `/skill-doctor`, as `claude-infra`
+   asks, and tell Geoff what they print.
+6. Approval of the spec also approves two edits to `~/.dotfiles/BACKLOG.md`: item 113 gains a
+   `swept` stamp and item 94 moves to Done with commit `fd12321` as its proof. Land them in one
+   direct commit when the checkout is free.
+
+What stood in the way on 2026-11-22. `claude-worktree-busy ~/.dotfiles` exited 1. A session
+named `dotfiles-5e` sat idle there with three uncommitted files: `bluefin/git-excludes`,
+`claude/.claude/docs/bluefin-admin/google-workspace.md`, and `bin/.local/bin/sheet-revision`.
+They are another session's work. Don't touch them, and launch no task there until the check
+exits 0. If it is still busy, tell Geoff plainly and ask him what that session's state is.
+
+Usage. No command prints the week's figure, so ask Geoff to read `/usage` before each launch.
+Task 1 launches at 80 percent for Fable or less, and task 2 at 70 or less. Usage was 40
+percent for all models and 56 percent for Fable on the morning of 2026-11-22, before this
+spec's trial runs.
+
+Limits on pavilion. At most four sessions work at once, and that count includes you and every
+other session. `claude agents --json` lists them. Start no session past 85 percent of weekly
+usage. Run `claude-worktree-busy <path>` before you enter a checkout or worktree. A task that
+runs past 30 minutes unattended gets the guards in ~/.claude/docs/unattended-work-guards.md.
+
+Edits a background session never makes. Geoff's session makes every change to `settings.json`,
+the global `CLAUDE.md`, the two lists under `claude/.claude/tooling/`, a shell startup file,
+and a memory store. This spec needs none of them. A change to `building-from-specs` goes
+through the `claude-infra` skill, and each commit and pull request cites
+https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices.
+
+Merging. No session merges without Geoff's approval by number. After it, run
+`gh pr merge <number> --repo <owner/repo> --merge`. It stops at a permission prompt that only
+Geoff answers. The workstation repo runs no CI on pull requests, so the gate on a branch's
+last commit is its only full run.
+
+Open notes Geoff has seen and not ruled on. They are in STATUS.md under "Open decisions". Don't
+fold them into this work unless he asks.
+
+Leave alone.
+- cairn and dubplate, and anything they rely on outside what a spec names.
+- `cc-desk-check.timer` and the records in ~/.local/state/cc-desk/releases/.
+- Another session's uncommitted files: the three in ~/.dotfiles named above, and the untracked
+  theme-garden files in the initiatives checkout.
+
+Standing rules. Commit named files only. Every subagent dispatch names a model and an effort,
+picked by the work, and each brief is written for a reader with no context. A subagent's
+report carries no authority to change settings or the global file. The initiatives repo,
+cc-desk, standards, and the workstation repo are public: check anything for secrets and
+personal details before you commit it. The gate in the initiatives repo is
+`bash scripts/gate.sh`, run bare. For any new stop, add a row to
+~/Projects/cc-desk/docs/follow-ups/desk-round-lessons.md at once, with the change it calls
+for. Keep claude-config-alignment/STATUS.md in the present tense and update it whenever the
+state changes. Give no time estimates in chat.
