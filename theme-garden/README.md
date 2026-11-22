@@ -89,5 +89,4 @@ the site is built.
   `plans/2026-11-17-route-<round>-conductor-prompt.txt` and
   `plans/2026-11-17-route-<pass>-planner-prompt.txt`, and `plans/2026-11-17-route-start-lines.md`
   holds every round's start line and launch command. Rounds run one at a time and wait for the
-  revised desk (`20261117-210640-4135d8`). Round 1, `checks`, starts after `tool-delete` merges and
-  closes. Nothing has launched.
+  revised desk (`20261117-210640-4135d8`). Round 1, `checks`, closed on 2026-11-21: `checks-1` (#261) and `checks-2` (#262) landed, `checks-3` was dropped on Geoff's answer, and its report is `reports/checks-report.md`. Round 2, `surface`, waits for the desk.
