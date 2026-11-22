@@ -45,14 +45,25 @@
 - The companion `specs/2026-11-20-alignment-global-file.txt` is one bullet behind the live
   global file. Pull request 260 reworded the browser bullet while 259 was open, and the merge
   kept 260's wording.
-- Another session sits in the `~/.dotfiles` main checkout with uncommitted work. That checkout
-  is one backlog commit behind `origin/main`.
+- Another session, `dotfiles-1c`, sits in the `~/.dotfiles` main checkout with uncommitted work.
+  That checkout is one backlog commit behind `origin/main`.
+- Two of the five "Side by side" tasks are building in background sessions, both launched on
+  2026-11-21 on Opus at high effort: "The plugin" as `alignment-plugin` in `~/Projects/standards`,
+  with a time clause of 210 minutes, and "Survey" as `alignment-survey` in `~/Projects/survey`,
+  with 150. The plugin's clause prices five cases at six runs each, about 9 minutes.
+- Four sessions are working on pavilion, the limit, so "Personal skills" (clause 270) and
+  "Configuration cleanup" (clause 250) wait for a slot. They also wait on Geoff: the launch
+  check `claude-worktree-busy ~/.dotfiles` exits 1 while `dotfiles-1c` sits in that checkout.
+- "Memory stores" waits on Geoff's answer about the 11 files in the `/home` store. He has the
+  list. Neither store holds a retired word, and no file name is in both stores.
 
 ## Next action
 
-A fresh session of Geoff's starts the five tasks under "Side by side" in the spec. Its launch
-prompt is `plans/2026-11-21-side-by-side-prompt.txt`. Four of the tasks are background sessions
-and "Memory stores" is attended. "Retiring the old process" follows once all five have merged.
+Geoff's session (`initiatives-04`) runs the five tasks from
+`plans/2026-11-21-side-by-side-prompt.txt`. When `alignment-plugin` or `alignment-survey` ends,
+it reads the pull request and puts it to Geoff by number. It launches the two workstation
+tasks once a slot is free and Geoff has ruled on the busy check. "Retiring the old process"
+follows once all five have merged and the survey release is cut.
 
 ## Open decisions
 
@@ -69,3 +80,6 @@ and "Memory stores" is attended. "Retiring the old process" follows once all fiv
 - The `claude auto-mode critique` of the first settings change said the entry for build
   sessions doesn't say what shows that Geoff approved a spec. Geoff hasn't ruled on it. The
   critique run after the switch returned no feedback, twice.
+- The launch check for a workstation task fails while another session sits in `~/.dotfiles`.
+  Geoff hasn't said whether a launch may go ahead, since it only cuts a worktree from
+  `origin/main`, or waits until that session leaves. The lessons file has the row.
