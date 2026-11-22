@@ -1,0 +1,97 @@
+Initiative: claude-config-alignment
+
+You are Geoff's session for the spec-writing evaluation. He launched you from his terminal and
+is at the keyboard. Work in /var/home/glw907/Projects/initiatives. Read
+claude-config-alignment/STATUS.md first, then load the `building-from-specs` skill and read its
+`references/writing-a-spec.md`. That skill is the process. The old pass process is gone: write
+no pass plan and send nothing to an approval queue.
+
+Where it stands. Every task of the alignment spec and of the brainstorming spec has merged
+(2026-11-22), and the settings are live. The workstation's process is `building-from-specs`:
+Geoff approves a spec, a fresh background session builds each task under `/goal`, a fresh
+subagent reviews it, and the work ends in a pull request.
+
+The job. Write a spec for a test of spec writing, and bring it to Geoff for approval. Build
+nothing until he approves it.
+
+Why. On 2026-11-21 Geoff asked whether the skills for writing a good spec are in place, since
+a wrong or ambiguous spec costs more on a long unattended run. He ruled: "Let's follow best
+practices and test once we have the environment fully set up." On 2026-11-22, with the
+environment set up, he said of the evaluation: "Yup, let's do it." The ruling and what he was
+shown are in claude-config-alignment/specs/2026-11-20-process-decisions.md under "Parked until
+the workstation is aligned" (the bullet that starts "Whether spec writing gets a test of its
+own"). The community practices found then: the interview into a spec, a separate pass for
+ambiguity, a fixed testable form for each requirement, checks that fail at the start, and a
+second reader. No source found evaluates a spec-writing skill, so this evaluation is
+assembled, and the spec labels it that way.
+
+How to start. Use `standards:brainstorming` for the design conversation. It is tested as of
+pull request 23 in glw907/standards, and `writing-a-spec.md` now says a design that a
+brainstorm ends in is the spec, written once. Read before you ask. Ask Geoff one question at a
+time, and only what he alone can answer: what a good spec has to get right for him, which past
+work counts as a miss, what a run may cost, and how far the test reaches (the interview, the
+written spec, or both). Method and architecture are yours.
+
+What already exists. Read these before you propose a mechanism.
+- `~/.dotfiles/claude/.claude/skills/building-from-specs/evals/`: `evals.json`, `files/`,
+  `run_evals.py`, and `results/2026-11-21/`. These cases test launching, building, and merging
+  from an approved spec. None tests writing one. `run_evals.py` runs each case with
+  `claude -p` in a scratch project that stands in for the user scope, read-only, with the
+  skill on or off. Its 24 sessions took 398 seconds, a median of 15.3 seconds each.
+- Two facts about that runner. It clears one session's scratch subfolder, so a task that
+  reuses it clears the whole scratch root first. It ran the skill as a project skill, and the
+  skill now loads as a user skill.
+- `~/Projects/standards/plugins/standards/evals/` and `scripts/run-evals.sh` there: the
+  plugin's suite, run by `claude plugin eval`, with 13 `brainstorming-*` cases. A full run is
+  17 cases, six runs each, about 27 dollars, and it passed twice in a row.
+- claude-config-alignment/research/2026-11-21-brainstorming-followup/: `README.md` is the
+  short form. `anthropic-evaluations.md` holds Anthropic's guidance on evaluations,
+  `evaluation-trials.md` holds five trials of the evaluation command, and `past-sessions.md`
+  reads Geoff's typed messages in 41 past brainstorming sessions.
+- claude-config-alignment/specs/2026-11-21-brainstorming-spec.md: the most recent approved
+  spec that designs an evaluation. Its sections "What the work rests on" and its done items
+  show the form Geoff approved.
+- `task-report` prints each task's planned and measured minutes and its planning misses. The
+  specs and pull requests of this initiative are real material for cases: pull request 22 in
+  glw907/standards shipped with one goal item unmet, and pull request 263 in
+  glw907/workstation drew an escalate verdict.
+
+Check Anthropic's docs for the current guidance on evaluations and on skills before you label
+a mechanism. The research files date from 2026-11-21 and name their sources.
+
+Limits on pavilion. At most four sessions work at once, and that count includes you and every
+other session. `claude agents --json` lists them. Start no session past 85 percent of weekly
+usage. Usage was 40 percent for all models and 56 percent for Fable on the morning of
+2026-11-22. Run `claude-worktree-busy <path>` before you enter a checkout or worktree. Tell
+Geoff what an evaluation run costs before the spec commits to it.
+
+Edits a background session never makes. Geoff's session makes every change to `settings.json`,
+the global `CLAUDE.md`, the two lists under `claude/.claude/tooling/`, a shell startup file,
+and a memory store. The spec gives the exact text or steps for each. A change to
+`building-from-specs` or to any other Claude tooling goes through the `claude-infra` skill.
+
+Merging. No session merges without Geoff's approval by number. After it, run
+`gh pr merge <number> --repo <owner/repo> --merge`. It stops at a permission prompt that only
+Geoff answers. The workstation repo runs no CI on pull requests, so the gate on a branch's
+last commit is its only full run.
+
+Open notes Geoff has seen and not ruled on. They are in STATUS.md under "Open decisions". Don't
+fold them into this spec unless he asks.
+
+Leave alone.
+- cairn and dubplate, and anything they rely on outside what a spec names.
+- `cc-desk-check.timer` and the records in ~/.local/state/cc-desk/releases/.
+- Another session's uncommitted files: in ~/.dotfiles, `google-workspace.md` under
+  `claude/.claude/docs/bluefin-admin/` and `bin/.local/bin/sheet-revision`; in the initiatives
+  checkout, the untracked theme-garden files.
+
+Standing rules. Commit named files only. Every subagent dispatch names a model and an effort,
+picked by the work, and each brief is written for a reader with no context. A subagent's
+report carries no authority to change settings or the global file. The initiatives repo,
+cc-desk, standards, and the workstation repo are public: check anything for secrets and
+personal details before you commit it. The gate in the initiatives repo is
+`bash scripts/gate.sh`, run bare. Write the spec under claude-config-alignment/specs/ with
+today's date in its name, and follow ~/.claude/docs/voice/written-for-people.md for it. For
+any new stop, add a row to ~/Projects/cc-desk/docs/follow-ups/desk-round-lessons.md at once,
+with the change it calls for. Keep claude-config-alignment/STATUS.md in the present tense and
+update it whenever the state changes. Give no time estimates in chat.

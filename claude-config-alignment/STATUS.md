@@ -172,9 +172,11 @@
 Every task of the alignment spec and of the brainstorming spec has merged. The launch prompt
 `plans/2026-11-21-side-by-side-prompt.txt` is finished, and no task session is running.
 
-Geoff's session raises the spec-writing evaluation with him, which his ruling of 2026-11-21
-parked until the environment was set up. He also has the notes the last three pull requests
-left, listed under "Open decisions".
+Geoff said on 2026-11-22 to go ahead with the spec-writing evaluation ("Yup, let's do it."). A
+fresh session writes its spec from the launch prompt at
+`plans/2026-11-22-spec-writing-evaluation-prompt.txt`, starting with a brainstorm, and brings
+the spec to Geoff for approval. Nothing is built before that. He also has the notes the last
+three pull requests left, listed under "Open decisions".
 
 ## Open decisions
 
@@ -184,8 +186,8 @@ left, listed under "Open decisions".
   aligned". None is asked until a spec needs its answer.
 - Geoff ruled on 2026-11-21 that spec writing is tested after the workstation is aligned:
   "Let's follow best practices and test once we have the environment fully set up." The
-  environment is now set up, and the question is his to answer: whether to write a spec for
-  that evaluation next.
+  environment is now set up, and on 2026-11-22 he said to go ahead. The spec for that
+  evaluation is the next piece of work.
 - Pull request 23 left three optional review notes. `.gitignore:4` matches session files only
   at the top of a case folder, `scripts/run-evals.sh` works only from the repo root, and
   `BACKLOG.md` lost its `## Low` heading.
