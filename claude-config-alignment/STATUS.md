@@ -136,8 +136,11 @@
 Geoff's session runs the tasks from `plans/2026-11-21-side-by-side-prompt.txt`. Every "Side by
 side" task has merged. Two things are left, in this order.
 
-1. Wait for the brainstorming task's session to end, then merge its pull request in
-   `glw907/standards` under Geoff's ruling that pull requests are pre-approved. The merge stops
+1. Wait for the brainstorming task's session to end, then merge its pull request, draft
+   number 23 in `glw907/standards`, under Geoff's ruling that pull requests are pre-approved.
+   No watcher outlives a clear of Geoff's session, so a fresh session reads the task's state
+   from `claude agents --json` (session `c6a1f289`) and `gh pr view 23 --repo glw907/standards`
+   before anything else. The merge stops
    at his permission prompt. The after-merge steps follow, then the four workstation edits in
    the follow-up spec as one direct commit, with their done items posted on the merged pull
    request. If the pull request stays a draft, its `## For Geoff` section goes to Geoff first.
