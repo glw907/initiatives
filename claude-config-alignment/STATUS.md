@@ -52,17 +52,22 @@
   with a time clause of 210 minutes, and "Survey" as `alignment-survey` in `~/Projects/survey`,
   with 150. The plugin's clause prices five cases at six runs each, about 9 minutes.
 - Four sessions are working on pavilion, the limit, so "Personal skills" (clause 270) and
-  "Configuration cleanup" (clause 250) wait for a slot. They also wait on Geoff: the launch
-  check `claude-worktree-busy ~/.dotfiles` exits 1 while `dotfiles-1c` sits in that checkout.
-- "Memory stores" waits on Geoff's answer about the 11 files in the `/home` store. He has the
-  list. Neither store holds a retired word, and no file name is in both stores.
+  "Configuration cleanup" (clause 250) wait for a slot. Geoff ruled on 2026-11-21 that both may
+  launch while `dotfiles-1c` sits in `~/.dotfiles` ("yes to 2"). The ruling covers the two
+  launches only.
+- "Memory stores" is half done. Geoff kept three of the 11 files in the `/home` store, by the
+  recommendations he was shown: `feedback_fix_cause_not_symptoms.md`,
+  `feedback_test_before_returning.md`, and `project_jmp_account.md`. They are copied into the
+  `/var/home` store and its index has 20 lines for 20 files. The `cd -P .` commit to
+  `bash/.bashrc` and the removal of the `/home` store wait until `claude-worktree-busy
+  ~/.dotfiles` exits 0.
 
 ## Next action
 
 Geoff's session (`initiatives-04`) runs the five tasks from
 `plans/2026-11-21-side-by-side-prompt.txt`. When `alignment-plugin` or `alignment-survey` ends,
 it reads the pull request and puts it to Geoff by number. It launches the two workstation
-tasks once a slot is free and Geoff has ruled on the busy check. "Retiring the old process"
+tasks as slots come free, and finishes "Memory stores" once the `~/.dotfiles` checkout is free. "Retiring the old process"
 follows once all five have merged and the survey release is cut.
 
 ## Open decisions
@@ -80,6 +85,3 @@ follows once all five have merged and the survey release is cut.
 - The `claude auto-mode critique` of the first settings change said the entry for build
   sessions doesn't say what shows that Geoff approved a spec. Geoff hasn't ruled on it. The
   critique run after the switch returned no feedback, twice.
-- The launch check for a workstation task fails while another session sits in `~/.dotfiles`.
-  Geoff hasn't said whether a launch may go ahead, since it only cuts a worktree from
-  `origin/main`, or waits until that session leaves. The lessons file has the row.
