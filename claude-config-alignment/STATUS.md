@@ -140,6 +140,13 @@
   busy check on `~/.dotfiles` exited 0, the repo read as public, and the brainstorming session
   was sent a notice. It runs beside the brainstorming task, since neither touches the other's
   repo. Pavilion has four working sessions while a suite run is going, which is the limit.
+- Geoff ruled late on 2026-11-21, before leaving for the night: "Unless there are major issues,
+  you can do all the merges." His session reads that as the three pull requests still to merge:
+  23 in `glw907/standards` and the two of "Retiring the old process". A pull request that stays
+  a draft, or a review with a blocking finding, is a major issue and waits for him. Each merge
+  still stops at his permission prompt, so no merge runs while he is away. His session runs the
+  first merge command only after both task sessions have ended, because a session held at a
+  prompt can't act on another session's notice.
 - Weekly usage was 38 percent for all models and 54 percent for Fable at 23:43 on 2026-11-21.
 
 ## Next action
