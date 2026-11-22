@@ -75,11 +75,16 @@
   so the three under "What Geoff decides" stand: the skill and tests aim at his four
   corrections, a brainstorm does a few outside lookups before the approaches, and the task may
   start four full suite runs.
-- The follow-up's build task, "The brainstorming skill and its tests", is running. Geoff's
-  session launched it at 22:37 on 2026-11-21 from `~/Projects/standards` as the background
-  session `brainstorming-skill-and-tests` (`c6a1f289`), on Opus at high effort, with a time
-  clause of 328 minutes. Its worktree is `.claude/worktrees/brainstorming-skill-tests`. It
-  takes two of pavilion's four sessions while a suite run is going.
+- The follow-up's build task, "The brainstorming skill and its tests", is built and waits for
+  its merge. Its session `brainstorming-skill-and-tests` (`c6a1f289`) ended `done` at 23:50 on
+  2026-11-21, 70 minutes against 164 planned. Pull request 23 in `glw907/standards` is ready on
+  `b9588de` with a green `validate` check and all 14 goal items met. The suite passed twice in
+  a row, 17 of 17 cases each time, for about 27 dollars a run. `standards:diff-reviewer`
+  returned accept with no blocking finding and three optional notes, which the pull request
+  lists under `## For Geoff`. Geoff's session checked that the branch's `SKILL.md` and
+  `scripts/check-mockup-page.sh` match their companion files. The worktree is
+  `.claude/worktrees/brainstorming-skill-tests` in `~/Projects/standards`, and it stays until
+  the merge.
 - The plugin's session met a new stop. The `/goal` checker answered "not met" 11 times in about
   two minutes over the item marked unmet, then marked the goal failed, and the session sat
   blocked on a question nobody was reading. Geoff's session stopped it. The row is in cc-desk's
@@ -157,12 +162,12 @@ Geoff's session merges. Neither merge waits on the other. No watcher outlives a 
 Geoff's session, so a fresh session reads both from `claude agents --json` before anything
 else, and starts no third session while both work.
 
-1. The brainstorming task, session `c6a1f289`, draft pull request 23 in `glw907/standards`.
-   When the session ends and the pull request is ready, Geoff's session merges it under his
-   ruling that pull requests are pre-approved. The merge stops at his permission prompt. The
-   after-merge steps follow, then the four workstation edits in the follow-up spec as one
-   direct commit, with their done items posted on the merged pull request. If the pull request
-   stays a draft, its `## For Geoff` section goes to Geoff first.
+1. Pull request 23 in `glw907/standards` is ready to merge, under Geoff's ruling on the
+   overnight merges. Geoff's session runs `gh pr merge 23 --repo glw907/standards --merge` once
+   the other task session has ended, and the command stops at his permission prompt. The
+   after-merge steps follow, with `claude rm c6a1f289`, then the four workstation edits in the
+   follow-up spec as one direct commit, with their done items posted on the merged pull
+   request. The lines those edits change were found on `7f5cbdf` and match the spec.
 2. The first pull request of "Retiring the old process", session `a0c893ad` in
    `glw907/workstation`. When it is ready, Geoff's session merges it the same way, pulls, runs
    `stow -R bin`, and checks the three after-merge items. It then builds the second pull
