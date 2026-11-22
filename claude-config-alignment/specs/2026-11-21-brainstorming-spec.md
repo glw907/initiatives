@@ -1,6 +1,7 @@
 # Brainstorming skill and plugin test spec
 
-Status: waiting for Geoff's approval.
+Status: approved by Geoff on 2026-11-21 ("Approved."). He changed no recommendation, so the
+three under [What Geoff decides](#what-geoff-decides) stand as written.
 
 This spec rewrites the brainstorming skill in the `standards` plugin around the four corrections
 Geoff made most often in 41 past brainstorming sessions. The new skill asks questions he can
