@@ -235,6 +235,18 @@ The work is a spec of its own, written after task 2 has merged, so that the revi
 around the test as built. Claude's suggested cadence is in the item, and Geoff hasn't ruled on
 it.
 
+The work after task 2 is the reshape of cairn-cms and dubplate to the workstation's process,
+which this record lists as a non-goal. Geoff ruled on 2026-11-22 that it comes before the
+monthly review rework ("The reshape first.") and agreed to how it runs ("Perfect."): a new
+initiative record, steered from the initiatives repo by a fresh session with a launch prompt,
+with each task launched from its repo's main checkout, and dubplate first. Geoff's session
+opens the record and writes the launch prompt once task 2 has merged and its two closing
+checks are reported. He also asked whether any Anthropic or community skill is missing for
+those two projects. The reshape's audit answers that with a trial for each candidate. The
+candidates from the official marketplace are `security-guidance` and `claude-security` for
+the sign-in, data, and upload code, and `claude-code-setup` and `claude-md-management` as
+one-time second readers of each repo's Claude files.
+
 He also has the notes the last three pull requests left, listed under "Open decisions".
 
 ## Open decisions
