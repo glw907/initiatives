@@ -165,31 +165,34 @@
   The gate on the branch's last commit is the only full run.
 - Geoff ruled late on 2026-11-21: "Unless there are major issues, you can do all the merges."
   The three merges of 2026-11-22 ran under it, and each stopped at his permission prompt.
-- Weekly usage was 40 percent for all models and 56 percent for Fable at 10:11 on 2026-11-22.
+- Weekly usage is 43 percent for all models and 63 percent for Fable at 12:26 on 2026-11-22.
+  `claude -p "/usage" --model haiku < /dev/null` prints both figures.
 
 ## Next action
 
 Every task of the alignment spec and of the brainstorming spec has merged. The launch prompt
 `plans/2026-11-21-side-by-side-prompt.txt` is finished, and no task session is running.
 
-The spec for the spec-writing test is written and waits for Geoff's approval:
-`specs/2026-11-22-spec-writing-test-spec.md`. Nothing is built. It asks him one question:
-whether the spend is all right (about 110 dollars planned, 170 at most). Its trial runs are in
-`research/2026-11-22-spec-writing-test/`. Geoff ruled on length on 2026-11-22: "I'll go with
-Anthropic's guidance on the subject." Anthropic's pages and four community sources give no
-number and size a spec by its change. The spec is revised to match: the guide's length rule
-states no number, and the test keeps 1,200 words as its pass mark. The sources are in the
-spec under "How long a spec may be". The launch prompt
-`plans/2026-11-22-spec-writing-evaluation-prompt.txt` is finished. A fresh session takes his
-approval and launches the tasks from `plans/2026-11-22-spec-writing-test-build-prompt.txt`.
+Geoff approved the spec for the spec-writing test on 2026-11-22. Asked whether the spend is
+all right (about 110 dollars planned, 170 at most), he typed: "The spend is OK. Continue." His
+session reads those words as his approval of the spec, since the spend was the one question
+the spec left him. The spec is `specs/2026-11-22-spec-writing-test-spec.md`, and its trial runs
+are in `research/2026-11-22-spec-writing-test/`. Nothing is built.
 
-Once he approves, his session launches the spec's first task in `~/.dotfiles` after the checks
-under the spec's "Before launch". On 2026-11-22 `claude-worktree-busy ~/.dotfiles` exits 1.
-The session `dotfiles-5e` sits idle there with three uncommitted files, and no task launches
-until that clears. The
-spec's second task waits for the first to merge. Approval also covers two backlog edits in the
-workstation repo, which his session lands when the checkout is free: item 113 gains a stamp and
-item 94 moves to Done.
+Geoff ruled on length the same day: "I'll go with Anthropic's guidance on the subject."
+Anthropic's pages and four community sources give no number and size a spec by its change. The
+spec matches: the guide's length rule states no number, and the test keeps 1,200 words as its
+pass mark. The sources are in the spec under "How long a spec may be".
+
+The launch prompt `plans/2026-11-22-spec-writing-evaluation-prompt.txt` is finished. Geoff's
+session works from `plans/2026-11-22-spec-writing-test-build-prompt.txt`.
+
+The checks under the spec's "Before launch" pass on 2026-11-22. `claude-worktree-busy
+~/.dotfiles` exits 0, and the session `dotfiles-5e` has ended. Its three uncommitted files are
+still in that checkout and stay untouched. No other session is working, so task 1 runs two
+test sessions at once. Geoff's session launches task 1 next. The spec's second task waits for
+the first to merge. Approval also covers two backlog edits in the workstation repo, which his
+session lands before the launch: item 113 gains a stamp and item 94 moves to Done.
 
 He also has the notes the last three pull requests left, listed under "Open decisions".
 
@@ -201,8 +204,8 @@ He also has the notes the last three pull requests left, listed under "Open deci
   aligned". None is asked until a spec needs its answer.
 - Geoff ruled on 2026-11-21 that spec writing is tested after the workstation is aligned:
   "Let's follow best practices and test once we have the environment fully set up." The
-  environment is now set up, and on 2026-11-22 he said to go ahead. The spec for that test
-  waits for his approval, with its one question, the spend.
+  environment is now set up, and on 2026-11-22 he said to go ahead. He approved the spec for
+  that test the same day.
 - Geoff ruled on 2026-11-22, while the spec was designed: the test covers the written spec
   and leaves out the design conversation; specs are written on Fable at `high` ("Let's go with
   the Anthropic recomendation."); no run compares against a session with no guide; and a long

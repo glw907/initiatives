@@ -1,6 +1,6 @@
 # Spec-writing test spec
 
-Status: waiting for Geoff's approval. Nothing is built.
+Status: approved by Geoff on 2026-11-22 ("The spend is OK. Continue."). Nothing is built.
 
 This spec adds a test for the guide that says how a spec is written,
 `building-from-specs/references/writing-a-spec.md`. Nothing tests that guide today. The test is

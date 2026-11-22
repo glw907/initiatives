@@ -44,16 +44,15 @@ The job, once he approves.
    `swept` stamp and item 94 moves to Done with commit `fd12321` as its proof. Land them in one
    direct commit when the checkout is free.
 
-What stood in the way on 2026-11-22. `claude-worktree-busy ~/.dotfiles` exited 1. A session
-named `dotfiles-5e` sat idle there with three uncommitted files: `bluefin/git-excludes`,
+Another session's files. Three uncommitted files sit in `~/.dotfiles`: `bluefin/git-excludes`,
 `claude/.claude/docs/bluefin-admin/google-workspace.md`, and `bin/.local/bin/sheet-revision`.
-They are another session's work. Don't touch them, and launch no task there until the check
-exits 0. If it is still busy, tell Geoff plainly and ask him what that session's state is.
+They are another session's work, and that session has ended. Don't touch them. Launch no task
+there unless `claude-worktree-busy ~/.dotfiles` exits 0. If it is busy, tell Geoff plainly and
+ask him what that session's state is.
 
-Usage. No command prints the week's figure, so ask Geoff to read `/usage` before each launch.
-Task 1 launches at 80 percent for Fable or less, and task 2 at 70 or less. Usage was 40
-percent for all models and 56 percent for Fable on the morning of 2026-11-22, before this
-spec's trial runs.
+Usage. `claude -p "/usage" --model haiku < /dev/null` prints the week's figures. Read them
+before each launch. Task 1 launches at 80 percent for Fable or less, and task 2 at 70 or less.
+STATUS holds the last reading.
 
 Limits on pavilion. At most four sessions work at once, and that count includes you and every
 other session. `claude agents --json` lists them. Start no session past 85 percent of weekly
