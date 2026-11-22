@@ -247,6 +247,15 @@ candidates from the official marketplace are `security-guidance` and `claude-sec
 the sign-in, data, and upload code, and `claude-code-setup` and `claude-md-management` as
 one-time second readers of each repo's Claude files.
 
+Geoff then asked which skills to remove. A count of `Skill` calls in the 7,485 session
+transcripts of the 30 days to 2026-11-22 gives two candidates at the workstation level, and
+neither is ruled on. The `cloudflare` plugin lists 18 skills and none was called, though its
+MCP server is in use. The five `vale-*` skills in the `standards` plugin had one call among
+them. `standards:svelte-check`, `standards:content-review`, and `standards:cairn-figure` had
+none, and a rename inside the 30 days could explain that. Skills made or renamed this week
+have low counts for that reason. In the two project repos, `cairn-running-passes` and
+`dubplate-pass` are the reshape's to replace or shrink.
+
 He also has the notes the last three pull requests left, listed under "Open decisions".
 
 ## Open decisions
