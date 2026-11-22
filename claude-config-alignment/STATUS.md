@@ -196,7 +196,9 @@ under Done.
 Task 1 is running. Geoff's session launched it from `~/.dotfiles` at 12:29 on 2026-11-22 as
 the background session `spec-writing-test-1` (id `d4893126`), on Opus at `high`. Its goal
 caps its test sessions at 40 dollars, runs two of them at once, and ends "or stop after 260
-minutes". `claude logs d4893126` shows its output. When the session has ended, Geoff's session
+minutes". `claude logs d4893126` shows its output. Geoff asked after the launch whether the
+builder should run on Fable. Told that Fable runs the 16 test sessions and Opus only builds
+the test, he ruled: "Keep it on Opus." When the session has ended, Geoff's session
 reads the pull request, the review verdict, and the baseline's summary, and brings the pull
 request to Geoff by number with what failed at baseline. It merges only after he approves by
 number. Task 2 launches after that merge, and only if a check failed at baseline and the
