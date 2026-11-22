@@ -132,27 +132,38 @@
   `test_a_run_past_cap_min_ends_as_stopped_time`, and passed on the next run with no change to
   the test. Two evaluation runs were going at the time. It is item 112 in the workstation
   backlog, commit `0c1cf61`.
-- Weekly usage was 34 percent for all models and 46 percent for Fable at 22:37 on 2026-11-21.
+- The first pull request of "Retiring the old process" is being built. Geoff's session
+  launched it at 23:43 on 2026-11-21 from `~/.dotfiles` at `7f5cbdf` as the background session
+  `retiring-old-process-first` (`a0c893ad`), on Opus at high effort, with the goal in
+  `plans/2026-11-21-retiring-first-goal.txt`. Its time clause is 320 minutes, twice the planned
+  160, with nothing added for evaluations because the task runs none. Before the launch the
+  busy check on `~/.dotfiles` exited 0, the repo read as public, and the brainstorming session
+  was sent a notice. It runs beside the brainstorming task, since neither touches the other's
+  repo. Pavilion has four working sessions while a suite run is going, which is the limit.
+- Weekly usage was 38 percent for all models and 54 percent for Fable at 23:43 on 2026-11-21.
 
 ## Next action
 
 Geoff's session runs the tasks from `plans/2026-11-21-side-by-side-prompt.txt`. Every "Side by
-side" task has merged. Two things are left, in this order.
+side" task has merged. Two task sessions are running, and each ends in a pull request that
+Geoff's session merges. Neither merge waits on the other. No watcher outlives a clear of
+Geoff's session, so a fresh session reads both from `claude agents --json` before anything
+else, and starts no third session while both work.
 
-1. Wait for the brainstorming task's session to end, then merge its pull request, draft
-   number 23 in `glw907/standards`, under Geoff's ruling that pull requests are pre-approved.
-   No watcher outlives a clear of Geoff's session, so a fresh session reads the task's state
-   from `claude agents --json` (session `c6a1f289`) and `gh pr view 23 --repo glw907/standards`
-   before anything else. The merge stops
-   at his permission prompt. The after-merge steps follow, then the four workstation edits in
-   the follow-up spec as one direct commit, with their done items posted on the merged pull
-   request. If the pull request stays a draft, its `## For Geoff` section goes to Geoff first.
-2. Run "Retiring the old process". The survey release it waits on is cut. The launch text for
-   its first pull request is ready at `plans/2026-11-21-retiring-first-goal.txt`, for a session
-   on Opus at high effort with a time clause of 320 minutes. The two searches were run on
-   `f37b3b9` on 2026-11-21 and still match the task's table, and no live setting names a script
-   the task deletes. Its retired-words gate leaves out the eight `evals/results/` folders named
-   in the launch prompt. A clear of Geoff's session fits just before it starts.
+1. The brainstorming task, session `c6a1f289`, draft pull request 23 in `glw907/standards`.
+   When the session ends and the pull request is ready, Geoff's session merges it under his
+   ruling that pull requests are pre-approved. The merge stops at his permission prompt. The
+   after-merge steps follow, then the four workstation edits in the follow-up spec as one
+   direct commit, with their done items posted on the merged pull request. If the pull request
+   stays a draft, its `## For Geoff` section goes to Geoff first.
+2. The first pull request of "Retiring the old process", session `a0c893ad` in
+   `glw907/workstation`. When it is ready, Geoff's session merges it the same way, pulls, runs
+   `stow -R bin`, and checks the three after-merge items. It then builds the second pull
+   request itself from the second table in the spec, runs `claude-tooling-sync apply` and
+   `verify` after that merge, and only then makes the direct commit that removes
+   `claude-merge-guard`. The brainstorming spec's workstation edits take the `brainstorming`
+   entry out of `vendored-skills.json`, so they land before the second pull request sets that
+   file's descriptions.
 
 After "Retiring the old process" merges, Geoff's session raises the spec-writing evaluation
 with him.
