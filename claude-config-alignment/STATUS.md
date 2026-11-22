@@ -141,9 +141,12 @@ side" task has merged. Two things are left, in this order.
    at his permission prompt. The after-merge steps follow, then the four workstation edits in
    the follow-up spec as one direct commit, with their done items posted on the merged pull
    request. If the pull request stays a draft, its `## For Geoff` section goes to Geoff first.
-2. Run "Retiring the old process". The survey release it waits on is cut. Its retired-words
-   gate leaves out the eight `evals/results/` folders named in the launch prompt. A clear of
-   Geoff's session fits just before it starts.
+2. Run "Retiring the old process". The survey release it waits on is cut. The launch text for
+   its first pull request is ready at `plans/2026-11-21-retiring-first-goal.txt`, for a session
+   on Opus at high effort with a time clause of 320 minutes. The two searches were run on
+   `f37b3b9` on 2026-11-21 and still match the task's table, and no live setting names a script
+   the task deletes. Its retired-words gate leaves out the eight `evals/results/` folders named
+   in the launch prompt. A clear of Geoff's session fits just before it starts.
 
 After "Retiring the old process" merges, Geoff's session raises the spec-writing evaluation
 with him.
