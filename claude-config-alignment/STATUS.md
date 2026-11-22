@@ -204,6 +204,17 @@ request to Geoff by number with what failed at baseline. It merges only after he
 number. Task 2 launches after that merge, and only if a check failed at baseline and the
 week's Fable usage is 70 percent or less.
 
+One backlog item waits for the workstation checkout. Geoff asked for it on 2026-11-22: "Yes,
+log it to the backlog." `claude-worktree-busy ~/.dotfiles` exits 1 while task 1 runs, since
+the task's worktree sits under that folder. Once the task's session has ended, Geoff's session
+adds the item at the top of `## Medium` in `~/.dotfiles/BACKLOG.md` under the next free number,
+with a commit of that file alone. The item's text:
+
+```markdown
+- [ ] **#N** Turn recorded planning misses into spec-writing test cases on a schedule `#improvement` `#workstation` `#initiative:claude-config-alignment` *(2026-11-22)*
+  A planning miss becomes a rule in `claude/.claude/skills/building-from-specs/references/writing-a-spec.md` on the day it happens, one rule at a time, and nothing measures the sum. The trial runs of 2026-11-22 found the cost: a session with the guide wrote 2,759 to 3,550 words for a one-task change, and a session with no guide wrote 1,056 and 1,090. Add a periodic pass, with the monthly model review as one place for it. The pass reads the misses recorded since the last one: the rows in `~/Projects/cc-desk/docs/follow-ups/desk-round-lessons.md`, the `task-score` lines that `task-report` reads, and Geoff's rulings. Each miss becomes a case in the spec-writing suite first and is kept as evidence: the spec, the wrong line, and what it cost. The guide or the `standards:brainstorming` skill changes only where the new case fails, and the whole suite reruns after the edit. It waits for the spec-writing test to merge (`~/Projects/initiatives/claude-config-alignment/specs/2026-11-22-spec-writing-test-spec.md`). Geoff asked for it on 2026-11-22.
+```
+
 He also has the notes the last three pull requests left, listed under "Open decisions".
 
 ## Open decisions
