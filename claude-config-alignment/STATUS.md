@@ -26,22 +26,33 @@
   session under `/goal` edited a skill file, committed, pushed, and opened a draft pull request
   with no prompt, and a command behind an `ask` rule was refused. The evidence is on pull
   request 256.
-- The second task, "The process skill", is running as the background session
-  `alignment-process-skill` in `~/.dotfiles`, launched on 2026-11-21 with a time clause of 140
-  minutes.
-- The third task, "The switch", is built on the branch `alignment-switch` and open as pull
-  request 259 in `glw907/workstation`. The workstation gate passes on it. Its first review found
-  merge spellings the `ask` rules miss, such as `gh -R owner/repo pr merge 5`. The guard now
-  sends those to a permission prompt, and the spec says so. The second review accepted commit
-  `d4ee9b6` with no open finding. The pull request waits for 258 to merge first.
+- The second task, "The process skill", is done. It merged as pull request 258 in
+  `glw907/workstation` on 2026-11-21. The skill `building-from-specs` is live, and a fresh
+  session lists it. Its build took 98 minutes against 70 planned, with five fix rounds. Its 24
+  evaluation sessions took 398 seconds in all, a median of 15.3 seconds each.
+- The third task, "The switch", is done. It merged as pull request 259 on 2026-11-21, and the
+  new global `CLAUDE.md` and settings are live. A merge command now stops at a permission
+  prompt that only Geoff answers, and a background session is refused one outright.
+  `approval-queue land` is retired. Two of 259's done items stay open until they can run:
+  `gh pr merge --help` in Geoff's session, and the next approved pull request stopping at the
+  prompt.
+- The build session made one call the spec didn't name. `claude-tooling-sync` caps a skill's
+  description at 500 characters and now lets `building-from-specs` alone run to 1,536, because
+  the approved text is longer than 500.
+- The workstation gate failed on `main` on pavilion after pull request 260 named
+  `~/.local/zen`, a path only thinkpad-x1 has. Commit `3a2fe1c` marks the two lines, and the
+  gate passes again.
+- The companion `specs/2026-11-20-alignment-global-file.txt` is one bullet behind the live
+  global file. Pull request 260 reworded the browser bullet while 259 was open, and the merge
+  kept 260's wording.
+- Another session sits in the `~/.dotfiles` main checkout with uncommitted work. That checkout
+  is one backlog commit behind `origin/main`.
 
 ## Next action
 
-The process skill's session is building draft pull request 258 in `glw907/workstation`. On
-2026-11-21 Geoff approved pull requests 258 and 259 ahead of time: "I'm pre-approving both." His
-session merges each one only after its review accepts with no open finding and its done items
-hold. It merges 258 first and 259 second, and runs each one's after-merge steps. A finding that
-changes what either pull request does goes back to Geoff first.
+A fresh session of Geoff's starts the five tasks under "Side by side" in the spec. Its launch
+prompt is `plans/2026-11-21-side-by-side-prompt.txt`. Four of the tasks are background sessions
+and "Memory stores" is attended. "Retiring the old process" follows once all five have merged.
 
 ## Open decisions
 
@@ -49,3 +60,8 @@ changes what either pull request does goes back to Geoff first.
   against the rewrite of Move. It is about later work and is not asked until that work starts.
 - The parked questions are listed in the rulings file under "Parked until the workstation is
   aligned". None is asked until a spec needs its answer.
+- Geoff asked on 2026-11-21 for Chromium to be trimmed to what development work needs. It is
+  item 109 in the workstation backlog and is no part of this spec.
+- The `claude auto-mode critique` of the first settings change said the entry for build
+  sessions doesn't say what shows that Geoff approved a spec. Geoff hasn't ruled on it. The
+  critique run after the switch returned no feedback, twice.

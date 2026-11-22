@@ -232,7 +232,9 @@ loads. A build session can't meet those on its branch. Each is marked "after the
 and stays out of the session's goal. After each merge, Geoff's session does these in order:
 
 1. It runs `claude-worktree-busy` on the repo's main checkout and pulls.
-2. It runs `stow -R bin` when the pull request added, renamed, or removed a script.
+2. It runs `stow -R bin` when the pull request added, renamed, or removed a script, and
+   `stow -R claude` when it added, renamed, or removed a skill. Each skill is its own link
+   under `~/.claude/skills/`.
 3. It runs `claude-tooling-sync apply` and `verify` when the pull request changed the settings.
    It then deletes from `~/.claude/settings.json` each top-level key the pull request removed.
 4. It checks the after-merge items and posts each result on the pull request.

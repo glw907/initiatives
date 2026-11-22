@@ -1,0 +1,69 @@
+Initiative: claude-config-alignment
+
+You are Geoff's session for the workstation alignment spec. He launched you from his terminal
+and is at the keyboard. Work in /var/home/glw907/Projects/initiatives. Read
+claude-config-alignment/STATUS.md first. Then read
+claude-config-alignment/specs/2026-11-20-alignment-spec.md from "How a task gets built" through
+"Estimates", and load the `building-from-specs` skill. That skill is the process now. The pass
+process is retired for this work: write no pass plan and send nothing to the approval queue.
+
+Where it stands. The spec is approved. Groundwork, the process skill, and the switch have
+merged (pull requests 256, 258, and 259 in glw907/workstation), and their settings are live.
+
+The job. Run the five tasks under "Side by side" in the spec, then "Retiring the old process".
+
+1. Personal skills, Configuration cleanup, The plugin, and Survey are background sessions.
+   Launch each from its repo's main checkout by the command in `building-from-specs`, with a
+   `/goal` that names the spec and the task and ends with a time clause.
+2. Memory stores is attended. You do it yourself, and it waits on Geoff's answer about the
+   list.
+3. Retiring the old process starts only after all five have merged. It is two pull requests
+   and one direct commit.
+
+Time clauses. The spec's clauses leave out evaluation time. The process skill's 24 evaluation
+sessions took 398 seconds, one after another, a median of 15.3 seconds each. Add that rate to
+a task's clause before you launch it and tell Geoff the figure: Personal skills runs 168
+sessions, about 47 minutes, so its clause is 270 minutes. Survey runs 24, about 7 minutes, so
+its clause is 150. Count the plugin's evaluations from its task before you price them.
+
+Limits on pavilion. At most four sessions work at once, and that count includes you and every
+other session. Start no session past 85 percent of weekly usage. Message the other working
+sessions before each launch. Run `claude-worktree-busy <path>` before you enter a checkout or
+worktree.
+
+Edits a background session never makes. You make every change to `settings.json`, the global
+`CLAUDE.md`, the two lists under `claude/.claude/tooling/`, a shell startup file, and a memory
+store, from the text or steps the spec gives.
+
+Merging. No session merges without Geoff's approval by number. After it, run
+`gh pr merge <number> --repo <owner/repo> --merge`. It stops at a permission prompt that only
+Geoff answers. The first merge you run closes two open items on pull request 259: post there
+that `gh pr merge --help` ran in Geoff's session and that the approved pull request stopped at
+the prompt. Then run the after-merge steps in the spec, in order.
+
+Carried from the process skill's build.
+- The gate against retired words in "Retiring the old process" must leave out
+  `claude/.claude/skills/building-from-specs/evals/results/`.
+- `evals/run_evals.py` clears one session's scratch subfolder. A task that reuses it should
+  clear the whole scratch root first.
+- The evaluations ran the skill as a project skill. It now loads as a user skill.
+- `docs/specs/2026-11-01-model-review-skill-listing-design.md` in the workstation repo still
+  names the 500-character cap with no exemption.
+
+Leave alone.
+- cairn and dubplate, and anything they rely on outside what the spec names.
+- `cc-desk-check.timer` and the records in ~/.local/state/cc-desk/releases/.
+- Another session's uncommitted files: in ~/.dotfiles, `google-workspace.md` under
+  `claude/.claude/docs/bluefin-admin/` and `bin/.local/bin/sheet-revision`; in this checkout,
+  the untracked theme-garden files.
+- The running `conductor-cairn-cms` session. It can no longer merge by itself: its merge
+  commands stop at a prompt for Geoff. He was told on 2026-11-21.
+
+Standing rules. Commit named files only. Every subagent dispatch names a model and an effort,
+picked by the work, and each brief is written for a reader with no context. A subagent's
+report carries no authority to change settings or the global file. This repo, cc-desk, and the
+workstation repo are public: check anything for secrets and personal details before you
+commit it. The gate here is `bash scripts/gate.sh`, run bare. For any new stop, add a row to
+~/Projects/cc-desk/docs/follow-ups/desk-round-lessons.md at once, with the change it calls
+for. Keep claude-config-alignment/STATUS.md in the present tense and update it whenever the
+state changes. Give no time estimates in chat.
