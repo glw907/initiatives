@@ -37,9 +37,9 @@ store, from the text or steps the spec gives.
 
 Merging. No session merges without Geoff's approval by number. After it, run
 `gh pr merge <number> --repo <owner/repo> --merge`. It stops at a permission prompt that only
-Geoff answers. The first merge you run closes two open items on pull request 259: post there
-that `gh pr merge --help` ran in Geoff's session and that the approved pull request stopped at
-the prompt. Then run the after-merge steps in the spec, in order.
+Geoff answers. The first merge you run closes the one open item on pull request 259: post
+there that the approved pull request stopped at the prompt and merged when he answered. Then
+run the after-merge steps in the spec, in order.
 
 Carried from the process skill's build.
 - The gate against retired words in "Retiring the old process" must leave out

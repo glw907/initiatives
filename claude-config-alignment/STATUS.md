@@ -33,9 +33,9 @@
 - The third task, "The switch", is done. It merged as pull request 259 on 2026-11-21, and the
   new global `CLAUDE.md` and settings are live. A merge command now stops at a permission
   prompt that only Geoff answers, and a background session is refused one outright.
-  `approval-queue land` is retired. Two of 259's done items stay open until they can run:
-  `gh pr merge --help` in Geoff's session, and the next approved pull request stopping at the
-  prompt.
+  `approval-queue land` is retired. `gh pr merge --help` ran in Geoff's session after a
+  38-second wait at the prompt. One of 259's done items stays open until it can run: the next
+  approved pull request stopping at the prompt.
 - The build session made one call the spec didn't name. `claude-tooling-sync` caps a skill's
   description at 500 characters and now lets `building-from-specs` alone run to 1,536, because
   the approved text is longer than 500.
