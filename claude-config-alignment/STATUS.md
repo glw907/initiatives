@@ -152,14 +152,21 @@
   `unattended-work-guards.md` and not in `building-from-specs` "Launching a task". It also
   filed workstation backlog item 113, a Vale config line that names a deleted skill.
 - The second pull request of "Retiring the old process" is built as six local commits and is
-  not pushed. They sit on branch `retiring-second` at `79f191e`, in the worktree
+  not pushed. They sit on branch `retiring-second` at `20fbbab`, in the worktree
   `~/Projects/workstation-wt/retiring-second`, on top of `33f7c79`. The gate exited 0 on
-  `79f191e`. The spec's two searches print only the lines its done items allow, plus the three
-  lines of `tests/test_claude_merge_guard.py` that the direct commit removes. One change is
-  outside the spec's table: survey 2.0.0's description is 515 characters, over the lint's
-  500, and `claude-tooling-sync` now exempts it, because that text is what the survey
-  evaluations tested. A `standards:diff-reviewer` read of `33f7c79..79f191e` is running, and
-  its verdict is not in.
+  `79f191e`, and a fresh `standards:diff-reviewer` returned accept on it with no blocking
+  finding. `20fbbab` holds the same tree (`c82bba3`) with the commits reordered, so the lint
+  passes at each one. Branch `retiring-second-reviewed` keeps `79f191e` until the push. The
+  spec's two searches print only the lines its done items allow, plus the three lines of
+  `tests/test_claude_merge_guard.py` that the direct commit removes.
+- One change in the second pull request is outside the spec's table. Survey 2.0.0's
+  description is 515 characters, over the lint's 500, and `claude-tooling-sync` now exempts
+  it, because that text is what the survey evaluations tested. The reviewer read it as
+  correct and asked for a line in the pull request body.
+- The reviewer found two places that name `claude-merge-guard` beyond the three the spec gives
+  the direct commit: the path list at `.claude/skills/dotfiles-pass/SKILL.md:50` and the
+  `pytest` leg's path pattern at `scripts/check.sh:144`. The direct commit drops both names
+  with the script.
 - Geoff ruled late on 2026-11-21, before leaving for the night: "Unless there are major issues,
   you can do all the merges." His session reads that as the three pull requests still to merge:
   23 in `glw907/standards` and the two of "Retiring the old process". A pull request that stays
@@ -188,7 +195,7 @@ before it acts on a watcher's notice.
    `~/.dotfiles`, and post their done items on pull request 23. They come after pull request
    264 merges, because both change `claude-tooling.md` and `BACKLOG.md`.
 4. Merge `origin/main` into `retiring-second`, rerun the gate, push, and open the second pull
-   request once its review is an accept. Merge it, pull, and run `claude-tooling-sync apply`
+   request. Its review is an accept. Merge it, pull, and run `claude-tooling-sync apply`
    and `verify`. Only then make the direct commit that removes `claude-merge-guard`, its
    test, and the test's name in the `pytest` leg's list. Run `stow -R bin` and check the done
    items at the spec's lines 754 to 768.
