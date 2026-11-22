@@ -45,15 +45,24 @@
 - The companion `specs/2026-11-20-alignment-global-file.txt` is one bullet behind the live
   global file. Pull request 260 reworded the browser bullet while 259 was open, and the merge
   kept 260's wording.
-- "The plugin" is built and waits on Geoff. Pull request 22 in `glw907/standards` is ready with
-  CI green. Seven of its eight done items are met. The sixth is unmet: `claude plugin eval
+- Geoff ruled on 2026-11-21: "Pull requests are all pre-approved." His session reads that as
+  the pull requests of this spec's tasks, and each merge still stops at his permission prompt.
+- "The plugin" is done. Pull request 22 in `glw907/standards` merged as `61f996a` on
+  2026-11-21 with seven of its eight done items met. The sixth is unmet: `claude plugin eval
   plugins/standards` exits 1, because the `ts-conventions` case already on `main` fails two runs
-  of three and one `brainstorming` run in three asks a compound question. Its review returned
-  escalate on that item. Its session, `alignment-plugin`, is stopped and its worktree is kept.
-- That session met a new stop. The `/goal` checker answered "not met" 11 times in about two
-  minutes over the item marked unmet, then marked the goal failed, and the session sat blocked
-  on a question nobody was reading. Geoff's session stopped it. The row is in cc-desk's lessons
-  file, commit `c353960`.
+  of three and one `brainstorming` run in three asks a compound question. The merge waited
+  about 16 seconds at Geoff's prompt, which closes the open item on pull request 259. The
+  user-scope plugin is at `61f996aa3eb3`, and a fresh session lists a description for each of
+  the four `vale-*` skills with no budget warning in its debug log. The session and its
+  branches are removed.
+- Geoff asked on 2026-11-21 for the follow-up to be planned: "look at current online and
+  anthropic success patterns. Brainstorming is especially critical, so we'll need to know what
+  works best with the current models, and aligns will with our local development patterns."
+  His session is researching it and writes a spec for his approval.
+- The plugin's session met a new stop. The `/goal` checker answered "not met" 11 times in about
+  two minutes over the item marked unmet, then marked the goal failed, and the session sat
+  blocked on a question nobody was reading. Geoff's session stopped it. The row is in cc-desk's
+  lessons file, commit `c353960`.
 - "Survey" is building in the background session `alignment-survey` in `~/Projects/survey`,
   launched at 15:32 on 2026-11-21 on Opus at high effort, with a time clause of 150 minutes. Its
   draft is pull request 13 in `glw907/survey`.
@@ -78,19 +87,16 @@
 
 ## Next action
 
-Geoff's session runs the tasks from `plans/2026-11-21-side-by-side-prompt.txt`. It puts pull
-request 22 to Geoff by number with the question under "Open decisions". When `alignment-survey`
-or `alignment-config-cleanup` ends, it reads the pull request and puts it to Geoff by number.
+Geoff's session runs the tasks from `plans/2026-11-21-side-by-side-prompt.txt`. It writes the follow-up spec for
+the plugin's evaluations and the brainstorming skill. When `alignment-survey` or
+`alignment-config-cleanup` ends, it reads the pull request, tells Geoff what it found, and
+merges it.
 It launches "Personal skills" when Survey ends. After each merge it runs the spec's after-merge
 steps, and after Survey's it cuts the survey release. "Retiring the old process" follows once
 all four pull requests have merged and the release is cut.
 
 ## Open decisions
 
-- Pull request 22 waits on Geoff's answer about its unmet done item. The `ts-conventions`
-  evaluation case requires the doc comment to say the exponent stops growing at attempt 30. It
-  scores 0.33 with the plugin and 0.33 without, and it failed on `main` before this branch.
-  Geoff's session recommends merging 22 as it stands and fixing the two cases in a follow-up.
 - The rulings file owes Geoff one question about where cc-desk's scheduled check-ins come
   against the rewrite of Move. It is about later work and is not asked until that work starts.
 - The parked questions are listed in the rulings file under "Parked until the workstation is
