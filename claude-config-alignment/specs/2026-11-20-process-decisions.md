@@ -119,6 +119,14 @@ answer.
   standing rules".
 - Four probes the research asked for: whether a `--bg` session waits for the usage reset, whether
   `PermissionDenied` fires under `dontAsk`, a respawn with an active goal, and a cold boot.
+- Whether spec writing gets a test of its own. On 2026-11-21 Geoff asked whether the skills
+  for writing a good spec are in place, since a wrong or ambiguous spec costs more on a long
+  run. He was shown what the community does and ruled: "Let's follow best practices and test
+  once we have the environment fully set up." Claude's reading: the alignment spec gains no
+  spec-writing evaluation, and the test comes after "Retiring the old process" has merged. The
+  community practices are the interview into a spec, a separate pass for ambiguity, a fixed
+  testable form for each requirement, checks that fail at the start, and a second reader. No
+  source found evaluates a spec-writing skill, so such an evaluation is assembled.
 
 ## What cc-desk is
 

@@ -60,6 +60,10 @@ and "Memory stores" is attended. "Retiring the old process" follows once all fiv
   against the rewrite of Move. It is about later work and is not asked until that work starts.
 - The parked questions are listed in the rulings file under "Parked until the workstation is
   aligned". None is asked until a spec needs its answer.
+- Geoff ruled on 2026-11-21 that spec writing is tested after the workstation is aligned:
+  "Let's follow best practices and test once we have the environment fully set up." The
+  rulings file holds it under "Parked until the workstation is aligned". No task in the spec
+  gains a spec-writing evaluation.
 - Geoff asked on 2026-11-21 for Chromium to be trimmed to what development work needs. It is
   item 109 in the workstation backlog and is no part of this spec.
 - The `claude auto-mode critique` of the first settings change said the entry for build

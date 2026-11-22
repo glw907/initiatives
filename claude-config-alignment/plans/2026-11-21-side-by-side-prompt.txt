@@ -50,6 +50,10 @@ Carried from the process skill's build.
 - `docs/specs/2026-11-01-model-review-skill-listing-design.md` in the workstation repo still
   names the 500-character cap with no exemption.
 
+Not yet. Geoff ruled on 2026-11-21 that spec writing is tested once the environment is fully
+set up. Add no spec-writing evaluation to any task. Raise it after "Retiring the old process"
+has merged.
+
 Leave alone.
 - cairn and dubplate, and anything they rely on outside what the spec names.
 - `cc-desk-check.timer` and the records in ~/.local/state/cc-desk/releases/.
