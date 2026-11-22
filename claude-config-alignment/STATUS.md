@@ -75,16 +75,16 @@
   so the three under "What Geoff decides" stand: the skill and tests aim at his four
   corrections, a brainstorm does a few outside lookups before the approaches, and the task may
   start four full suite runs.
-- The follow-up's build task, "The brainstorming skill and its tests", is built and waits for
-  its merge. Its session `brainstorming-skill-and-tests` (`c6a1f289`) ended `done` at 23:50 on
-  2026-11-21, 70 minutes against 164 planned. Pull request 23 in `glw907/standards` is ready on
-  `b9588de` with a green `validate` check and all 14 goal items met. The suite passed twice in
-  a row, 17 of 17 cases each time, for about 27 dollars a run. `standards:diff-reviewer`
-  returned accept with no blocking finding and three optional notes, which the pull request
-  lists under `## For Geoff`. Geoff's session checked that the branch's `SKILL.md` and
-  `scripts/check-mockup-page.sh` match their companion files. The worktree is
-  `.claude/worktrees/brainstorming-skill-tests` in `~/Projects/standards`, and it stays until
-  the merge.
+- The follow-up's build task, "The brainstorming skill and its tests", is done. Pull request 23
+  in `glw907/standards` merged as `b6dbe0d` on 2026-11-22 with all 14 goal items met and a green
+  `validate` check. Its review returned accept with three optional notes, which the pull
+  request lists under `## For Geoff`. The session took 70 minutes against 164 planned, and the
+  suite passed twice in a row, 17 of 17 cases each time, for about 27 dollars a run. The
+  session, its worktree, and its branches are removed.
+- The brainstorming spec's four workstation edits are commit `de25be6` in `glw907/workstation`.
+  Their done items are posted on pull request 23. The user-scope plugin is at `b6dbe0db3b70`, a
+  fresh session lists the new description for `standards:brainstorming`, and the mock-up
+  server's screen shows "Connected" in its header and no logo.
 - The plugin's session met a new stop. The `/goal` checker answered "not met" 11 times in about
   two minutes over the item marked unmet, then marked the goal failed, and the session sat
   blocked on a question nobody was reading. Geoff's session stopped it. The row is in cc-desk's
@@ -124,8 +124,8 @@
 - Geoff ruled on 2026-11-21 to drop the `paths:` key from `vps-conventions` ("you can drop the
   vps-conventions"). Commit `7f5cbdf` in `glw907/workstation` removes its four lines, and the
   skill is back in a session's list. That closes the blocking finding on pull request 263.
-- The `~/.dotfiles` main checkout is level with `origin/main` at `7f5cbdf`, and the gate
-  passed on that commit. The busy check exits 0 there. Two uncommitted files from another
+- The `~/.dotfiles` main checkout is level with `origin/main` at `ac87235`, and the gate
+  passes on that commit. The busy check exits 0 there. Two uncommitted files from another
   session are still there: `google-workspace.md` under `claude/.claude/docs/bluefin-admin/` and
   `bin/.local/bin/sheet-revision`.
 - Geoff kept two of the four habits pull request 262 listed ("The first two.", 2026-11-21):
@@ -137,71 +137,44 @@
   `test_a_run_past_cap_min_ends_as_stopped_time`, and passed on the next run with no change to
   the test. Two evaluation runs were going at the time. It is item 112 in the workstation
   backlog, commit `0c1cf61`.
-- The first pull request of "Retiring the old process" is built and ready: pull request 264 in
-  `glw907/workstation`, on `33f7c79`, mergeable. Its session `retiring-old-process-first`
-  (`a0c893ad`) ended `done` at 00:27 on 2026-11-22, 38 minutes after its launch from
-  `7f5cbdf`, against 160 planned. It ran on Opus at high effort with the goal in
-  `plans/2026-11-21-retiring-first-goal.txt`. The gate exited 0 on `fd12321`, the commit that
-  deletes `pass-core`, and on `33f7c79`. The reviewer returned fix on `1f00abe` and accept on
-  `33f7c79`. The pull request shows no checks because the workstation repo runs no CI on pull
-  requests, as pull request 263 also showed none. Geoff's session checked the branch itself:
-  it leaves alone every file the goal named, and no live settings file, unit, or hook in
-  another repo names a script it deletes.
+- "Retiring the old process" is done, and with it every task of the alignment spec. Its first
+  pull request, 264 in `glw907/workstation`, merged as `4fa6f48` on 2026-11-22. The build
+  session ran on Opus at high effort and took 38 minutes against 160 planned. The reviewer
+  returned fix on `1f00abe` and accept on `33f7c79`. The three after-merge items are posted on
+  the pull request: `task-report --help` runs, no link in `~/.local/bin` dangles, and a fresh
+  session in `~/Projects/cairn-cms` called `cairn-pass` and `building-from-specs`.
 - Pull request 264 leaves two notes for Geoff. `cairn-pass` doesn't name the cairn-cms process
   skill, because that skill's name holds a retired word. The weekly usage check sits only in
   `unattended-work-guards.md` and not in `building-from-specs` "Launching a task". It also
   filed workstation backlog item 113, a Vale config line that names a deleted skill.
-- The second pull request of "Retiring the old process" is built as six local commits and is
-  not pushed. They sit on branch `retiring-second` at `20fbbab`, in the worktree
-  `~/Projects/workstation-wt/retiring-second`, on top of `33f7c79`. The gate exited 0 on
-  `79f191e`, and a fresh `standards:diff-reviewer` returned accept on it with no blocking
-  finding. `20fbbab` holds the same tree (`c82bba3`) with the commits reordered, so the lint
-  passes at each one. Branch `retiring-second-reviewed` keeps `79f191e` until the push. The
-  spec's two searches print only the lines its done items allow, plus the three lines of
-  `tests/test_claude_merge_guard.py` that the direct commit removes.
-- One change in the second pull request is outside the spec's table. Survey 2.0.0's
-  description is 515 characters, over the lint's 500, and `claude-tooling-sync` now exempts
-  it, because that text is what the survey evaluations tested. The reviewer read it as
-  correct and asked for a line in the pull request body.
-- The reviewer found two places that name `claude-merge-guard` beyond the three the spec gives
-  the direct commit: the path list at `.claude/skills/dotfiles-pass/SKILL.md:50` and the
-  `pytest` leg's path pattern at `scripts/check.sh:144`. The direct commit drops both names
-  with the script.
-- Geoff ruled late on 2026-11-21, before leaving for the night: "Unless there are major issues,
-  you can do all the merges." His session reads that as the three pull requests still to merge:
-  23 in `glw907/standards` and the two of "Retiring the old process". A pull request that stays
-  a draft, or a review with a blocking finding, is a major issue and waits for him. Each merge
-  still stops at his permission prompt, so no merge runs while he is away. His session runs the
-  first merge command only after both task sessions have ended, because a session held at a
-  prompt can't act on another session's notice.
-- Weekly usage was 38 percent for all models and 54 percent for Fable at 23:43 on 2026-11-21.
+- The second pull request is 265 in `glw907/workstation`, merged as `edae735` on 2026-11-22.
+  Geoff's session built it as six commits. A fresh `standards:diff-reviewer` returned accept
+  with no blocking finding, and the gate exited 0 on its last commit, `ae19668`. The `cc-desk`
+  and `cc-desk-work` skills are gone, the survey skill is at 2.0.0, the gate fails on any of
+  the ten retired words, and the `PreToolUse` hooks name `claude-git-guard`.
+- The settings are applied. `claude-tooling-sync apply` changed one line of the live
+  `settings.json`, the hook's command, and `verify` exits 0. Commit `ac87235` then removes
+  `claude-merge-guard` and its test. It also drops the script's name from the gate's `pytest`
+  path pattern and from the `dotfiles-pass` skill, and three open backlog items now name
+  `claude-git-guard`. All six done items hold on `ac87235`, and the evidence is posted on pull
+  request 265. The worktree and the branches are removed.
+- One change in pull request 265 is outside the spec's table. Survey 2.0.0's description is
+  515 characters, over the lint's 500, and `claude-tooling-sync` now lets it run to 1,536,
+  because that text is what the survey evaluations tested. The reviewer read it as correct.
+- The workstation repo runs no CI on pull requests, so a pull request there shows no checks.
+  The gate on the branch's last commit is the only full run.
+- Geoff ruled late on 2026-11-21: "Unless there are major issues, you can do all the merges."
+  The three merges of 2026-11-22 ran under it, and each stopped at his permission prompt.
+- Weekly usage was 40 percent for all models and 56 percent for Fable at 10:11 on 2026-11-22.
 
 ## Next action
 
-Geoff's session runs the tasks from `plans/2026-11-21-side-by-side-prompt.txt`. Every "Side by
-side" task has merged, and no task session is running. Three merges are left, and each stops
-at a permission prompt that only Geoff answers. A background watcher can outlive a clear of
-Geoff's session, so a fresh session reads `claude agents --json` and the open pull requests
-before it acts on a watcher's notice.
+Every task of the alignment spec and of the brainstorming spec has merged. The launch prompt
+`plans/2026-11-21-side-by-side-prompt.txt` is finished, and no task session is running.
 
-1. Merge pull request 23 with `gh pr merge 23 --repo glw907/standards --merge`. After it: the
-   busy check and a pull in `~/Projects/standards`, `claude rm c6a1f289`, and the branch
-   `worktree-brainstorming-skill-tests` deleted locally and on the remote.
-2. Merge pull request 264 with `gh pr merge 264 --repo glw907/workstation --merge`. After it:
-   the busy check and a pull in `~/.dotfiles`, `stow -R bin`, `stow -R claude`, the three
-   after-merge items posted on the pull request, `claude rm a0c893ad`, and the branch
-   `worktree-retire-old-process-1` deleted locally and on the remote.
-3. Make the four workstation edits of the brainstorming spec as one direct commit in
-   `~/.dotfiles`, and post their done items on pull request 23. They come after pull request
-   264 merges, because both change `claude-tooling.md` and `BACKLOG.md`.
-4. Merge `origin/main` into `retiring-second`, rerun the gate, push, and open the second pull
-   request. Its review is an accept. Merge it, pull, and run `claude-tooling-sync apply`
-   and `verify`. Only then make the direct commit that removes `claude-merge-guard`, its
-   test, and the test's name in the `pytest` leg's list. Run `stow -R bin` and check the done
-   items at the spec's lines 754 to 768.
-
-After "Retiring the old process" merges, Geoff's session raises the spec-writing evaluation
-with him.
+Geoff's session raises the spec-writing evaluation with him, which his ruling of 2026-11-21
+parked until the environment was set up. He also has the notes the last three pull requests
+left, listed under "Open decisions".
 
 ## Open decisions
 
@@ -211,16 +184,20 @@ with him.
   aligned". None is asked until a spec needs its answer.
 - Geoff ruled on 2026-11-21 that spec writing is tested after the workstation is aligned:
   "Let's follow best practices and test once we have the environment fully set up." The
-  rulings file holds it under "Parked until the workstation is aligned". No task in the spec
-  gains a spec-writing evaluation.
+  environment is now set up, and the question is his to answer: whether to write a spec for
+  that evaluation next.
+- Pull request 23 left three optional review notes. `.gitignore:4` matches session files only
+  at the top of a case folder, `scripts/run-evals.sh` works only from the repo root, and
+  `BACKLOG.md` lost its `## Low` heading.
+- Pull request 264's two notes and pull request 265's description limit for the survey skill
+  are under "Current state". Each stands unless Geoff objects.
 - Geoff asked on 2026-11-21 for Chromium to be trimmed to what development work needs. It is
   item 109 in the workstation backlog and is no part of this spec.
 - The `claude auto-mode critique` of the first settings change said the entry for build
   sessions doesn't say what shows that Geoff approved a spec. Geoff hasn't ruled on it. The
   critique run after the switch returned no feedback, twice.
-- Pull request 13 left three things for a later look: `DESIGN.md` in `glw907/survey` still
-  says "the approval queue" in four places (its backlog item 10), the workstation still holds
-  `~/.claude/docs/voice/approval-brief.md`, and the survey skill's description ends on a clause
-  that addresses Claude.
+- Pull request 13 left two things for a later look: `DESIGN.md` in `glw907/survey` still says
+  "the approval queue" in four places (its backlog item 10), and the survey skill's description
+  ends on a clause that addresses Claude.
 - "The plugin" added `BACKLOG.md` and `.claude/project-tracking.json` to the public `standards`
   repo, outside its task's table. They stay unless Geoff objects.
