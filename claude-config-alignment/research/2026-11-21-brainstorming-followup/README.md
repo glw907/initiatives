@@ -24,6 +24,11 @@ reader at high effort compared the local skill with local practice and changed n
 | `superpowers-upstream.md` | 14 | 7 | 6 | 1 |
 | `community-elicitation-patterns.md` | 14 | 9 | 5 | 0 |
 | `local-read.md` | one report | not checked | | |
+| `past-sessions.md` | one report | not checked | | |
+| `evaluation-trials.md` | three trials | run by Geoff's session | | |
+
+After the research, one Opus reader at high effort read Geoff's typed messages in 41 past
+brainstorming sessions, and Geoff's session ran three trials of the evaluation command.
 
 A finding with any verdict but `confirmed` is not evidence until someone reads the page again.
 In most of those the quote is real and the researcher's conclusion reaches past it. The local
@@ -131,3 +136,31 @@ The full report is `local-read.md`. Its main points:
   approval before it builds.
 - The visual companion carries upstream's brand, loads a logo from an outside host on every
   screen, and opens the default browser.
+
+## What the past sessions show
+
+The full report is `past-sessions.md`. Its main points:
+
+- Geoff corrected the brainstorm in 35 of 41 sessions. In 14, his first typed reply turned down
+  or sidestepped the opening question.
+- The four most common corrections are about the kind of question. It asked him to imagine or
+  recall something he could not answer, asked what it could have looked up, asked him to make a
+  call that was the model's, or grew the work past what he asked for.
+- He never complained about more than one question in a message, and no session built before
+  approval. The plugin's one brainstorming evaluation tests the first of those.
+- A recommendation with its reason, offered as a numbered pick, got one-word answers. Drawn
+  options worked when he could not describe a look.
+
+## What the trials show
+
+The full record is `evaluation-trials.md`. Its main points:
+
+- With one fact to a grader and a Sonnet judge, the judge's three votes matched in 23 of 24
+  gradings. The skill still asked a compound first question in 4 runs of 8.
+- A count of question marks and a judge measure different things, and each missed replies the
+  other caught.
+- A later turn can be tested from a hand-written history of one row for each message. A
+  recorded session file holds account ids and the workstation's instructions and is not fit to
+  commit.
+- The second message asked the user to guess at a cause in 4 runs of 4, which is the kind of
+  question Geoff turned down most often.

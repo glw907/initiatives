@@ -61,15 +61,20 @@
   The research is done and saved in `research/2026-11-21-brainstorming-followup/`. Its
   `README.md` is the short form. Four Sonnet researchers read Anthropic's pages, the upstream
   skill, and other published interview patterns, a second agent refetched every source, and
-  one Opus reader compared the local skill with local practice. The spec is not written yet.
+  one Opus reader compared the local skill with local practice. A second Opus reader then read
+  Geoff's typed messages in 41 past brainstorming sessions (`past-sessions.md`), and Geoff's
+  session ran three trials of the evaluation command (`evaluation-trials.md`). The spec is not
+  written yet.
 - The plugin's session met a new stop. The `/goal` checker answered "not met" 11 times in about
   two minutes over the item marked unmet, then marked the goal failed, and the session sat
   blocked on a question nobody was reading. Geoff's session stopped it. The row is in cc-desk's
   lessons file, commit `c353960`.
-- "Survey" is building in the background session `alignment-survey` in `~/Projects/survey`,
-  launched at 15:32 on 2026-11-21 on Opus at high effort, with a time clause of 150 minutes.
-  Pull request 13 in `glw907/survey` is marked ready, and the session was still working at
-  16:41, so it is not merged.
+- "Survey" is done. Pull request 13 in `glw907/survey` merged as `30cd337` on 2026-11-21 with
+  all six done items met, reviewed with an accept and no blocking finding. It took 71 minutes
+  against 70 planned. The session and its branches are removed.
+- Survey 2.0.0 is released, tagged at `885adb1`. Geoff's session chose the version by the
+  changelog's rule that a removed rule is a major, because the release removes
+  `writing/approval-brief.md`. The workstation still vendors `v1.7.0` until the last task.
 - "Configuration cleanup" is done. Pull request 262 in `glw907/workstation` merged as `9796bf9`
   on 2026-11-21, reviewed with an accept and no open finding. It took 11 minutes against 125
   planned. Both after-merge checks are posted on the pull request: a `.yml` under `styles/`
@@ -79,8 +84,8 @@
   `claude-tooling-sync verify` passes. The session and its branches are removed.
 - "Personal skills" is building in the background session `alignment-personal-skills` in
   `~/.dotfiles`, launched at 16:40 on 2026-11-21 on Opus at high effort, with a time clause of
-  270 minutes. Geoff's session launched it before Survey ended and told it to start no
-  evaluation session while Survey is working, which keeps pavilion at four.
+  270 minutes. Its draft pull request is 263 in `glw907/workstation`, and at 17:00 it was
+  running its evaluation sessions one at a time.
 - "Memory stores" is done. Geoff kept three of the 11 files in the `/home` store, and they are
   in the `/var/home` store, whose index has 20 lines for 20 files. Commit `39f36df` in
   `glw907/workstation` adds `cd -P .` to the `claude` function, and the gate passed before it.
@@ -92,20 +97,21 @@
   2026-11-21 that the workstation launches may go ahead past that check. Two uncommitted files
   from another session are still there: `google-workspace.md` under
   `claude/.claude/docs/bluefin-admin/` and `bin/.local/bin/sheet-revision`.
-- Weekly usage was 15 percent at 16:41 on 2026-11-21.
+- Weekly usage was 16 percent at 17:00 on 2026-11-21.
 
 ## Next action
 
 Geoff's session runs the tasks from `plans/2026-11-21-side-by-side-prompt.txt`. When
-`alignment-survey` or `alignment-personal-skills` ends, it reads the pull request, tells Geoff
-what it found, and merges it. After each merge it runs the spec's after-merge steps, and after
-Survey's it cuts the survey release. "Retiring the old process" follows once both pull requests
-have merged and the release is cut.
+`alignment-personal-skills` ends, it reads pull request 263, tells Geoff what it found, and
+merges it, then runs the spec's after-merge steps. "Retiring the old process" follows that
+merge. The survey release it waits on is cut.
 
 Between those, it writes the follow-up spec for the plugin's evaluations and the brainstorming
 skill, by `~/.claude/skills/building-from-specs/references/writing-a-spec.md`. It reads
 `research/2026-11-21-brainstorming-followup/README.md` first. Any evaluation run it makes as a
-probe counts against pavilion's limit of four working sessions.
+probe counts against pavilion's limit of four working sessions. The trial cases are in the
+session's scratch folder and are gone after a reboot, so `evaluation-trials.md` holds each
+grader and command in full.
 
 ## Open decisions
 
@@ -127,5 +133,9 @@ probe counts against pavilion's limit of four working sessions.
   keep: source `~/.local/secrets` in the same command before reading a secret; give
   `wrangler secret put` a `--name`; put a Node script with CSS selectors in a file; and use
   `gh issue list --search` when `gh issue view` fails. His session recommends the first two.
+- Pull request 13 left three things for a later look: `DESIGN.md` in `glw907/survey` still
+  says "the approval queue" in four places (its backlog item 10), the workstation still holds
+  `~/.claude/docs/voice/approval-brief.md`, and the survey skill's description ends on a clause
+  that addresses Claude.
 - "The plugin" added `BACKLOG.md` and `.claude/project-tracking.json` to the public `standards`
   repo, outside its task's table. They stay unless Geoff objects.
