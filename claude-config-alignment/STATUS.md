@@ -204,15 +204,18 @@ request to Geoff by number with what failed at baseline. It merges only after he
 number. Task 2 launches after that merge, and only if a check failed at baseline and the
 week's Fable usage is 70 percent or less.
 
-One backlog item waits for the workstation checkout. Geoff asked for it on 2026-11-22: "Yes,
-log it to the backlog." `claude-worktree-busy ~/.dotfiles` exits 1 while task 1 runs, since
-the task's worktree sits under that folder. Once the task's session has ended, Geoff's session
-adds the item at the top of `## Medium` in `~/.dotfiles/BACKLOG.md` under the next free number,
-with a commit of that file alone. The item's text:
+One backlog item waits for the workstation checkout. Geoff asked for it on 2026-11-22 ("Yes,
+log it to the backlog.") and then widened it: "Probably we should do a broader consideration of
+the monthly review process in light of the process changes, complete with research into best
+practice." `claude-worktree-busy ~/.dotfiles` exits 1 while task 1 runs, since the task's
+worktree sits under that folder. Once the task's session has ended, Geoff's session adds the
+item at the top of `## Medium` in `~/.dotfiles/BACKLOG.md` under the next free number, with a
+commit of that file alone. The work is a spec of its own, written after the spec-writing test
+has merged, so that the review is designed around the test as built. The item's text:
 
 ```markdown
-- [ ] **#N** Turn recorded planning misses into spec-writing test cases on a schedule `#improvement` `#workstation` `#initiative:claude-config-alignment` *(2026-11-22)*
-  A planning miss becomes a rule in `claude/.claude/skills/building-from-specs/references/writing-a-spec.md` on the day it happens, one rule at a time, and nothing measures the sum. The trial runs of 2026-11-22 found the cost: a session with the guide wrote 2,759 to 3,550 words for a one-task change, and a session with no guide wrote 1,056 and 1,090. Add a periodic pass. Geoff asked whether monthly is right, and Claude's suggested cadence is: with the monthly model review, only when at least one miss was recorded since the last pass, and at once after a switch of model. Geoff hasn't ruled on the cadence. The pass reads the misses recorded since the last one: the rows in `~/Projects/cc-desk/docs/follow-ups/desk-round-lessons.md`, the `task-score` lines that `task-report` reads, and Geoff's rulings. Each miss becomes a case in the spec-writing suite first and is kept as evidence: the spec, the wrong line, and what it cost. The guide or the `standards:brainstorming` skill changes only where the new case fails, and the whole suite reruns after the edit. It waits for the spec-writing test to merge (`~/Projects/initiatives/claude-config-alignment/specs/2026-11-22-spec-writing-test-spec.md`). Geoff asked for it on 2026-11-22.
+- [ ] **#N** Rework the monthly review for the spec-based process, with research into published practice `#improvement` `#workstation` `#initiative:claude-config-alignment` *(2026-11-22)*
+  Geoff asked on 2026-11-22 for "a broader consideration of the monthly review process in light of the process changes, complete with research into best practice." The monthly review, launched by `model-review-notify`, predates `building-from-specs` and the skill tests. The work is a spec: read what the review does today, read Anthropic's pages and community practice on reviewing an agent setup over time, and say what the review should check each month now. One part is already asked for. A planning miss becomes a rule in `claude/.claude/skills/building-from-specs/references/writing-a-spec.md` on the day it happens, one rule at a time, and nothing measures the sum. The trial runs of 2026-11-22 found the cost: a session with the guide wrote 2,759 to 3,550 words for a one-task change, and a session with no guide wrote 1,056 and 1,090. The review should read the misses recorded since the last one: the rows in `~/Projects/cc-desk/docs/follow-ups/desk-round-lessons.md`, the `task-score` lines that `task-report` reads, and Geoff's rulings. Each miss becomes a case in the spec-writing suite first and is kept as evidence: the spec, the wrong line, and what it cost. The guide or the `standards:brainstorming` skill changes only where the new case fails, and the whole suite reruns after the edit. Claude's suggested cadence, which Geoff hasn't ruled on: monthly, only when at least one miss was recorded, and at once after a switch of model. The spec waits for the spec-writing test to merge (`~/Projects/initiatives/claude-config-alignment/specs/2026-11-22-spec-writing-test-spec.md`).
 ```
 
 He also has the notes the last three pull requests left, listed under "Open decisions".
