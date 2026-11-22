@@ -70,8 +70,16 @@
   skill passed 4 of the 13 brainstorming cases, and so did a session with no plugin. Three
   fresh readers checked the spec in two rounds, and their findings are in it. A background
   session in auto mode then ran the 13 brainstorming cases on the final text, and all 13
-  passed. The spec waits for Geoff with three questions: what the rewrite aims at, whether a
-  brainstorm does outside research, and how many suite runs the task may spend.
+  passed.
+- Geoff approved the follow-up spec on 2026-11-21 ("Approved."). He changed no recommendation,
+  so the three under "What Geoff decides" stand: the skill and tests aim at his four
+  corrections, a brainstorm does a few outside lookups before the approaches, and the task may
+  start four full suite runs.
+- The follow-up's build task, "The brainstorming skill and its tests", is running. Geoff's
+  session launched it at 22:37 on 2026-11-21 from `~/Projects/standards` as the background
+  session `brainstorming-skill-and-tests` (`c6a1f289`), on Opus at high effort, with a time
+  clause of 328 minutes. Its worktree is `.claude/worktrees/brainstorming-skill-tests`. It
+  takes two of pavilion's four sessions while a suite run is going.
 - The plugin's session met a new stop. The `/goal` checker answered "not met" 11 times in about
   two minutes over the item marked unmet, then marked the goal failed, and the session sat
   blocked on a question nobody was reading. Geoff's session stopped it. The row is in cc-desk's
@@ -121,17 +129,18 @@
   `test_a_run_past_cap_min_ends_as_stopped_time`, and passed on the next run with no change to
   the test. Two evaluation runs were going at the time. It is item 112 in the workstation
   backlog, commit `0c1cf61`.
-- Weekly usage was 34 percent for all models and 45 percent for Fable at 22:25 on 2026-11-21.
-- No session is working in `~/Projects/standards`, and its checkout is clean at `61f996a`.
+- Weekly usage was 34 percent for all models and 46 percent for Fable at 22:37 on 2026-11-21.
 
 ## Next action
 
 Geoff's session runs the tasks from `plans/2026-11-21-side-by-side-prompt.txt`. Every "Side by
 side" task has merged. Two things are left, in this order.
 
-1. Geoff answers the three questions in the follow-up spec,
-   `specs/2026-11-21-brainstorming-spec.md`, and approves it. Its build task launches only
-   after that. A restart of his session fits here, before or after he approves.
+1. Wait for the brainstorming task's session to end, then merge its pull request in
+   `glw907/standards` under Geoff's ruling that pull requests are pre-approved. The merge stops
+   at his permission prompt. The after-merge steps follow, then the four workstation edits in
+   the follow-up spec as one direct commit, with their done items posted on the merged pull
+   request. If the pull request stays a draft, its `## For Geoff` section goes to Geoff first.
 2. Run "Retiring the old process". The survey release it waits on is cut. Its retired-words
    gate leaves out the eight `evals/results/` folders named in the launch prompt. A clear of
    Geoff's session fits just before it starts.
