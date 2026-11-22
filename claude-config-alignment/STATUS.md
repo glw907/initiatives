@@ -45,33 +45,52 @@
 - The companion `specs/2026-11-20-alignment-global-file.txt` is one bullet behind the live
   global file. Pull request 260 reworded the browser bullet while 259 was open, and the merge
   kept 260's wording.
-- Another session, `dotfiles-1c`, sits in the `~/.dotfiles` main checkout with uncommitted work.
-  That checkout is one backlog commit behind `origin/main`.
-- Two of the five "Side by side" tasks are building in background sessions, both launched on
-  2026-11-21 on Opus at high effort: "The plugin" as `alignment-plugin` in `~/Projects/standards`,
-  with a time clause of 210 minutes, and "Survey" as `alignment-survey` in `~/Projects/survey`,
-  with 150. The plugin's clause prices five cases at six runs each, about 9 minutes.
-- Four sessions are working on pavilion, the limit, so "Personal skills" (clause 270) and
-  "Configuration cleanup" (clause 250) wait for a slot. Geoff ruled on 2026-11-21 that both may
-  launch while `dotfiles-1c` sits in `~/.dotfiles` ("yes to 2"). The ruling covers the two
-  launches only.
-- "Memory stores" is half done. Geoff kept three of the 11 files in the `/home` store, by the
-  recommendations he was shown: `feedback_fix_cause_not_symptoms.md`,
-  `feedback_test_before_returning.md`, and `project_jmp_account.md`. They are copied into the
-  `/var/home` store and its index has 20 lines for 20 files. The `cd -P .` commit to
-  `bash/.bashrc` and the removal of the `/home` store wait until `claude-worktree-busy
-  ~/.dotfiles` exits 0.
+- "The plugin" is built and waits on Geoff. Pull request 22 in `glw907/standards` is ready with
+  CI green. Seven of its eight done items are met. The sixth is unmet: `claude plugin eval
+  plugins/standards` exits 1, because the `ts-conventions` case already on `main` fails two runs
+  of three and one `brainstorming` run in three asks a compound question. Its review returned
+  escalate on that item. Its session, `alignment-plugin`, is stopped and its worktree is kept.
+- That session met a new stop. The `/goal` checker answered "not met" 11 times in about two
+  minutes over the item marked unmet, then marked the goal failed, and the session sat blocked
+  on a question nobody was reading. Geoff's session stopped it. The row is in cc-desk's lessons
+  file, commit `c353960`.
+- "Survey" is building in the background session `alignment-survey` in `~/Projects/survey`,
+  launched at 15:32 on 2026-11-21 on Opus at high effort, with a time clause of 150 minutes. Its
+  draft is pull request 13 in `glw907/survey`.
+- "Configuration cleanup" is building in the background session `alignment-config-cleanup` in
+  `~/.dotfiles`, launched at 16:11 on 2026-11-21 on Opus at high effort, with a time clause of
+  250 minutes. Its goal carries one sentence the plugin's lacked, a call Geoff's session made
+  after the stop above: the goal is also met when the pull request is ready and marks an item
+  unmet with its reason.
+- "Personal skills" (clause 270) waits for a slot. It and Survey each run evaluation sessions
+  one at a time, and each of those counts against the limit of four, so it launches when Survey
+  ends. Its goal text is written.
+- "Memory stores" is done. Geoff kept three of the 11 files in the `/home` store, and they are
+  in the `/var/home` store, whose index has 20 lines for 20 files. Commit `39f36df` in
+  `glw907/workstation` adds `cd -P .` to the `claude` function, and the gate passed before it.
+  The `/home` store's folder is gone. A print-mode session started from `/home/glw907` and one
+  from `/var/home/glw907` each named `~/.claude/projects/-var-home-glw907/memory/`. The search
+  for the retired words over the store prints nothing.
+- The `~/.dotfiles` main checkout is level with `origin/main`. The session `dotfiles-1c` has
+  ended, and its two uncommitted files are still there: `google-workspace.md` under
+  `claude/.claude/docs/bluefin-admin/` and `bin/.local/bin/sheet-revision`.
+- Weekly usage was 13 percent at 16:10 on 2026-11-21.
 
 ## Next action
 
-Geoff's session (`initiatives-04`) runs the five tasks from
-`plans/2026-11-21-side-by-side-prompt.txt`. When `alignment-plugin` or `alignment-survey` ends,
-it reads the pull request and puts it to Geoff by number. It launches the two workstation
-tasks as slots come free, and finishes "Memory stores" once the `~/.dotfiles` checkout is free. "Retiring the old process"
-follows once all five have merged and the survey release is cut.
+Geoff's session runs the tasks from `plans/2026-11-21-side-by-side-prompt.txt`. It puts pull
+request 22 to Geoff by number with the question under "Open decisions". When `alignment-survey`
+or `alignment-config-cleanup` ends, it reads the pull request and puts it to Geoff by number.
+It launches "Personal skills" when Survey ends. After each merge it runs the spec's after-merge
+steps, and after Survey's it cuts the survey release. "Retiring the old process" follows once
+all four pull requests have merged and the release is cut.
 
 ## Open decisions
 
+- Pull request 22 waits on Geoff's answer about its unmet done item. The `ts-conventions`
+  evaluation case requires the doc comment to say the exponent stops growing at attempt 30. It
+  scores 0.33 with the plugin and 0.33 without, and it failed on `main` before this branch.
+  Geoff's session recommends merging 22 as it stands and fixing the two cases in a follow-up.
 - The rulings file owes Geoff one question about where cc-desk's scheduled check-ins come
   against the rewrite of Move. It is about later work and is not asked until that work starts.
 - The parked questions are listed in the rulings file under "Parked until the workstation is
