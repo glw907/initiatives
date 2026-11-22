@@ -173,10 +173,13 @@ Every task of the alignment spec and of the brainstorming spec has merged. The l
 `plans/2026-11-21-side-by-side-prompt.txt` is finished, and no task session is running.
 
 The spec for the spec-writing test is written and waits for Geoff's approval:
-`specs/2026-11-22-spec-writing-test-spec.md`. Nothing is built. It asks him two questions: how
-long a spec for a one-task change may be (1,200 words is recommended), and whether the spend
-is all right (about 110 dollars planned, 170 at most). Its trial runs are in
-`research/2026-11-22-spec-writing-test/`. The launch prompt
+`specs/2026-11-22-spec-writing-test-spec.md`. Nothing is built. It asks him one question:
+whether the spend is all right (about 110 dollars planned, 170 at most). Its trial runs are in
+`research/2026-11-22-spec-writing-test/`. Geoff ruled on length on 2026-11-22: "I'll go with
+Anthropic's guidance on the subject." Anthropic's pages and four community sources give no
+number and size a spec by its change. The spec is revised to match: the guide's length rule
+states no number, and the test keeps 1,200 words as its pass mark. The sources are in the
+spec under "How long a spec may be". The launch prompt
 `plans/2026-11-22-spec-writing-evaluation-prompt.txt` is finished. A fresh session takes his
 approval and launches the tasks from `plans/2026-11-22-spec-writing-test-build-prompt.txt`.
 
@@ -199,7 +202,7 @@ He also has the notes the last three pull requests left, listed under "Open deci
 - Geoff ruled on 2026-11-21 that spec writing is tested after the workstation is aligned:
   "Let's follow best practices and test once we have the environment fully set up." The
   environment is now set up, and on 2026-11-22 he said to go ahead. The spec for that test
-  waits for his approval, with its two questions.
+  waits for his approval, with its one question, the spend.
 - Geoff ruled on 2026-11-22, while the spec was designed: the test covers the written spec
   and leaves out the design conversation; specs are written on Fable at `high` ("Let's go with
   the Anthropic recomendation."); no run compares against a session with no guide; and a long

@@ -16,10 +16,10 @@ passes both times, and it reports what still fails when it doesn't. One thing is
 from the trial runs: today's guide produces a spec of about 3,000 words for a change of twenty
 lines, which Geoff ruled too long.
 
-Two questions wait for Geoff, under [What Geoff decides](#what-geoff-decides). The rest is his
+One question waits for Geoff, under [What Geoff decides](#what-geoff-decides). The rest is his
 ruling, quoted, or a call Claude made, listed under [Calls Claude made](#calls-claude-made).
 
-To approve, Geoff answers the two questions and says the spec is approved, in his terminal.
+To approve, Geoff answers the question and says the spec is approved, in his terminal.
 Nothing launches before that. If he wants something changed, he says what, and the spec is
 revised first.
 
@@ -28,20 +28,50 @@ The trial runs behind this spec are in `research/2026-11-22-spec-writing-test/`,
 
 ## What Geoff decides
 
-The spec is written as if each recommendation holds.
+The spec is written as if the recommendation holds.
 
-1. **How long may a spec for a one-task change be?** Geoff ruled on 2026-11-22 that a long spec
-   for a small change is a failure: "Yes, that's too long for a small change." The number is
-   Claude's. The recommendation is 1,200 words. Two sessions with no guide wrote 1,056 and 1,090
-   words for a small change, and three sessions with the guide wrote 2,759, 2,803, and 3,550. A
-   different number changes one figure in six cases and in one sentence of the guide.
-2. **Is the spend all right?** One full run of the 16 cases costs about 29 dollars of usage, as
-   Claude Code prices it. The two tasks are planned at about 110 dollars and capped at 170. A
-   full run of the `standards` plugin's suite cost $27.30 and moved the week's usage from 23
-   to 26 percent. By that measure the plan is about 12 percent of a week's usage and the cap about
-   19. The two sessions that build the tasks use more on top, and no figure for them is
-   measured. The recommendation is yes. A lower cap means fewer cases or a final check that
-   passes once in place of twice, and either one makes the result weaker.
+**Is the spend all right?** One full run of the 16 cases costs about 29 dollars of usage, as
+Claude Code prices it. The two tasks are planned at about 110 dollars and capped at 170. A full
+run of the `standards` plugin's suite cost $27.30 and moved the week's usage from 23 to 26
+percent. By that measure the plan is about 12 percent of a week's usage and the cap about 19.
+The two sessions that build the tasks use more on top, and no figure for them is measured. The
+recommendation is yes. A lower cap means fewer cases or a final check that passes once in place
+of twice, and either one makes the result weaker.
+
+## How long a spec may be
+
+Geoff ruled on 2026-11-22 that a long spec for a small change is a failure: "Yes, that's too
+long for a small change." Asked for a limit in words, he said: "I'll go with Anthropic's
+guidance on the subject." He then asked what community practice says.
+
+Anthropic gives no number for a spec. Its rule for a document a model writes to disk is on its
+page for Opus 5: "Match the length of written documents to what the task needs: cover the
+substance, but do not pad with filler sections, redundant summaries, or boilerplate." Its page
+for Fable 5.2 warns about fixed limits on prose. The model follows style rules closely, "so a
+hard limit such as 'one instruction per sentence, in 20 words or fewer' can make its prose
+choppy."
+
+The community sources give no number either. Each one sizes the spec by the change.
+
+| Source | What it says |
+| --- | --- |
+| [The `superpowers` brainstorming skill](https://github.com/obra/superpowers/blob/main/skills/brainstorming/SKILL.md) | "For a small change, the short design covers the same points in a line or two each" |
+| [How to write a good spec for AI agents](https://addyosmani.com/blog/good-spec/) | "A good rule of thumb: adjust spec detail to task complexity." |
+| [The right amount of spec for agentic development](https://www.oreilly.com/radar/the-right-amount-of-spec-for-agentic-development/) | "there is no single right amount of specification. The answer depends on the kind of work you're doing." |
+| [A review of three spec-writing tools](https://www.martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) | One tool turned a small bug into "4 'user stories' with a total of 16 acceptance criteria", and another's files were "repetitive, both with each other, and with the code that already existed" |
+
+So the guide's length rule states no number. It tells the writer to match the spec to the work
+and to cover each point of a one-task spec in a line or two, except the task and its goal. The
+text is under [The guide changes](#the-guide-changes).
+
+The test still checks a number. A check has to pass or fail the same way on every run, and a
+word count does. The mark is 1,200 words, and it is Claude's. Two sessions with no guide wrote
+1,056 and 1,090 words for a small change, and three sessions with the guide wrote 2,759, 2,803,
+and 3,550. The mark lives in the test and nowhere in the guide.
+
+A judge that reads each spec for padding was weighed and passed over. The `superpowers`
+project measured that kind of grading. A quality call on the same runs "matched about two times
+in three", so its table "leans on the factual yes/no line".
 
 ## What is wrong today
 
@@ -100,7 +130,7 @@ Opus at high." On 2026-11-22 Geoff ruled for Anthropic's recommendation, which i
 - A guide that grows a rule no failing check asked for.
 - A pull request marked ready with a done item unmet and unsaid. Pull request 22 in `standards`
   did that.
-- A spec for a one-task change that runs past the length limit after the work.
+- A spec for a one-task change that runs past 1,200 words after the work.
 
 ## Constraints
 
@@ -388,17 +418,19 @@ trial runs say the length rule will be needed.
 | A reader's brief | Any reader case fails | A new file, named in "Before approval" |
 
 A failing check with no row here gets the smallest change of wording that answers it. The
-builder writes it and shows it under `## For Geoff`.
+builder writes it and shows it under `## For Geoff`. No change puts a word count in the guide,
+since Geoff ruled for Anthropic's guidance and it gives none.
 
 <details>
 <summary>The four texts</summary>
 
 The length rule:
 
-> A spec is as long as its work needs and no longer. A change that is one task gets a spec of
-> 1,200 words or fewer. A heading of this list with nothing to say gets one line. A probe's
-> output is quoted only where a done item or a label rests on it, and no section restates
-> another.
+> Match a spec's length to what its work needs. Cover the substance, and leave out filler
+> sections, a summary that repeats another section, and boilerplate. A spec for a change that
+> is one task covers each point of this list in a line or two, except the task and its goal. A
+> point with nothing to say gets one line. A probe's output is quoted only where a done item or
+> a label rests on it.
 
 The fixed form:
 
@@ -585,13 +617,15 @@ Geoff's session checks these on the day, for each task.
 11. Stand-in files replace `task-report`, the denials log, and the remote in a writing case.
 12. Both tasks run on Opus at `high`. Fable is the tighter weekly limit, and the test sessions
     need it.
-13. The guide's limit is 1,000 words. The three changes that land in the guide add about 140
+13. The guide's limit is 1,000 words. The three changes that land in the guide add about 150
     to its 796, and the reader's brief is a separate file.
 14. A trap check has a near-miss sample. The fresh reader of this spec showed that a name alone
     is weak evidence: `test_export_csv` appears twice in a trial report on a spec with no
     planted mistake.
 15. A session that dies is rerun once and never counts against the guide.
 16. The final pair of runs happens once, and a failure there is reported as unmet.
+17. The length check's mark is 1,200 words, kept in the test and out of the guide. The reasons
+    are under [How long a spec may be](#how-long-a-spec-may-be).
 
 ## Where each mechanism comes from
 
@@ -609,4 +643,8 @@ Geoff's session checks these on the day, for each task.
 | Settings for one session | Documented | "Settings precedence, highest first: managed settings, command line, project local, shared project, user." (<https://code.claude.com/docs/en/settings>) |
 | A spec-writing test run by `run_evals.py` with these pieces | Assembled | The trial runs under [What the work rests on](#what-the-work-rests-on) |
 | A planted mistake for a fresh reader to find | Assembled | The same trial runs. The second reader is community practice, and no source found tests one |
-| The limit of 1,200 words | Invented | Geoff's ruling that a long spec for a small change fails, and the five measured lengths |
+| A spec's length matched to its work, with no number given to the writer | Documented | "Match the length of written documents to what the task needs" (<https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5>), and the caution on hard limits (<https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2>) |
+| A line or two for each point of a small change's spec | Community | The `superpowers` brainstorming skill, quoted under [How long a spec may be](#how-long-a-spec-may-be) |
+| Detail that grows with the task | Community | The three articles quoted in the same section |
+| A yes-or-no check in place of a quality call | Community | The grader-noise note in <https://github.com/obra/superpowers/pull/2644> |
+| The test's mark of 1,200 words | Invented | Geoff's ruling that a long spec for a small change fails, and the five measured lengths |

@@ -12,14 +12,13 @@ the workstation repo (`glw907/workstation`, checkout `~/.dotfiles`). Nothing is 
 trial runs are in claude-config-alignment/research/2026-11-22-spec-writing-test/.
 
 Approval. STATUS says whether Geoff has approved the spec. If it doesn't quote his approval,
-he hasn't. The spec asks him two questions under "What Geoff decides": whether 1,200 words is
-the right limit for a one-task spec, and whether the spend is all right (about 29 dollars a
-full run, about 110 planned and 170 at most for both tasks). Ask for his answers and his
-approval in plain words, one question at a time, and launch nothing before he gives them. Only
-his typed words approve. When he approves, quote his words in STATUS and commit that.
-- If he picks a different word limit, change the figure everywhere the spec states it before
-  any launch: "What Geoff decides", the writing cases' length check, the guide-changes table,
-  the length rule's text, and the last row of the mechanism table. Commit the edit.
+he hasn't. The spec asks him one question under "What Geoff decides": whether the spend is all
+right (about 29 dollars a full run, about 110 planned and 170 at most for both tasks). Ask for
+his answer and his approval in plain words, one question at a time, and launch nothing before
+he gives them. Only his typed words approve. When he approves, quote his words in STATUS and
+commit that.
+- The length question is settled. Geoff ruled for Anthropic's guidance on 2026-11-22, and the
+  spec's section "How long a spec may be" holds what that means. Don't ask it again.
 - If he wants a lower cap, tell him what it cuts, by the spec's own sentence on that, and edit
   the spec's caps to his number before any launch.
 - If he wants anything else changed, revise the spec, rerun `vale` and
