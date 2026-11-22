@@ -165,8 +165,8 @@
   The gate on the branch's last commit is the only full run.
 - Geoff ruled late on 2026-11-21: "Unless there are major issues, you can do all the merges."
   The three merges of 2026-11-22 ran under it, and each stopped at his permission prompt.
-- Weekly usage is 48 percent for all models and 70 percent for Fable at 14:35 on 2026-11-22.
-  It was 43 and 63 at 12:26, before the baseline run.
+- Weekly usage is 48 percent for all models and 70 percent for Fable at 14:35 on 2026-11-22,
+  after the baseline run. It was 43 and 63 at 12:26.
   `claude -p "/usage" --model haiku < /dev/null` prints both figures.
 
 ## Next action
@@ -194,46 +194,46 @@ still in that checkout and stay untouched. The two backlog edits that approval c
 landed in the workstation repo as commit `e81bf69`: item 113 carries a stamp and item 94 is
 under Done.
 
-Task 1 is built and waits for Geoff's approval of pull request 266 in `glw907/workstation`,
-"Add the spec-writing test and record its first baseline". Geoff's session launched the task
-at 12:29 on 2026-11-22 on Opus at `high` (his ruling: "Keep it on Opus."), and its session
-finished at 14:25 with its goal met. Geoff's session stopped it at 14:36, and
-`claude-worktree-busy ~/.dotfiles` exits 0. The worktree `.claude/worktrees/spec-writing-test`
-and the branch stay until the merge. The branch's last commit is `456f9a9`.
+Task 1 is done. Pull request 266 in `glw907/workstation`, "Add the spec-writing test and record
+its first baseline", merged as `05a1ec6` on 2026-11-22 after Geoff typed "merge 266, and launch
+task 2." The build session ran on Opus at `high` (his ruling: "Keep it on Opus."), started at
+12:29, and finished at 14:25 with its goal met. The checkout is pulled, `claude-tooling-sync
+verify` exits 0, no link under `~/.claude/skills` or `~/.local/bin` dangles, and the session,
+its worktree, and both branches are removed.
 
 - The baseline ran all 16 cases on Fable at `high`, and each ended `finished`. All 16 trap
   checks passed. All six writing cases failed the length check, with specs of 3,671 to 4,285
-  words against the pass mark of 1,200. Geoff's session reran `--list` and `--summary` on
-  `456f9a9` and saw the same table.
+  words against the pass mark of 1,200. The folder is
+  `claude/.claude/skills/building-from-specs/evals/results/2026-11-22/spec-writing-baseline/`.
 - A fresh `standards:diff-reviewer` on Opus at `high` escalated on the first read, and a third
-  read of the whole branch accepted `456f9a9` with no blocking finding. The pull request says
-  the gate exits 0 on that commit with 42 legs run.
+  read of the whole branch accepted the last commit, `456f9a9`, with no blocking finding.
 - The test sessions spent 37.04 of the 40 dollars.
-- The pull request asks Geoff one question: whether to pay about 34 dollars for a new baseline
-  that fixes the grading gaps in workstation backlog item 114 before task 2. The task's
-  session recommends no, and so does Geoff's session.
-- The review left three notes for task 2's goal. The one that changes it: a failed trap check
-  whose judge answer is null, or that carries `error`, is a judge error, so the session reruns
-  it once and never changes the guide for it.
-- The pull request changes two files outside task 1's list: `scripts/check.sh` (one
+- The pull request asked whether to pay about 34 dollars for a new baseline that fixes the
+  grading gaps in workstation backlog item 114 before task 2. Both sessions recommended no,
+  and Geoff's words launch task 2 on the test as it stands. Item 114 lands with the next full
+  run after task 2.
+- The pull request changed two files outside task 1's list: `scripts/check.sh` (one
   `shellcheck` exclusion for the 16 proof scripts) and `BACKLOG.md` (item 114).
 
-Geoff's session merges pull request 266 only after he approves it by number. Task 2 launches
-after that merge, since a check failed at baseline, and only if the week's Fable usage is 70
-percent or less. It reads 70 percent at 14:35.
+Task 2 is running. Geoff's session launched it from `~/.dotfiles` at 14:36 on 2026-11-22 as
+the background session `spec-writing-test-2` (id `7247711a`), on Opus at `high`. The week's
+usage read 48 percent for all models and 70 percent for Fable just before, and no other
+session was working. Its goal names the spec's three done items and three must-still-pass
+checks word for word, caps its test sessions at 130 dollars, runs two of them at once, and
+ends "or stop after 300 minutes". It says the one guide change is the length rule, and that a
+failed trap check whose judge answer is null or carries `error` is a judge error: the session
+reruns that case once and never changes the guide for it. `claude logs 7247711a` shows its
+output. When the session has ended, Geoff's session reads the pull request, the review
+verdict, and the summary of both final runs, and brings the pull request to Geoff by number.
+After that merge it runs `claude-tooling-sync verify` and `/skill-doctor` and tells Geoff what
+they print.
 
-One backlog item waits for the workstation checkout. Geoff asked for it on 2026-11-22 ("Yes,
-log it to the backlog.") and then widened it: "Probably we should do a broader consideration of
-the monthly review process in light of the process changes, complete with research into best
-practice." It waits for pull request 266 to merge, because that branch adds item 114 at the
-same place in the file. After the merge, Geoff's session adds the item at the top of
-`## Medium` in `~/.dotfiles/BACKLOG.md` as item 115, with a commit of that file alone. The work is a spec of its own, written after the spec-writing test
-has merged, so that the review is designed around the test as built. The item's text:
-
-```markdown
-- [ ] **#115** Rework the monthly review for the spec-based process, with research into published practice `#improvement` `#workstation` `#initiative:claude-config-alignment` *(2026-11-22)*
-  Geoff asked on 2026-11-22 for "a broader consideration of the monthly review process in light of the process changes, complete with research into best practice." The monthly review, launched by `model-review-notify`, predates `building-from-specs` and the skill tests. The work is a spec: read what the review does today, read Anthropic's pages and community practice on reviewing an agent setup over time, and say what the review should check each month now. One part is already asked for. A planning miss becomes a rule in `claude/.claude/skills/building-from-specs/references/writing-a-spec.md` on the day it happens, one rule at a time, and nothing measures the sum. The trial runs of 2026-11-22 found the cost: a session with the guide wrote 2,759 to 3,550 words for a one-task change, and a session with no guide wrote 1,056 and 1,090. The review should read the misses recorded since the last one: the rows in `~/Projects/cc-desk/docs/follow-ups/desk-round-lessons.md`, the `task-score` lines that `task-report` reads, and Geoff's rulings. Each miss becomes a case in the spec-writing suite first and is kept as evidence: the spec, the wrong line, and what it cost. The guide or the `standards:brainstorming` skill changes only where the new case fails, and the whole suite reruns after the edit. Claude's suggested cadence, which Geoff hasn't ruled on: monthly, only when at least one miss was recorded, and at once after a switch of model. The spec waits for the spec-writing test to merge (`~/Projects/initiatives/claude-config-alignment/specs/2026-11-22-spec-writing-test-spec.md`).
-```
+The monthly review rework is item 115 in the workstation backlog, commit `e8d9035`. Geoff
+asked for it on 2026-11-22: "Probably we should do a broader consideration of the monthly
+review process in light of the process changes, complete with research into best practice."
+The work is a spec of its own, written after task 2 has merged, so that the review is designed
+around the test as built. Claude's suggested cadence is in the item, and Geoff hasn't ruled on
+it.
 
 He also has the notes the last three pull requests left, listed under "Open decisions".
 
