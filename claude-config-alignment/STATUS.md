@@ -63,8 +63,15 @@
   skill, and other published interview patterns, a second agent refetched every source, and
   one Opus reader compared the local skill with local practice. A second Opus reader then read
   Geoff's typed messages in 41 past brainstorming sessions (`past-sessions.md`), and Geoff's
-  session ran three trials of the evaluation command (`evaluation-trials.md`). The spec is not
-  written yet.
+  session ran five trials of the evaluation command (`evaluation-trials.md`).
+- The follow-up spec is written at `specs/2026-11-21-brainstorming-spec.md`, with three files
+  beside it: the new skill text, the script that writes the test cases, and a check for the
+  mock-up page. On Fable 5.2 the rewrite passed all 17 cases in two full runs. The current
+  skill passed 4 of the 13 brainstorming cases, and so did a session with no plugin. Three
+  fresh readers checked the spec in two rounds, and their findings are in it. A background
+  session in auto mode then ran the 13 brainstorming cases on the final text, and all 13
+  passed. The spec waits for Geoff with three questions: what the rewrite aims at, whether a
+  brainstorm does outside research, and how many suite runs the task may spend.
 - The plugin's session met a new stop. The `/goal` checker answered "not met" 11 times in about
   two minutes over the item marked unmet, then marked the goal failed, and the session sat
   blocked on a question nobody was reading. Geoff's session stopped it. The row is in cc-desk's
@@ -82,36 +89,55 @@
   `bluefin-admin` skill. A plain question about a doc was answered by search without the skill.
   Commit `1773529` drops the retired instructions folder from one auto-mode allow entry, and
   `claude-tooling-sync verify` passes. The session and its branches are removed.
-- "Personal skills" is building in the background session `alignment-personal-skills` in
-  `~/.dotfiles`, launched at 16:40 on 2026-11-21 on Opus at high effort, with a time clause of
-  270 minutes. Its draft pull request is 263 in `glw907/workstation`, and at 17:00 it was
-  running its evaluation sessions one at a time.
+- "Personal skills" is done. Pull request 263 in `glw907/workstation` merged as `7c1022a` on
+  2026-11-21 under Geoff's ruling that pull requests are pre-approved. Its review returned
+  escalate with one blocking finding and nine others, and Geoff has the blocking one as a
+  question: the `paths:` key on `vps-conventions` keeps that skill out of the list until a
+  session opens a matching file. The checkout is pulled and restowed, `claude-tooling-sync
+  verify` passes, and the after-merge checks are posted on the pull request. The worktree and
+  both branches are removed.
+- That task's session is removed. `claude rm 1ba4a94a` failed while the background service
+  was down and worked once the next background launch had started it. The row is in cc-desk's
+  lessons file, commit `8d29338`.
+- Commit `f37b3b9` in `glw907/workstation` fixes the one line of the old process that pull
+  request 263 left in `claude-infra`: work beyond the request goes to the backlog through
+  `standards:log-issue`.
 - "Memory stores" is done. Geoff kept three of the 11 files in the `/home` store, and they are
   in the `/var/home` store, whose index has 20 lines for 20 files. Commit `39f36df` in
   `glw907/workstation` adds `cd -P .` to the `claude` function, and the gate passed before it.
   The `/home` store's folder is gone. A print-mode session started from `/home/glw907` and one
   from `/var/home/glw907` each named `~/.claude/projects/-var-home-glw907/memory/`. The search
   for the retired words over the store prints nothing.
-- The `~/.dotfiles` main checkout is level with `origin/main` at `1773529`. Geoff's session
-  `dotfiles-17` sits idle in it, so the busy check exits 1 there. Geoff ruled earlier on
-  2026-11-21 that the workstation launches may go ahead past that check. Two uncommitted files
-  from another session are still there: `google-workspace.md` under
-  `claude/.claude/docs/bluefin-admin/` and `bin/.local/bin/sheet-revision`.
-- Weekly usage was 16 percent at 17:00 on 2026-11-21.
+- The `~/.dotfiles` main checkout is level with `origin/main` at `f37b3b9`, and the gate
+  passed on that commit. The busy check exits 0 there. Two uncommitted files from another
+  session are still there: `google-workspace.md` under `claude/.claude/docs/bluefin-admin/` and
+  `bin/.local/bin/sheet-revision`.
+- Geoff kept two of the four habits pull request 262 listed ("The first two.", 2026-11-21):
+  source `~/.local/secrets` in the same command, and give `wrangler secret put` a `--name`.
+  Commit `ea609c0` in `glw907/workstation` adds them to the global file's "Secrets" section,
+  because a section of their own put the file over its 120-line cap. The companion
+  `specs/2026-11-20-alignment-global-file.txt` is a record of the switch and lacks them.
+- The workstation gate failed once on `tests/test_cleanroom_live.py`, in
+  `test_a_run_past_cap_min_ends_as_stopped_time`, and passed on the next run with no change to
+  the test. Two evaluation runs were going at the time. It is item 112 in the workstation
+  backlog, commit `0c1cf61`.
+- Weekly usage was 34 percent for all models and 45 percent for Fable at 22:25 on 2026-11-21.
+- No session is working in `~/Projects/standards`, and its checkout is clean at `61f996a`.
 
 ## Next action
 
-Geoff's session runs the tasks from `plans/2026-11-21-side-by-side-prompt.txt`. When
-`alignment-personal-skills` ends, it reads pull request 263, tells Geoff what it found, and
-merges it, then runs the spec's after-merge steps. "Retiring the old process" follows that
-merge. The survey release it waits on is cut.
+Geoff's session runs the tasks from `plans/2026-11-21-side-by-side-prompt.txt`. Every "Side by
+side" task has merged. Two things are left, in this order.
 
-Between those, it writes the follow-up spec for the plugin's evaluations and the brainstorming
-skill, by `~/.claude/skills/building-from-specs/references/writing-a-spec.md`. It reads
-`research/2026-11-21-brainstorming-followup/README.md` first. Any evaluation run it makes as a
-probe counts against pavilion's limit of four working sessions. The trial cases are in the
-session's scratch folder and are gone after a reboot, so `evaluation-trials.md` holds each
-grader and command in full.
+1. Geoff answers the three questions in the follow-up spec,
+   `specs/2026-11-21-brainstorming-spec.md`, and approves it. Its build task launches only
+   after that. A restart of his session fits here, before or after he approves.
+2. Run "Retiring the old process". The survey release it waits on is cut. Its retired-words
+   gate leaves out the eight `evals/results/` folders named in the launch prompt. A clear of
+   Geoff's session fits just before it starts.
+
+After "Retiring the old process" merges, Geoff's session raises the spec-writing evaluation
+with him.
 
 ## Open decisions
 
@@ -128,14 +154,11 @@ grader and command in full.
 - The `claude auto-mode critique` of the first settings change said the entry for build
   sessions doesn't say what shows that Geoff approved a spec. Geoff hasn't ruled on it. The
   critique run after the switch returned no feedback, twice.
-- Pull request 262 names four habits from the retired operational rules that no loaded file
-  carries now, and gives a section for the global `CLAUDE.md`. Geoff hasn't chosen which to
-  keep: source `~/.local/secrets` in the same command before reading a secret; give
-  `wrangler secret put` a `--name`; put a Node script with CSS selectors in a file; and use
-  `gh issue list --search` when `gh issue view` fails. His session recommends the first two.
 - Pull request 13 left three things for a later look: `DESIGN.md` in `glw907/survey` still
   says "the approval queue" in four places (its backlog item 10), the workstation still holds
   `~/.claude/docs/voice/approval-brief.md`, and the survey skill's description ends on a clause
   that addresses Claude.
+- Geoff has an open question on the `paths:` key in `vps-conventions`: drop it, keep it, or
+  widen it. His session recommends dropping it, which is four lines and a direct change.
 - "The plugin" added `BACKLOG.md` and `.claude/project-tracking.json` to the public `standards`
   repo, outside its task's table. They stay unless Geoff objects.

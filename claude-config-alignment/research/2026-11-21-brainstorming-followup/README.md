@@ -25,10 +25,10 @@ reader at high effort compared the local skill with local practice and changed n
 | `community-elicitation-patterns.md` | 14 | 9 | 5 | 0 |
 | `local-read.md` | one report | not checked | | |
 | `past-sessions.md` | one report | not checked | | |
-| `evaluation-trials.md` | three trials | run by Geoff's session | | |
+| `evaluation-trials.md` | six trials | run by Geoff's session | | |
 
 After the research, one Opus reader at high effort read Geoff's typed messages in 41 past
-brainstorming sessions, and Geoff's session ran three trials of the evaluation command.
+brainstorming sessions, and Geoff's session ran six trials of the evaluation command.
 
 A finding with any verdict but `confirmed` is not evidence until someone reads the page again.
 In most of those the quote is real and the researcher's conclusion reaches past it. The local
@@ -164,3 +164,11 @@ The full record is `evaluation-trials.md`. Its main points:
   commit.
 - The second message asked the user to guess at a cause in 4 runs of 4, which is the kind of
   question Geoff turned down most often.
+- A run that names no model uses Opus 5.5, so the first four trials measured the skill on
+  Opus. The fifth pins Fable 5.2, where a full suite of 17 cases takes 33 minutes and costs
+  about $27.
+- On 13 cases the rewrite passed all 13 in two full runs. The current skill passed 4, and so
+  did a session with no plugin. A judge found the question answerable in 67 of 72 replies with
+  the rewrite, 5 of 18 with the current skill, and 17 of 18 with no plugin.
+- The final text passed all 13 cases again, with 263 of 264 grader checks, in a run that a
+  background session started in auto mode and waited through.

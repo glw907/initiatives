@@ -107,3 +107,150 @@ What it shows:
   frame the workstation's writing standard bans.
 - The two graders disagree here in the other direction. The judge passed three replies as one
   ask, and each holds two question marks.
+
+## Trial 4: eleven cases on the current skill and on a draft rewrite
+
+Eleven brainstorming cases were written from the corrections in `past-sessions.md`, each with
+one grader for each fact. The same cases ran on the current skill and on a first draft of the
+rewrite, six runs a case, with the Sonnet judge and no model named for the runs.
+
+A run with no model named uses `claude-opus-5-5`, whatever the workstation's settings say. One
+case run later with `--keep-temp` showed it: the trace of the run records that model, while
+`~/.claude/settings.json` names `fable`. So trials 1 to 4 measured the skill on Opus 5.5.
+
+| | Current skill | Draft |
+| --- | --- | --- |
+| Time | 907 seconds | 873 seconds |
+| Cost | $8.05 | $7.12 |
+| A run | about 14 seconds and $0.12 | about 13 seconds and $0.11 |
+
+Passes of 6 for each grader whose rubric did not change afterward:
+
+| Case | Grader | Current skill | Draft |
+| --- | --- | --- | --- |
+| `cannot-describe` | `shows-options` | 0 | 5 |
+| `second-question` | `answerable` | 1 | 5 |
+| `second-question` | `plain-restatement` | 0 | 5 |
+| `rough-number` | `answerable` | 3 | 6 |
+| `rough-number` | `treats-the-number-as-rough` | 6 | 6 |
+| `already-answered` | `carries-forward` | 6 | 6 |
+| `how-is-the-models-call` | `asks-what-is-theirs` | 6 | 6 |
+| `best-practice` | `answers-with-the-practice` | 6 | 4 |
+| `right-size` | `stays-small` | 6 | 6 |
+| `approach-picked` | `no-building` | 4 | 6 |
+
+What it shows:
+
+- The current skill never showed options to someone who said they couldn't describe what they
+  wanted. All six replies asked the baker to describe the bakery in other words: "if a regular
+  walked in and described your bakery to a friend, what would they say it's like?"
+- On a second message the current skill asked for a guess at other people's reasons in five
+  runs of six ("Why do you think they stay empty?"), and all six opened with "So the real goal"
+  or "So the real problem".
+- Three of the current skill's six `rough-number` replies asked "What made you want this now?"
+  and offered guesses at the answer. One added "Did something happen", the question that asks
+  him to recall one incident.
+- Two of the current skill's six replies showed a full draft design the moment an approach was
+  picked.
+- The current skill already holds three of the behaviors: it uses an answer already given, it
+  makes the method call itself, and it keeps a small tool small.
+- Four graders were wrong and were rewritten before trial 5. `skill-not-fired` passed 0 of 12
+  because `tool_used` defaults `min` to 1, so "never called" needs `min: 0` and `max: 0`.
+  `one-ask` counted the offer to skip the questions as a second ask. `stays-in-scope` failed a
+  "why rebuild" question, and `checks-before-writing` failed a reply that asked one more
+  question. `no-offered-answers` failed remarks that were not answers to the question.
+- The draft had two real gaps, and its wording changed before trial 5. After "what's best
+  practice here?" it answered and then asked "Does that sound right?" beside a new question.
+  After a numbered list of choices it asked a second, separate question.
+
+## Trial 5: thirteen cases on Fable 5.2, against the current skill and no plugin
+
+The cases grew to thirteen, and every run from here names its models: `claude-fable-5-2` for
+the run and `claude-sonnet-5-5` for the judge. The scores for each case are in the spec,
+`specs/2026-11-21-brainstorming-spec.md`, under "What the cases found".
+
+| Run | What ran | Result | Time | Cost |
+| --- | --- | --- | --- | --- |
+| First | The rewrite, six runs a case, with a $15 cost cap | Stopped at the cap after 10 of 17 cases | 1,099 seconds | $15.24 |
+| Second | The rewrite, the full suite from a fresh clone | Exit 0, 17 of 17 cases at 0.8 or more | 1,998 seconds | $27.30 |
+| Third | The same, after two rubric fixes | Exit 0, 17 of 17 cases at 0.8 or more | 1,966 seconds | $27.36 |
+| Fourth | The current skill and no plugin, the 13 cases, three runs each | 4 of 13 cases at 0.8 or more in each | 1,615 seconds | $18.01 |
+
+A run on Fable costs about $0.27, against $0.11 on Opus 5.5 in trial 4. The suite's cost cap
+went from $15 to $35.
+
+The first run found one wrong grader and one gap in the draft.
+
+- `no-building` passed 0 of 6 in `approach-picked`. After a pick the skill plays the design
+  back, and the grader failed each reply for describing what a page shows. It now fails only
+  on code, a schema, file names, or build steps.
+- `shows-options` passed 2 of 6 in `cannot-describe`. Four replies asked what the site is for
+  and promised to show looks later. The draft now says to show two or three options in that
+  same message, before the why question.
+
+The second run found two wrong rubrics outside brainstorming. `wraps-with-context` in
+`go-conventions` passed 2 of 6 and `backoff-is-done` in `backlog-sweep` passed 4 of 6. Each
+demanded one exact detail and failed replies that were right, and each was corrected before
+the third run.
+
+Passes for each brainstorming grader. The rewrite's column adds the second and third runs. The
+fourth run named no `--threshold`, so the command exited 1 on its default of 1.0.
+
+| Grader | Rewrite | Current skill | No plugin |
+| --- | --- | --- | --- |
+| `answerable` | 67 of 72 | 5 of 18 | 17 of 18 |
+| `one-ask` | 132 of 132 | 21 of 33 | 6 of 33 |
+| `no-offered-answers` | 12 of 12 | 0 of 3 | 0 of 3 |
+| `says-where-each-comes-from` | 12 of 12 | 0 of 3 | 0 of 3 |
+| `shows-options` | 12 of 12 | 0 of 3 | 3 of 3 |
+| `plain-restatement` | 12 of 12 | 2 of 3 | 0 of 3 |
+| `answers-with-the-practice` | 12 of 12 | 2 of 3 | 3 of 3 |
+| `asks-what-is-theirs` | 12 of 12 | 3 of 3 | 1 of 3 |
+| `stays-in-scope` | 12 of 12 | 3 of 3 | 0 of 3 |
+| `stays-small` | 12 of 12 | 3 of 3 | 0 of 3 |
+| `no-building` | 36 of 36 | 9 of 9 | 7 of 9 |
+| `skill-fired` | 72 of 72 | 18 of 18 | Left out |
+| `skill-not-fired` | 12 of 12 | 3 of 3 | Left out |
+
+Nine other graders passed every run in all three columns: `asks-nothing-the-files-answer`,
+`carries-forward`, `checks-before-writing`, `does-the-rename`, `names-what-it-read`,
+`no-question`, `numbers-the-approaches`, `recommends-one`, and `treats-the-number-as-rough`.
+
+What it shows:
+
+- The current skill makes its questions harder to answer than no skill does. Two of its three
+  first replies asked the user to "walk me through a season with the paper sheet".
+- With no plugin a reply asks several things at once. Two of its three first replies were five
+  numbered questions. It also grew a small tool and asked about the build when the user was
+  gathering requirements.
+- The rewrite's five misses are all `answerable`, each on a question about why now, such as
+  "What's prompting you to add an events calendar now?" The judge's votes split on it.
+- Neither the current skill nor a bare session says where an approach comes from. That
+  behavior is new with the rewrite.
+- The raw result files hold local paths and stay out of the repo.
+
+## Trial 6: the final text, run by a background session
+
+One sentence of the skill's text changed after trial 5, to remove a contradiction a reader of
+the spec found. This trial ran the thirteen brainstorming cases once more on the final text. It
+also tested how a task session will run the suite. A session started with `claude --bg`,
+`--permission-mode auto`, and the task's `--settings` ran `bash scripts/run-evals.sh --case
+'brainstorming-*'` in the scratch clone.
+
+| Measure | Result |
+| --- | --- |
+| Exit code | 0 |
+| Cases that pass | 13 of 13 |
+| Grader checks passed | 263 of 264 |
+| Run records with an error | 0 of 78 |
+| Time | 21 minutes |
+| Cost as the command prices it | $20.30 |
+
+What it shows:
+
+- The one miss is `answerable` in `rough-number`, which scored 0.94. Every other case scored
+  1.00.
+- No call the session made was refused. It started the script with the Bash tool's
+  `run_in_background`, waited for the exit notice, and read exit 0.
+- Weekly usage rose from 31 to 34 percent for all models and from 41 to 45 percent for Fable
+  across the run. Geoff's session and one reviewing subagent worked beside it.
