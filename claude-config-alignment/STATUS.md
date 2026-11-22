@@ -137,14 +137,29 @@
   `test_a_run_past_cap_min_ends_as_stopped_time`, and passed on the next run with no change to
   the test. Two evaluation runs were going at the time. It is item 112 in the workstation
   backlog, commit `0c1cf61`.
-- The first pull request of "Retiring the old process" is being built. Geoff's session
-  launched it at 23:43 on 2026-11-21 from `~/.dotfiles` at `7f5cbdf` as the background session
-  `retiring-old-process-first` (`a0c893ad`), on Opus at high effort, with the goal in
-  `plans/2026-11-21-retiring-first-goal.txt`. Its time clause is 320 minutes, twice the planned
-  160, with nothing added for evaluations because the task runs none. Before the launch the
-  busy check on `~/.dotfiles` exited 0, the repo read as public, and the brainstorming session
-  was sent a notice. It runs beside the brainstorming task, since neither touches the other's
-  repo. Pavilion has four working sessions while a suite run is going, which is the limit.
+- The first pull request of "Retiring the old process" is built and ready: pull request 264 in
+  `glw907/workstation`, on `33f7c79`, mergeable. Its session `retiring-old-process-first`
+  (`a0c893ad`) ended `done` at 00:27 on 2026-11-22, 38 minutes after its launch from
+  `7f5cbdf`, against 160 planned. It ran on Opus at high effort with the goal in
+  `plans/2026-11-21-retiring-first-goal.txt`. The gate exited 0 on `fd12321`, the commit that
+  deletes `pass-core`, and on `33f7c79`. The reviewer returned fix on `1f00abe` and accept on
+  `33f7c79`. The pull request shows no checks because the workstation repo runs no CI on pull
+  requests, as pull request 263 also showed none. Geoff's session checked the branch itself:
+  it leaves alone every file the goal named, and no live settings file, unit, or hook in
+  another repo names a script it deletes.
+- Pull request 264 leaves two notes for Geoff. `cairn-pass` doesn't name the cairn-cms process
+  skill, because that skill's name holds a retired word. The weekly usage check sits only in
+  `unattended-work-guards.md` and not in `building-from-specs` "Launching a task". It also
+  filed workstation backlog item 113, a Vale config line that names a deleted skill.
+- The second pull request of "Retiring the old process" is built as six local commits and is
+  not pushed. They sit on branch `retiring-second` at `79f191e`, in the worktree
+  `~/Projects/workstation-wt/retiring-second`, on top of `33f7c79`. The gate exited 0 on
+  `79f191e`. The spec's two searches print only the lines its done items allow, plus the three
+  lines of `tests/test_claude_merge_guard.py` that the direct commit removes. One change is
+  outside the spec's table: survey 2.0.0's description is 515 characters, over the lint's
+  500, and `claude-tooling-sync` now exempts it, because that text is what the survey
+  evaluations tested. A `standards:diff-reviewer` read of `33f7c79..79f191e` is running, and
+  its verdict is not in.
 - Geoff ruled late on 2026-11-21, before leaving for the night: "Unless there are major issues,
   you can do all the merges." His session reads that as the three pull requests still to merge:
   23 in `glw907/standards` and the two of "Retiring the old process". A pull request that stays
@@ -157,25 +172,26 @@
 ## Next action
 
 Geoff's session runs the tasks from `plans/2026-11-21-side-by-side-prompt.txt`. Every "Side by
-side" task has merged. Two task sessions are running, and each ends in a pull request that
-Geoff's session merges. Neither merge waits on the other. No watcher outlives a clear of
-Geoff's session, so a fresh session reads both from `claude agents --json` before anything
-else, and starts no third session while both work.
+side" task has merged, and no task session is running. Three merges are left, and each stops
+at a permission prompt that only Geoff answers. A background watcher can outlive a clear of
+Geoff's session, so a fresh session reads `claude agents --json` and the open pull requests
+before it acts on a watcher's notice.
 
-1. Pull request 23 in `glw907/standards` is ready to merge, under Geoff's ruling on the
-   overnight merges. Geoff's session runs `gh pr merge 23 --repo glw907/standards --merge` once
-   the other task session has ended, and the command stops at his permission prompt. The
-   after-merge steps follow, with `claude rm c6a1f289`, then the four workstation edits in the
-   follow-up spec as one direct commit, with their done items posted on the merged pull
-   request. The lines those edits change were found on `7f5cbdf` and match the spec.
-2. The first pull request of "Retiring the old process", session `a0c893ad` in
-   `glw907/workstation`. When it is ready, Geoff's session merges it the same way, pulls, runs
-   `stow -R bin`, and checks the three after-merge items. It then builds the second pull
-   request itself from the second table in the spec, runs `claude-tooling-sync apply` and
-   `verify` after that merge, and only then makes the direct commit that removes
-   `claude-merge-guard`. The brainstorming spec's workstation edits take the `brainstorming`
-   entry out of `vendored-skills.json`, so they land before the second pull request sets that
-   file's descriptions.
+1. Merge pull request 23 with `gh pr merge 23 --repo glw907/standards --merge`. After it: the
+   busy check and a pull in `~/Projects/standards`, `claude rm c6a1f289`, and the branch
+   `worktree-brainstorming-skill-tests` deleted locally and on the remote.
+2. Merge pull request 264 with `gh pr merge 264 --repo glw907/workstation --merge`. After it:
+   the busy check and a pull in `~/.dotfiles`, `stow -R bin`, `stow -R claude`, the three
+   after-merge items posted on the pull request, `claude rm a0c893ad`, and the branch
+   `worktree-retire-old-process-1` deleted locally and on the remote.
+3. Make the four workstation edits of the brainstorming spec as one direct commit in
+   `~/.dotfiles`, and post their done items on pull request 23. They come after pull request
+   264 merges, because both change `claude-tooling.md` and `BACKLOG.md`.
+4. Merge `origin/main` into `retiring-second`, rerun the gate, push, and open the second pull
+   request once its review is an accept. Merge it, pull, and run `claude-tooling-sync apply`
+   and `verify`. Only then make the direct commit that removes `claude-merge-guard`, its
+   test, and the test's name in the `pytest` leg's list. Run `stow -R bin` and check the done
+   items at the spec's lines 754 to 768.
 
 After "Retiring the old process" merges, Geoff's session raises the spec-writing evaluation
 with him.
