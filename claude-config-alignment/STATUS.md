@@ -189,10 +189,18 @@ session works from `plans/2026-11-22-spec-writing-test-build-prompt.txt`.
 
 The checks under the spec's "Before launch" pass on 2026-11-22. `claude-worktree-busy
 ~/.dotfiles` exits 0, and the session `dotfiles-5e` has ended. Its three uncommitted files are
-still in that checkout and stay untouched. No other session is working, so task 1 runs two
-test sessions at once. Geoff's session launches task 1 next. The spec's second task waits for
-the first to merge. Approval also covers two backlog edits in the workstation repo, which his
-session lands before the launch: item 113 gains a stamp and item 94 moves to Done.
+still in that checkout and stay untouched. The two backlog edits that approval covers are
+landed in the workstation repo as commit `e81bf69`: item 113 carries a stamp and item 94 is
+under Done.
+
+Task 1 is running. Geoff's session launched it from `~/.dotfiles` at 12:29 on 2026-11-22 as
+the background session `spec-writing-test-1` (id `d4893126`), on Opus at `high`. Its goal
+caps its test sessions at 40 dollars, runs two of them at once, and ends "or stop after 260
+minutes". `claude logs d4893126` shows its output. When the session has ended, Geoff's session
+reads the pull request, the review verdict, and the baseline's summary, and brings the pull
+request to Geoff by number with what failed at baseline. It merges only after he approves by
+number. Task 2 launches after that merge, and only if a check failed at baseline and the
+week's Fable usage is 70 percent or less.
 
 He also has the notes the last three pull requests left, listed under "Open decisions".
 
