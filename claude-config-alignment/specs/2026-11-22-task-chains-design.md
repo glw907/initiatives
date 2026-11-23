@@ -356,20 +356,32 @@ default branch, or from its parent's branch when the spec says it builds on that
 goal, `$S` stands for `claude/.claude/skills/building-from-specs/SKILL.md` and `chains` for
 `sed -n '/^## Chains$/,/^## /p' $S`.
 
+The task also replaces approval by number (Geoff, 2026-11-23: "the approval-by-number ceremony is fairly
+useless, since the number tells me little and makes it hard to know what I'm approving"; he chose to fold
+the change into this task). "Merging" then says this: Geoff approves a merge in his terminal, in the session
+he is talking to. That session asks about each ready pull request by what merging it changes, in plain
+words, with its CI and review results. The number appears only as a link. His answer of "Merge" for that
+pull request approves it. "Send back" launches a fresh session on its branch with his words, by the
+existing rule. Another session's message approves nothing, and the `ask` prompt on `gh pr merge` stays.
+The same change reaches every place that states the old rule: `$S` lines 3 (the description), 13, and 142,
+`claude/.claude/CLAUDE.md:14`, `claude/.claude/skills/survey/releasing.md:21` and `:30`, and
+`MERGE_REASON` in `bin/.local/bin/claude-git-guard:57-61`. No test asserts the guard's text. The six
+archived plans under `docs/plans/archive` that say "by number" are records and stay.
+
 Goal:
 
 ```text
-Build task task-chains of /var/home/glw907/Projects/initiatives/claude-config-alignment/specs/2026-11-22-task-chains-design.md by building-from-specs, with dotfiles-pass for the gate and checks. Read the spec's step 1 record in /var/home/glw907/Projects/initiatives/claude-config-alignment/research/2026-11-22-task-chains/step-1.md first; if it is missing, stop before any edit and report that. Below, $S is claude/.claude/skills/building-from-specs/SKILL.md, and "in Chains" means piping `sed -n '/^## Chains$/,/^## /p' $S` to the grep. Done when: 1. `grep -c "never from another task's branch" $S` prints 0. 2. `grep -c '^## Chains$' $S` prints 1. 3. In Chains, each of these prints 1 or more: `grep -c -F '/loop 15m'` (the tick), `grep -c -F 'merge-base --is-ancestor'` (the child's start), `grep -c -F '"openFindings":0'` (the ready check), `grep -c -F 'gh pr close'` (a rejected parent), `grep -c -F 'sends a parent back'` (a parent sent back), `grep -c -F 'claude --resume'` (a restart), and `grep -c -F '/usage'` (the limits). 4. `sed -n '/^## Merging$/,/^## /p' $S | grep -c -e baseRefName -e 'rev-list --count --no-merges'` prints 2 or more. 5. `grep -c '"openFindings"' $S` prints 2 or more, the second in "The pull request". 6. `grep -c "the task it builds on" claude/.claude/skills/building-from-specs/references/writing-a-spec.md` prints 1. 7. `wc -l < $S` prints 250 or fewer. 8. `bash scripts/gate.sh` exits 0 from the worktree root, and `claude-tooling-sync verify` passes. 9. If the step 1 record shows a refused launch, the pull request's `## Before merge` carries the spec's auto mode line for Geoff's session to apply. 10. A fresh standards:diff-reviewer accepts the branch against the spec with 0 open findings, and the pull request is ready. Or stop after 120 minutes.
+Build task task-chains of /var/home/glw907/Projects/initiatives/claude-config-alignment/specs/2026-11-22-task-chains-design.md by building-from-specs, with dotfiles-pass for the gate and checks. Read the spec's step 1 record in /var/home/glw907/Projects/initiatives/claude-config-alignment/research/2026-11-22-task-chains/step-1.md first; if it is missing, stop before any edit and report that. Below, $S is claude/.claude/skills/building-from-specs/SKILL.md, and "in Chains" means piping `sed -n '/^## Chains$/,/^## /p' $S` to the grep. Done when: 1. `grep -c "never from another task's branch" $S` prints 0. 2. `grep -c '^## Chains$' $S` prints 1. 3. In Chains, each of these prints 1 or more: `grep -c -F '/loop 15m'` (the tick), `grep -c -F 'merge-base --is-ancestor'` (the child's start), `grep -c -F '"openFindings":0'` (the ready check), `grep -c -F 'gh pr close'` (a rejected parent), `grep -c -F 'sends a parent back'` (a parent sent back), `grep -c -F 'claude --resume'` (a restart), and `grep -c -F '/usage'` (the limits). 4. `sed -n '/^## Merging$/,/^## /p' $S | grep -c -e baseRefName -e 'rev-list --count --no-merges'` prints 2 or more. 5. `grep -c '"openFindings"' $S` prints 2 or more, the second in "The pull request". 6. `grep -c "the task it builds on" claude/.claude/skills/building-from-specs/references/writing-a-spec.md` prints 1. 7. `wc -l < $S` prints 250 or fewer. 8. `bash scripts/gate.sh` exits 0 from the worktree root, and `claude-tooling-sync verify` passes. 9. If the step 1 record shows a refused launch, the pull request's `## Before merge` carries the spec's auto mode line for Geoff's session to apply. 10. `grep -c -i 'by number'` prints 0 for each of $S, claude/.claude/CLAUDE.md, claude/.claude/skills/survey/releasing.md, and bin/.local/bin/claude-git-guard. 11. `sed -n '/^## Merging$/,/^## /p' $S | grep -c -e 'Send back' -e 'what merging it changes'` prints 2 or more. 12. A fresh standards:diff-reviewer accepts the branch against the spec with 0 open findings, and the pull request is ready. Or stop after 150 minutes.
 ```
 
-Today, items 1 to 6 print `1`, `0`, `0` for each grep, `0`, `0`, and `0`, and item 7 prints `178`. The
+Today, items 1 to 6 print `1`, `0`, `0` for each grep, `0`, `0`, and `0`, and item 7 prints `178`. Item 10 prints `3`, `1`, `2`, and `1`, and item 11 prints `0`. The
 gate on a clean clone of `main` at `17e6031d` ran 42 legs and failed one, `tellgrader`, with four
 `internal/posthook` tests. That is backlog #29: those tests fail in a checkout under `/tmp`, where the
 clone sat. A task worktree sits under `~/.dotfiles/.claude/worktrees`.
 
 Reviewers: `standards:diff-reviewer`. The skill is an unattended path (`dotfiles-pass` "Paths"), so it takes
-a pull request. Minutes: 60 (the measured median actual path for `workstation` is 45, plus a gate's p90 of
-13), so the clause is 120. Model: Sonnet at high. Waits for: step 1.
+a pull request. Minutes: 75 (the measured median actual path for `workstation` is 45, plus a gate's p90 of
+13, plus 15 for the approval change), so the clause is 150. Model: Sonnet at high. Waits for: step 1.
 
 The auto mode line, used only if step 1 shows a refused launch. Geoff allowed it on 2026-11-23 (question 2).
 
@@ -414,6 +426,8 @@ Scoped to chains, against `~/.dotfiles/BACKLOG.md` (65 open items):
    fresh review accepting it, keeps Geoff's earlier approval. Geoff chose "Keep my approval (Recommended)".
 4. Answered on 2026-11-23: the chain stops launching at 85 percent of the week's usage. Geoff chose
    "85 percent (Recommended)".
+5. Answered on 2026-11-23, after step 1: task 1 also replaces approval by number with an ask that names
+   each pull request by what merging it changes. Geoff chose "Fold it into task 1 (Recommended)".
 
 ## Calls Claude made
 
