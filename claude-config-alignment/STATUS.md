@@ -239,7 +239,10 @@ The work after task 2 is the reshape of cairn-cms and dubplate to the workstatio
 which this record lists as a non-goal. Geoff ruled on 2026-11-22 that it comes before the
 monthly review rework ("The reshape first.") and agreed to how it runs ("Perfect."): a new
 initiative record, steered from the initiatives repo by a fresh session with a launch prompt,
-with each task launched from its repo's main checkout, and dubplate first. Geoff's session
+with each task launched from its repo's main checkout, and dubplate first. He added on
+2026-11-22 who plans and who builds: "Note for the reshap for for cairn and dubplate, I'd
+like a Fable planning effort. I can execute with something lighter." So the launch prompt
+puts the audit and each spec on Fable, and each task's build on a lighter model. Geoff's session
 opens the record and writes the launch prompt once task 2 has merged and its two closing
 checks are reported. He also asked whether any Anthropic or community skill is missing for
 those two projects. The reshape's audit answers that with a trial for each candidate. The
@@ -287,7 +290,7 @@ The count of 73 `content-draft` calls and no `content-review` call does not show
 drafted without its check. Every one of the 73 comes from one prompt in the test for cairn's
 docs skill, "Write the homepage copy for the new about section on 907.life.", which checks
 that the docs skill stays out. No site has a content commit since 2026-08-22. The closer look
-on 2026-11-22 still finds three weak points, and a proposal for them waits for Geoff's answer:
+on 2026-11-22 still finds three weak points:
 
 - `content-draft` ends by offering the check. In 64 of the 73 test sessions the offer was the
   last thing said, and nobody was there to accept it.
@@ -300,6 +303,25 @@ on 2026-11-22 still finds three weak points, and a proposal for them waits for G
 
 ecxc-ski's `.claude/rules/content.md` also points at `~/.claude/docs/web-content-method.md`
 and `prose-guard`, and neither exists. Only ecxc-ski has a `docs/content-guide.md`.
+
+Claude proposed four fixes and asked "Do you want all four, with a spec for item 3?" Geoff
+answered on 2026-11-22: "Yes." Nothing is built, and the spec is being written.
+
+1. `content-draft` runs `content-review` on the file it drafted and reports the result, in
+   place of offering to. This is in the `standards` plugin and joins item 3's spec, because
+   it changes what a skill does.
+2. `site-pass` has the task session run `content-review` on each changed content file before
+   its pull request is ready, and quote the result there. The reviewer agent stays as it is.
+   This joins the workstation pull request that waits for task 2.
+3. The plugin ships a small Vale style built from the method's banned-word list.
+   `content-review` runs Vale with that config and fails when Vale reads no file, so no site
+   needs a Vale config. This one gets a short spec, and Geoff approves it before any launch.
+4. ecxc-ski's content rule loses its dead pointers. It lands directly after item 3 merges.
+
+A draft of the style, run on 2026-11-22 over all 111 content files in the four sites, flags
+26 places: 21 in aksailingclub-org, 5 in 907-life, and none in ecxc-ski or cairn-pub. The
+method's two samples come out as it says they should, the clean one with no finding and the
+other with 12.
 
 He also has the notes the last three pull requests left, listed under "Open decisions".
 
