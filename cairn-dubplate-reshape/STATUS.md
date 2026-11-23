@@ -1,14 +1,16 @@
 # Status
 
-The audit of both repos is done, and Geoff has answered its three questions. Two spec sessions
-come next, and Geoff starts each one. `dubplate`'s runs on Opus at high from
-`plans/2026-11-22-dubplate-spec-prompt.txt`. `cairn-cms`'s runs on Fable at high from
-`plans/2026-11-22-cairn-cms-spec-prompt.txt`, after he approves `dubplate`'s spec. The facts for
-both are gathered in `research/2026-11-22-spec-inputs/`.
+The `dubplate` spec is written and waits for Geoff's approval:
+`specs/2026-11-22-dubplate-reshape.md`. Its Opus fresh reader's findings are folded in. After he
+approves it, this session writes the build launch prompt in `plans/` and stops. `cairn-cms`'s spec
+session runs on Fable at high from `plans/2026-11-22-cairn-cms-spec-prompt.txt` after that approval.
+The facts for both are gathered in `research/2026-11-22-spec-inputs/`.
 
 ## Current state
 
 - Geoff approved the record as pull request 182 on 2026-11-22, and it is active.
+- The `dubplate` spec has three tasks: the `internal/serve` fix, the Claude files and backlog, and
+  the Go team's checks. A probe showed a `--bg` task session can edit `.claude/` files.
 - The audit is `research/2026-11-22-audit/README.md`, with the trial outputs in its `trials/`
   folder. It read `dubplate` at `907605c` and `cairn-cms` at `87869e61f`. Neither repo has
   changed.
