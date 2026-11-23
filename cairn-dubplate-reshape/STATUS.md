@@ -3,7 +3,7 @@
 Geoff approved the `dubplate` spec, `specs/2026-11-22-dubplate-reshape.md`, and its build runs from
 `plans/2026-11-22-dubplate-build-prompt.txt`. Opus drafted `cairn-cms`'s spec,
 `specs/2026-11-22-cairn-cms-reshape.md`, from `plans/2026-11-22-cairn-cms-spec-prompt.txt`. A Fable
-fresh reader is checking it, and then it goes to Geoff. Its build prompt is written after he approves.
+fresh reader checked it, and it waits for Geoff's approval. Its build prompt is written after he approves.
 
 ## Current state
 
