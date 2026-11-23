@@ -98,7 +98,9 @@ commit when it has (probe below).
 
 Geoff can approve a chain's pull requests in one message. The session merges them in chain order and runs
 the four merge steps of "Merging" for each before the next, so the parent's remote branch is deleted before
-its child merges. In these checks, `<n>` is the pull request being merged and `<r>` its repo. Three checks
+its child merges. Between the parent's merge and the delete of its remote branch, each open child gets
+`gh pr edit <child> --repo <r> --base <default>`. A plain `git push origin --delete` of a child's base
+closes the child; it doesn't retarget it (step 1 record, 2026-11-23). In these checks, `<n>` is the pull request being merged and `<r>` its repo. Three checks
 come before each `gh pr merge`.
 
 - Its base is the default branch. `gh pr view <n> --repo <r> --json baseRefName --jq .baseRefName` prints
