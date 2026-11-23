@@ -12,8 +12,10 @@ fresh reader checked it, and it waits for Geoff's approval. Its build prompt is 
   the Go team's checks. A probe showed a `--bg` task session can edit `.claude/` files.
 - The `dubplate` build is under way. Hand-over 1 landed as `96c4e91` on `master`, and the GitHub
   settings are on. Task 1 (`serve-shutdown`) merged as pull request 20 (`3cc98d3`) after Geoff
-  approved it with "PR 20 is approved." on 2026-11-22. Task 2 (`claude-files`, session `d05076de`)
-  is still working on draft pull request 21. Task 3 waits until task 2 has merged.
+  approved it with "PR 20 is approved." on 2026-11-22. Task 2 (`claude-files`) merged as pull
+  request 21 (`56d95f7`) after Geoff approved it with "PR 21 approved" on 2026-11-22. The merged
+  `docs/STATUS.md` references to rounds moved to milestones in `f7cc516`. Task 3 (`gate-checks`,
+  session `c21bb503`, Opus at medium) is running from `~/Projects/dubplate`.
 - The `cairn-cms` spec has three tasks: rename the process skill to `cairn-build` and reword the
   Claude files, move the docs process off the Approval Queue before the docs cycle fires on
   2026-12-01, and apply the backlog sweep. Four steps in Geoff's session come first. Nothing in
