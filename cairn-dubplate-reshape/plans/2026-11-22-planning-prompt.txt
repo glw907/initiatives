@@ -3,8 +3,14 @@ Initiative: cairn-dubplate-reshape
 You are Geoff's session for planning the reshape of cairn-cms and dubplate. He launched you
 from his terminal and is at the keyboard. Work in /var/home/glw907/Projects/initiatives. Read
 cairn-dubplate-reshape/README.md first, then load the `building-from-specs` skill and read its
-references/writing-a-spec.md from top to bottom. This session runs on Fable at `high`, because
-Geoff asked for "a Fable planning effort" and builds "with something lighter".
+references/writing-a-spec.md from top to bottom.
+
+Which model. The planning is split in two, and each part is a session of its own. The audit,
+steps 1 to 4, runs on Opus at `high`. The specs, steps 5 to 7, run on Fable at `high`. Geoff
+asked for "a Fable planning effort" and builds "with something lighter". Fable read 85
+percent of the week on 2026-11-22, so Claude proposed the audit on Opus now and the specs on
+Fable after the week resets, and he answered: "Split is fine." If you are on Opus, do steps 1
+to 4 and stop. If you are on Fable, the audit should be on file: do steps 5 to 7.
 
 Where it stands. The record is written (2026-11-22). Nothing is audited, no spec exists, and
 neither repo has changed. If cairn-dubplate-reshape/STATUS.md exists, it is newer than this
@@ -33,11 +39,13 @@ The job. It is one planning effort for both repos, then one spec for each, dubpl
    `govulncheck` is not installed on pavilion, and an install follows the software tiers in
    the global `CLAUDE.md`. Record what the two Go checks print on dubplate today.
 4. Bring Geoff the audit in plain words. Ask only what he alone can answer (product, taste,
-   priority, scope, budget), one question at a time, and settle each before you write a spec.
-   Method and architecture calls are yours. Record them in the spec.
-5. Write dubplate's spec at cairn-dubplate-reshape/specs/, by writing-a-spec.md. Have one
-   fresh reader with no context check it, on Fable at `high`. Then bring it to Geoff for
-   approval. Only his typed words approve.
+   priority, scope, budget), one question at a time. Quote each answer in
+   cairn-dubplate-reshape/STATUS.md, commit the audit and STATUS, and stop. The specs are the
+   Fable session's.
+5. Read the audit and Geoff's answers in STATUS. Method and architecture calls are yours, and
+   each goes in the spec. Write dubplate's spec at cairn-dubplate-reshape/specs/, by
+   writing-a-spec.md. Have one fresh reader with no context check it, on Fable at `high`.
+   Then bring it to Geoff for approval. Only his typed words approve.
 6. Write the cairn-cms spec the same way. Carry over each ruling Geoff gave on dubplate that
    applies, and quote it. cairn-cms is the larger job: it has 8 skills, 3 agents, 5 rules,
    and hooks.
@@ -50,9 +58,10 @@ that changes a repo's process skill while that repo's other work is running can 
 work, so each spec says what must be idle before its first launch.
 
 Usage. `claude -p "/usage" --model haiku < /dev/null` prints the week's figures. Fable read
-83 percent of the week at 15:32 on 2026-11-22, and the week resets on Nov 27 at 11pm
-Anchorage. Read the figures first. Start no subagent on Fable past 85 percent. If the figure
-is past 85 when you start, tell Geoff before you do anything else and ask whether to go on.
+85 percent of the week at 15:39 on 2026-11-22, and the week resets on Nov 27 at 11pm
+Anchorage. Read the figures first. The audit session starts no subagent on Fable. The spec
+session starts only when Fable reads under 85 percent, and if it reads more, tells Geoff
+before it does anything else.
 
 Limits on pavilion. At most four sessions work at once, and that count includes you and every
 other session. `claude agents --json` lists them. A subagent is no session, but it spends

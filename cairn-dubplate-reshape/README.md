@@ -42,7 +42,9 @@ any particular skills, tools, or patterns I should be using to write good Go cod
   skills `golang-security` and `golang-database` from `samber/cc-skills-golang`; and three checks
   for dubplate's gate, `go test -race`, `govulncheck`, and a fuzz test for its upload and audio
   parsers.
-- The audit and each spec are written on Fable. Each task is built on a lighter model.
+- Each spec is written on Fable, and each task is built on a lighter model. The audit runs on
+  Opus: Fable was at 85 percent of its week on 2026-11-22, Claude proposed the split, and
+  Geoff answered "Split is fine."
 
 ## Non-goals
 
@@ -59,10 +61,10 @@ any particular skills, tools, or patterns I should be using to write good Go cod
 The changes land in `cairn-cms` and `dubplate`, each task launched from that repo's main checkout.
 The `workstation` repo holds `cairn-pass`, the short facts file for cairn-cms, and would hold one
 for dubplate if the audit calls for it. The audit, both specs, and the launch prompts live here.
-One planning session steers the work from this repo.
+Two planning sessions steer the work from this repo, one for the audit and one for the specs.
 
 ## Records
 
-- Launch prompt for the planning session: `plans/2026-11-22-planning-prompt.txt`.
+- Launch prompt for both planning sessions: `plans/2026-11-22-planning-prompt.txt`.
 - What came before: `../claude-config-alignment/STATUS.md`, which records Geoff's rulings on this
   work and the count of skill use behind the tool candidates.
