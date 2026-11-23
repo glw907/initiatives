@@ -1,30 +1,29 @@
 # Status
 
-Geoff approved the `dubplate` spec, `specs/2026-11-22-dubplate-reshape.md`. Its build runs from
-`plans/2026-11-22-dubplate-build-prompt.txt`, in a session Geoff starts from `~/Projects/dubplate`
-on Sonnet at high. `cairn-cms`'s spec session can start now, on Fable at high from
-`plans/2026-11-22-cairn-cms-spec-prompt.txt`. The facts for both are gathered in
-`research/2026-11-22-spec-inputs/`.
+Geoff approved the `dubplate` spec, `specs/2026-11-22-dubplate-reshape.md`, and its build runs from
+`plans/2026-11-22-dubplate-build-prompt.txt`. Opus drafted `cairn-cms`'s spec,
+`specs/2026-11-22-cairn-cms-reshape.md`, from `plans/2026-11-22-cairn-cms-spec-prompt.txt`. A Fable
+fresh reader is checking it, and then it goes to Geoff. Its build prompt is written after he approves.
 
 ## Current state
 
 - Geoff approved the record as pull request 182 on 2026-11-22, and it is active.
 - The `dubplate` spec has three tasks: the `internal/serve` fix, the Claude files and backlog, and
   the Go team's checks. A probe showed a `--bg` task session can edit `.claude/` files.
-- The `dubplate` build is under way. Hand-over 1 landed as `96c4e91` on `master`: `docs/STATUS.md`
-  is 42 lines and the old-process grep prints `0`. The GitHub settings are on: the vulnerability
-  alerts check exits `0` and the scanning check prints `enabled enabled`. Task 1 (`serve-shutdown`,
-  session `1c94556f`) and task 2 (`claude-files`, session `d05076de`) are running in background
-  sessions started from `~/Projects/dubplate`. Task 3 waits until both have merged.
+- The `dubplate` build is under way. Hand-over 1 landed as `96c4e91` on `master`, and the GitHub
+  settings are on. Task 1 (`serve-shutdown`) merged as pull request 20 (`3cc98d3`) after Geoff
+  approved it with "PR 20 is approved." on 2026-11-22. Task 2 (`claude-files`, session `d05076de`)
+  is still working on draft pull request 21. Task 3 waits until task 2 has merged.
+- The `cairn-cms` spec has three tasks: rename the process skill to `cairn-build` and reword the
+  Claude files, move the docs process off the Approval Queue before the docs cycle fires on
+  2026-12-01, and apply the backlog sweep. Four steps in Geoff's session come first. Nothing in
+  `cairn-cms` has changed, and no other session works there.
 - The audit is `research/2026-11-22-audit/README.md`, with the trial outputs in its `trials/`
   folder. It read `dubplate` at `907605c` and `cairn-cms` at `87869e61f`. Neither repo has
   changed.
 - The trials adopt `govulncheck` and fuzz tests for `dubplate`'s gate, and `go test -race` for its
-  CI after one fix. They decline `golang-security`, `golang-database`, `claude-code-setup`, and
-  `claude-md-management`.
-- The race run found an ordering bug in `dubplate`'s `internal/serve`. The test
-  `TestServeUntilDoneShutsDownWhenOneServeFails` fails a few times in 50 under `-race`. The fix is
-  product work, and it lands before `-race` joins CI.
+  CI once task 1's `internal/serve` fix lands. They decline `golang-security`, `golang-database`,
+  `claude-code-setup`, and `claude-md-management`.
 - `govulncheck` 1.10.0 is installed through Homebrew. Its line in the Homebrew list, `brew "govulncheck"`
   beside `brew "gopls"` in `~/.dotfiles/bluefin/Brewfile`, isn't written yet, because another
   session holds `~/.dotfiles`. The next session there adds it and runs `check-drift`.
