@@ -3,6 +3,8 @@
 Status: proposed (2026-11-22). Geoff set the scope in the terminal. The goals and non-goals below
 are Claude's reading of his words.
 
+Status: active (2026-11-22). Geoff approved the record as pull request 182.
+
 ## Summary
 
 This initiative moves the two project repos, cairn-cms and dubplate, onto the workstation's Claude

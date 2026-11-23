@@ -16,9 +16,9 @@ Where it stands. The record is written (2026-11-22). Nothing is audited, no spec
 neither repo has changed. If cairn-dubplate-reshape/STATUS.md exists, it is newer than this
 prompt: read it and start from where it says.
 
-The record's status. The record's README says whether it is proposed or active. If it is
-still proposed, its goals and non-goals are Claude's reading of Geoff's words. Read them to
-him in plain words and ask whether they are right before you audit anything.
+The record's status. Geoff approved the record as pull request 182 on 2026-11-22, and it is
+active. Its goals and non-goals are Claude's reading of his words, which he approved as
+written.
 
 The job. It is one planning effort for both repos, then one spec for each, dubplate first.
 1. Run `claude-worktree-busy ~/Projects/dubplate` and `claude-worktree-busy
