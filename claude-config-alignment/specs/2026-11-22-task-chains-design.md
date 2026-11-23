@@ -25,8 +25,8 @@ Goals:
 - A task whose spec says it builds on another task launches with no word from Geoff once that task's pull
   request is ready, and its branch starts from the parent's branch.
 - Independent tasks of one spec run side by side, and dependent ones run in series, overnight.
-- Only the session Geoff talks to merges. An Ask task merges on his "Merge" (task 1). A Show task merges
-  on his approval of its spec once its checks pass, and he hears of it afterward (task 2).
+- Only Geoff's typed words approve a merge, by task 1's "Merge" answer, and only the session he talks to
+  merges. Merge tiers are a separate spec (task 2).
 - A task session still can't merge. The merge prompt goes (Geoff, 2026-11-23), so a deny takes its place in
   task sessions (task 1, "The merge prompt").
 
@@ -402,54 +402,17 @@ The auto mode line, used only if step 1 shows a refused launch. Geoff allowed it
 Launching the next task of an approved spec from that spec's chain tick is routine (Geoff, 2026-11-23). In the session that holds a `/loop` chain tick, this covers `claude --bg` from the main checkout of a repo under /var/home/glw907/Projects or /var/home/glw907/.dotfiles, with the launch line building-from-specs "Launching a task" gives, for a task the tick's spec names. It clears Unsanctioned Communication for that launch only. It does not cover a task the spec doesn't name, a stop, or a merge.
 ```
 
-## Task 2: Show and Ask tiers
+## Task 2: moved to its own spec
 
-Geoff, 2026-11-23: "I'm getting a lot of smaller PRs with very obvious approval. And that definitaly
-causes approval fatigue." And: "small approvials that are mere formality are presenting in the same way as
-much more consiquntial decisions." He chose tiers set in each spec, "assuming that represents best
-practice."
-
-The tiers follow Ship / Show / Ask (Rouan Wilsenach,
-<https://www.martinfowler.com/articles/ship-show-ask.html>). Ship is `building-from-specs` "Direct
-changes" already. This task adds Show and Ask. One departure from that article: there the author picks
-each change's tier, and here Geoff picks it when he approves the spec, so his approval moves to the
-point where he sees the design. A change that drifts from its spec drops to Ask by itself. GitHub's
-Dependabot auto-merge
-(<https://docs.github.com/en/code-security/tutorials/secure-your-dependencies/automate-dependabot-with-actions>)
-is the precedent for a merge gated on checks with no per-change approval.
-
-The task writes these rules into `$S`:
-
-- Each task in a spec carries `Tier: show` or `Tier: ask`, and Geoff approves it with the spec. A task is
-  Ask unless all of these hold: it touches no sign-in or data path, no settings, hook, or permission
-  file, and in a path that runs unattended work it changes wording only. The repo's pass skill holds the
-  path map that answers each one.
-- A Show pull request says `Tier: show` in its body. The session Geoff talks to merges it, by the merge
-  steps, when every one of these holds: the task's session has ended, the pull request is ready, `gh pr
-  checks` exits 0, the task-score reads `verdict` `accept`, `openFindings` 0, and `unmet` 0, the body has
-  no `## Before merge` and nothing under `## For Geoff`, and `git diff --name-only` lists only paths the
-  spec names for that task. A miss on any of them makes the pull request Ask, and it comes to Geoff by
-  task 1's rule.
-- After a Show merge, Geoff's next sitting note names it in plain words, with its merge commit and
-  `git revert -m 1 <sha>` to undo it.
-- Ask is task 1's "Merging", unchanged.
-
-`writing-a-spec.md` gains the `Tier:` line in what a task carries. Tasks 1 and 2 are Ask: both change
-paths that run unattended work.
-
-Goal:
-
-```text
-Build task tiers of /var/home/glw907/Projects/initiatives/claude-config-alignment/specs/2026-11-22-task-chains-design.md by building-from-specs, with dotfiles-pass for the gate and checks. Below, $S is claude/.claude/skills/building-from-specs/SKILL.md. Done when: 1. `grep -c -F 'Tier: show' $S` prints 1 or more, and `grep -c -F 'Tier: ask' $S` prints 1 or more. 2. `sed -n '/^## Merging$/,/^## /p' $S | grep -c -e 'git diff --name-only' -e 'git revert -m 1'` prints 2 or more. 3. `grep -c -F 'Tier:' claude/.claude/skills/building-from-specs/references/writing-a-spec.md` prints 1 or more. 4. `grep -c -F 'ship-show-ask' $S` prints 1. 5. `wc -l < $S` prints 270 or fewer. 6. `bash scripts/gate.sh` exits 0 from the worktree root, and `claude-tooling-sync verify` passes. 7. A fresh standards:diff-reviewer accepts the branch against the spec's Task 2 with 0 open findings, and the pull request is ready. Or stop after 90 minutes.
-```
-
-Reviewers: `standards:diff-reviewer`. Minutes: 45, so the clause is 90. Model: Sonnet at high. Tier: ask.
-Waits for: task 1 merged, since both rewrite "Merging".
+The Show and Ask tiers left this spec on 2026-11-23. Geoff: "we'll need to make sure that change is baked
+thoughtfully into out broader claude infastructure. That might be worth a clean session and formal
+brainstorm/spec." The brief is `research/2026-11-23-merge-tiers-brief.md`, and the draft written here
+stands in it as a starting point, never a decision.
 
 ## Merge order
 
 Step 1's two stub pull requests merge first, in chain order, during step 1. Task 1's pull request
-merges after, then task 2's. Then `dotfiles-pass` "After a merge" runs, and, if the auto mode line landed,
+merges after. Then `dotfiles-pass` "After a merge" runs, and, if the auto mode line landed,
 `claude-tooling-sync apply` and `verify`.
 
 ## Backlog sweep
