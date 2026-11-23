@@ -2,7 +2,8 @@
 
 Geoff approved the `dubplate` spec, `specs/2026-11-22-dubplate-reshape.md`, and its build is done. Geoff approved `cairn-cms`'s spec,
 `specs/2026-11-22-cairn-cms-reshape.md`. Its build runs from `plans/2026-11-22-cairn-cms-build-prompt.txt`,
-in a session Geoff starts from `~/Projects/cairn-cms` on Sonnet at high. No task has launched.
+in a session Geoff starts from `~/Projects/cairn-cms` on Sonnet at high. All three tasks are merged. The
+`cairn-docs-cycle` launcher edit (`workstation` pull request 270) and the dry run remain.
 
 ## Current state
 
@@ -33,10 +34,17 @@ in a session Geoff starts from `~/Projects/cairn-cms` on Sonnet at high. No task
   on 2026-11-22. The `cairn-docs-cycle` launcher edit waits for task 2. Task 1 (`cairn-build`, Sonnet at high)
   merged as `cairn-cms` pull request 263 (`475435700`) after Geoff approved it with "263 approved" on
   2026-11-22. Its session sat `blocked` after the pull request was ready, so the session Geoff talks to
-  stopped it before the merge. Task 2 (`docs-process`, session `d16c24ce`, Opus at medium) is running from
-  `~/Projects/cairn-cms` and has started its eval suites. `claude agents --json` lists the four `claude -p` eval
-  children as busy, which the spec's call 17 said it would not. Geoff ruled on 2026-11-22 with "You can
-  start task 3", so task 3 (`backlog-sweep`, session `03150688`, Sonnet at medium) is running too.
+  stopped it before the merge. Task 2 (`docs-process`, Opus at medium) merged as `cairn-cms` pull request 264 (`8bc81cf64`) and task 3
+  (`backlog-sweep`, Sonnet at medium) as pull request 265 (`2254cada6`), both after Geoff typed "PR 264 and 265
+  are both approved." on 2026-11-23. Geoff added "Both recomendations accepted.", and pull request 264 took two
+  fixes to `evals/cycle-prompt.txt` before the merge: a skipped month leaves `last` alone, and step 1's
+  open-pull-request search ignores the run month's own branch. `claude agents --json` listed the four `claude -p`
+  eval children as busy, which the spec's call 17 said it would not. Geoff ruled on 2026-11-22 with "You can
+  start task 3". Task 3's session sat `blocked` after its pull request was ready, as task 1's had, and
+  was stopped before the merge. Geoff asked "please log the process failure", read as those blocked sessions:
+  `~/.dotfiles/BACKLOG.md` #118 holds it. The goal checker kept finding the done list's "and the session has
+  ended" clause unmet. The `cairn-docs-cycle` launcher edit is `workstation` pull request 270. #308 from the
+  sweep is `~/.dotfiles/BACKLOG.md` #119.
 - The audit is `research/2026-11-22-audit/README.md`, with the trial outputs in its `trials/` folder.
 - The trials adopt `govulncheck` and fuzz tests for `dubplate`'s gate, and `go test -race` for its
   CI once task 1's `internal/serve` fix lands. They decline `golang-security`, `golang-database`,
@@ -66,6 +74,8 @@ in a session Geoff starts from `~/Projects/cairn-cms` on Sonnet at high. No task
   Geoff's approval by number. It merges only after the `spec-writing-test-2` session ends, as
   pull request 24 does, because the standards plugin updates itself in every new session.
 - The `dubplate` spec carries the `internal/serve` shutdown fix before `-race` joins CI.
+- "PR 264 and 265 are both approved. And please log the process failure. Both recomendations accepted."
+  (2026-11-23). The two recommendations were the `cycle-prompt.txt` fixes above.
 - "spec approved" (2026-11-22), approving the `cairn-cms` spec as written, with its calls: the docs
   cycle opens one pull request and never waits, and the December fallback.
 - "Approved." (2026-11-22), approving the `dubplate` spec as written, with its calls: the race
