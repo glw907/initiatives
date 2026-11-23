@@ -423,6 +423,9 @@ He also has the notes the last three pull requests left, listed under "Open deci
   model favoring its own writing. The rule waits for a change to the "Models" section of
   `building-from-specs`, made through `claude-infra`, and stays out of the task-chains spec.
   The change is item 116 in the workstation backlog (`~/.dotfiles/BACKLOG.md`).
+- Writing the task-chains spec found that the skill's launch form puts the goal in double
+  quotes, so the shell runs its backticked commands. The fix is item 117 in the workstation
+  backlog. Until it lands, every launch passes its goal through a quoted here-document.
 - Pull request 23 left three optional review notes. `.gitignore:4` matches session files only
   at the top of a case folder, `scripts/run-evals.sh` works only from the repo root, and
   `BACKLOG.md` lost its `## Low` heading.
