@@ -23,7 +23,13 @@ in a session Geoff starts from `~/Projects/cairn-cms` on Sonnet at high. No task
   `research/2026-11-22-leftover-worktree/agent-a828799e8800f0243-uncommitted.patch`, and the
   removal used `--force`. `~/.claude/jobs/5452379b/tmp/base-tree` was clean and its tip is merged.
 - The `cairn-cms` spec has four steps in Geoff's session, then three tasks: `cairn-build`, the docs
-  process before the 2026-12-01 docs cycle, and the backlog sweep. Nothing in `cairn-cms` has changed.
+  process before the 2026-12-01 docs cycle, and the backlog sweep. Steps 1 to 3 are done on 2026-11-22:
+  hand-over 1 landed as `b48f6149a` on `main` (`docs/STATUS.md`, 54 lines), the GitHub settings are
+  on (alerts, secret scanning, and push protection read `enabled enabled`), and the settings change
+  landed as `672ddac08`. Turning alerts on raised Dependabot alert 1, a medium `minimatch` denial of
+  service in `package-lock.json`, which no task covers. Step 4, the `cairn-pass` and `claude-tooling.md`
+  edits, merged as `workstation` pull request 269 (`17e6031`) after Geoff approved it with "269 approved."
+  on 2026-11-22. The `cairn-docs-cycle` launcher edit waits for task 2. No task has launched.
 - The audit is `research/2026-11-22-audit/README.md`, with the trial outputs in its `trials/` folder.
 - The trials adopt `govulncheck` and fuzz tests for `dubplate`'s gate, and `go test -race` for its
   CI once task 1's `internal/serve` fix lands. They decline `golang-security`, `golang-database`,
