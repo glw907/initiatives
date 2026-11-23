@@ -415,6 +415,13 @@ He also has the notes the last three pull requests left, listed under "Open deci
   and leaves out the design conversation; specs are written on Fable at `high` ("Let's go with
   the Anthropic recomendation."); no run compares against a session with no guide; and a long
   spec for a small change is a failure ("Yes, that's too long for a small change").
+- Geoff approved a change to which models read a spec on 2026-11-22 ("Excellent. Could you
+  log that"). Fable writes the spec and a fresh Opus session reads it. A short extra read on
+  the builder's model, usually Sonnet, checks that the spec is clear enough to build from.
+  When Fable is near its weekly cap, Opus writes and a fresh Opus session reads. Fresh context
+  does most of the work, and a second model of similar strength adds coverage and avoids a
+  model favoring its own writing. The rule waits for a change to the "Models" section of
+  `building-from-specs`, made through `claude-infra`, and stays out of the task-chains spec.
 - Pull request 23 left three optional review notes. `.gitignore:4` matches session files only
   at the top of a case folder, `scripts/run-evals.sh` works only from the repo root, and
   `BACKLOG.md` lost its `## Low` heading.
