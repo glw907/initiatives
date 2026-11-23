@@ -422,6 +422,7 @@ He also has the notes the last three pull requests left, listed under "Open deci
   does most of the work, and a second model of similar strength adds coverage and avoids a
   model favoring its own writing. The rule waits for a change to the "Models" section of
   `building-from-specs`, made through `claude-infra`, and stays out of the task-chains spec.
+  The change is item 116 in the workstation backlog (`~/.dotfiles/BACKLOG.md`).
 - Pull request 23 left three optional review notes. `.gitignore:4` matches session files only
   at the top of a case folder, `scripts/run-evals.sh` works only from the repo root, and
   `BACKLOG.md` lost its `## Low` heading.
