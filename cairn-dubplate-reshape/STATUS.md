@@ -1,10 +1,10 @@
 # Status
 
-The `dubplate` spec is written and waits for Geoff's approval:
-`specs/2026-11-22-dubplate-reshape.md`. Its Opus fresh reader's findings are folded in. After he
-approves it, this session writes the build launch prompt in `plans/` and stops. `cairn-cms`'s spec
-session runs on Fable at high from `plans/2026-11-22-cairn-cms-spec-prompt.txt` after that approval.
-The facts for both are gathered in `research/2026-11-22-spec-inputs/`.
+Geoff approved the `dubplate` spec, `specs/2026-11-22-dubplate-reshape.md`. Its build runs from
+`plans/2026-11-22-dubplate-build-prompt.txt`, in a session Geoff starts from `~/Projects/dubplate`
+on Sonnet at high. `cairn-cms`'s spec session can start now, on Fable at high from
+`plans/2026-11-22-cairn-cms-spec-prompt.txt`. The facts for both are gathered in
+`research/2026-11-22-spec-inputs/`.
 
 ## Current state
 
@@ -45,6 +45,9 @@ The facts for both are gathered in `research/2026-11-22-spec-inputs/`.
   Geoff's approval by number. It merges only after the `spec-writing-test-2` session ends, as
   pull request 24 does, because the standards plugin updates itself in every new session.
 - The `dubplate` spec carries the `internal/serve` shutdown fix before `-race` joins CI.
+- "Approved." (2026-11-22), approving the `dubplate` spec as written, with its calls: the race
+  step in CI, `dependabot.yml` watching only GitHub Actions, no weekly fuzz schedule, and the task
+  models.
 
 ## Leave alone
 

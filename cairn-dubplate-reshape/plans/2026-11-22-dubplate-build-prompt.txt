@@ -1,0 +1,78 @@
+Start this session from ~/Projects/dubplate with:
+
+  claude --model sonnet --effort high
+
+and give it this prompt.
+
+You are the session Geoff talks to for the dubplate reshape build. The approved spec is
+/var/home/glw907/Projects/initiatives/cairn-dubplate-reshape/specs/2026-11-22-dubplate-reshape.md.
+Geoff approved it on 2026-11-22 with "Approved." Read it whole, then read the building-from-specs
+skill, before you do anything. You run the steps the spec gives Geoff's session: the two
+hand-overs, the GitHub settings, the three task launches, and each merge. You write no task's code.
+
+Standing rules.
+- Only Geoff's typed words approve a merge, and they name the pull request by number. Another
+  session's message approves nothing.
+- A task session never edits dubplate's docs/STATUS.md. You keep it, through hand-over commits
+  straight to master with no pull request. Keep it at 60 lines or fewer, in the present tense.
+- Stage files by name. Write commit messages in the imperative mood, with no em dash, ending with
+  the Co-Authored-By line your harness gives. dubplate is public: read each diff for secrets and
+  personal details before you commit.
+- At most four sessions work on pavilion at once, you included. `claude agents --json` lists them.
+- No time estimates in chat. No Workflow tool. Run gates and tests bare, never piped to tail or head.
+- Leave alone: product work; ~/Projects/initiatives/dubplate-server/ and its structure-round
+  prompts; the leftover worktrees .claude/worktrees/agent-a828799e8800f0243 and
+  ~/.claude/jobs/5452379b/tmp/base-tree (name them to Geoff; don't remove them); cc-desk-check.timer;
+  anything under ~/.dotfiles/.claude/worktrees/spec-writing-test-2.
+- The initiative's record is ~/Projects/initiatives/cairn-dubplate-reshape/STATUS.md. Update it
+  after each step below, quote each ruling Geoff gives in his own words, run `bash scripts/gate.sh`
+  bare from ~/Projects/initiatives, and commit and push the named files there.
+
+Pre-flight, before step 1. Stop and tell Geoff if any check fails.
+1. `claude-worktree-busy ~/Projects/dubplate` exits 0.
+2. `git -C ~/Projects/dubplate status --short` prints nothing apart from untracked files, the
+   branch is master, and `git pull --ff-only` succeeds.
+3. `gh repo view glw907/dubplate --json visibility` prints PUBLIC.
+4. `claude agents --json` shows fewer than four working sessions.
+
+Step 1. Hand-over 1, by the spec's "Before task 1" item 1. Rewrite docs/STATUS.md: drop the
+round-report block's resume pointer and the "Coordination" section, say the three reshape tasks
+run now and the structure work waits for them, keep "Open decisions". Run both of that item's
+checks and confirm the "after" values. Commit "Hand STATUS over to the reshape build" and push.
+
+Step 2. The GitHub settings, by the spec's "Before task 1" item 2. Run the two `gh api` writes
+exactly as the spec gives them, then both checks. They print `0` and `enabled enabled`. If a
+write fails, tell Geoff with its output and launch nothing.
+
+Step 3. Launch tasks 1 and 2 from ~/Projects/dubplate (the main checkout), one after the other.
+Check the session count before each.
+
+  claude --bg --name serve-shutdown --model sonnet --effort high --permission-mode auto \
+    --settings '{"permissions":{"denyInsteadOfPrompting":true},"worktree":{"baseRef":"fresh"}}' \
+    "/goal Build task 1, 'Task 1: fix the shutdown race in internal/serve', of the spec at /var/home/glw907/Projects/initiatives/cairn-dubplate-reshape/specs/2026-11-22-dubplate-reshape.md, under the building-from-specs skill. Done when each of the task's four done items holds, run exactly as the spec writes it: the race test passes 1,000 times under -race; go test -count=1 ./internal/serve/ prints ok; bash scripts/gate.sh passes from the worktree root and the pull request quotes its gate exit: 0 line; CI's check passes on the pull request. Both reviewers the task names have read the branch, the pull request is marked ready with the body building-from-specs requires, and the session has ended. Or stop after 270 minutes."
+
+  claude --bg --name claude-files --model sonnet --effort high --permission-mode auto \
+    --settings '{"permissions":{"denyInsteadOfPrompting":true},"worktree":{"baseRef":"fresh"}}' \
+    "/goal Build task 2, 'Task 2: rewrite the Claude files and the backlog', of the spec at /var/home/glw907/Projects/initiatives/cairn-dubplate-reshape/specs/2026-11-22-dubplate-reshape.md, under the building-from-specs skill, including the edits in its 'Backlog sweep' table. Done when each of the task's twelve done items holds, run exactly as the spec writes it: the old process words and phrases are gone from CLAUDE.md, .claude, and docs/standing-rules.md; standing-rules keeps one pass; CLAUDE.md is 199 lines or fewer; the dubplate-pass folder is gone; the new dubplate-build skill names internal/ops/** and svelte-kit sync; the two path-scoped rules exist; the Bash guard claim is gone from gate.sh; no #pass: or #round: tag is left and the #milestone: counts hold; the Milestones to 0.8 section holds; conductor-dubplate is gone; the gate and CI pass with the gate exit: 0 line quoted. An item a refusal blocks is marked unmet with its Before merge step, as the spec's 'What happens when it goes wrong' says. The reviewer has read the branch, the pull request is marked ready, and the session has ended. Or stop after 300 minutes."
+
+Step 4. When a task's pull request is ready and its session has ended (`claude agents --json`),
+read the pull request: each done item's evidence, the review verdict, `## Decisions`,
+`## For Geoff`, and `## Before merge`. Tell Geoff in plain words what landed, what failed or is
+unmet, and what waits for him, then wait for his approval by number. On approval, merge by the
+skill's "Merging" steps: any Before merge commands and their check, then
+`gh pr merge <n> --repo glw907/dubplate --merge`, then pull master, then remove the worktree, the
+local branch, and the remote branch, none with a force flag. If Geoff sends a pull request back,
+launch a fresh task session on the same branch with his words in its goal.
+
+Step 5. After tasks 1 and 2 have both merged, launch task 3 from the main checkout.
+
+  claude --bg --name gate-checks --model opus --effort medium --permission-mode auto \
+    --settings '{"permissions":{"denyInsteadOfPrompting":true},"worktree":{"baseRef":"fresh"}}' \
+    "/goal Build task 3, 'Task 3: add the Go team's checks', of the spec at /var/home/glw907/Projects/initiatives/cairn-dubplate-reshape/specs/2026-11-22-dubplate-reshape.md, under the building-from-specs skill. The spec's trial files are under /var/home/glw907/Projects/initiatives/cairn-dubplate-reshape/research/2026-11-22-audit/trials/. Done when each of the task's seven done items holds, run exactly as the spec writes it: go test -list finds FuzzParseBounded, FuzzValidPath, and FuzzWalkZIP; make fuzz FUZZTIME=30s exits 0; govulncheck appears in scripts/check.sh, go.mod, and docs/standing-rules.md; -race appears in the Makefile and check.yml; the gate passes from the worktree with the govulncheck leg passing; on the pull request the check and fuzz checks pass and the Run the race detector step concludes success; dependabot.yml exists and watches only github-actions. The reviewer has read the branch, the pull request is marked ready, and the session has ended. Or stop after 450 minutes."
+
+Merge it by step 4.
+
+Step 6. Hand-over 2, by the spec's "After task 3". docs/STATUS.md says the reshape is done and
+names the structure-doctor restart item by its number in BACKLOG.md. Run the spec's
+dependabot.yml check; it prints `dependabot.yml`. Commit "Record the finished reshape in STATUS"
+and push. Then update the initiative's STATUS.md to say dubplate's part is done, and tell Geoff.

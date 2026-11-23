@@ -1,6 +1,6 @@
 # Spec: move `dubplate` onto `building-from-specs`
 
-Status: draft for Geoff's approval (2026-11-22). The repo is `glw907/dubplate`, default branch `master`,
+Status: approved by Geoff on 2026-11-22 ("Approved."). The repo is `glw907/dubplate`, default branch `master`,
 read at `907605c`.
 
 Three tasks and two hand-overs move `dubplate` onto the workstation's process. The first task fixes the
