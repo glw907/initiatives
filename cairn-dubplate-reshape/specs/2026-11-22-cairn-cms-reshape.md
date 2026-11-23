@@ -18,7 +18,7 @@ efforts to fit the workstation claude tooling?" The initiative record states suc
 repo launches, builds, and merges by that skill and the repo's short facts file, with no process text of
 the repo's own in the way." He set the planning split: "I'd like a Fable planning effort. I can execute
 with something lighter." For this spec he said: "You can prep for the spec session. I'll spend my remaining
-fable time on it." Opus wrote this spec, and a Fable fresh reader checked it.
+fable time on it."
 
 His rulings this spec carries:
 
@@ -31,8 +31,8 @@ His rulings this spec carries:
   proving loop's "friction list" becomes "backlog list" (2026-11-13), renamed together with the grader's key.
 - The #459 wording for `cairn-proving-setup`, adopted 2026-11-14: "no `$` other than `$?`, no backtick, and
   no `<` or `>`".
-- From the approved `dubplate` spec ("Approved.", 2026-11-22), call 6: a milestone's name is
-  `milestone`, so a placement naming product work reads the same in both repos.
+- From the approved `dubplate` spec ("Approved.", 2026-11-22), call 6: "The BACKLOG tag for a milestone is
+  `#milestone:<name>`." A placement naming product work uses the same tag here, so both repos read alike.
 - Rulings already in the files stay as written: the `scripts/gate/` carve-out (2026-11-03), the docs-stage
   close boundary test (2026-10-07), and the fifteen-run budget stop (2026-11-10).
 
@@ -41,8 +41,8 @@ Goals:
 - `CLAUDE.md`, `CONTRIBUTING.md`, and `.claude/` name no process but `building-from-specs`.
 - One repo skill, `cairn-build`, holds the facts a task session needs: worktree setup, the gate, the full
   suite's home, risk classes, review checklists by path, the close checklist, and the live admin smoke test.
-- One gate form, the committed fast lane, written the same way in the repo skill, `CONTRIBUTING.md`, and the
-  workstation's `cairn-pass`.
+- One gate form, the committed fast lane. `CONTRIBUTING.md` gives it bare, and the repo skill and the
+  workstation's `cairn-pass` give it wrapped by `cairn-run-gate`.
 - A disputed docs call reaches Geoff in the pull request's `## For Geoff`, and the monthly docs cycle hands
   over by pull request and never waits.
 - BACKLOG carries the sweep's verdicts, and the paused theme-garden rounds restart only as specs.
@@ -66,17 +66,23 @@ published page, if the eval regression suite drops, if a pull request merges wit
   `--permission-mode acceptEdits`, and no task session has run it yet. After one other try, task 2 puts the run
   under `## Before merge` with its exact command, marks done item 6 unmet, and leaves the pull request in draft.
   Geoff's session runs it, puts the table in the pull request, and marks it ready.
+- An eval run paused on the usage limit. The runner prints "run paused on the usage limit: resume after the
+  reset with --resume <runId>" and exits 4 (`run.mjs:1316-1320`). Task 2 resumes it with that command after the
+  reset. If the reset falls past its time clause, it puts the resume command under `## Before merge` and leaves
+  the pull request in draft.
 - A regression drop on the branch. A drop counts only if it persists through `--case <id> --trials 3` reruns,
   per `.claude/rules/evals-docs-process.md`. Task 2 fixes the wording that caused it. A drop it can't fix
   leaves the pull request in draft with the table and the failing transcripts named.
-- No network in the task's worktree. `src/tests/unit/workflow-yaml.test.ts:471` fetches `actionlint`, so a unit
+- No network in the task's worktree. `src/tests/unit/workflow-yaml.test.ts:466` fetches `actionlint`, so a unit
   leg goes red without DNS (#489). The task names that leg as the cause and reruns once the network is back. It
   never skips the test.
 - The December docs cycle. `model-review.timer` fires 2026-12-01 00:47 AKST and launches `cairn-docs-cycle`,
   which pulls `main` and runs `evals/cycle-prompt.txt` from it. The old prompt names the removed
   `approval-packet` skill and waits on a ruling, holding a session slot. Task 2 aims to merge first. If it is
-  still open on 2026-11-30, Geoff's session commits task 2's `cycle-prompt.txt` straight to `main`. The cycle
-  prompt changes no docs session's steps, so the eval rule doesn't cover it.
+  still open on 2026-11-30 and its review accepted the `cycle-prompt.txt` change, Geoff's session commits that
+  one file from task 2's branch straight to `main`. The new prompt opens a pull request and ends, so it can do
+  less harm unattended than the old one. If the review hasn't accepted it, Geoff's session comments out the
+  `cairn-docs-cycle` call at `model-review-notify:125` for December, in a `~/.dotfiles` worktree.
 
 ## What idles, and how the paused work restarts
 
@@ -101,10 +107,10 @@ Each file gets a verdict, with the files that read it.
 | `…/references/admin-smoke-test.md` | Keep, moved with the skill | The skill | Task 1 rewords lines 1, 12, 14, 154 |
 | `…/references/pass-gate-tiers.md` | Keep as `gate-tiers.md` | `gate-tier.mjs:3,136`; `gate-tier.test.ts:1064` | Task 1 renames it and rewords 1, 18, 27, 28, 135, 221, 231 |
 | `…/references/launch-prompts.md` | Delete | The old skill only | Task 1 |
-| `skills/cairn-releasing/` | Keep | `CLAUDE.md:39,47` | Task 1 rewords its process lines |
+| `skills/cairn-releasing/` | Keep | `CLAUDE.md:39,47` | Task 1 rewords its process lines, 273 among them |
 | `skills/cairn-proving-setup/` | Keep | `cairn-releasing` (the `naive` leg) | Task 1 rewords lines 5, 14, 60, 77, 95 and `owner-card.md:3`, and folds #459 |
 | `skills/cairn-writing-docs/` | Keep | `CLAUDE.md:63`; `.claude/rules/docs.md`, `docs-with-code.md`; `cairn-docs-cycle` (workstation) | Task 2 |
-| `skills/cairn-writing-engine-code/` | Keep | `CLAUDE.md:44`; `.claude/rules/` | Task 1 rewords `code-idioms.md:22,140` and `durable-gotchas.md:577,581` |
+| `skills/cairn-writing-engine-code/` | Keep | `CLAUDE.md:44`; `.claude/rules/` | Task 1 rewords `SKILL.md:3,8`, `code-idioms.md:22,140`, and `durable-gotchas.md:577,581` |
 | `skills/cairn-judging-scope/` | Keep | `CLAUDE.md:43` | Task 1 rewords `extending-developer-lens.md:68` |
 | `skills/cairn-following-admin-design/`, `skills/cairn-following-public-design/` | Keep | `rules/admin.md`, `rules/public.md` | None |
 | `agents/cairn-implementer.md` | Delete | `CLAUDE.md:29,49`; `CONTRIBUTING.md:13`; `launch-prompts.md`; the workstation's `claude-tooling.md:127` | Task 1; Geoff's session for the workstation line |
@@ -160,12 +166,18 @@ samples, finds the failures, runs the suites, and opens one pull request. That p
 history entry and the `sources.md` dates, with each row under `## For Geoff`, its options now, defer, and drop,
 and one recommended. Geoff answers in his terminal. His session records each call in the entry on the branch,
 files each "now" and "defer" row as a `#docs-process` BACKLOG item, and merges. A "now" item's fix is a later
-task whose first step writes the failing capability case, as the old step 6 did.
+task whose first step writes the failing capability case, as the old step 6 did. The merged entry in
+`evals/history.md` is where the next cycle reads his answers. A graduation (a capability case moving to the
+regression suite) is an edit on the same branch, named under `## For Geoff`.
 
 For the eval case, `review-unsupported-claim` is a capability case that asserts the close packet. It is
-rewritten to assert the `## For Geoff` entry, so it is the change's target capability case: the main arm's
+rewritten to assert the `## For Geoff` entry, so it is the change's target capability case: the baseline arm's
 files still say "close packet" and the branch's say `## For Geoff`. The rule's bar for the merge is that the
 regression suite doesn't drop and the target case improves.
+
+The baseline arm is `87869e61f`, not `main`. The rule's `paths` include `CLAUDE.md`, so task 1's edits outside
+the docs section count as a docs-process change too. A run against `main` after task 1 merges would hide a drop
+that task 1 caused. One run against `87869e61f` proves both tasks' changes.
 
 ## Mechanisms and their sources
 
@@ -185,8 +197,10 @@ regression suite doesn't drop and the target case improves.
   `catalog-check`), per `gh run list --repo glw907/cairn-cms --limit 8`.
 - `task-report` medians for `cairn-cms`: local gates 8.8 minutes (p90 31.4), CI wait 39.8 (p90 156.2). The
   minutes below use them.
-- The two regression and capability runs in `evals/history.md` (October) took under two hours each. Task 2's
-  run of both suites on two arms is planned at 120 minutes.
+- `evals.json` holds 11 regression cases and 2 capability cases. Both suites on two arms at the default three
+  trials is 78 sessions, under `SESSION_CAP = 120` (`run.mjs:28`), so `--max` isn't needed. Each session runs
+  Sonnet at medium and each judge Opus at medium (`run.mjs:200`, `:1043`), four at a time. The October runs
+  took under two hours each, and task 2's run is planned at 120 minutes.
 
 ## Files
 
@@ -194,11 +208,12 @@ The file list comes from `research/2026-11-22-spec-inputs/search-cairn-cms.md` a
 `triage-cairn-cms.md`, and the counts below were run at `87869e61f`.
 
 - Strict words (`pass-core|running-passes|conductor|executor|approval[- ]packet|approval[- ]queue|cairn-implementer|launch-prompts|pair subagent`):
-  32 hits outside `cairn-writing-docs`, all task 1's, and 31 inside it. Task 2 takes 24 of those 31. Seven stay
-  as data: the guard prompts "Do not push, open a PR, or run approval-queue" in `evals.json:195,246,309`, the deny
-  entry in `evals/run.mjs:57` and its test in `run.test.mjs:272`, and the false hits in
-  `docs-register.md:287,288` ("executor" inside other words). The eighth is `cycle-prompt.txt:40`, the Approval
-  Queue store's folder path, which task 2's step 1 keeps.
+  32 hits outside `cairn-writing-docs`, all task 1's, and 31 inside it. Task 2 removes 21 of those 31 and
+  rewrites two more. Seven stay as data: the guard prompts "Do not push, open a PR, or run approval-queue" in
+  `evals.json:195,246,309`, the deny entry in `evals/run.mjs:57` and its test in `run.test.mjs:272`, and the
+  false hits in `docs-register.md:287,288` ("executor" inside other words). `cycle-prompt.txt:40`, the Approval
+  Queue store's folder path, stays because task 2's step 1 keeps it. `evals.json:313` and `:333` are rewritten,
+  and each still asserts that no command runs `approval-queue`. That leaves 10.
 - The word "pass": 147 hits, sorted in `triage-cairn-cms.md`. History stays as written: `docs/internal/plans/`,
   `admin-design-system.md`, `cm-editing-surface-alignment.md`, `code-idioms.md:14,183,192,194`,
   `extending-developer-lens.md` apart from line 68, the `scripts/checks` comments other than `gate-tier.mjs`, and
@@ -213,14 +228,15 @@ Each task's files:
   `.claude/skills/cairn-releasing/SKILL.md`, `.claude/skills/cairn-proving-setup/SKILL.md` and
   `references/owner-card.md`, `.claude/skills/cairn-writing-engine-code/references/code-idioms.md` and
   `durable-gotchas.md`, `.claude/skills/cairn-judging-scope/references/extending-developer-lens.md`,
-  `.claude/agents/engine-triage.md`, `scripts/checks/gate-tier.mjs` (comments only),
-  `src/tests/unit/gate-tier.test.ts` (a path string and a comment).
+  `.claude/skills/cairn-writing-engine-code/SKILL.md`, `.claude/agents/engine-triage.md`,
+  `scripts/checks/gate-tier.mjs` (comments only), `src/tests/unit/gate-tier.test.ts` (a path string and two
+  comments).
 - Task 2: `CLAUDE.md` ("Documentation is a pass dimension" only), `.claude/skills/cairn-writing-docs/SKILL.md`,
-  `references/review.md`, `evals/evals.json`, `evals/cycle-prompt.txt`.
+  `references/review.md`, `evals/evals.json`, `evals/cycle-prompt.txt`, `evals/site-cases/e1-add-public-option.json`.
 - Task 3: `BACKLOG.md`.
 - Geoff's session: `docs/STATUS.md`, `.claude/settings.json`, and in `~/.dotfiles`,
-  `claude/.claude/skills/cairn-pass/SKILL.md`, `claude/.claude/docs/claude-tooling.md`, and
-  `bin/.local/bin/cairn-docs-cycle`.
+  `claude/.claude/skills/cairn-pass/SKILL.md`, `claude/.claude/docs/claude-tooling.md`,
+  `bin/.local/bin/cairn-docs-cycle`, and `BACKLOG.md` (for #308).
 
 ## Commands against the denials log
 
@@ -293,9 +309,13 @@ and the `spec-writing-test-2` worktree. The worktree off `origin/main` leaves th
     and at least `1` after.
 - `claude/.claude/docs/claude-tooling.md:127` stops naming `cairn-cms`'s `cairn-implementer`.
   `grep -c cairn-implementer claude/.claude/docs/claude-tooling.md` prints `1` today, and `0` after.
-- `bin/.local/bin/cairn-docs-cycle`'s dry-run line says "skip step 4", writes the history entry, commits it
-  locally, and opens no pull request, matching task 2's prompt. This one lands after task 2 merges, as a second
-  pull request. `grep -c 'steps 0 and 4' bin/.local/bin/cairn-docs-cycle` prints `1` today, and `0` after.
+- `bin/.local/bin/cairn-docs-cycle` matches task 2's prompt. Its dry-run line becomes "Dry run: skip step 4.
+  Write the history entry to the state folder and stop. Do not commit, push, or open a PR." Its header comment
+  (lines 4 to 9) says the session samples sessions, runs the evals, opens one pull request, and ends. This one
+  lands after task 2 merges, as a second pull request.
+  - `grep -c 'steps 0 and 4' bin/.local/bin/cairn-docs-cycle` prints `1` today, and `0` after.
+  - `grep -c -i -E 'queues? one triage|waits for' bin/.local/bin/cairn-docs-cycle` prints at least `1` today,
+    and `0` after.
 
 ## Task 1: rename the process skill and reword the Claude files
 
@@ -310,8 +330,10 @@ Rename `.claude/skills/cairn-running-passes/` to `.claude/skills/cairn-build/` w
 worktree off `main`; the `cairn-build` skill has the setup command, the gate, the risk classes, and the close
 checklist; CI on the pull request carries the whole suites. Line 36 says "A task never bumps the version or
 publishes". The skills list at 41 to 51 names each skill and agent once, without restating its description, and
-drops `cairn-implementer` (#299). Line 79 says "A change that adds a diagnosable code path". `CONTRIBUTING.md:13`
-and `:72` give the same gate and name `cairn-build`.
+drops `cairn-implementer` (#299). Line 79 says "A change that adds a diagnosable code path".
+`CONTRIBUTING.md:13` drops its `cairn-implementer` sentence and keeps the bare
+`npm run lane:fast -- --range <base>..HEAD`, since a contributor has no `cairn-run-gate`. `CONTRIBUTING.md:72`
+names `cairn-build`.
 
 The other files' process lines, reworded to tasks, specs, pull requests, and milestones, with history left as
 written:
@@ -319,18 +341,23 @@ written:
 - `cairn-releasing/SKILL.md`: lines 7, 14, 44, 52, 53 (`standards:running-passes` "Close" becomes
   `building-from-specs` "Merging"), 126, 135, 236 ("a conductor plays the owner" becomes "the session running the
   loop plays the owner"), 261 and 383 (`cairn-build`), and 269 and 272 ("A task that changes `scripts/gate/`").
-  Lines 371 and 374 say "backlog" for "friction" (#374).
+  Line 273 says "so that task's live proof". Lines 371 and 374 say "backlog" for "friction" (#374).
 - `cairn-proving-setup/SKILL.md`: line 5 ("Use when a task runs the setup proving loop"), 14, 60 ("The session
   that runs the polish loop"), 77 ("A stop goes to the pull request's `## For Geoff`"), and 95. Lines 71 and 72
   take the #459 wording. `references/owner-card.md:3` says "What the session running the loop answers". The
-  "friction list" at lines 74, 83, 84, and 91, `owner-card.md:5`, and `scripts/gate/grade.mjs:881` stays, because
-  it names the grader's key; task 3 files the rename for the next task that changes `scripts/gate/`.
-- `code-idioms.md:22` ("a task that changes an idiom updates this page") and `:140`; `durable-gotchas.md:577`
+  "friction list" at lines 74, 83, 84, and 91 and `owner-card.md:5` stays, because it names the `## Friction`
+  heading the grader writes (`scripts/gate/grade.mjs:881`). Task 3's #374 wording places that rename at the next
+  task that changes `scripts/gate/`.
+- `cairn-writing-engine-code/SKILL.md:3` ("when a task writes tests") and `:8` ("and a task checks its diff
+  against it").
+- `code-idioms.md:22` ("a task that changes an idiom updates this page") and `:140` ("never change during the
+  polish loop"); `durable-gotchas.md:577`
   ("an open spec on its branch") and `:581` (the new path); `extending-developer-lens.md:68` ("checklist for
   every task"); `engine-triage.md:83` ("a small engine task now, or a queued engine task") and `:97` ("what the
   task builds").
-- `gate-tier.mjs` lines 1, 3, 13, and 136, comments only. `gate-tier.test.ts:1010` (a path string the test feeds
-  the classifier) and `:1064` (a comment).
+- `gate-tier.mjs` lines 1, 3, 13, and 136, comments only ("A task session runs it", "the legs a task session
+  runs after each commit"). `gate-tier.test.ts:908` and `:1064` (comments) and `:1010` (a path string the test
+  feeds the classifier).
 
 Done when:
 
@@ -363,6 +390,10 @@ Reviewers: `standards:diff-reviewer`. Minutes: 130 (work 50, local gates 20, CI 
 
 ## Task 2: move the docs process off the Approval Queue
 
+Task 1 changes `CLAUDE.md`, so the line numbers below are `87869e61f`'s. Find each line by its quoted text.
+Between the two merges, `cairn-writing-docs/SKILL.md:38` names a skill that no longer exists; the pointer
+fails harmlessly and task 2 fixes it.
+
 `CLAUDE.md`'s "Documentation is a pass dimension" becomes "## Documentation ships with each change". Line 55
 says "Every change updates the docs for what it changed", 62 says "A change to a public behavior edits the
 affected pages in the same pull request", 64 says "in the same pull request", and 65 says "kept current in every
@@ -382,9 +413,13 @@ applies his answer on the branch before the merge. Every `approval-queue` comman
 
 `evals/evals.json`'s `review-unsupported-claim` case: its expectations and judge criteria 1 and 3 assert that the
 reply puts the call under `## For Geoff` in pull request #900's body with the same parts, that no command runs
-`approval-queue`, `gh pr edit`, or `gh pr merge`, and that the sentence stays on the page. The case's prompt says
-to end by giving the `## For Geoff` text rather than editing the pull request. Its check on
+`approval-queue`, `gh pr edit`, or `gh pr merge`, and that the sentence stays on the page. The case's prompt
+keeps its guard ("or run approval-queue") and says to end by giving the text it would add to the pull request
+body, without naming the section, so the prompt doesn't hand either arm the answer. Its check on
 `within about a minute` stays.
+
+`evals/site-cases/e1-add-public-option.json:16` quotes the `CLAUDE.md` sentence on the changelog entry. It quotes
+task 1's merged wording instead.
 
 `evals/cycle-prompt.txt` follows "Approaches":
 
@@ -393,18 +428,23 @@ to end by giving the `## For Geoff` text rather than editing the pull request. I
   `docs/editors/` or `docs/admin/` page, and from earlier cycles' pull requests (`head:docs-cycle-`): their
   `## For Geoff` answers and review comments. The Approval Queue store stays readable for decisions before
   2026-11-22, named as a folder path with no command.
-- Steps 2 to 4 stay.
+- Steps 2 to 4 stay. The lines that point at the decide document or at steps 6 and 7 (lines 5, 20, 27, 60, 69,
+  and 117) point at step 5 and the pull request.
+- Step 1 first looks for an open pull request on a `docs-cycle-` branch. If one is open, the cycle writes one
+  line naming it to `~/.local/state/cairn-docs-cycle/<YYYY-MM>/skipped`, writes `last`, and ends.
 - Step 5 writes the history entry, each row with its recommended call, on a branch `docs-cycle-<YYYY-MM>` in a
   worktree off `origin/main`, with the `sources.md` dates and any graduation. It runs the fast lane through
   `cairn-run-gate`, opens the pull request with each row under `## For Geoff`, watches CI with
   `ci-green <sha> --pr <n> --wait`, writes the date into `~/.local/state/cairn-docs-cycle/last`, and ends. It
   never merges and never sends a desktop notice.
-- A dry run skips step 4, commits the entry locally, and stops with no push or pull request.
+- A dry run skips step 4, writes the history entry to `~/.local/state/cairn-docs-cycle/<YYYY-MM>/`, and stops.
+  It commits nothing, so it can't collide with that month's real branch.
 - The old steps 6 and 7 go. Geoff's session acts on his answers, as "Approaches" says.
 
-Run the change rule from the main checkout's copy of the runner, as a background command waited on until it
-exits: `node .claude/skills/cairn-writing-docs/evals/run.mjs main <branch> --suite all`, with `--max` if it plans
-more than 120 sessions. Read every failing trial's transcript, rerun any regression drop with
+Run the change rule from the task's worktree root, with the branch's copy of the runner, since `run.mjs` reads
+`evals.json` from its own folder (`run.mjs:25`, `:1213`). Start it as a background command and wait until it
+exits: `node .claude/skills/cairn-writing-docs/evals/run.mjs 87869e61f <branch> --suite all`. "Approaches" says
+why the baseline is `87869e61f`. Read every failing trial's transcript, rerun any regression drop with
 `--case <id> --trials 3`, and put the table in the pull request.
 
 Done when:
@@ -416,18 +456,19 @@ Done when:
    `R2='pass dimension|every pass|same pass|a pass that|the pass that|pass branch|close packet|pass.s close|approval-queue (send|collect|check|merge|land|notes|reply)|approval-packet|round conductor|the conductor|kind .?merge|kind decide|running-passes'`,
    `git grep -n -i -E "$R2" -- .claude/skills/cairn-writing-docs/SKILL.md .claude/skills/cairn-writing-docs/references/review.md .claude/skills/cairn-writing-docs/evals/cycle-prompt.txt | wc -l`
    prints `24` today, and `0` after. The strict-words count from task 1's done item 1, run over
-   `.claude/skills/cairn-writing-docs` alone, prints `31` today, and `8` after: the seven data hits and the store
-   path named in "Files".
+   `.claude/skills/cairn-writing-docs` alone, prints `31` today, and `10` after: the hits "Files" names.
 3. `grep -c -i -E 'close packet|kind .?merge' .claude/skills/cairn-writing-docs/evals/evals.json` prints `2`
    today, and `0` after. `grep -c 'For Geoff' .claude/skills/cairn-writing-docs/evals/evals.json` prints `0`
    today, and at least `2` after.
 4. `grep -c 'For Geoff' .claude/skills/cairn-writing-docs/references/review.md` prints `0` today, and at least
    `1` after.
 5. The cycle never waits. `grep -c -E 'pending|collect|notify-send' .claude/skills/cairn-writing-docs/evals/cycle-prompt.txt`
-   prints `10` today, and `0` after.
-6. The eval table is in the pull request, from a run of both suites on `main` and the branch. The regression
-   suite on the branch matches `main` (36/36 in the October entry), and `review-unsupported-claim` scores higher on
-   the branch. Unmet with a `## Before merge` step if the run couldn't start.
+   prints `10` today, and `0` after. `grep -c -i -E 'decide document|step [67]' .claude/skills/cairn-writing-docs/evals/cycle-prompt.txt`
+   prints `6` today, and `0` after.
+6. The eval table is in the pull request, from a run of both suites on `87869e61f` and the branch. No
+   regression case on the branch falls below the baseline after the reruns (33 trials an arm), and
+   `review-unsupported-claim` scores higher on the branch. Unmet with a `## Before merge` step if the run couldn't
+   start or finish.
 7. The gate and CI pass, as in task 1.
 
 Reviewers: `standards:diff-reviewer`. Minutes: 240 (work 45, local gates 15, eval run 120, CI wait 45, review 15).
@@ -438,28 +479,35 @@ task 1 merged, since both edit `CLAUDE.md` and `SKILL.md:38` names `cairn-build`
 
 `BACKLOG.md` takes the verdicts in "Backlog sweep" below, with the new wording for #374, #389, and #525 and the
 placement rules from `research/2026-11-22-spec-inputs/sweep-cairn-cms.md`, which the task reads by absolute path.
-It moves #299 and #459 to Done, citing task 1's pull request. It files five items through `standards:log-issue`:
+It moves #299 and #459 to Done, citing task 1's pull request. #374's new wording names what is left after
+tasks 1 and 2: the "friction list" in `cairn-proving-setup` and `owner-card.md:5`, and the grader's `## Friction`
+heading, renamed together at the next task that changes `scripts/gate/`, which owes the #349 gate run. It files
+four items through `standards:log-issue`, each under the exact title given here:
 
-- Restart round `surface` as a spec under `building-from-specs`, from
-  `theme-garden/plans/2026-11-17-route-surface-conductor-prompt.txt`'s scope.
-- Restart round `events` passes 2 and 3 as a spec, from the round two design, site basics.
-- Write theme-garden G3's plan as a spec when Geoff starts the theme work; it re-checks against `main` first.
-- Rename the grader's "friction list" key to "backlog list" in `scripts/gate/grade.mjs`, its tests, and
-  `cairn-proving-setup`, and reword the `scripts/gate/` comments that name a pass. Placement: the next task that
-  changes `scripts/gate/`, which owes the #349 gate run.
-- Run a full sweep: 47 open items carry no `swept` stamp from the last 90 days, and 32 cite `tool/` paths deleted
-  in `a96deb40b`. It also renumbers the duplicate #491, #492, and #494.
+- "Write the round `surface` spec", from the scope in
+  `~/Projects/initiatives/theme-garden/plans/2026-11-17-route-surface-conductor-prompt.txt`, tagged
+  `#milestone:surface`.
+- "Write the round `events` two spec", for its passes 2 and 3, from the round two design, site basics, tagged
+  `#milestone:events`.
+- "Write the theme-garden G3 spec", placed when Geoff starts the theme work. It re-checks the plan against `main`
+  first.
+- "Run a full backlog sweep". Its body says 47 open items carry no `swept` stamp from the last 90 days, 32 cite
+  `tool/` paths deleted in `a96deb40b`, and the numbers #491, #492, and #494 each name two items. The sweep
+  renumbers them.
 
 Done when:
 
-1. No open item's placement names a pass.
-   `sed -n '1,/^## Done/p' BACKLOG.md | grep -c -i -E 'next pass|pass that touches|tidy pass|close packet'`
-   prints `43` today, and `0` after.
+1. No open item's placement names a pass or round.
+   `sed -n '1,/^## Won/p' BACKLOG.md | grep -o -i -E 'Placement:[^.]*' | grep -c -i -E '\b(pass|round)s?\b'`
+   prints `66` today, and `0` after. A placement that names the round `surface` or `events` work names its
+   milestone tag.
 2. `grep -c '^- \[x\] \*\*#299\*\*' BACKLOG.md` and the same for #459 print `0` today, and `1` after.
-3. #522 is under `## Won't do`, and #308 is filed in `~/.dotfiles/BACKLOG.md` through a line in the pull
-   request's `## For Geoff`, since the task can't commit to that repo.
-4. The five new items exist. `grep -c -E 'round .surface|friction list. key|full sweep' BACKLOG.md` prints `0`
-   today, and at least `3` after.
+3. #522 and #308 moved to `## Won't do`. `sed -n '/^## Won/,/^## Done/p' BACKLOG.md | grep -c -E '\*\*#(522|308)\*\*'`
+   prints `0` today, and `2` after. #308's entry says it is refiled in `~/.dotfiles/BACKLOG.md`, and the pull
+   request's `## For Geoff` gives the item's exact text, since the task can't commit to that repo. Geoff's session
+   files it.
+4. The four new items exist. For each title above, `grep -c -F '<title>' BACKLOG.md` prints `0` today, and `1`
+   after.
 5. CI passes on the pull request.
 
 Reviewers: `standards:diff-reviewer`. Minutes: 95 (work 35, local gates 10, CI wait 40, review 10). Time clause:
@@ -468,9 +516,15 @@ at once.
 
 ## After task 3: Geoff's session
 
-The `cairn-docs-cycle` dry-run line, from "The workstation change", once task 2 has merged. Then hand-over 2,
-committed directly: `docs/STATUS.md` says the reshape is done and names the round `surface` restart item by
-number.
+Once task 2 has merged, the `cairn-docs-cycle` change from "The workstation change". Then one dry run before
+2026-12-01: `git -C ~/Projects/cairn-cms pull --ff-only`, then `cairn-docs-cycle --dry-run`. It must write the
+history entry under `~/.local/state/cairn-docs-cycle/<YYYY-MM>/` and commit nothing. If it fails to launch, as
+November's run did, `journalctl --user -u model-review.service --since 2026-11-01 --until 2026-11-02` holds the
+earlier failure to compare.
+
+After task 3, Geoff's session files #308 in `~/.dotfiles/BACKLOG.md` from the pull request's text. Then
+hand-over 2, committed directly: `docs/STATUS.md` says the reshape is done and names the round `surface` spec item
+by number.
 
 ## Merge order
 
@@ -485,13 +539,13 @@ The scoped `standards:backlog-sweep` verdicts. Approving this spec approves thes
 | --- | --- | --- |
 | #459 Unsandboxed-prompt rule | Fold | Task 1; task 3 moves it to Done |
 | #299 Fold the `CLAUDE.md` minors | Fold | Task 1; task 3 moves it to Done |
-| #374 Reword "friction" as "backlog" | Reword | The sweep's new wording; tasks 1 and 2 take `cairn-releasing` and `CLAUDE.md` |
+| #374 Reword "friction" as "backlog" | Reword | Tasks 1 and 2 take `cairn-releasing` and `CLAUDE.md`; the new wording names what is left, placed at the next task that changes `scripts/gate/` |
 | #389 `auth-data` map names the new command's files | Reword | "The repo skill's `auth-data` path map", placed at the task that adds the first of those files |
 | #525 Waymark brand link overflows at 320 | Reword | Placement: the next task that changes `themes/waymark` |
 | #522 Pass 2's changelog undercount | Drop | Move to Won't do; the entry left with `tool/` |
-| #308 Failed check labels in the `cairn-run-gate` record | Drop | Refile in `~/.dotfiles/BACKLOG.md` |
+| #308 Failed check labels in the `cairn-run-gate` record | Drop | Move to Won't do; Geoff's session refiles it in `~/.dotfiles/BACKLOG.md` |
 | #359, #408, #424, #473, #565, #566, #552, #371, #372, #329, #435, #191, #564, #489, #291 | Keep | None |
-| 66 placements naming a pass or round | Reword | "the next pass that touches X" becomes "the next task that touches X"; a closed named pass becomes its file trigger; product rounds become milestones; "tidy pass" becomes "tidy task" |
+| 66 placements naming a pass or round | Reword | "the next pass that touches X" becomes "the next task that touches X"; a closed named pass becomes its file trigger; a product round becomes its `#milestone:<name>` tag; "tidy pass" becomes "tidy task" |
 
 ## For Geoff, outside the tasks
 
@@ -499,8 +553,8 @@ The scoped `standards:backlog-sweep` verdicts. Approving this spec approves thes
 whose tip isn't on `origin/main`, and 1 with uncommitted changes. No task touches them. His session can remove
 the merged, clean ones after a dry run and look at the rest. The routine for sveltejs/kit#17368 is due for
 deletion at claude.ai/code/routines, which an agent can't do. The November docs cycle failed to launch
-(`journalctl --user -u model-review.service`, 2026-11-01: "cairn docs cycle launch failed"); the December one
-runs task 2's prompt.
+(`journalctl --user -u model-review.service`, 2026-11-01: "cairn docs cycle launch failed"). The dry run after
+task 2 checks the launch before December's.
 
 ## Calls Claude made
 
@@ -512,11 +566,10 @@ runs task 2's prompt.
 6. The monthly docs cycle opens one pull request and ends. A "now" row becomes a BACKLOG item whose fix is a
    later task, and the cycle no longer writes fixes itself.
 7. `review-unsupported-claim` is rewritten as the target capability case.
-8. Task 1's `CLAUDE.md` edits sit outside the docs section, so the eval rule doesn't apply to it. Task 2 runs the
-   suites.
+8. Task 1 runs no evals. Task 2's one run, against `87869e61f`, covers task 1's `CLAUDE.md` edits as well.
 9. History stays as written, and so do the `media-pass-b` and `media-pass-c` spec names, whose CI baselines would
    be orphaned by a rename.
-10. `scripts/gate/` stays unchanged, including the grader's "friction list" key, and its rename is a BACKLOG item.
+10. `scripts/gate/` stays unchanged, including the grader's `## Friction` heading, and #374 places its rename.
 11. The `check-idioms` and `check-leaks` word lists, the `--class` flag's name, the approval-queue deny entry in
     `run.mjs`, the guard prompts in `evals.json`, and the trigger-test prompts stay, since each is data.
 12. Dependabot security updates stay off, and `dependabot.yml` stays as it is.
@@ -525,3 +578,9 @@ runs task 2's prompt.
 15. Task 1 runs on Sonnet at high, task 2 on Opus at medium, and task 3 on Sonnet at medium. Each task's
     reviewers run on Opus at high, by `building-from-specs` "Models".
 16. The `claude-security` run waits for the next large change to sign-in code, per Geoff's ruling.
+17. The runner keeps its four concurrent `claude -p` sessions. They are child processes of task 2's session.
+    `claude agents` manages background sessions (its help says "Manage background agents"), and a `claude -p`
+    child isn't one, so the four-session cap counts task 2 once.
+18. If task 2 hasn't merged by 2026-11-30, its reviewed `cycle-prompt.txt` lands directly, and an unreviewed one
+    means December's cycle is switched off.
+19. A cycle that finds last month's pull request still open skips the month.
