@@ -1,9 +1,10 @@
 # Status
 
-The audit of both repos is done, and Geoff has answered its three questions. A session on Fable
-writes the two specs next, `dubplate`'s first, from `plans/2026-11-22-spec-session-prompt.txt`.
-Geoff starts it, and it spends the Fable left this week. Its facts are gathered in
-`research/2026-11-22-spec-inputs/`, so Fable goes to judgment and writing.
+The audit of both repos is done, and Geoff has answered its three questions. Two spec sessions
+come next, and Geoff starts each one. `dubplate`'s runs on Opus at high from
+`plans/2026-11-22-dubplate-spec-prompt.txt`. `cairn-cms`'s runs on Fable at high from
+`plans/2026-11-22-cairn-cms-spec-prompt.txt`, after he approves `dubplate`'s spec. The facts for
+both are gathered in `research/2026-11-22-spec-inputs/`.
 
 ## Current state
 
@@ -26,6 +27,8 @@ Geoff starts it, and it spends the Fable left this week. Its facts are gathered 
 - "You can prep for the spec session. I'll spend my remaining fable time on it." (2026-11-22).
   This replaces the planning prompt's rule to start only under 85 percent. Fable read 96 percent
   then, and the week resets on Nov 27 at 11 PM Anchorage time.
+- "Perfect. Let's plan for that." (2026-11-22), answering Claude's proposal that Opus at high
+  write `dubplate`'s spec with an Opus fresh reader, and Fable write `cairn-cms`'s.
 - "You can remove cairn-figure." (2026-11-22).
 - "That matches." (2026-11-22), answering Claude's recommendation on the audit's three questions:
   - No automated security review for now. `security-guidance` stays off, because the reviews

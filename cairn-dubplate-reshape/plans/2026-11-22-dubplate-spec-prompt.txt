@@ -1,29 +1,28 @@
-You are the spec session for reshaping cairn-cms and dubplate onto `building-from-specs`. Run on
-Fable at `high`. Your job is steps 5 to 7 of
-~/Projects/initiatives/cairn-dubplate-reshape/plans/2026-11-22-planning-prompt.txt: write dubplate's
-spec, then cairn-cms's, have each checked by one fresh reader, bring each to Geoff for approval,
-and write a build launch prompt for each approved spec. Read the planning prompt's standing rules,
-limits, and leave-alone list; they bind you. Skip its steps 1 to 4, which are done.
+You are the spec session for dubplate in the reshape of cairn-cms and dubplate onto
+`building-from-specs`. Run on Opus at `high`. Your job is steps 5 and 7 of
+~/Projects/initiatives/cairn-dubplate-reshape/plans/2026-11-22-planning-prompt.txt for dubplate
+only: write dubplate's spec, have one fresh reader check it, bring it to Geoff for approval, and
+write its build launch prompt. Read the planning prompt's standing rules, limits, and leave-alone
+list; they bind you. Skip its steps 1 to 4, which are done. Step 6, the cairn-cms spec, belongs to
+a later session on Fable from plans/2026-11-22-cairn-cms-spec-prompt.txt.
 
-Geoff's ruling on budget. "You can prep for the spec session. I'll spend my remaining fable time on
-it." (2026-11-22). That replaces the planning prompt's rule to start only under 85 percent. Fable
-read 96 percent when he said it, and the week resets on Nov 27 at 11pm Anchorage. So spend Fable
-on judgment and writing, never on gathering facts. An Opus session gathered them for you, listed
-below. Trust those files, cite them, and rerun a search only where a file says the fact is
-unproved. Dispatch reads and searches to Sonnet, and any judgment you can hand off to Opus at
-`high`. Fable runs only you and each spec's fresh reader.
+Geoff's ruling on models. Claude proposed that Opus at `high` write dubplate's spec with an Opus
+fresh reader, and that Fable write cairn-cms's. Geoff answered "Perfect. Let's plan for that."
+(2026-11-22). That replaces, for this job, the `building-from-specs` line that spec writing and
+its fresh reader run on Fable. Run the fresh reader on Opus at `high`. Start no Fable subagent.
+
+The facts are gathered in research/2026-11-22-spec-inputs/, listed below. Trust those files, cite
+them, and rerun a search only where a file says the fact is unproved. Dispatch reads, searches,
+and mechanical edits to Sonnet.
 
 Before anything else:
-1. Run `claude -p "/usage" --model haiku < /dev/null` and `claude agents --json`. If Fable reads
-   100 percent, or four or more other sessions are working, tell Geoff and stop. On 2026-11-22
-   six were working, three of them `spec-writing-test-2` and its test sessions.
-2. Run `claude-worktree-busy ~/Projects/dubplate` and `claude-worktree-busy ~/Projects/cairn-cms`.
+1. Run `claude agents --json`. If four or more other sessions are working, tell Geoff and stop.
+   On 2026-11-22 six were working, three of them `spec-writing-test-2` and its test sessions.
+2. Run `claude-worktree-busy ~/Projects/dubplate`.
 3. Read ~/.claude/skills/building-from-specs/SKILL.md and its references/writing-a-spec.md.
 
-Order and stopping. Write dubplate's spec first and take it to approval. Start cairn-cms's only
-if Fable has room left after that. If usage runs out mid-spec, commit the draft under
-cairn-dubplate-reshape/specs/, update STATUS with exactly where it stands, and stop. A spec
-finished after the reset is fine.
+Write the spec at cairn-dubplate-reshape/specs/. Write each ruling Geoff gives on it into STATUS,
+quoted, so the cairn-cms session can carry over the ones that apply.
 
 What you read first:
 - cairn-dubplate-reshape/STATUS.md: Geoff's rulings, quoted. Carry each into the spec it
@@ -31,6 +30,7 @@ What you read first:
 - cairn-dubplate-reshape/research/2026-11-22-audit/README.md: the audit, with a verdict table per
   repo and the tool trials. Its trials/ folder holds the outputs.
 - cairn-dubplate-reshape/research/2026-11-22-spec-inputs/, gathered for you on 2026-11-22:
+  The cairn-cms files are for the later session; read only the dubplate ones and the shared ones.
   - search-dubplate.md and search-cairn-cms.md: the file-list searches for old-process words, each
     command with its hit count and every hit listed. Strict words: dubplate 21 hits, cairn-cms
     84. The loose word "pass": dubplate 63, cairn-cms 392.
@@ -51,7 +51,8 @@ What you read first:
   - task-report.md: `task-report --since 2026-10-23 --repo dubplate --repo cairn-cms`, the
     measured minutes for like tasks. If it is empty, rerun that command; it is slow.
 
-Facts the specs must settle, each a method call of yours unless it is marked as Geoff's:
+Facts the specs must settle, each a method call of yours unless it is marked as Geoff's. The two
+cairn-cms items belong to the later session; leave them for it.
 - The least-proven assumption is that a `claude --bg` task session in auto mode, with
   `denyInsteadOfPrompting`, may edit a repo's `.claude/skills/`, `.claude/agents/`,
   `.claude/rules/`, and `.claude/hooks/` in its worktree. The denials log holds one refusal of
@@ -70,7 +71,7 @@ Facts the specs must settle, each a method call of yours unless it is marked as 
 - The audit found more in each repo than its process words. Use its verdict tables, not a fresh
   read.
 
-The spec's reader runs on Fable at `high` with no context, per writing-a-spec.md. Bring Geoff one
+The spec's reader runs on Opus at `high` with no context, per writing-a-spec.md and Geoff's ruling. Bring Geoff one
 batched question only where its answer changes what he approves. Only his typed words approve.
 
 Records. Keep cairn-dubplate-reshape/STATUS.md in the present tense, 60 lines or fewer, and update

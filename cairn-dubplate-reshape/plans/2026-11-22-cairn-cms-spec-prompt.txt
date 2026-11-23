@@ -1,0 +1,53 @@
+You are the spec session for cairn-cms in the reshape of cairn-cms and dubplate onto
+`building-from-specs`. Run on Fable at `high`. Your job is steps 6 and 7 of
+~/Projects/initiatives/cairn-dubplate-reshape/plans/2026-11-22-planning-prompt.txt for cairn-cms
+only: write cairn-cms's spec, have one fresh reader check it, bring it to Geoff for approval, and
+write its build launch prompt. Read the planning prompt's standing rules, limits, and leave-alone
+list; they bind you. Skip its steps 1 to 5, which are done or belong to the dubplate session.
+
+Geoff's rulings on models and budget, both 2026-11-22:
+- "You can prep for the spec session. I'll spend my remaining fable time on it." This replaces
+  the planning prompt's rule to start only under 85 percent.
+- "Perfect. Let's plan for that." This answers Claude's proposal that Opus at `high` write
+  dubplate's spec and Fable write cairn-cms's. Your fresh reader runs on Fable at `high`, per
+  `building-from-specs`.
+
+Spend Fable on judgment and writing, never on gathering facts. Dispatch reads, searches, and
+mechanical edits to Sonnet, and judgment you can hand off to Opus at `high`. Fable runs only you
+and the fresh reader.
+
+When to start. Start after Geoff approves dubplate's spec, so you can carry over his rulings on it.
+If he wants cairn-cms's spec sooner, his word overrides that. Fable read 96 percent on 2026-11-22,
+and the week resets on Nov 27 at 11pm Anchorage.
+
+Before anything else:
+1. Run `claude -p "/usage" --model haiku < /dev/null` and `claude agents --json`. If Fable reads
+   100 percent, or four or more other sessions are working, tell Geoff and stop.
+2. Run `claude-worktree-busy ~/Projects/cairn-cms`.
+3. Read ~/.claude/skills/building-from-specs/SKILL.md and its references/writing-a-spec.md, and the
+   `cairn-pass` skill, which holds cairn-cms's gate and CI watch.
+4. Read cairn-dubplate-reshape/STATUS.md and dubplate's approved spec under
+   cairn-dubplate-reshape/specs/. Carry each of Geoff's rulings that applies to cairn-cms into your
+   spec, quoted. If dubplate's spec probed the `.claude/` edit from a `claude --bg` session, use
+   its result and don't probe again.
+
+What you read. Read the "What you read first" and "Facts the specs must settle" sections of
+plans/2026-11-22-dubplate-spec-prompt.txt. They list the gathered inputs for both repos in
+research/2026-11-22-spec-inputs/. Read the cairn-cms files and the shared ones. Trust them, cite
+them, and rerun a search only where a file says the fact is unproved. If cairn-cms's HEAD has moved
+past `87869e61f`, rerun the two searches the search file gives and note the difference.
+
+cairn-cms is the larger job. It carries 8 skills, 3 agents, 5 rules, a hook, 119 leftover
+agent worktrees, and the desk line in its STATUS. Each skill, agent, rule, and hook gets a verdict
+in the spec: keep, rewrite, or delete, with what else reads it. A task that changes the repo's
+process skill while other cairn-cms work is running can break that work, so the spec says what
+must be idle before its first launch.
+
+If usage runs out mid-spec, commit the draft under cairn-dubplate-reshape/specs/, update STATUS
+with exactly where it stands, and stop.
+
+Records. Keep cairn-dubplate-reshape/STATUS.md in the present tense, 60 lines or fewer, and update
+it whenever the state changes. Commit named files only. The gate is `bash scripts/gate.sh` in
+~/Projects/initiatives, run bare. These repos are public: check what you commit for secrets and
+personal details. Pages for Geoff follow ~/.claude/docs/voice/written-for-people.md. Give no
+time estimates in chat.
