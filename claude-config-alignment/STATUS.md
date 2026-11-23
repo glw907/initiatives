@@ -165,8 +165,9 @@
   The gate on the branch's last commit is the only full run.
 - Geoff ruled late on 2026-11-21: "Unless there are major issues, you can do all the merges."
   The three merges of 2026-11-22 ran under it, and each stopped at his permission prompt.
-- Weekly usage is 56 percent for all models and 85 percent for Fable at 15:39 on 2026-11-22,
-  with task 2 still running. It was 48 and 70 at 14:35, and 43 and 63 at 12:26. The week
+- Weekly usage is 62 percent for all models and 97 percent for Fable at 16:51 on 2026-11-22,
+  near the end of task 2. It was 56 and 85 at 15:39, 48 and 70 at 14:35, and 43 and 63 at
+  12:26. The week
   resets on Nov 27 at 11pm Anchorage.
   `claude -p "/usage" --model haiku < /dev/null` prints both figures.
 
@@ -218,18 +219,33 @@ its worktree, and both branches are removed.
 - The pull request changed two files outside task 1's list: `scripts/check.sh` (one
   `shellcheck` exclusion for the 16 proof scripts) and `BACKLOG.md` (item 114).
 
-Task 2 is running. Geoff's session launched it from `~/.dotfiles` at 14:36 on 2026-11-22 as
-the background session `spec-writing-test-2` (id `7247711a`), on Opus at `high`. The week's
-usage read 48 percent for all models and 70 percent for Fable just before, and no other
-session was working. Its goal names the spec's three done items and three must-still-pass
-checks word for word, caps its test sessions at 130 dollars, runs two of them at once, and
-ends "or stop after 300 minutes". It says the one guide change is the length rule, and that a
-failed trap check whose judge answer is null or carries `error` is a judge error: the session
-reruns that case once and never changes the guide for it. `claude logs 7247711a` shows its
-output. When the session has ended, Geoff's session reads the pull request, the review
-verdict, and the summary of both final runs, and brings the pull request to Geoff by number.
-After that merge it runs `claude-tooling-sync verify` and `/skill-doctor` and tells Geoff what
-they print.
+Task 2's work is done, and its pull request waits for Geoff. It is 267 in `glw907/workstation`,
+"The spec guide carries a length rule, and the six length checks still fail", marked ready at
+17:04 on 2026-11-22 on commit `4a6836e`. The session `spec-writing-test-2` (id `7247711a`) ran
+on Opus at `high` from 14:36, and its test sessions on Fable at `high` spent 110.10 of the 130
+dollars.
+
+- The guide's length rule is the spec's text 1 reworded twice, and the pull request quotes it.
+  The specs shrank from 3,671 to 4,285 words in the baseline to 1,719 to 2,199 in the final
+  pair, still over the 1,200 mark.
+- The summary of both final runs prints 32 rows with guide hash `3a6fd5d`, which matches `git
+  hash-object` of the guide, and exits 1. All 12 length checks fail, and four reader trap
+  checks fail: `read-uncovered-edge` in both runs, `read-missing-file` and `read-wrong-path` in
+  run 2. Every writing case's trap, nothing-built, and guide-read checks pass. Done item 1 is
+  unmet, which the spec allows.
+- The reviewer returned fix on `2fff338` and accept on `4a6836e`, with no finding open. The
+  gate exits 0, and gitleaks finds no leak in the branch's 8 commits.
+- `claude-tooling-sync verify` exits 1 on one key: the live `model` is `opus` and the tracked
+  one is `fable`. The live file changed at 15:50:42, four seconds after the session
+  `initiatives-16` started. Geoff decides which value stays.
+- The session ended `blocked`. The `/goal` checker refused its stop four times on done item 1,
+  the stop of 2026-11-21 returning. `claude stop 7247711a` from Geoff's session was refused by
+  the auto-mode classifier, so the session is still listed. The row is in cc-desk's lessons
+  file, commit `68a6dfc`.
+
+After Geoff approves 267 by number, his session merges it, follows `building-from-specs`
+"Merging" and `dotfiles-pass` "After a merge", and runs `claude-tooling-sync verify` and
+`/skill-doctor`.
 
 The monthly review rework is item 115 in the workstation backlog, commit `e8d9035`. Geoff
 asked for it on 2026-11-22: "Probably we should do a broader consideration of the monthly
