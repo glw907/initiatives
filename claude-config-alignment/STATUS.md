@@ -189,8 +189,8 @@ pass mark. The sources are in the spec under "How long a spec may be".
 
 The launch prompt `plans/2026-11-22-spec-writing-evaluation-prompt.txt` is finished. Geoff's
 session worked from `plans/2026-11-22-spec-writing-test-build-prompt.txt` until he asked it to
-get ready to be cleared. The next session works from `plans/2026-11-22-close-out-prompt.txt`,
-which lists everything still owed, in order.
+get ready to be cleared. The close-out prompt `plans/2026-11-22-close-out-prompt.txt` is
+finished: its five steps are done, and no session it launched is running.
 
 The checks under the spec's "Before launch" pass on 2026-11-22. `claude-worktree-busy
 ~/.dotfiles` exits 0, and the session `dotfiles-5e` has ended. Its three uncommitted files are
@@ -300,9 +300,16 @@ that commit with no blocking finding. `vale-setup` stays with its one call, `con
 hands off to, and `cairn-figure` is the reshape's.
 
 The second part is pull request 268 in `glw907/workstation`, "The skill lists match the
-standards plugin, and only Cloudflare's docs server remains", on commit `e0dc05f`. Its gate
-exits 0 and gitleaks finds no leak, and a fresh `standards:diff-reviewer` is reading it. It is one pull request in the workstation repo
-that drops the four Vale entries from `vendored-skills.json`, adds the Svelte entry, fixes
+standards plugin, and only Cloudflare's docs server remains", merged as `77c686c` on
+2026-11-22 after Geoff typed "approved, 26, 268, 27". A fresh `standards:diff-reviewer` on
+Opus at `high` accepted `e0dc05f` with no blocking finding. One wording commit came after the
+review, `298a386`, which has the laptop's setup list uninstall the `cloudflare` plugin. The
+gate exits 0 on it and gitleaks finds no leak. After the merge the checkout is pulled, the
+worktree and branch are removed, the standards plugin is updated to `6c089e0`, and
+`claude-tooling-sync apply` added the `cloudflare-docs` server. `claude-tooling-sync verify`
+exits 0, `claude mcp get cloudflare-docs` reports it connected, and the `cloudflare` plugin is
+uninstalled on pavilion. The Cloudflare OAuth grant may still be listed in the dashboard. The
+pull request drops the four Vale entries from `vendored-skills.json`, adds the Svelte entry, fixes
 `rules/vale.md` and `claude-tooling.md`, and removes the `cloudflare` plugin. That plugin
 lists 18 skills and none was called, but its documentation server was called 17 times, so
 a docs-only server moves to `mcp-servers.json` at user scope. A count of real calls finds
@@ -310,6 +317,11 @@ a docs-only server moves to `mcp-servers.json` at user scope. A count of real ca
 Cloudflare's docs server, `docs.mcp.cloudflare.com`, which needs no sign-in. The same pull
 request has `site-pass` run `content-review` from the task session, and defines `$E` in the
 two eval READMEs, where `run_evals` paths did not resolve.
+
+The review found that `vale-setup` still offers Vale's `fix` and `triage` skills at
+`SKILL.md:11-12` and `:67`, which pull request 24 removed. It is item 2 in the standards
+backlog, landed through pull request 27 there, merged as `6c089e0`, because standards `main`
+takes pull requests only.
 
 Three community skills are passed over for now. `svelte-code-writer`, read in full, runs
 `npx @sveltejs/mcp` with no pinned version. `golang-security` and `golang-database` from
@@ -354,9 +366,10 @@ The three checks under its "Before launch" pass on 2026-11-22. Pull request 24 h
 other session was working, and the week read 62 percent for all models. In the trial, a clone
 at `01c86da` with the trial files and the skill's new step 2, a Sonnet session called
 `content-vale.sh` at its full path under the clone, and its transcript shows `11 errors, 1
-warning and 0 suggestions in 1 file.` The task `content-check` is done, and its pull request waits for Geoff. It is 26 in
+warning and 0 suggestions in 1 file.` The task `content-check` is done. Its pull request, 26 in
 `glw907/standards`, "content-review ships a banned-word Vale style, and content-draft runs it",
-marked ready at 17:22 on commit `0188d12`. The session launched at 17:16 from
+was marked ready at 17:22 on commit `0188d12` and merged as `5271225` after Geoff typed
+"approved, 26, 268, 27". `claude rm` removed its session, worktree, and branch. The session launched at 17:16 from
 `~/Projects/standards` (id `41356b88`), on Opus at `high`, and Geoff's session stopped it after
 its report. Every goal item is met, the `validate` check passes, and a fresh
 `standards:diff-reviewer` accepted with no open finding. On a fresh clone, Geoff's session
@@ -375,6 +388,10 @@ lessons file calls for.
    `content-review` runs Vale with that config and fails when Vale reads no file, so no site
    needs a Vale config. This one gets a short spec, and Geoff approves it before any launch.
 4. ecxc-ski's content rule loses its dead pointers. It lands directly after item 3 merges.
+
+All four are done. Item 4 landed in ecxc-ski as commit `05281c6`, which also rewords backlog
+item 27 there. The same stale pointers remain in ecxc-ski's `docs/content-guide.md`, at lines
+5, 16, 253, and 258 to 259, and they are its backlog item 43.
 
 A draft of the style, run on 2026-11-22 over all 111 content files in the four sites, flags
 26 places: 21 in aksailingclub-org, 5 in 907-life, and none in ecxc-ski or cairn-pub. The

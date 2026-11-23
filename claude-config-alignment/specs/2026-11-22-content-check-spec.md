@@ -1,7 +1,8 @@
 # Content check spec
 
-Status: approved. Geoff said "approved" on 2026-11-22. Nothing is built, and the trial under
-[Before launch](#before-launch) is still owed.
+Status: built. Geoff said "approved" on 2026-11-22. The trial under
+[Before launch](#before-launch) passed on 2026-11-22, and the task merged as pull request 26 in
+`glw907/standards`, commit `5271225`.
 
 `content-review` runs Vale to catch banned words, but no site has a Vale config, so Vale reads
 no file and passes. This spec ships a small Vale style in the `standards` plugin, built from

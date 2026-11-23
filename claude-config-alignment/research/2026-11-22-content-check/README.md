@@ -2,7 +2,9 @@
 
 These files are the trial versions behind
 [the content check spec](../../specs/2026-11-22-content-check-spec.md). All of them ran on
-pavilion with Vale 3.28.1.
+pavilion with Vale 3.28.1. The trial run before launch passed on 2026-11-22: a Sonnet session
+called `content-vale.sh` on a clone at `01c86da` and got `11 errors, 1 warning and 0
+suggestions in 1 file.` The built version merged as pull request 26 in `glw907/standards`.
 
 | File | What it is |
 | --- | --- |
