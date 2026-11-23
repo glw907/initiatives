@@ -250,7 +250,7 @@ dollars.
   the `model` key.
 - `/skill-doctor` lists 77 skills. Never used: the 17 `cloudflare` skills, the five that pull
   request 24 removes, `go-ship` (removed by pull request 28 in standards, after Geoff said
-  "Remove go-ship." on 2026-11-22; it waits for his approval by number), `content-draft`, `cairn-figure`, and 10 skills synced from
+  "Remove go-ship." on 2026-11-22, merged as `5f18621` after "approved, 28"), `content-draft`, `cairn-figure`, and 10 skills synced from
   claude.ai, which it suggests turning off in `/skills` or on claude.ai. Geoff hasn't ruled on
   those 10.
 
