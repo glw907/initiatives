@@ -165,8 +165,9 @@
   The gate on the branch's last commit is the only full run.
 - Geoff ruled late on 2026-11-21: "Unless there are major issues, you can do all the merges."
   The three merges of 2026-11-22 ran under it, and each stopped at his permission prompt.
-- Weekly usage is 48 percent for all models and 70 percent for Fable at 14:35 on 2026-11-22,
-  after the baseline run. It was 43 and 63 at 12:26.
+- Weekly usage is 56 percent for all models and 85 percent for Fable at 15:39 on 2026-11-22,
+  with task 2 still running. It was 48 and 70 at 14:35, and 43 and 63 at 12:26. The week
+  resets on Nov 27 at 11pm Anchorage.
   `claude -p "/usage" --model haiku < /dev/null` prints both figures.
 
 ## Next action
@@ -186,7 +187,9 @@ spec matches: the guide's length rule states no number, and the test keeps 1,200
 pass mark. The sources are in the spec under "How long a spec may be".
 
 The launch prompt `plans/2026-11-22-spec-writing-evaluation-prompt.txt` is finished. Geoff's
-session works from `plans/2026-11-22-spec-writing-test-build-prompt.txt`.
+session worked from `plans/2026-11-22-spec-writing-test-build-prompt.txt` until he asked it to
+get ready to be cleared. The next session works from `plans/2026-11-22-close-out-prompt.txt`,
+which lists everything still owed, in order.
 
 The checks under the spec's "Before launch" pass on 2026-11-22. `claude-worktree-busy
 ~/.dotfiles` exits 0, and the session `dotfiles-5e` has ended. Its three uncommitted files are
@@ -242,9 +245,17 @@ initiative record, steered from the initiatives repo by a fresh session with a l
 with each task launched from its repo's main checkout, and dubplate first. He added on
 2026-11-22 who plans and who builds: "Note for the reshap for for cairn and dubplate, I'd
 like a Fable planning effort. I can execute with something lighter." So the launch prompt
-puts the audit and each spec on Fable, and each task's build on a lighter model. Geoff's session
-opens the record and writes the launch prompt once task 2 has merged and its two closing
-checks are reported. He also asked whether any Anthropic or community skill is missing for
+puts the audit and each spec on Fable, and each task's build on a lighter model. He then said
+to start the planning without waiting for task 2: "Once you're done you can prep to clear, and
+we'll get started on the cairn and dubplate planning. Should I run those as two separate
+efforts, or together?" Claude answered: one planning effort with one audit of both repos,
+then a spec and a build for each, dubplate first. The record is `cairn-dubplate-reshape/`.
+Geoff approved it as pull request 182 in `glw907/initiatives` ("Approved."), it merged as
+`369afb2`, and the record is active. Its launch prompt is
+`cairn-dubplate-reshape/plans/2026-11-22-planning-prompt.txt`. Fable read 85 percent of the week at 15:39, so Claude proposed a split: the
+audit of both repos on Opus as soon as pavilion has a free slot, and the two specs on Fable
+after the reset on Nov 27. Geoff answered: "Split is fine." The launch prompt says which
+steps each session does. He also asked whether any Anthropic or community skill is missing for
 those two projects. The reshape's audit answers that with a trial for each candidate. The
 candidates from the official marketplace are `security-guidance` and `claude-security` for
 the sign-in, data, and upload code, and `claude-code-setup` and `claude-md-management` as
@@ -305,7 +316,14 @@ ecxc-ski's `.claude/rules/content.md` also points at `~/.claude/docs/web-content
 and `prose-guard`, and neither exists. Only ecxc-ski has a `docs/content-guide.md`.
 
 Claude proposed four fixes and asked "Do you want all four, with a spec for item 3?" Geoff
-answered on 2026-11-22: "Yes." Nothing is built, and the spec is being written.
+answered on 2026-11-22: "Yes." Nothing is built. The spec for items 1 and 3 is written at
+`specs/2026-11-22-content-check-spec.md`, with its trial files in
+`research/2026-11-22-content-check/`, and it waits for Geoff's approval. A fresh reader
+checked it and Claude fixed what it found. The worst finding was that pavilion's Vale config
+in the home folder could add file types and accepted words to the check, so the script now
+runs Vale with `--no-global`. One trial is still owed before launch, because pavilion was at
+four working sessions: a Sonnet session that loads the changed plugin and runs
+`content-review` on a sample.
 
 1. `content-draft` runs `content-review` on the file it drafted and reports the result, in
    place of offering to. This is in the `standards` plugin and joins item 3's spec, because
@@ -321,7 +339,7 @@ answered on 2026-11-22: "Yes." Nothing is built, and the spec is being written.
 A draft of the style, run on 2026-11-22 over all 111 content files in the four sites, flags
 26 places: 21 in aksailingclub-org, 5 in 907-life, and none in ecxc-ski or cairn-pub. The
 method's two samples come out as it says they should, the clean one with no finding and the
-other with 12.
+other with 11 errors and 1 warning.
 
 He also has the notes the last three pull requests left, listed under "Open decisions".
 

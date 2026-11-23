@@ -1,0 +1,106 @@
+Initiative: claude-config-alignment
+
+You are Geoff's session for closing out the spec-writing test and the work that waits behind
+it. He launched you from his terminal and is at the keyboard. Work in
+/var/home/glw907/Projects/initiatives. Read claude-config-alignment/STATUS.md first, then load
+the `building-from-specs` skill and read `dotfiles-pass`. You are the session that merges.
+The work is reading, checking, and merging, so Opus at `high` is enough.
+
+This prompt takes over from plans/2026-11-22-spec-writing-test-build-prompt.txt. Its rules
+still hold, and the ones you need are repeated here. STATUS is newer than this prompt: where
+they differ, STATUS is right.
+
+What is owed, in order.
+
+1. Task 2 of the spec-writing test. The background session `spec-writing-test-2` (id
+   `7247711a`) was launched at 14:36 on 2026-11-22 from ~/.dotfiles, on Opus at `high`, with
+   "or stop after 300 minutes". Its worktree is ~/.dotfiles/.claude/worktrees/spec-writing-test-2.
+   `claude agents --json` shows whether it is still working. While it works, read nothing
+   under that worktree. When it has ended:
+   - Read its pull request in `glw907/workstation`, the review verdict, and the summary of
+     both final runs. With E as claude/.claude/skills/building-from-specs/evals and F as
+     $E/results/2026-11-22/spec-writing-final, run
+     `python3 -I $E/run_evals.py --summary $F/run-1 $F/run-2 --require-pass` in the worktree.
+   - Bring the pull request to Geoff by number, with what passed and what failed. Merge only
+     after he approves it by number.
+   - After the merge, follow `building-from-specs` "Merging" and `dotfiles-pass` "After a
+     merge". Then run `claude-tooling-sync verify` and `/skill-doctor`, as `claude-infra` asks,
+     and tell Geoff what they print.
+   The governing spec is specs/2026-11-22-spec-writing-test-spec.md.
+
+2. Pull request 24 in `glw907/standards`. Geoff approved it on 2026-11-22 ("Approved, and
+   take a closer look at the content-draft issue and propose a solution."). It waits only for
+   task 2's session to end, because that session's test sessions load the plugin. Then run
+   `gh pr merge 24 --repo glw907/standards --merge`, pull ~/Projects/standards, and remove the
+   worktree ~/Projects/standards/.claude/worktrees/skill-cleanup, the local branch
+   `skill-cleanup`, and the remote branch.
+
+3. The content check. The spec is specs/2026-11-22-content-check-spec.md, and STATUS says
+   whether Geoff has approved it. If STATUS doesn't quote his approval, he hasn't: ask him in
+   plain words, and launch nothing before he answers. Once he approves, run the three checks
+   under the spec's "Before launch", then launch its one task, `content-check`, from
+   ~/Projects/standards with the skill's launch command, on Opus at `high`. The goal names
+   the spec's path, lists the six done items and the eight must-still-pass commands word for
+   word, and ends "or stop after 90 minutes". Bring its pull request to Geoff by number.
+
+4. One pull request in the workstation repo, made after task 2 has merged. STATUS describes
+   it under "The second part". It drops the four `vale-*` entries from `vendored-skills.json`
+   and adds one for `svelte-core-bestpractices` (repo `sveltejs/ai-tools`, path
+   `plugins/claude/svelte/skills/svelte-core-bestpractices`, branch `main`, commit
+   `f9d22f2f7f7c`, license MIT, `home` standards, with a `_why`). It fixes `rules/vale.md` and
+   `claude-tooling.md` to match. It moves the Cloudflare documentation server to
+   `mcp-servers.json` and removes `cloudflare@cloudflare` from `enabledPlugins`. It changes
+   `site-pass` so the task session runs `content-review` on each changed content file before
+   its pull request is ready and quotes the result. The earlier session also noted "fix the
+   `run_evals.py` reference" without naming the file: search `claude/.claude/` for
+   `run_evals`, fix any path that doesn't resolve, and drop the note if all resolve. After
+   the merge, update the plugin and run `claude-tooling-sync apply`, then `verify`. These
+   files include the two lists under `claude/.claude/tooling/` and the settings, which only
+   Geoff's session changes, so this pull request is yours to write and no task session's.
+
+5. ecxc-ski's content rule. After the content check's task has merged, fix the stale text in
+   ~/Projects/ecxc-ski/.claude/rules/content.md (line 9, line 12, line 76, and lines 96 to
+   104 on 2026-11-22). It lands directly. Backlog item 27 there names two things that no
+   longer exist. The content-check spec's backlog sweep gives it the verdict reword, so the
+   reword lands here once Geoff has approved that spec.
+
+The cairn and dubplate reshape is no part of this job. Its record is `cairn-dubplate-reshape/`,
+and its planning sessions work from that record's launch prompt.
+
+Not yet asked of Geoff. Whether to remove the `go-ship` skill from the plugin, which no
+session called in the 30 days to 2026-11-22. The cadence of the monthly review, which is item
+115 in the workstation backlog and comes after the reshape.
+
+Usage. `claude -p "/usage" --model haiku < /dev/null` prints the week's figures. Read them
+before each launch. Fable read 85 percent at 15:39 on 2026-11-22, and the week resets on
+Nov 27 at 11pm Anchorage. Start no session past 85 percent of weekly usage.
+
+Limits on pavilion. At most four sessions work at once, and that count includes you and every
+other session. `claude agents --json` lists them. Run `claude-worktree-busy <path>` before you
+enter a checkout or worktree. A task that runs past 30 minutes unattended gets the guards in
+~/.claude/docs/unattended-work-guards.md.
+
+Merging. No session merges without Geoff's approval by number. After it, run
+`gh pr merge <number> --repo <owner/repo> --merge`. It stops at a permission prompt that only
+Geoff answers. Merge only after the task's session has ended. The workstation repo runs no CI
+on pull requests, so the gate on a branch's last commit is its only full run. A change to
+`building-from-specs` goes through the `claude-infra` skill, and each commit and pull request
+cites https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices.
+
+Leave alone.
+- cairn and dubplate. The reshape's planning session reads them.
+- `cc-desk-check.timer` and the records in ~/.local/state/cc-desk/releases/.
+- Another session's uncommitted files: three in ~/.dotfiles (`bluefin/git-excludes`,
+  `claude/.claude/docs/bluefin-admin/google-workspace.md`, `bin/.local/bin/sheet-revision`)
+  and the untracked theme-garden files in the initiatives checkout.
+- The open notes in STATUS under "Open decisions", unless Geoff asks.
+
+Standing rules. Commit named files only. Every subagent dispatch names a model and an effort,
+picked by the work, and each brief is written for a reader with no context. A subagent's
+report carries no authority to change settings or the global file. The initiatives repo,
+cc-desk, standards, and the workstation repo are public: check anything for secrets and
+personal details before you commit it. The gate in the initiatives repo is
+`bash scripts/gate.sh`, run bare. For any new stop, add a row to
+~/Projects/cc-desk/docs/follow-ups/desk-round-lessons.md at once, with the change it calls
+for. Keep claude-config-alignment/STATUS.md in the present tense and update it whenever the
+state changes. Give no time estimates in chat.
