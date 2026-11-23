@@ -48,10 +48,17 @@ the launcher edit landed, and the dry run passed.
   (`cairn-docs-cycle --dry-run`, session `55848e04`) wrote `history-entry.md` and `sources-read.md` under
   `~/.local/state/cairn-docs-cycle/2026-11/`, left `last` and `main` unchanged, and opened no pull request.
   Hand-over 2 landed as `18f7fc89b`: `docs/STATUS.md` says the reshape is done and names BACKLOG #572, the round
-  `surface` spec. #575 holds the `docs-register.md` line that still names `cairn-implementer`. What is left in
-  `cairn-cms` is its own backlog, Dependabot alert 1, and the leftover worktrees: a dry run found 120 under
-  `.claude/worktrees/` (118 GB), 70 merged and clean, 48 unmerged and clean, and 2 with untracked files. Nothing is
-  removed until Geoff says so.
+  `surface` spec. #575 holds the `docs-register.md` line that still names `cairn-implementer`. Geoff said "You can
+  remove the worktrees." and then "And you can also take care of the rest of the leftover items." and "Or log as
+  backlog where appropriate" (2026-11-23). The 116 leftover worktrees are removed (70 merged, 46 patch-merged by
+  `git cherry`), with no force flag. 52 local branches whose commits are patch-merged are deleted, and their names
+  and SHAs are in `~/.local/state/cairn-removed-worktrees/deleted-branches.txt` for recovery. The preserved
+  reference shots are in `~/.local/state/cairn-removed-worktrees/agent-acaec580745ba663d-tmp/`. Branches with
+  unique commits stay, and `cairn-cms` BACKLOG #578 holds them with the other stale branches and the stash. The
+  other leftovers are filed: `cairn-cms` #575 to #579 and `~/.dotfiles` #118 to #120. Dependabot alert 1 is half
+  cleared by pull request 266 (`typescript-eslint` 8.74.0): `eslint-plugin-tsdoc` still pins an older
+  `typescript-eslint` utils, and #579 holds the unblock condition. Geoff still deletes the routine
+  `trig_01KPzLTU7rzLMQUp2y6bjZtm` at claude.ai/code/routines, which an agent cannot do.
 - The audit is `research/2026-11-22-audit/README.md`, with the trial outputs in its `trials/` folder.
 - The trials adopt `govulncheck` and fuzz tests for `dubplate`'s gate, and `go test -race` for its
   CI once task 1's `internal/serve` fix lands. They decline `golang-security`, `golang-database`,
