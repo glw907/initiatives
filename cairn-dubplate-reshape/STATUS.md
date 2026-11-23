@@ -13,7 +13,9 @@ on Sonnet at high. `cairn-cms`'s spec session can start now, on Fable at high fr
   the Go team's checks. A probe showed a `--bg` task session can edit `.claude/` files.
 - The `dubplate` build is under way. Hand-over 1 landed as `96c4e91` on `master`: `docs/STATUS.md`
   is 42 lines and the old-process grep prints `0`. The GitHub settings are on: the vulnerability
-  alerts check exits `0` and the scanning check prints `enabled enabled`. Tasks 1 and 2 launch next.
+  alerts check exits `0` and the scanning check prints `enabled enabled`. Task 1 (`serve-shutdown`,
+  session `1c94556f`) and task 2 (`claude-files`, session `d05076de`) are running in background
+  sessions started from `~/Projects/dubplate`. Task 3 waits until both have merged.
 - The audit is `research/2026-11-22-audit/README.md`, with the trial outputs in its `trials/`
   folder. It read `dubplate` at `907605c` and `cairn-cms` at `87869e61f`. Neither repo has
   changed.
