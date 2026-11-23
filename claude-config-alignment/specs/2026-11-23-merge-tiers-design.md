@@ -36,7 +36,7 @@ Show tier in a repo the script has no map for, and PR CI for the three sites tha
 
 The work fails if a pull request merges without Geoff's word while it touches a path the repo lists as Ask-only,
 changes a file its task's `Files:` line doesn't name, or comes from a task the approved spec marks Ask. It also
-fails if a task session can run the script, or if a Show merge never reaches Geoff's report.
+fails if a task session can merge through the script, or if a Show merge never reaches Geoff's report.
 
 ## How the tiers work
 
@@ -68,59 +68,84 @@ since the gate runs them and a reviewer reads them.
 | each site repo (ecxc-ski, 907-life, aksailingclub-org, cairn-pub) | that site's `auth-data` and `runner` globs in `site-pass` "Risk-class path map", plus `.claude/**`, `CLAUDE.md`, and `**/CLAUDE.md` |
 | `glw907/cc-desk-scratch` | `.github/**`, `scripts/**`, `.claude/**`, `CLAUDE.md` |
 
-Each repo is keyed by the `nameWithOwner` that `gh repo view` prints from its main checkout. The 907-life
-checkout prints `glw907/907-life-legacy` today, and that is its key. Brace globs are written out, because
+Each repo is keyed by the `nameWithOwner` of its main checkout's `origin`: `glw907/workstation` for
+`~/.dotfiles`, `glw907/cairn-cms`, `glw907/ecxc-ski`, `glw907/907-life-legacy` for the 907-life checkout,
+`glw907/aksailingclub-org`, `glw907/cairn-pub`, and `glw907/cc-desk-scratch`. Brace globs are written out, because
 `PurePath.full_match` doesn't expand them.
 
 ### What `claude-show-merge` checks
 
-`claude-show-merge <owner/repo> <number> --spec <path> --task <name>` runs these checks in order and prints one
-line for each: `pass <check>` or `fail <check>: <reason>`. It merges only when all pass. `--dry-run` runs every
-check and merges nothing.
+`claude-show-merge <owner/repo> <number> --spec <path> --task <name>` runs every check below, even after one
+fails, and prints one line for each: `pass <check>`, `fail <check>: <reason>`, or `wait <check>: <reason>`. It
+merges only when all pass. `--dry-run` runs every check, merges nothing, and writes no record.
 
-1. Task session: `CLAUDE_TASK_SESSION` isn't `1`. A task session can't run it.
+1. Task session: `CLAUDE_TASK_SESSION` isn't `1`. A task session can't merge with it.
 2. Repo: the repo has an Ask-only list.
-3. Spec: the spec file is tracked in its git repo with no uncommitted change. Its `Status:` line starts with
+3. Earlier result: the record holds no `ask` row for this pull request. Once a pull request falls to an ask, it
+   stays one.
+4. Spec: the spec file is tracked in its git repo with no uncommitted change. Its `Status:` line starts with
    `Status: approved`. One section holds `Name: <task>`, and that section holds `Tier: show` and a `Files:` line
    with at least one backticked glob. The spec as last committed at or before the pull request's `createdAt` has
-   the same `Status:` start and the same `Tier:` and `Files:` lines for the task, so a change made after the task
+   the same `Status:` start and the same `Tier:` and `Files:` lines for the task. A change made after the task
    started counts for nothing.
-4. Session: the newest entry named `<task>` in `claude agents --json --all` reads `done`.
-5. Pull request: `state` is `OPEN`, `isDraft` is `false`, `mergeable` is `MERGEABLE`, and `baseRefName` is the
-   repo's default branch from `gh repo view --json defaultBranchRef`. The script records `headRefOid` here.
-6. CI: `gh pr checks` exits 0. In `glw907/workstation`, which has no PR CI, `no checks reported` passes too, the
-   same exception as task-chains' ready check.
-7. Review: the `task-score` comment parses as JSON and reads `"verdict":"accept"`, `"openFindings":0`, and
+5. Session: the newest entry named `<task>` in `claude agents --json --all` reads `done`. An entry still at work,
+   or no entry because the task ran on the other host, is a wait.
+6. Pull request: `state` is `OPEN`, `isDraft` is `false`, `mergeable` is `MERGEABLE`, and `baseRefName` is the
+   repo's default branch from `gh repo view --json defaultBranchRef`. The script keeps the `headRefOid` it read
+   here.
+7. CI: `gh pr checks` exits 0. Exit 8, checks still running, is a wait. A retargeted child reruns its CI, so it
+   waits a tick or two. In `glw907/workstation`, which has no PR CI, `no checks reported` passes too, the same
+   exception as task-chains' ready check.
+8. Review: the `task-score` comment parses as JSON and reads `"verdict":"accept"`, `"openFindings":0`, and
    `"unmet":0`.
-8. Body: the body holds no `## Before merge` heading and no `## For Geoff` heading.
-9. Files: every path in `gh api repos/<r>/pulls/<n>/files --paginate`, `filename` and `previous_filename`
-   both, matches a `Files:` glob, and none matches an Ask-only glob.
-10. Current: `gh api repos/<r>/compare/<head>...<default>` lists the files changed on the default branch since
+9. Body: the body holds no `## Before merge` heading and no `## For Geoff` heading, and it holds the line
+   `From spec <path>, task <name>.` with the same path and name the script was given.
+10. Files: every path in `gh api repos/<r>/pulls/<n>/files --paginate`, `filename` and `previous_filename`
+    both, matches a `Files:` glob, and none matches an Ask-only glob.
+11. Current: `gh api repos/<r>/compare/<head>...<default>` lists the files changed on the default branch since
     the merge base, and none of them is a file the pull request changes. A list of 300 files, the API's most,
     fails. For a child (the body's first line reads `Built on #<p> at <sha>`), pull request `<p>` has merged and
     its `headRefOid` is `<sha>`.
 
-Then it runs `gh pr merge <n> --repo <r> --merge --match-head-commit <headRefOid>`, with the head read at check 5,
+When all pass, it runs `gh pr merge <n> --repo <r> --merge --match-head-commit <sha>`, with the sha check 6 kept,
 so a push after the checks stops the merge. It prints `merged <r>#<n> <merge sha>` and
 `undo: git revert -m 1 <merge sha>`.
 
 | Exit | Meaning | What follows |
 | --- | --- | --- |
-| 0 | Merged, or every check passed under `--dry-run` | The tick runs the cleanup steps. |
+| 0 | Merged, or every check passed under `--dry-run` | The caller runs the cleanup steps. |
 | 1 | A check failed | The pull request is an ask, with the failed check named. |
-| 2 | A read failed: a `gh` or `claude` error, or a moved head at the merge | It is tried once more at the next tick, and a second exit 2 counts as exit 1. |
+| 2 | A read failed: a `gh` or `claude` error, or a moved head at the merge | The next tick tries once more. A second exit 2 for the same pull request becomes exit 1. |
+| 3 | A check waits | The next tick tries again. Nothing counts against the pull request. |
+
+When results differ, the first of 1, 2, 3 in that order sets the exit. A failed check outranks a failed read,
+because a known failure is already an ask.
+
+### The record
+
+Each run that isn't `--dry-run` and doesn't exit 3 appends one JSON row to `~/.local/state/claude-show-merge.jsonl`.
+The row holds the time, repo, number, spec, task, result (`merged`, `ask`, or `retry`), the failed checks with
+their reasons, and the merge commit. Exit 2 writes `retry`, and the second exit 2 writes `ask`. On `merged` and
+`ask` the script also comments on the pull request with the same line it printed, so the reason shows on GitHub.
+
+`claude-show-merge --report` prints, in plain words, each `merged` and `ask` row written since the last
+`--report`, the merged ones with their undo line. It then writes the time it ran to
+`~/.local/state/claude-show-merge.reported`. A merge that no session reported stays in the next report, so a
+loop that dies early loses nothing.
 
 ### Where it runs
 
 The chain tick of task-chains runs it. After step 3 finds a task ready, a task whose section reads `Tier: show`,
-and whose parent has merged or that has none, goes to `claude-show-merge`. On exit 0 the tick runs "Merging"
-steps 4 and 5 (pull, retarget children, clean up) and the repo pass skill's "After a merge". On exit 1 the task
-waits for Geoff with the printed reason, and its children still launch, as for any ready task. The tick's
-sitting note gains two lists: each Show merge, in plain words, with its merge commit and the `git revert -m 1`
-line, and each Show task that fell to an ask, with its failed check.
+and whose parent has merged or that has none, goes to `claude-show-merge`, with `--spec` and `--task` read from
+the body's `From spec` line. On exit 0 the tick runs "Merging" steps 4 and 5 (pull, retarget children, clean up)
+and the repo pass skill's "After a merge". On exit 1 the task waits for Geoff, and its children still launch, as
+for any ready task. Step 6 doesn't end the chain while a Show pull request exited 2 or 3 on this tick. The tick's
+sitting note carries the output of `claude-show-merge --report`.
 
-With no tick, Geoff's session runs the script at the start of his next sitting, before it asks about anything
-else, and reports each Show merge the same way.
+With no tick, Geoff's session starts each sitting the same way, before it asks about anything else. It lists
+open pull requests with `gh search prs --owner glw907 --state open --json repository,number,body`, runs the
+script on each whose body holds a `From spec` line and whose task section reads `Tier: show`, and shows him the
+`--report` output.
 
 ### Undo
 
@@ -135,17 +160,27 @@ auto mode's classifier never sees it. `autoMode.allow[1]` allows skill and scrip
 because "each change takes effect only after Geoff merges its PR". Show makes that untrue. Its clause becomes: "each
 change takes effect only after its pull request merges, on Geoff's word or, for a task his approved spec marks
 Show, through `claude-show-merge`, which refuses every settings, hook, permission, and guard path."
-Settings stay Ask, so `autoMode.allow[2]` keeps its clause. `claude-git-guard` denies `claude-show-merge` when
-`CLAUDE_TASK_SESSION` is `1`, as task-chains' follow-up does for merges.
+Settings stay Ask, so `autoMode.allow[2]` keeps its clause.
+
+Task-chains' follow-up sets `CLAUDE_TASK_SESSION=1` on each task session's launch line. With it set,
+`claude-git-guard` denies any command that runs `claude-show-merge` without `--ask-only`, `--help`, or
+`--dry-run`. The guard reads the variable from its own environment, so an inline `CLAUDE_TASK_SESSION=0` doesn't
+help. It finds the script as the command word of any part of a command line: after `cd ... &&`, after `env` or
+variable assignments, as a path ending in `/claude-show-merge`, after `python3` and its flags, or inside a
+`bash -c` or `sh -c` string. A command that only names it as an argument, such as `grep claude-show-merge`, passes.
 
 ## Limits
 
 - Show applies only in the seven repos the table lists. Three of them, ecxc-ski, 907-life, and cairn-pub, have no
-  PR CI, so check 6 fails there and their tasks stay Ask until they have it.
+  PR CI, so check 7 fails there and their tasks stay Ask until they have it.
 - The compare and pull request files lists stop at 300 and 3,000 files, and a list at the cap fails.
 - A read failure is retried once, at the next tick, 15 minutes later and up to 7.5 minutes late.
 - The tick merges every passing Show pull request it finds, in chain order, with no cap per tick.
 - A revert has no time limit. One that conflicts goes to Geoff as an ask.
+- A task's session entry lives on the host that launched it. On the other host, check 5 waits, so a Show pull
+  request merges only from a session on the host that launched its task.
+- A wait has no limit of its own. The chain stays open while one lasts, and the task-chains limits on the loop
+  still end it.
 
 ## Approaches
 
@@ -205,6 +240,9 @@ Geoff chose the spec.
 - The git guard lets the script through today. Fed
   `claude-show-merge glw907/cc-desk-scratch 7 --spec /x.md --task t`, it printed nothing and exited 0, with
   `CLAUDE_TASK_SESSION` unset and set to `1`. Task 1 adds the deny.
+- Task-chains' follow-up sets `CLAUDE_TASK_SESSION=1` on every task session's launch line. Its spec says so
+  (task 1, "The merge prompt"), but `git grep CLAUDE_TASK_SESSION` on `origin/worktree-task-chains` finds nothing
+  yet. This spec's tasks wait for that follow-up to merge.
 - The tick's ready check and the script read the same fields. Task-chains task 1's step 3 reads the session
   state, the draft flag, `gh pr checks`, and the `task-score` JSON. The script reads them again, so a stale tick
   read can't merge.
@@ -243,7 +281,7 @@ The repo pass skills `cairn-pass`, `site-pass`, and `dotfiles-pass` gain a point
 | `stow` | 1 | 2026-11-01, `[Self-Modification]`. A refusal after a Show merge goes in the sitting note, and Geoff's session reruns it. |
 | `claude-tooling-sync` | 2 | `apply` never follows a Show merge, because `claude/.claude/tooling/**` is Ask-only. |
 | `claude --bg` | 2 | Launches are task-chains' and unchanged here. |
-| `git revert`, `gh pr create`, `gh pr diff`, `git worktree remove`, `claude-show-merge` | 0 | |
+| `git revert`, `gh pr create`, `gh pr diff`, `gh search prs`, `env -u`, `git worktree remove`, `claude-show-merge` | 0 | |
 
 ## Task 1: build `claude-show-merge`
 
@@ -252,19 +290,21 @@ Tier: ask
 Files: `bin/.local/bin/claude-show-merge`, `tests/test_claude_show_merge.py`, `scripts/check.sh`, `bin/.local/bin/claude-git-guard`, `tests/test_claude_git_guard.py`
 
 The task builds in `glw907/workstation`, launched from `~/.dotfiles`. The script is stdlib Python run as
-`python3 -I`, one file, per the workstation's tool rule. It does what "How the tiers work" says: the ten checks,
-the merge, the exits, `--dry-run`, and `--ask-only`, with the table's lists. Its tests put fake `gh` and `claude`
-on `PATH`. `claude-git-guard` denies a command that runs `claude-show-merge` when `CLAUDE_TASK_SESSION` is `1`,
-and its reason names the task-session rule.
+`python3 -I`, one file, per the workstation's tool rule. It does what "How the tiers work" says: the eleven checks,
+the merge, the four exits, the record, `--dry-run`, `--report`, and `--ask-only`, with the table's lists. The
+record and the report marker go under `$XDG_STATE_HOME`, falling back to `~/.local/state`, so the tests can point
+them at a temporary folder. The tests put fake `gh` and `claude` on `PATH`. `claude-git-guard` gains the deny that
+"Settings" describes, and its reason names the task-session rule.
 
 Goal:
 
 ```text
-Build task show-merge-script of /var/home/glw907/Projects/initiatives/claude-config-alignment/specs/2026-11-23-merge-tiers-design.md by building-from-specs, with dotfiles-pass for the gate and checks. Below, $M is bin/.local/bin/claude-show-merge. Done when: 1. `$M --help | grep -c -e --spec -e --task -e --dry-run -e --ask-only` prints 4 or more. 2. `$M --ask-only glw907/workstation | grep -c -x -F -e claude/.claude/settings.json -e bin/.local/bin/claude-git-guard -e bin/.local/bin/claude-show-merge -e 'claude/.claude/skills/building-from-specs/**'` prints 4, and `$M --ask-only glw907/standards` exits 1. 3. `uv run --with pytest --no-project python -m pytest tests/test_claude_show_merge.py -q` passes, with one test for each of the spec's ten checks whose fixture misses only that check and expects exit 1 and that check's fail line, one test where a read fails and expects exit 2, and one where every check passes and the fake gh records `pr merge <n> --repo <r> --merge --match-head-commit <sha>`. A test also finds every backticked glob of site-pass "Risk-class path map", braces expanded, in that site's list. 4. `$M glw907/workstation 271 --spec /var/home/glw907/Projects/initiatives/claude-config-alignment/specs/2026-11-22-task-chains-design.md --task task-chains --dry-run` exits 1, and its output holds a fail line for the spec check. 5. Fed `{"tool_name":"Bash","tool_input":{"command":"claude-show-merge glw907/cc-desk-scratch 7 --spec /x.md --task t"}}` on stdin, bin/.local/bin/claude-git-guard prints a deny decision with CLAUDE_TASK_SESSION=1, and prints nothing and exits 0 without it; tests/test_claude_git_guard.py covers both. 6. `grep -c 'show-merge' scripts/check.sh` prints 1 or more. 7. `bash scripts/gate.sh` exits 0 from the worktree root, and `claude-tooling-sync verify` passes. 8. A fresh standards:diff-reviewer accepts the branch against the spec's "How the tiers work" and Task 1 with 0 open findings, and the pull request is ready. Or stop after 180 minutes.
+Build task show-merge-script of /var/home/glw907/Projects/initiatives/claude-config-alignment/specs/2026-11-23-merge-tiers-design.md by building-from-specs, with dotfiles-pass for the gate and checks. Below, $M is bin/.local/bin/claude-show-merge and $G is bin/.local/bin/claude-git-guard. Done when: 1. Each of `$M --help | grep -c -F -- --spec`, the same for `--task`, `--dry-run`, `--report`, and `--ask-only`, prints 1 or more. 2. `$M --ask-only <key>` exits 0 for each of glw907/workstation, glw907/cairn-cms, glw907/ecxc-ski, glw907/907-life-legacy, glw907/aksailingclub-org, glw907/cairn-pub, and glw907/cc-desk-scratch; it exits 1 for glw907/standards and glw907/907-life; and for glw907/workstation its output holds, as whole lines, every glob and script path the spec's table lists for that repo, checked by a test that carries that list. 3. `uv run --with pytest --no-project python -m pytest tests/test_claude_show_merge.py -q` passes, and the file holds at least these tests: for each of the eleven checks, a fixture that misses only that check, expecting exit 1 and that check's fail line, and for check 4 a second fixture whose working spec reads `Tier: show` while the copy committed at `createdAt` reads `Tier: ask`; for check 11, a child whose parent merged at another sha, a child whose parent merged at the named sha (pass), and a compare list of 300 files; waits, with checks pending (gh exit 8) and with no session entry, each expecting exit 3 and no record row; a failed read expecting exit 2 and a `retry` row, then a second run expecting exit 1 and an `ask` row; a head that moves between check 6 and the merge, expecting exit 2; one fixture with a failed check and a failed read, expecting exit 1; a full pass where the fake gh records `pr merge <n> --repo <r> --merge --match-head-commit <sha>` with the sha the fixture's check 6 returned, and a `merged` row; and `--report` printing that row once and nothing on a second run. A test also reads site-pass "Risk-class path map" and finds, in each site's list, the globs it names for every site plus those it names for that site, braces expanded, and none it names only for another site. 4. `env -u CLAUDE_TASK_SESSION $M glw907/workstation 271 --spec /var/home/glw907/Projects/initiatives/claude-config-alignment/specs/2026-11-22-task-chains-design.md --task task-chains --dry-run` exits 1, its output holds `pass task-session` and `pass repo`, and its `fail spec` line names the missing `Name: task-chains` section. 5. tests/test_claude_git_guard.py passes, and with CLAUDE_TASK_SESSION=1 it expects $G to deny each of `claude-show-merge glw907/x 7 --spec /x.md --task t`, `bin/.local/bin/claude-show-merge glw907/x 7 --spec /x.md --task t`, `python3 -I ~/.local/bin/claude-show-merge glw907/x 7 --spec /x.md --task t`, `bash -c 'claude-show-merge glw907/x 7 --spec /x.md --task t'`, `CLAUDE_TASK_SESSION=0 claude-show-merge glw907/x 7 --spec /x.md --task t`, and `cd /tmp && claude-show-merge glw907/x 7 --spec /x.md --task t`; to pass `grep -c claude-show-merge f.md`, `claude-show-merge --ask-only glw907/workstation`, `claude-show-merge --help`, and `claude-show-merge glw907/x 7 --spec /x.md --task t --dry-run`; and with the variable unset, to pass every one of them. 6. `grep -c -E 'claude-\(.*show-merge' scripts/check.sh` prints 1, the pytest leg's path filter. 7. `bash scripts/gate.sh` exits 0 from the worktree root, and `claude-tooling-sync verify` passes. 8. A fresh standards:diff-reviewer accepts the branch against the spec's "How the tiers work" and Task 1 with 0 open findings, and the pull request is ready. Or stop after 180 minutes.
 ```
 
 Today, items 1 to 4 fail because `bin/.local/bin/claude-show-merge` doesn't exist (`test -x` exits 1, and
-`ls tests | grep -c show_merge` prints 0). Item 5 prints nothing and exits 0 in both cases. Item 6 prints 0.
+`ls tests | grep -c show_merge` prints 0). For item 5, the guard prints nothing and exits 0 on the plain spelling,
+with the variable set and unset. Item 6 prints 0.
 
 Reviewers: `standards:diff-reviewer`. Minutes: 90 (the measured median actual path for `workstation` is 45, plus
 a gate's p90 of 13, plus 30 for a new script and its tests), so the clause is 180. Model: Opus at high. Waits for:
@@ -279,9 +319,11 @@ Files: `claude/.claude/skills/building-from-specs/SKILL.md`, `claude/.claude/ski
 The task builds in `glw907/workstation`, launched from `~/.dotfiles`, in the agent-facing register
 (`~/.claude/docs/voice/agent-facing.md`). It writes:
 
-- `SKILL.md`: "Chains" gains the Show step and the two sitting-note lists from "Where it runs". "Merging" gains the
-  Show paragraph, the sitting run with no tick, and "Undo", citing the Ship/Show/Ask URL. The step list at the
-  top and "The pull request" item 5 say `## For Geoff` is left out when nothing waits.
+- `SKILL.md`: "Chains" gains the Show step from "Where it runs": the script's four exits, cleanup only on exit 0,
+  the chain held open on exit 2 or 3, and `--report` in the sitting note. "Merging" gains the Show paragraph, the
+  sitting run with no tick, and "Undo", citing the Ship/Show/Ask URL. "The pull request" gains the
+  `From spec <path>, task <name>.` line, and its item 5 and the step list at the top say `## For Geoff` is left
+  out when nothing waits.
 - `writing-a-spec.md`: a task carries the `Name:`, `Tier:`, and `Files:` lines, and Show is allowed only by "A
   task's tier".
 - `CLAUDE.md` "Work is built from specs": "Only the session Geoff is talking to merges, and only after he approves
@@ -291,7 +333,7 @@ The task builds in `glw907/workstation`, launched from `~/.dotfiles`, in the age
   repos.
 - `evals.json`: one case. The tick finds a ready pull request whose spec task reads `Tier: show`. The expected
   behavior is that it runs `claude-show-merge` with `--spec` and `--task`, runs no bare `gh pr merge`, asks
-  Geoff nothing, and puts the `git revert -m 1` line in the sitting note.
+  Geoff nothing, and puts the `--report` output, with its `git revert -m 1` line, in the sitting note.
 
 A task session leaves settings alone, so the pull request's `## Before merge` carries the "Settings" edits as
 exact JSON, with this check: `python3 -I -c 'import json; s=json.load(open("claude/.claude/settings.json"));
@@ -302,11 +344,12 @@ commit, after his "Merge" and after the task's session has ended, then merges.
 Goal:
 
 ```text
-Build task show-tier-rules of /var/home/glw907/Projects/initiatives/claude-config-alignment/specs/2026-11-23-merge-tiers-design.md by building-from-specs, with dotfiles-pass for the gate and checks. Below, $S is claude/.claude/skills/building-from-specs/SKILL.md, and "in Chains" or "in Merging" means piping `sed -n '/^## Chains$/,/^## /p' $S` or `sed -n '/^## Merging$/,/^## /p' $S` to the grep. Done when: 1. `grep -c -F 'Tier: show' $S` prints 1 or more. 2. In Chains, `grep -c -F 'claude-show-merge'` prints 1 or more and `grep -c -F 'git revert -m 1'` prints 1 or more. 3. In Merging, `grep -c -F 'claude-show-merge'` prints 1 or more and `grep -c -F 'Revert'` prints 1 or more. 4. `grep -c -F 'ship-show-ask' $S` prints 1. 5. `wc -l < $S` prints 270 or fewer. 6. For claude/.claude/skills/building-from-specs/references/writing-a-spec.md, `grep -c -F -e 'Name:' -e 'Tier:' -e 'Files:'` prints 3 or more. 7. `grep -c -F 'claude-show-merge' claude/.claude/CLAUDE.md` prints 1. 8. `grep -c -F 'claude-show-merge --ask-only'` prints 1 or more in each of .claude/skills/dotfiles-pass/SKILL.md, claude/.claude/skills/cairn-pass/SKILL.md, and claude/.claude/skills/site-pass/SKILL.md. 9. `grep -c -F 'claude-show-merge' claude/.claude/skills/building-from-specs/evals/evals.json` prints 1 or more. 10. The pull request's `## Before merge` carries the spec's "Settings" edits as exact JSON and the spec's check, read with `gh pr view <n> --repo glw907/workstation --json body --jq .body | grep -c -F 'Bash(claude-show-merge *)'` printing 1 or more. 11. `bash scripts/gate.sh` exits 0 from the worktree root, and `claude-tooling-sync verify` passes. 12. A fresh standards:diff-reviewer accepts the branch against the spec's "How the tiers work" and Task 2 with 0 open findings, and the pull request is ready. Or stop after 120 minutes.
+Build task show-tier-rules of /var/home/glw907/Projects/initiatives/claude-config-alignment/specs/2026-11-23-merge-tiers-design.md by building-from-specs, with dotfiles-pass for the gate and checks. Below, $S is claude/.claude/skills/building-from-specs/SKILL.md, $W is claude/.claude/skills/building-from-specs/references/writing-a-spec.md, and "in Chains" or "in Merging" means piping `sed -n '/^## Chains$/,/^## /p' $S` or `sed -n '/^## Merging$/,/^## /p' $S` to the grep. Done when: 1. `grep -c -F 'Tier: show' $S` prints 1 or more, and `grep -c -F 'From spec' $S` prints 1 or more. 2. In Chains, `grep -c -F 'claude-show-merge'` prints 1 or more and `grep -c -F -- '--report'` prints 1 or more. 3. In Merging, `grep -c -F 'claude-show-merge'` prints 1 or more, `grep -c -F 'Revert'` prints 1 or more, and `grep -c -F 'git revert -m 1'` prints 1 or more. 4. `grep -c -F 'ship-show-ask' $S` prints 1. 5. `wc -l < $S` prints 270 or fewer. 6. Each of `grep -c -F 'Name:' $W`, `grep -c -F 'Tier:' $W`, `grep -c -F 'Files:' $W`, and `grep -c -F -- '--ask-only' $W` prints 1 or more. 7. `grep -c -F 'claude-show-merge' claude/.claude/CLAUDE.md` prints 1, and `grep -c -F 'only after he approves the pull request in his terminal.' claude/.claude/CLAUDE.md` prints 0. 8. `grep -c -F 'claude-show-merge --ask-only glw907/workstation' .claude/skills/dotfiles-pass/SKILL.md` and `grep -c -F 'claude-show-merge --ask-only glw907/cairn-cms' claude/.claude/skills/cairn-pass/SKILL.md` each print 1 or more, and claude/.claude/skills/site-pass/SKILL.md names each of glw907/ecxc-ski, glw907/907-life-legacy, glw907/aksailingclub-org, and glw907/cairn-pub on a line holding `claude-show-merge --ask-only`. 9. `python3 -I -c 'import json,sys; c=[x for x in json.load(open(sys.argv[1])) if "Tier: show" in json.dumps(x) and all(s in x["expected_behavior"] for s in ("claude-show-merge","--spec","--task","gh pr merge","git revert -m 1","--report"))]; print(len(c))' claude/.claude/skills/building-from-specs/evals/evals.json` prints 1. 10. The pull request's `## Before merge` carries the "Settings" edits as exact JSON and the spec's check: its body, read with `gh pr view <n> --repo glw907/workstation --json body --jq .body`, holds `Bash(claude-show-merge *)`, the new `autoMode.allow[1]` clause word for word, and the check command, and it shows the check printing `1 1` on a copy of settings.json outside the repo with the edits applied. 11. `bash scripts/gate.sh` exits 0 from the worktree root, and `claude-tooling-sync verify` passes. 12. A fresh standards:diff-reviewer accepts the branch against the spec's "How the tiers work" and Task 2 with 0 open findings, and the pull request is ready. The reviewer confirms in the text that the tick runs the script itself and never `--dry-run` followed by `gh pr merge`, that cleanup runs only on exit 0, that exit 1 is an ask, exit 2 is tried once more, and exit 3 is tried at the next tick, and that Geoff's session runs Show merges and `--report` before its other asks. Or stop after 120 minutes.
 ```
 
-Today, on task-chains' branch (`origin/worktree-task-chains`), items 1 to 4 print 0, item 5 prints 250, item 6
-prints 0, and items 7 to 9 print 0 for each file. Item 10 has no pull request yet.
+Today, on task-chains' branch (`origin/worktree-task-chains`), every count in items 1 to 4 and 6 prints 0, and
+item 5 prints 250. Item 7's first count prints 0 and its second prints 1. Item 8 finds no line, and item 9 prints
+0. Item 10 has no pull request yet.
 
 Reviewers: `standards:diff-reviewer`. Minutes: 60 (the median of 45 plus a gate's p90 of 13), so the clause is
 120. Model: Sonnet at high. Waits for: task-chains task 1 and its follow-up, merged, since both rewrite "Chains"
@@ -331,7 +374,7 @@ Tier: show
 Files: `show/a.txt`
 
 ```text
-Build task show-proof-a of /var/home/glw907/Projects/initiatives/claude-config-alignment/specs/2026-11-23-merge-tiers-design.md, section "Stub A", by building-from-specs. Create the directory show/, write show/a.txt holding the one line `a`, and commit it. Done when: 1. `cat show/a.txt` prints the one line `a`. 2. `bash scripts/gate.sh` exits 0. 3. `gh pr checks <n> --repo glw907/cc-desk-scratch` lists `gate` as pass. 4. A fresh standards:diff-reviewer accepts the diff with 0 open findings, and the pull request is ready with the body building-from-specs "The pull request" names, with no `## For Geoff` and no `## Before merge`. Or stop after 40 minutes.
+Build task show-proof-a of /var/home/glw907/Projects/initiatives/claude-config-alignment/specs/2026-11-23-merge-tiers-design.md, section "Stub A", by building-from-specs. Create the directory show/, write show/a.txt holding the one line `a`, and commit it. Done when: 1. `cat show/a.txt` prints the one line `a`. 2. `bash scripts/gate.sh` exits 0. 3. `gh pr checks <n> --repo glw907/cc-desk-scratch` lists `gate` as pass. 4. A fresh standards:diff-reviewer accepts the diff with 0 open findings, and the pull request is ready with the body building-from-specs "The pull request" names, with no `## For Geoff`, no `## Before merge`, and the line `From spec /var/home/glw907/Projects/initiatives/claude-config-alignment/specs/2026-11-23-merge-tiers-design.md, task show-proof-a.` Or stop after 40 minutes.
 ```
 
 ### Stub B
@@ -341,23 +384,36 @@ Tier: show
 Files: `show/b.txt`
 
 ```text
-Build task show-proof-b of /var/home/glw907/Projects/initiatives/claude-config-alignment/specs/2026-11-23-merge-tiers-design.md, section "Stub B", by building-from-specs. Create the directory show/, write show/b.txt holding the one line `b` and show/extra.txt holding the one line `extra`, and commit both. Done when: 1. `cat show/b.txt show/extra.txt` prints `b` then `extra`. 2. `bash scripts/gate.sh` exits 0. 3. `gh pr checks <n> --repo glw907/cc-desk-scratch` lists `gate` as pass. 4. A fresh standards:diff-reviewer accepts the diff with 0 open findings, and the pull request is ready with the body building-from-specs "The pull request" names, with no `## For Geoff` and no `## Before merge`. Or stop after 40 minutes.
+Build task show-proof-b of /var/home/glw907/Projects/initiatives/claude-config-alignment/specs/2026-11-23-merge-tiers-design.md, section "Stub B", by building-from-specs. Create the directory show/, write show/b.txt holding the one line `b` and show/extra.txt holding the one line `extra`, and commit both. Done when: 1. `cat show/b.txt show/extra.txt` prints `b` then `extra`. 2. `bash scripts/gate.sh` exits 0. 3. `gh pr checks <n> --repo glw907/cc-desk-scratch` lists `gate` as pass. 4. A fresh standards:diff-reviewer accepts the diff with 0 open findings, and the pull request is ready with the body building-from-specs "The pull request" names, with no `## For Geoff`, no `## Before merge`, and the line `From spec /var/home/glw907/Projects/initiatives/claude-config-alignment/specs/2026-11-23-merge-tiers-design.md, task show-proof-b.` Or stop after 40 minutes.
 ```
 
 Stub B writes a file its `Files:` line leaves out, so it must come to Geoff as an ask.
 
 Done when:
 
-1. Stub A's pull request merged with no message from Geoff: `gh pr view <a> --repo glw907/cc-desk-scratch --json
-   state --jq .state` prints `MERGED`, and the transcript shows `claude-show-merge` exiting 0 inside a loop turn
-   with no refusal. Today `git -C ~/Projects/cc-desk-scratch ls-remote origin 'refs/heads/*show-proof*'` prints
-   nothing.
-2. Stub B's pull request reads `OPEN`, and the script's output in the transcript holds a `fail files` line naming
-   `show/extra.txt`.
-3. The sitting note lists stub A's merge with its merge commit and `git revert -m 1 <sha>`, and stub B as an ask
-   with that reason.
-4. After Geoff says "Revert" for stub A, the revert pull request merges, and
-   `git -C ~/Projects/cc-desk-scratch show origin/main:show/a.txt` exits 128.
+Below, the transcript is the session's file under `~/.claude/projects/-var-home-glw907-Projects-cc-desk-scratch/`,
+and the record is `~/.local/state/claude-show-merge.jsonl`.
+
+1. Stub A merged through the script, in a loop turn, with no word from Geoff.
+   - `gh pr view <a> --repo glw907/cc-desk-scratch --json state,mergeCommit --jq '.state+" "+.mergeCommit.oid'`
+     prints `MERGED` and a sha.
+   - That sha equals the one in the script's `merged` line in the transcript and in the record's `merged` row for
+     `show-proof-a`.
+   - The transcript holds no refusal of that call, no Bash call holding `gh pr merge` outside the script, and no
+     message from Geoff between the `/loop` line and the pull request's `mergedAt`.
+   - Today `git -C ~/Projects/cc-desk-scratch ls-remote origin 'refs/heads/*show-proof*'` prints nothing.
+2. Stub B fell to an ask from the tick.
+   - Its pull request reads `OPEN`.
+   - The record holds an `ask` row for `show-proof-b` whose failed checks include `files` naming
+     `show/extra.txt`.
+   - The pull request carries the script's comment with that line.
+3. The sitting note holds the `--report` output: stub A's merge with the sha from item 1 and
+   `git revert -m 1 <that sha>`, and stub B as an ask with its reason.
+4. Geoff's "Revert" undoes stub A through a merged pull request.
+   - After he says "Revert" for stub A, a pull request whose head commit's subject starts with `Revert "Merge pull
+     request #<a>` reads `MERGED`.
+   - After `git -C ~/Projects/cc-desk-scratch fetch origin`, `git -C ~/Projects/cc-desk-scratch show
+     origin/main:show/a.txt` exits 128.
 
 Stub B's pull request then closes on Geoff's word. The session records the results with each command's output in
 `research/2026-11-23-merge-tiers/step-3.md` and commits it directly to `~/Projects/initiatives`. If item 1 fails
@@ -380,7 +436,7 @@ Scoped to merging, against `~/.dotfiles/BACKLOG.md` (68 open items):
   found. Mark it closed.
 - #102, merge spellings the guard misses: keep. A Show merge runs no spelling of `gh pr merge`, and the guard's
   merge deny still guards task sessions.
-- New: the three sites with no PR CI never pass the ready check of "Chains" or check 6 of the script, so their
+- New: the three sites with no PR CI never pass the ready check of "Chains" or check 7 of the script, so their
   tasks never reach the tick's launch of a child or a Show merge. File it with `standards:log-issue`.
 
 ## Found, not in scope
@@ -410,8 +466,16 @@ Scoped to merging, against `~/.dotfiles/BACKLOG.md` (68 open items):
   prose.
 - The spec is read as committed when the pull request opened, so an edit made during the task can't make it Show.
 - A repo with no list, such as standards or survey, stays Ask until a later change adds one.
-- The task-score gains no field. The caller passes `--spec` and `--task`.
-- A read failure exits 2 and gets one retry, so a passing `gh` hiccup doesn't send a Show task to Geoff.
+- The task-score gains no field. The body's `From spec` line tells any session which spec and task a pull request
+  came from, and the script checks it against `--spec` and `--task`.
+- The script runs every check after a failure, so its output names each failure at once.
+- A read failure exits 2 and gets one retry, so a passing `gh` hiccup doesn't send a Show task to Geoff. A wait
+  exits 3 and counts for nothing, so a child's rerun CI or a session still at work doesn't either.
+- An ask sticks. The record keeps it, so a later tick can't merge a pull request Geoff was told waits for him.
+- The record is a local file plus a pull request comment. The file survives a dead loop, and `--report` shows
+  each row once.
+- The guard lets `--ask-only`, `--help`, and `--dry-run` through in task sessions, because spec writers and task 1's
+  own goal items run them and none of them merges.
 - The settings edits land in task 2's `## Before merge`, because a task session leaves settings alone.
 - Task 1 runs on Opus, because the script is the merge's only gate. Task 2 runs on Sonnet.
 - The proof step comes last, because it needs the script and the rule live. Its fallback is approved with this
