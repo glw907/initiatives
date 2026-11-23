@@ -1,0 +1,10 @@
+id: lean-project-pattern
+title: Lean project pattern
+summary: Settles one mainstream pattern for how a project holds its rules, decisions, and build order, so agents write lean, well-architected code, and pilots it on dubplate.
+status: active
+owner: glw907
+created: 2026-11-23
+repos:
+  - dubplate
+  - workstation
+  - standards
