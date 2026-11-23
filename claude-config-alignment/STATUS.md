@@ -252,13 +252,15 @@ clean up skills while we wait on task 2." and "Add new useful skills, and remove
 we don't need." The evidence is a count of `Skill` calls in the 7,485 session transcripts of
 the 30 days to 2026-11-22. The work has two parts.
 
-The first part is pull request 24 in `glw907/standards`, which waits for Geoff's approval by
-number. It removes `vale-ci`, `vale-fix`, `vale-triage`, `vale-vocab`, and `svelte-check`,
+The first part is pull request 24 in `glw907/standards`. Asked "Do you approve pull request
+24?", Geoff answered on 2026-11-22: "Approved, and take a closer look at the content-draft
+issue and propose a solution." The merge waits until task 2's session has ended, because its
+test sessions load the plugin. It removes `vale-ci`, `vale-fix`, `vale-triage`, `vale-vocab`, and `svelte-check`,
 none of which was called, and adds `svelte-core-bestpractices` from `sveltejs/ai-tools` at
 commit `f9d22f2f7f7c` (MIT), because the plugin has no skill for writing Svelte code. Its CI
 check passes on the last commit, `0cfaf11`, and a fresh `standards:diff-reviewer` accepted
-that commit with no blocking finding. `vale-setup` stays with its one call. `content-review` stays because
-`content-draft`, called 73 times, hands off to it, and `cairn-figure` is the reshape's.
+that commit with no blocking finding. `vale-setup` stays with its one call, `content-review` stays as the check `content-draft`
+hands off to, and `cairn-figure` is the reshape's.
 
 The second part waits until task 2 has ended, because it changes the workstation's lists and
 live settings and task 2's checks read both. It is one pull request in the workstation repo
@@ -280,6 +282,24 @@ checks that <https://go.dev/doc/security/best-practices> recommends: `go test -r
 `govulncheck`, and a fuzz test for its upload and audio parsers. A search of its `Makefile`,
 `scripts/check.sh`, and `.github/workflows/check.yml` on 2026-11-22 finds none. The reshape's
 audit of dubplate weighs adding each. `govulncheck` is not installed on pavilion.
+
+The count of 73 `content-draft` calls and no `content-review` call does not show site content
+drafted without its check. Every one of the 73 comes from one prompt in the test for cairn's
+docs skill, "Write the homepage copy for the new about section on 907.life.", which checks
+that the docs skill stays out. No site has a content commit since 2026-08-22. The closer look
+on 2026-11-22 still finds three weak points, and a proposal for them waits for Geoff's answer:
+
+- `content-draft` ends by offering the check. In 64 of the 73 test sessions the offer was the
+  last thing said, and nobody was there to accept it.
+- `content-review` runs `vale <file>` for banned words. No site has a `.vale.ini`, and none
+  ever had one, so Vale reads no file: in ecxc-ski it prints "0 errors, 0 warnings and 0
+  suggestions in 0 files" and exits 0. The only Vale styles on pavilion are Google and
+  Microsoft.
+- `site-pass` names `standards:content-review` for `src/content/**`, but the task reviewer,
+  `standards:diff-reviewer`, has no Skill tool and no web search, and the check asks for both.
+
+ecxc-ski's `.claude/rules/content.md` also points at `~/.claude/docs/web-content-method.md`
+and `prose-guard`, and neither exists. Only ecxc-ski has a `docs/content-guide.md`.
 
 He also has the notes the last three pull requests left, listed under "Open decisions".
 
