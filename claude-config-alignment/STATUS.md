@@ -219,9 +219,9 @@ its worktree, and both branches are removed.
 - The pull request changed two files outside task 1's list: `scripts/check.sh` (one
   `shellcheck` exclusion for the 16 proof scripts) and `BACKLOG.md` (item 114).
 
-Task 2's work is done, and its pull request waits for Geoff. It is 267 in `glw907/workstation`,
-"The spec guide carries a length rule, and the six length checks still fail", marked ready at
-17:04 on 2026-11-22 on commit `4a6836e`. The session `spec-writing-test-2` (id `7247711a`) ran
+Task 2 is done. Pull request 267 in `glw907/workstation`, "The spec guide carries a length rule,
+and the six length checks still fail", merged as `9dd4f13` on 2026-11-22 after Geoff typed
+"approved, 267". It was marked ready at 17:04 on commit `4a6836e`. The session `spec-writing-test-2` (id `7247711a`) ran
 on Opus at `high` from 14:36, and its test sessions on Fable at `high` spent 110.10 of the 130
 dollars.
 
@@ -237,15 +237,22 @@ dollars.
   gate exits 0, and gitleaks finds no leak in the branch's 8 commits.
 - `claude-tooling-sync verify` exits 1 on one key: the live `model` is `opus` and the tracked
   one is `fable`. The live file changed at 15:50:42, four seconds after the session
-  `initiatives-16` started. Geoff decides which value stays.
+  `initiatives-16` started. Geoff asked which makes more sense, and Claude recommended Opus as
+  the tracked default, because Fable reads 97 percent and the spec-writing launches name
+  Fable themselves. Geoff hasn't ruled.
 - The session ended `blocked`. The `/goal` checker refused its stop four times on done item 1,
-  the stop of 2026-11-21 returning. `claude stop 7247711a` from Geoff's session was refused by
-  the auto-mode classifier, so the session is still listed. The row is in cc-desk's lessons
-  file, commit `68a6dfc`.
-
-After Geoff approves 267 by number, his session merges it, follows `building-from-specs`
-"Merging" and `dotfiles-pass` "After a merge", and runs `claude-tooling-sync verify` and
-`/skill-doctor`.
+  the stop of 2026-11-21 returning. The auto-mode classifier refused `claude stop 7247711a`
+  twice, and it ran once Geoff gave the go-ahead. The row is in cc-desk's lessons file, commit
+  `68a6dfc`.
+- After the merge the checkout is pulled, and `claude rm` removed the session, its worktree,
+  and its local branch. GitHub had already deleted the remote branch. The merge added no
+  script or skill and changed no setting, so nothing was restowed or applied. No link under
+  `~/.local/bin` or `~/.claude/skills` dangles, and `claude-tooling-sync verify` fails only on
+  the `model` key.
+- `/skill-doctor` lists 77 skills. Never used: the 17 `cloudflare` skills, the five that pull
+  request 24 removes, `go-ship`, `content-draft`, `cairn-figure`, and 10 skills synced from
+  claude.ai, which it suggests turning off in `/skills` or on claude.ai. Geoff hasn't ruled on
+  those 10.
 
 The monthly review rework is item 115 in the workstation backlog, commit `e8d9035`. Geoff
 asked for it on 2026-11-22: "Probably we should do a broader consideration of the monthly
@@ -282,18 +289,18 @@ clean up skills while we wait on task 2." and "Add new useful skills, and remove
 we don't need." The evidence is a count of `Skill` calls in the 7,485 session transcripts of
 the 30 days to 2026-11-22. The work has two parts.
 
-The first part is pull request 24 in `glw907/standards`. Asked "Do you approve pull request
-24?", Geoff answered on 2026-11-22: "Approved, and take a closer look at the content-draft
-issue and propose a solution." The merge waits until task 2's session has ended, because its
-test sessions load the plugin. It removes `vale-ci`, `vale-fix`, `vale-triage`, `vale-vocab`, and `svelte-check`,
+The first part is pull request 24 in `glw907/standards`, merged as `01c86da` on 2026-11-22
+after task 2's session ended. Asked "Do you approve pull request 24?", Geoff answered on
+2026-11-22: "Approved, and take a closer look at the content-draft issue and propose a
+solution." `~/Projects/standards` is pulled, and the worktree and both branches are removed.
+The user-scope plugin is updated with the second part. It removes `vale-ci`, `vale-fix`, `vale-triage`, `vale-vocab`, and `svelte-check`,
 none of which was called, and adds `svelte-core-bestpractices` from `sveltejs/ai-tools` at
 commit `f9d22f2f7f7c` (MIT), because the plugin has no skill for writing Svelte code. Its CI
 check passes on the last commit, `0cfaf11`, and a fresh `standards:diff-reviewer` accepted
 that commit with no blocking finding. `vale-setup` stays with its one call, `content-review` stays as the check `content-draft`
 hands off to, and `cairn-figure` is the reshape's.
 
-The second part waits until task 2 has ended, because it changes the workstation's lists and
-live settings and task 2's checks read both. It is one pull request in the workstation repo
+The second part is next, now that task 2 has merged. It is one pull request in the workstation repo
 that drops the four Vale entries from `vendored-skills.json`, adds the Svelte entry, fixes
 `rules/vale.md` and `claude-tooling.md`, and removes the `cloudflare` plugin. That plugin
 lists 18 skills and none was called, but its documentation server was called 17 times, so
@@ -335,12 +342,20 @@ Claude proposed four fixes and asked "Do you want all four, with a spec for item
 answered on 2026-11-22: "Yes." Nothing is built. The spec for items 1 and 3 is written at
 `specs/2026-11-22-content-check-spec.md`, with its trial files in
 `research/2026-11-22-content-check/`. A fresh reader checked it and Claude fixed what it
-found. Geoff approved it on 2026-11-22: "approved". Its task, `content-check`, is not
-launched: pull request 24 has to merge first, and that waits for task 2's session to end. The worst finding was that pavilion's Vale config
-in the home folder could add file types and accepted words to the check, so the script now
-runs Vale with `--no-global`. One trial is still owed before launch, because pavilion was at
-four working sessions: a Sonnet session that loads the changed plugin and runs
-`content-review` on a sample.
+found. The worst finding was that pavilion's Vale config in the home folder could add file
+types and accepted words to the check, so the script now runs Vale with `--no-global`. Geoff
+approved it on 2026-11-22: "approved".
+
+The three checks under its "Before launch" pass on 2026-11-22. Pull request 24 has merged, one
+other session was working, and the week read 62 percent for all models. In the trial, a clone
+at `01c86da` with the trial files and the skill's new step 2, a Sonnet session called
+`content-vale.sh` at its full path under the clone, and its transcript shows `11 errors, 1
+warning and 0 suggestions in 1 file.` The task `content-check` is running. Geoff's session
+launched it from `~/Projects/standards` at 17:16 as the background session `content-check`
+(id `41356b88`), on Opus at `high`, on the branch `worktree-content-check`. Its goal lists the
+six done items and the eight commands word for word, and ends "or stop after 90 minutes". It
+also counts as met when the pull request is ready and lists each unmet item, the change cc-desk's
+lessons file calls for.
 
 1. `content-draft` runs `content-review` on the file it drafted and reports the result, in
    place of offering to. This is in the `standards` plugin and joins item 3's spec, because
