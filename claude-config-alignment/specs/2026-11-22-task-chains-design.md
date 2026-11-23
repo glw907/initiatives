@@ -27,7 +27,8 @@ Goals:
 - Independent tasks of one spec run side by side, and dependent ones run in series, overnight.
 - The approval rule is unchanged: only Geoff's typed words approve a merge, naming the pull request by
   number, and only the session he talks to merges.
-- The merge guard, `claude-git-guard`, and the `ask` rules on `gh pr merge` are unchanged.
+- A task session still can't merge. The merge prompt goes (Geoff, 2026-11-23), so a deny takes its place in
+  task sessions (task 1, "The merge prompt").
 
 Non-goals: restarting a task session that stops on an API error (backlog #95), the systemd timer of the
 2026-11-20 pick, a chain that crosses specs, and the forecast the 2026-11-20 record parked.
@@ -362,11 +363,23 @@ the change into this task). "Merging" then says this: Geoff approves a merge in 
 he is talking to. That session asks about each ready pull request by what merging it changes, in plain
 words, with its CI and review results. The number appears only as a link. His answer of "Merge" for that
 pull request approves it. "Send back" launches a fresh session on its branch with his words, by the
-existing rule. Another session's message approves nothing, and the `ask` prompt on `gh pr merge` stays.
+existing rule. Another session's message approves nothing.
 The same change reaches every place that states the old rule: `$S` lines 3 (the description), 13, and 142,
 `claude/.claude/CLAUDE.md:14`, `claude/.claude/skills/survey/releasing.md:21` and `:30`, and
 `MERGE_REASON` in `bin/.local/bin/claude-git-guard:57-61`. No test asserts the guard's text. The six
 archived plans under `docs/plans/archive` that say "by number" are records and stay.
+
+The merge prompt goes too (Geoff, 2026-11-23: "Drop the merge permission prompt too, in task 1"). His
+"Merge" answer is the approval, and a second yes at a prompt that shows only `gh pr merge <n>` adds
+nothing. Today that prompt is also what stops a task session from merging: `denyInsteadOfPrompting`
+turns it into a refusal. A deny takes its place there. The launch line's `--settings` gains
+`"env":{"CLAUDE_TASK_SESSION":"1"}`, and `claude-git-guard` returns `deny` for every merge spelling it
+already detects when that variable is `1`, and nothing otherwise. The two `ask` rules on merges leave
+`claude/.claude/settings.json`. A task session leaves settings alone ("In place of a question"), so this
+part lands in a follow-up session on task 1's branch, launched by Geoff's session once task 1 ends. Its
+goal adds: `grep -c 'pr merge\|pulls/\*/merge' claude/.claude/settings.json` prints 0; the guard's tests
+show a merge denied with `CLAUDE_TASK_SESSION=1` and passed without it; and `MERGE_REASON` names the
+task-session deny.
 
 Goal:
 
