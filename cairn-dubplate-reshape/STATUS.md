@@ -34,8 +34,9 @@ in a session Geoff starts from `~/Projects/cairn-cms` on Sonnet at high. No task
   merged as `cairn-cms` pull request 263 (`475435700`) after Geoff approved it with "263 approved" on
   2026-11-22. Its session sat `blocked` after the pull request was ready, so the session Geoff talks to
   stopped it before the merge. Task 2 (`docs-process`, session `d16c24ce`, Opus at medium) is running from
-  `~/Projects/cairn-cms` and has started its eval suites. Task 3 waits for a session slot: `claude agents --json`
-  lists the four `claude -p` eval children as busy, which the spec's call 17 said it would not.
+  `~/Projects/cairn-cms` and has started its eval suites. `claude agents --json` lists the four `claude -p` eval
+  children as busy, which the spec's call 17 said it would not. Geoff ruled on 2026-11-22 with "You can
+  start task 3", so task 3 (`backlog-sweep`, session `03150688`, Sonnet at medium) is running too.
 - The audit is `research/2026-11-22-audit/README.md`, with the trial outputs in its `trials/` folder.
 - The trials adopt `govulncheck` and fuzz tests for `dubplate`'s gate, and `go test -race` for its
   CI once task 1's `internal/serve` fix lands. They decline `golang-security`, `golang-database`,
