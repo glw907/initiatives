@@ -16,6 +16,12 @@ in a session Geoff starts from `~/Projects/cairn-cms` on Sonnet at high. No task
   request 21 (`56d95f7`) after Geoff approved it with "PR 21 approved" on 2026-11-22. The merged
   `docs/STATUS.md` references to rounds moved to milestones in `f7cc516`. Task 3 (`gate-checks`,
   session `c21bb503`, Opus at medium) is running from `~/Projects/dubplate`.
+- Geoff asked "Please clean up the worktrees." on 2026-11-22, and both `dubplate` leftovers are
+  removed. `agent-a828799e8800f0243` held 23 uncommitted edits, an old copy of the restore-intent
+  record work that `master` already carries in its flat shape, at the retired
+  `internal/engine/store` path. Its diff is kept in
+  `research/2026-11-22-leftover-worktree/agent-a828799e8800f0243-uncommitted.patch`, and the
+  removal used `--force`. `~/.claude/jobs/5452379b/tmp/base-tree` was clean and its tip is merged.
 - The `cairn-cms` spec has four steps in Geoff's session, then three tasks: `cairn-build`, the docs
   process before the 2026-12-01 docs cycle, and the backlog sweep. Nothing in `cairn-cms` has changed.
 - The audit is `research/2026-11-22-audit/README.md`, with the trial outputs in its `trials/` folder.
