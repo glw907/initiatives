@@ -26,7 +26,8 @@ trial's verdict is adopt or decline.
 
 ## What waits on Geoff
 
-Three questions are his, because they are budget or scope. Everything else in this page is a
+Three questions are his, because they are budget or scope. He answered them on 2026-11-22, and
+`../../STATUS.md` quotes his answers. Everything else in this page is a
 method call that each repo's spec settles. A later session writes those two specs from this
 audit, `dubplate`'s first.
 

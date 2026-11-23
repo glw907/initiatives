@@ -1,7 +1,7 @@
 # Status
 
-The audit of both repos is done, and three questions wait on Geoff. When he has answered them, a
-session on Fable writes the two specs, `dubplate`'s first, by steps 5 to 7 of
+The audit of both repos is done, and Geoff has answered its three questions. A session on Fable
+writes the two specs next, `dubplate`'s first, by steps 5 to 7 of
 `plans/2026-11-22-planning-prompt.txt`. It starts only when Fable reads under 85 percent of the
 week. On 2026-11-22 Fable read 89 percent, and the week resets on Nov 27 at 11 PM Anchorage time.
 
@@ -16,25 +16,27 @@ week. On 2026-11-22 Fable read 89 percent, and the week resets on Nov 27 at 11 P
   `claude-md-management`.
 - The race run found an ordering bug in `dubplate`'s `internal/serve`. The test
   `TestServeUntilDoneShutsDownWhenOneServeFails` fails a few times in 50 under `-race`. The fix is
-  product work, and it lands before `-race` joins CI. It isn't filed in `dubplate`'s backlog yet.
+  product work, and it lands before `-race` joins CI.
 - `govulncheck` 1.10.0 is installed through Homebrew. Its line in the Homebrew list, `brew "govulncheck"`
   beside `brew "gopls"` in `~/.dotfiles/bluefin/Brewfile`, isn't written yet, because another
   session holds `~/.dotfiles`. The next session there adds it and runs `check-drift`.
 
-## Waiting on Geoff
-
-1. Should an automated security review spend usage: the `security-guidance` review at the end of
-   each turn, or a `claude-security` scan as a Workflow?
-2. Should GitHub's secret scanning, push protection, and Dependabot alerts go on for both public
-   repos?
-3. Should the `figure-verifier` agent go with `cairn-figure`?
-
 ## Geoff's rulings
 
-- "You can remove cairn-figure." (2026-11-22). Standards pull request 25 removes the skill. Its
-  check passes, and it waits for Geoff's approval by number. It merges only after the
-  `spec-writing-test-2` session ends, as pull request 24 does, because the standards plugin
-  updates itself in every new session.
+- "You can remove cairn-figure." (2026-11-22).
+- "That matches." (2026-11-22), answering Claude's recommendation on the audit's three questions:
+  - No automated security review for now. `security-guidance` stays off, because the reviews
+    every pull request already gets cover it. `claude-security` runs once on `dubplate` after
+    the week resets, before any release that people outside the house sign into. `cairn-cms`
+    waits for its next large change to sign-in code.
+  - GitHub's secret scanning, push protection, and Dependabot alerts go on for both public
+    repos, and `dubplate` gains a `dependabot.yml`. Each repo's spec carries the step, since
+    nothing in either repo changes before its spec is approved.
+  - The `figure-verifier` agent goes with `cairn-figure`.
+- Standards pull request 25 removes the skill and the agent. Its check passes, and it waits for
+  Geoff's approval by number. It merges only after the `spec-writing-test-2` session ends, as
+  pull request 24 does, because the standards plugin updates itself in every new session.
+- The `dubplate` spec carries the `internal/serve` shutdown fix before `-race` joins CI.
 
 ## Leave alone
 
