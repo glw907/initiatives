@@ -1,7 +1,6 @@
 # Status
 
-Geoff approved the `dubplate` spec, `specs/2026-11-22-dubplate-reshape.md`, and its build runs from
-`plans/2026-11-22-dubplate-build-prompt.txt`. Geoff approved `cairn-cms`'s spec,
+Geoff approved the `dubplate` spec, `specs/2026-11-22-dubplate-reshape.md`, and its build is done. Geoff approved `cairn-cms`'s spec,
 `specs/2026-11-22-cairn-cms-reshape.md`. Its build runs from `plans/2026-11-22-cairn-cms-build-prompt.txt`,
 in a session Geoff starts from `~/Projects/cairn-cms` on Sonnet at high. No task has launched.
 
@@ -10,12 +9,14 @@ in a session Geoff starts from `~/Projects/cairn-cms` on Sonnet at high. No task
 - Geoff approved the record as pull request 182 on 2026-11-22, and it is active.
 - The `dubplate` spec has three tasks: the `internal/serve` fix, the Claude files and backlog, and
   the Go team's checks. A probe showed a `--bg` task session can edit `.claude/` files.
-- The `dubplate` build is under way. Hand-over 1 landed as `96c4e91` on `master`, and the GitHub
-  settings are on. Task 1 (`serve-shutdown`) merged as pull request 20 (`3cc98d3`) after Geoff
-  approved it with "PR 20 is approved." on 2026-11-22. Task 2 (`claude-files`) merged as pull
-  request 21 (`56d95f7`) after Geoff approved it with "PR 21 approved" on 2026-11-22. The merged
-  `docs/STATUS.md` references to rounds moved to milestones in `f7cc516`. Task 3 (`gate-checks`,
-  session `c21bb503`, Opus at medium) is running from `~/Projects/dubplate`.
+- The `dubplate` build is done on 2026-11-22. Hand-over 1 landed as `96c4e91` on `master`, and the
+  GitHub settings are on. Task 1 (`serve-shutdown`) merged as pull request 20 (`3cc98d3`) after Geoff
+  approved it with "PR 20 is approved." Task 2 (`claude-files`) merged as pull request 21
+  (`56d95f7`) after "PR 21 approved". Task 3 (`gate-checks`) merged as pull request 22 (`ae23af6`)
+  after "22 approved." Hand-over 2 landed as `4fd388d`: `docs/STATUS.md` says the reshape is done,
+  names backlog #173 as the `structure-doctor` restart, and the dependabot check prints
+  `dependabot.yml`. No `dubplate` session is running, and its worktrees are gone. What is left in
+  `dubplate` is its own backlog: #173 and #174, and #132 for the critical `certifi` advisory.
 - Geoff asked "Please clean up the worktrees." on 2026-11-22, and both `dubplate` leftovers are
   removed. `agent-a828799e8800f0243` held 23 uncommitted edits, an old copy of the restore-intent
   record work that `master` already carries in its flat shape, at the retired
