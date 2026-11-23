@@ -249,7 +249,8 @@ dollars.
   `~/.local/bin` or `~/.claude/skills` dangles, and `claude-tooling-sync verify` fails only on
   the `model` key.
 - `/skill-doctor` lists 77 skills. Never used: the 17 `cloudflare` skills, the five that pull
-  request 24 removes, `go-ship`, `content-draft`, `cairn-figure`, and 10 skills synced from
+  request 24 removes, `go-ship` (removed by pull request 28 in standards, after Geoff said
+  "Remove go-ship." on 2026-11-22; it waits for his approval by number), `content-draft`, `cairn-figure`, and 10 skills synced from
   claude.ai, which it suggests turning off in `/skills` or on claude.ai. Geoff hasn't ruled on
   those 10.
 
@@ -257,8 +258,8 @@ The monthly review rework is item 115 in the workstation backlog, commit `e8d903
 asked for it on 2026-11-22: "Probably we should do a broader consideration of the monthly
 review process in light of the process changes, complete with research into best practice."
 The work is a spec of its own, written after task 2 has merged, so that the review is designed
-around the test as built. Claude's suggested cadence is in the item, and Geoff hasn't ruled on
-it.
+around the test as built. It runs monthly: Geoff answered on 2026-11-22, "I assume the
+monthly review should run ... monthly?" The item records it in workstation commit `734d57c`.
 
 The work after task 2 is the reshape of cairn-cms and dubplate to the workstation's process,
 which this record lists as a non-goal. Geoff ruled on 2026-11-22 that it comes before the
