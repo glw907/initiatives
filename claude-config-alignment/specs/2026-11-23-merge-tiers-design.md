@@ -1,6 +1,6 @@
 # Spec: merge a Show pull request without Geoff's word
 
-Status: draft, not approved.
+Status: approved by Geoff on 2026-11-23 ("merge tiers spec approved.").
 
 Today every pull request waits for Geoff. A one-line skill fix reaches him the same way as a change to sign-in
 code. This spec gives each task of a spec one of two tiers, set by Geoff when he approves the spec. An Ask task
