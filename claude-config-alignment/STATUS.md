@@ -318,8 +318,9 @@ and `prose-guard`, and neither exists. Only ecxc-ski has a `docs/content-guide.m
 Claude proposed four fixes and asked "Do you want all four, with a spec for item 3?" Geoff
 answered on 2026-11-22: "Yes." Nothing is built. The spec for items 1 and 3 is written at
 `specs/2026-11-22-content-check-spec.md`, with its trial files in
-`research/2026-11-22-content-check/`, and it waits for Geoff's approval. A fresh reader
-checked it and Claude fixed what it found. The worst finding was that pavilion's Vale config
+`research/2026-11-22-content-check/`. A fresh reader checked it and Claude fixed what it
+found. Geoff approved it on 2026-11-22: "approved". Its task, `content-check`, is not
+launched: pull request 24 has to merge first, and that waits for task 2's session to end. The worst finding was that pavilion's Vale config
 in the home folder could add file types and accepted words to the check, so the script now
 runs Vale with `--no-global`. One trial is still owed before launch, because pavilion was at
 four working sessions: a Sonnet session that loads the changed plugin and runs

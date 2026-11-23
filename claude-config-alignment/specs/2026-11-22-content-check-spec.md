@@ -1,6 +1,7 @@
 # Content check spec
 
-Status: waiting for Geoff's approval. Nothing is built.
+Status: approved. Geoff said "approved" on 2026-11-22. Nothing is built, and the trial under
+[Before launch](#before-launch) is still owed.
 
 `content-review` runs Vale to catch banned words, but no site has a Vale config, so Vale reads
 no file and passes. This spec ships a small Vale style in the `standards` plugin, built from

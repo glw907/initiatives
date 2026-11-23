@@ -35,9 +35,8 @@ What is owed, in order.
    worktree ~/Projects/standards/.claude/worktrees/skill-cleanup, the local branch
    `skill-cleanup`, and the remote branch.
 
-3. The content check. The spec is specs/2026-11-22-content-check-spec.md, and STATUS says
-   whether Geoff has approved it. If STATUS doesn't quote his approval, he hasn't: ask him in
-   plain words, and launch nothing before he answers. Once he approves, run the three checks
+3. The content check. The spec is specs/2026-11-22-content-check-spec.md. Geoff approved it
+   on 2026-11-22 ("approved"). After pull request 24 has merged, run the three checks
    under the spec's "Before launch", then launch its one task, `content-check`, from
    ~/Projects/standards with the skill's launch command, on Opus at `high`. The goal names
    the spec's path, lists the six done items and the eight must-still-pass commands word for
