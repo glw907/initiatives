@@ -2,8 +2,8 @@
 
 Geoff approved the `dubplate` spec, `specs/2026-11-22-dubplate-reshape.md`, and its build is done. Geoff approved `cairn-cms`'s spec,
 `specs/2026-11-22-cairn-cms-reshape.md`. Its build runs from `plans/2026-11-22-cairn-cms-build-prompt.txt`,
-in a session Geoff starts from `~/Projects/cairn-cms` on Sonnet at high. All three tasks are merged. The
-`cairn-docs-cycle` launcher edit (`workstation` pull request 270) and the dry run remain.
+in a session Geoff starts from `~/Projects/cairn-cms` on Sonnet at high. Its build is done on 2026-11-23: all three tasks are merged,
+the launcher edit landed, and the dry run passed.
 
 ## Current state
 
@@ -43,8 +43,15 @@ in a session Geoff starts from `~/Projects/cairn-cms` on Sonnet at high. All thr
   start task 3". Task 3's session sat `blocked` after its pull request was ready, as task 1's had, and
   was stopped before the merge. Geoff asked "please log the process failure", read as those blocked sessions:
   `~/.dotfiles/BACKLOG.md` #118 holds it. The goal checker kept finding the done list's "and the session has
-  ended" clause unmet. The `cairn-docs-cycle` launcher edit is `workstation` pull request 270. #308 from the
-  sweep is `~/.dotfiles/BACKLOG.md` #119.
+  ended" clause unmet. The `cairn-docs-cycle` launcher edit merged as `workstation` pull request 270 (`0b2589bb`) after Geoff typed
+  "270 approved" on 2026-11-23. #308 from the sweep is `~/.dotfiles/BACKLOG.md` #119. The dry run
+  (`cairn-docs-cycle --dry-run`, session `55848e04`) wrote `history-entry.md` and `sources-read.md` under
+  `~/.local/state/cairn-docs-cycle/2026-11/`, left `last` and `main` unchanged, and opened no pull request.
+  Hand-over 2 landed as `18f7fc89b`: `docs/STATUS.md` says the reshape is done and names BACKLOG #572, the round
+  `surface` spec. #575 holds the `docs-register.md` line that still names `cairn-implementer`. What is left in
+  `cairn-cms` is its own backlog, Dependabot alert 1, and the leftover worktrees: a dry run found 120 under
+  `.claude/worktrees/` (118 GB), 70 merged and clean, 48 unmerged and clean, and 2 with untracked files. Nothing is
+  removed until Geoff says so.
 - The audit is `research/2026-11-22-audit/README.md`, with the trial outputs in its `trials/` folder.
 - The trials adopt `govulncheck` and fuzz tests for `dubplate`'s gate, and `go test -race` for its
   CI once task 1's `internal/serve` fix lands. They decline `golang-security`, `golang-database`,
