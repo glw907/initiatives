@@ -237,9 +237,8 @@ dollars.
   gate exits 0, and gitleaks finds no leak in the branch's 8 commits.
 - `claude-tooling-sync verify` exits 1 on one key: the live `model` is `opus` and the tracked
   one is `fable`. The live file changed at 15:50:42, four seconds after the session
-  `initiatives-16` started. Geoff asked which makes more sense, and Claude recommended Opus as
-  the tracked default, because Fable reads 97 percent and the spec-writing launches name
-  Fable themselves. Geoff hasn't ruled.
+  `initiatives-16` started. Geoff ruled on 2026-11-22: "Opus is fine for this." Pull request
+  268 makes the tracked default `opus`.
 - The session ended `blocked`. The `/goal` checker refused its stop four times on done item 1,
   the stop of 2026-11-21 returning. The auto-mode classifier refused `claude stop 7247711a`
   twice, and it ran once Geoff gave the go-ahead. The row is in cc-desk's lessons file, commit
@@ -300,12 +299,17 @@ check passes on the last commit, `0cfaf11`, and a fresh `standards:diff-reviewer
 that commit with no blocking finding. `vale-setup` stays with its one call, `content-review` stays as the check `content-draft`
 hands off to, and `cairn-figure` is the reshape's.
 
-The second part is next, now that task 2 has merged. It is one pull request in the workstation repo
+The second part is pull request 268 in `glw907/workstation`, "The skill lists match the
+standards plugin, and only Cloudflare's docs server remains", on commit `e0dc05f`. Its gate
+exits 0 and gitleaks finds no leak, and a fresh `standards:diff-reviewer` is reading it. It is one pull request in the workstation repo
 that drops the four Vale entries from `vendored-skills.json`, adds the Svelte entry, fixes
 `rules/vale.md` and `claude-tooling.md`, and removes the `cloudflare` plugin. That plugin
 lists 18 skills and none was called, but its documentation server was called 17 times, so
-the server moves to `mcp-servers.json` at user scope. Its tool names change with the move,
-and Geoff may have to sign in to it once through `/mcp`.
+a docs-only server moves to `mcp-servers.json` at user scope. A count of real calls finds
+17 to the plugin's `docs` tool and none to `execute` or `search`, so the new entry is
+Cloudflare's docs server, `docs.mcp.cloudflare.com`, which needs no sign-in. The same pull
+request has `site-pass` run `content-review` from the task session, and defines `$E` in the
+two eval READMEs, where `run_evals` paths did not resolve.
 
 Three community skills are passed over for now. `svelte-code-writer`, read in full, runs
 `npx @sveltejs/mcp` with no pinned version. `golang-security` and `golang-database` from
@@ -350,9 +354,13 @@ The three checks under its "Before launch" pass on 2026-11-22. Pull request 24 h
 other session was working, and the week read 62 percent for all models. In the trial, a clone
 at `01c86da` with the trial files and the skill's new step 2, a Sonnet session called
 `content-vale.sh` at its full path under the clone, and its transcript shows `11 errors, 1
-warning and 0 suggestions in 1 file.` The task `content-check` is running. Geoff's session
-launched it from `~/Projects/standards` at 17:16 as the background session `content-check`
-(id `41356b88`), on Opus at `high`, on the branch `worktree-content-check`. Its goal lists the
+warning and 0 suggestions in 1 file.` The task `content-check` is done, and its pull request waits for Geoff. It is 26 in
+`glw907/standards`, "content-review ships a banned-word Vale style, and content-draft runs it",
+marked ready at 17:22 on commit `0188d12`. The session launched at 17:16 from
+`~/Projects/standards` (id `41356b88`), on Opus at `high`, and Geoff's session stopped it after
+its report. Every goal item is met, the `validate` check passes, and a fresh
+`standards:diff-reviewer` accepted with no open finding. On a fresh clone, Geoff's session
+reran the style test, the three counts in item 3, and the `pivotal` change, and each matched. Its goal lists the
 six done items and the eight commands word for word, and ends "or stop after 90 minutes". It
 also counts as met when the pull request is ready and lists each unmet item, the change cc-desk's
 lessons file calls for.
