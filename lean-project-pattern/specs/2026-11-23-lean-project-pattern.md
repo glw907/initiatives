@@ -1,6 +1,6 @@
 # Spec: the lean project pattern, piloted on dubplate
 
-Status: proposed, waiting for Geoff's approval. Three repos are read: `glw907/dubplate` on `master` at
+Status: approved by Geoff on 2026-11-23 ("I approve #183"). Three repos are read: `glw907/dubplate` on `master` at
 `95f8592`, `glw907/workstation` on `main` at `0b2589bb`, and `glw907/standards` on `main` at `5f18621`.
 
 Three tasks set one pattern for how a project holds its rules, decisions, and build order. Task 1

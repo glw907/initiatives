@@ -1,6 +1,6 @@
 # Lean project pattern
 
-Status: proposed (2026-11-23). Geoff set the aim in the terminal and asked for the spec ("yes, write
+Status: active (2026-11-23). Geoff set the aim in the terminal and asked for the spec ("yes, write
 the spec"). The goals and non-goals below are Claude's reading of his words.
 
 ## Summary
@@ -55,4 +55,4 @@ spec-based process. He set the terms over several messages:
 
 ## Records
 
-- 2026-11-23: the spec is written, and waits for Geoff's approval.
+- 2026-11-23: Geoff approved the spec (initiatives PR #183).
