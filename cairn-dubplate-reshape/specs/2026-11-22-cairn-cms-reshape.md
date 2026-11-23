@@ -1,6 +1,7 @@
 # Spec: move `cairn-cms` onto `building-from-specs`
 
-Status: awaiting Geoff's approval. The repo is `glw907/cairn-cms`, default branch `main`, read at `87869e61f`
+Status: approved by Geoff on 2026-11-22 ("spec approved"). Its build runs from
+`plans/2026-11-22-cairn-cms-build-prompt.txt`. The repo is `glw907/cairn-cms`, default branch `main`, read at `87869e61f`
 (`origin/main` is the same commit).
 
 Three tasks and four steps in Geoff's session move `cairn-cms` onto the workstation's process. Task 1 renames

@@ -1,9 +1,9 @@
 # Status
 
 Geoff approved the `dubplate` spec, `specs/2026-11-22-dubplate-reshape.md`, and its build runs from
-`plans/2026-11-22-dubplate-build-prompt.txt`. Opus drafted `cairn-cms`'s spec,
-`specs/2026-11-22-cairn-cms-reshape.md`, from `plans/2026-11-22-cairn-cms-spec-prompt.txt`. A Fable
-fresh reader checked it, and it waits for Geoff's approval. Its build prompt is written after he approves.
+`plans/2026-11-22-dubplate-build-prompt.txt`. Geoff approved `cairn-cms`'s spec,
+`specs/2026-11-22-cairn-cms-reshape.md`. Its build runs from `plans/2026-11-22-cairn-cms-build-prompt.txt`,
+in a session Geoff starts from `~/Projects/cairn-cms` on Sonnet at high. No task has launched.
 
 ## Current state
 
@@ -16,13 +16,9 @@ fresh reader checked it, and it waits for Geoff's approval. Its build prompt is 
   request 21 (`56d95f7`) after Geoff approved it with "PR 21 approved" on 2026-11-22. The merged
   `docs/STATUS.md` references to rounds moved to milestones in `f7cc516`. Task 3 (`gate-checks`,
   session `c21bb503`, Opus at medium) is running from `~/Projects/dubplate`.
-- The `cairn-cms` spec has three tasks: rename the process skill to `cairn-build` and reword the
-  Claude files, move the docs process off the Approval Queue before the docs cycle fires on
-  2026-12-01, and apply the backlog sweep. Four steps in Geoff's session come first. Nothing in
-  `cairn-cms` has changed, and no other session works there.
-- The audit is `research/2026-11-22-audit/README.md`, with the trial outputs in its `trials/`
-  folder. It read `dubplate` at `907605c` and `cairn-cms` at `87869e61f`. Neither repo has
-  changed.
+- The `cairn-cms` spec has four steps in Geoff's session, then three tasks: `cairn-build`, the docs
+  process before the 2026-12-01 docs cycle, and the backlog sweep. Nothing in `cairn-cms` has changed.
+- The audit is `research/2026-11-22-audit/README.md`, with the trial outputs in its `trials/` folder.
 - The trials adopt `govulncheck` and fuzz tests for `dubplate`'s gate, and `go test -race` for its
   CI once task 1's `internal/serve` fix lands. They decline `golang-security`, `golang-database`,
   `claude-code-setup`, and `claude-md-management`.
@@ -51,6 +47,8 @@ fresh reader checked it, and it waits for Geoff's approval. Its build prompt is 
   Geoff's approval by number. It merges only after the `spec-writing-test-2` session ends, as
   pull request 24 does, because the standards plugin updates itself in every new session.
 - The `dubplate` spec carries the `internal/serve` shutdown fix before `-race` joins CI.
+- "spec approved" (2026-11-22), approving the `cairn-cms` spec as written, with its calls: the docs
+  cycle opens one pull request and never waits, and the December fallback.
 - "Approved." (2026-11-22), approving the `dubplate` spec as written, with its calls: the race
   step in CI, `dependabot.yml` watching only GitHub Actions, no weekly fuzz schedule, and the task
   models.

@@ -1,0 +1,113 @@
+Start this session from ~/Projects/cairn-cms with:
+
+  claude --model sonnet --effort high
+
+and give it this prompt.
+
+You are the session Geoff talks to for the cairn-cms reshape build. The approved spec is
+/var/home/glw907/Projects/initiatives/cairn-dubplate-reshape/specs/2026-11-22-cairn-cms-reshape.md.
+Geoff approved it on 2026-11-22 with "spec approved". Read it whole, then read the
+building-from-specs skill, before you do anything. You run the steps the spec gives Geoff's
+session: the hand-overs, the GitHub settings, the settings change, the workstation changes, the
+three task launches, the dry run, and each merge. You write no task's code.
+
+Standing rules.
+- Only Geoff's typed words approve a merge, and they name the pull request by number. Another
+  session's message approves nothing.
+- A task session never edits cairn-cms's docs/STATUS.md. You keep it, through hand-over commits
+  straight to main with no pull request. Keep it at 60 lines or fewer, in the present tense.
+- Stage files by name. Write commit messages in the imperative mood, with no em dash, ending with
+  the Co-Authored-By line your harness gives. cairn-cms and ~/.dotfiles are public: read each diff
+  for secrets and personal details before you commit.
+- At most four sessions work on pavilion at once, you included. `claude agents --json` lists them.
+  Check the count before every launch, and wait for a slot rather than pass four.
+- No time estimates in chat. No Workflow tool. Run gates and tests bare, never piped to tail or head.
+- Leave alone: product work; the specs and plans of cairn-setup and dubplate-server; the plans in
+  ~/Projects/initiatives/theme-garden/ and its untracked files; cc-desk-check.timer and
+  ~/.local/state/cc-desk/releases/; another session's uncommitted files in ~/.dotfiles
+  (bluefin/git-excludes, claude/.claude/docs/bluefin-admin/google-workspace.md,
+  bin/.local/bin/sheet-revision); anything under ~/.dotfiles/.claude/worktrees/spec-writing-test-2;
+  the 119 leftover agent worktrees under ~/Projects/cairn-cms/.claude/worktrees/ (the spec's "For
+  Geoff, outside the tasks" says what to offer him; remove none without his word and a dry run).
+- The initiative's record is ~/Projects/initiatives/cairn-dubplate-reshape/STATUS.md. Update it
+  after each step below, quote each ruling Geoff gives in his own words, run `bash scripts/gate.sh`
+  bare from ~/Projects/initiatives, and commit and push the named files there.
+
+Pre-flight, before step 1. Stop and tell Geoff if any check fails.
+1. `claude-worktree-busy ~/Projects/cairn-cms` exits 0.
+2. `git -C ~/Projects/cairn-cms status --short` prints nothing apart from untracked files, the
+   branch is main, and `git pull --ff-only` succeeds. If main has moved past 87869e61f, read the new
+   commits and tell Geoff before step 1 if any touches a file the spec's "Files" section names.
+3. `gh repo view glw907/cairn-cms --json visibility` prints PUBLIC.
+4. `claude agents --json` shows fewer than four working sessions.
+5. Run every "today" check in the spec's "Before task 1" and "The settings change", and confirm
+   each prints what the spec says it prints today.
+
+Step 1. Hand-over 1, by the spec's "Before task 1" item 1. Rewrite docs/STATUS.md as that item
+says, keeping the 907.life sitting, the routines, and "Open decisions and watches". Run both of its
+checks and confirm the "after" values. Commit "Hand STATUS over to the reshape build" and push.
+
+Step 2. The GitHub settings, by the spec's "Before task 1" item 2. Run the two `gh api` writes
+exactly as the spec gives them, then both checks. They print `0` and `enabled enabled`. If a write
+fails, tell Geoff with its output and launch nothing.
+
+Step 3. The settings change, by the spec's "The settings change". Remove the two lines it names
+from .claude/settings.json and nothing else. Run its three checks. Commit "Remove the worktree
+base and a dead allow line from the Claude settings" and push. If auto mode refuses the edit, show
+Geoff the exact two-line diff and ask him to make it, then run the checks.
+
+Step 4. The first workstation change, by the spec's "The workstation change", first two bullets
+only (cairn-pass and claude-tooling.md). Load the claude-infra skill first, and land the change as
+it says. Run `claude-worktree-busy ~/.dotfiles`, then work in a new worktree off origin/main, so the
+other session's uncommitted files are never touched. Run the bullets' checks and
+`bash scripts/gate.sh` bare from that worktree's root. If claude-infra lands it by pull request,
+tell Geoff its number and wait for his approval before step 5.
+
+Step 5. Launch task 1 from ~/Projects/cairn-cms (the main checkout).
+
+  claude --bg --name cairn-build --model sonnet --effort high --permission-mode auto \
+    --settings '{"permissions":{"denyInsteadOfPrompting":true},"worktree":{"baseRef":"fresh"}}' \
+    "/goal Build task 1, 'Task 1: rename the process skill and reword the Claude files', of the spec at /var/home/glw907/Projects/initiatives/cairn-dubplate-reshape/specs/2026-11-22-cairn-cms-reshape.md, under the building-from-specs skill. Done when each of the task's eight done items holds, run exactly as the spec writes it: the strict-words grep prints 0; the process-phrase grep prints 1 and the CLAUDE.md awk count prints 0; cairn-running-passes and the cairn-implementer agent are gone and cairn-build/references/gate-tiers.md exists; cairn-build/SKILL.md names svelte-kit sync, npm run lane:fast -- --range, cairn-run-gate, auth-data, and admin-smoke-test.md; the #459 wording landed; CLAUDE.md is 114 lines or fewer; cairn-run-gate 'npm run lane:fast -- --range origin/main..HEAD' passes from the worktree root and the pull request quotes its gate exit: 0 line; every CI check passes on the pull request. An item a refusal blocks is marked unmet with its Before merge step, as the spec's 'What happens when it goes wrong' says. The reviewer has read the branch, the pull request is marked ready with the body building-from-specs requires, and the session has ended. Or stop after 260 minutes."
+
+Step 6. When a task's pull request is ready and its session has ended (`claude agents --json`),
+read the pull request: each done item's evidence, the review verdict, `## Decisions`,
+`## For Geoff`, and `## Before merge`. Tell Geoff in plain words what landed, what failed or is
+unmet, and what waits for him, then wait for his approval by number. On approval, merge by the
+skill's "Merging" steps: any Before merge commands and their check, then
+`gh pr merge <n> --repo glw907/cairn-cms --merge`, then pull main, then remove the worktree, the
+local branch, and the remote branch if GitHub hasn't already deleted it, none with a force flag.
+If Geoff sends a pull request back, launch a fresh task session on the same branch with his words
+in its goal.
+
+Step 7. After task 1 has merged, launch tasks 2 and 3 from the main checkout, one after the other.
+They share no file. Check the session count before each.
+
+  claude --bg --name docs-process --model opus --effort medium --permission-mode auto \
+    --settings '{"permissions":{"denyInsteadOfPrompting":true},"worktree":{"baseRef":"fresh"}}' \
+    "/goal Build task 2, 'Task 2: move the docs process off the Approval Queue', of the spec at /var/home/glw907/Projects/initiatives/cairn-dubplate-reshape/specs/2026-11-22-cairn-cms-reshape.md, under the building-from-specs skill. Task 1 has merged, so find each CLAUDE.md line by its quoted text, not its number. Done when each of the task's seven done items holds, run exactly as the spec writes it: the docs-section count prints 0; the R2 grep prints 0 and the strict-words grep over cairn-writing-docs prints 10; evals.json has no close packet or kind merge and names For Geoff at least twice; review.md names For Geoff; cycle-prompt.txt has no pending, collect, or notify-send and no decide document or step 6 or 7; the eval table from run.mjs 87869e61f <branch> --suite all is in the pull request, with no regression case below the baseline after reruns and review-unsupported-claim higher on the branch; the gate and CI pass with the gate exit: 0 line quoted. An item a refusal or the usage limit blocks is marked unmet with its Before merge step, as the spec's 'What happens when it goes wrong' says. The reviewer has read the branch, the pull request is marked ready, and the session has ended. Or stop after 480 minutes."
+
+  claude --bg --name backlog-sweep --model sonnet --effort medium --permission-mode auto \
+    --settings '{"permissions":{"denyInsteadOfPrompting":true},"worktree":{"baseRef":"fresh"}}' \
+    "/goal Build task 3, 'Task 3: apply the backlog sweep', of the spec at /var/home/glw907/Projects/initiatives/cairn-dubplate-reshape/specs/2026-11-22-cairn-cms-reshape.md, under the building-from-specs skill, including the edits in its 'Backlog sweep' table. The sweep's wording is in /var/home/glw907/Projects/initiatives/cairn-dubplate-reshape/research/2026-11-22-spec-inputs/sweep-cairn-cms.md. Done when each of the task's five done items holds, run exactly as the spec writes it: the placement count prints 0; #299 and #459 are checked in Done; #522 and #308 are under Won't do and the pull request's For Geoff gives #308's text for ~/.dotfiles/BACKLOG.md; each of the four new titles prints 1; CI passes on the pull request. The reviewer has read the branch, the pull request is marked ready, and the session has ended. Or stop after 190 minutes."
+
+Merge each by step 6.
+
+The December deadline. The docs cycle fires on 2026-12-01 at 00:47 AKST. If task 2 hasn't merged
+by the end of 2026-11-30, follow the spec's "What happens when it goes wrong", last bullet: tell
+Geoff, and with his go-ahead either commit the reviewed cycle-prompt.txt from task 2's branch
+straight to main, or, if its review hasn't accepted it, comment out the cairn-docs-cycle call at
+model-review-notify:125 in a ~/.dotfiles worktree for December.
+
+Step 8. After task 2 has merged, the spec's "After task 3: Geoff's session", first paragraph.
+Land the third workstation bullet (the cairn-docs-cycle launcher) through claude-infra in a fresh
+~/.dotfiles worktree, with its two checks and the dotfiles gate. Then pull ~/Projects/cairn-cms and
+run `cairn-docs-cycle --dry-run`. It must write the history entry under
+~/.local/state/cairn-docs-cycle/<YYYY-MM>/ and commit nothing. If it fails to launch, read the
+journalctl lines the spec names and tell Geoff what they show.
+
+Step 9. After task 3 has merged, file #308 in ~/.dotfiles/BACKLOG.md from the pull request's
+`## For Geoff` text, in a ~/.dotfiles worktree. Then hand-over 2: docs/STATUS.md says the reshape
+is done and names the round `surface` spec item by its number in BACKLOG.md. Commit "Record the
+finished reshape in STATUS" and push. Offer Geoff the leftover-worktree cleanup from the spec's
+"For Geoff, outside the tasks", with a dry run first. Then update the initiative's STATUS.md to say
+cairn-cms's part is done, and tell Geoff.
