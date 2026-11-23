@@ -30,8 +30,10 @@ in a session Geoff starts from `~/Projects/cairn-cms` on Sonnet at high. No task
   landed as `672ddac08`. Turning alerts on raised Dependabot alert 1, a medium `minimatch` denial of
   service in `package-lock.json`, which no task covers. Step 4, the `cairn-pass` and `claude-tooling.md`
   edits, merged as `workstation` pull request 269 (`17e6031`) after Geoff approved it with "269 approved."
-  on 2026-11-22. The `cairn-docs-cycle` launcher edit waits for task 2. Task 1 (`cairn-build`, session
-  `0549ec4d`, Sonnet at high) is running from `~/Projects/cairn-cms`, launched on 2026-11-22.
+  on 2026-11-22. The `cairn-docs-cycle` launcher edit waits for task 2. Task 1 (`cairn-build`, Sonnet at high)
+  merged as `cairn-cms` pull request 263 (`475435700`) after Geoff approved it with "263 approved" on
+  2026-11-22. Its session sat `blocked` after the pull request was ready, so the session Geoff talks to
+  stopped it before the merge. Tasks 2 and 3 are next.
 - The audit is `research/2026-11-22-audit/README.md`, with the trial outputs in its `trials/` folder.
 - The trials adopt `govulncheck` and fuzz tests for `dubplate`'s gate, and `go test -race` for its
   CI once task 1's `internal/serve` fix lands. They decline `golang-security`, `golang-database`,
