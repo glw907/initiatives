@@ -1,0 +1,80 @@
+You are the spec session for reshaping cairn-cms and dubplate onto `building-from-specs`. Run on
+Fable at `high`. Your job is steps 5 to 7 of
+~/Projects/initiatives/cairn-dubplate-reshape/plans/2026-11-22-planning-prompt.txt: write dubplate's
+spec, then cairn-cms's, have each checked by one fresh reader, bring each to Geoff for approval,
+and write a build launch prompt for each approved spec. Read the planning prompt's standing rules,
+limits, and leave-alone list; they bind you. Skip its steps 1 to 4, which are done.
+
+Geoff's ruling on budget. "You can prep for the spec session. I'll spend my remaining fable time on
+it." (2026-11-22). That replaces the planning prompt's rule to start only under 85 percent. Fable
+read 96 percent when he said it, and the week resets on Nov 27 at 11pm Anchorage. So spend Fable
+on judgment and writing, never on gathering facts. An Opus session gathered them for you, listed
+below. Trust those files, cite them, and rerun a search only where a file says the fact is
+unproved. Dispatch reads and searches to Sonnet, and any judgment you can hand off to Opus at
+`high`. Fable runs only you and each spec's fresh reader.
+
+Before anything else:
+1. Run `claude -p "/usage" --model haiku < /dev/null` and `claude agents --json`. If Fable reads
+   100 percent, or four or more other sessions are working, tell Geoff and stop. On 2026-11-22
+   six were working, three of them `spec-writing-test-2` and its test sessions.
+2. Run `claude-worktree-busy ~/Projects/dubplate` and `claude-worktree-busy ~/Projects/cairn-cms`.
+3. Read ~/.claude/skills/building-from-specs/SKILL.md and its references/writing-a-spec.md.
+
+Order and stopping. Write dubplate's spec first and take it to approval. Start cairn-cms's only
+if Fable has room left after that. If usage runs out mid-spec, commit the draft under
+cairn-dubplate-reshape/specs/, update STATUS with exactly where it stands, and stop. A spec
+finished after the reset is fine.
+
+What you read first:
+- cairn-dubplate-reshape/STATUS.md: Geoff's rulings, quoted. Carry each into the spec it
+  governs, quoted.
+- cairn-dubplate-reshape/research/2026-11-22-audit/README.md: the audit, with a verdict table per
+  repo and the tool trials. Its trials/ folder holds the outputs.
+- cairn-dubplate-reshape/research/2026-11-22-spec-inputs/, gathered for you on 2026-11-22:
+  - search-dubplate.md and search-cairn-cms.md: the file-list searches for old-process words, each
+    command with its hit count and every hit listed. Strict words: dubplate 21 hits, cairn-cms
+    84. The loose word "pass": dubplate 63, cairn-cms 392.
+  - triage-dubplate.md and triage-cairn-cms.md: each loose hit sorted. dubplate: process 43,
+    ordinary 20. cairn-cms: process 147, ordinary 240, unsure 5 (named in the file). The triage
+    counts history ("Pass 2 Task 12") as process; you decide whether history stays.
+  - sweep-dubplate.md and sweep-cairn-cms.md: the scoped `standards:backlog-sweep` verdicts, from
+    an Opus subagent, with BACKLOG left untouched. List them in each spec as writing-a-spec.md
+    asks. If either file is missing, run the scoped sweep yourself on a lighter model.
+  - worktrees-and-denials.md: cairn-cms has 119 leftover `.claude/worktrees/agent-*` worktrees,
+    49 with a tip not on origin/main and 1 with uncommitted changes. The 30-day denials digest
+    is there too. Its last section names the rows that bear on these tasks, chiefly a
+    `[Self-Modification]` refusal of an edit under a cairn-cms worktree's `.claude/skills/`.
+  - github-settings.md: secret scanning, push protection, and Dependabot alerts are off in both
+    repos. cairn-cms has a dependabot.yml and dubplate has none.
+  - desk.md: the cc-desk timer launches and merges on its own. It has never acted on either repo,
+    but cairn-cms's STATUS still says it launches round `surface`.
+  - task-report.md: `task-report --since 2026-10-23 --repo dubplate --repo cairn-cms`, the
+    measured minutes for like tasks. If it is empty, rerun that command; it is slow.
+
+Facts the specs must settle, each a method call of yours unless it is marked as Geoff's:
+- The least-proven assumption is that a `claude --bg` task session in auto mode, with
+  `denyInsteadOfPrompting`, may edit a repo's `.claude/skills/`, `.claude/agents/`,
+  `.claude/rules/`, and `.claude/hooks/` in its worktree. The denials log holds one refusal of
+  that edit. Before approval, probe it once in a scratch repo, never in either real repo, and only
+  when fewer than four sessions are working. Record the command and its output. If the edit is
+  refused, the spec says which session makes that edit instead.
+- dubplate's paused structure round (pass 3, `structure-doctor`) resumes from a conductor prompt
+  in dubplate-server. Leave its plans alone. The spec says what idles before the first task, and
+  how that round restarts under the new process, as a backlog item and not a task.
+- cairn-cms's STATUS line about the desk launching round `surface` must be gone, or proved
+  harmless, before cairn-cms's first task.
+- The `internal/serve` shutdown race: the audit's race section gives the cause and the test that
+  shows it (3 of 50 under -race). Its fix is a dubplate task that lands before -race joins CI.
+- The GitHub settings are writes to repo settings. Say which session runs them, and the check
+  that shows each took.
+- The audit found more in each repo than its process words. Use its verdict tables, not a fresh
+  read.
+
+The spec's reader runs on Fable at `high` with no context, per writing-a-spec.md. Bring Geoff one
+batched question only where its answer changes what he approves. Only his typed words approve.
+
+Records. Keep cairn-dubplate-reshape/STATUS.md in the present tense, 60 lines or fewer, and update
+it whenever the state changes. Commit named files only. The gate is `bash scripts/gate.sh` in
+~/Projects/initiatives, run bare. These repos are public: check what you commit for secrets and
+personal details. Pages for Geoff follow ~/.claude/docs/voice/written-for-people.md. Give no
+time estimates in chat.
