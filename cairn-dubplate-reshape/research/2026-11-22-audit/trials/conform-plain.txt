@@ -1,0 +1,3 @@
+ok  	github.com/glw907/dubplate/internal/harness/conform	37.739s
+wall=38.19 maxrss_kb=152192
+exit=0

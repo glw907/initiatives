@@ -1,0 +1,12 @@
+$ go test -race -count=50 -run ^TestServeUntilDoneShutsDownWhenOneServeFails$ ./internal/serve/
+--- FAIL: TestServeUntilDoneShutsDownWhenOneServeFails (0.00s)
+    server_test.go:397: 127.0.0.2:33927 still bound after the failure path, want the shutdown to have released it: listen tcp 127.0.0.2:33927: bind: address already in use
+--- FAIL: TestServeUntilDoneShutsDownWhenOneServeFails (0.00s)
+    server_test.go:397: 127.0.0.2:36947 still bound after the failure path, want the shutdown to have released it: listen tcp 127.0.0.2:36947: bind: address already in use
+FAIL
+FAIL	github.com/glw907/dubplate/internal/serve	0.028s
+FAIL
+exit=1
+$ go test -count=50 -run ^TestServeUntilDoneShutsDownWhenOneServeFails$ ./internal/serve/
+ok  	github.com/glw907/dubplate/internal/serve	0.006s
+exit=0

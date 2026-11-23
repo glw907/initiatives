@@ -1,0 +1,11 @@
+package gate
+
+import "testing"
+
+// FuzzValidPath checks ValidPath never panics on arbitrary bytes.
+func FuzzValidPath(f *testing.F) {
+	for _, s := range []string{"a/b.flac", "../x", "/abs", "", "a\x00b", "CON", "a//b"} {
+		f.Add([]byte(s))
+	}
+	f.Fuzz(func(t *testing.T, p []byte) { _ = ValidPath(p) })
+}

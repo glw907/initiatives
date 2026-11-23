@@ -1,0 +1,229 @@
+2026-11-23T00:57:59Z
+ok  	github.com/glw907/dubplate/cmd/dubplate-server	297.317s
+ok  	github.com/glw907/dubplate/cmd/harness	16.217s
+ok  	github.com/glw907/dubplate/internal/atomicfile	1.014s
+ok  	github.com/glw907/dubplate/internal/auth	52.512s
+ok  	github.com/glw907/dubplate/internal/backup	73.613s
+ok  	github.com/glw907/dubplate/internal/config	1.037s
+ok  	github.com/glw907/dubplate/internal/engine/matcher	31.286s
+ok  	github.com/glw907/dubplate/internal/engine/matcher/unidecode	3.094s
+ok  	github.com/glw907/dubplate/internal/engine/matcher/unidecode/unidecodetest	1.683s
+ok  	github.com/glw907/dubplate/internal/engine/musicbrainz	1.898s
+ok  	github.com/glw907/dubplate/internal/engine/tag	1.620s
+ok  	github.com/glw907/dubplate/internal/engine/tagio	1.327s
+ok  	github.com/glw907/dubplate/internal/harness	45.187s
+ok  	github.com/glw907/dubplate/internal/harness/analysis	1.086s
+ok  	github.com/glw907/dubplate/internal/harness/cassette	1.020s
+panic: test timed out after 10m0s
+	running tests:
+		TestWholeCorpusGradesTheCorrectedVerdictsInDefaultMode (3m30s)
+
+goroutine 1979 [running]:
+testing.(*M).startAlarm.func1()
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2961 +0x605
+created by time.goFunc
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/time/sleep.go:182 +0x45
+
+goroutine 1 [chan receive, 3 minutes]:
+testing.(*T).Run(0xc0001ec488, {0xb26174, 0x36}, 0xfbcb48)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2268 +0xb3e
+testing.runTests.func1(0xc0001ec488)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2744 +0x85
+testing.tRunner(0xc0001ec488, 0xc00053b9e0)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2195 +0x21d
+testing.runTests({0xb150ce, 0x1a}, {0xb2519f, 0x33}, 0xc0001b6108, {0x101f068, 0x3a, 0x3a}, {0xc2b902642d5d191d, 0x8bd5b1445a, ...})
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2742 +0x9ea
+testing.(*M).Run(0xc0001a0d20)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2602 +0xf45
+github.com/glw907/dubplate/internal/harness/conform.TestMain(0xc0001a0d20)
+	~/Projects/dubplate/internal/harness/conform/testmain_test.go:21 +0x125
+main.main()
+	_testmain.go:162 +0x172
+
+goroutine 1259 [runnable]:
+github.com/glw907/dubplate/internal/engine/matcher/unidecode.(*Table).Lookup(...)
+	~/Projects/dubplate/internal/engine/matcher/unidecode/table.go:39
+github.com/glw907/dubplate/internal/engine/matcher.transliterate({0xc0008ab9c0, 0x32})
+	~/Projects/dubplate/internal/engine/matcher/translit.go:41 +0x159
+github.com/glw907/dubplate/internal/engine/matcher.sdStrip({0xc0008ab9c0, 0x32})
+	~/Projects/dubplate/internal/engine/matcher/strdist.go:129 +0x6a
+github.com/glw907/dubplate/internal/engine/matcher.stringDistBasic({0xc00099b0e0, 0x4e}, {0xc0008ab9c0, 0x32})
+	~/Projects/dubplate/internal/engine/matcher/strdist.go:80 +0x58
+github.com/glw907/dubplate/internal/engine/matcher.StringDist({0x3fa47ae147ae147b, 0x3fd0000000000000, 0x3fd0000000000000, 0xc0004c6c00, 0xc0004c6c30, {{0x0, 0x0, 0x0}, {0x0, 0x0, ...}, ...}, ...}, ...)
+	~/Projects/dubplate/internal/engine/matcher/strdist.go:35 +0x15a
+github.com/glw907/dubplate/internal/engine/matcher.(*Distance).AddString(0xc0013b8700, {0xb0c29e, 0xb}, 0xc0041c5968, 0xc0008b99a8)
+	~/Projects/dubplate/internal/engine/matcher/strdist.go:65 +0x150
+github.com/glw907/dubplate/internal/engine/matcher.addTrackTitle(...)
+	~/Projects/dubplate/internal/engine/matcher/track.go:52
+github.com/glw907/dubplate/internal/engine/matcher.DistanceForTrack({0x3fa47ae147ae147b, 0x3fd0000000000000, 0x3fd0000000000000, 0xc0004c6c00, 0xc0004c6c30, {{0x0, 0x0, 0x0}, {0x0, 0x0, ...}, ...}, ...}, ...)
+	~/Projects/dubplate/internal/engine/matcher/track.go:26 +0x30f
+github.com/glw907/dubplate/internal/engine/matcher.assignItems({0x3fa47ae147ae147b, 0x3fd0000000000000, 0x3fd0000000000000, 0xc0004c6c00, 0xc0004c6c30, {{0x0, 0x0, 0x0}, {0x0, 0x0, ...}, ...}, ...}, ...)
+	~/Projects/dubplate/internal/engine/matcher/assign.go:82 +0xb34
+github.com/glw907/dubplate/internal/engine/matcher.(*Candidates).Add(_, {0x3fa47ae147ae147b, 0x3fd0000000000000, 0x3fd0000000000000, 0xc0004c6c00, 0xc0004c6c30, {{0x0, 0x0, 0x0}, {0x0, ...}, ...}, ...}, ...)
+	~/Projects/dubplate/internal/engine/matcher/candidate.go:131 +0x628
+github.com/glw907/dubplate/internal/harness/conform.gradeCaseDefault({0xfbb328, 0x1047900}, {0xc00099a000, 0x53}, {0xc003ed9170?, 0xc003ed9188?, 0xc003ed91a0?, 0xc003ed91b8?})
+	~/Projects/dubplate/internal/harness/conform/case.go:585 +0x19d0
+github.com/glw907/dubplate/internal/harness/conform.GradeCases({0xc0000348c4, 0x22}, 0x1)
+	~/Projects/dubplate/internal/harness/conform/case.go:182 +0x6f6
+github.com/glw907/dubplate/internal/harness/conform.init.func2()
+	~/Projects/dubplate/internal/harness/conform/case_test.go:313 +0x12a
+sync.OnceValues[...].func1.1()
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/sync/oncefunc.go:101 +0xbd
+sync.(*Once).doSlow(0xc0002360e8, 0xc0000a8c30)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/sync/once.go:78 +0xa2
+sync.(*Once).Do(0xc0002360e8, 0xc0000a8c30)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/sync/once.go:69 +0x33
+sync.OnceValues[...].func1()
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/sync/oncefunc.go:93 +0x85
+github.com/glw907/dubplate/internal/harness/conform.TestWholeCorpusGradesTheCorrectedVerdictsInDefaultMode(0xc003ec3d48)
+	~/Projects/dubplate/internal/harness/conform/case_test.go:337 +0x89
+testing.tRunner(0xc003ec3d48, 0xfbcb48)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2195 +0x21d
+created by testing.(*T).Run in goroutine 1
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/testing/testing.go:2260 +0xb13
+
+goroutine 1534 [IO wait]:
+internal/poll.runtime_pollWait(0x7ff970d3cc00, 0x72)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/runtime/netpoll.go:351 +0x85
+internal/poll.(*pollDesc).wait(0xc00521a020, 0x72, 0x0)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/internal/poll/fd_poll_runtime.go:84 +0xb1
+internal/poll.(*pollDesc).waitRead(...)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0xc00521a000, {0xc000574000, 0x1000, 0x1000})
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/internal/poll/fd_unix.go:170 +0x499
+net.(*netFD).Read(0xc00521a000, {0xc000574000, 0x1000, 0x1000})
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/fd_posix.go:68 +0x4b
+net.(*conn).Read(0xc0001900a0, {0xc000574000, 0x1000, 0x1000})
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/net.go:196 +0xad
+net/http.(*connReader).Read(0xc0040150c0, {0xc000574000, 0x1000, 0x1000})
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/http/server.go:852 +0x288
+bufio.(*Reader).fill(0xc0000620c0)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/bufio/bufio.go:113 +0x2a4
+bufio.(*Reader).Peek(0xc0000620c0, 0x4)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/bufio/bufio.go:152 +0xaf
+net/http.(*conn).serve(0xc00022e120, {0xfbb3d0, 0xc0004c6f90})
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/http/server.go:2197 +0x112e
+created by net/http.(*Server).Serve in goroutine 1977
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/http/server.go:3608 +0x92a
+
+goroutine 1948 [select]:
+net/http.(*persistConn).writeLoop(0xc000156000)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/http/transport.go:2833 +0x1b5
+created by net/http.(*Transport).dialConn in goroutine 1978
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/http/transport.go:2124 +0x397d
+
+goroutine 1947 [IO wait]:
+internal/poll.runtime_pollWait(0x7ff970d3ca00, 0x72)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/runtime/netpoll.go:351 +0x85
+internal/poll.(*pollDesc).wait(0xc004212020, 0x72, 0x0)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/internal/poll/fd_poll_runtime.go:84 +0xb1
+internal/poll.(*pollDesc).waitRead(...)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0xc004212000, {0xc000158000, 0x1000, 0x1000})
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/internal/poll/fd_unix.go:170 +0x499
+net.(*netFD).Read(0xc004212000, {0xc000158000, 0x1000, 0x1000})
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/fd_posix.go:68 +0x4b
+net.(*conn).Read(0xc0003d8000, {0xc000158000, 0x1000, 0x1000})
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/net.go:196 +0xad
+net/http.(*persistConn).Read(0xc000156000, {0xc000158000, 0x1000, 0x1000})
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/http/transport.go:2300 +0x233
+bufio.(*Reader).fill(0xc000188180)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/bufio/bufio.go:113 +0x2a4
+bufio.(*Reader).Peek(0xc000188180, 0x1)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/bufio/bufio.go:152 +0xaf
+net/http.(*persistConn).readLoop(0xc000156000)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/http/transport.go:2493 +0x325
+created by net/http.(*Transport).dialConn in goroutine 1978
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/http/transport.go:2123 +0x38f2
+
+goroutine 1977 [IO wait]:
+internal/poll.runtime_pollWait(0x7ff970d3c800, 0x72)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/runtime/netpoll.go:351 +0x85
+internal/poll.(*pollDesc).wait(0xc0001e80a0, 0x72, 0x0)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/internal/poll/fd_poll_runtime.go:84 +0xb1
+internal/poll.(*pollDesc).waitRead(...)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Accept(0xc0001e8080)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/internal/poll/fd_unix.go:618 +0x4ea
+net.(*netFD).accept(0xc0001e8080)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/fd_unix.go:149 +0x45
+net.(*TCPListener).accept(0xc004015040)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/tcpsock_posix.go:159 +0x4e
+net.(*TCPListener).Accept(0xc004015040)
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/tcpsock.go:387 +0x65
+net/http.(*Server).Serve(0xc0001fa140, {0xfbafc0, 0xc004015040})
+	/var/home/linuxbrew/.linuxbrew/Cellar/go/1.27.4/libexec/src/net/http/server.go:3578 +0x6ad
+github.com/glw907/dubplate/internal/harness/stub.New.func1()
+	~/Projects/dubplate/internal/harness/stub/stub.go:88 +0x5d
+created by github.com/glw907/dubplate/internal/harness/stub.New in goroutine 1259
+	~/Projects/dubplate/internal/harness/stub/stub.go:85 +0x9aa
+FAIL	github.com/glw907/dubplate/internal/harness/conform	600.612s
+ok  	github.com/glw907/dubplate/internal/harness/oracle	1.055s
+ok  	github.com/glw907/dubplate/internal/harness/stub	1.020s
+ok  	github.com/glw907/dubplate/internal/harness/subsonic/fixture	1.197s
+ok  	github.com/glw907/dubplate/internal/harness/subsonic/grade	40.652s
+ok  	github.com/glw907/dubplate/internal/harness/subsonic/session	1.074s
+ok  	github.com/glw907/dubplate/internal/harness/subsonic/stack	142.532s
+ok  	github.com/glw907/dubplate/internal/harness/subsonic/xmlrule	16.099s
+ok  	github.com/glw907/dubplate/internal/harness/synth	1.377s
+ok  	github.com/glw907/dubplate/internal/id	1.015s
+ok  	github.com/glw907/dubplate/internal/identity	1.390s
+ok  	github.com/glw907/dubplate/internal/intake	46.161s
+ok  	github.com/glw907/dubplate/internal/intake/gate	2.054s
+ok  	github.com/glw907/dubplate/internal/intake/staging	1.031s
+ok  	github.com/glw907/dubplate/internal/notify	1.081s
+ok  	github.com/glw907/dubplate/internal/opensubsonic	1.152s
+ok  	github.com/glw907/dubplate/internal/opensubsonic/client	1.033s
+ok  	github.com/glw907/dubplate/internal/opensubsonic/conformance	1.082s
+ok  	github.com/glw907/dubplate/internal/ops	1.040s
+ok  	github.com/glw907/dubplate/internal/ops/admin	18.831s
+ok  	github.com/glw907/dubplate/internal/ops/local	13.229s
+ok  	github.com/glw907/dubplate/internal/ops/opshttp	3.009s
+ok  	github.com/glw907/dubplate/internal/reject	1.040s
+2026/11/22 15:58:53 INFO serve: refused request path=/anchor/a/../page status=400 identity_spelling_present=false
+2026/11/22 15:58:53 INFO serve: refused request path=/anchor/page status=405 identity_spelling_present=false
+2026/11/22 15:58:53 INFO serve: refused request path=/anchor/page status=403 identity_spelling_present=false
+2026/11/22 15:58:53 INFO serve: refused request path=/anchor/a/../page status=400 identity_spelling_present=false
+2026/11/22 15:58:53 INFO serve: refused request path=/anchor/page status=405 identity_spelling_present=false
+2026/11/22 15:58:53 INFO serve: refused request path=/anchor/page status=403 identity_spelling_present=false
+2026/11/22 15:58:53 INFO serve: refused request path=/anchor/echo/.. status=400 identity_spelling_present=false
+2026/11/22 15:58:53 INFO serve: refused request path=/outside.. status=400 identity_spelling_present=false
+2026/11/22 15:58:53 INFO serve: refused request path=/anchor/echo status=403 identity_spelling_present=false
+2026/11/22 15:58:53 INFO serve: refused request path=/outside status=403 identity_spelling_present=false
+2026/11/22 15:58:53 INFO serve: refused request path=/anchor/echo/../secret status=400 identity_spelling_present=false
+--- FAIL: TestServeUntilDoneShutsDownWhenOneServeFails (0.00s)
+    server_test.go:397: 127.0.0.2:38625 still bound after the failure path, want the shutdown to have released it: listen tcp 127.0.0.2:38625: bind: address already in use
+FAIL
+FAIL	github.com/glw907/dubplate/internal/serve	2.367s
+ok  	github.com/glw907/dubplate/internal/settings	14.501s
+ok  	github.com/glw907/dubplate/internal/store	50.149s
+ok  	github.com/glw907/dubplate/internal/webapp	1.366s
+ok  	github.com/glw907/dubplate/tools/close-evidence	1.013s
+ok  	github.com/glw907/dubplate/web	1.027s
+FAIL
+Command exited with non-zero status 1
+	Command being timed: "go test -race -count=1 ./..."
+	User time (seconds): 1354.55
+	System time (seconds): 52.93
+	Percent of CPU this job got: 222%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 10:33.35
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 934588
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 503
+	Minor (reclaiming a frame) page faults: 19615393
+	Voluntary context switches: 2142078
+	Involuntary context switches: 880920
+	Swaps: 0
+	File system inputs: 610960
+	File system outputs: 807456
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+exit=1
+2026-11-23T01:08:32Z
