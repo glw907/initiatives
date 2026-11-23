@@ -247,14 +247,39 @@ candidates from the official marketplace are `security-guidance` and `claude-sec
 the sign-in, data, and upload code, and `claude-code-setup` and `claude-md-management` as
 one-time second readers of each repo's Claude files.
 
-Geoff then asked which skills to remove. A count of `Skill` calls in the 7,485 session
-transcripts of the 30 days to 2026-11-22 gives two candidates at the workstation level, and
-neither is ruled on. The `cloudflare` plugin lists 18 skills and none was called, though its
-MCP server is in use. The five `vale-*` skills in the `standards` plugin had one call among
-them. `standards:svelte-check`, `standards:content-review`, and `standards:cairn-figure` had
-none, and a rename inside the 30 days could explain that. Skills made or renamed this week
-have low counts for that reason. In the two project repos, `cairn-running-passes` and
+Geoff then asked which skills to remove, and on 2026-11-22 he gave the go-ahead: "You can
+clean up skills while we wait on task 2." and "Add new useful skills, and remove skills that
+we don't need." The evidence is a count of `Skill` calls in the 7,485 session transcripts of
+the 30 days to 2026-11-22. The work has two parts.
+
+The first part is pull request 24 in `glw907/standards`, which waits for Geoff's approval by
+number. It removes `vale-ci`, `vale-fix`, `vale-triage`, `vale-vocab`, and `svelte-check`,
+none of which was called, and adds `svelte-core-bestpractices` from `sveltejs/ai-tools` at
+commit `f9d22f2f7f7c` (MIT), because the plugin has no skill for writing Svelte code. Its CI
+check passes on the last commit, `0cfaf11`, and a fresh `standards:diff-reviewer` accepted
+that commit with no blocking finding. `vale-setup` stays with its one call. `content-review` stays because
+`content-draft`, called 73 times, hands off to it, and `cairn-figure` is the reshape's.
+
+The second part waits until task 2 has ended, because it changes the workstation's lists and
+live settings and task 2's checks read both. It is one pull request in the workstation repo
+that drops the four Vale entries from `vendored-skills.json`, adds the Svelte entry, fixes
+`rules/vale.md` and `claude-tooling.md`, and removes the `cloudflare` plugin. That plugin
+lists 18 skills and none was called, but its documentation server was called 17 times, so
+the server moves to `mcp-servers.json` at user scope. Its tool names change with the move,
+and Geoff may have to sign in to it once through `/mcp`.
+
+Three community skills are passed over for now. `svelte-code-writer`, read in full, runs
+`npx @sveltejs/mcp` with no pinned version. `golang-security` and `golang-database` from
+`samber/cc-skills-golang` fit dubplate, so the reshape reads and weighs them. The first
+opens by telling its reader to fan out five subagents, which the workstation's rules don't
+allow without Geoff's word. In the two project repos, `cairn-running-passes` and
 `dubplate-pass` are the reshape's to replace or shrink.
+
+Geoff also asked what he should use to write good Go. Dubplate's gate and CI lack three
+checks that <https://go.dev/doc/security/best-practices> recommends: `go test -race`,
+`govulncheck`, and a fuzz test for its upload and audio parsers. A search of its `Makefile`,
+`scripts/check.sh`, and `.github/workflows/check.yml` on 2026-11-22 finds none. The reshape's
+audit of dubplate weighs adding each. `govulncheck` is not installed on pavilion.
 
 He also has the notes the last three pull requests left, listed under "Open decisions".
 
