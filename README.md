@@ -8,7 +8,7 @@ Cross-repo specs, plans, and research live next to the record they serve. A sess
 
 Work falls under one of three cases. Check them in order.
 
-1. The work belongs to an initiative when it serves one of the initiative's goals and no non-goal excludes it. Put its spec, plan, and research in `<id>/specs/`, `<id>/plans/`, or `<id>/research/`, and start the plan with an `Initiative: <id>` line.
+1. The work belongs to an initiative when it serves one of the initiative's goals and no non-goal excludes it. Put its spec, plan, and research in `<id>/specs/`, `<id>/plans/`, or `<id>/research/`, and start the plan with an `Initiative: <id>` line. An item the initiative files in another repo's backlog carries an `#initiative:<id>` tag, and the record's `STATUS.md` names the item by repo and number, so each side points to the other.
 2. When no record fits, the work is ordinary work for that repo's backlog, or the start of a new initiative. A new initiative gets a record with status `proposed`.
 3. A fix with no larger purpose needs no initiative.
 
