@@ -1,0 +1,10 @@
+id: cairn-dubplate-reshape
+title: cairn and dubplate reshape
+summary: Moves cairn-cms and dubplate onto the workstation's Claude tooling and its spec-built process, from one audit of both repos and one approved spec for each.
+status: proposed
+owner: glw907
+created: 2026-11-22
+repos:
+  - cairn-cms
+  - dubplate
+  - workstation
