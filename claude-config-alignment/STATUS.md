@@ -192,10 +192,14 @@
   watcher at 77 percent weekly usage. Its goal adds two facts: `SKILL.md` starts at 273 lines, over
   item 5's cap of 270, so text moves to a reference file; and the tick skips a pull request whose
   ask is already recorded, since 274 found each run posts another comment.
-- Next: when `show-tier-rules` ends, read its pull request and ask Geoff by "Merging". On "Merge",
-  apply its `## Before merge` settings edits on the branch as a commit, check they print `1 1`,
-  merge, pull `~/.dotfiles`, run `claude-tooling-sync apply` and `verify`, and then run the spec's
-  Step 3 stub proof with Geoff in `~/Projects/cc-desk-scratch`.
+- 2026-11-23, 21:50: `show-tier-rules` merged as workstation pull request 275 (`f28a1ade`) on Geoff's
+  "Merge". Its `## Before merge` settings edits landed on `main` as `1b6fd9f3`, and the check printed `1 1`.
+  `~/.dotfiles` is pulled, `claude-tooling-sync apply` and `verify` passed, and the session, worktree, and
+  branches are removed.
+- Step 3's stub proof runs as `show-proof` (`746e154b`, Sonnet at medium), launched from
+  `~/Projects/cc-desk-scratch` with the spec's `/loop 15m` line, at 79 percent weekly usage. Geoff answers
+  "Revert" for stub A and closes stub B there. Next: when it ends, check the four done items and record them
+  in `research/2026-11-23-merge-tiers/step-3.md`.
 - The lean-project-pattern record is closed. This section's work is driven from here now.
 
 Every task of the alignment spec and of the brainstorming spec has merged. The launch prompt
