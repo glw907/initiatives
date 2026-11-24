@@ -186,14 +186,17 @@
   prompt. Its goal is the spec's paragraph "The merge prompt goes too". The `ask` rule removal from
   `settings.json` comes under its `## Before merge`, for Geoff's session to apply and then run
   `claude-tooling-sync apply` and `verify`. Until then, the merge prompt still fires.
-- Next: when `merge-prompt` ends, read its pull request and ask Geoff about it by what merging it
-  changes. After the merge, the approved `specs/2026-11-23-merge-tiers-design.md` (Show and Ask tiers,
-  written by session `merge-tiers` with Geoff) is ready to launch: its tasks wait for 271 and this
-  follow-up, merged. Launch it only on Geoff's word.
-- The lean-project-pattern record's task 2 also waits for `merge-prompt`, and it edits the same two
-  skill files as merge-tiers task 2. One session drives both from `lean-project-pattern/STATUS.md`.
-- Weekly usage was 75 percent for all models and 100 percent for Fable at the `merge-prompt` launch.
-  Both reset Nov 27 at 10:59pm Anchorage.
+- `merge-prompt` merged as pull request 272, and merge-tiers task 1 (`claude-show-merge`) as pull
+  request 274 (`05cba83f`), each on Geoff's "Merge". `stow -R bin` links the script. Merge-tiers
+  task 2 runs as `show-tier-rules` (`beae5c68`, Sonnet at high, 120-minute clause), launched with a
+  watcher at 77 percent weekly usage. Its goal adds two facts: `SKILL.md` starts at 273 lines, over
+  item 5's cap of 270, so text moves to a reference file; and the tick skips a pull request whose
+  ask is already recorded, since 274 found each run posts another comment.
+- Next: when `show-tier-rules` ends, read its pull request and ask Geoff by "Merging". On "Merge",
+  apply its `## Before merge` settings edits on the branch as a commit, check they print `1 1`,
+  merge, pull `~/.dotfiles`, run `claude-tooling-sync apply` and `verify`, and then run the spec's
+  Step 3 stub proof with Geoff in `~/Projects/cc-desk-scratch`.
+- The lean-project-pattern record is closed. This section's work is driven from here now.
 
 Every task of the alignment spec and of the brainstorming spec has merged. The launch prompt
 `plans/2026-11-21-side-by-side-prompt.txt` is finished, and no task session is running.
