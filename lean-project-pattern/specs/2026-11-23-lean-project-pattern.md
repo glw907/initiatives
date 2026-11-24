@@ -342,14 +342,15 @@ as the worked example, and cites the memory guide and the AGENTS.md study for th
 Done when (paths below are relative to `claude/.claude/skills/building-from-specs/`):
 
 1. In `SKILL.md`, `grep -c -F` prints `0` today and 1 or more after for each of `simplify`,
-   `Tidy First`, `repo-files.md`, and `log-issue`.
+   `Tidy First`, and `repo-files.md`, and prints `1` today and 2 or more after for `log-issue`.
 2. `awk '/^## A session at work/,/^## In place of a question/' SKILL.md | grep -c -E 'refactor'`
    prints `0` today, and 1 or more after.
 3. `awk '/^## Gates and review/,/^## The pull request/' SKILL.md | grep -n -E 'simplify|diff-reviewer'`
    shows `simplify` on an earlier line than the first `diff-reviewer`, and names `<parent-sha>`.
 4. In `references/writing-a-spec.md`, `grep -c -F` prints `0` today and 1 or more after for each of
-   `walking skeleton`, `Spec Kit`, `least-proven`, `docs/decisions`, `github.github.com/spec-kit`,
-   `walking-skeleton`, `removes the exclusion`, and `preparatory-refactoring-example`.
+   `walking skeleton`, `Spec Kit`, `docs/decisions`, `github.github.com/spec-kit`, `walking-skeleton`,
+   `removes the exclusion`, and `preparatory-refactoring-example`, and prints `1` today and 2 or more
+   after for `least-proven`.
 5. `test -f references/repo-files.md` exits 1 today, and 0 after. In it, `grep -c -F` prints 1 or
    more for each of `200 lines`, `exclusion`, `ceiling`, `deadcode -test`, `gocognit`, `dupl`,
    `forbidigo`, `dubplate`, `code.claude.com/docs/en/memory`, `arxiv.org/abs/2602.11988`, and
