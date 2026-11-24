@@ -321,13 +321,20 @@ that builds on nothing is Spec Kit's parallel mark, so no separate mark is added
 first task is a walking skeleton: the thinnest build that carries one function end to end through
 every major part. Among tasks free to go next, the one resting on the least-proven assumption goes
 first. A decision that binds later work becomes a record in the repo's `docs/decisions/`, in the task
-that first builds on it. Each rule carries its source URL from this spec's table.
+that first builds on it. When a feature task must change code under a check's exclusion, the spec puts
+a task that changes no behavior right before it. That task restructures the code and removes the
+exclusion, and the feature task builds on it (Fowler's preparatory refactoring,
+<https://martinfowler.com/articles/preparatory-refactoring-example.html>). Each rule carries its
+source URL from this spec's table or this paragraph.
 
 **`references/repo-files.md`** is new. It lists the files every repo carries and what each holds,
 sized by the repo: `CLAUDE.md` under 200 lines with no overview or history; the README; `BACKLOG.md`;
 the gate; `docs/STATUS.md` by pointer to "Records"; and `docs/decisions/`, which appears with its
 first record. It says a rule a tool can check becomes a gate check and its prose goes; that a check
-adopted on existing code lists each finding as a named exclusion and the list only shrinks; and that
+adopted on existing code lists each finding as a named exclusion and the list only shrinks; that an
+excluded finding with a score, such as a function's complexity, keeps its score at adoption as a
+ceiling the gate enforces, so excluded code can't get worse (ESLint's bulk suppressions record counts
+the same way, <https://eslint.org/blog/2025/04/introducing-bulk-suppressions/>); and that
 a Go repo takes the four checks task 1 proved (dupl, gocognit, forbidigo, `deadcode -test`). A repo in
 another language takes its ecosystem's equivalents, named in that repo's spec. It points at dubplate
 as the worked example, and cites the memory guide and the AGENTS.md study for the `CLAUDE.md` rule.
@@ -341,19 +348,21 @@ Done when (paths below are relative to `claude/.claude/skills/building-from-spec
 3. `awk '/^## Gates and review/,/^## The pull request/' SKILL.md | grep -n -E 'simplify|diff-reviewer'`
    shows `simplify` on an earlier line than the first `diff-reviewer`, and names `<parent-sha>`.
 4. In `references/writing-a-spec.md`, `grep -c -F` prints `0` today and 1 or more after for each of
-   `walking skeleton`, `Spec Kit`, `least-proven`, `docs/decisions`, `github.github.com/spec-kit`, and
-   `walking-skeleton`.
+   `walking skeleton`, `Spec Kit`, `least-proven`, `docs/decisions`, `github.github.com/spec-kit`,
+   `walking-skeleton`, `removes the exclusion`, and `preparatory-refactoring-example`.
 5. `test -f references/repo-files.md` exits 1 today, and 0 after. In it, `grep -c -F` prints 1 or
-   more for each of `200 lines`, `exclusion`, `deadcode -test`, `gocognit`, `dupl`, `forbidigo`,
-   `dubplate`, `code.claude.com/docs/en/memory`, and `arxiv.org/abs/2602.11988`.
+   more for each of `200 lines`, `exclusion`, `ceiling`, `deadcode -test`, `gocognit`, `dupl`,
+   `forbidigo`, `dubplate`, `code.claude.com/docs/en/memory`, `arxiv.org/abs/2602.11988`, and
+   `introducing-bulk-suppressions`.
 6. `bash scripts/gate.sh` passes from the worktree root.
 7. `awk '/^## Launching a task/,/^## A session at work/' SKILL.md | grep -c -F 'run_in_background'`
    prints `0` today, and 1 or more after.
 8. The pull request says the spec-writing eval's recorded `guideHash` goes stale with this change,
    per backlog #114, and that the rerun waits for #114.
 
-Reviewers: `standards:diff-reviewer`. Minutes: 52 (work 32, local gates 4, review 16), from
-task-report's workstation medians. Time clause: 104 minutes. Model: Opus at medium. Waits for: task 1
+Reviewers: `standards:diff-reviewer`. Minutes: 56 (work 36, local gates 4, review 16), from
+task-report's workstation medians, plus 4 for the two exclusion rules Geoff added on 2026-11-23 ("Add
+both rules"). Time clause: 112 minutes. Model: Opus at medium. Waits for: task 1
 merged, PR #271 merged, and no other open pull request touching `building-from-specs`.
 `gh pr list -R glw907/workstation --state open --json number,files` answers the last. If Geoff closes
 #271 unmerged, task 2 uses today's "Waits for" wording and runs `simplify` against the default branch.
