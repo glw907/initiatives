@@ -16,7 +16,18 @@ on the same day he added a watcher rule to task 2 ("Please do", commit `3c906b5`
 - Workstation pull request 271 (task chains) merged at 18:05 on 2026-11-23. Approval now follows its
   "Merging" section: Geoff answers "Merge" or "Send back" to a question that says what each pull request changes.
 
+- 2026-11-23, 18:50: `merge-prompt` merged as workstation pull request 272 on Geoff's "Merge". Its settings
+  edits landed as `eecbca3b`, and `claude-tooling-sync apply` and `verify` passed. Its session, worktree, and
+  branches are removed. Task 2 gained Geoff's two exclusion rules ("Add both rules", `5a8940a`) and two
+  corrected baselines (`f6ceb23`). Dubplate backlog #185 holds the gate side.
+- Launched from `~/.dotfiles`, each with a watcher: this record's task 2 as `lean-pattern-skill` (`06e34f26`,
+  Opus at medium, 112-minute clause), and merge-tiers task 1 as `show-merge-script` (`e622595c`, Opus at
+  high, 180-minute clause). Usage at launch: 75 percent all models, 100 percent Fable.
+
 ## Next action
+
+When a watcher wakes, follow steps 6 and 2 below: ask Geoff by "Merging", and launch merge-tiers task 2
+(`show-tier-rules`) once both pull requests merge.
 
 One session drives this record and `claude-config-alignment/STATUS.md` ("Task chains and merge tiers"), since
 both wait on the `merge-prompt` session (`7be0f058`, in `~/.dotfiles/.claude/worktrees/merge-prompt`). It builds
