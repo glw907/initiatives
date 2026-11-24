@@ -29,8 +29,9 @@ on the same day he added a watcher rule to task 2 ("Please do", commit `3c906b5`
   `claude-worktree-busy` exits 1 while `show-merge-script` works under it. `SKILL.md` is 273 lines after
   273, so merge-tiers task 2's 270-line cap means its builder moves text to a reference file; its launch
   goal says so.
-- Dubplate: the complexity spec is `~/Projects/dubplate/docs/specs/2026-11-23-complexity-cleanup.md`,
-  awaiting Geoff. The architecture-read workflow (`wf_904b154b-5e4`, 49 readers) writes
+- Dubplate: Geoff approved the complexity spec ("Approve and launch"), committed with the #164 reword as
+  dubplate `388c64b`. It launched as `complexity-cleanup` (`7032924c`, Opus at high, 400-minute clause)
+  with a watcher, at 77 percent weekly usage. The architecture-read workflow (`wf_904b154b-5e4`, 49 readers) writes
   `dubplate/docs/research/2026-11-23-architecture-read.md`, which feeds a cleanup spec.
 
 ## Next action
