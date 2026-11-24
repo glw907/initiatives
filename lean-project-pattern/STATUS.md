@@ -29,8 +29,9 @@ and "Merging"), and stops by 19:30 on 2026-11-23.
 2. Two pieces of work then edit `building-from-specs` `SKILL.md` and `references/writing-a-spec.md`: this
    record's task 2 and the merge-tiers spec's task 2 (`show-tier-rules`). They run one after the other. The
    merge-tiers spec's task 1 (`claude-show-merge`) touches neither and runs beside either. Merge tiers
-   launches only on Geoff's word, so ask him the order. Claude recommends this record's task 2 first, beside
-   merge-tiers task 1, then merge-tiers task 2 once both merge.
+   launches only on Geoff's word. On 2026-11-23 he chose "Lean rules first", which also lets merge tiers
+   launch: this record's task 2 beside merge-tiers task 1, then merge-tiers task 2 once both merge. Merge-tiers
+   task 2 caps `SKILL.md` at 270 lines, and it is 250 before this record's task 2.
 3. Before each launch, run the checks in `building-from-specs` "Launching a task", confirm
    `gh pr list -R glw907/workstation --state open --json number,files` shows no other open pull request
    touching the files the task edits, and read `/usage`: the week must be under 85 percent.
