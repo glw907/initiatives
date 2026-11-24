@@ -375,9 +375,10 @@ nothing. Today that prompt is also what stops a task session from merging: `deny
 turns it into a refusal. A deny takes its place there. The launch line's `--settings` gains
 `"env":{"CLAUDE_TASK_SESSION":"1"}`, and `claude-git-guard` returns `deny` for every merge spelling it
 already detects when that variable is `1`, and nothing otherwise. The two `ask` rules on merges leave
-`claude/.claude/settings.json`. A task session leaves settings alone ("In place of a question"), so this
-part lands in a follow-up session on task 1's branch, launched by Geoff's session once task 1 ends. Its
-goal adds: `grep -c 'pr merge\|pulls/\*/merge' claude/.claude/settings.json` prints 0; the guard's tests
+`claude/.claude/settings.json`. This part lands as its own pull request from the default branch, launched
+once task 1 merged (Geoff merged pull request 271 on 2026-11-23, as `2ac06b56`), with the name
+`merge-prompt`. A task session leaves settings alone ("In place of a question"), so the `ask` rule removal
+goes under that pull request's `## Before merge` for Geoff's session to apply. Its goal adds: `grep -c 'pr merge\|pulls/\*/merge' claude/.claude/settings.json` prints 0; the guard's tests
 show a merge denied with `CLAUDE_TASK_SESSION=1` and passed without it; and `MERGE_REASON` names the
 task-session deny.
 
