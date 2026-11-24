@@ -89,7 +89,7 @@ A product never ends, and an initiative does, so only a bounded effort gets a re
 | [Dubplate server](dubplate-server/README.md) | active | dubplate | Builds the greenfield dubplate server that gives a group one well-organized music library. |
 | [ECXC rebuild](ecxc-rebuild/README.md) | proposed | ecxc-ski | Would rebuild ecxc.ski on the current cairn once the cairn docs standard is complete. |
 | [Household phonebook](household-phonebook/README.md) | done | phonebook, household-it, survey | Serves one shared phonebook to the household's Yealink phones and a web app from a Cloudflare Worker. |
-| [Lean project pattern](lean-project-pattern/README.md) | active | dubplate, workstation, standards | Settles one mainstream pattern for how a project holds its rules, decisions, and build order, so agents write lean, well-architected code, and pilots it on dubplate. |
+| [Lean project pattern](lean-project-pattern/README.md) | done | dubplate, workstation, standards | Settles one mainstream pattern for how a project holds its rules, decisions, and build order, so agents write lean, well-architected code, and pilots it on dubplate. |
 | [Monthly model review](monthly-model-review/README.md) | active | workstation | Reviews the Claude models, effort settings, and skills each month and logs the result. |
 | [Public phonebook](phonebook-public/README.md) | proposed | phonebook | Would publish a scrubbed copy of the household phonebook, with a README explaining the setup and what the build taught, so others can make their own. |
 | [Poplar re-founding](poplar-refounding/README.md) | active | poplar | Rebuilds the poplar email client from the ground up against a settled architecture. |

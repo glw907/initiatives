@@ -1,5 +1,9 @@
 # Lean project pattern
 
+Status: done (2026-11-23). All three tasks merged on Geoff's word: dubplate pull request 26, standards
+pull request 29, and workstation pull request 273. The merge-tiers work goes on in
+`claude-config-alignment/STATUS.md`, and the dubplate cleanup in dubplate's own `docs/specs/`.
+
 Status: active (2026-11-23). Geoff set the aim in the terminal and asked for the spec ("yes, write
 the spec"). The goals and non-goals below are Claude's reading of his words.
 

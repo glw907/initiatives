@@ -34,10 +34,19 @@ on the same day he added a watcher rule to task 2 ("Please do", commit `3c906b5`
   with a watcher, at 77 percent weekly usage. The architecture-read workflow (`wf_904b154b-5e4`, 49 readers) writes
   `dubplate/docs/research/2026-11-23-architecture-read.md`, which feeds a cleanup spec.
 
+- 2026-11-23, 19:45: merge-tiers task 1 merged as workstation pull request 274 (`05cba83f`) on Geoff's
+  "Merge". `~/.dotfiles` is pulled and `stow -R bin` links `claude-show-merge`. Merge-tiers task 2
+  launched as `show-tier-rules` (`beae5c68`, Sonnet at high, 120-minute clause), told that `SKILL.md`
+  starts at 273 lines and that the tick skips a pull request whose ask is already recorded. This record
+  is closed (`status: done`).
+
 ## Next action
 
-When `show-merge-script`'s watcher wakes, ask Geoff by "Merging", pull `~/.dotfiles`, close this record
-through `log-project`, and launch merge-tiers task 2 (`show-tier-rules`).
+This record is done. Merge-tiers continues from `claude-config-alignment/STATUS.md`: when
+`show-tier-rules` ends, ask Geoff by "Merging", apply its `## Before merge` settings edits, then run Step 3.
+The dubplate work continues from dubplate `docs/STATUS.md`: `complexity-cleanup` (`7032924c`) is
+building, and the architecture read at `docs/research/2026-11-23-architecture-read.md` feeds a cleanup
+spec.
 
 One session drives this record and `claude-config-alignment/STATUS.md` ("Task chains and merge tiers"), since
 both wait on the `merge-prompt` session (`7be0f058`, in `~/.dotfiles/.claude/worktrees/merge-prompt`). It builds
