@@ -190,6 +190,8 @@
   changes. After the merge, the approved `specs/2026-11-23-merge-tiers-design.md` (Show and Ask tiers,
   written by session `merge-tiers` with Geoff) is ready to launch: its tasks wait for 271 and this
   follow-up, merged. Launch it only on Geoff's word.
+- The lean-project-pattern record's task 2 also waits for `merge-prompt`, and it edits the same two
+  skill files as merge-tiers task 2. One session drives both from `lean-project-pattern/STATUS.md`.
 - Weekly usage was 75 percent for all models and 100 percent for Fable at the `merge-prompt` launch.
   Both reset Nov 27 at 10:59pm Anchorage.
 
