@@ -173,6 +173,26 @@
 
 ## Next action
 
+### Task chains and merge tiers (2026-11-23, newest)
+
+- Task chains are live. Task 1 of `specs/2026-11-22-task-chains-design.md` merged as pull request
+  271 in `glw907/workstation` (`2ac06b56`) on Geoff's "merge". `building-from-specs` now has
+  `## Chains`, and Geoff approves a merge by answering "Merge" or "Send back" to a question that says
+  what merging it changes. The `~/.dotfiles` checkout is pulled, and the worktree and branches are
+  removed. The step 1 record is `research/2026-11-22-task-chains/step-1.md`.
+- The follow-up `merge-prompt` (session 7be0f058, Sonnet at high, 80-minute clause) is building in
+  `~/.dotfiles`. It sets `CLAUDE_TASK_SESSION=1` on the launch line, has `claude-git-guard` deny every
+  merge spelling in a task session and pass it elsewhere, and rewords the three lines that describe the
+  prompt. Its goal is the spec's paragraph "The merge prompt goes too". The `ask` rule removal from
+  `settings.json` comes under its `## Before merge`, for Geoff's session to apply and then run
+  `claude-tooling-sync apply` and `verify`. Until then, the merge prompt still fires.
+- Next: when `merge-prompt` ends, read its pull request and ask Geoff about it by what merging it
+  changes. After the merge, the approved `specs/2026-11-23-merge-tiers-design.md` (Show and Ask tiers,
+  written by session `merge-tiers` with Geoff) is ready to launch: its tasks wait for 271 and this
+  follow-up, merged. Launch it only on Geoff's word.
+- Weekly usage was 75 percent for all models and 100 percent for Fable at the `merge-prompt` launch.
+  Both reset Nov 27 at 10:59pm Anchorage.
+
 Every task of the alignment spec and of the brainstorming spec has merged. The launch prompt
 `plans/2026-11-21-side-by-side-prompt.txt` is finished, and no task session is running.
 
