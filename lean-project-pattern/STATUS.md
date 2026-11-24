@@ -24,10 +24,19 @@ on the same day he added a watcher rule to task 2 ("Please do", commit `3c906b5`
   Opus at medium, 112-minute clause), and merge-tiers task 1 as `show-merge-script` (`e622595c`, Opus at
   high, 180-minute clause). Usage at launch: 75 percent all models, 100 percent Fable.
 
+- 2026-11-23, 19:10: `lean-pattern-skill` merged as workstation pull request 273 (`66aee9ee`) on Geoff's
+  "Merge". Its session, worktree, and branches are removed. `~/.dotfiles` is not pulled yet:
+  `claude-worktree-busy` exits 1 while `show-merge-script` works under it. `SKILL.md` is 273 lines after
+  273, so merge-tiers task 2's 270-line cap means its builder moves text to a reference file; its launch
+  goal says so.
+- Dubplate: the complexity spec is `~/Projects/dubplate/docs/specs/2026-11-23-complexity-cleanup.md`,
+  awaiting Geoff. The architecture-read workflow (`wf_904b154b-5e4`, 49 readers) writes
+  `dubplate/docs/research/2026-11-23-architecture-read.md`, which feeds a cleanup spec.
+
 ## Next action
 
-When a watcher wakes, follow steps 6 and 2 below: ask Geoff by "Merging", and launch merge-tiers task 2
-(`show-tier-rules`) once both pull requests merge.
+When `show-merge-script`'s watcher wakes, ask Geoff by "Merging", pull `~/.dotfiles`, close this record
+through `log-project`, and launch merge-tiers task 2 (`show-tier-rules`).
 
 One session drives this record and `claude-config-alignment/STATUS.md` ("Task chains and merge tiers"), since
 both wait on the `merge-prompt` session (`7be0f058`, in `~/.dotfiles/.claude/worktrees/merge-prompt`). It builds
