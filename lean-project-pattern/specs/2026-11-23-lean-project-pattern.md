@@ -308,7 +308,12 @@ failing check or the review finding that calls for it. "Gates and review" gains 
 review dispatch: the session runs the built-in `simplify` skill on the commit range the review reads
 (`<parent-sha>..HEAD` for a task built on another, else the branch against the default branch), and
 `simplify` commits its fixes separately. The opening paragraph gains one line that points at
-`references/repo-files.md`.
+`references/repo-files.md`. "Launching a task" gains one rule after the launch block: a session that
+launches a task outside a chain starts a watcher in the same turn. The watcher is a background Bash
+command (`run_in_background`) that exits once `claude agents --json` shows the task's session no
+longer `working`, so its exit wakes the launching session, which reads the pull request and reports
+to Geoff. Geoff added this rule on 2026-11-23 ("Please do"), after a launch with no watcher left two
+ready pull requests unreported for three and a half hours.
 
 **`references/writing-a-spec.md`**, at the tasks bullet, says a spec's tasks run setup first, then
 the foundation every feature needs, then one phase per feature in priority order (Spec Kit). A task
@@ -342,11 +347,13 @@ Done when (paths below are relative to `claude/.claude/skills/building-from-spec
    more for each of `200 lines`, `exclusion`, `deadcode -test`, `gocognit`, `dupl`, `forbidigo`,
    `dubplate`, `code.claude.com/docs/en/memory`, and `arxiv.org/abs/2602.11988`.
 6. `bash scripts/gate.sh` passes from the worktree root.
-7. The pull request says the spec-writing eval's recorded `guideHash` goes stale with this change,
+7. `awk '/^## Launching a task/,/^## A session at work/' SKILL.md | grep -c -F 'run_in_background'`
+   prints `0` today, and 1 or more after.
+8. The pull request says the spec-writing eval's recorded `guideHash` goes stale with this change,
    per backlog #114, and that the rerun waits for #114.
 
-Reviewers: `standards:diff-reviewer`. Minutes: 50 (work 30, local gates 4, review 16), from
-task-report's workstation medians. Time clause: 100 minutes. Model: Opus at medium. Waits for: task 1
+Reviewers: `standards:diff-reviewer`. Minutes: 52 (work 32, local gates 4, review 16), from
+task-report's workstation medians. Time clause: 104 minutes. Model: Opus at medium. Waits for: task 1
 merged, PR #271 merged, and no other open pull request touching `building-from-specs`.
 `gh pr list -R glw907/workstation --state open --json number,files` answers the last. If Geoff closes
 #271 unmerged, task 2 uses today's "Waits for" wording and runs `simplify` against the default branch.
@@ -427,7 +434,7 @@ concern its subject. Nothing folds.
 | workstation | #115 | keep | A separate spec, waiting on the spec-writing test. |
 | workstation | #116 | keep | The "Models" text is untouched by task 2. |
 | workstation | #117 | keep | The launch block is outside task 2's lines; land it with #118. |
-| workstation | #118 | keep | The fix is a sentence in "Launching a task", which task 2 does not rewrite. |
+| workstation | #118 | keep | The fix is a sentence in "Launching a task". Task 2 adds the watcher rule there and leaves that sentence alone. |
 
 The reword of #88 drops the clause "the dead exports (`reject.All`, `Reason.Blocking`, `Param`,
 `Canonical`, `staging.ErrLinuxOnly`, the `Route` exports) find callers or go" and keeps the rest. Each
